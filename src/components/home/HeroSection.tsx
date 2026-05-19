@@ -6,7 +6,7 @@ export default function HeroSection() {
       {/* YouTube Background Video Container */}
       <div className="absolute inset-0 w-full h-full pointer-events-none select-none overflow-hidden z-0">
         <iframe
-          src="https://www.youtube.com/embed/sGyAIy71wD4?autoplay=1&mute=1&loop=1&playlist=sGyAIy71wD4&controls=0&showinfo=0&rel=0&iv_load_policy=3&playsinline=1&enablejsapi=1&disablekb=1&modestbranding=1"
+          src="https://www.youtube.com/embed/tZeR1AGk_Uk?autoplay=1&mute=1&loop=1&playlist=tZeR1AGk_Uk&controls=0&showinfo=0&rel=0&iv_load_policy=3&playsinline=1&enablejsapi=1&disablekb=1&modestbranding=1"
           frameBorder="0"
           allow="autoplay; encrypted-media"
           allowFullScreen
