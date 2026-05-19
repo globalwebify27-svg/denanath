@@ -45,7 +45,7 @@ export default function PatientReviews() {
   };
 
   return (
-    <section className="w-full relative z-30 mt-28 py-20 bg-gradient-to-br from-white via-teal-50/[0.1] to-[#f4fafb] overflow-hidden border-t border-slate-100">
+    <section className="w-full relative z-30 py-12 sm:py-16 bg-gradient-to-br from-[#f5fbfb] via-teal-50/[0.1] to-[#f4fafb] overflow-hidden">
       
       {/* Decorative elements */}
       <div className="absolute top-1/2 left-0 w-96 h-96 bg-teal-500/[0.02] rounded-full blur-[100px] pointer-events-none -z-10" />

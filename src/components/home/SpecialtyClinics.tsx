@@ -42,7 +42,7 @@ export default function SpecialtyClinics() {
             return (
               <div 
                 key={clinic.id} 
-                className="group relative bg-white p-6 rounded-2xl border border-slate-100 hover:border-[#007a87]/30 hover:shadow-[0_15px_35px_rgba(0,122,135,0.06)] hover:-translate-y-1 transition-all flex flex-col justify-between min-h-[150px] cursor-pointer"
+                className="group relative bg-white p-6 rounded-2xl border border-slate-200 hover:border-[#007a87] hover:shadow-[0_15px_35px_rgba(0,122,135,0.1)] hover:-translate-y-1 transition-all flex flex-col justify-between min-h-[150px] cursor-pointer"
               >
                 {/* Red brand indicator in the corner */}
                 <div className="absolute top-4 right-4 w-1.5 h-1.5 rounded-full bg-red-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>

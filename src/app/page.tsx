@@ -19,7 +19,7 @@ export default function Home() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   return (
-    <div className="relative overflow-hidden bg-white min-h-screen pb-24">
+    <div className="relative overflow-hidden bg-[#f6fafb] min-h-screen pb-24">
       {/* Subtle top background gradient overlay */}
       <div className="absolute top-0 left-0 right-0 h-[80vh] bg-gradient-to-b from-teal-500/[0.03] to-transparent pointer-events-none z-0"></div>
 

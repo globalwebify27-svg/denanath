@@ -140,7 +140,7 @@ export default function Navbar() {
 
               <Link
                 href="/appointments"
-                className="bg-[#db5209] hover:bg-[#c14605] text-white px-5 py-2.5 rounded-md font-bold text-xs uppercase tracking-wider flex items-center gap-1.5 transition-all shadow-sm"
+                className="bg-[#d9232d] hover:bg-[#b81d24] text-white px-5 py-2.5 rounded-md font-bold text-xs uppercase tracking-wider flex items-center gap-1.5 transition-all shadow-sm"
               >
                 <span>Book an Appointment</span>
               </Link>
@@ -232,7 +232,7 @@ export default function Navbar() {
               <Link
                 href="/appointments"
                 onClick={() => setMobileMenuOpen(false)}
-                className="block w-full py-2.5 rounded-lg bg-[#db5209] text-white font-bold text-center text-xs uppercase tracking-wider shadow-sm"
+                className="block w-full py-2.5 rounded-lg bg-[#d9232d] hover:bg-[#b81d24] text-white font-bold text-center text-xs uppercase tracking-wider shadow-sm transition-all"
               >
                 Book an Appointment
               </Link>

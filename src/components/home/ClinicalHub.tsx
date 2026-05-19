@@ -158,7 +158,7 @@ export default function ClinicalHub() {
   const theme = currentHub.colorTheme;
 
   return (
-    <section className="w-full bg-gradient-to-br from-[#f0f7f7] via-white to-[#f5fbfb] py-20 sm:py-24 border-t border-b border-slate-100 relative z-30 mt-28">
+    <section className="w-full bg-gradient-to-br from-[#f0f7f7] via-white to-[#f5fbfb] py-20 sm:py-24 border-t border-slate-100 relative z-30 mt-28">
       {/* Dynamic Background Patterns (lifeline SVG in light teal color) */}
       <div className="absolute inset-0 bg-[radial-gradient(#007a8703_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none" />
       

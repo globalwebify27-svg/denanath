@@ -4,7 +4,7 @@ import { ArrowRight, ShieldCheck } from "lucide-react";
 
 export default function AboutSection() {
   return (
-    <section className="w-full bg-white relative z-20 pt-24 pb-16 border-b border-slate-100">
+    <section className="w-full bg-gradient-to-b from-white to-[#f6fafb] relative z-20 pt-24 pb-16 border-b border-slate-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           
