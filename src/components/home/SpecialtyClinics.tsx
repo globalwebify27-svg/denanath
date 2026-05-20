@@ -20,54 +20,145 @@ export default function SpecialtyClinics() {
   ];
 
   return (
-    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-24 relative z-30 py-12 px-6 sm:px-8 rounded-[2rem] overflow-hidden">
-      <div className="relative z-10">
-        {/* Asymmetrical Elegant Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 border-b border-slate-200/50 pb-8">
-          <div>
-            <p className="text-[10px] font-bold text-[#007a87] uppercase tracking-[0.2em] mb-2">Specialized Medical Care</p>
-            <h2 className="text-3xl sm:text-4xl font-light text-slate-900 tracking-tight">
-              Our Specialty <span className="font-semibold text-[#002b5c]">Care Clinics</span>
-            </h2>
-          </div>
-          <p className="text-slate-500 text-xs sm:text-sm font-light max-w-md leading-relaxed">
-            Highly focused clinical programs and centers of excellence addressing specialized therapeutic and medical disciplines.
-          </p>
-        </div>
+   <section className="relative mt-24  overflow-hidden rounded-[2rem] bg-gradient-to-br from-[#ecfdf5] via-[#f0fdf4] to-[#d1fae5] py-12 px-6 sm:px-8">
 
-        {/* Clinics Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
-          {clinics.map((clinic) => {
-            const Icon = clinic.icon;
-            return (
-              <div 
-                key={clinic.id} 
-                className="group relative bg-white p-6 rounded-2xl border border-slate-200 hover:border-[#007a87] hover:shadow-[0_15px_35px_rgba(0,122,135,0.1)] hover:-translate-y-1 transition-all flex flex-col justify-between min-h-[150px] cursor-pointer"
-              >
-                {/* Red brand indicator in the corner */}
-                <div className="absolute top-4 right-4 w-1.5 h-1.5 rounded-full bg-red-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+  {/* Green Glow Effects */}
+  <div className="absolute top-0 left-0 h-72 w-72 rounded-full bg-emerald-300/30 blur-3xl"></div>
+  <div className="absolute bottom-0 right-0 h-72 w-72 rounded-full bg-teal-300/30 blur-3xl"></div>
 
-                <div className="flex justify-between items-start">
-                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-transform group-hover:scale-105 duration-300 ${clinic.color}`}>
-                    <Icon className="w-5 h-5" />
-                  </div>
-                  <span className="text-[10px] font-bold text-slate-300 tracking-widest">{clinic.id}</span>
-                </div>
+  {/* Grid Pattern */}
+  <div className="absolute inset-0 opacity-[0.03] bg-[linear-gradient(to_right,#065f46_1px,transparent_1px),linear-gradient(to_bottom,#065f46_1px,transparent_1px)] bg-[size:40px_40px]"></div>
 
-                <div>
-                  <h3 className="text-xs sm:text-[13px] font-bold text-[#002b5c] tracking-tight group-hover:text-[#007a87] transition-colors duration-300 leading-snug">
-                    {clinic.name}
-                  </h3>
-                  <div className="flex items-center gap-1 text-[9px] font-bold text-teal-600 uppercase tracking-widest mt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <span>Explore</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
+  <div className="relative z-10 max-w-7xl mx-auto">
+    
+    {/* Header */}
+    <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 border-b border-emerald-200/60 pb-8">
+      
+      <div>
+        <p className="text-[10px] font-bold text-[#007a87] uppercase tracking-[0.2em] mb-2">
+          Specialized Medical Care
+        </p>
+
+        <h2 className="text-3xl sm:text-4xl font-light text-slate-900 tracking-tight">
+          Our Specialty{" "}
+          <span className="font-semibold text-emerald-700">
+            Care Clinics
+          </span>
+        </h2>
       </div>
-    </section>
+
+      <p className="text-slate-600 text-xs sm:text-sm font-light max-w-md leading-relaxed">
+        Highly focused clinical programs and centers of excellence addressing specialized therapeutic and medical disciplines.
+      </p>
+    </div>
+
+    {/* Clinics Grid */}
+    <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
+
+      {clinics.map((clinic) => {
+        const Icon = clinic.icon;
+
+        return (
+          <div
+            key={clinic.id}
+            className="
+              group relative
+              rounded-2xl
+              border border-emerald-100
+              bg-white/70
+              backdrop-blur-xl
+              p-6
+              overflow-hidden
+              shadow-[0_10px_30px_rgba(16,185,129,0.08)]
+              hover:shadow-[0_20px_45px_rgba(16,185,129,0.18)]
+              hover:border-emerald-300
+              hover:-translate-y-2
+              transition-all duration-500
+              flex flex-col justify-between
+              min-h-[160px]
+              cursor-pointer
+            "
+          >
+
+            {/* Hover Glow */}
+            <div className="
+              absolute inset-0 opacity-0
+              group-hover:opacity-100
+              transition duration-500
+              bg-[radial-gradient(circle_at_top_right,rgba(16,185,129,0.12),transparent_60%)]
+            "></div>
+
+            {/* Top */}
+            <div className="relative z-10 flex justify-between items-start">
+
+              <div
+                className={`
+                  w-11 h-11 rounded-xl
+                  flex items-center justify-center
+                  transition-transform duration-300
+                  group-hover:scale-110
+                  shadow-sm
+                  ${clinic.color}
+                `}
+              >
+                <Icon className="w-5 h-5" />
+              </div>
+
+              <span className="text-[10px] font-bold text-emerald-200 tracking-widest">
+                {clinic.id}
+              </span>
+
+            </div>
+
+            {/* Bottom */}
+            <div className="relative z-10">
+
+              <h3 className="
+                text-xs sm:text-[13px]
+                font-bold
+                text-slate-800
+                tracking-tight
+                leading-snug
+                group-hover:text-emerald-700
+                transition-colors duration-300
+              ">
+                {clinic.name}
+              </h3>
+
+              <div className="
+                flex items-center gap-1
+                text-[9px]
+                font-bold
+                text-emerald-600
+                uppercase
+                tracking-widest
+                mt-3
+                opacity-0
+                translate-y-2
+                group-hover:opacity-100
+                group-hover:translate-y-0
+                transition-all duration-300
+              ">
+                <span>Explore</span>
+
+                <ArrowRight className="w-3.5 h-3.5" />
+              </div>
+            </div>
+
+            {/* Bottom Accent */}
+            <div className="
+              absolute bottom-0 left-0
+              h-[3px] w-0
+              bg-gradient-to-r from-emerald-500 to-teal-500
+              group-hover:w-full
+              transition-all duration-500
+            "></div>
+
+          </div>
+        );
+      })}
+    </div>
+  </div>
+</section>
   );
 }

@@ -13,6 +13,10 @@ import SpecialtyClinics from "@/components/home/SpecialtyClinics";
 import ClinicalHub from "@/components/home/ClinicalHub";
 import PatientReviews from "@/components/home/PatientReviews";
 import PartnersAccreditation from "@/components/home/PartnersAccreditation";
+import Trust_Credibility from "@/components/home/Trust_Credibility";
+import DoctorsSection from "@/components/home/Doctors";
+import PatientJourney from "@/components/home/Patient";
+import EmergencyCTA from "@/components/home/EmergencyCTA";
 
 export default function Home() {
   const { doctors, departments } = useHospital();
@@ -44,6 +48,10 @@ export default function Home() {
       <AboutSection />
 
       {/* 6. SPECIALTY CARE CLINICS SECTION */}
+      <Trust_Credibility/>
+      <DoctorsSection/>
+      <PatientJourney/>
+      <EmergencyCTA/>
       <SpecialtyClinics />
 
       {/* 7. CLINICAL HUB SECTION */}

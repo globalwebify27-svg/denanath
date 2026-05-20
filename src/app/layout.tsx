@@ -4,6 +4,8 @@ import "./globals.css";
 import { HospitalProvider } from "@/context/HospitalContext";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import QuickAccessWidget from "@/components/home/QuickAccessWidget";
+
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   variable: "--font-plus-jakarta",
@@ -28,7 +30,8 @@ export default function RootLayout({
       <body 
         className={`${plusJakartaSans.className} min-h-full flex flex-col bg-slate-50 text-slate-800 antialiased`}
         suppressHydrationWarning
-      >
+        >
+        <QuickAccessWidget/>
         <HospitalProvider>
           <Navbar />
           <main className="flex-grow flex flex-col">
