@@ -1,17 +1,15 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import Link from "next/link";
 import { usePathname } from "next/navigation";
-import {
-  Heart, Menu, X, Phone, Calendar, Lock,
-  Stethoscope, Clock, Building, HelpCircle, ArrowRight
-} from "lucide-react";
+import { Menu, X, Phone, ChevronDown } from "lucide-react";
+import Link from "next/link";
 
 export default function Navbar() {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [expandedMobileMenu, setExpandedMobileMenu] = useState<string | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -26,18 +24,81 @@ export default function Navbar() {
   }, []);
 
   const navLinks = [
-    { name: "Specialties", href: "/departments", icon: Building },
-    { name: "Our Doctors", href: "/doctors", icon: Stethoscope },
-    { name: "Support Facilities", href: "/facilities", icon: Clock },
-    { name: "Wellness Packages", href: "/health-packages", icon: Heart },
+    { name: "Home", href: "/" },
+    { name: "About Us", href: "/about" },
+    {
+      name: "Patient & Visitors",
+      href: "/patient-visitors",
+      dropdown: [
+        { name: "Out Patient guide", href: "/patient-guide/out-patient" },
+        { name: "In patient guide", href: "/patient-guide/in-patient" },
+        { name: "Health Packages", href: "/health-packages" },
+        { name: "Facilities", href: "/facilities" },
+        { name: "Patients Stories / Feedbacks", href: "/feedbacks" },
+        { name: "Patient Rights & Responsibilities", href: "/patient-rights" },
+        { name: "Photos", href: "/gallery/photos" },
+        { name: "Videos", href: "/gallery/videos" },
+      ],
+    },
+    {
+      name: "Doctors & Departments",
+      href: "/doctors-departments",
+      dropdown: [
+        { name: "Doctor Details", href: "/doctors" },
+        { name: "Department Details", href: "/departments" },
+        { name: "Services", href: "/services" },
+      ],
+    },
+    {
+      name: "Research",
+      href: "/research",
+      dropdown: [
+        { name: "About Us", href: "/research/about" },
+        { name: "Training And Events", href: "/research/events" },
+        { name: "Awards", href: "/research/awards" },
+        { name: "Newsletter Articles", href: "/research/newsletters" },
+        { name: "Publications", href: "/research/publications" },
+        { name: "Annual Reports", href: "/research/annual-reports" },
+        { name: "Sponsors & CROs", href: "/research/sponsors-cros" },
+        { name: "Contact Us", href: "/research/contact" },
+      ],
+    },
+    {
+      name: "Academics",
+      href: "/academics",
+      dropdown: [
+        { name: "Academics", href: "/academics/overview" },
+        { name: "Simulation Center", href: "/academics/simulation-center" },
+      ],
+    },
+    {
+      name: "Online Facilities",
+      href: "/online-facilities",
+      dropdown: [
+        { name: "E-Mail Login (DMH Users)", href: "/online-facilities/email-login" },
+        { name: "Online Payment", href: "/online-facilities/payment" },
+        { name: "Patient Portal", href: "/online-facilities/portal" },
+        { name: "Patient Registration Form", href: "/online-facilities/registration" },
+      ],
+    },
+    { name: "Careers", href: "/careers" },
+    { name: "Contact Us", href: "/contact" },
   ];
 
+  const toggleMobileDropdown = (name: string) => {
+    if (expandedMobileMenu === name) {
+      setExpandedMobileMenu(null);
+    } else {
+      setExpandedMobileMenu(name);
+    }
+  };
+
   return (
-    <header className="w-full z-50 flex flex-col">
-      {/* Tier 2: Teal Utility Bar */}
-      <div className="hidden md:block w-full bg-[#007a87] text-white text-[11px] py-2 px-4 sm:px-6 lg:px-8 font-medium">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:justify-between items-center gap-2 md:gap-0">
-          <div className="flex items-center gap-5 text-white/90">
+    <header className="w-full z-50 flex flex-col font-sans select-none">
+      {/* Tier 1: Teal Utility Bar */}
+      <div className="hidden xl:block w-full bg-[#007a87] text-white text-[11px] py-2 px-4 font-medium border-b border-teal-600/30">
+        <div className="max-w-[96%] mx-auto flex justify-between items-center">
+          <div className="flex items-center gap-4 text-white/90">
             <Link href="/doctors" className="hover:text-white transition-colors">Find a Doctor</Link>
             <span className="opacity-30">|</span>
             <Link href="/facilities" className="hover:text-white transition-colors">Blogs</Link>
@@ -49,7 +110,7 @@ export default function Navbar() {
             <Link href="/contact" className="hover:text-white transition-colors">Contact Us</Link>
           </div>
 
-          <div className="flex items-center gap-5 text-[11px] font-bold">
+          <div className="flex items-center gap-4 font-bold tracking-wide">
             <a 
               href="https://wa.me/912040151515" 
               target="_blank" 
@@ -70,161 +131,176 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Main White Header sticky wrapper */}
+      {/* Main White Header */}
       <nav
-        className={`w-full bg-white border-b border-slate-200 py-3.5 z-40 transition-all ${scrolled ? "fixed top-0 left-0 shadow-md backdrop-blur-md bg-white/95" : "relative"
-          }`}
+        className={`w-full bg-white border-b border-slate-200 py-3 z-40 transition-all duration-200 ${
+          scrolled ? "fixed top-0 left-0 shadow-lg backdrop-blur-md bg-white/95" : "relative"
+        }`}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-[96%] mx-auto">
           <div className="flex justify-between items-center">
 
-            {/* DMH Logo & 25 Years Anniversary Badge */}
-            <div className="flex items-center">
-              <Link href="/" className="flex items-center gap-3 group focus:outline-none">
-                <div className="relative flex items-center justify-center w-11 h-11 rounded-lg bg-slate-50 border border-slate-100 p-1 transition-all">
+            {/* DMH Logo Section */}
+            <div className="flex items-center shrink-0 max-w-[25%]">
+              <Link href="/" className="flex items-center gap-1.5 group focus:outline-none">
+                <div className="relative flex items-center justify-center w-8 h-8 xl:w-9 h-9 rounded-lg bg-slate-50 border border-slate-100 p-1 shrink-0">
                   <img
                     src="/logo.png"
                     alt="DMH Logo"
                     className="w-full h-full object-contain"
                   />
                 </div>
-                <div className="flex flex-col text-left">
-                  <span className="text-[15px] font-black tracking-tight leading-none text-[#002b5c]">
+                <div className="flex flex-col text-left whitespace-nowrap">
+                  <span className="text-[12px] xl:text-[13px] 2xl:text-[14px] font-black tracking-tight leading-none text-[#002b5c]">
                     DEENANATH
                   </span>
-                  <span className="text-[8.5px] font-extrabold tracking-widest leading-none uppercase mt-0.5 text-[#007a87]">
+                  <span className="text-[7px] xl:text-[7.5px] 2xl:text-[8px] font-extrabold tracking-widest leading-none uppercase mt-0.5 text-[#007a87]">
                     Mangeshkar Hospital
                   </span>
                 </div>
               </Link>
 
-              {/* Elegant Vertical Divider and 25 Years Stamp (Exactly like Max Healthcare) */}
-              <div className="hidden md:flex items-center ml-5 pl-5 border-l border-slate-200">
-                <div className="flex flex-col text-left select-none">
-                  <span className="text-[11px] font-black text-amber-600 tracking-wider uppercase leading-none">
+              {/* Anniversary Badge - Hidden on small laptops to save horizontal space */}
+              <div className="hidden 2xl:flex items-center ml-3 pl-3 border-l border-slate-200 whitespace-nowrap shrink-0">
+                <div className="flex flex-col text-left">
+                  <span className="text-[9px] font-black text-amber-600 tracking-wider uppercase leading-none">
                     25 YEARS
                   </span>
-                  <span className="text-[7.5px] font-black text-slate-400 tracking-widest uppercase mt-0.5 leading-none">
-                    Of Clinical Trust & Care
+                  <span className="text-[6.5px] font-black text-slate-400 tracking-widest uppercase mt-0.5 leading-none">
+                    Of Trust & Care
                   </span>
                 </div>
               </div>
             </div>
 
-            {/* Desktop Navigation Links */}
-            <div className="hidden lg:flex items-center gap-7">
-              <Link href="/departments" className="text-xs font-black text-slate-700 hover:text-[#007a87] uppercase tracking-wider transition-colors">
-                Hospitals
-              </Link>
-              <Link href="/departments" className="text-xs font-black text-slate-700 hover:text-[#007a87] uppercase tracking-wider transition-colors">
-                Treatments
-              </Link>
-              <Link href="/departments" className="text-xs font-black text-slate-700 hover:text-[#007a87] uppercase tracking-wider transition-colors">
-                Services
-              </Link>
-              <Link href="/facilities" className="text-xs font-black text-slate-700 hover:text-[#007a87] uppercase tracking-wider transition-colors">
-                Academics
-              </Link>
-              <Link href="/contact" className="text-xs font-black text-slate-700 hover:text-[#007a87] uppercase tracking-wider transition-colors">
-                Quick Enquiry
-              </Link>
+            {/* Desktop Navigation Links (Responsive Flex & Fluid Gap) */}
+            <div className="hidden xl:flex items-center justify-center flex-1 mx-2 gap-[0.6vw] 2xl:gap-3.5 max-w-[60%]">
+              {navLinks.map((link, idx) => (
+                <div key={idx} className="relative group py-2">
+                  <Link 
+                    href={link.href} 
+                    className="text-[10px] 2xl:text-[11px] font-black text-slate-700 hover:text-[#007a87] uppercase tracking-wider transition-colors flex items-center gap-0.5 whitespace-nowrap"
+                  >
+                    <span>{link.name}</span>
+                    {link.dropdown && <ChevronDown className="w-2.5 h-2.5 opacity-60 group-hover:rotate-180 transition-transform shrink-0" />}
+                  </Link>
+
+                  {/* Dropdown Box Alignment Fix */}
+                  {link.dropdown && (
+                    <div className={`absolute top-full pt-2 hidden group-hover:block w-64 z-50 animate-fadeIn ${
+                      idx > 4 ? "right-0" : "left-0"
+                    }`}>
+                      <div className="bg-white rounded-lg shadow-xl border border-slate-100 py-1.5 overflow-hidden">
+                        {link.dropdown.map((subLink, sIdx) => (
+                          <Link
+                            key={sIdx}
+                            href={subLink.href}
+                            className="block px-4 py-2 text-[11px] font-semibold text-slate-600 hover:bg-slate-50 hover:text-[#007a87] border-b border-slate-50 last:border-0 transition-colors"
+                          >
+                            {subLink.name}
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ))}
             </div>
 
             {/* Right Action Stack */}
-            <div className="hidden lg:flex items-center gap-4">
-              <button className="p-2 text-slate-500 hover:text-slate-900 transition-colors">
-                <svg className="w-5 h-5 stroke-current" fill="none" viewBox="0 0 24 24" strokeWidth="2.5">
+            <div className="hidden xl:flex items-center gap-2 xl:gap-3 shrink-0 max-w-[20%] justify-end">
+              <button className="p-1 text-slate-500 hover:text-slate-900 transition-colors shrink-0">
+                <svg className="w-4 h-4 stroke-current" fill="none" viewBox="0 0 24 24" strokeWidth="2.5">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
               </button>
 
               <Link
                 href="/appointments"
-                className="bg-[#d9232d] hover:bg-[#b81d24] text-white px-5 py-2.5 rounded-md font-bold text-xs uppercase tracking-wider flex items-center gap-1.5 transition-all shadow-sm"
+                className="bg-[#d9232d] hover:bg-[#b81d24] text-white px-3 2xl:px-4 py-2 rounded-md font-bold text-[10px] 2xl:text-[11px] uppercase tracking-wider flex items-center gap-1 transition-all shadow-sm whitespace-nowrap shrink-0"
               >
-                <span>Book an Appointment</span>
+                <span>Book Appointment</span>
               </Link>
             </div>
 
-            {/* Mobile Actions Trigger */}
-            <div className="lg:hidden flex items-center gap-3">
-              <button className="p-2 text-slate-500 hover:text-slate-900 transition-colors">
-                <svg className="w-5 h-5 stroke-current" fill="none" viewBox="0 0 24 24" strokeWidth="2.5">
+            {/* Mobile / Tablet View Trigger (Triggers under 1280px Screen width) */}
+            <div className="xl:hidden flex items-center gap-3 shrink-0">
+              <button className="p-1.5 text-slate-500 hover:text-slate-900 transition-colors">
+                <svg className="w-4 h-4 stroke-current" fill="none" viewBox="0 0 24 24" strokeWidth="2.5">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
               </button>
 
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="p-2 rounded-md bg-slate-50 border border-slate-200 text-slate-700 transition-colors"
+                className="p-1.5 rounded-md bg-slate-50 border border-slate-200 text-slate-700 transition-colors"
                 aria-label="Toggle Menu"
               >
-                {mobileMenuOpen ? <X className="w-4.5 h-4.5" /> : <Menu className="w-4.5 h-4.5" />}
+                {mobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
               </button>
             </div>
           </div>
         </div>
 
-        {/* Mobile Navigation Panel */}
+        {/* Mobile / Tablet Drawer */}
         <div
-          className={`lg:hidden absolute inset-x-0 top-full bg-white border-b border-slate-200 overflow-hidden transition-all duration-300 ease-in-out shadow-lg ${mobileMenuOpen ? "max-h-[500px] opacity-100 py-4" : "max-h-0 opacity-0 py-0"
-            }`}
+          className={`xl:hidden absolute inset-x-0 top-full bg-white border-b border-slate-200 overflow-y-auto transition-all duration-300 ease-in-out shadow-xl ${
+            mobileMenuOpen ? "max-h-[85vh] opacity-100 py-4" : "max-h-0 opacity-0 py-0 pointer-events-none"
+          }`}
         >
           <div className="px-4 space-y-1">
-            <Link
-              href="/departments"
-              onClick={() => setMobileMenuOpen(false)}
-              className="flex items-center gap-3 px-4 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider text-slate-700 hover:bg-slate-50"
-            >
-              <span>Hospitals</span>
-            </Link>
-            <Link
-              href="/departments"
-              onClick={() => setMobileMenuOpen(false)}
-              className="flex items-center gap-3 px-4 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider text-slate-700 hover:bg-slate-50"
-            >
-              <span>Treatments</span>
-            </Link>
-            <Link
-              href="/departments"
-              onClick={() => setMobileMenuOpen(false)}
-              className="flex items-center gap-3 px-4 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider text-slate-700 hover:bg-slate-50"
-            >
-              <span>Services</span>
-            </Link>
-            <Link
-              href="/facilities"
-              onClick={() => setMobileMenuOpen(false)}
-              className="flex items-center gap-3 px-4 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider text-slate-700 hover:bg-slate-50"
-            >
-              <span>Academics</span>
-            </Link>
-            <Link
-              href="/contact"
-              onClick={() => setMobileMenuOpen(false)}
-              className="flex items-center gap-3 px-4 py-2.5 rounded-lg text-xs font-bold uppercase tracking-wider text-slate-700 hover:bg-slate-50"
-            >
-              <span>Quick Enquiry</span>
-            </Link>
-
-            {/* Utility links for mobile */}
-            <div className="pt-3 border-t border-slate-100 mt-3 space-y-1">
-              <p className="px-4 text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-1">Quick Tools</p>
-              <div className="grid grid-cols-2 gap-1 text-[11px] font-semibold text-slate-600">
-                <Link href="/doctors" onClick={() => setMobileMenuOpen(false)} className="px-4 py-2 hover:bg-slate-50 rounded-lg">Find a Doctor</Link>
-                <Link href="/facilities" onClick={() => setMobileMenuOpen(false)} className="px-4 py-2 hover:bg-slate-50 rounded-lg">Blogs</Link>
-                <Link href="/patient-guide" onClick={() => setMobileMenuOpen(false)} className="px-4 py-2 hover:bg-slate-50 rounded-lg">My Reports</Link>
-                <Link href="/facilities" onClick={() => setMobileMenuOpen(false)} className="px-4 py-2 hover:bg-slate-50 rounded-lg">Research</Link>
-                <Link href="/contact" onClick={() => setMobileMenuOpen(false)} className="px-4 py-2 hover:bg-slate-50 rounded-lg col-span-2">Contact Us</Link>
+            {navLinks.map((link, idx) => (
+              <div key={idx} className="border-b border-slate-50 last:border-0 pb-1">
+                {link.dropdown ? (
+                  <>
+                    <button
+                      onClick={() => toggleMobileDropdown(link.name)}
+                      className="w-full flex justify-between items-center px-3 py-2 rounded-lg text-xs font-bold uppercase tracking-wider text-slate-700 hover:bg-slate-50"
+                    >
+                      <span>{link.name}</span>
+                      <ChevronDown
+                        className={`w-4 h-4 transform transition-transform ${
+                          expandedMobileMenu === link.name ? "rotate-180 text-[#007a87]" : ""
+                        }`}
+                      />
+                    </button>
+                    
+                    <div
+                      className={`pl-4 space-y-0.5 overflow-hidden transition-all duration-200 ${
+                        expandedMobileMenu === link.name ? "max-h-96 opacity-100 mt-1 mb-2" : "max-h-0 opacity-0"
+                      }`}
+                    >
+                      {link.dropdown.map((subLink, sIdx) => (
+                        <Link
+                          key={sIdx}
+                          href={subLink.href}
+                          onClick={() => setMobileMenuOpen(false)}
+                          className="block px-3 py-1.5 text-[11px] font-semibold text-slate-600 hover:text-[#007a87]"
+                        >
+                          {subLink.name}
+                        </Link>
+                      ))}
+                    </div>
+                  </>
+                ) : (
+                  <Link
+                    href={link.href}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="flex items-center px-3 py-2 rounded-lg text-xs font-bold uppercase tracking-wider text-slate-700 hover:bg-slate-50"
+                  >
+                    {link.name}
+                  </Link>
+                )}
               </div>
-            </div>
+            ))}
 
+            {/* Bottom Panel Actions inside Mobile Drawer */}
             <div className="pt-3 border-t border-slate-100 mt-3 flex flex-col gap-2">
               <a 
                 href="https://wa.me/912040151515" 
                 target="_blank" 
                 rel="noopener noreferrer" 
-                className="flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg bg-green-50 hover:bg-green-100 text-green-700 text-xs font-bold transition-colors"
+                className="flex items-center justify-center gap-2 py-2 px-4 rounded-lg bg-green-50 hover:bg-green-100 text-green-700 text-xs font-bold transition-colors"
               >
                 <span>WhatsApp Us (24/7)</span>
               </a>

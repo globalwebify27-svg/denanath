@@ -70,60 +70,66 @@ export default function TrustSection() {
         </motion.div>
 
         {/* Stats Grid */}
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-5">
+<div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-5 gap-6">
 
-          {/* NABH Card */}
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: true }}
-            whileHover={{ y: -8 }}
-            className="rounded-2xl border border-slate-200 bg-white p-8 text-center shadow-sm hover:shadow-2xl transition"
-          >
-            <h3 className="text-2xl font-semibold text-[#007a87]">
-              NABH
-            </h3>
+  {/* NABH Card */}
+  <motion.div
+    initial={{ opacity: 0, y: 50 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.5 }}
+    viewport={{ once: true }}
+    whileHover={{ y: -8 }}
+    className="rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 text-center shadow-sm hover:shadow-2xl transition col-span-1"
+  >
+    <h3 className="text-xl sm:text-2xl font-semibold text-[#007a87]">
+      NABH
+    </h3>
+    <p className="mt-3 text-xs sm:text-sm text-slate-700">
+      Accredited Hospital
+    </p>
+  </motion.div>
 
-            <p className="mt-3 text-sm text-slate-700">
-              Accredited Hospital
-            </p>
-          </motion.div>
+  {/* Dynamic Stats */}
+{stats.map((item, index) => {
+  const isLast = index === stats.length - 1;
 
-          {/* Dynamic Stats */}
-          {stats.map((item, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{
-                duration: 0.3,
-                delay: index * 0.1,
-              }}
-              viewport={{ once: true }}
-              whileHover={{
-                y: -8,
-                scale: 1.02,
-              }}
-              className="rounded-3xl text-sm border border-slate-200 bg-white p-8 text-center shadow-sm transition hover:shadow-2xl"
-            >
-              <h3
-                className={`text-3xl font-semibold ${item.color}`}
-              >
-                <CountUp
-                  end={item.number}
-                  duration={3}
-                  decimals={item.number % 1 !== 0 ? 1 : 0}
-                />
-                {item.suffix}
-              </h3>
+  return (
+    <motion.div
+      key={index}
+      initial={{ opacity: 0, y: 50 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{
+        duration: 0.3,
+        delay: index * 0.1,
+      }}
+      viewport={{ once: true }}
+      whileHover={{
+        y: -8,
+        scale: 1.02,
+      }}
+      className={`
+        rounded-3xl border border-slate-200 bg-white p-6 sm:p-8 text-center shadow-sm transition hover:shadow-2xl
+        col-span-1
+        ${isLast ? "col-span-2 sm:col-span-1 lg:col-span-1 w-full" : ""}
+      `}
+    >
+      <h3 className={`text-xl sm:text-3xl font-semibold ${item.color}`}>
+        <CountUp
+          end={item.number}
+          duration={3}
+          decimals={item.number % 1 !== 0 ? 1 : 0}
+        />
+        {item.suffix}
+      </h3>
 
-              <p className="mt-3 font-medium text-slate-700">
-                {item.label}
-              </p>
-            </motion.div>
-          ))}
-        </div>
+      <p className="mt-3 font-medium text-slate-700 text-xs sm:text-sm">
+        {item.label}
+      </p>
+    </motion.div>
+  );
+})}
+
+</div>
       </div>
     </section>
   );

@@ -21,24 +21,28 @@ export default function PartnersAccreditation() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           
           {/* Card 1: DMH - A Trusted Healthcare Partner */}
-          <div className="bg-white rounded-3xl p-8 sm:p-10 border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.02)] hover:shadow-[0_20px_50px_rgba(0,43,92,0.06)] hover:-translate-y-0.5 transition-all duration-300 relative overflow-hidden group">
+          <div className="bg-white rounded-3xl border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.02)] hover:shadow-[0_20px_50px_rgba(0,43,92,0.06)] hover:-translate-y-0.5 transition-all duration-300 relative overflow-hidden group flex flex-col">
             
-            {/* Decorative line art vector icon in top-right */}
-            <div className="absolute top-6 right-6 text-slate-100/70 group-hover:text-[#002b5c]/5 group-hover:scale-105 transition-all duration-500 pointer-events-none">
-              <svg className="w-24 h-24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="0.5">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-              </svg>
+            {/* Image Banner Header */}
+            <div className="h-48 sm:h-56 w-full relative overflow-hidden">
+              <img 
+                src="https://images.unsplash.com/photo-1586773860418-d37222d8fce3?q=80&w=800&auto=format&fit=crop" 
+                alt="Medical Team Collaboration" 
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+              />
+              {/* Gradient overlay for smooth blending into the card */}
+              <div className="absolute inset-0 bg-gradient-to-t from-white via-white/20 to-transparent"></div>
             </div>
 
-            <div className="relative z-10 space-y-6">
+            <div className="relative z-10 space-y-6 p-8 pt-2 sm:p-10 sm:pt-4 flex-1 flex flex-col">
               <h3 className="text-xl sm:text-2xl font-extrabold text-[#002b5c] tracking-tight">
                 DMH - A Trusted Healthcare Partner
               </h3>
-              <p className="text-slate-500 text-sm font-light leading-relaxed">
+              <p className="text-slate-500 text-sm font-light leading-relaxed flex-1">
                 &ldquo;Combining professional competence with a human touch to deliver ethical, rational care and medico-social services.&rdquo;
               </p>
               
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 border-t border-slate-50">
                 <Link 
                   href="/about" 
                   className="inline-flex items-center gap-3 text-slate-700 hover:text-[#002b5c] text-xs font-bold transition-colors group/link"
@@ -74,24 +78,28 @@ export default function PartnersAccreditation() {
           </div>
 
           {/* Card 2: I'm A Patient */}
-          <div className="bg-white rounded-3xl p-8 sm:p-10 border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.02)] hover:shadow-[0_20px_50px_rgba(199,9,9,0.04)] hover:-translate-y-0.5 transition-all duration-300 relative overflow-hidden group">
+          <div className="bg-white rounded-3xl border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.02)] hover:shadow-[0_20px_50px_rgba(199,9,9,0.04)] hover:-translate-y-0.5 transition-all duration-300 relative overflow-hidden group flex flex-col">
             
-            {/* Decorative family vector in top-right */}
-            <div className="absolute top-6 right-6 text-slate-100/70 group-hover:text-[#c70909]/5 group-hover:scale-105 transition-all duration-500 pointer-events-none">
-              <svg className="w-24 h-24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="0.5">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-              </svg>
+            {/* Image Banner Header */}
+            <div className="h-48 sm:h-56 w-full relative overflow-hidden">
+              <img 
+                src="https://images.unsplash.com/photo-1516549655169-df83a0774514?q=80&w=800&auto=format&fit=crop" 
+                alt="Compassionate Patient Care" 
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 object-top"
+              />
+              {/* Gradient overlay for smooth blending into the card */}
+              <div className="absolute inset-0 bg-gradient-to-t from-white via-white/20 to-transparent"></div>
             </div>
 
-            <div className="relative z-10 space-y-6">
+            <div className="relative z-10 space-y-6 p-8 pt-2 sm:p-10 sm:pt-4 flex-1 flex flex-col">
               <h3 className="text-xl sm:text-2xl font-extrabold text-[#002b5c] tracking-tight">
                 I&apos;m A Patient
               </h3>
-              <p className="text-slate-500 text-sm font-light leading-relaxed">
+              <p className="text-slate-500 text-sm font-light leading-relaxed flex-1">
                 Your safety is our priority with Pune&rsquo;s pioneering Emergency Medical Service, combining international-standard infrastructure and expert care when every second counts.
               </p>
               
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 border-t border-slate-50">
                 <Link 
                   href="/patient-guide" 
                   className="inline-flex items-center gap-3 text-slate-700 hover:text-red-600 text-xs font-bold transition-colors group/link"

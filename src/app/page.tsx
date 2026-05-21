@@ -48,20 +48,20 @@ export default function Home() {
       <AboutSection />
 
       {/* 6. SPECIALTY CARE CLINICS SECTION */}
+      <SpecialtyClinics />
+      <ClinicalHub />
       <Trust_Credibility/>
       <DoctorsSection/>
       <PatientJourney/>
       <EmergencyCTA/>
-      <SpecialtyClinics />
 
       {/* 7. CLINICAL HUB SECTION */}
-      <ClinicalHub />
 
       {/* 8. PATIENT REVIEWS & STORIES */}
       <PatientReviews />
+      <PartnersAccreditation />
 
       {/* 9. PARTNERS & ACCREDITATION SECTION */}
-      <PartnersAccreditation />
     </div>
   );
 }

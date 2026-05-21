@@ -45,15 +45,23 @@ export default function FloatingActionStrip({ setIsSearchOpen }: FloatingActionS
           onClick={() => setIsSearchOpen(true)}
           className="flex-1 w-full max-w-xl xl:max-w-[460px] bg-[#007a87] hover:bg-[#d9232d] text-white rounded-[1.5rem] py-4 px-6 sm:px-8 shadow-[0_8px_30px_rgba(0,122,135,0.2)] hover:shadow-[0_8px_30px_rgba(217,35,45,0.3)] transition-all duration-300 hover:-translate-y-1 flex items-center justify-between group flex-shrink-0"
         >
-          <div className="flex items-center gap-4 text-left">
-            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white/20 rounded-xl flex items-center justify-center group-hover:bg-white/30 transition-colors">
-              <Search className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
-            </div>
-            <div>
-              <h3 className="font-semibold text-base sm:text-lg tracking-tight">Ask a question or find a doctor</h3>
-              <p className="text-white/80 text-[11px] sm:text-xs font-medium mt-0.5">Start your assessment or search for specialties</p>
-            </div>
-          </div>
+<div className="flex items-start sm:items-center gap-3 sm:gap-4 text-left">
+  
+  <div className="w-9 h-9 sm:w-12 sm:h-12 bg-white/20 rounded-xl flex items-center justify-center group-hover:bg-white/30 transition-colors flex-shrink-0">
+    <Search className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+  </div>
+
+  <div className="min-w-0">
+    <h3 className="font-semibold text-sm sm:text-lg leading-snug tracking-tight break-words">
+      Ask a question or find a doctor
+    </h3>
+
+    <p className="text-white/80 text-[11px] sm:text-xs font-medium mt-1 leading-snug break-words">
+      Start your assessment or search for specialties
+    </p>
+  </div>
+
+</div>
           <div className="w-10 h-10 bg-white text-[#007a87] group-hover:text-[#d9232d] rounded-xl flex items-center justify-center shadow-sm group-hover:scale-105 transition-all hidden sm:flex">
             <ArrowRight className="w-5 h-5" />
           </div>
