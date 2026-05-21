@@ -9,7 +9,7 @@ export default function HeroSection() {
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
-    let typingInterval: NodeJS.Timeout;
+    let typingInterval: NodeJS.Timeout | undefined = undefined;
 
     if (index <= text.length) {
       typingInterval = setInterval(() => {
@@ -19,8 +19,6 @@ export default function HeroSection() {
     }
 
     if (index > text.length) {
-      clearInterval(typingInterval);
-
       const timeout = setTimeout(() => {
         setDisplayText("");
         setIndex(0);
@@ -29,7 +27,11 @@ export default function HeroSection() {
       return () => clearTimeout(timeout);
     }
 
-    return () => clearInterval(typingInterval);
+    return () => {
+      if (typingInterval) {
+        clearInterval(typingInterval);
+      }
+    };
   }, [index, text]);
 
   return (
