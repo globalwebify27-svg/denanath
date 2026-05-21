@@ -1,14 +1,16 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { Star, Quote, CheckCircle2, Heart, ArrowLeft, ArrowRight } from "lucide-react";
+import { Star, Quote, CheckCircle2, Heart, ArrowLeft, ArrowRight, ChevronDown, ChevronUp } from "lucide-react";
 
 export default function PatientReviews() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  const [mobileExpandedIndex, setMobileExpandedIndex] = useState<number | null>(null);
   
   const listContainerRef = useRef<HTMLDivElement>(null);
-  const activeButtonRef = useRef<HTMLButtonElement>(null);
+  const activeButtonRef = useRef<HTMLDivElement>(null);
+  const horizontalContainerRef = useRef<HTMLDivElement>(null);
 
   // Expanded patient list (Total 6)
   const reviews = [
@@ -71,14 +73,15 @@ export default function PatientReviews() {
   const handleNext = () => setActiveIndex((prev) => (prev + 1) % reviews.length);
   const handlePrev = () => setActiveIndex((prev) => (prev - 1 + reviews.length) % reviews.length);
 
-  // 1. Auto-Play Logic (Changes active index every 3.5 seconds)
+  // 1. Auto-Play Logic (Changes active index every 5 seconds)
   useEffect(() => {
-    if (isPaused) return;
+    // Pause auto-play if mouse is hovering OR if a profile is currently expanded on mobile
+    if (isPaused || mobileExpandedIndex !== null) return;
     const timer = setInterval(() => {
       handleNext();
-    }, 3500);
+    }, 5000);
     return () => clearInterval(timer);
-  }, [isPaused, reviews.length]);
+  }, [isPaused, mobileExpandedIndex, reviews.length]);
 
   // 2. Vertical Auto-Scroll Logic (Keeps the active button in the center of the list)
   useEffect(() => {
@@ -90,6 +93,20 @@ export default function PatientReviews() {
         top: activeItem.offsetTop - container.clientHeight / 2 + activeItem.clientHeight / 2,
         behavior: "smooth"
       });
+    }
+  }, [activeIndex]);
+  
+  // 3. Horizontal Auto-Scroll Logic for Mobile (Centers the active card in the horizontal view)
+  useEffect(() => {
+    if (horizontalContainerRef.current) {
+      const container = horizontalContainerRef.current;
+      const activeChild = container.children[activeIndex] as HTMLElement;
+      if (activeChild) {
+        container.scrollTo({
+          left: activeChild.offsetLeft - container.clientWidth / 2 + activeChild.clientWidth / 2,
+          behavior: "smooth"
+        });
+      }
     }
   }, [activeIndex]);
 
@@ -116,36 +133,22 @@ export default function PatientReviews() {
               Read true experiences shared by our patients, detailing their journeys to wellness supported by our doctors and clinical staff.
             </p>
           </div>
-          
-          {/* Custom Carousel Arrows */}
-          {/* <div className="flex items-center gap-3 shrink-0">
-            <button 
-              onClick={handlePrev}
-              className="w-11 h-11 rounded-full border border-slate-200 hover:border-[#007a87] text-slate-600 hover:text-[#007a87] bg-white flex items-center justify-center transition-all hover:shadow-md cursor-pointer"
-              aria-label="Previous story"
-            >
-              <ArrowLeft className="w-5 h-5" />
-            </button>
-            <button 
-              onClick={handleNext}
-              className="w-11 h-11 rounded-full border border-slate-200 hover:border-[#007a87] text-slate-600 hover:text-[#007a87] bg-white flex items-center justify-center transition-all hover:shadow-md cursor-pointer"
-              aria-label="Next story"
-            >
-              <ArrowRight className="w-5 h-5" />
-            </button>
-          </div> */}
         </div>
 
         {/* Carousel Showcase */}
         <div 
           className="relative w-full"
-          onMouseEnter={() => setIsPaused(true)}
-          onMouseLeave={() => setIsPaused(false)}
+          onPointerEnter={(e) => {
+            if (e.pointerType === 'mouse') setIsPaused(true);
+          }}
+          onPointerLeave={(e) => {
+            if (e.pointerType === 'mouse') setIsPaused(false);
+          }}
         >
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
             
             {/* Left Big Focused Review Card */}
-            <div className="lg:col-span-8 h-full">
+            <div className="hidden lg:block lg:col-span-8 h-full">
               <div className="bg-white border border-slate-100 rounded-[2.5rem] p-8 sm:p-12 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.03)] relative overflow-hidden transition-all duration-500 hover:shadow-[0_30px_70px_rgba(0,122,135,0.06)] hover:border-teal-500/10 min-h-[380px] h-full flex flex-col justify-between">
                 
                 <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808003_1px,transparent_1px),linear-gradient(to_bottom,#80808003_1px,transparent_1px)] bg-[size:32px_32px] pointer-events-none" />
@@ -195,41 +198,213 @@ export default function PatientReviews() {
               </div>
             </div>
 
-            {/* Right Interactive Selection Column - Now vertically scrolling */}
+            {/* Mobile Horizontal Selection Row */}
+            <div className="lg:hidden w-full mb-6">
+              <div 
+                ref={horizontalContainerRef}
+                className="flex gap-5 overflow-x-auto py-8 px-6 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden snap-x snap-mandatory"
+              >
+                {reviews.map((review, idx) => {
+                  const isExpandedMobile = mobileExpandedIndex === idx;
+                  return (
+                    <div
+                      key={idx}
+                      onClick={() => {
+                        setActiveIndex(idx);
+                        setMobileExpandedIndex(mobileExpandedIndex === idx ? null : idx);
+                      }}
+                      className={`snap-center shrink-0 w-[280px] max-w-[85vw] min-h-[140px] text-left p-5 rounded-3xl border transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] flex flex-col justify-between cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#007a87]/30 ${
+                        isExpandedMobile 
+                          ? "bg-white border-teal-500/30 shadow-[0_15px_35px_rgba(0,122,135,0.12)] ring-2 ring-[#007a87]/5 scale-[1.12] z-10" 
+                          : "bg-white/40 border-slate-100 hover:bg-white hover:border-slate-200 scale-95 opacity-70"
+                      }`}
+                    >
+                      <div className="flex items-center gap-3 w-full">
+                        <div className={`relative w-12 h-12 rounded-full overflow-hidden border-2 shrink-0 transition-transform duration-500 ${isExpandedMobile ? "border-teal-500 scale-110" : "border-slate-200"}`}>
+                          <img 
+                            src={review.avatar} 
+                            alt={review.name} 
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                        <div className="flex-1 min-w-0 transition-opacity duration-300">
+                          <h4 className={`text-sm font-bold truncate ${isExpandedMobile ? "text-[#007a87]" : "text-slate-800"}`}>
+                            {review.name}
+                          </h4>
+                          <p className="text-[10px] text-slate-500 truncate font-light mt-0.5">{review.treatment}</p>
+                        </div>
+                      </div>
+                      
+                      <div className={`flex items-center justify-between mt-4 pt-3 border-t transition-colors duration-300 ${isExpandedMobile ? "border-teal-100" : "border-slate-100/50"}`}>
+                        <span className={`text-[10px] font-medium truncate max-w-[70%] transition-colors duration-300 ${isExpandedMobile ? "text-teal-700/80" : "text-slate-500"}`}>{review.type}</span>
+                        <div className="shrink-0 flex items-center transition-transform duration-500">
+                          {isExpandedMobile ? (
+                            <ChevronUp className="w-4 h-4 text-teal-500" />
+                          ) : (
+                            <ChevronDown className="w-4 h-4 text-slate-400" />
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Mobile Expanded Details Card */}
+            <div className={`lg:hidden w-full transition-[grid-template-rows,opacity,margin] duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] grid ${
+              mobileExpandedIndex !== null 
+                ? "grid-rows-[1fr] opacity-100 mb-8" 
+                : "grid-rows-[0fr] opacity-0 mb-0"
+            }`}>
+              <div className="overflow-hidden">
+                <div className="bg-white border border-teal-500/10 rounded-[2rem] p-6 shadow-[0_15px_45px_rgba(0,122,135,0.05)] relative">
+                  <div className="absolute right-6 top-6 text-teal-500/5">
+                    <Quote className="w-16 h-16 stroke-current" />
+                  </div>
+                  
+                  <div className="space-y-4 relative z-10">
+                    <div className="flex items-center gap-1">
+                      {[...Array(reviews[activeIndex].rating)].map((_, i) => (
+                        <Star key={i} className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                      ))}
+                      <span className="text-[9px] font-bold text-amber-600 ml-2 tracking-widest uppercase">Verified Care</span>
+                    </div>
+
+                    <blockquote className="text-sm text-[#002b5c] font-light leading-relaxed italic">
+                      &ldquo;{reviews[activeIndex].text}&rdquo;
+                    </blockquote>
+
+                    <div className="pt-4 border-t border-slate-100 flex items-center justify-between gap-4">
+                      <div className="flex items-center gap-3">
+                        <div className="w-11 h-11 rounded-full overflow-hidden border-2 border-teal-500/10">
+                          <img 
+                            src={reviews[activeIndex].avatar} 
+                            alt={reviews[activeIndex].name} 
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                        <div>
+                          <h4 className="font-bold text-slate-800 text-xs tracking-tight">
+                            {reviews[activeIndex].name}
+                          </h4>
+                          <p className="text-[10px] text-[#007a87] font-semibold uppercase tracking-wider">
+                            {reviews[activeIndex].type}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="text-right">
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded bg-slate-50 text-[9px] font-bold text-slate-400 uppercase tracking-widest border border-slate-200/50">
+                          {reviews[activeIndex].treatment}
+                        </span>
+                        <span className="block text-[8px] text-slate-400 font-medium tracking-wider mt-1">
+                          {reviews[activeIndex].date}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Right Interactive Selection Column - Now vertically scrolling (Desktop only) */}
             <div 
               ref={listContainerRef}
-              className="lg:col-span-4 flex flex-col gap-3 max-h-[420px] overflow-y-auto px-1 py-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+              className="hidden lg:flex lg:col-span-4 flex-col gap-3 lg:max-h-[420px] lg:overflow-y-auto overflow-visible px-1 py-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
             >
               {reviews.map((review, idx) => {
-                const isActive = activeIndex === idx;
+                const isActiveDesktop = activeIndex === idx;
+                const isExpandedMobile = mobileExpandedIndex === idx;
                 return (
-                  <button
+                  <div
                     key={idx}
-                    ref={isActive ? activeButtonRef : null}
-                    onClick={() => setActiveIndex(idx)}
-                    className={`w-full text-left p-4 rounded-2xl border transition-all duration-300 flex items-center gap-4 shrink-0 ${
-                      isActive 
-                        ? "bg-white border-teal-500/30 shadow-[0_12px_30px_rgba(0,122,135,0.08)] ring-2 ring-[#007a87]/5" 
-                        : "bg-white/40 border-slate-100 hover:bg-white hover:border-slate-200"
-                    }`}
+                    ref={isActiveDesktop ? activeButtonRef : null}
+                    onClick={() => {
+                      setActiveIndex(idx);
+                      setMobileExpandedIndex(mobileExpandedIndex === idx ? null : idx);
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        setActiveIndex(idx);
+                        setMobileExpandedIndex(mobileExpandedIndex === idx ? null : idx);
+                      }
+                    }}
+                    role="button"
+                    tabIndex={0}
+                    className={`w-full text-left p-4 rounded-2xl border transition-all duration-300 flex flex-col gap-2 shrink-0 cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#007a87]/30 
+                      ${
+                        isActiveDesktop 
+                          ? "lg:bg-white lg:border-teal-500/30 lg:shadow-[0_12px_30px_rgba(0,122,135,0.08)] lg:ring-2 lg:ring-[#007a87]/5" 
+                          : "lg:bg-white/40 lg:border-slate-100 lg:hover:bg-white lg:hover:border-slate-200"
+                      }
+                      ${
+                        isExpandedMobile 
+                          ? "max-lg:bg-white max-lg:border-teal-500/30 max-lg:shadow-[0_12px_30px_rgba(0,122,135,0.08)] max-lg:ring-2 max-lg:ring-[#007a87]/5" 
+                          : "max-lg:bg-white/40 max-lg:border-slate-100 max-lg:hover:bg-white max-lg:hover:border-slate-200"
+                      }`}
                   >
-                    <div className={`relative w-12 h-12 rounded-full overflow-hidden border-2 shrink-0 transition-transform duration-300 ${isActive ? "border-teal-500 scale-105" : "border-slate-200"}`}>
-                      <img 
-                        src={review.avatar} 
-                        alt={review.name} 
-                        className="w-full h-full object-cover"
-                      />
+                    <div className="flex items-center gap-4 w-full">
+                      <div className={`relative w-12 h-12 rounded-full overflow-hidden border-2 shrink-0 transition-transform duration-300 
+                        ${isActiveDesktop ? "lg:border-teal-500 lg:scale-105" : "lg:border-slate-200 lg:scale-100"} 
+                        ${isExpandedMobile ? "max-lg:border-teal-500 max-lg:scale-105" : "max-lg:border-slate-200 max-lg:scale-100"}`}>
+                        <img 
+                          src={review.avatar} 
+                          alt={review.name} 
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <h4 className={`text-sm font-bold truncate 
+                          ${isActiveDesktop ? "lg:text-[#007a87]" : "lg:text-slate-800"} 
+                          ${isExpandedMobile ? "max-lg:text-[#007a87]" : "max-lg:text-slate-800"}`}>
+                          {review.name}
+                        </h4>
+                        <p className="text-[10.5px] text-slate-400 truncate font-light mt-0.5">{review.treatment}</p>
+                      </div>
+                      <div className="shrink-0 flex items-center">
+                        {isActiveDesktop && (
+                          <span className="w-1.5 h-1.5 rounded-full bg-teal-500 animate-pulse lg:block hidden mr-1" />
+                        )}
+                        {isExpandedMobile ? (
+                          <ChevronUp className="w-4 h-4 text-teal-500 lg:hidden" />
+                        ) : (
+                          <ChevronDown className="w-4 h-4 text-slate-400 lg:hidden" />
+                        )}
+                      </div>
                     </div>
-                    <div className="flex-1 min-w-0">
-                      <h4 className={`text-sm font-bold truncate ${isActive ? "text-[#007a87]" : "text-slate-800"}`}>
-                        {review.name}
-                      </h4>
-                      <p className="text-[10.5px] text-slate-400 truncate font-light mt-0.5">{review.treatment}</p>
+
+                    {/* Expandable Details Section for Mobile */}
+                    <div className={`lg:hidden overflow-hidden transition-all duration-500 ease-in-out ${
+                      isExpandedMobile 
+                        ? "max-h-[400px] opacity-100 mt-2 pt-3 border-t border-slate-100" 
+                        : "max-h-0 opacity-0 pointer-events-none mt-0 pt-0 border-t-transparent"
+                    }`}>
+                      <div className="space-y-3">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-1">
+                            {[...Array(review.rating)].map((_, i) => (
+                              <Star key={i} className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                            ))}
+                          </div>
+                          <span className="text-[9px] text-slate-400 font-medium tracking-wider">{review.date}</span>
+                        </div>
+                        
+                        <p className="text-xs text-[#002b5c] font-light leading-relaxed italic">
+                          &ldquo;{review.text}&rdquo;
+                        </p>
+                        
+                        <div className="flex flex-wrap items-center justify-between gap-2 pt-1">
+                          <span className="text-[10px] text-[#007a87] font-semibold uppercase tracking-wider">
+                            {review.type}
+                          </span>
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-slate-50 text-[9px] font-bold text-slate-400 uppercase tracking-widest border border-slate-200/50">
+                            {review.treatment}
+                          </span>
+                        </div>
+                      </div>
                     </div>
-                    {isActive && (
-                      <span className="w-1.5 h-1.5 rounded-full bg-teal-500 animate-pulse shrink-0" />
-                    )}
-                  </button>
+                  </div>
                 );
               })}
             </div>

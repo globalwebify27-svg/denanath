@@ -4,7 +4,7 @@ import { ArrowRight, ShieldCheck } from "lucide-react";
 
 export default function AboutSection() {
   return (
-    <section className="w-full bg-gradient-to-b from-white to-[#f6fafb] relative z-20 pt-24 pb-16 border-b border-slate-100">
+    <section className="w-full bg-gradient-to-b from-white to-[#f6fafb] relative z-20 pt-12 md:pt-16 pb-10 md:pb-12 border-b border-slate-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           
@@ -51,7 +51,7 @@ export default function AboutSection() {
             
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
               <Link 
-                href="/about" 
+                href="/about-hospital" 
                 className="px-8 py-4 bg-slate-900 hover:bg-[#d9232d] text-white rounded-xl text-sm font-semibold transition-all shadow-lg hover:shadow-[0_8px_30px_rgba(217,35,45,0.3)] flex items-center gap-2 group"
               >
                 <span>Discover Our Legacy</span>

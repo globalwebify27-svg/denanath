@@ -44,7 +44,7 @@ export default function PartnersAccreditation() {
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 border-t border-slate-50">
                 <Link 
-                  href="/about" 
+                  href="/about-hospital" 
                   className="inline-flex items-center gap-3 text-slate-700 hover:text-[#002b5c] text-xs font-bold transition-colors group/link"
                 >
                   <span className="w-7 h-7 rounded-full bg-[#002b5c] text-white flex items-center justify-center group-hover/link:bg-[#007a87] transition-colors shadow-sm">
@@ -54,7 +54,7 @@ export default function PartnersAccreditation() {
                 </Link>
 
                 <Link 
-                  href="/about" 
+                  href="/about-hospital" 
                   className="inline-flex items-center gap-3 text-slate-700 hover:text-[#002b5c] text-xs font-bold transition-colors group/link"
                 >
                   <span className="w-7 h-7 rounded-full bg-[#002b5c] text-white flex items-center justify-center group-hover/link:bg-[#007a87] transition-colors shadow-sm">

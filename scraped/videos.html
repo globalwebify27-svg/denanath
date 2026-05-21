@@ -1,0 +1,915 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="utf-8" /><title>
+	Video Gallery
+</title><meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="description" /><meta name="author" />
+ <!--[if lt IE 7 ]> <html class="ie6"> <![endif]-->
+<!--[if IE 7 ]>    <html class="ie7"> <![endif]-->
+<!--[if IE 8 ]>    <html class="ie8"> <![endif]-->
+<!--[if IE 9 ]>    <html class="ie9"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html class=""> <!--<![endif]-->
+<link rel="shortcut icon" href="cms/Template/Default/Img/favicon.ico" /><link type="text/css" href="cms/Template/Default/css/style.css" rel="stylesheet" /><link type="text/css" href="cms/Template/Default/css/bootstrap.css" rel="stylesheet" /><link type="text/css" href="cms/Template/Default/css/bootstrap-responsive.min.css" rel="stylesheet" /><link type="text/css" href="cms/Template/Default/css/sssstyle.css" rel="stylesheet" /><link type="text/css" href="cms/Template/Default/css/dmhtabs.css" rel="stylesheet" /><link type="text/css" href="cms/Template/Default/css/dcpl.css" rel="stylesheet" /><link type="text/css" href="cms/Template/Default/css/Testimonial.css" rel="stylesheet" /><link type="text/css" href="cms/Template/Default/css/searchPage.css" rel="stylesheet" /><link type="text/css" href="cms/Template/Default/css/news.css" rel="stylesheet" />
+    <meta name="keywords" content="Video Gallery" />
+    <meta name="description" content="Video Gallery" />
+    <meta name="Author" content="
+  " />
+    <meta name="Generator" content="BuiltCMS- Web Application" />
+    <meta name="date" content="2026-01-13" />
+</head>
+<body>
+<form name="aspnetForm" method="post" action="/VideoGallery" id="aspnetForm">
+<div>
+<input type="hidden" name="ctl00_ScriptManager1_HiddenField" id="ctl00_ScriptManager1_HiddenField" value="" />
+<input type="hidden" name="__EVENTTARGET" id="__EVENTTARGET" value="" />
+<input type="hidden" name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="" />
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwUKLTUwMjg1MzkzNA9kFgJmD2QWAgIDDxYCHgZhY3Rpb24FDS9WaWRlb0dhbGxlcnkWCAIGD2QWAmYPZBYCZg8WAh4EVGV4dAV5DQogICAgPGEgaHJlZj0iL3BhdGllbnQtYW5kLXZpc2l0b3JzIj5QYXRpZW50ICYgVmlzaXRvcnM8L2E+DQogICAgPHNwYW4gY2xhc3M9Im5hdmlnYXRlX2Fycm93Ij4NCiAgICA8L3NwYW4+VmlkZW8gR2FsbGVyeWQCCA9kFgQCBw88KwAJAQAPFgQeCERhdGFLZXlzFgAeC18hSXRlbUNvdW50AgZkFgxmD2QWAgIBDw8WBh4PQ29tbWFuZEFyZ3VtZW50BQEwHgdUb29sVGlwBQNBTEwfAQUDQUxMFgIeBWNsYXNzBRV2aWRlb2FsYnVtdGFic2VsZWN0ZWRkAgEPZBYCAgEPDxYGHwQFATYfBQUPUEFUSUVOVCBTVE9SSUVTHwEFD1BBVElFTlQgU1RPUklFUxYCHwYFDXZpZGVvYWxidW10YWJkAgIPZBYCAgEPDxYGHwQFATgfBQUJSUNVLVZJU0lUHwEFCUlDVS1WSVNJVBYCHwYFDXZpZGVvYWxidW10YWJkAgMPZBYCAgEPDxYGHwQFATkfBQUIQ09WSUQtMTkfAQUIQ09WSUQtMTkWAh8GBQ12aWRlb2FsYnVtdGFiZAIED2QWAgIBDw8WBh8EBQIxMB8FBRZXRUxMTkVTUyBBTkQgTElGRVNUWUxFHwEFFldFTExORVNTIEFORCBMSUZFU1RZTEUWAh8GBQ12aWRlb2FsYnVtdGFiZAIFD2QWAgIBDw8WBh8EBQIxMR8FBRdNQUFJIE1PVEhFUidTIE1JTEsgQkFOSx8BBRdNQUFJIE1PVEhFUidTIE1JTEsgQkFOSxYCHwYFDXZpZGVvYWxidW10YWJkAgkPPCsACQEADxYEHwIWAB8DAhlkFjJmD2QWBGYPFQJ9PGlmcmFtZSBhbGxvd2Z1bGxzY3JlZW49IiIgZnJhbWVib3JkZXI9IjAiIGhlaWdodD0iMzE1IiBzcmM9Imh0dHBzOi8vd3d3LnlvdXR1YmUuY29tL2VtYmVkL1ZNaWxvMTBIYmg0IiB3aWR0aD0iNDIwIj48L2lmcmFtZT45Q09WSUQgMTkgVkFDQ0lORSA6IFdoeSBXaGVuICYgSG93IGJ5IERyLiBEaGFuYW5qYXkgS2Vsa2FyZAIBDxYCHwEFOUNPVklEIDE5IFZBQ0NJTkUgOiBXaHkgV2hlbiAmIEhvdyBieSBEci4gRGhhbmFuamF5IEtlbGthcmQCAQ9kFgRmDxUCfTxpZnJhbWUgYWxsb3dmdWxsc2NyZWVuPSIiIGZyYW1lYm9yZGVyPSIwIiBoZWlnaHQ9IjMxNSIgc3JjPSJodHRwczovL3d3dy55b3V0dWJlLmNvbS9lbWJlZC90NWItd2ZKSXNQRSIgd2lkdGg9IjQyMCI+PC9pZnJhbWU+NUNvdmlkLTE5IEhvbWUgSXNvbGF0aW9uIEluc3RydWN0aW9ucyBieSBETUggLSBNYXJhdGhpZAIBDxYCHwEFNUNvdmlkLTE5IEhvbWUgSXNvbGF0aW9uIEluc3RydWN0aW9ucyBieSBETUggLSBNYXJhdGhpZAICD2QWBGYPFQJ9PGlmcmFtZSBhbGxvd2Z1bGxzY3JlZW49IiIgZnJhbWVib3JkZXI9IjAiIGhlaWdodD0iMzE1IiBzcmM9Imh0dHBzOi8vd3d3LnlvdXR1YmUuY29tL2VtYmVkL0JuWWh5bUIzcURjIiB3aWR0aD0iNDIwIj48L2lmcmFtZT40Q292aWQtMTkgSG9tZSBJc29sYXRpb24gSW5zdHJ1Y3Rpb25zIGJ5IERNSC0gRW5nbGlzaGQCAQ8WAh8BBTRDb3ZpZC0xOSBIb21lIElzb2xhdGlvbiBJbnN0cnVjdGlvbnMgYnkgRE1ILSBFbmdsaXNoZAIDD2QWBGYPFQJ9PGlmcmFtZSBhbGxvd2Z1bGxzY3JlZW49IiIgZnJhbWVib3JkZXI9IjAiIGhlaWdodD0iMzE1IiBzcmM9Imh0dHBzOi8vd3d3LnlvdXR1YmUuY29tL2VtYmVkLzctNnVRTjZrUTJFIiB3aWR0aD0iNDIwIj48L2lmcmFtZT4yQ292aWQtMTkgSG9tZSBJc29sYXRpb24gSW5zdHJ1Y3Rpb25zIGJ5IERNSC0gSGluZGlkAgEPFgIfAQUyQ292aWQtMTkgSG9tZSBJc29sYXRpb24gSW5zdHJ1Y3Rpb25zIGJ5IERNSC0gSGluZGlkAgQPZBYEZg8VAn08aWZyYW1lIGFsbG93ZnVsbHNjcmVlbj0iIiBmcmFtZWJvcmRlcj0iMCIgaGVpZ2h0PSIzMTUiIHNyYz0iaHR0cHM6Ly93d3cueW91dHViZS5jb20vZW1iZWQvaHY5bk9zY2lESHciIHdpZHRoPSI0MjAiPjwvaWZyYW1lPkpETUggY292aWQtMTkgdXBkYXRlIChmb3IgZG9jdG9ycykgUGFydCAxOiBPdmVydmlldywgUHJldmVudGlvbiAmIERpYWdub3Npc2QCAQ8WAh8BBUpETUggY292aWQtMTkgdXBkYXRlIChmb3IgZG9jdG9ycykgUGFydCAxOiBPdmVydmlldywgUHJldmVudGlvbiAmIERpYWdub3Npc2QCBQ9kFgRmDxUCfTxpZnJhbWUgYWxsb3dmdWxsc2NyZWVuPSIiIGZyYW1lYm9yZGVyPSIwIiBoZWlnaHQ9IjMxNSIgc3JjPSJodHRwczovL3d3dy55b3V0dWJlLmNvbS9lbWJlZC9ZN2ljdFl5OUk5WSIgd2lkdGg9IjQyMCI+PC9pZnJhbWU+M0RNSCBjb3ZpZC0xOSB1cGRhdGUgKGZvciBkb2N0b3JzKSBQYXJ0IDI6IFRyZWF0bWVudGQCAQ8WAh8BBTNETUggY292aWQtMTkgdXBkYXRlIChmb3IgZG9jdG9ycykgUGFydCAyOiBUcmVhdG1lbnRkAgYPZBYEZg8VAn08aWZyYW1lIGFsbG93ZnVsbHNjcmVlbj0iIiBmcmFtZWJvcmRlcj0iMCIgaGVpZ2h0PSIzMTUiIHNyYz0iaHR0cHM6Ly93d3cueW91dHViZS5jb20vZW1iZWQvTXVFbVp4dnhSUTAiIHdpZHRoPSI0MjAiPjwvaWZyYW1lPiZETUggY292aWQtMTkgdXBkYXRlIFBhcnQgMzogUGFlZGlhdHJpY2QCAQ8WAh8BBSZETUggY292aWQtMTkgdXBkYXRlIFBhcnQgMzogUGFlZGlhdHJpY2QCBw9kFgRmDxUCfDxpZnJhbWUgYWxsb3dmdWxsc2NyZWVuPSIiIGZyYW1lYm9yZGVyPSIwIiBoZWlnaHQ9IjMxNSJzcmM9Imh0dHBzOi8vd3d3LnlvdXR1YmUuY29tL2VtYmVkL1l5c21EN0lEdUVnIiB3aWR0aD0iNDIwIj48L2lmcmFtZT4ORE1IIEphbG5ldGkgLTFkAgEPFgIfAQUORE1IIEphbG5ldGkgLTFkAggPZBYEZg8VAn08aWZyYW1lIGFsbG93ZnVsbHNjcmVlbj0iIiBmcmFtZWJvcmRlcj0iMCIgaGVpZ2h0PSIzMTUiIHNyYz0iaHR0cHM6Ly93d3cueW91dHViZS5jb20vZW1iZWQvaDhaNThGUE1LYzQiIHdpZHRoPSI0MjAiPjwvaWZyYW1lPhNETUggSmFsbmV0aS0yIFEgJiBBZAIBDxYCHwEFE0RNSCBKYWxuZXRpLTIgUSAmIEFkAgkPZBYEZg8VAnw8aWZyYW1lIGFsbG93ZnVsbHNjcmVlbj0iIiBmcmFtZWJvcmRlcj0iMCIgaGVpZ2h0PSIzMTUic3JjPSJodHRwczovL3d3dy55b3V0dWJlLmNvbS9lbWJlZC9QTVcwT29OaFllRSIgd2lkdGg9IjQyMCI+PC9pZnJhbWU+ZEV2ZXJ5dGhpbmcgdG8ga25vdyBhYm91dCBjb3ZpZC0xOSBQYXJ0IDEgb2YgMyA6IFByZXZlbnRpb24gYW5kIE92ZXJ2aWV3IGJ5IERyLiBEaGFuYW5qYXkgS2Vsa2FyLCBETUhkAgEPFgIfAQVkRXZlcnl0aGluZyB0byBrbm93IGFib3V0IGNvdmlkLTE5IFBhcnQgMSBvZiAzIDogUHJldmVudGlvbiBhbmQgT3ZlcnZpZXcgYnkgRHIuIERoYW5hbmpheSBLZWxrYXIsIERNSGQCCg9kFgRmDxUCfTxpZnJhbWUgYWxsb3dmdWxsc2NyZWVuPSIiIGZyYW1lYm9yZGVyPSIwIiBoZWlnaHQ9IjMxNSIgc3JjPSJodHRwczovL3d3dy55b3V0dWJlLmNvbS9lbWJlZC9TRzN6cDNWd01OTSIgd2lkdGg9IjQyMCI+PC9pZnJhbWU+ZEV2ZXJ5dGhpbmcgdG8ga25vdyBhYm91dCBjb3ZpZC0xOSBwYXJ0IDIgb2YgMyA6IERpYWdub3NpcyBhbmQgVHJlYXRtZW50IGJ5IERyLiBEaGFuYW5qYXkgS2Vsa2FyLCBETUhkAgEPFgIfAQVkRXZlcnl0aGluZyB0byBrbm93IGFib3V0IGNvdmlkLTE5IHBhcnQgMiBvZiAzIDogRGlhZ25vc2lzIGFuZCBUcmVhdG1lbnQgYnkgRHIuIERoYW5hbmpheSBLZWxrYXIsIERNSGQCCw9kFgRmDxUCfTxpZnJhbWUgYWxsb3dmdWxsc2NyZWVuPSIiIGZyYW1lYm9yZGVyPSIwIiBoZWlnaHQ9IjMxNSIgc3JjPSJodHRwczovL3d3dy55b3V0dWJlLmNvbS9lbWJlZC8wS3JwZUdocUROMCIgd2lkdGg9IjQyMCI+PC9pZnJhbWU+XkV2ZXJ5dGhpbmcgdG8ga25vdyBhYm91dCBjb3ZpZC0xOSBwYXJ0IDMgb2YgMyA6IExpdmluZyB3aXRoIGNvdmlkIGJ5IERyLiBEaGFuYW5qYXkgS2Vsa2FyLCBETUhkAgEPFgIfAQVeRXZlcnl0aGluZyB0byBrbm93IGFib3V0IGNvdmlkLTE5IHBhcnQgMyBvZiAzIDogTGl2aW5nIHdpdGggY292aWQgYnkgRHIuIERoYW5hbmpheSBLZWxrYXIsIERNSGQCDA9kFgRmDxUCfDxpZnJhbWUgYWxsb3dmdWxsc2NyZWVuPSIiIGZyYW1lYm9yZGVyPSIwIiBoZWlnaHQ9IjMxNSJzcmM9Imh0dHBzOi8vd3d3LnlvdXR1YmUuY29tL2VtYmVkL3JyeGE0eGpMZ3VRIiB3aWR0aD0iNDIwIj48L2lmcmFtZT43R3VpZGFuY2UgTGVjdHVyZSBvbiBDb3JvbmEgVmlydXMgfCBEci4gRGhhbmFuamF5IEtlbGthcmQCAQ8WAh8BBTdHdWlkYW5jZSBMZWN0dXJlIG9uIENvcm9uYSBWaXJ1cyB8IERyLiBEaGFuYW5qYXkgS2Vsa2FyZAIND2QWBGYPFQJ9PGlmcmFtZSBhbGxvd2Z1bGxzY3JlZW49IiIgZnJhbWVib3JkZXI9IjAiIGhlaWdodD0iMzE1IiBzcmM9Imh0dHBzOi8vd3d3LnlvdXR1YmUuY29tL2VtYmVkLzNIdHUtN1RJSDNnIiB3aWR0aD0iNTYwIj48L2lmcmFtZT4JSUNVLVZpc2l0ZAIBDxYCHwEFCUlDVS1WaXNpdGQCDg9kFgRmDxUCfTxpZnJhbWUgYWxsb3dmdWxsc2NyZWVuPSIiIGZyYW1lYm9yZGVyPSIwIiBoZWlnaHQ9IjMxNSIgc3JjPSJodHRwczovL3d3dy55b3V0dWJlLmNvbS9lbWJlZC9zRFpHcFpfVnR0cyIgd2lkdGg9IjQyMCI+PC9pZnJhbWU+S0luIHRoZSBzaGFkb3cgb2YgdmlydHVhbCB0cnV0aOKApiBDb3JvbmEgaW4gb3VyIG1pbmRzIHwgRHIgRGhhbmFuamF5IEtlbGthcmQCAQ8WAh8BBUtJbiB0aGUgc2hhZG93IG9mIHZpcnR1YWwgdHJ1dGjigKYgQ29yb25hIGluIG91ciBtaW5kcyB8IERyIERoYW5hbmpheSBLZWxrYXJkAg8PZBYEZg8VAnc8aWZyYW1lIGFsbG93ZnVsbHNjcmVlbj0iIiBmcmFtZWJvcmRlcj0iMCIgaGVpZ2h0PSIzMTUiIHNyYz0iLy93d3cueW91dHViZS5jb20vZW1iZWQvNmhCN0NGbmZzUlEiIHdpZHRoPSI0MjAiPjwvaWZyYW1lPhdNYWFpIE1vdGhlcidzIE1pbGsgQmFua2QCAQ8WAh8BBRdNYWFpIE1vdGhlcidzIE1pbGsgQmFua2QCEA9kFgRmDxUCdzxpZnJhbWUgYWxsb3dmdWxsc2NyZWVuPSIiIGZyYW1lYm9yZGVyPSIwIiBoZWlnaHQ9IjMxNSIgc3JjPSIvL3d3dy55b3V0dWJlLmNvbS9lbWJlZC9VQ2dlWmFGSGxldyIgd2lkdGg9IjQyMCI+PC9pZnJhbWU+J01JTkQgb3ZlciBNQVRURVIgYnkgRHIuRGhhbmFuamF5IEtlbGthcmQCAQ8WAh8BBSdNSU5EIG92ZXIgTUFUVEVSIGJ5IERyLkRoYW5hbmpheSBLZWxrYXJkAhEPZBYEZg8VAnQ8aWZyYW1lIHdpZHRoPSI0MjAiIGhlaWdodD0iMzE1IiBzcmM9Ii8vd3d3LnlvdXR1YmUuY29tL2VtYmVkL1lGVzFZRHhPckR3IiBmcmFtZWJvcmRlcj0iMCIgYWxsb3dmdWxsc2NyZWVuPjwvaWZyYW1lPg9QYXRpZW50IFN0b3JpZXNkAgEPFgIfAQUPUGF0aWVudCBTdG9yaWVzZAISD2QWBGYPFQJ0PGlmcmFtZSB3aWR0aD0iNDIwIiBoZWlnaHQ9IjMxNSIgc3JjPSIvL3d3dy55b3V0dWJlLmNvbS9lbWJlZC9zQU5xYXBmaXpuTSIgZnJhbWVib3JkZXI9IjAiIGFsbG93ZnVsbHNjcmVlbj48L2lmcmFtZT4PUGF0aWVudCBTdG9yaWVzZAIBDxYCHwEFD1BhdGllbnQgU3Rvcmllc2QCEw9kFgRmDxUCdDxpZnJhbWUgd2lkdGg9IjQyMCIgaGVpZ2h0PSIzMTUiIHNyYz0iLy93d3cueW91dHViZS5jb20vZW1iZWQvOTRXWng2Skk1azQiIGZyYW1lYm9yZGVyPSIwIiBhbGxvd2Z1bGxzY3JlZW4+PC9pZnJhbWU+D1BhdGllbnQgU3Rvcmllc2QCAQ8WAh8BBQ9QYXRpZW50IFN0b3JpZXNkAhQPZBYEZg8VAn08aWZyYW1lIGFsbG93ZnVsbHNjcmVlbj0iIiBmcmFtZWJvcmRlcj0iMCIgaGVpZ2h0PSIzMTUiIHNyYz0iaHR0cHM6Ly93d3cueW91dHViZS5jb20vZW1iZWQvalNxbld5cWJYYmsiIHdpZHRoPSI0MjAiPjwvaWZyYW1lPkxSZWhhYmlsaXRhdGlvbiBndWlkZWxpbmVzIGZvciBwYXRpZW50cyByZWNvdmVyaW5nIGZyb20gQ292aWQtMTkgKGluIEVuZ2xpc2gpZAIBDxYCHwEFTFJlaGFiaWxpdGF0aW9uIGd1aWRlbGluZXMgZm9yIHBhdGllbnRzIHJlY292ZXJpbmcgZnJvbSBDb3ZpZC0xOSAoaW4gRW5nbGlzaClkAhUPZBYEZg8VAn08aWZyYW1lIGFsbG93ZnVsbHNjcmVlbj0iIiBmcmFtZWJvcmRlcj0iMCIgaGVpZ2h0PSIzMTUiIHNyYz0iaHR0cHM6Ly93d3cueW91dHViZS5jb20vZW1iZWQvd0xUanE4VTJQYmsiIHdpZHRoPSI0MjAiPjwvaWZyYW1lPkxSZWhhYmlsaXRhdGlvbiBndWlkZWxpbmVzIGZvciBwYXRpZW50cyByZWNvdmVyaW5nIGZyb20gQ292aWQtMTkgKGluIG1hcmF0aGkpZAIBDxYCHwEFTFJlaGFiaWxpdGF0aW9uIGd1aWRlbGluZXMgZm9yIHBhdGllbnRzIHJlY292ZXJpbmcgZnJvbSBDb3ZpZC0xOSAoaW4gbWFyYXRoaSlkAhYPZBYEZg8VAn08aWZyYW1lIGFsbG93ZnVsbHNjcmVlbj0iIiBmcmFtZWJvcmRlcj0iMCIgaGVpZ2h0PSIzMTUiIHNyYz0iaHR0cHM6Ly93d3cueW91dHViZS5jb20vZW1iZWQvNEl0YnBWdmNNUXMiIHdpZHRoPSI0MjAiPjwvaWZyYW1lPhpTdWtzaG1hIFlvZ2EgQW5kIFByYW5heWFtYWQCAQ8WAh8BBRpTdWtzaG1hIFlvZ2EgQW5kIFByYW5heWFtYWQCFw9kFgRmDxUCdzxpZnJhbWUgYWxsb3dmdWxsc2NyZWVuPSIiIGZyYW1lYm9yZGVyPSIwIiBoZWlnaHQ9IjMxNSIgc3JjPSIvL3d3dy55b3V0dWJlLmNvbS9lbWJlZC83bEp6M00tNjlpQSIgd2lkdGg9IjQyMCI+PC9pZnJhbWU+KVdvcmsgTGlmZSBCYWxhbmNlIGJ5IERyLiBEaGFuYW5qYXkgS2Vsa2FyZAIBDxYCHwEFKVdvcmsgTGlmZSBCYWxhbmNlIGJ5IERyLiBEaGFuYW5qYXkgS2Vsa2FyZAIYD2QWBGYPFQJ9PGlmcmFtZSBhbGxvd2Z1bGxzY3JlZW49IiIgZnJhbWVib3JkZXI9IjAiIGhlaWdodD0iMzE1IiBzcmM9Imh0dHBzOi8vd3d3LnlvdXR1YmUuY29tL2VtYmVkL05fdkU4NVNVSUpNIiB3aWR0aD0iNDIwIj48L2lmcmFtZT7BAeCkruCkvuCkneClhyDgpJfgpYHgpLDgpYEgKOCkleCliC4g4KSF4KSq4KWN4KSq4KS+4KS44KS+4KS54KWH4KSsIOCkquClh+CkguCkoeCkuOClhyAsIOCkoeCliS4g4KSu4KWH4KS54KSw4KWCIOCkruClh+CkueCkpOCkviAsIOCkruCkvi4g4KSy4KSk4KS+IOCkpuClgOCkpuClgCApIGJ5IERyLiBEaGFuYW5qYXkgS2Vsa2FyIE1TIEZSQ1NkAgEPFgIfAQXBAeCkruCkvuCkneClhyDgpJfgpYHgpLDgpYEgKOCkleCliC4g4KSF4KSq4KWN4KSq4KS+4KS44KS+4KS54KWH4KSsIOCkquClh+CkguCkoeCkuOClhyAsIOCkoeCliS4g4KSu4KWH4KS54KSw4KWCIOCkruClh+CkueCkpOCkviAsIOCkruCkvi4g4KSy4KSk4KS+IOCkpuClgOCkpuClgCApIGJ5IERyLiBEaGFuYW5qYXkgS2Vsa2FyIE1TIEZSQ1NkAg4PZBYCZg9kFgICAQ8WAh8BBUVDb3B5cmlnaHQgJmNvcHk7IDIwMjYmbmJzcDs8c3Bhbj5EZWVuYW5hdGggTWFuZ2VzaGthciBIb3NwaXRhbDwvc3Bhbj5kAg8PZBYCZg9kFgJmDxYCHwEFZTxhIGhyZWY9Imh0dHA6Ly93d3cuYnVpbHRjbXMuY29tIiB0YXJnZXQ9Il9ibGFuayIgdGl0bGU9IldlYiBDb250ZW50IE1hbmFnZW1lbnQgU3lzdGVtLiI+YnVpbHRDTVM8L2E+ZGR+C6SExDsuweAkMDZnljEg1qBgYA==" />
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+var theForm = document.forms['aspnetForm'];
+if (!theForm) {
+    theForm = document.aspnetForm;
+}
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        theForm.__EVENTTARGET.value = eventTarget;
+        theForm.__EVENTARGUMENT.value = eventArgument;
+        theForm.submit();
+    }
+}
+//]]>
+</script>
+
+
+<script src="/WebResource.axd?d=AB7vsxAaKFLxzT1OBWKQJVzJKLqLkH444OYPkSY-cFS345EG7_vwT-CGcWUYdg98bTTJbQoEVFTo7OsouSut9gGNSEk1&amp;t=638313896380000000" type="text/javascript"></script>
+
+
+<script src="/ScriptResource.axd?d=6I4zg4K1NQ-DyMq4YnAKNOTOmkr7A95hTqct816lNQDEonBkOrt5wF9r91g4vFXylGmPsNiFvB1FBeMbgkjJ2Cw676g3GcG5k-ZXybJz9xMMKJIa0&amp;t=705c9838" type="text/javascript"></script>
+<script src="/ScriptResource.axd?d=Sfi96IDidMX5pPR7Nq6hOEhjv0yDafoc3WL3VQUhvJwQPz50Aq1MohzpzSVYt9GBl5bKuIdS5EyeBzVwVFTlJxtuAku1tZ2ZlwF8YSYG-h6UEIRog8TFEaoDNC3yYzAJoQ53yA2&amp;t=705c9838" type="text/javascript"></script>
+<div>
+
+	<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="F12C16F1" />
+</div>
+<!--<script src="https://www.dmhospital.org/cms/Template/Default/js/less-1.3.3.min.js"></script>-->
+ <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+ <!--[if lt IE 9]>
+ <script src="https://www.dmhospital.org/cms/Template/Default/js/html5shiv.js"></script>
+ <![endif]-->
+ <script src="https://www.dmhospital.org/cms/Template/Default/js/jquery-1.js" type="text/javascript"></script>
+ <script src="https://www.dmhospital.org/cms/Template/Default/js/jquery.min.js" type="text/javascript"></script>
+ <script src="https://www.dmhospital.org/cms/Template/Default/js/ga.js" type="text/javascript"></script>
+ <script src="https://www.dmhospital.org/cms/Template/Default/js/bootstrap.js" type="text/javascript"></script>
+ <script src="https://www.dmhospital.org/cms/Template/Default/js/jquery.js" type="text/javascript"></script>
+ <script src="https://www.dmhospital.org/cms/Template/Default/js/scripts.js" type="text/javascript"></script>
+ <script src="https://www.dmhospital.org/cms/Template/Default/js/responsiveslides.min.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+//<![CDATA[
+Sys.WebForms.PageRequestManager._initialize('ctl00$ScriptManager1', document.getElementById('aspnetForm'));
+Sys.WebForms.PageRequestManager.getInstance()._updateControls([], [], [], 90);
+//]]>
+</script>
+
+<div id="container-fluid" class="container-fluid">
+	<div class="defaultContentWidthHeaderHome">
+		<div class="row-fluid">
+			<div class="span4">
+				
+<div class="span12"> 
+<ul class="top-social-network">
+      <li> <a target="_blank" href="https://www.facebook.com/DeenanathMangeshkarHospitalandResearchCenter/"><i class="fa fa-facebook"></i></a> </li>
+      <li> <a target="_blank" href="https://twitter.com/DMHospitalPune"><img src="https://www.dmhospital.org/cms/Media/image/twitter-x.png" width="15px" /></a> </li>
+      <li style="margin-right:5px;"> <a target="_blank" style="color:red" href="https://www.youtube.com/channel/UCRgYZg3YubpilEGCLBVhUjQ?view_as=subscriber"><i class="fa fa-fw fa-youtube"></i></a></li>
+    </ul>
+</div>
+ 
+
+			</div>
+			<div class="span4">
+				
+<div class="emergency_no">
+	<div>
+		<img src="https://www.dmhospital.org/cms/Media/image/Ambulance-icon.png" /> Call Ambulance : <span> 020 40151540</span></div>
+</div>
+<!--<div class="emergency_no">
+	<a href="https://www.dmhospital.org/vaccine/index.php"><img src="https://www.dmhospital.org/cms/Media/image/Capture9.png" style="width:auto; height:90%; margin-top:5px" /></a></div>-->
+ 
+
+			</div>
+			<div class="span4">
+				
+<div class="applinks mobile-hide">
+	<a href="https://www.dmhospital.org/searchresult"><button type="button" class="btn btn-app" style="padding: 5px; font-size: 16px; margin-bottom: 9px; margin-right: 0px; background: white;  color: #1e1d1d; text-shadow: none;"><i class="fa fa-search"></i> Search</button></a> <a href="https://play.google.com/store/apps/details?id=org.dmhospital.app&hl=en" target="_blank"><img alt="logo" class="playstore" src="https://www.dmhospital.org/cms/Media/image/google-play-badge.png" /></a> <a href="https://itunes.apple.com/in/app/deenanath-mangeshkar-hospital/id1187525263?mt=8" target="_blank"><img alt="logo" class="applestore" src="https://www.dmhospital.org/cms/Media/image/download-on-the-app-store.png" /></a></div>
+ 
+
+			</div>
+		</div>
+	</div>
+	<div style="position:relative;z-index:1054" class="defaultContentWidth">
+		<div class="row-fluid">
+			<div class="span12">
+				<div class="menu-content">
+					<div class="row-fluid">
+						<div class="span12">
+							<div class="topborder">
+								<div class="row-fluid">
+									<div class="span4">
+										
+<div class="logo mainlogo left clearfix">
+	<a class="trademark" href="https://www.dmhospital.org"><img alt="logo" src="https://www.dmhospital.org/cms/Media/image/logo.png" /> </a>
+	<div class="table">
+		<div class="tagLineHolder">
+			<p class="left textshadow info">
+				<a class="trademark" href="httpd://www.dmhospital.org"><strong>Deenanath Mangeshkar Hospital<br />
+				& Research Center</strong></a></p>
+		</div>
+	</div>
+</div>
+ 
+
+									</div>
+									<div class="span8">
+										<script type="text/javascript" src="/cms/javascript/JSselectedmenu.js"></script><input type="hidden"  id="_GenexTopMenu_hdn_PageName"  value="patient-and-visitors" /> <input type="hidden" id="BuiltCMS_PageTitle" value= " Patient & Visitors " />
+<div id="mainmenu-dropdown-duration" style="display: none;">
+    200</div>
+<div id="mainmenu-dropdown-easing" style="display: none;">
+    swing</div>
+<div class="menu-wrap">
+    <span class="menubut bigbut menu_drawer">☰</span>
+    <nav id="mainmenu" class="mainmenu">
+<ul class="menu">
+    <li class="menu-item" id="_Genex_Header_TopMenu_Link_21"><a target="_top" href="/default">Home</a></li>
+<li class="menu-item parent" id="_Genex_Header_TopMenu_Link_22"><a href="#">About Us</a>
+	<ul class="sub-menu children">
+<li class="menu-item"><a target="_self" href="/about-hospital">About Hospital</a></li>
+
+<li class="menu-item"><a target="_self" href="/associates">Associates</a></li>
+
+<li class="menu-item"><a target="_self" href="/accreditations">Accreditations</a></li>
+
+<li class="menu-item"><a target="_self" href="/supportHospitalDonations">Support Hospital / Donations</a></li>
+
+<li class="menu-item"><a target="_self" href="/Unique-features-of-DMH">Unique features of DMH</a></li>
+
+<li class="menu-item"><a target="_self" href="/Foreign-Contribution">Foreign Contribution</a></li>
+
+<li class="menu-item"><a target="_self" href="https://www.dmhospital.org/charity-details">Charity Details</a></li>
+
+</ul>
+</li>
+<li class="menu-item parent" id="_Genex_Header_TopMenu_Link_23"><a href="#">Patient & Visitors</a>
+	<ul class="sub-menu children">
+<li class="menu-item"><a target="_self" href="/OutPatientGGuide">Out Patient guide</a></li>
+
+<li class="menu-item"><a target="_self" href="/InPatientGuide">In patient guide</a></li>
+
+<li class="menu-item"><a target="_self" href="/health-packages">Health Packages</a></li>
+
+<li class="menu-item"><a target="_self" href="/facilities">Facilities</a></li>
+
+<li class="menu-item"><a target="_self" href="/Testimonial">Patients Stories / Feedbacks</a></li>
+
+<li class="menu-item"><a target="_self" href="/Patient-Rights-and-Responsibilities">Patient Rights & Responsibilities</a></li>
+
+<li class="menu-item"><a target="_self" href="/photogallery">Photos</a></li>
+
+<li class="menu-item"><a target="_self" href="/VideoGallery">Videos</a></li>
+
+</ul>
+</li>
+<li class="menu-item parent" id="_Genex_Header_TopMenu_Link_24"><a href="/doctors-profile">Doctors & Departments</a>
+	<ul class="sub-menu children">
+<li class="menu-item"><a target="_self" href="http://www.dmhospital.org/doctors-profile">Doctor Details</a></li>
+
+<li class="menu-item"><a target="_self" href="/specialties">Department Details</a></li>
+
+<li class="menu-item"><a target="_self" href="/services">Services</a></li>
+
+</ul>
+</li>
+<li class="menu-item parent" id="_Genex_Header_TopMenu_Link_25"><a href="#">Research</a>
+	<ul class="sub-menu children">
+<li class="menu-item"><a target="_self" href="/research-aboutus">About Us</a></li>
+
+<li class="menu-item"><a target="_self" href="/training-event">Training And Events</a></li>
+
+<li class="menu-item"><a target="_self" href="/research-awards">Awards</a></li>
+
+<li class="menu-item"><a target="_self" href="/research-newsletters">Newsletter Articles</a></li>
+
+<li class="menu-item"><a target="_self" href="/research-publications">Publications</a></li>
+
+<li class="menu-item"><a target="_self" href="/research-events">Annual Reports</a></li>
+
+<li class="menu-item"><a target="_self" href="/research-sponsors-cros">Sponsors & CROs</a></li>
+
+<li class="menu-item"><a target="_self" href="/research-contact-us">Contact Us</a></li>
+
+</ul>
+</li>
+<li class="menu-item parent" id="_Genex_Header_TopMenu_Link_26"><a href="#">Academics</a>
+	<ul class="sub-menu children">
+<li class="menu-item"><a target="_self" href="https://www.dmhospital.org/Academics">Academics</a></li>
+
+<li class="menu-item"><a target="_self" href="/simulation-center">Simulation Center</a></li>
+
+</ul>
+</li>
+<li class="menu-item parent" id="_Genex_Header_TopMenu_Link_27"><a href="#">Online Facilities</a>
+	<ul class="sub-menu children">
+<li class="menu-item"><a target="_self" href="/email">E-Mail Login (DMH Users)</a></li>
+
+<li class="menu-item"><a target="_blank" href="https://www.dmhospital.org/pay/index.php">Online Payment</a></li>
+
+<li class="menu-item"><a target="_blank" href="http://phr.dmhospital.org/PatientPortal/">Patient Portal</a></li>
+
+<li class="menu-item"><a target="_blank" href="https://mapp.dmhospital.org/amrita_login/patient_registration/index.php">Patient Registration Form</a></li>
+
+</ul>
+</li>
+<li class="menu-item" id="_Genex_Header_TopMenu_Link_28"><a target="_self" href="/DMH-Careers">Careers</a></li>
+<li class="menu-item" id="_Genex_Header_TopMenu_Link_29"><a target="_self" href="/contact-us">Contact Us</a></li>
+<script type="text/javascript">
+ var page=document.getElementById("_GenexTopMenu_hdn_PageName").value;
+  if(page!="")
+   {
+         set_cookie("genex_cook_Page_Name",page);
+   }
+ page=Get_Cookie("genex_cook_Page_Name");
+ switch (encodeURIComponent(page))
+ {
+case encodeURIComponent("default"):
+SetOverStyle("_Genex_Header_TopMenu_Link_21");
+break;
+case encodeURIComponent("about-us"):
+SetOverStyle("_Genex_Header_TopMenu_Link_22");
+break;
+case encodeURIComponent("patient-and-visitors"):
+SetOverStyle("_Genex_Header_TopMenu_Link_23");
+break;
+case encodeURIComponent("doctors-profile"):
+SetOverStyle("_Genex_Header_TopMenu_Link_24");
+break;
+case encodeURIComponent("research"):
+SetOverStyle("_Genex_Header_TopMenu_Link_25");
+break;
+case encodeURIComponent("academics"):
+SetOverStyle("_Genex_Header_TopMenu_Link_26");
+break;
+case encodeURIComponent("online-facilities"):
+SetOverStyle("_Genex_Header_TopMenu_Link_27");
+break;
+case encodeURIComponent("dmh-careers"):
+SetOverStyle("_Genex_Header_TopMenu_Link_28");
+break;
+case encodeURIComponent("contact-us"):
+SetOverStyle("_Genex_Header_TopMenu_Link_29");
+break;
+ }
+</script>
+
+</ul>
+</nav>
+</div>
+
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row-fluid">
+		<div class="span12">
+			
+<div class="wpcf7 entry-content page-heading">
+<h1 class="wpcf7 entry-content h1">
+    Video Gallery</h1>
+<div class="toolbar">
+    <div class="breadcrumb">
+        <span class="crumbs">
+		<a title="Home" href="/default">
+		<i class="falogo fa-home"></i>
+            Home		
+        </a>
+	
+		<i class="fahome fahome-clone"></i>
+           
+    <a href="/patient-and-visitors">Patient & Visitors</a>
+    <span class="navigate_arrow">
+    </span>Video Gallery
+		
+	    </span> 
+    </div>
+	
+
+</div>
+</div>
+		</div>
+	</div>
+	<div class="row-fluid">
+		<div class="span12">
+			
+<div class="topsidebar">
+    <div id="submenu-widget-2" class="box widget-container">
+        <div class="box-wrapper">
+            <ul>
+                <li class="page_title">
+                    Patient & Visitors
+                </li>
+                <li><a id="1032" name="catbox" target="_self" href="/OutPatientGGuide"  >Out Patient guide</a>
+</li>
+<li class="divider"></li><li><a id="1033" name="catbox" target="_self" href="/InPatientGuide"  >In patient guide</a>
+</li>
+<li class="divider"></li><li><a id="1017" name="catbox" target="_self" href="/health-packages"  >Health Packages</a>
+</li>
+<li class="divider"></li><li><a id="1016" name="catbox" target="_self" href="/facilities"  >Facilities</a>
+</li>
+<li class="divider"></li><li><a id="34" name="catbox" target="_self" href="/Testimonial"  >Patients Stories / Feedbacks</a>
+</li>
+<li class="divider"></li><li><a id="14564" name="catbox" target="_self" href="/Patient-Rights-and-Responsibilities"  >Patient Rights & Responsibilities</a>
+</li>
+<li class="divider"></li><li><a id="23" name="catbox" target="_self" href="/photogallery"  >Photos</a>
+</li>
+<li class="divider"></li><li><a id="29" name="catbox"  target="_self" href="/VideoGallery"  >Videos</a>
+</li>
+<script type="text/javascript">
+ var page=document.getElementById("_GenexTopMenu_hdn_PageName").value;
+  if(page!="")
+   {
+         set_cookie("genex_cook_Page_Name",page);
+   }
+ page=Get_Cookie("genex_cook_Page_Name");
+ switch (encodeURIComponent(page))
+ {
+case encodeURIComponent(""):
+SetOverStyle("_Genex_Header_Top_Link_0");
+break;
+ }
+</script>
+
+            </ul>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" language="javascript">
+    function showonlyone() {
+        if (document.getElementById("hdn_PageId") != null) {
+            var submenuid = parseInt(document.getElementById("hdn_PageId").value);
+            var catbox = document.getElementsByTagName("a");
+            for (var x = 0; x < catbox.length; x++) {
+                name = catbox[x].getAttribute("name");
+                if (name == 'catbox') {
+                    var iid = parseInt(catbox[x].id);
+
+                    if (iid == submenuid) {
+                        catbox[x].style.color = "#fff";
+                        catbox[x].style.backgroundColor = "#15bba4";
+                    }
+                }
+            }
+        }
+    }
+</script>
+<script type="text/javascript" language="javascript">
+    showonlyone();
+</script>
+
+		</div>
+	</div>
+	<div class="defaultContentWidth">
+		<div class="row-fluid">
+			<div class="span12">
+				<div class="contentpadding">
+					<div class="row-fluid">
+						<div class="span12">
+							
+    <div class="PageTitle">
+        <span id="ctl00_ContentPlaceHolder1_lbl_PageHeading"></span>
+    </div>
+    <div style="width: 100%; text-align: center; margin-top: 30px;
+    margin-bottom: 30px;">
+        <b>
+            </b>
+    </div>
+    <input type="hidden" name="ctl00$ContentPlaceHolder1$HIDCatID" id="ctl00_ContentPlaceHolder1_HIDCatID" value="0" />
+    <div style="padding-bottom: 10px; float: left;">
+        <span id="ctl00_ContentPlaceHolder1_dlAlbumTab" class="img-video-sub-tab"><span>
+                <a id="ctl00_ContentPlaceHolder1_dlAlbumTab_ctl00_lnkbtnAlbumFilter" title="ALL" class="videoalbumtabselected" href="javascript:__doPostBack('ctl00$ContentPlaceHolder1$dlAlbumTab$ctl00$lnkbtnAlbumFilter','')">ALL</a>
+            </span><span>
+                <a id="ctl00_ContentPlaceHolder1_dlAlbumTab_ctl01_lnkbtnAlbumFilter" title="PATIENT STORIES" class="videoalbumtab" href="javascript:__doPostBack('ctl00$ContentPlaceHolder1$dlAlbumTab$ctl01$lnkbtnAlbumFilter','')">PATIENT STORIES</a>
+            </span><span>
+                <a id="ctl00_ContentPlaceHolder1_dlAlbumTab_ctl02_lnkbtnAlbumFilter" title="ICU-VISIT" class="videoalbumtab" href="javascript:__doPostBack('ctl00$ContentPlaceHolder1$dlAlbumTab$ctl02$lnkbtnAlbumFilter','')">ICU-VISIT</a>
+            </span><span>
+                <a id="ctl00_ContentPlaceHolder1_dlAlbumTab_ctl03_lnkbtnAlbumFilter" title="COVID-19" class="videoalbumtab" href="javascript:__doPostBack('ctl00$ContentPlaceHolder1$dlAlbumTab$ctl03$lnkbtnAlbumFilter','')">COVID-19</a>
+            </span><span>
+                <a id="ctl00_ContentPlaceHolder1_dlAlbumTab_ctl04_lnkbtnAlbumFilter" title="WELLNESS AND LIFESTYLE" class="videoalbumtab" href="javascript:__doPostBack('ctl00$ContentPlaceHolder1$dlAlbumTab$ctl04$lnkbtnAlbumFilter','')">WELLNESS AND LIFESTYLE</a>
+            </span><span>
+                <a id="ctl00_ContentPlaceHolder1_dlAlbumTab_ctl05_lnkbtnAlbumFilter" title="MAAI MOTHER'S MILK BANK" class="videoalbumtab" href="javascript:__doPostBack('ctl00$ContentPlaceHolder1$dlAlbumTab$ctl05$lnkbtnAlbumFilter','')">MAAI MOTHER'S MILK BANK</a>
+            </span></span>
+    </div>
+    <div class="inner_gallery_control">
+        <div>
+        </div>
+        <div class="gallery_box">
+            <span id="ctl00_ContentPlaceHolder1_dtlst_VideoGallery"><span align="left" valign="top">
+                    
+                    <div class="Video_Box">
+                        <iframe allowfullscreen="" frameborder="0" height="315" src="https://www.youtube.com/embed/VMilo10Hbh4" width="420"></iframe>
+                        <div class="video_title">
+                            COVID 19 VACCINE : Why When & How by Dr. Dhananjay Kelkar
+                        </div>
+                    </div>
+                    <div class="blank_space_10">
+                    </div>
+                    
+                </span><span align="left" valign="top">
+                    
+                    <div class="Video_Box">
+                        <iframe allowfullscreen="" frameborder="0" height="315" src="https://www.youtube.com/embed/t5b-wfJIsPE" width="420"></iframe>
+                        <div class="video_title">
+                            Covid-19 Home Isolation Instructions by DMH - Marathi
+                        </div>
+                    </div>
+                    <div class="blank_space_10">
+                    </div>
+                    
+                </span><span align="left" valign="top">
+                    
+                    <div class="Video_Box">
+                        <iframe allowfullscreen="" frameborder="0" height="315" src="https://www.youtube.com/embed/BnYhymB3qDc" width="420"></iframe>
+                        <div class="video_title">
+                            Covid-19 Home Isolation Instructions by DMH- English
+                        </div>
+                    </div>
+                    <div class="blank_space_10">
+                    </div>
+                    
+                </span><span align="left" valign="top">
+                    
+                    <div class="Video_Box">
+                        <iframe allowfullscreen="" frameborder="0" height="315" src="https://www.youtube.com/embed/7-6uQN6kQ2E" width="420"></iframe>
+                        <div class="video_title">
+                            Covid-19 Home Isolation Instructions by DMH- Hindi
+                        </div>
+                    </div>
+                    <div class="blank_space_10">
+                    </div>
+                    
+                </span><br /><span align="left" valign="top">
+                    
+                    <div class="Video_Box">
+                        <iframe allowfullscreen="" frameborder="0" height="315" src="https://www.youtube.com/embed/hv9nOsciDHw" width="420"></iframe>
+                        <div class="video_title">
+                            DMH covid-19 update (for doctors) Part 1: Overview, Prevention & Diagnosis
+                        </div>
+                    </div>
+                    <div class="blank_space_10">
+                    </div>
+                    
+                </span><span align="left" valign="top">
+                    
+                    <div class="Video_Box">
+                        <iframe allowfullscreen="" frameborder="0" height="315" src="https://www.youtube.com/embed/Y7ictYy9I9Y" width="420"></iframe>
+                        <div class="video_title">
+                            DMH covid-19 update (for doctors) Part 2: Treatment
+                        </div>
+                    </div>
+                    <div class="blank_space_10">
+                    </div>
+                    
+                </span><span align="left" valign="top">
+                    
+                    <div class="Video_Box">
+                        <iframe allowfullscreen="" frameborder="0" height="315" src="https://www.youtube.com/embed/MuEmZxvxRQ0" width="420"></iframe>
+                        <div class="video_title">
+                            DMH covid-19 update Part 3: Paediatric
+                        </div>
+                    </div>
+                    <div class="blank_space_10">
+                    </div>
+                    
+                </span><span align="left" valign="top">
+                    
+                    <div class="Video_Box">
+                        <iframe allowfullscreen="" frameborder="0" height="315"src="https://www.youtube.com/embed/YysmD7IDuEg" width="420"></iframe>
+                        <div class="video_title">
+                            DMH Jalneti -1
+                        </div>
+                    </div>
+                    <div class="blank_space_10">
+                    </div>
+                    
+                </span><br /><span align="left" valign="top">
+                    
+                    <div class="Video_Box">
+                        <iframe allowfullscreen="" frameborder="0" height="315" src="https://www.youtube.com/embed/h8Z58FPMKc4" width="420"></iframe>
+                        <div class="video_title">
+                            DMH Jalneti-2 Q & A
+                        </div>
+                    </div>
+                    <div class="blank_space_10">
+                    </div>
+                    
+                </span><span align="left" valign="top">
+                    
+                    <div class="Video_Box">
+                        <iframe allowfullscreen="" frameborder="0" height="315"src="https://www.youtube.com/embed/PMW0OoNhYeE" width="420"></iframe>
+                        <div class="video_title">
+                            Everything to know about covid-19 Part 1 of 3 : Prevention and Overview by Dr. Dhananjay Kelkar, DMH
+                        </div>
+                    </div>
+                    <div class="blank_space_10">
+                    </div>
+                    
+                </span><span align="left" valign="top">
+                    
+                    <div class="Video_Box">
+                        <iframe allowfullscreen="" frameborder="0" height="315" src="https://www.youtube.com/embed/SG3zp3VwMNM" width="420"></iframe>
+                        <div class="video_title">
+                            Everything to know about covid-19 part 2 of 3 : Diagnosis and Treatment by Dr. Dhananjay Kelkar, DMH
+                        </div>
+                    </div>
+                    <div class="blank_space_10">
+                    </div>
+                    
+                </span><span align="left" valign="top">
+                    
+                    <div class="Video_Box">
+                        <iframe allowfullscreen="" frameborder="0" height="315" src="https://www.youtube.com/embed/0KrpeGhqDN0" width="420"></iframe>
+                        <div class="video_title">
+                            Everything to know about covid-19 part 3 of 3 : Living with covid by Dr. Dhananjay Kelkar, DMH
+                        </div>
+                    </div>
+                    <div class="blank_space_10">
+                    </div>
+                    
+                </span><br /><span align="left" valign="top">
+                    
+                    <div class="Video_Box">
+                        <iframe allowfullscreen="" frameborder="0" height="315"src="https://www.youtube.com/embed/rrxa4xjLguQ" width="420"></iframe>
+                        <div class="video_title">
+                            Guidance Lecture on Corona Virus | Dr. Dhananjay Kelkar
+                        </div>
+                    </div>
+                    <div class="blank_space_10">
+                    </div>
+                    
+                </span><span align="left" valign="top">
+                    
+                    <div class="Video_Box">
+                        <iframe allowfullscreen="" frameborder="0" height="315" src="https://www.youtube.com/embed/3Htu-7TIH3g" width="560"></iframe>
+                        <div class="video_title">
+                            ICU-Visit
+                        </div>
+                    </div>
+                    <div class="blank_space_10">
+                    </div>
+                    
+                </span><span align="left" valign="top">
+                    
+                    <div class="Video_Box">
+                        <iframe allowfullscreen="" frameborder="0" height="315" src="https://www.youtube.com/embed/sDZGpZ_Vtts" width="420"></iframe>
+                        <div class="video_title">
+                            In the shadow of virtual truth… Corona in our minds | Dr Dhananjay Kelkar
+                        </div>
+                    </div>
+                    <div class="blank_space_10">
+                    </div>
+                    
+                </span><span align="left" valign="top">
+                    
+                    <div class="Video_Box">
+                        <iframe allowfullscreen="" frameborder="0" height="315" src="//www.youtube.com/embed/6hB7CFnfsRQ" width="420"></iframe>
+                        <div class="video_title">
+                            Maai Mother's Milk Bank
+                        </div>
+                    </div>
+                    <div class="blank_space_10">
+                    </div>
+                    
+                </span><br /><span align="left" valign="top">
+                    
+                    <div class="Video_Box">
+                        <iframe allowfullscreen="" frameborder="0" height="315" src="//www.youtube.com/embed/UCgeZaFHlew" width="420"></iframe>
+                        <div class="video_title">
+                            MIND over MATTER by Dr.Dhananjay Kelkar
+                        </div>
+                    </div>
+                    <div class="blank_space_10">
+                    </div>
+                    
+                </span><span align="left" valign="top">
+                    
+                    <div class="Video_Box">
+                        <iframe width="420" height="315" src="//www.youtube.com/embed/YFW1YDxOrDw" frameborder="0" allowfullscreen></iframe>
+                        <div class="video_title">
+                            Patient Stories
+                        </div>
+                    </div>
+                    <div class="blank_space_10">
+                    </div>
+                    
+                </span><span align="left" valign="top">
+                    
+                    <div class="Video_Box">
+                        <iframe width="420" height="315" src="//www.youtube.com/embed/sANqapfiznM" frameborder="0" allowfullscreen></iframe>
+                        <div class="video_title">
+                            Patient Stories
+                        </div>
+                    </div>
+                    <div class="blank_space_10">
+                    </div>
+                    
+                </span><span align="left" valign="top">
+                    
+                    <div class="Video_Box">
+                        <iframe width="420" height="315" src="//www.youtube.com/embed/94WZx6JI5k4" frameborder="0" allowfullscreen></iframe>
+                        <div class="video_title">
+                            Patient Stories
+                        </div>
+                    </div>
+                    <div class="blank_space_10">
+                    </div>
+                    
+                </span><br /><span align="left" valign="top">
+                    
+                    <div class="Video_Box">
+                        <iframe allowfullscreen="" frameborder="0" height="315" src="https://www.youtube.com/embed/jSqnWyqbXbk" width="420"></iframe>
+                        <div class="video_title">
+                            Rehabilitation guidelines for patients recovering from Covid-19 (in English)
+                        </div>
+                    </div>
+                    <div class="blank_space_10">
+                    </div>
+                    
+                </span><span align="left" valign="top">
+                    
+                    <div class="Video_Box">
+                        <iframe allowfullscreen="" frameborder="0" height="315" src="https://www.youtube.com/embed/wLTjq8U2Pbk" width="420"></iframe>
+                        <div class="video_title">
+                            Rehabilitation guidelines for patients recovering from Covid-19 (in marathi)
+                        </div>
+                    </div>
+                    <div class="blank_space_10">
+                    </div>
+                    
+                </span><span align="left" valign="top">
+                    
+                    <div class="Video_Box">
+                        <iframe allowfullscreen="" frameborder="0" height="315" src="https://www.youtube.com/embed/4ItbpVvcMQs" width="420"></iframe>
+                        <div class="video_title">
+                            Sukshma Yoga And Pranayama
+                        </div>
+                    </div>
+                    <div class="blank_space_10">
+                    </div>
+                    
+                </span><span align="left" valign="top">
+                    
+                    <div class="Video_Box">
+                        <iframe allowfullscreen="" frameborder="0" height="315" src="//www.youtube.com/embed/7lJz3M-69iA" width="420"></iframe>
+                        <div class="video_title">
+                            Work Life Balance by Dr. Dhananjay Kelkar
+                        </div>
+                    </div>
+                    <div class="blank_space_10">
+                    </div>
+                    
+                </span><br /><span align="left" valign="top">
+                    
+                    <div class="Video_Box">
+                        <iframe allowfullscreen="" frameborder="0" height="315" src="https://www.youtube.com/embed/N_vE85SUIJM" width="420"></iframe>
+                        <div class="video_title">
+                            माझे गुरु (कै. अप्पासाहेब पेंडसे , डॉ. मेहरू मेहता , मा. लता दीदी ) by Dr. Dhananjay Kelkar MS FRCS
+                        </div>
+                    </div>
+                    <div class="blank_space_10">
+                    </div>
+                    
+                </span><br /></span>
+        </div>
+    </div>
+    
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="page-footer">
+		<div class="row-fluid">
+			<div class="span12">
+				<div class="defaultContentWidthFooter width90Per">
+					<div class="row-fluid">
+						<div class="span3">
+							
+<div class="widget">
+	<h5>
+		<span>Our</span> office</h5>
+	<ul class="office-contact">
+		<li>
+			<i class="fa fa-home"> </i>
+			<h6>
+				Address :</h6>
+			Near Mhatre Bridge,Erandwane, Pune 411004,</li>
+		<li>
+			<i class="fa fa-phone"> </i>
+			<h6>
+				Phone :</h6>
+			Tel. +91 20 4015 1000 / 49153000</li>
+		<li>
+			<i class="fa fa-envelope"> </i>
+			<h6>
+				Email :</h6>
+			info@dmhospital.org</li>
+	</ul>
+</div>
+<br />
+ 
+
+						</div>
+						<div class="span3">
+							
+<div class="clearfix">
+    <div class="sbox-wrap">
+        <div class="sbox-content clear clearfix">           
+            <div class="sc-column one-third">
+                <h5><a class="iconLink" href="/events"><span>Events / News</span></a></h5>				
+                 <div class="sc-page">
+ <div class="item clearfix">
+ <div class="image">
+<a class="greyscale"target="_top" href="/eventsdetails/Diabetes-Nursing-Conference-2026">
+<img src="/Images/EventImages/Diabetes-Nursing-Conference2.jpg" alt="Diabetes Nursing Conference 2026" /></a></div>
+<div class="text">
+<a class="greyscale"target="_top" href="/eventsdetails/Diabetes-Nursing-Conference-2026">
+<p>Diabetes Nursing Conference 2026</p></a></div>
+ <div class="rule">&nbsp;</div>
+</div></div>
+         			
+            </div>
+        </div>
+    </div>
+</div>
+
+						</div>
+						<div class="span3">
+							
+<div class="widget">
+	<h5>
+		<span>Testimonials</span></h5>
+	<div class="tweet">
+		<ul>
+			<li style="">
+				<a href="https://www.dmhospital.org/testimonial" target="_blank">Generous help from Charity department made treatment possible. </a>
+				<div class="testimonialname">
+					<a href="https://www.dmhospital.org/testimonial" target="_blank">- Mrs Rajashri Anil Gavali</a></div>
+			</li>
+			<li style="">
+				<a href="https://www.dmhospital.org/testimonial" target="_blank">Great Support Received From Staff And Doctors During Transplant Surgery. </a>
+				<div class="testimonialname">
+					<a href="https://www.dmhospital.org/testimonial" target="_blank">- Mrs Himali Pimpalkhare</a></div>
+			</li>
+			<li style="">
+				<a href="https://www.dmhospital.org/testimonial" target="_blank">Where There Is Hope There Is Faith.</a>
+				<div class="testimonialname">
+					<a href="https://www.dmhospital.org/testimonial" target="_blank">- Mr Arvind Chintaman Daware</a></div>
+			</li>
+			<li style="">
+				<a href="https://www.dmhospital.org/testimonial" target="_blank">Prompt Action By Doctors And Excellent Service By Mediclaim Department.</a>
+				<div class="testimonialname">
+					<a href="https://www.dmhospital.org/testimonial" target="_blank">- Mr Shankar Gundal</a></div>
+			</li>
+			<li style="">
+				<a href="https://www.dmhospital.org/testimonial" target="_blank">Good Doctors And Financial Help From Charity Made Treatment Possible.</a>
+				<div class="testimonialname">
+					<a href="https://www.dmhospital.org/testimonial" target="_blank">- Mr Dilip Ramchandra Kale</a></div>
+			</li>
+		</ul>
+	</div>
+</div>
+<br />
+ 
+
+						</div>
+						<div class="span3">
+							
+<div class="widget">
+	<h5>
+		<span>Quick</span> links</h5>
+	<ul>
+		<li>
+			<a href="https://www.dmhospital.org/out-patient-department">OPD Schedule</a></li>
+		<!--<li>
+			<a href="https://www.dmhospital.org/headlines">News</a></li>-->
+		<li>
+			<a href="https://www.dmhospital.org/events">Events / News</a></li>
+		<li>
+			<a href="http://www.dmhospital.org/testimonial">Testimonials</a></li>
+		<li>
+			<a href="https://www.dmhospital.org/photogallery">Photo Gallery</a></li>
+		<li>
+			<a href="https://www.dmhospital.org/videogallery">Video Gallery</a></li>
+		<li>
+			<a href="https://www.dmhospital.org/EC-approval">EC Approval</a></li>
+		<li>
+			<a href="https://www.dmhospital.org/sitemap">Site Map</a></li>
+		<li>
+			<a href="https://www.dmhospital.org/disclaimer">Disclaimer</a></li>
+	</ul>
+</div>
+<br />
+ 
+
+						</div>
+					</div>
+				</div>
+				<div class="footer-line">
+					<div class="row-fluid">
+						<div class="span12">
+							<div class="noMinHeight">
+								<div class="row-fluid">
+									<div class="span12">
+										
+<div class="span12">
+  <div class="span12">
+    <div class="mobile-view">
+      <div class="grid-container">
+        <div class="grid-item"> <a href="https://www.dmhospital.org/doctors-profile"><i class="fa fa-user-md"></i> <span style="display: block">Doctors &<br />
+          Departments</span> </a></div>
+        <div class="grid-item"> <a href="https://www.dmhospital.org/out-patient-department"><i class="fa fa-calendar"></i> <span style="display: block">OPD<br />
+          Schedules</span> </a></div>
+        <div class="grid-item"> <a href="https://www.dmhospital.org/health-packages"><i class="fa fa-stethoscope"></i> <span style="display: block">Health<br />
+          Packages</span> </a></div>
+        <div class="grid-item"> <a href="https://www.dmhospital.org/inpatientguide"><i class="fa fa-hospital-o"></i> <span style="display: block">Patient &<br />
+          Visitors</span> </a></div>
+        <div class="grid-item"> <a href="https://phr.dmhospital.org/Appointment/"><i class="fa fa-phone"></i> <span style="display: block">Request<br />
+          Appointment</span> </a></div>
+        <div class="grid-item"> <a href="https://phr.dmhospital.org/PatientPortal/" target="_blank"><i class="fa fa-file-text-o"></i> <span style="display: block">Patient<br />
+        Portal</span> </a></div>
+      </div>
+    </div>
+    <div class="floting-btn">
+      <div class="btn-wrapper"> <a href="#info-pop" role="button" class="btn-pop" data-toggle="modal" data-keyboard="false" data-backdrop="static"><i class="fa  fa-filter tooltip-btn" aria-hidden="true"></i></a>
+        <div aria-hidden="true" aria-labelledby="myModalLabel" class="modal hide fade" id="info-pop" role="dialog" tabindex="-1">
+          <div class="modal-header">
+            <button aria-hidden="true" class="close" data-dismiss="modal" type="button">×</button>
+            <h3 id="myModalLabel"> online facility</h3>
+          </div>
+          <div class="modal-body"> <a href="https://www.dmhospital.org/pay/index.php" target="_blank">Online Payment</a> <a href="https://phr.dmhospital.org/PatientPortal/">Patient Portal</a> <a href="https://phr.dmhospital.org/Appointment/">Book Appointment</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+ 
+
+									</div>
+								</div>
+							</div>
+							<div class="defaultContentWidth width90Per">
+								<div class="row-fluid">
+									<div class="span7">
+										
+<script type="text/javascript" language="javascript">
+    showonlyone();
+</script>
+Copyright &copy; 2026&nbsp;<span>Deenanath Mangeshkar Hospital</span>
+
+									</div>
+									<div class="span5">
+										
+<div class="poweredbyright">
+&nbsp;&nbsp;Powered By
+<a href="http://www.builtcms.com" target="_blank" title="Web Content Management System.">builtCMS</a>
+</div>
+
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script src="https://www.dmhospital.org/cms/Template/Default/js/dmh.js" type="text/javascript"></script>
+<script type="application/javascript"></script>
+
+
+<script type="text/javascript">
+//<![CDATA[
+(function() {var fn = function() {$get("ctl00_ScriptManager1_HiddenField").value = '';Sys.Application.remove_init(fn);};Sys.Application.add_init(fn);})();Sys.Application.initialize();
+//]]>
+</script>
+</form>
+</body>
+</html>
+

@@ -25,19 +25,31 @@ export default function Navbar() {
 
   const navLinks = [
     { name: "Home", href: "/" },
-    { name: "About Us", href: "/about" },
+    {
+      name: "About Us",
+      href: "/about-hospital",
+      dropdown: [
+        { name: "About Hospital", href: "/about-hospital" },
+        { name: "Associates", href: "/associates" },
+        { name: "Accreditations", href: "/accreditations" },
+        { name: "Support Hospital / Donations", href: "/supportHospitalDonations" },
+        { name: "Unique features of DMH", href: "/unique-features" },
+        { name: "Foreign Contribution", href: "/foreign-contribution" },
+        { name: "Charity Details", href: "/charity-details" },
+      ],
+    },
     {
       name: "Patient & Visitors",
       href: "/patient-visitors",
       dropdown: [
-        { name: "Out Patient guide", href: "/patient-guide/out-patient" },
-        { name: "In patient guide", href: "/patient-guide/in-patient" },
+        { name: "Out Patient guide", href: "/out-patient" },
+        { name: "In patient guide", href: "/in-patient" },
         { name: "Health Packages", href: "/health-packages" },
         { name: "Facilities", href: "/facilities" },
         { name: "Patients Stories / Feedbacks", href: "/feedbacks" },
         { name: "Patient Rights & Responsibilities", href: "/patient-rights" },
-        { name: "Photos", href: "/gallery/photos" },
-        { name: "Videos", href: "/gallery/videos" },
+        { name: "Photos", href: "/gallery-photos" },
+        { name: "Videos", href: "/gallery-videos" },
       ],
     },
     {

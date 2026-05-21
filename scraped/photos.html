@@ -1,0 +1,1248 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="utf-8" /><title>
+	Photo Gallery
+</title><meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="description" /><meta name="author" />
+ <!--[if lt IE 7 ]> <html class="ie6"> <![endif]-->
+<!--[if IE 7 ]>    <html class="ie7"> <![endif]-->
+<!--[if IE 8 ]>    <html class="ie8"> <![endif]-->
+<!--[if IE 9 ]>    <html class="ie9"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html class=""> <!--<![endif]-->
+<link rel="shortcut icon" href="cms/Template/Default/Img/favicon.ico" /><link type="text/css" href="cms/Template/Default/css/style.css" rel="stylesheet" /><link type="text/css" href="cms/Template/Default/css/bootstrap.css" rel="stylesheet" /><link type="text/css" href="cms/Template/Default/css/bootstrap-responsive.min.css" rel="stylesheet" /><link type="text/css" href="cms/Template/Default/css/sssstyle.css" rel="stylesheet" /><link type="text/css" href="cms/Template/Default/css/dmhtabs.css" rel="stylesheet" /><link type="text/css" href="cms/Template/Default/css/dcpl.css" rel="stylesheet" /><link type="text/css" href="cms/Template/Default/css/Testimonial.css" rel="stylesheet" /><link type="text/css" href="cms/Template/Default/css/searchPage.css" rel="stylesheet" /><link type="text/css" href="cms/Template/Default/css/news.css" rel="stylesheet" />
+    <meta name="keywords" content="Photo Gallery" />
+    <meta name="description" content="Photo Gallery" />
+    <meta name="Author" content="
+  " />
+    <meta name="Generator" content="BuiltCMS- Web Application" />
+    <meta name="date" content="2026-01-13" />
+    <link rel="stylesheet" href="/admin/PhotoGallery/Styles/vlightbox1.css"
+        type="text/css" />
+    <link rel="stylesheet" href="/admin/PhotoGallery/Styles/visuallightbox.css"
+        type="text/css" media="screen" />
+</head>
+<body>
+<form name="aspnetForm" method="post" action="/photogallery" id="aspnetForm">
+<div>
+<input type="hidden" name="ctl00_ScriptManager1_HiddenField" id="ctl00_ScriptManager1_HiddenField" value="" />
+<input type="hidden" name="__EVENTTARGET" id="__EVENTTARGET" value="" />
+<input type="hidden" name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="" />
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwUKLTcwNDk4ODcwMg9kFgJmD2QWAgIDDxYCHgZhY3Rpb24FDS9waG90b2dhbGxlcnkWCAIGD2QWAmYPZBYCZg8WAh4EVGV4dAV5DQogICAgPGEgaHJlZj0iL3BhdGllbnQtYW5kLXZpc2l0b3JzIj5QYXRpZW50ICYgVmlzaXRvcnM8L2E+DQogICAgPHNwYW4gY2xhc3M9Im5hdmlnYXRlX2Fycm93Ij4NCiAgICA8L3NwYW4+UGhvdG8gR2FsbGVyeWQCCA9kFgQCAw88KwAJAQAPFgQeCERhdGFLZXlzFgAeC18hSXRlbUNvdW50AgZkFgxmD2QWAgIBDw8WBh4PQ29tbWFuZEFyZ3VtZW50BQEwHgdUb29sVGlwBQNBTEwfAQUDQUxMFgIeBWNsYXNzBRBhbGJ1bXRhYnNlbGVjdGVkZAIBD2QWAgIBDw8WBh8EBQIxMB8FBQNETUgfAQUDRE1IFgIfBgUIYWxidW10YWJkAgIPZBYCAgEPDxYGHwQFAjE2HwUFDU1BSU4gQlVJTERJTkcfAQUNTUFJTiBCVUlMRElORxYCHwYFCGFsYnVtdGFiZAIDD2QWAgIBDw8WBh8EBQIxNx8FBRlTVVBFUiBTUEVDSUFMSVRZIEJVSUxESU5HHwEFGVNVUEVSIFNQRUNJQUxJVFkgQlVJTERJTkcWAh8GBQhhbGJ1bXRhYmQCBA9kFgICAQ8PFgYfBAUCMjAfBQUWV09STEQgVEhZUk9JRCBEQVkgMjAyNB8BBRZXT1JMRCBUSFlST0lEIERBWSAyMDI0FgIfBgUIYWxidW10YWJkAgUPZBYCAgEPDxYGHwQFAjIyHwUFF1dPUkxEIERJQUJFVEVTIERBWSAyMDI1HwEFF1dPUkxEIERJQUJFVEVTIERBWSAyMDI1FgIfBgUIYWxidW10YWJkAgQPPCsACQEADxYEHwIWAB8DAihkFlBmD2QWCAIBDxYCHwEFD2FiZHVsLWthbGFtLmpwZ2QCAw8WAh8BBb0BPGEgY2xhc3M9InZsaWdodGJveDEiIGhyZWY9Ii9JbWFnZXMvUGhvdG9nYWxsZXJ5L21lZGl1bS9hYmR1bC1rYWxhbS5qcGciICB0aXRsZT0iIiA+PGltZyBzcmM9Ii9JbWFnZXMvUGhvdG9HYWxsZXJ5L3RodW1ibmFpbC9hYmR1bC1rYWxhbS5qcGciIGFsdD0iIiBzdHlsZT0id2lkdGg6MjAwcHg7aGVpZ2h0OjE1MHB4OyIgLz48L2E+ZAIEDxUBAGQCBQ8WAh8BZWQCAQ9kFggCAQ8WAh8BBQ10ZW5kdWxrYXIuanBnZAIDDxYCHwEFuQE8YSBjbGFzcz0idmxpZ2h0Ym94MSIgaHJlZj0iL0ltYWdlcy9QaG90b2dhbGxlcnkvbWVkaXVtL3RlbmR1bGthci5qcGciICB0aXRsZT0iIiA+PGltZyBzcmM9Ii9JbWFnZXMvUGhvdG9HYWxsZXJ5L3RodW1ibmFpbC90ZW5kdWxrYXIuanBnIiBhbHQ9IiIgc3R5bGU9IndpZHRoOjIwMHB4O2hlaWdodDoxNTBweDsiIC8+PC9hPmQCBA8VAQBkAgUPFgIfAWVkAgIPZBYIAgEPFgIfAQUfb2Jlc2l0eS1jbGluaWMtaW5hdWd1cmF0aW9uLmpwZ2QCAw8WAh8BBd0BPGEgY2xhc3M9InZsaWdodGJveDEiIGhyZWY9Ii9JbWFnZXMvUGhvdG9nYWxsZXJ5L21lZGl1bS9vYmVzaXR5LWNsaW5pYy1pbmF1Z3VyYXRpb24uanBnIiAgdGl0bGU9IiIgPjxpbWcgc3JjPSIvSW1hZ2VzL1Bob3RvR2FsbGVyeS90aHVtYm5haWwvb2Jlc2l0eS1jbGluaWMtaW5hdWd1cmF0aW9uLmpwZyIgYWx0PSIiIHN0eWxlPSJ3aWR0aDoyMDBweDtoZWlnaHQ6MTUwcHg7IiAvPjwvYT5kAgQPFQEAZAIFDxYCHwFlZAIDD2QWCAIBDxYCHwEFDTh0aCBtYXJjaC5KUEdkAgMPFgIfAQW5ATxhIGNsYXNzPSJ2bGlnaHRib3gxIiBocmVmPSIvSW1hZ2VzL1Bob3RvZ2FsbGVyeS9tZWRpdW0vOHRoIG1hcmNoLkpQRyIgIHRpdGxlPSIiID48aW1nIHNyYz0iL0ltYWdlcy9QaG90b0dhbGxlcnkvdGh1bWJuYWlsLzh0aCBtYXJjaC5KUEciIGFsdD0iIiBzdHlsZT0id2lkdGg6MjAwcHg7aGVpZ2h0OjE1MHB4OyIgLz48L2E+ZAIEDxUBAGQCBQ8WAh8BZWQCBA9kFggCAQ8WAh8BBRNhZHYgd291bmQgY2FyZTMuSlBHZAIDDxYCHwEFxQE8YSBjbGFzcz0idmxpZ2h0Ym94MSIgaHJlZj0iL0ltYWdlcy9QaG90b2dhbGxlcnkvbWVkaXVtL2FkdiB3b3VuZCBjYXJlMy5KUEciICB0aXRsZT0iIiA+PGltZyBzcmM9Ii9JbWFnZXMvUGhvdG9HYWxsZXJ5L3RodW1ibmFpbC9hZHYgd291bmQgY2FyZTMuSlBHIiBhbHQ9IiIgc3R5bGU9IndpZHRoOjIwMHB4O2hlaWdodDoxNTBweDsiIC8+PC9hPmQCBA8VAQBkAgUPFgIfAWVkAgUPZBYIAgEPFgIfAQUMRFNDXzAwNjQuSlBHZAIDDxYCHwEFtwE8YSBjbGFzcz0idmxpZ2h0Ym94MSIgaHJlZj0iL0ltYWdlcy9QaG90b2dhbGxlcnkvbWVkaXVtL0RTQ18wMDY0LkpQRyIgIHRpdGxlPSIiID48aW1nIHNyYz0iL0ltYWdlcy9QaG90b0dhbGxlcnkvdGh1bWJuYWlsL0RTQ18wMDY0LkpQRyIgYWx0PSIiIHN0eWxlPSJ3aWR0aDoyMDBweDtoZWlnaHQ6MTUwcHg7IiAvPjwvYT5kAgQPFQEAZAIFDxYCHwFlZAIGD2QWCAIBDxYCHwEFB2ZlYi5qcGdkAgMPFgIfAQWtATxhIGNsYXNzPSJ2bGlnaHRib3gxIiBocmVmPSIvSW1hZ2VzL1Bob3RvZ2FsbGVyeS9tZWRpdW0vZmViLmpwZyIgIHRpdGxlPSIiID48aW1nIHNyYz0iL0ltYWdlcy9QaG90b0dhbGxlcnkvdGh1bWJuYWlsL2ZlYi5qcGciIGFsdD0iIiBzdHlsZT0id2lkdGg6MjAwcHg7aGVpZ2h0OjE1MHB4OyIgLz48L2E+ZAIEDxUBAGQCBQ8WAh8BZWQCBw9kFggCAQ8WAh8BBQdvY3QuanBnZAIDDxYCHwEFrQE8YSBjbGFzcz0idmxpZ2h0Ym94MSIgaHJlZj0iL0ltYWdlcy9QaG90b2dhbGxlcnkvbWVkaXVtL29jdC5qcGciICB0aXRsZT0iIiA+PGltZyBzcmM9Ii9JbWFnZXMvUGhvdG9HYWxsZXJ5L3RodW1ibmFpbC9vY3QuanBnIiBhbHQ9IiIgc3R5bGU9IndpZHRoOjIwMHB4O2hlaWdodDoxNTBweDsiIC8+PC9hPmQCBA8VAQBkAgUPFgIfAWVkAggPZBYIAgEPFgIfAQUNNHRoIGFwcmlsLmpwZ2QCAw8WAh8BBbkBPGEgY2xhc3M9InZsaWdodGJveDEiIGhyZWY9Ii9JbWFnZXMvUGhvdG9nYWxsZXJ5L21lZGl1bS80dGggYXByaWwuanBnIiAgdGl0bGU9IiIgPjxpbWcgc3JjPSIvSW1hZ2VzL1Bob3RvR2FsbGVyeS90aHVtYm5haWwvNHRoIGFwcmlsLmpwZyIgYWx0PSIiIHN0eWxlPSJ3aWR0aDoyMDBweDtoZWlnaHQ6MTUwcHg7IiAvPjwvYT5kAgQPFQEAZAIFDxYCHwFlZAIJD2QWCAIBDxYCHwEFDjI2dGggYXByaWwuanBnZAIDDxYCHwEFuwE8YSBjbGFzcz0idmxpZ2h0Ym94MSIgaHJlZj0iL0ltYWdlcy9QaG90b2dhbGxlcnkvbWVkaXVtLzI2dGggYXByaWwuanBnIiAgdGl0bGU9IiIgPjxpbWcgc3JjPSIvSW1hZ2VzL1Bob3RvR2FsbGVyeS90aHVtYm5haWwvMjZ0aCBhcHJpbC5qcGciIGFsdD0iIiBzdHlsZT0id2lkdGg6MjAwcHg7aGVpZ2h0OjE1MHB4OyIgLz48L2E+ZAIEDxUBAGQCBQ8WAh8BZWQCCg9kFggCAQ8WAh8BBRZEci5BcnVuZGhhdGktS2hhcmUuanBnZAIDDxYCHwEFywE8YSBjbGFzcz0idmxpZ2h0Ym94MSIgaHJlZj0iL0ltYWdlcy9QaG90b2dhbGxlcnkvbWVkaXVtL0RyLkFydW5kaGF0aS1LaGFyZS5qcGciICB0aXRsZT0iIiA+PGltZyBzcmM9Ii9JbWFnZXMvUGhvdG9HYWxsZXJ5L3RodW1ibmFpbC9Eci5BcnVuZGhhdGktS2hhcmUuanBnIiBhbHQ9IiIgc3R5bGU9IndpZHRoOjIwMHB4O2hlaWdodDoxNTBweDsiIC8+PC9hPmQCBA8VAQBkAgUPFgIfAWVkAgsPZBYIAgEPFgIfAQULV1REICg0KS5qcGdkAgMPFgIfAQW1ATxhIGNsYXNzPSJ2bGlnaHRib3gxIiBocmVmPSIvSW1hZ2VzL1Bob3RvZ2FsbGVyeS9tZWRpdW0vV1REICg0KS5qcGciICB0aXRsZT0iIiA+PGltZyBzcmM9Ii9JbWFnZXMvUGhvdG9HYWxsZXJ5L3RodW1ibmFpbC9XVEQgKDQpLmpwZyIgYWx0PSIiIHN0eWxlPSJ3aWR0aDoyMDBweDtoZWlnaHQ6MTUwcHg7IiAvPjwvYT5kAgQPFQEAZAIFDxYCHwFlZAIMD2QWCAIBDxYCHwEFC1dURCAoNSkuanBnZAIDDxYCHwEFtQE8YSBjbGFzcz0idmxpZ2h0Ym94MSIgaHJlZj0iL0ltYWdlcy9QaG90b2dhbGxlcnkvbWVkaXVtL1dURCAoNSkuanBnIiAgdGl0bGU9IiIgPjxpbWcgc3JjPSIvSW1hZ2VzL1Bob3RvR2FsbGVyeS90aHVtYm5haWwvV1REICg1KS5qcGciIGFsdD0iIiBzdHlsZT0id2lkdGg6MjAwcHg7aGVpZ2h0OjE1MHB4OyIgLz48L2E+ZAIEDxUBAGQCBQ8WAh8BZWQCDQ9kFggCAQ8WAh8BBQtXVEQgKDYpLmpwZ2QCAw8WAh8BBbUBPGEgY2xhc3M9InZsaWdodGJveDEiIGhyZWY9Ii9JbWFnZXMvUGhvdG9nYWxsZXJ5L21lZGl1bS9XVEQgKDYpLmpwZyIgIHRpdGxlPSIiID48aW1nIHNyYz0iL0ltYWdlcy9QaG90b0dhbGxlcnkvdGh1bWJuYWlsL1dURCAoNikuanBnIiBhbHQ9IiIgc3R5bGU9IndpZHRoOjIwMHB4O2hlaWdodDoxNTBweDsiIC8+PC9hPmQCBA8VAQBkAgUPFgIfAWVkAg4PZBYIAgEPFgIfAQUNMV9XVEQgKDgpLmpwZ2QCAw8WAh8BBbkBPGEgY2xhc3M9InZsaWdodGJveDEiIGhyZWY9Ii9JbWFnZXMvUGhvdG9nYWxsZXJ5L21lZGl1bS8xX1dURCAoOCkuanBnIiAgdGl0bGU9IiIgPjxpbWcgc3JjPSIvSW1hZ2VzL1Bob3RvR2FsbGVyeS90aHVtYm5haWwvMV9XVEQgKDgpLmpwZyIgYWx0PSIiIHN0eWxlPSJ3aWR0aDoyMDBweDtoZWlnaHQ6MTUwcHg7IiAvPjwvYT5kAgQPFQEAZAIFDxYCHwFlZAIPD2QWCAIBDxYCHwEFDldURCAyNCAoMikuanBnZAIDDxYCHwEFuwE8YSBjbGFzcz0idmxpZ2h0Ym94MSIgaHJlZj0iL0ltYWdlcy9QaG90b2dhbGxlcnkvbWVkaXVtL1dURCAyNCAoMikuanBnIiAgdGl0bGU9IiIgPjxpbWcgc3JjPSIvSW1hZ2VzL1Bob3RvR2FsbGVyeS90aHVtYm5haWwvV1REIDI0ICgyKS5qcGciIGFsdD0iIiBzdHlsZT0id2lkdGg6MjAwcHg7aGVpZ2h0OjE1MHB4OyIgLz48L2E+ZAIEDxUBAGQCBQ8WAh8BZWQCEA9kFggCAQ8WAh8BBQ5XVEQgMjQgKDMpLmpwZ2QCAw8WAh8BBbsBPGEgY2xhc3M9InZsaWdodGJveDEiIGhyZWY9Ii9JbWFnZXMvUGhvdG9nYWxsZXJ5L21lZGl1bS9XVEQgMjQgKDMpLmpwZyIgIHRpdGxlPSIiID48aW1nIHNyYz0iL0ltYWdlcy9QaG90b0dhbGxlcnkvdGh1bWJuYWlsL1dURCAyNCAoMykuanBnIiBhbHQ9IiIgc3R5bGU9IndpZHRoOjIwMHB4O2hlaWdodDoxNTBweDsiIC8+PC9hPmQCBA8VAQBkAgUPFgIfAWVkAhEPZBYIAgEPFgIfAQUKV1REIDI0LmpwZ2QCAw8WAh8BBbMBPGEgY2xhc3M9InZsaWdodGJveDEiIGhyZWY9Ii9JbWFnZXMvUGhvdG9nYWxsZXJ5L21lZGl1bS9XVEQgMjQuanBnIiAgdGl0bGU9IiIgPjxpbWcgc3JjPSIvSW1hZ2VzL1Bob3RvR2FsbGVyeS90aHVtYm5haWwvV1REIDI0LmpwZyIgYWx0PSIiIHN0eWxlPSJ3aWR0aDoyMDBweDtoZWlnaHQ6MTUwcHg7IiAvPjwvYT5kAgQPFQEAZAIFDxYCHwFlZAISD2QWCAIBDxYCHwEFG0lNRy0yMDI1MTEzMC1XQTAwMDcgKDEpLmpwZ2QCAw8WAh8BBdUBPGEgY2xhc3M9InZsaWdodGJveDEiIGhyZWY9Ii9JbWFnZXMvUGhvdG9nYWxsZXJ5L21lZGl1bS9JTUctMjAyNTExMzAtV0EwMDA3ICgxKS5qcGciICB0aXRsZT0iIiA+PGltZyBzcmM9Ii9JbWFnZXMvUGhvdG9HYWxsZXJ5L3RodW1ibmFpbC9JTUctMjAyNTExMzAtV0EwMDA3ICgxKS5qcGciIGFsdD0iIiBzdHlsZT0id2lkdGg6MjAwcHg7aGVpZ2h0OjE1MHB4OyIgLz48L2E+ZAIEDxUBAGQCBQ8WAh8BZWQCEw9kFggCAQ8WAh8BBRdJTUctMjAyNTExMzAtV0EwMDE3LmpwZ2QCAw8WAh8BBc0BPGEgY2xhc3M9InZsaWdodGJveDEiIGhyZWY9Ii9JbWFnZXMvUGhvdG9nYWxsZXJ5L21lZGl1bS9JTUctMjAyNTExMzAtV0EwMDE3LmpwZyIgIHRpdGxlPSIiID48aW1nIHNyYz0iL0ltYWdlcy9QaG90b0dhbGxlcnkvdGh1bWJuYWlsL0lNRy0yMDI1MTEzMC1XQTAwMTcuanBnIiBhbHQ9IiIgc3R5bGU9IndpZHRoOjIwMHB4O2hlaWdodDoxNTBweDsiIC8+PC9hPmQCBA8VAQBkAgUPFgIfAWVkAhQPZBYIAgEPFgIfAQUXSU1HLTIwMjUxMTMwLVdBMDA0NS5qcGdkAgMPFgIfAQXNATxhIGNsYXNzPSJ2bGlnaHRib3gxIiBocmVmPSIvSW1hZ2VzL1Bob3RvZ2FsbGVyeS9tZWRpdW0vSU1HLTIwMjUxMTMwLVdBMDA0NS5qcGciICB0aXRsZT0iIiA+PGltZyBzcmM9Ii9JbWFnZXMvUGhvdG9HYWxsZXJ5L3RodW1ibmFpbC9JTUctMjAyNTExMzAtV0EwMDQ1LmpwZyIgYWx0PSIiIHN0eWxlPSJ3aWR0aDoyMDBweDtoZWlnaHQ6MTUwcHg7IiAvPjwvYT5kAgQPFQEAZAIFDxYCHwFlZAIVD2QWCAIBDxYCHwEFG0lNRy0yMDI1MTEzMC1XQTAwNjkgKDEpLmpwZ2QCAw8WAh8BBdUBPGEgY2xhc3M9InZsaWdodGJveDEiIGhyZWY9Ii9JbWFnZXMvUGhvdG9nYWxsZXJ5L21lZGl1bS9JTUctMjAyNTExMzAtV0EwMDY5ICgxKS5qcGciICB0aXRsZT0iIiA+PGltZyBzcmM9Ii9JbWFnZXMvUGhvdG9HYWxsZXJ5L3RodW1ibmFpbC9JTUctMjAyNTExMzAtV0EwMDY5ICgxKS5qcGciIGFsdD0iIiBzdHlsZT0id2lkdGg6MjAwcHg7aGVpZ2h0OjE1MHB4OyIgLz48L2E+ZAIEDxUBAGQCBQ8WAh8BZWQCFg9kFggCAQ8WAh8BBRdJTUctMjAyNTExMzAtV0EwMDkxLmpwZ2QCAw8WAh8BBc0BPGEgY2xhc3M9InZsaWdodGJveDEiIGhyZWY9Ii9JbWFnZXMvUGhvdG9nYWxsZXJ5L21lZGl1bS9JTUctMjAyNTExMzAtV0EwMDkxLmpwZyIgIHRpdGxlPSIiID48aW1nIHNyYz0iL0ltYWdlcy9QaG90b0dhbGxlcnkvdGh1bWJuYWlsL0lNRy0yMDI1MTEzMC1XQTAwOTEuanBnIiBhbHQ9IiIgc3R5bGU9IndpZHRoOjIwMHB4O2hlaWdodDoxNTBweDsiIC8+PC9hPmQCBA8VAQBkAgUPFgIfAWVkAhcPZBYIAgEPFgIfAQUXSU1HLTIwMjUxMjAxLVdBMDAwOS5qcGdkAgMPFgIfAQXNATxhIGNsYXNzPSJ2bGlnaHRib3gxIiBocmVmPSIvSW1hZ2VzL1Bob3RvZ2FsbGVyeS9tZWRpdW0vSU1HLTIwMjUxMjAxLVdBMDAwOS5qcGciICB0aXRsZT0iIiA+PGltZyBzcmM9Ii9JbWFnZXMvUGhvdG9HYWxsZXJ5L3RodW1ibmFpbC9JTUctMjAyNTEyMDEtV0EwMDA5LmpwZyIgYWx0PSIiIHN0eWxlPSJ3aWR0aDoyMDBweDtoZWlnaHQ6MTUwcHg7IiAvPjwvYT5kAgQPFQEAZAIFDxYCHwFlZAIYD2QWCAIBDxYCHwEFF0lNRy0yMDI1MTIwMi1XQTAwMDEuanBnZAIDDxYCHwEFzQE8YSBjbGFzcz0idmxpZ2h0Ym94MSIgaHJlZj0iL0ltYWdlcy9QaG90b2dhbGxlcnkvbWVkaXVtL0lNRy0yMDI1MTIwMi1XQTAwMDEuanBnIiAgdGl0bGU9IiIgPjxpbWcgc3JjPSIvSW1hZ2VzL1Bob3RvR2FsbGVyeS90aHVtYm5haWwvSU1HLTIwMjUxMjAyLVdBMDAwMS5qcGciIGFsdD0iIiBzdHlsZT0id2lkdGg6MjAwcHg7aGVpZ2h0OjE1MHB4OyIgLz48L2E+ZAIEDxUBAGQCBQ8WAh8BZWQCGQ9kFggCAQ8WAh8BBRdJTUctMjAyNTEyMDItV0EwMDI3LmpwZ2QCAw8WAh8BBc0BPGEgY2xhc3M9InZsaWdodGJveDEiIGhyZWY9Ii9JbWFnZXMvUGhvdG9nYWxsZXJ5L21lZGl1bS9JTUctMjAyNTEyMDItV0EwMDI3LmpwZyIgIHRpdGxlPSIiID48aW1nIHNyYz0iL0ltYWdlcy9QaG90b0dhbGxlcnkvdGh1bWJuYWlsL0lNRy0yMDI1MTIwMi1XQTAwMjcuanBnIiBhbHQ9IiIgc3R5bGU9IndpZHRoOjIwMHB4O2hlaWdodDoxNTBweDsiIC8+PC9hPmQCBA8VAQBkAgUPFgIfAWVkAhoPZBYIAgEPFgIfAQUXSU1HLTIwMjUxMjAyLVdBMDAzMS5qcGdkAgMPFgIfAQXNATxhIGNsYXNzPSJ2bGlnaHRib3gxIiBocmVmPSIvSW1hZ2VzL1Bob3RvZ2FsbGVyeS9tZWRpdW0vSU1HLTIwMjUxMjAyLVdBMDAzMS5qcGciICB0aXRsZT0iIiA+PGltZyBzcmM9Ii9JbWFnZXMvUGhvdG9HYWxsZXJ5L3RodW1ibmFpbC9JTUctMjAyNTEyMDItV0EwMDMxLmpwZyIgYWx0PSIiIHN0eWxlPSJ3aWR0aDoyMDBweDtoZWlnaHQ6MTUwcHg7IiAvPjwvYT5kAgQPFQEAZAIFDxYCHwFlZAIbD2QWCAIBDxYCHwEFEGRtYW5nZXNoa2FyMS5qcGdkAgMPFgIfAQXAATxhIGNsYXNzPSJ2bGlnaHRib3gxIiBocmVmPSIvSW1hZ2VzL1Bob3RvZ2FsbGVyeS9tZWRpdW0vZG1hbmdlc2hrYXIxLmpwZyIgIHRpdGxlPSIuIiA+PGltZyBzcmM9Ii9JbWFnZXMvUGhvdG9HYWxsZXJ5L3RodW1ibmFpbC9kbWFuZ2VzaGthcjEuanBnIiBhbHQ9IiIgc3R5bGU9IndpZHRoOjIwMHB4O2hlaWdodDoxNTBweDsiIC8+PC9hPmQCBA8VAQEuZAIFDxYCHwEFAS5kAhwPZBYIAgEPFgIfAQUeR1NfUHJpdmF0ZSBCIChEZWx1eGUgUm9vbSkuSlBHZAIDDxYCHwEF9gE8YSBjbGFzcz0idmxpZ2h0Ym94MSIgaHJlZj0iL0ltYWdlcy9QaG90b2dhbGxlcnkvbWVkaXVtL0dTX1ByaXZhdGUgQiAoRGVsdXhlIFJvb20pLkpQRyIgIHRpdGxlPSJHU18gUHJpdmF0ZSBCIChEZWx1eGUgUm9vbSkiID48aW1nIHNyYz0iL0ltYWdlcy9QaG90b0dhbGxlcnkvdGh1bWJuYWlsL0dTX1ByaXZhdGUgQiAoRGVsdXhlIFJvb20pLkpQRyIgYWx0PSIiIHN0eWxlPSJ3aWR0aDoyMDBweDtoZWlnaHQ6MTUwcHg7IiAvPjwvYT5kAgQPFQEbR1NfIFByaXZhdGUgQiAoRGVsdXhlIFJvb20pZAIFDxYCHwEFG0dTXyBQcml2YXRlIEIgKERlbHV4ZSBSb29tKWQCHQ9kFggCAQ8WAh8BBRZHU19Ob24gQUMgRGF5IENhcmUuanBnZAIDDxYCHwEF3QE8YSBjbGFzcz0idmxpZ2h0Ym94MSIgaHJlZj0iL0ltYWdlcy9QaG90b2dhbGxlcnkvbWVkaXVtL0dTX05vbiBBQyBEYXkgQ2FyZS5qcGciICB0aXRsZT0iR1NfTm9uIEFDIERheSBDYXJlIiA+PGltZyBzcmM9Ii9JbWFnZXMvUGhvdG9HYWxsZXJ5L3RodW1ibmFpbC9HU19Ob24gQUMgRGF5IENhcmUuanBnIiBhbHQ9IiIgc3R5bGU9IndpZHRoOjIwMHB4O2hlaWdodDoxNTBweDsiIC8+PC9hPmQCBA8VARJHU19Ob24gQUMgRGF5IENhcmVkAgUPFgIfAQUSR1NfTm9uIEFDIERheSBDYXJlZAIeD2QWCAIBDxYCHwEFGUdTX1ByaXZhdGUgQyAoTm9uIEFDKS5KUEdkAgMPFgIfAQXmATxhIGNsYXNzPSJ2bGlnaHRib3gxIiBocmVmPSIvSW1hZ2VzL1Bob3RvZ2FsbGVyeS9tZWRpdW0vR1NfUHJpdmF0ZSBDIChOb24gQUMpLkpQRyIgIHRpdGxlPSJHU19Qcml2YXRlIEMgKE5vbiBBQykiID48aW1nIHNyYz0iL0ltYWdlcy9QaG90b0dhbGxlcnkvdGh1bWJuYWlsL0dTX1ByaXZhdGUgQyAoTm9uIEFDKS5KUEciIGFsdD0iIiBzdHlsZT0id2lkdGg6MjAwcHg7aGVpZ2h0OjE1MHB4OyIgLz48L2E+ZAIEDxUBFUdTX1ByaXZhdGUgQyAoTm9uIEFDKWQCBQ8WAh8BBRVHU19Qcml2YXRlIEMgKE5vbiBBQylkAh8PZBYIAgEPFgIfAQUgR1NfUHJpdmF0ZSBEIChTbWFsbCBBQyBSb29tKS5KUEdkAgMPFgIfAQX7ATxhIGNsYXNzPSJ2bGlnaHRib3gxIiBocmVmPSIvSW1hZ2VzL1Bob3RvZ2FsbGVyeS9tZWRpdW0vR1NfUHJpdmF0ZSBEIChTbWFsbCBBQyBSb29tKS5KUEciICB0aXRsZT0iR1NfUHJpdmF0ZSBEIChTbWFsbCBBQyBSb29tKSIgPjxpbWcgc3JjPSIvSW1hZ2VzL1Bob3RvR2FsbGVyeS90aHVtYm5haWwvR1NfUHJpdmF0ZSBEIChTbWFsbCBBQyBSb29tKS5KUEciIGFsdD0iIiBzdHlsZT0id2lkdGg6MjAwcHg7aGVpZ2h0OjE1MHB4OyIgLz48L2E+ZAIEDxUBHEdTX1ByaXZhdGUgRCAoU21hbGwgQUMgUm9vbSlkAgUPFgIfAQUcR1NfUHJpdmF0ZSBEIChTbWFsbCBBQyBSb29tKWQCIA9kFggCAQ8WAh8BBRhHU19TZW1pIFByaXZhdGUgUm9vbS5KUEdkAgMPFgIfAQXjATxhIGNsYXNzPSJ2bGlnaHRib3gxIiBocmVmPSIvSW1hZ2VzL1Bob3RvZ2FsbGVyeS9tZWRpdW0vR1NfU2VtaSBQcml2YXRlIFJvb20uSlBHIiAgdGl0bGU9IkdTX1NlbWkgUHJpdmF0ZSBSb29tIiA+PGltZyBzcmM9Ii9JbWFnZXMvUGhvdG9HYWxsZXJ5L3RodW1ibmFpbC9HU19TZW1pIFByaXZhdGUgUm9vbS5KUEciIGFsdD0iIiBzdHlsZT0id2lkdGg6MjAwcHg7aGVpZ2h0OjE1MHB4OyIgLz48L2E+ZAIEDxUBFEdTX1NlbWkgUHJpdmF0ZSBSb29tZAIFDxYCHwEFFEdTX1NlbWkgUHJpdmF0ZSBSb29tZAIhD2QWCAIBDxYCHwEFFEdTX1NVUEVSX0RFTFVYX0EuSlBHZAIDDxYCHwEF1wE8YSBjbGFzcz0idmxpZ2h0Ym94MSIgaHJlZj0iL0ltYWdlcy9QaG90b2dhbGxlcnkvbWVkaXVtL0dTX1NVUEVSX0RFTFVYX0EuSlBHIiAgdGl0bGU9IkdTX1NVUEVSX0RFTFVYX0EiID48aW1nIHNyYz0iL0ltYWdlcy9QaG90b0dhbGxlcnkvdGh1bWJuYWlsL0dTX1NVUEVSX0RFTFVYX0EuSlBHIiBhbHQ9IiIgc3R5bGU9IndpZHRoOjIwMHB4O2hlaWdodDoxNTBweDsiIC8+PC9hPmQCBA8VARBHU19TVVBFUl9ERUxVWF9BZAIFDxYCHwEFEEdTX1NVUEVSX0RFTFVYX0FkAiIPZBYIAgEPFgIfAQUUR1MuU1VQRVJfREVMVVhfQi5KUEdkAgMPFgIfAQXXATxhIGNsYXNzPSJ2bGlnaHRib3gxIiBocmVmPSIvSW1hZ2VzL1Bob3RvZ2FsbGVyeS9tZWRpdW0vR1MuU1VQRVJfREVMVVhfQi5KUEciICB0aXRsZT0iR1NfU1VQRVJfREVMVVhfQiIgPjxpbWcgc3JjPSIvSW1hZ2VzL1Bob3RvR2FsbGVyeS90aHVtYm5haWwvR1MuU1VQRVJfREVMVVhfQi5KUEciIGFsdD0iIiBzdHlsZT0id2lkdGg6MjAwcHg7aGVpZ2h0OjE1MHB4OyIgLz48L2E+ZAIEDxUBEEdTX1NVUEVSX0RFTFVYX0JkAgUPFgIfAQUQR1NfU1VQRVJfREVMVVhfQmQCIw9kFggCAQ8WAh8BBQ9TUyBEYXkgQ2FyZS5qcGdkAgMPFgIfAQXIATxhIGNsYXNzPSJ2bGlnaHRib3gxIiBocmVmPSIvSW1hZ2VzL1Bob3RvZ2FsbGVyeS9tZWRpdW0vU1MgRGF5IENhcmUuanBnIiAgdGl0bGU9IlNTX0RheSBDYXJlIiA+PGltZyBzcmM9Ii9JbWFnZXMvUGhvdG9HYWxsZXJ5L3RodW1ibmFpbC9TUyBEYXkgQ2FyZS5qcGciIGFsdD0iIiBzdHlsZT0id2lkdGg6MjAwcHg7aGVpZ2h0OjE1MHB4OyIgLz48L2E+ZAIEDxUBC1NTX0RheSBDYXJlZAIFDxYCHwEFC1NTX0RheSBDYXJlZAIkD2QWCAIBDxYCHwEFEFNTIFByaXZhdGUgQS5KUEdkAgMPFgIfAQXLATxhIGNsYXNzPSJ2bGlnaHRib3gxIiBocmVmPSIvSW1hZ2VzL1Bob3RvZ2FsbGVyeS9tZWRpdW0vU1MgUHJpdmF0ZSBBLkpQRyIgIHRpdGxlPSJTU19Qcml2YXRlIEEiID48aW1nIHNyYz0iL0ltYWdlcy9QaG90b0dhbGxlcnkvdGh1bWJuYWlsL1NTIFByaXZhdGUgQS5KUEciIGFsdD0iIiBzdHlsZT0id2lkdGg6MjAwcHg7aGVpZ2h0OjE1MHB4OyIgLz48L2E+ZAIEDxUBDFNTX1ByaXZhdGUgQWQCBQ8WAh8BBQxTU19Qcml2YXRlIEFkAiUPZBYIAgEPFgIfAQUQU1NfUHJpdmF0ZSBCLkpQR2QCAw8WAh8BBcsBPGEgY2xhc3M9InZsaWdodGJveDEiIGhyZWY9Ii9JbWFnZXMvUGhvdG9nYWxsZXJ5L21lZGl1bS9TU19Qcml2YXRlIEIuSlBHIiAgdGl0bGU9IlNTX1ByaXZhdGUgQiIgPjxpbWcgc3JjPSIvSW1hZ2VzL1Bob3RvR2FsbGVyeS90aHVtYm5haWwvU1NfUHJpdmF0ZSBCLkpQRyIgYWx0PSIiIHN0eWxlPSJ3aWR0aDoyMDBweDtoZWlnaHQ6MTUwcHg7IiAvPjwvYT5kAgQPFQEMU1NfUHJpdmF0ZSBCZAIFDxYCHwEFDFNTX1ByaXZhdGUgQmQCJg9kFggCAQ8WAh8BBSdTU19TZW1pIFByaXZhdGUgQSAoT25seSBGb3IgR3luYWVjKS5KUEdkAgMPFgIfAQWQAjxhIGNsYXNzPSJ2bGlnaHRib3gxIiBocmVmPSIvSW1hZ2VzL1Bob3RvZ2FsbGVyeS9tZWRpdW0vU1NfU2VtaSBQcml2YXRlIEEgKE9ubHkgRm9yIEd5bmFlYykuSlBHIiAgdGl0bGU9IlNTX1NlbWkgUHJpdmF0ZSBBIChPbmx5IEZvciBHeW5hZWMpIiA+PGltZyBzcmM9Ii9JbWFnZXMvUGhvdG9HYWxsZXJ5L3RodW1ibmFpbC9TU19TZW1pIFByaXZhdGUgQSAoT25seSBGb3IgR3luYWVjKS5KUEciIGFsdD0iIiBzdHlsZT0id2lkdGg6MjAwcHg7aGVpZ2h0OjE1MHB4OyIgLz48L2E+ZAIEDxUBI1NTX1NlbWkgUHJpdmF0ZSBBIChPbmx5IEZvciBHeW5hZWMpZAIFDxYCHwEFI1NTX1NlbWkgUHJpdmF0ZSBBIChPbmx5IEZvciBHeW5hZWMpZAInD2QWCAIBDxYCHwEFFVNTX1NlbWkgUHJpdmF0ZSBCLkpQR2QCAw8WAh8BBdoBPGEgY2xhc3M9InZsaWdodGJveDEiIGhyZWY9Ii9JbWFnZXMvUGhvdG9nYWxsZXJ5L21lZGl1bS9TU19TZW1pIFByaXZhdGUgQi5KUEciICB0aXRsZT0iU1NfU2VtaSBQcml2YXRlIEIiID48aW1nIHNyYz0iL0ltYWdlcy9QaG90b0dhbGxlcnkvdGh1bWJuYWlsL1NTX1NlbWkgUHJpdmF0ZSBCLkpQRyIgYWx0PSIiIHN0eWxlPSJ3aWR0aDoyMDBweDtoZWlnaHQ6MTUwcHg7IiAvPjwvYT5kAgQPFQERU1NfU2VtaSBQcml2YXRlIEJkAgUPFgIfAQURU1NfU2VtaSBQcml2YXRlIEJkAg4PZBYCZg9kFgICAQ8WAh8BBUVDb3B5cmlnaHQgJmNvcHk7IDIwMjYmbmJzcDs8c3Bhbj5EZWVuYW5hdGggTWFuZ2VzaGthciBIb3NwaXRhbDwvc3Bhbj5kAg8PZBYCZg9kFgJmDxYCHwEFZTxhIGhyZWY9Imh0dHA6Ly93d3cuYnVpbHRjbXMuY29tIiB0YXJnZXQ9Il9ibGFuayIgdGl0bGU9IldlYiBDb250ZW50IE1hbmFnZW1lbnQgU3lzdGVtLiI+YnVpbHRDTVM8L2E+ZGR5kHCrvFTeV83V7/cWa5ALXJSYNA==" />
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+var theForm = document.forms['aspnetForm'];
+if (!theForm) {
+    theForm = document.aspnetForm;
+}
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        theForm.__EVENTTARGET.value = eventTarget;
+        theForm.__EVENTARGUMENT.value = eventArgument;
+        theForm.submit();
+    }
+}
+//]]>
+</script>
+
+
+<script src="/WebResource.axd?d=AB7vsxAaKFLxzT1OBWKQJVzJKLqLkH444OYPkSY-cFS345EG7_vwT-CGcWUYdg98bTTJbQoEVFTo7OsouSut9gGNSEk1&amp;t=638313896380000000" type="text/javascript"></script>
+
+
+<script src="/ScriptResource.axd?d=6I4zg4K1NQ-DyMq4YnAKNOTOmkr7A95hTqct816lNQDEonBkOrt5wF9r91g4vFXylGmPsNiFvB1FBeMbgkjJ2Cw676g3GcG5k-ZXybJz9xMMKJIa0&amp;t=705c9838" type="text/javascript"></script>
+<script src="/ScriptResource.axd?d=Sfi96IDidMX5pPR7Nq6hOEhjv0yDafoc3WL3VQUhvJwQPz50Aq1MohzpzSVYt9GBl5bKuIdS5EyeBzVwVFTlJxtuAku1tZ2ZlwF8YSYG-h6UEIRog8TFEaoDNC3yYzAJoQ53yA2&amp;t=705c9838" type="text/javascript"></script>
+<div>
+
+	<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="75BC8C8D" />
+</div>
+<!--<script src="https://www.dmhospital.org/cms/Template/Default/js/less-1.3.3.min.js"></script>-->
+ <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+ <!--[if lt IE 9]>
+ <script src="https://www.dmhospital.org/cms/Template/Default/js/html5shiv.js"></script>
+ <![endif]-->
+ <script src="https://www.dmhospital.org/cms/Template/Default/js/jquery-1.js" type="text/javascript"></script>
+ <script src="https://www.dmhospital.org/cms/Template/Default/js/jquery.min.js" type="text/javascript"></script>
+ <script src="https://www.dmhospital.org/cms/Template/Default/js/ga.js" type="text/javascript"></script>
+ <script src="https://www.dmhospital.org/cms/Template/Default/js/bootstrap.js" type="text/javascript"></script>
+ <script src="https://www.dmhospital.org/cms/Template/Default/js/jquery.js" type="text/javascript"></script>
+ <script src="https://www.dmhospital.org/cms/Template/Default/js/scripts.js" type="text/javascript"></script>
+ <script src="https://www.dmhospital.org/cms/Template/Default/js/responsiveslides.min.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+//<![CDATA[
+Sys.WebForms.PageRequestManager._initialize('ctl00$ScriptManager1', document.getElementById('aspnetForm'));
+Sys.WebForms.PageRequestManager.getInstance()._updateControls([], [], [], 90);
+//]]>
+</script>
+
+<div id="container-fluid" class="container-fluid">
+	<div class="defaultContentWidthHeaderHome">
+		<div class="row-fluid">
+			<div class="span4">
+				
+<div class="span12"> 
+<ul class="top-social-network">
+      <li> <a target="_blank" href="https://www.facebook.com/DeenanathMangeshkarHospitalandResearchCenter/"><i class="fa fa-facebook"></i></a> </li>
+      <li> <a target="_blank" href="https://twitter.com/DMHospitalPune"><img src="https://www.dmhospital.org/cms/Media/image/twitter-x.png" width="15px" /></a> </li>
+      <li style="margin-right:5px;"> <a target="_blank" style="color:red" href="https://www.youtube.com/channel/UCRgYZg3YubpilEGCLBVhUjQ?view_as=subscriber"><i class="fa fa-fw fa-youtube"></i></a></li>
+    </ul>
+</div>
+ 
+
+			</div>
+			<div class="span4">
+				
+<div class="emergency_no">
+	<div>
+		<img src="https://www.dmhospital.org/cms/Media/image/Ambulance-icon.png" /> Call Ambulance : <span> 020 40151540</span></div>
+</div>
+<!--<div class="emergency_no">
+	<a href="https://www.dmhospital.org/vaccine/index.php"><img src="https://www.dmhospital.org/cms/Media/image/Capture9.png" style="width:auto; height:90%; margin-top:5px" /></a></div>-->
+ 
+
+			</div>
+			<div class="span4">
+				
+<div class="applinks mobile-hide">
+	<a href="https://www.dmhospital.org/searchresult"><button type="button" class="btn btn-app" style="padding: 5px; font-size: 16px; margin-bottom: 9px; margin-right: 0px; background: white;  color: #1e1d1d; text-shadow: none;"><i class="fa fa-search"></i> Search</button></a> <a href="https://play.google.com/store/apps/details?id=org.dmhospital.app&hl=en" target="_blank"><img alt="logo" class="playstore" src="https://www.dmhospital.org/cms/Media/image/google-play-badge.png" /></a> <a href="https://itunes.apple.com/in/app/deenanath-mangeshkar-hospital/id1187525263?mt=8" target="_blank"><img alt="logo" class="applestore" src="https://www.dmhospital.org/cms/Media/image/download-on-the-app-store.png" /></a></div>
+ 
+
+			</div>
+		</div>
+	</div>
+	<div style="position:relative;z-index:1054" class="defaultContentWidth">
+		<div class="row-fluid">
+			<div class="span12">
+				<div class="menu-content">
+					<div class="row-fluid">
+						<div class="span12">
+							<div class="topborder">
+								<div class="row-fluid">
+									<div class="span4">
+										
+<div class="logo mainlogo left clearfix">
+	<a class="trademark" href="https://www.dmhospital.org"><img alt="logo" src="https://www.dmhospital.org/cms/Media/image/logo.png" /> </a>
+	<div class="table">
+		<div class="tagLineHolder">
+			<p class="left textshadow info">
+				<a class="trademark" href="httpd://www.dmhospital.org"><strong>Deenanath Mangeshkar Hospital<br />
+				& Research Center</strong></a></p>
+		</div>
+	</div>
+</div>
+ 
+
+									</div>
+									<div class="span8">
+										<script type="text/javascript" src="/cms/javascript/JSselectedmenu.js"></script><input type="hidden"  id="_GenexTopMenu_hdn_PageName"  value="patient-and-visitors" /> <input type="hidden" id="BuiltCMS_PageTitle" value= " Patient & Visitors " />
+<div id="mainmenu-dropdown-duration" style="display: none;">
+    200</div>
+<div id="mainmenu-dropdown-easing" style="display: none;">
+    swing</div>
+<div class="menu-wrap">
+    <span class="menubut bigbut menu_drawer">☰</span>
+    <nav id="mainmenu" class="mainmenu">
+<ul class="menu">
+    <li class="menu-item" id="_Genex_Header_TopMenu_Link_21"><a target="_top" href="/default">Home</a></li>
+<li class="menu-item parent" id="_Genex_Header_TopMenu_Link_22"><a href="#">About Us</a>
+	<ul class="sub-menu children">
+<li class="menu-item"><a target="_self" href="/about-hospital">About Hospital</a></li>
+
+<li class="menu-item"><a target="_self" href="/associates">Associates</a></li>
+
+<li class="menu-item"><a target="_self" href="/accreditations">Accreditations</a></li>
+
+<li class="menu-item"><a target="_self" href="/supportHospitalDonations">Support Hospital / Donations</a></li>
+
+<li class="menu-item"><a target="_self" href="/Unique-features-of-DMH">Unique features of DMH</a></li>
+
+<li class="menu-item"><a target="_self" href="/Foreign-Contribution">Foreign Contribution</a></li>
+
+<li class="menu-item"><a target="_self" href="https://www.dmhospital.org/charity-details">Charity Details</a></li>
+
+</ul>
+</li>
+<li class="menu-item parent" id="_Genex_Header_TopMenu_Link_23"><a href="#">Patient & Visitors</a>
+	<ul class="sub-menu children">
+<li class="menu-item"><a target="_self" href="/OutPatientGGuide">Out Patient guide</a></li>
+
+<li class="menu-item"><a target="_self" href="/InPatientGuide">In patient guide</a></li>
+
+<li class="menu-item"><a target="_self" href="/health-packages">Health Packages</a></li>
+
+<li class="menu-item"><a target="_self" href="/facilities">Facilities</a></li>
+
+<li class="menu-item"><a target="_self" href="/Testimonial">Patients Stories / Feedbacks</a></li>
+
+<li class="menu-item"><a target="_self" href="/Patient-Rights-and-Responsibilities">Patient Rights & Responsibilities</a></li>
+
+<li class="menu-item"><a target="_self" href="/photogallery">Photos</a></li>
+
+<li class="menu-item"><a target="_self" href="/VideoGallery">Videos</a></li>
+
+</ul>
+</li>
+<li class="menu-item parent" id="_Genex_Header_TopMenu_Link_24"><a href="/doctors-profile">Doctors & Departments</a>
+	<ul class="sub-menu children">
+<li class="menu-item"><a target="_self" href="http://www.dmhospital.org/doctors-profile">Doctor Details</a></li>
+
+<li class="menu-item"><a target="_self" href="/specialties">Department Details</a></li>
+
+<li class="menu-item"><a target="_self" href="/services">Services</a></li>
+
+</ul>
+</li>
+<li class="menu-item parent" id="_Genex_Header_TopMenu_Link_25"><a href="#">Research</a>
+	<ul class="sub-menu children">
+<li class="menu-item"><a target="_self" href="/research-aboutus">About Us</a></li>
+
+<li class="menu-item"><a target="_self" href="/training-event">Training And Events</a></li>
+
+<li class="menu-item"><a target="_self" href="/research-awards">Awards</a></li>
+
+<li class="menu-item"><a target="_self" href="/research-newsletters">Newsletter Articles</a></li>
+
+<li class="menu-item"><a target="_self" href="/research-publications">Publications</a></li>
+
+<li class="menu-item"><a target="_self" href="/research-events">Annual Reports</a></li>
+
+<li class="menu-item"><a target="_self" href="/research-sponsors-cros">Sponsors & CROs</a></li>
+
+<li class="menu-item"><a target="_self" href="/research-contact-us">Contact Us</a></li>
+
+</ul>
+</li>
+<li class="menu-item parent" id="_Genex_Header_TopMenu_Link_26"><a href="#">Academics</a>
+	<ul class="sub-menu children">
+<li class="menu-item"><a target="_self" href="https://www.dmhospital.org/Academics">Academics</a></li>
+
+<li class="menu-item"><a target="_self" href="/simulation-center">Simulation Center</a></li>
+
+</ul>
+</li>
+<li class="menu-item parent" id="_Genex_Header_TopMenu_Link_27"><a href="#">Online Facilities</a>
+	<ul class="sub-menu children">
+<li class="menu-item"><a target="_self" href="/email">E-Mail Login (DMH Users)</a></li>
+
+<li class="menu-item"><a target="_blank" href="https://www.dmhospital.org/pay/index.php">Online Payment</a></li>
+
+<li class="menu-item"><a target="_blank" href="http://phr.dmhospital.org/PatientPortal/">Patient Portal</a></li>
+
+<li class="menu-item"><a target="_blank" href="https://mapp.dmhospital.org/amrita_login/patient_registration/index.php">Patient Registration Form</a></li>
+
+</ul>
+</li>
+<li class="menu-item" id="_Genex_Header_TopMenu_Link_28"><a target="_self" href="/DMH-Careers">Careers</a></li>
+<li class="menu-item" id="_Genex_Header_TopMenu_Link_29"><a target="_self" href="/contact-us">Contact Us</a></li>
+<script type="text/javascript">
+ var page=document.getElementById("_GenexTopMenu_hdn_PageName").value;
+  if(page!="")
+   {
+         set_cookie("genex_cook_Page_Name",page);
+   }
+ page=Get_Cookie("genex_cook_Page_Name");
+ switch (encodeURIComponent(page))
+ {
+case encodeURIComponent("default"):
+SetOverStyle("_Genex_Header_TopMenu_Link_21");
+break;
+case encodeURIComponent("about-us"):
+SetOverStyle("_Genex_Header_TopMenu_Link_22");
+break;
+case encodeURIComponent("patient-and-visitors"):
+SetOverStyle("_Genex_Header_TopMenu_Link_23");
+break;
+case encodeURIComponent("doctors-profile"):
+SetOverStyle("_Genex_Header_TopMenu_Link_24");
+break;
+case encodeURIComponent("research"):
+SetOverStyle("_Genex_Header_TopMenu_Link_25");
+break;
+case encodeURIComponent("academics"):
+SetOverStyle("_Genex_Header_TopMenu_Link_26");
+break;
+case encodeURIComponent("online-facilities"):
+SetOverStyle("_Genex_Header_TopMenu_Link_27");
+break;
+case encodeURIComponent("dmh-careers"):
+SetOverStyle("_Genex_Header_TopMenu_Link_28");
+break;
+case encodeURIComponent("contact-us"):
+SetOverStyle("_Genex_Header_TopMenu_Link_29");
+break;
+ }
+</script>
+
+</ul>
+</nav>
+</div>
+
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row-fluid">
+		<div class="span12">
+			
+<div class="wpcf7 entry-content page-heading">
+<h1 class="wpcf7 entry-content h1">
+    Photo Gallery</h1>
+<div class="toolbar">
+    <div class="breadcrumb">
+        <span class="crumbs">
+		<a title="Home" href="/default">
+		<i class="falogo fa-home"></i>
+            Home		
+        </a>
+	
+		<i class="fahome fahome-clone"></i>
+           
+    <a href="/patient-and-visitors">Patient & Visitors</a>
+    <span class="navigate_arrow">
+    </span>Photo Gallery
+		
+	    </span> 
+    </div>
+	
+
+</div>
+</div>
+		</div>
+	</div>
+	<div class="row-fluid">
+		<div class="span12">
+			
+<div class="topsidebar">
+    <div id="submenu-widget-2" class="box widget-container">
+        <div class="box-wrapper">
+            <ul>
+                <li class="page_title">
+                    Patient & Visitors
+                </li>
+                <li><a id="1032" name="catbox" target="_self" href="/OutPatientGGuide"  >Out Patient guide</a>
+</li>
+<li class="divider"></li><li><a id="1033" name="catbox" target="_self" href="/InPatientGuide"  >In patient guide</a>
+</li>
+<li class="divider"></li><li><a id="1017" name="catbox" target="_self" href="/health-packages"  >Health Packages</a>
+</li>
+<li class="divider"></li><li><a id="1016" name="catbox" target="_self" href="/facilities"  >Facilities</a>
+</li>
+<li class="divider"></li><li><a id="34" name="catbox" target="_self" href="/Testimonial"  >Patients Stories / Feedbacks</a>
+</li>
+<li class="divider"></li><li><a id="14564" name="catbox" target="_self" href="/Patient-Rights-and-Responsibilities"  >Patient Rights & Responsibilities</a>
+</li>
+<li class="divider"></li><li><a id="23" name="catbox" target="_self" href="/photogallery"  >Photos</a>
+</li>
+<li class="divider"></li><li><a id="29" name="catbox"  target="_self" href="/VideoGallery"  >Videos</a>
+</li>
+<script type="text/javascript">
+ var page=document.getElementById("_GenexTopMenu_hdn_PageName").value;
+  if(page!="")
+   {
+         set_cookie("genex_cook_Page_Name",page);
+   }
+ page=Get_Cookie("genex_cook_Page_Name");
+ switch (encodeURIComponent(page))
+ {
+case encodeURIComponent(""):
+SetOverStyle("_Genex_Header_Top_Link_0");
+break;
+ }
+</script>
+
+            </ul>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" language="javascript">
+    function showonlyone() {
+        if (document.getElementById("hdn_PageId") != null) {
+            var submenuid = parseInt(document.getElementById("hdn_PageId").value);
+            var catbox = document.getElementsByTagName("a");
+            for (var x = 0; x < catbox.length; x++) {
+                name = catbox[x].getAttribute("name");
+                if (name == 'catbox') {
+                    var iid = parseInt(catbox[x].id);
+
+                    if (iid == submenuid) {
+                        catbox[x].style.color = "#fff";
+                        catbox[x].style.backgroundColor = "#15bba4";
+                    }
+                }
+            }
+        }
+    }
+</script>
+<script type="text/javascript" language="javascript">
+    showonlyone();
+</script>
+
+		</div>
+	</div>
+	<div class="defaultContentWidth">
+		<div class="row-fluid">
+			<div class="span12">
+				<div class="contentpadding">
+					<div class="row-fluid">
+						<div class="span12">
+							
+    <div class="PageTitle">
+        <span id="ctl00_ContentPlaceHolder1_lbl_PageHeading"></span>
+    </div>
+    <div style="width: 100%; text-align: center;">
+        <b>
+            </b>
+    </div>
+    <input type="hidden" name="ctl00$ContentPlaceHolder1$HIDCatID" id="ctl00_ContentPlaceHolder1_HIDCatID" value="0" />
+    <div class="inner_gallery_control">
+        <div>
+            <span id="ctl00_ContentPlaceHolder1_dlAlbumTab" class="img-video-sub-tab"><span>
+                    <a id="ctl00_ContentPlaceHolder1_dlAlbumTab_ctl00_lnkbtnAlbumFilter" title="ALL" class="albumtabselected" href="javascript:__doPostBack('ctl00$ContentPlaceHolder1$dlAlbumTab$ctl00$lnkbtnAlbumFilter','')">ALL</a>
+                </span><span>
+                    <a id="ctl00_ContentPlaceHolder1_dlAlbumTab_ctl01_lnkbtnAlbumFilter" title="DMH" class="albumtab" href="javascript:__doPostBack('ctl00$ContentPlaceHolder1$dlAlbumTab$ctl01$lnkbtnAlbumFilter','')">DMH</a>
+                </span><span>
+                    <a id="ctl00_ContentPlaceHolder1_dlAlbumTab_ctl02_lnkbtnAlbumFilter" title="MAIN BUILDING" class="albumtab" href="javascript:__doPostBack('ctl00$ContentPlaceHolder1$dlAlbumTab$ctl02$lnkbtnAlbumFilter','')">MAIN BUILDING</a>
+                </span><span>
+                    <a id="ctl00_ContentPlaceHolder1_dlAlbumTab_ctl03_lnkbtnAlbumFilter" title="SUPER SPECIALITY BUILDING" class="albumtab" href="javascript:__doPostBack('ctl00$ContentPlaceHolder1$dlAlbumTab$ctl03$lnkbtnAlbumFilter','')">SUPER SPECIALITY BUILDING</a>
+                </span><span>
+                    <a id="ctl00_ContentPlaceHolder1_dlAlbumTab_ctl04_lnkbtnAlbumFilter" title="WORLD THYROID DAY 2024" class="albumtab" href="javascript:__doPostBack('ctl00$ContentPlaceHolder1$dlAlbumTab$ctl04$lnkbtnAlbumFilter','')">WORLD THYROID DAY 2024</a>
+                </span><span>
+                    <a id="ctl00_ContentPlaceHolder1_dlAlbumTab_ctl05_lnkbtnAlbumFilter" title="WORLD DIABETES DAY 2025" class="albumtab" href="javascript:__doPostBack('ctl00$ContentPlaceHolder1$dlAlbumTab$ctl05$lnkbtnAlbumFilter','')">WORLD DIABETES DAY 2025</a>
+                </span></span>
+            <br />
+            <br />
+        </div>
+        
+        <div class="gallery_box">
+            <span id="ctl00_ContentPlaceHolder1_dtlst_PhotoGallery"><span align="left" valign="top">
+                    <div class="photo_box">
+                        
+                        
+                        <a class="vlightbox1" href="/Images/Photogallery/medium/abdul-kalam.jpg"  title="" ><img src="/Images/PhotoGallery/thumbnail/abdul-kalam.jpg" alt="" style="width:200px;height:150px;" /></a>
+                        <div class="photo_title">
+                            
+                        </div>
+                        <div class="clear">
+                        </div>
+                        
+                    </div>
+                    <div class="blank_space_10">
+                    </div>
+                    
+                </span><span align="left" valign="top">
+                    <div class="photo_box">
+                        
+                        
+                        <a class="vlightbox1" href="/Images/Photogallery/medium/tendulkar.jpg"  title="" ><img src="/Images/PhotoGallery/thumbnail/tendulkar.jpg" alt="" style="width:200px;height:150px;" /></a>
+                        <div class="photo_title">
+                            
+                        </div>
+                        <div class="clear">
+                        </div>
+                        
+                    </div>
+                    <div class="blank_space_10">
+                    </div>
+                    
+                </span><span align="left" valign="top">
+                    <div class="photo_box">
+                        
+                        
+                        <a class="vlightbox1" href="/Images/Photogallery/medium/obesity-clinic-inauguration.jpg"  title="" ><img src="/Images/PhotoGallery/thumbnail/obesity-clinic-inauguration.jpg" alt="" style="width:200px;height:150px;" /></a>
+                        <div class="photo_title">
+                            
+                        </div>
+                        <div class="clear">
+                        </div>
+                        
+                    </div>
+                    <div class="blank_space_10">
+                    </div>
+                    
+                </span><span align="left" valign="top">
+                    <div class="photo_box">
+                        
+                        
+                        <a class="vlightbox1" href="/Images/Photogallery/medium/8th march.JPG"  title="" ><img src="/Images/PhotoGallery/thumbnail/8th march.JPG" alt="" style="width:200px;height:150px;" /></a>
+                        <div class="photo_title">
+                            
+                        </div>
+                        <div class="clear">
+                        </div>
+                        
+                    </div>
+                    <div class="blank_space_10">
+                    </div>
+                    
+                </span><br /><span align="left" valign="top">
+                    <div class="photo_box">
+                        
+                        
+                        <a class="vlightbox1" href="/Images/Photogallery/medium/adv wound care3.JPG"  title="" ><img src="/Images/PhotoGallery/thumbnail/adv wound care3.JPG" alt="" style="width:200px;height:150px;" /></a>
+                        <div class="photo_title">
+                            
+                        </div>
+                        <div class="clear">
+                        </div>
+                        
+                    </div>
+                    <div class="blank_space_10">
+                    </div>
+                    
+                </span><span align="left" valign="top">
+                    <div class="photo_box">
+                        
+                        
+                        <a class="vlightbox1" href="/Images/Photogallery/medium/DSC_0064.JPG"  title="" ><img src="/Images/PhotoGallery/thumbnail/DSC_0064.JPG" alt="" style="width:200px;height:150px;" /></a>
+                        <div class="photo_title">
+                            
+                        </div>
+                        <div class="clear">
+                        </div>
+                        
+                    </div>
+                    <div class="blank_space_10">
+                    </div>
+                    
+                </span><span align="left" valign="top">
+                    <div class="photo_box">
+                        
+                        
+                        <a class="vlightbox1" href="/Images/Photogallery/medium/feb.jpg"  title="" ><img src="/Images/PhotoGallery/thumbnail/feb.jpg" alt="" style="width:200px;height:150px;" /></a>
+                        <div class="photo_title">
+                            
+                        </div>
+                        <div class="clear">
+                        </div>
+                        
+                    </div>
+                    <div class="blank_space_10">
+                    </div>
+                    
+                </span><span align="left" valign="top">
+                    <div class="photo_box">
+                        
+                        
+                        <a class="vlightbox1" href="/Images/Photogallery/medium/oct.jpg"  title="" ><img src="/Images/PhotoGallery/thumbnail/oct.jpg" alt="" style="width:200px;height:150px;" /></a>
+                        <div class="photo_title">
+                            
+                        </div>
+                        <div class="clear">
+                        </div>
+                        
+                    </div>
+                    <div class="blank_space_10">
+                    </div>
+                    
+                </span><br /><span align="left" valign="top">
+                    <div class="photo_box">
+                        
+                        
+                        <a class="vlightbox1" href="/Images/Photogallery/medium/4th april.jpg"  title="" ><img src="/Images/PhotoGallery/thumbnail/4th april.jpg" alt="" style="width:200px;height:150px;" /></a>
+                        <div class="photo_title">
+                            
+                        </div>
+                        <div class="clear">
+                        </div>
+                        
+                    </div>
+                    <div class="blank_space_10">
+                    </div>
+                    
+                </span><span align="left" valign="top">
+                    <div class="photo_box">
+                        
+                        
+                        <a class="vlightbox1" href="/Images/Photogallery/medium/26th april.jpg"  title="" ><img src="/Images/PhotoGallery/thumbnail/26th april.jpg" alt="" style="width:200px;height:150px;" /></a>
+                        <div class="photo_title">
+                            
+                        </div>
+                        <div class="clear">
+                        </div>
+                        
+                    </div>
+                    <div class="blank_space_10">
+                    </div>
+                    
+                </span><span align="left" valign="top">
+                    <div class="photo_box">
+                        
+                        
+                        <a class="vlightbox1" href="/Images/Photogallery/medium/Dr.Arundhati-Khare.jpg"  title="" ><img src="/Images/PhotoGallery/thumbnail/Dr.Arundhati-Khare.jpg" alt="" style="width:200px;height:150px;" /></a>
+                        <div class="photo_title">
+                            
+                        </div>
+                        <div class="clear">
+                        </div>
+                        
+                    </div>
+                    <div class="blank_space_10">
+                    </div>
+                    
+                </span><span align="left" valign="top">
+                    <div class="photo_box">
+                        
+                        
+                        <a class="vlightbox1" href="/Images/Photogallery/medium/WTD (4).jpg"  title="" ><img src="/Images/PhotoGallery/thumbnail/WTD (4).jpg" alt="" style="width:200px;height:150px;" /></a>
+                        <div class="photo_title">
+                            
+                        </div>
+                        <div class="clear">
+                        </div>
+                        
+                    </div>
+                    <div class="blank_space_10">
+                    </div>
+                    
+                </span><br /><span align="left" valign="top">
+                    <div class="photo_box">
+                        
+                        
+                        <a class="vlightbox1" href="/Images/Photogallery/medium/WTD (5).jpg"  title="" ><img src="/Images/PhotoGallery/thumbnail/WTD (5).jpg" alt="" style="width:200px;height:150px;" /></a>
+                        <div class="photo_title">
+                            
+                        </div>
+                        <div class="clear">
+                        </div>
+                        
+                    </div>
+                    <div class="blank_space_10">
+                    </div>
+                    
+                </span><span align="left" valign="top">
+                    <div class="photo_box">
+                        
+                        
+                        <a class="vlightbox1" href="/Images/Photogallery/medium/WTD (6).jpg"  title="" ><img src="/Images/PhotoGallery/thumbnail/WTD (6).jpg" alt="" style="width:200px;height:150px;" /></a>
+                        <div class="photo_title">
+                            
+                        </div>
+                        <div class="clear">
+                        </div>
+                        
+                    </div>
+                    <div class="blank_space_10">
+                    </div>
+                    
+                </span><span align="left" valign="top">
+                    <div class="photo_box">
+                        
+                        
+                        <a class="vlightbox1" href="/Images/Photogallery/medium/1_WTD (8).jpg"  title="" ><img src="/Images/PhotoGallery/thumbnail/1_WTD (8).jpg" alt="" style="width:200px;height:150px;" /></a>
+                        <div class="photo_title">
+                            
+                        </div>
+                        <div class="clear">
+                        </div>
+                        
+                    </div>
+                    <div class="blank_space_10">
+                    </div>
+                    
+                </span><span align="left" valign="top">
+                    <div class="photo_box">
+                        
+                        
+                        <a class="vlightbox1" href="/Images/Photogallery/medium/WTD 24 (2).jpg"  title="" ><img src="/Images/PhotoGallery/thumbnail/WTD 24 (2).jpg" alt="" style="width:200px;height:150px;" /></a>
+                        <div class="photo_title">
+                            
+                        </div>
+                        <div class="clear">
+                        </div>
+                        
+                    </div>
+                    <div class="blank_space_10">
+                    </div>
+                    
+                </span><br /><span align="left" valign="top">
+                    <div class="photo_box">
+                        
+                        
+                        <a class="vlightbox1" href="/Images/Photogallery/medium/WTD 24 (3).jpg"  title="" ><img src="/Images/PhotoGallery/thumbnail/WTD 24 (3).jpg" alt="" style="width:200px;height:150px;" /></a>
+                        <div class="photo_title">
+                            
+                        </div>
+                        <div class="clear">
+                        </div>
+                        
+                    </div>
+                    <div class="blank_space_10">
+                    </div>
+                    
+                </span><span align="left" valign="top">
+                    <div class="photo_box">
+                        
+                        
+                        <a class="vlightbox1" href="/Images/Photogallery/medium/WTD 24.jpg"  title="" ><img src="/Images/PhotoGallery/thumbnail/WTD 24.jpg" alt="" style="width:200px;height:150px;" /></a>
+                        <div class="photo_title">
+                            
+                        </div>
+                        <div class="clear">
+                        </div>
+                        
+                    </div>
+                    <div class="blank_space_10">
+                    </div>
+                    
+                </span><span align="left" valign="top">
+                    <div class="photo_box">
+                        
+                        
+                        <a class="vlightbox1" href="/Images/Photogallery/medium/IMG-20251130-WA0007 (1).jpg"  title="" ><img src="/Images/PhotoGallery/thumbnail/IMG-20251130-WA0007 (1).jpg" alt="" style="width:200px;height:150px;" /></a>
+                        <div class="photo_title">
+                            
+                        </div>
+                        <div class="clear">
+                        </div>
+                        
+                    </div>
+                    <div class="blank_space_10">
+                    </div>
+                    
+                </span><span align="left" valign="top">
+                    <div class="photo_box">
+                        
+                        
+                        <a class="vlightbox1" href="/Images/Photogallery/medium/IMG-20251130-WA0017.jpg"  title="" ><img src="/Images/PhotoGallery/thumbnail/IMG-20251130-WA0017.jpg" alt="" style="width:200px;height:150px;" /></a>
+                        <div class="photo_title">
+                            
+                        </div>
+                        <div class="clear">
+                        </div>
+                        
+                    </div>
+                    <div class="blank_space_10">
+                    </div>
+                    
+                </span><br /><span align="left" valign="top">
+                    <div class="photo_box">
+                        
+                        
+                        <a class="vlightbox1" href="/Images/Photogallery/medium/IMG-20251130-WA0045.jpg"  title="" ><img src="/Images/PhotoGallery/thumbnail/IMG-20251130-WA0045.jpg" alt="" style="width:200px;height:150px;" /></a>
+                        <div class="photo_title">
+                            
+                        </div>
+                        <div class="clear">
+                        </div>
+                        
+                    </div>
+                    <div class="blank_space_10">
+                    </div>
+                    
+                </span><span align="left" valign="top">
+                    <div class="photo_box">
+                        
+                        
+                        <a class="vlightbox1" href="/Images/Photogallery/medium/IMG-20251130-WA0069 (1).jpg"  title="" ><img src="/Images/PhotoGallery/thumbnail/IMG-20251130-WA0069 (1).jpg" alt="" style="width:200px;height:150px;" /></a>
+                        <div class="photo_title">
+                            
+                        </div>
+                        <div class="clear">
+                        </div>
+                        
+                    </div>
+                    <div class="blank_space_10">
+                    </div>
+                    
+                </span><span align="left" valign="top">
+                    <div class="photo_box">
+                        
+                        
+                        <a class="vlightbox1" href="/Images/Photogallery/medium/IMG-20251130-WA0091.jpg"  title="" ><img src="/Images/PhotoGallery/thumbnail/IMG-20251130-WA0091.jpg" alt="" style="width:200px;height:150px;" /></a>
+                        <div class="photo_title">
+                            
+                        </div>
+                        <div class="clear">
+                        </div>
+                        
+                    </div>
+                    <div class="blank_space_10">
+                    </div>
+                    
+                </span><span align="left" valign="top">
+                    <div class="photo_box">
+                        
+                        
+                        <a class="vlightbox1" href="/Images/Photogallery/medium/IMG-20251201-WA0009.jpg"  title="" ><img src="/Images/PhotoGallery/thumbnail/IMG-20251201-WA0009.jpg" alt="" style="width:200px;height:150px;" /></a>
+                        <div class="photo_title">
+                            
+                        </div>
+                        <div class="clear">
+                        </div>
+                        
+                    </div>
+                    <div class="blank_space_10">
+                    </div>
+                    
+                </span><br /><span align="left" valign="top">
+                    <div class="photo_box">
+                        
+                        
+                        <a class="vlightbox1" href="/Images/Photogallery/medium/IMG-20251202-WA0001.jpg"  title="" ><img src="/Images/PhotoGallery/thumbnail/IMG-20251202-WA0001.jpg" alt="" style="width:200px;height:150px;" /></a>
+                        <div class="photo_title">
+                            
+                        </div>
+                        <div class="clear">
+                        </div>
+                        
+                    </div>
+                    <div class="blank_space_10">
+                    </div>
+                    
+                </span><span align="left" valign="top">
+                    <div class="photo_box">
+                        
+                        
+                        <a class="vlightbox1" href="/Images/Photogallery/medium/IMG-20251202-WA0027.jpg"  title="" ><img src="/Images/PhotoGallery/thumbnail/IMG-20251202-WA0027.jpg" alt="" style="width:200px;height:150px;" /></a>
+                        <div class="photo_title">
+                            
+                        </div>
+                        <div class="clear">
+                        </div>
+                        
+                    </div>
+                    <div class="blank_space_10">
+                    </div>
+                    
+                </span><span align="left" valign="top">
+                    <div class="photo_box">
+                        
+                        
+                        <a class="vlightbox1" href="/Images/Photogallery/medium/IMG-20251202-WA0031.jpg"  title="" ><img src="/Images/PhotoGallery/thumbnail/IMG-20251202-WA0031.jpg" alt="" style="width:200px;height:150px;" /></a>
+                        <div class="photo_title">
+                            
+                        </div>
+                        <div class="clear">
+                        </div>
+                        
+                    </div>
+                    <div class="blank_space_10">
+                    </div>
+                    
+                </span><span align="left" valign="top">
+                    <div class="photo_box">
+                        
+                        
+                        <a class="vlightbox1" href="/Images/Photogallery/medium/dmangeshkar1.jpg"  title="." ><img src="/Images/PhotoGallery/thumbnail/dmangeshkar1.jpg" alt="" style="width:200px;height:150px;" /></a>
+                        <div class="photo_title">
+                            .
+                        </div>
+                        <div class="clear">
+                        </div>
+                        
+                    </div>
+                    <div class="blank_space_10">
+                    </div>
+                    
+                </span><br /><span align="left" valign="top">
+                    <div class="photo_box">
+                        
+                        
+                        <a class="vlightbox1" href="/Images/Photogallery/medium/GS_Private B (Deluxe Room).JPG"  title="GS_ Private B (Deluxe Room)" ><img src="/Images/PhotoGallery/thumbnail/GS_Private B (Deluxe Room).JPG" alt="" style="width:200px;height:150px;" /></a>
+                        <div class="photo_title">
+                            GS_ Private B (Deluxe Room)
+                        </div>
+                        <div class="clear">
+                        </div>
+                        
+                    </div>
+                    <div class="blank_space_10">
+                    </div>
+                    
+                </span><span align="left" valign="top">
+                    <div class="photo_box">
+                        
+                        
+                        <a class="vlightbox1" href="/Images/Photogallery/medium/GS_Non AC Day Care.jpg"  title="GS_Non AC Day Care" ><img src="/Images/PhotoGallery/thumbnail/GS_Non AC Day Care.jpg" alt="" style="width:200px;height:150px;" /></a>
+                        <div class="photo_title">
+                            GS_Non AC Day Care
+                        </div>
+                        <div class="clear">
+                        </div>
+                        
+                    </div>
+                    <div class="blank_space_10">
+                    </div>
+                    
+                </span><span align="left" valign="top">
+                    <div class="photo_box">
+                        
+                        
+                        <a class="vlightbox1" href="/Images/Photogallery/medium/GS_Private C (Non AC).JPG"  title="GS_Private C (Non AC)" ><img src="/Images/PhotoGallery/thumbnail/GS_Private C (Non AC).JPG" alt="" style="width:200px;height:150px;" /></a>
+                        <div class="photo_title">
+                            GS_Private C (Non AC)
+                        </div>
+                        <div class="clear">
+                        </div>
+                        
+                    </div>
+                    <div class="blank_space_10">
+                    </div>
+                    
+                </span><span align="left" valign="top">
+                    <div class="photo_box">
+                        
+                        
+                        <a class="vlightbox1" href="/Images/Photogallery/medium/GS_Private D (Small AC Room).JPG"  title="GS_Private D (Small AC Room)" ><img src="/Images/PhotoGallery/thumbnail/GS_Private D (Small AC Room).JPG" alt="" style="width:200px;height:150px;" /></a>
+                        <div class="photo_title">
+                            GS_Private D (Small AC Room)
+                        </div>
+                        <div class="clear">
+                        </div>
+                        
+                    </div>
+                    <div class="blank_space_10">
+                    </div>
+                    
+                </span><br /><span align="left" valign="top">
+                    <div class="photo_box">
+                        
+                        
+                        <a class="vlightbox1" href="/Images/Photogallery/medium/GS_Semi Private Room.JPG"  title="GS_Semi Private Room" ><img src="/Images/PhotoGallery/thumbnail/GS_Semi Private Room.JPG" alt="" style="width:200px;height:150px;" /></a>
+                        <div class="photo_title">
+                            GS_Semi Private Room
+                        </div>
+                        <div class="clear">
+                        </div>
+                        
+                    </div>
+                    <div class="blank_space_10">
+                    </div>
+                    
+                </span><span align="left" valign="top">
+                    <div class="photo_box">
+                        
+                        
+                        <a class="vlightbox1" href="/Images/Photogallery/medium/GS_SUPER_DELUX_A.JPG"  title="GS_SUPER_DELUX_A" ><img src="/Images/PhotoGallery/thumbnail/GS_SUPER_DELUX_A.JPG" alt="" style="width:200px;height:150px;" /></a>
+                        <div class="photo_title">
+                            GS_SUPER_DELUX_A
+                        </div>
+                        <div class="clear">
+                        </div>
+                        
+                    </div>
+                    <div class="blank_space_10">
+                    </div>
+                    
+                </span><span align="left" valign="top">
+                    <div class="photo_box">
+                        
+                        
+                        <a class="vlightbox1" href="/Images/Photogallery/medium/GS.SUPER_DELUX_B.JPG"  title="GS_SUPER_DELUX_B" ><img src="/Images/PhotoGallery/thumbnail/GS.SUPER_DELUX_B.JPG" alt="" style="width:200px;height:150px;" /></a>
+                        <div class="photo_title">
+                            GS_SUPER_DELUX_B
+                        </div>
+                        <div class="clear">
+                        </div>
+                        
+                    </div>
+                    <div class="blank_space_10">
+                    </div>
+                    
+                </span><span align="left" valign="top">
+                    <div class="photo_box">
+                        
+                        
+                        <a class="vlightbox1" href="/Images/Photogallery/medium/SS Day Care.jpg"  title="SS_Day Care" ><img src="/Images/PhotoGallery/thumbnail/SS Day Care.jpg" alt="" style="width:200px;height:150px;" /></a>
+                        <div class="photo_title">
+                            SS_Day Care
+                        </div>
+                        <div class="clear">
+                        </div>
+                        
+                    </div>
+                    <div class="blank_space_10">
+                    </div>
+                    
+                </span><br /><span align="left" valign="top">
+                    <div class="photo_box">
+                        
+                        
+                        <a class="vlightbox1" href="/Images/Photogallery/medium/SS Private A.JPG"  title="SS_Private A" ><img src="/Images/PhotoGallery/thumbnail/SS Private A.JPG" alt="" style="width:200px;height:150px;" /></a>
+                        <div class="photo_title">
+                            SS_Private A
+                        </div>
+                        <div class="clear">
+                        </div>
+                        
+                    </div>
+                    <div class="blank_space_10">
+                    </div>
+                    
+                </span><span align="left" valign="top">
+                    <div class="photo_box">
+                        
+                        
+                        <a class="vlightbox1" href="/Images/Photogallery/medium/SS_Private B.JPG"  title="SS_Private B" ><img src="/Images/PhotoGallery/thumbnail/SS_Private B.JPG" alt="" style="width:200px;height:150px;" /></a>
+                        <div class="photo_title">
+                            SS_Private B
+                        </div>
+                        <div class="clear">
+                        </div>
+                        
+                    </div>
+                    <div class="blank_space_10">
+                    </div>
+                    
+                </span><span align="left" valign="top">
+                    <div class="photo_box">
+                        
+                        
+                        <a class="vlightbox1" href="/Images/Photogallery/medium/SS_Semi Private A (Only For Gynaec).JPG"  title="SS_Semi Private A (Only For Gynaec)" ><img src="/Images/PhotoGallery/thumbnail/SS_Semi Private A (Only For Gynaec).JPG" alt="" style="width:200px;height:150px;" /></a>
+                        <div class="photo_title">
+                            SS_Semi Private A (Only For Gynaec)
+                        </div>
+                        <div class="clear">
+                        </div>
+                        
+                    </div>
+                    <div class="blank_space_10">
+                    </div>
+                    
+                </span><span align="left" valign="top">
+                    <div class="photo_box">
+                        
+                        
+                        <a class="vlightbox1" href="/Images/Photogallery/medium/SS_Semi Private B.JPG"  title="SS_Semi Private B" ><img src="/Images/PhotoGallery/thumbnail/SS_Semi Private B.JPG" alt="" style="width:200px;height:150px;" /></a>
+                        <div class="photo_title">
+                            SS_Semi Private B
+                        </div>
+                        <div class="clear">
+                        </div>
+                        
+                    </div>
+                    <div class="blank_space_10">
+                    </div>
+                    
+                </span><br /></span>
+        </div>
+    </div>
+    
+    
+    <script src="/admin/PhotoGallery/javascript/jquery.min.js"
+        type="text/javascript"></script>
+    <script src="/cms/javascript/visuallightbox.js" type="text/javascript"></script>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="page-footer">
+		<div class="row-fluid">
+			<div class="span12">
+				<div class="defaultContentWidthFooter width90Per">
+					<div class="row-fluid">
+						<div class="span3">
+							
+<div class="widget">
+	<h5>
+		<span>Our</span> office</h5>
+	<ul class="office-contact">
+		<li>
+			<i class="fa fa-home"> </i>
+			<h6>
+				Address :</h6>
+			Near Mhatre Bridge,Erandwane, Pune 411004,</li>
+		<li>
+			<i class="fa fa-phone"> </i>
+			<h6>
+				Phone :</h6>
+			Tel. +91 20 4015 1000 / 49153000</li>
+		<li>
+			<i class="fa fa-envelope"> </i>
+			<h6>
+				Email :</h6>
+			info@dmhospital.org</li>
+	</ul>
+</div>
+<br />
+ 
+
+						</div>
+						<div class="span3">
+							
+<div class="clearfix">
+    <div class="sbox-wrap">
+        <div class="sbox-content clear clearfix">           
+            <div class="sc-column one-third">
+                <h5><a class="iconLink" href="/events"><span>Events / News</span></a></h5>				
+                 <div class="sc-page">
+ <div class="item clearfix">
+ <div class="image">
+<a class="greyscale"target="_top" href="/eventsdetails/Diabetes-Nursing-Conference-2026">
+<img src="/Images/EventImages/Diabetes-Nursing-Conference2.jpg" alt="Diabetes Nursing Conference 2026" /></a></div>
+<div class="text">
+<a class="greyscale"target="_top" href="/eventsdetails/Diabetes-Nursing-Conference-2026">
+<p>Diabetes Nursing Conference 2026</p></a></div>
+ <div class="rule">&nbsp;</div>
+</div></div>
+         			
+            </div>
+        </div>
+    </div>
+</div>
+
+						</div>
+						<div class="span3">
+							
+<div class="widget">
+	<h5>
+		<span>Testimonials</span></h5>
+	<div class="tweet">
+		<ul>
+			<li style="">
+				<a href="https://www.dmhospital.org/testimonial" target="_blank">Generous help from Charity department made treatment possible. </a>
+				<div class="testimonialname">
+					<a href="https://www.dmhospital.org/testimonial" target="_blank">- Mrs Rajashri Anil Gavali</a></div>
+			</li>
+			<li style="">
+				<a href="https://www.dmhospital.org/testimonial" target="_blank">Great Support Received From Staff And Doctors During Transplant Surgery. </a>
+				<div class="testimonialname">
+					<a href="https://www.dmhospital.org/testimonial" target="_blank">- Mrs Himali Pimpalkhare</a></div>
+			</li>
+			<li style="">
+				<a href="https://www.dmhospital.org/testimonial" target="_blank">Where There Is Hope There Is Faith.</a>
+				<div class="testimonialname">
+					<a href="https://www.dmhospital.org/testimonial" target="_blank">- Mr Arvind Chintaman Daware</a></div>
+			</li>
+			<li style="">
+				<a href="https://www.dmhospital.org/testimonial" target="_blank">Prompt Action By Doctors And Excellent Service By Mediclaim Department.</a>
+				<div class="testimonialname">
+					<a href="https://www.dmhospital.org/testimonial" target="_blank">- Mr Shankar Gundal</a></div>
+			</li>
+			<li style="">
+				<a href="https://www.dmhospital.org/testimonial" target="_blank">Good Doctors And Financial Help From Charity Made Treatment Possible.</a>
+				<div class="testimonialname">
+					<a href="https://www.dmhospital.org/testimonial" target="_blank">- Mr Dilip Ramchandra Kale</a></div>
+			</li>
+		</ul>
+	</div>
+</div>
+<br />
+ 
+
+						</div>
+						<div class="span3">
+							
+<div class="widget">
+	<h5>
+		<span>Quick</span> links</h5>
+	<ul>
+		<li>
+			<a href="https://www.dmhospital.org/out-patient-department">OPD Schedule</a></li>
+		<!--<li>
+			<a href="https://www.dmhospital.org/headlines">News</a></li>-->
+		<li>
+			<a href="https://www.dmhospital.org/events">Events / News</a></li>
+		<li>
+			<a href="http://www.dmhospital.org/testimonial">Testimonials</a></li>
+		<li>
+			<a href="https://www.dmhospital.org/photogallery">Photo Gallery</a></li>
+		<li>
+			<a href="https://www.dmhospital.org/videogallery">Video Gallery</a></li>
+		<li>
+			<a href="https://www.dmhospital.org/EC-approval">EC Approval</a></li>
+		<li>
+			<a href="https://www.dmhospital.org/sitemap">Site Map</a></li>
+		<li>
+			<a href="https://www.dmhospital.org/disclaimer">Disclaimer</a></li>
+	</ul>
+</div>
+<br />
+ 
+
+						</div>
+					</div>
+				</div>
+				<div class="footer-line">
+					<div class="row-fluid">
+						<div class="span12">
+							<div class="noMinHeight">
+								<div class="row-fluid">
+									<div class="span12">
+										
+<div class="span12">
+  <div class="span12">
+    <div class="mobile-view">
+      <div class="grid-container">
+        <div class="grid-item"> <a href="https://www.dmhospital.org/doctors-profile"><i class="fa fa-user-md"></i> <span style="display: block">Doctors &<br />
+          Departments</span> </a></div>
+        <div class="grid-item"> <a href="https://www.dmhospital.org/out-patient-department"><i class="fa fa-calendar"></i> <span style="display: block">OPD<br />
+          Schedules</span> </a></div>
+        <div class="grid-item"> <a href="https://www.dmhospital.org/health-packages"><i class="fa fa-stethoscope"></i> <span style="display: block">Health<br />
+          Packages</span> </a></div>
+        <div class="grid-item"> <a href="https://www.dmhospital.org/inpatientguide"><i class="fa fa-hospital-o"></i> <span style="display: block">Patient &<br />
+          Visitors</span> </a></div>
+        <div class="grid-item"> <a href="https://phr.dmhospital.org/Appointment/"><i class="fa fa-phone"></i> <span style="display: block">Request<br />
+          Appointment</span> </a></div>
+        <div class="grid-item"> <a href="https://phr.dmhospital.org/PatientPortal/" target="_blank"><i class="fa fa-file-text-o"></i> <span style="display: block">Patient<br />
+        Portal</span> </a></div>
+      </div>
+    </div>
+    <div class="floting-btn">
+      <div class="btn-wrapper"> <a href="#info-pop" role="button" class="btn-pop" data-toggle="modal" data-keyboard="false" data-backdrop="static"><i class="fa  fa-filter tooltip-btn" aria-hidden="true"></i></a>
+        <div aria-hidden="true" aria-labelledby="myModalLabel" class="modal hide fade" id="info-pop" role="dialog" tabindex="-1">
+          <div class="modal-header">
+            <button aria-hidden="true" class="close" data-dismiss="modal" type="button">×</button>
+            <h3 id="myModalLabel"> online facility</h3>
+          </div>
+          <div class="modal-body"> <a href="https://www.dmhospital.org/pay/index.php" target="_blank">Online Payment</a> <a href="https://phr.dmhospital.org/PatientPortal/">Patient Portal</a> <a href="https://phr.dmhospital.org/Appointment/">Book Appointment</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+ 
+
+									</div>
+								</div>
+							</div>
+							<div class="defaultContentWidth width90Per">
+								<div class="row-fluid">
+									<div class="span7">
+										
+<script type="text/javascript" language="javascript">
+    showonlyone();
+</script>
+Copyright &copy; 2026&nbsp;<span>Deenanath Mangeshkar Hospital</span>
+
+									</div>
+									<div class="span5">
+										
+<div class="poweredbyright">
+&nbsp;&nbsp;Powered By
+<a href="http://www.builtcms.com" target="_blank" title="Web Content Management System.">builtCMS</a>
+</div>
+
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script src="https://www.dmhospital.org/cms/Template/Default/js/dmh.js" type="text/javascript"></script>
+<script type="application/javascript"></script>
+
+
+<script type="text/javascript">
+//<![CDATA[
+(function() {var fn = function() {$get("ctl00_ScriptManager1_HiddenField").value = '';Sys.Application.remove_init(fn);};Sys.Application.add_init(fn);})();Sys.Application.initialize();
+//]]>
+</script>
+</form>
+</body>
+</html>
+
