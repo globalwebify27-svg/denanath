@@ -5,7 +5,7 @@ import Link from "next/link";
 import { ChevronRight, Stethoscope } from "lucide-react";
 
 export default function DoctorsDepartmentsPage() {
-  const options = [];
+  const options: any[] = [];
 
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 

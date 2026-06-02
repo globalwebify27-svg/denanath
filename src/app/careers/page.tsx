@@ -180,7 +180,7 @@ const jobsList = [
 ];
 
 export default function CareersPage() {
-  const options = [];
+  const options: any[] = [];
 
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [applyingJob, setApplyingJob] = useState<any>(null);

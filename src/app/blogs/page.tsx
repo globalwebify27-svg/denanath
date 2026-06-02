@@ -5,7 +5,7 @@ import Link from "next/link";
 import { ChevronRight, FileText } from "lucide-react";
 
 export default function BlogsPage() {
-  const options = [];
+  const options: any[] = [];
 
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 

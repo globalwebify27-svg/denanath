@@ -5,7 +5,7 @@ import Link from "next/link";
 import { ChevronRight, Calendar } from "lucide-react";
 
 export default function BookAppointmentPage() {
-  const options = [];
+  const options: any[] = [];
 
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 

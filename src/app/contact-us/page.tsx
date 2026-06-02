@@ -5,7 +5,7 @@ import Link from "next/link";
 import { ChevronRight, Building2, MapPin, Phone, Mail, HeartPulse, Stethoscope, Droplet, Pill, Activity, Baby, Send, ShieldAlert } from "lucide-react";
 
 export default function ContactUsPage() {
-  const options = [];
+  const options: any[] = [];
 
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 

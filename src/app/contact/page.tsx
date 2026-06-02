@@ -5,7 +5,7 @@ import Link from "next/link";
 import { ChevronRight, Phone } from "lucide-react";
 
 export default function ContactUsPage() {
-  const options = [];
+  const options: any[] = [];
 
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
