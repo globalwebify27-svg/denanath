@@ -96,8 +96,16 @@ export default function PatientGuidePage() {
                 </h2>
                 
               </div>
+              <div className="space-y-6 mt-8">
+                <div className="bg-slate-50 p-2 md:p-4 rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
+                  <img 
+                    src="https://www.dmhospital.org/cms/Media/image/patients-rights-responsibility.jpg" 
+                    alt="Patient Rights & Responsibilities" 
+                    className="w-full h-auto rounded-xl object-contain"
+                  />
+                </div>
+              </div>
 
-              <div className="space-y-6 mt-8">\n  <ul className="list-none space-y-3 mb-6">\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Out Patient guide</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>In patient guide</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Health Packages</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Facilities</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Patients Stories / Feedbacks</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Patient Rights & Responsibilities</span></li>\n</ul>\n</div>\n
 
             </div>
           </div>

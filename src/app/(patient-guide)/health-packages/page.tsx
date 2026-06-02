@@ -2,9 +2,9 @@
 
 import React, { useEffect, useRef } from "react";
 import Link from "next/link";
-import { ChevronRight, ActivitySquare } from "lucide-react";
+import { ChevronRight, ActivitySquare, CheckCircle2, AlertCircle, Phone, Mail, Building2, FileText, IndianRupee } from "lucide-react";
 
-export default function PatientGuidePage() {
+export default function HealthPackagesPage() {
   const patientGuideOptions = [
     { name: "Out Patient Guide", href: "/out-patient", active: false },
     { name: "In Patient Guide", href: "/in-patient", active: false },
@@ -14,6 +14,107 @@ export default function PatientGuidePage() {
     { name: "Patient Rights & Responsibilities", href: "/patient-rights", active: false },
     { name: "Photos", href: "/gallery-photos", active: false },
     { name: "Videos", href: "/gallery-videos", active: false },
+  ];
+
+  const packages = [
+    {
+      name: "Basic Package",
+      cost: "3820.00",
+      payable: "3450.00",
+      tests: ["Physician Consultation", "Eye Consultation", "Haemogram", "BSL (F & PP)", "Lipid Profile", "Sr. Creatinine", "Urine Routine/Microscopy", "ECG", "Chest X Ray"]
+    },
+    {
+      name: "Senior Citizen",
+      cost: "3890.00",
+      payable: "3400.00",
+      tests: ["Physician Consultation", "Haemogram", "BSL (F &PP)", "Lipid Profile", "Sr. Creatinine", "Sr. TSH (Ultra)", "Urine Routine/Microscopy", "Blood Urea Level", "HbA1C", "ECG", "Chest X Ray"]
+    },
+    {
+      name: "Executive - A",
+      cost: "6540.00",
+      payable: "5900.00",
+      tests: ["Physician Consultation", "Eye Consultation", "Haemogram", "BSL (F &PP)", "Lipid Profile", "Sr. Creatinine", "HbA1c", "Sr. TSH (Ultra)", "Urine Routine/Microscopy", "Blood Urea Level", "ECG", "Chest X Ray", "TMT(Stress Test)"]
+    },
+    {
+      name: "Executive - B",
+      cost: "8740.00",
+      payable: "7850.00",
+      tests: ["Physician Consultation", "Eye Consultation", "Haemogram", "BSL (F &PP)", "Lipid Profile", "Sr. Creatinine", "Urine Routine/Microscopy", "Blood Urea Level", "SGOT", "SGPT", "HbA1c", "Sr. TSH (Ultra)", "ECG", "Chest X Ray", "TMT(Stress Test)", "Sonography (Abd + Pelvis)"]
+    },
+    {
+      name: "Well Woman - I",
+      cost: "5100.00",
+      payable: "4770.00",
+      tests: ["Gynaec Consultation", "HPV-Genotyping (16,18)", "Digital Mammography"]
+    },
+    {
+      name: "Well Woman - II",
+      cost: "6900.00",
+      payable: "6390.00",
+      tests: ["Gynaec Consultation", "HPV Genotyping (16,18)", "Digital Mammography", "Sonography (Abd + Pelvis)"]
+    },
+    {
+      name: "Well Woman - III",
+      cost: "5100.00",
+      payable: "4590.00",
+      tests: ["Gynaec Consultation", "Digital Mammography", "Sonography (Abd + Pelvis)"]
+    },
+    {
+      name: "Well Woman - IV",
+      cost: "4200.00",
+      payable: "3960.00",
+      tests: ["Gynaec Consultation", "HPV Genotyping (16,18)", "Sonography (Abd + Pelvis)"]
+    },
+    {
+      name: "Comprehensive Package",
+      cost: "8540.00",
+      payable: "7700.00",
+      tests: ["Physician Consultation", "Haemogram", "BSL (F &PP)", "Lipid Profile", "Liver Function Test (Sr. Bilirubin, SGPT, SGOT, Sr. Alkaline Phosphatase,Sr. Protein)", "Renal Function Test (Blood Urea Level, Sr. Creatinine, Sr. Electrolytes, Sr. Uric Acid, Sr. Calcium, Sr. Phosphorus)", "Urine Routine/Microscopy", "HbA1c", "Sr. TSH (Ultra)", "ECG", "Chest X Ray", "TMT(Stress Test)", "Sonography (Abd + Pelvis)"]
+    },
+    {
+      name: "Super Comprehensive Package",
+      cost: "12090.00",
+      payable: "10880.00",
+      tests: ["Physician Consultation", "Eye Consultation", "Haemogram", "BSL (F &PP)", "Lipid Profile", "Liver Function Test (Sr. Bilirubin, SGPT, SGOT, Sr. Alkaline Phosphatase,Sr. Protein)", "Renal Function Test (Blood Urea Level, Sr. Creatinine, Sr. Electrolytes, Sr. Uric Acid, Sr. Calcium, Sr. Phosphorus)", "Urine Routine/Microscopy", "HbA1c", "Sr. Vit B12", "25 OH Vit D", "Thyroid Function Test", "ECG", "Chest X Ray", "TMT(Stress Test)", "Sonography (Abd+Pel)"]
+    },
+    {
+      name: "Super Comprehensive For Senior Citizen",
+      cost: "12040.00",
+      payable: "10350.00",
+      tests: ["Physician Consultation", "Eye Consultation", "Haemogram", "BSL (F &PP)", "Lipid Profile", "Liver Function Test (Sr. Bilirubin, SGPT, SGOT, Sr. Alkaline Phosphatase,Sr. Protein)", "Renal Function Test (Blood Urea Level, Sr. Creatinine, Sr. Electrolytes, Sr. Uric Acid, Sr. Calcium, Sr. Phosphorus)", "Urine Routine/Microscopy", "HbA1c", "Sr. Vit B12", "25 OH Vit D", "Thyroid Function Test", "ECG", "Chest X Ray", "2 D Echo + Colour Doppler", "Sonography (Abd+Pel)"]
+    }
+  ];
+
+  const companyList = [
+    "AAM India Manufacturing Corporation Pvt Ltd",
+    "ARAI (The Automotive Research Association of India)",
+    "Fleetguard Filters Private Limited",
+    "Bajaj Finserve Health Ltd",
+    "Indian Oil Corporation Ltd ( IOCL)",
+    "Jnana Prabodhini Medical Trust (JPMT)",
+    "Maharshi Karve Stree Shikshan Sanstha (MKSS)",
+    "Media Ocean India Pvt Ltd",
+    "Prayas Health Group",
+    "Prayas Energey Group",
+    "Sheetal Wireless Technologies Pvt Ltd",
+    "SVC Co Operative Bank Ltd",
+    "Tata Motors Ltd",
+    "Thyssen Krupp Industrial Solutions (India) Pvt Ltd",
+    "Wai Technologies Pvt Ltd"
+  ];
+
+  const instructions = [
+    "Kindly take prior appointment.",
+    "For first time registration please bring a photo id proof such as PAN Card, Aadhaar Card, Passport.",
+    "Please ensure you have fasted overnight (8 to 10 hrs) prior to the check-up.",
+    "Do not consume any alcoholic beverages in any form for 72 hours prior to check-up.",
+    "Please bring all your medical prescriptions and previous medical records with you.",
+    "Kindly inform the Health Check reception if you have any history of diabetes or cardiac problem.",
+    "We kindly request male participants in the TMT test to consider shaving their chest. Your co-operation is appreciated.",
+    "We kindly request all corporate clients to bring company letter, employee ID, or any confirmation letter if credit billing is required.",
+    "Please wear minimum jewellery on the day of health check-up.",
+    "Access your investigation reports electronically on the patient portal the same day or following day.",
+    "Any additional tests suggested by the Doctor during the consultation that are not included in the package will incur extra charge."
   ];
 
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -86,26 +187,132 @@ export default function PatientGuidePage() {
           <div className="w-full flex-1">
             <div className="bg-white rounded-3xl shadow-[0_8px_40px_rgb(0,0,0,0.03)] border border-slate-100/60 p-6 sm:p-10 md:p-14">
               
-              <div className="mb-10">
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-teal-50 border border-teal-100 text-[#007a87] text-xs font-bold tracking-wider uppercase mb-4">
-                  <ActivitySquare className="w-4 h-4" />
-                  <span>Patient Guide</span>
+              <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-10 gap-4">
+                <div>
+                  <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-teal-50 border border-teal-100 text-[#007a87] text-xs font-bold tracking-wider uppercase mb-4">
+                    <ActivitySquare className="w-4 h-4" />
+                    <span>Patient Guide</span>
+                  </div>
+                  <h2 className="text-3xl md:text-4xl font-extrabold text-[#002b5c] tracking-tight">
+                    Health Packages
+                  </h2>
                 </div>
-                <h2 className="text-3xl md:text-4xl font-extrabold text-[#002b5c] mb-6 tracking-tight">
-                  Health Packages
-                </h2>
-                
+                <div className="bg-amber-50 text-amber-800 border border-amber-200 px-4 py-2 rounded-lg font-medium text-sm self-start">
+                  w.e.f. 16th Feb 2026
+                </div>
               </div>
+              <div className="w-20 h-1.5 bg-[#007a87] rounded-full mb-10"></div>
 
-              <div className="space-y-6 mt-8">\n  <ul className="list-none space-y-3 mb-6">\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Out Patient guide</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>In patient guide</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Health Packages</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Facilities</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Patients Stories / Feedbacks</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Patient Rights & Responsibilities</span></li>\n</ul>\n  <h3 className="text-2xl font-bold text-[#002b5c] mt-8 mb-4">Basic Package</h3>\n  <ul className="list-none space-y-3 mb-6">\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Physician Consultation</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Eye Consultation</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>BSL (F & PP)</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Lipid Profile</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Sr. Creatinine</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Urine Routine/Microscopy</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Chest X Ray</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Total Cost (Rs.) 3820.00</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Payable Cost (Rs. ) 3450.00</span></li>\n</ul>\n  <h3 className="text-2xl font-bold text-[#002b5c] mt-8 mb-4">Executive - A</h3>\n  <ul className="list-none space-y-3 mb-6">\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Physician Consultation</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Eye Consultation</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>BSL (F &PP)</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Lipid Profile</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Sr. Creatinine</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Sr. TSH (Ultra)</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Urine Routine/Microscopy</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Blood Urea Level</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Chest X Ray</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>TMT(Stress Test)</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Total Cost (Rs.) 6540.00</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Payable Cost (Rs. ) 5900.00</span></li>\n</ul>\n  <h3 className="text-2xl font-bold text-[#002b5c] mt-8 mb-4">Senior Citizen</h3>\n  <ul className="list-none space-y-3 mb-6">\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Physician Consultation</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>BSL (F &PP)</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Lipid Profile</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Sr. Creatinine</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Sr. TSH (Ultra)</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Urine Routine/Microscopy</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Blood Urea Level</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Chest X Ray</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Total Cost (Rs.) 3890.00</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Payable Cost (Rs. ) 3400.00</span></li>\n</ul>\n  <h3 className="text-2xl font-bold text-[#002b5c] mt-8 mb-4">Executive - B</h3>\n  <ul className="list-none space-y-3 mb-6">\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Physician Consultation</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Eye Consultation</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>BSL (F &PP)</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Lipid Profile</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Sr. Creatinine</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Urine Routine/Microscopy</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Blood Urea Level</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Sr. TSH (Ultra)</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Chest X Ray</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>TMT(Stress Test)</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Sonography (Abd + Pelvis)</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Total Cost (Rs.) 8740.00</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Payable Cost (Rs. ) 7850.00</span></li>\n</ul>\n  <h3 className="text-2xl font-bold text-[#002b5c] mt-8 mb-4">Well Woman - I</h3>\n  <ul className="list-none space-y-3 mb-6">\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Gynaec Consultation</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>HPV-Genotyping (16,18)</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Digital Mammography</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Total Cost (Rs.) 5100.00</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Payable Cost (Rs. ) 4770.00</span></li>\n</ul>\n  <h3 className="text-2xl font-bold text-[#002b5c] mt-8 mb-4">Well Woman - II</h3>\n  <ul className="list-none space-y-3 mb-6">\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Gynaec Consultation</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>HPV Genotyping (16,18)</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Digital Mammography</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Sonography (Abd + Pelvis)</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Total Cost (Rs.) 6900.00</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Payable Cost (Rs. ) 6390.00</span></li>\n</ul>\n  <h3 className="text-2xl font-bold text-[#002b5c] mt-8 mb-4">Well Woman - III</h3>\n  <ul className="list-none space-y-3 mb-6">\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Gynaec Consultation</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Digital Mammography</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Sonography (Abd + Pelvis)</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Total Cost (Rs.) 5100.00</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Payable Cost (Rs. ) 4590.00</span></li>\n</ul>\n  <h3 className="text-2xl font-bold text-[#002b5c] mt-8 mb-4">Well Woman - IV</h3>\n  <ul className="list-none space-y-3 mb-6">\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Gynaec Consultation</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>HPV Genotyping (16,18)</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Sonography (Abd + Pelvis)</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Total Cost (Rs.) 4200.00</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Payable Cost (Rs. ) 3960.00</span></li>\n</ul>\n  <h3 className="text-2xl font-bold text-[#002b5c] mt-8 mb-4">Comprehensive Package</h3>\n  <ul className="list-none space-y-3 mb-6">\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Physician Consultation</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>BSL (F &PP)</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Lipid Profile</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Liver Function Test (Sr. Bilirubin, SGPT, SGOT, Sr. Alkaline Phosphatase,Sr. Protein)</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Renal Function Test (Blood Urea Level, Sr. Creatinine, Sr. Electrolytes, Sr. Uric Acid, Sr. Calcium, Sr. Phosphorus)</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Urine Routine/Microscopy</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Sr. TSH (Ultra)</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Chest X Ray</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>TMT(Stress Test)</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Sonography (Abd + Pelvis)</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Total Cost (Rs.) 8540.00</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Payable Cost (Rs. ) 7700.00</span></li>\n</ul>\n  <h3 className="text-2xl font-bold text-[#002b5c] mt-8 mb-4">Super Comprehensive Package</h3>\n  <ul className="list-none space-y-3 mb-6">\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Physician Consultation</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Eye Consultation</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>BSL (F &PP)</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Lipid Profile</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Liver Function Test (Sr. Bilirubin, SGPT, SGOT, Sr. Alkaline Phosphatase,Sr. Protein)</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Renal Function Test (Blood Urea Level, Sr. Creatinine, Sr. Electrolytes, Sr. Uric Acid, Sr. Calcium, Sr. Phosphorus)</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Urine Routine/Microscopy</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Sr. Vit B12</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>25 OH Vit D</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Thyroid Function Test</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Chest X Ray</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>TMT(Stress Test)</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Sonography (Abd+Pel)</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Total Cost (Rs.) 12090.00</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Payable Cost (Rs. ) 10880.00</span></li>\n</ul>\n  <h3 className="text-2xl font-bold text-[#002b5c] mt-8 mb-4">Super Comprehensive Package For Senior Citizen</h3>\n  <ul className="list-none space-y-3 mb-6">\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Physician Consultation</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Eye Consultation</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>BSL (F &PP)</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Lipid Profile</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Liver Function Test (Sr. Bilirubin, SGPT, SGOT, Sr. Alkaline Phosphatase,Sr. Protein)</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Renal Function Test (Blood Urea Level, Sr. Creatinine, Sr. Electrolytes, Sr. Uric Acid, Sr. Calcium, Sr. Phosphorus)</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Urine Routine/Microscopy</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Sr. Vit B12</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>25 OH Vit D</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Thyroid Function Test</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Chest X Ray</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>2 D Echo + Colour Doppler</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Sonography (Abd+Pel)</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Total Cost (Rs.) 12040.00</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Payable Cost (Rs. ) 10350.00</span></li>\n</ul>\n  <h3 className="text-2xl font-bold text-[#002b5c] mt-8 mb-4">Company List</h3>\n  <ul className="list-none space-y-3 mb-6">\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>AAM India Manufacturing Corporation Pvt Ltd</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>ARAI (The Automotive Research Association of India)</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Fleetguard Filters Private Limited</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Bajaj Finserve Health Ltd</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Indian Oil Corporation Ltd ( IOCL)</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Jnana Prabodhini Medical Trust (JPMT)</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Maharshi Karve Stree Shikshan Sanstha (MKSS)</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Media Ocean India Pvt Ltd</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Prayas Health Group</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Prayas Energey Group</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Sheetal Wireless Technologies Pvt Ltd</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>SVC Co Operative Bank Ltd</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Tata Motors Ltd</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Thyssen Krupp Industrial Solutions (India) Pvt Ltd</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Wai Technologies Pvt Ltd</span></li>\n</ul>\n  <h3 className="text-2xl font-bold text-[#002b5c] mt-8 mb-4">IMPORTANT INSTRUCTIONS</h3>\n  <ul className="list-none space-y-3 mb-6">\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Kindly take prior appointment</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>For first time registration please bring a photo id proof such as PAN Card, Aadhaar Card, Passport.</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Please ensure you have fasted overnight (8 to 10 hrs) prior to the check-up.</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Do not consume any alcoholic beverages in any form for 72 hours prior to check-up.</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Please bring all your medical prescriptions and previous medical records with you.</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Kindly inform the Health Check reception if you have any history of diabetes or cardiac problem.</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>We kindly request male participants in the TMT test to consider shaving their chest. Your co-operation is appreciated.</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>We kindly request all corporate clients to bring company letter, employee ID, or any confirmation letter if credit billing is required.</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Please wear minimum jewellery on the day of health check-up.</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Access your investigation reports electronically on the patient portal the same day or following day.</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Any additional tests suggested by the Doctor during the consultation that are not included in the package will incur extra charge.</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>For Women
-            
-				Pregnant woman or those suspecting pregnancy should inform us and are advised to avoid X-rays or similar test. It is advisable to refrain from undergoing any health check up during menstruation.</span></li>\n</ul>\n  <p className="text-slate-600 leading-relaxed font-light text-base">For Health Check Appointments.
-			Please Call
-          
-			020 – 40151011 / 40151015 / 9158885173
-			Mon to Sat 10 a.m. to 6 p.m.
-			Or E-mail ID : pr@dmhospital.org.</p>\n  <h3 className="text-2xl font-bold text-[#002b5c] mt-8 mb-4">For first time registration please refer to this QR code.</h3>\n</div>\n
+              <div className="space-y-12 text-slate-700">
+                
+                {/* Health Packages Grid */}
+                <section>
+                  <div className="grid md:grid-cols-2 gap-6">
+                    {packages.map((pkg, idx) => (
+                      <div key={idx} className="bg-white rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow overflow-hidden flex flex-col h-full group">
+                        <div className="p-5 md:p-6 bg-slate-50 border-b border-slate-100 flex-1">
+                          <h3 className="text-xl font-bold text-[#002b5c] mb-4 group-hover:text-[#007a87] transition-colors">{pkg.name}</h3>
+                          <ul className="space-y-2 mb-2">
+                            {pkg.tests.map((test, testIdx) => (
+                              <li key={testIdx} className="flex items-start gap-2 text-sm text-slate-600">
+                                <CheckCircle2 className="w-4 h-4 text-teal-500 shrink-0 mt-0.5" />
+                                <span className="leading-tight">{test}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                        <div className="p-5 bg-teal-50/50 flex flex-col sm:flex-row justify-between gap-4 border-t border-teal-100/50">
+                          <div>
+                            <p className="text-xs text-slate-500 uppercase font-bold tracking-wider mb-1">Total Cost</p>
+                            <p className="text-sm font-semibold text-slate-400 line-through flex items-center"><IndianRupee className="w-3.5 h-3.5 mr-0.5" /> {pkg.cost}</p>
+                          </div>
+                          <div className="sm:text-right">
+                            <p className="text-xs text-[#007a87] uppercase font-bold tracking-wider mb-1">Payable Cost</p>
+                            <p className="text-2xl font-bold text-[#007a87] flex items-center sm:justify-end"><IndianRupee className="w-5 h-5 mr-0.5" /> {pkg.payable}</p>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </section>
 
+                <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 pt-8 border-t border-slate-100">
+                  {/* Important Instructions */}
+                  <section>
+                    <h3 className="text-2xl font-bold text-[#002b5c] mb-6 flex items-center gap-3">
+                      <FileText className="w-6 h-6 text-[#007a87]" />
+                      Important Instructions
+                    </h3>
+                    <div className="bg-blue-50/50 rounded-2xl p-6 border border-blue-100">
+                      <ul className="space-y-3">
+                        {instructions.map((instruction, idx) => (
+                          <li key={idx} className="flex items-start gap-3">
+                            <ChevronRight className="w-5 h-5 text-blue-600 shrink-0 mt-0.5" />
+                            <span className="text-sm text-slate-700 leading-relaxed">{instruction}</span>
+                          </li>
+                        ))}
+                      </ul>
+                      
+                      <div className="mt-6 pt-6 border-t border-blue-100">
+                        <h4 className="font-bold text-slate-800 mb-3 flex items-center gap-2">
+                          <AlertCircle className="w-5 h-5 text-amber-500" />
+                          For Women
+                        </h4>
+                        <p className="text-sm text-slate-600 leading-relaxed">
+                          Pregnant woman or those suspecting pregnancy should inform us and are advised to avoid X-rays or similar test. It is advisable to refrain from undergoing any health check up during menstruation.
+                        </p>
+                      </div>
+                    </div>
+                  </section>
+
+                  <div className="space-y-8">
+                    {/* Appointments Contact */}
+                    <section>
+                      <h3 className="text-2xl font-bold text-[#002b5c] mb-6 flex items-center gap-3">
+                        <Phone className="w-6 h-6 text-[#007a87]" />
+                        Book Appointment
+                      </h3>
+                      <div className="bg-[#002b5c] text-white rounded-2xl p-6 shadow-lg">
+                        <h4 className="text-blue-200 text-sm font-bold uppercase tracking-wider mb-4">Health Check Appointments</h4>
+                        <div className="space-y-4">
+                          <div className="flex items-start gap-3">
+                            <Phone className="w-5 h-5 text-teal-400 shrink-0 mt-1" />
+                            <div>
+                              <p className="font-semibold text-lg">020 – 40151011</p>
+                              <p className="font-semibold text-lg">020 – 40151015</p>
+                              <p className="font-semibold text-lg">9158885173</p>
+                              <p className="text-blue-200 text-sm mt-1">Mon to Sat, 10 a.m. to 6 p.m.</p>
+                            </div>
+                          </div>
+                          <div className="flex items-center gap-3 pt-4 border-t border-white/10">
+                            <Mail className="w-5 h-5 text-teal-400 shrink-0" />
+                            <a href="mailto:pr@dmhospital.org" className="text-teal-100 hover:text-white transition-colors">pr@dmhospital.org</a>
+                          </div>
+                        </div>
+                      </div>
+                    </section>
+
+                    {/* Corporate Companies */}
+                    <section>
+                      <h3 className="text-2xl font-bold text-[#002b5c] mb-6 flex items-center gap-3">
+                        <Building2 className="w-6 h-6 text-[#007a87]" />
+                        Company List
+                      </h3>
+                      <div className="bg-white border border-slate-200 rounded-2xl p-5 h-[300px] overflow-y-auto custom-scrollbar">
+                        <ul className="space-y-2">
+                          {companyList.map((company, idx) => (
+                            <li key={idx} className="flex items-start gap-2 border-b border-slate-50 pb-2 last:border-0 last:pb-0">
+                              <CheckCircle2 className="w-4 h-4 text-teal-500 shrink-0 mt-0.5" />
+                              <span className="text-sm text-slate-600">{company}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </section>
+                  </div>
+                </div>
+
+              </div>
             </div>
           </div>
 

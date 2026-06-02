@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef } from "react";
 import Link from "next/link";
-import { ChevronRight, Bed } from "lucide-react";
+import { ChevronRight, Bed, Phone, MapPin, Clock, FileText, CheckCircle2 } from "lucide-react";
 
 export default function PatientGuidePage() {
   const patientGuideOptions = [
@@ -94,14 +94,456 @@ export default function PatientGuidePage() {
                 <h2 className="text-3xl md:text-4xl font-extrabold text-[#002b5c] mb-6 tracking-tight">
                   In Patient Guide
                 </h2>
-                
+                <div className="w-20 h-1.5 bg-[#007a87] rounded-full mb-8"></div>
               </div>
 
-              <div className="space-y-6 mt-8">\n  <ul className="list-none space-y-3 mb-6">\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Out Patient guide</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>In patient guide</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Health Packages</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Facilities</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Patients Stories / Feedbacks</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Patient Rights & Responsibilities</span></li>\n</ul>\n  <h3 className="text-2xl font-bold text-[#002b5c] mt-8 mb-4">Admission :-</h3>\n  <p className="text-slate-600 leading-relaxed font-light text-base">GS / Old Building</p>\n  <ul className="list-none space-y-3 mb-6">\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Location - Ground floor B wing</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Time - 24/7</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Direct contact number - 020 40151019</span></li>\n</ul>\n  <p className="text-slate-600 leading-relaxed font-light text-base">SS / New Building</p>\n  <ul className="list-none space-y-3 mb-6">\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Location - Behind Reception</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Time - 7am to 10pm (Sunday closed)</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Direct contact number - 020 49153024</span></li>\n</ul>\n  <h3 className="text-2xl font-bold text-[#002b5c] mt-8 mb-4">Main Building</h3>\n  <ul className="list-none space-y-3 mb-6">\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Operator Assistance: 40151000 (Multiple Lines)</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Emergency: 40151024 / 40151027 / 40151065</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>ICU: 40151155 / 40151152 PICU : 40151297 /40151217</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Public Relation: 40151011 / 40151015</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Pharmacy: 40151041 /40151040</span></li>\n</ul>\n  <h3 className="text-2xl font-bold text-[#002b5c] mt-8 mb-4">Super Speciality Building</h3>\n  <ul className="list-none space-y-3 mb-6">\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Operator Assistance: 020 49153000</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>ICU: 49153483 / 49153484 NICU : 49153380 / 49153381</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Pharmacy: 49153009</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Blood Bank: 49153081 / 49153089</span></li>\n</ul>\n  <h3 className="text-2xl font-bold text-[#002b5c] mt-8 mb-4">Important Guidelines:</h3>\n  <p className="text-slate-600 leading-relaxed font-light text-base">Patient should be physically present in the hospital premises at the time of admission</p>\n  <p className="text-slate-600 leading-relaxed font-light text-base">To facilitate the process of Registration/Admission/Charity/Mediclaim, please ensure to carry patients ID proof(Adhar card, Pan card, Voting card, Driving license, Passport)</p>\n  <p className="text-slate-600 leading-relaxed font-light text-base">Patients are advised not to keep any valuables, jewellery or other costly items with them during their stay at the Hospital.</p>\n  <p className="text-slate-600 leading-relaxed font-light text-base">You can ask for room service for- a. Pharmacy b.Diet c. WiFi</p>\n  <p className="text-slate-600 leading-relaxed font-light text-base">Please do not Smoke or Spit in the Hospital premises.</p>\n  <p className="text-slate-600 leading-relaxed font-light text-base">Please remember that the total cost of Treatment/Procedure will vary as per your ward/room</p>\n  <p className="text-slate-600 leading-relaxed font-light text-base">No room booking service - rooms and hospital can not be booked in advance as exact discharge time of admitted patients can not be predicted and admission cant not be denied to any patients needing treatment</p>\n  <h3 className="text-2xl font-bold text-[#002b5c] mt-8 mb-4">Room details :</h3>\n  <h3 className="text-2xl font-bold text-[#002b5c] mt-8 mb-4">Main Building:</h3>\n  <h3 className="text-2xl font-bold text-[#002b5c] mt-8 mb-4">Room Type: GS Special Room A (Patient Room)</h3>\n  <ul className="list-none space-y-3 mb-6">\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Rate: Rs. 15000/-</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Facilities: One Attendant Bed, Attached Toilet- Attendant Bathroom, A/C As Well As Windows, Fan, Tv, Telephone, Sofaset, Refrigerator, Ward Robe</span></li>\n</ul>\n  <h3 className="text-2xl font-bold text-[#002b5c] mt-8 mb-4">Room Type: GS Special Room A (Relative Room)</h3>\n  <h3 className="text-2xl font-bold text-[#002b5c] mt-8 mb-4">Room Type: 
-        GS Special Room B</h3>\n  <ul className="list-none space-y-3 mb-6">\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Rate: Rs. 9000/-</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Facilities: One Attendant Bed, Attached Toilet- Attendant Bathroom, A/C As Well As Windows, Fan, Tv, Telephone, Sofaset, Refrigerator, Ward Robe,</span></li>\n</ul>\n  <h3 className="text-2xl font-bold text-[#002b5c] mt-8 mb-4">Room Type: GS Private A</h3>\n  <ul className="list-none space-y-3 mb-6">\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Rate: Rs. 4500/-</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Facilities: One Attendant Bed, Attached Toilet-Bathroom, A/C As Well As Windows, Tv, Telephone, Sofaset, Refrigerator, Ward Robe, Fan</span></li>\n</ul>\n  <h3 className="text-2xl font-bold text-[#002b5c] mt-8 mb-4">Room Type: GS Private B</h3>\n  <ul className="list-none space-y-3 mb-6">\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Rate: Rs. 4000/-</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Facilities: One Attendant Bed, Attached Toilet-Bathroom, A/C As Well As Windows, Tv, Telephone, Sofaset, Ward Robe, Fan</span></li>\n</ul>\n  <h3 className="text-2xl font-bold text-[#002b5c] mt-8 mb-4">Room Type:  GS Private C</h3>\n  <ul className="list-none space-y-3 mb-6">\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Rate: Rs. 3000/-</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Facilities: One Attendant Bed, Attached Toilet-Bathroom, Ventilated Room, Tv, Telephone, Ward Robe, Fan,Non A/C</span></li>\n</ul>\n  <h3 className="text-2xl font-bold text-[#002b5c] mt-8 mb-4">Room Type: GS Private D</h3>\n  <ul className="list-none space-y-3 mb-6">\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Rate: Rs. 2500/-</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Facilities: One Attendant Bed, Attached Toilet-Bathroom, A/C, Ventilation through A/C And Fan, Tv, Telephone, Ward Robe, No Window</span></li>\n</ul>\n  <h3 className="text-2xl font-bold text-[#002b5c] mt-8 mb-4">Room Type: GS Semi Private</h3>\n  <ul className="list-none space-y-3 mb-6">\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Rate: Rs. 1700/-</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Facilities: Only One Patient In A Room, One Attendant Bed, Shared Toilet For 4 Rooms, Telephone, No Tv</span></li>\n</ul>\n  <h3 className="text-2xl font-bold text-[#002b5c] mt-8 mb-4">Room Type: General Ward</h3>\n  <ul className="list-none space-y-3 mb-6">\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Rate: Rs. 600/-</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Facilities: Telephone</span></li>\n</ul>\n  <h3 className="text-2xl font-bold text-[#002b5c] mt-8 mb-4">Room Type: GS Day Care (Non AC)</h3>\n  <ul className="list-none space-y-3 mb-6">\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Rate: Rs. 1100/-</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Facilities: Common Ward For Male And Female</span></li>\n</ul>\n  <p className="text-slate-600 leading-relaxed font-light text-base">* All the rooms have central oxygen & suction connection, attendant bed, bed-side locker.</p>\n  <h3 className="text-2xl font-bold text-[#002b5c] mt-8 mb-4">Super Speciality Building:</h3>\n  <h3 className="text-2xl font-bold text-[#002b5c] mt-8 mb-4">Room Type: SS Super Deluxe A (Patient Room)</h3>\n  <ul className="list-none space-y-3 mb-6">\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Rate: Rs. 9000/-</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Facilities: One attendant bed, Attached toilet-bathroom, A/C as well as windows, Tv, Telephone, Sofaset, Refrigerator, Ward Robe</span></li>\n</ul>\n  <h3 className="text-2xl font-bold text-[#002b5c] mt-8 mb-4">Room Type: SS Super Deluxe A (Relative room)</h3>\n  <ul className="list-none space-y-3 mb-6">\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Facilities: No window, One bed, One sofa, TV, AC</span></li>\n</ul>\n  <h3 className="text-2xl font-bold text-[#002b5c] mt-8 mb-4">Room Type: SS Super Deluxe B (Window room)</h3>\n  <ul className="list-none space-y-3 mb-6">\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Rate: Rs. 6700/-</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Facilities: One attendant bed, Attached toilet-bathroom, A/C, Tv, Telephone, Sofaset, Refrigerator, Ward robe</span></li>\n</ul>\n  <h3 className="text-2xl font-bold text-[#002b5c] mt-8 mb-4">Room Type: SS Super Deluxe B (Non Window room)</h3>\n  <ul className="list-none space-y-3 mb-6">\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Rate: Rs. 6700/-</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Facilities: One attendant bed, Attached toilet-bathroom, A/C, Tv, Telephone, Sofaset, Refrigerator, Ward robe</span></li>\n</ul>\n  <h3 className="text-2xl font-bold text-[#002b5c] mt-8 mb-4">Room Type: SS Super Deluxe C</h3>\n  <ul className="list-none space-y-3 mb-6">\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Rate: Rs. 6200/-</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Facilities: One attendant bed, A/C, Tv, Telephone, Sofaset, Refrigerator, Ward robe</span></li>\n</ul>\n  <h3 className="text-2xl font-bold text-[#002b5c] mt-8 mb-4">Room Type: SS  Private AC</h3>\n  <ul className="list-none space-y-3 mb-6">\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Rate: Rs. 4500/-</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Facilities: One Attendant Bed, Attached Toilet-Bathroom, A/C, Windows, Fan, Tv, Telephone, Sofaset, Refrigerator, WardRobe</span></li>\n</ul>\n  <h3 className="text-2xl font-bold text-[#002b5c] mt-8 mb-4">Room Type: SS Private Non-AC</h3>\n  <ul className="list-none space-y-3 mb-6">\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Rate: Rs. 4000/-</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Facilities: One Attendant Bed, Attached Toilet-Bathroom, Ventilated Room, Fan, Tv, Telephone, Wardrobe, Non-AC</span></li>\n</ul>\n  <h3 className="text-2xl font-bold text-[#002b5c] mt-8 mb-4">Room Type: SS Semi Private A (Obs-Gyn)</h3>\n  <ul className="list-none space-y-3 mb-6">\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Rate: Rs. 2200/-</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Facilities: One Attendant Bed, Separate Toilet-Bathroom, A/C, Telephone, No TV</span></li>\n</ul>\n  <h3 className="text-2xl font-bold text-[#002b5c] mt-8 mb-4">Room Type: SS Semi Private B</h3>\n  <ul className="list-none space-y-3 mb-6">\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Rate: Rs. 1700/-</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Facilities: Only One Patient In A Room, One Attendant Bed, Shared Toilet For 4 Rooms, Telephone, No Tv</span></li>\n</ul>\n  <h3 className="text-2xl font-bold text-[#002b5c] mt-8 mb-4">Room Type: SS Day Care (AC)</h3>\n  <ul className="list-none space-y-3 mb-6">\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Rate: Rs. 1300/-</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Facilities: Common Ward For Male And Female</span></li>\n</ul>\n  <p className="text-slate-600 leading-relaxed font-light text-base">* All the rooms have central oxygen & suction connection, attendant bed, bed-side locker.</p>\n  <h3 className="text-2xl font-bold text-[#002b5c] mt-8 mb-4">Intensive Care Unit :</h3>\n  <ul className="list-none space-y-3 mb-6">\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>High Dependency Unit (HDU)</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>General Bed</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Private Room w/o AC</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Private Room with AC</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Deluxe Room</span></li>\n</ul>\n  <h3 className="text-2xl font-bold text-[#002b5c] mt-8 mb-4">Neonatal Intensive Care Unit :</h3>\n  <ul className="list-none space-y-3 mb-6">\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Nursery Care</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Intermidiate Care</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>High Dependancy</span></li>\n</ul>\n  <h3 className="text-2xl font-bold text-[#002b5c] mt-8 mb-4">Paediatric Intensive Care Unit :</h3>\n  <ul className="list-none space-y-3 mb-6">\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Step Down Bed</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Non Ventilated Bed</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Ventilated Bed</span></li>\n</ul>\n  <h3 className="text-2xl font-bold text-[#002b5c] mt-8 mb-4">Meal Timings :</h3>\n  <p className="text-slate-600 leading-relaxed font-light text-base">07.00am - 07.30am</p>\n  <p className="text-slate-600 leading-relaxed font-light text-base">08.30am - 09.00am</p>\n  <p className="text-slate-600 leading-relaxed font-light text-base">12.30pm - 01.30pm</p>\n  <p className="text-slate-600 leading-relaxed font-light text-base">03.30pm - 04.00pm</p>\n  <p className="text-slate-600 leading-relaxed font-light text-base">07.00pm - 08.00pm</p>\n  <p className="text-slate-600 leading-relaxed font-light text-base">* Tea-Coffee vending machines on each floor.
-	* Coffee shop is open for 24 hours.
-	* The hospital diet is optional.</p>\n  <h3 className="text-2xl font-bold text-[#002b5c] mt-8 mb-4">Admission Procedure</h3>\n  <p className="text-slate-600 leading-relaxed font-light text-base">On admission to Deenanath Mangeshkar Hospital, you will be required to do the following:</p>\n  <ul className="list-none space-y-3 mb-6">\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Confirm the room type which you will be staying in. All charges are based on a standard room, so please note your total bill may change in accordance to this.</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>You will be asked to complete an ‘Admission Form’ and verify who will be responsible for your medical expenses.</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>You will now be escorted to your room by one of the hospital porters.</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Once you arrive, a nurse or coordinator will explain about the facilities in your room and you will be asked to make a preference for your meals (meals are not compulsory in the hospital, you can bring meals from outside.).</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>The nurse will ask you to change your clothes into the hospital pyjamas and your temperature and blood pressure will be checked.</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Additionally, if you need to undergo any minor or major surgery, you will be asked to sign Consent form in order to give permission to the Hospital to proceed.</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>If you have any questions at this point, please do not hesitate to ask our nurse or request for a coordinator.</span></li>\n</ul>\n  <p className="text-slate-600 leading-relaxed font-light text-base">Hospital Phone Numbers concerned to IPD</p>\n  <h3 className="text-2xl font-bold text-[#002b5c] mt-8 mb-4">Cashless Hospitalization</h3>\n  <p className="text-slate-600 leading-relaxed font-light text-base">All Health Insurance Companies offer cashless hospitalization facility to their policy Holders. Most Insurance companies ,particularly Public Sector Insurance companies provide cashless facility through TPA (Third Party Administrator). The insurance company, TPA and network hospital have entered into an agreement to ensure smooth cashless facility for all eligible policy holders.</p>\n  <p className="text-slate-600 leading-relaxed font-light text-base">As a policy holder one should be familiar with the terms TPA, cashless process, Network Hospital and Non-Network Hospital.</p>\n  <p className="text-slate-600 leading-relaxed font-light text-base">Name and Address of your TPA is usually mentioned on Policy document. In case of hospitalization, when you get admitted to a Network Hospital you will be eligible for cashless hospitalization, subject to the other terms and condition mentioned in your policy being fulfilled. If you are admitted to a Non- Network Hospital, you will have to settle the bill directly to the hospital and then seek re-imbursement through your TPA.</p>\n  <p className="text-slate-600 leading-relaxed font-light text-base">One must understand that cashless treatment does not mean free treatment. We as a network hospital have volunteered to provide this facility as a value added service to help you as our out -patient in this process.</p>\n  <p className="text-slate-600 leading-relaxed font-light text-base">In short Cashless hospitalization is a facility provided by health insurance Company that enables an insured customer to obtain admission and undergo the required treatment without a direct payment. The assigned TPA will mediate between the network hospital (DMH) and the insurance company to settle the bills on behalf of the insured customer.</p>\n  <p className="text-slate-600 leading-relaxed font-light text-base">For planned admissions (where your surgery is already decided) you must get your initial approval prior to your admission date by visiting our Mediclaim help desk. However, for emergency and walk-in admission you can contact the Mediclaim help desk immediately on admission .</p>\n  <p className="text-slate-600 leading-relaxed font-light text-base">For your information note the location and contact number of Mediclaim department at the Hospital</p>\n  <h3 className="text-2xl font-bold text-[#002b5c] mt-8 mb-4">DMHRC – Main Building</h3>\n  <ul className="list-none space-y-3 mb-6">\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Location - 2nd floor ‘C’ wing</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Contact No-  020 40151258, 020 40151259, 020 - 40151254</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Email : mediclaim@dmhospital.org</span></li>\n</ul>\n  <h3 className="text-2xl font-bold text-[#002b5c] mt-8 mb-4">DMHSS – Super Speciality Building</h3>\n  <ul className="list-none space-y-3 mb-6">\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Location –  Ground Floor , R. No 28</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Contact No -  020 49153070, 020 49153071 / 020 49153038</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>For all patients:  8th Floor – 3877 / 3861</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Email : mediclaim@dmhospital.org</span></li>\n</ul>\n  <p className="text-slate-600 leading-relaxed font-light text-base">For pre-authorization</p>\n  <p className="text-slate-600 leading-relaxed font-light text-base">10.00 a.m. to 1.30 p.m. & 3 p.m. to 6 p.m. Mon. to Sat. & Sun. 10 a.m. to 2 p.m.</p>\n  <p className="text-slate-600 leading-relaxed font-light text-base">At the Mediclaim Department, you need to bring with you.</p>\n  <ul className="list-none space-y-3 mb-6">\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Health Insurance Policy copy, must for individual policy holders. Photo ID card if issued by TPA, Employee ID card (corporate policy holder)</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Patient and Policy holder Aadhar Card, PAN card.</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Passport size photo only for (Max Bhupa, Applo Munich, SBI General Ins., Manipal and Cigna TTK)</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Admission note given by your treating doctor.</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>All necessary investigations reports.</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Address proof (electricity bill) telephone bill / Rental agreement copy / bank statement.</span></li>\n</ul>\n  <p className="text-slate-600 leading-relaxed font-light text-base">Our liaison officer will guide you for filling pre-authorization.</p>\n  <h3 className="text-2xl font-bold text-[#002b5c] mt-8 mb-4">TPA Companies :</h3>\n  <p className="text-slate-600 leading-relaxed font-light text-base">Deenanath Mangeshkar Hospital is empanelled with following insurance companies / TPA’s for cashless facility.</p>\n  <h3 className="text-2xl font-bold text-[#002b5c] mt-8 mb-4">Corporate Companies :</h3>\n  <ul className="list-none space-y-3 mb-6">\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Assist Card Smalline Corp SA (ACI)</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Autovision Gmbh Caregroup Auslandsservice</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Automotive Research Asso. India (ARAI)</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Bharat Electronic Ltd</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Cummins India Ltd</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Hero MotoCorp Ltd</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Indian Oil Corporation Ltd (IOCL)</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>KSB Pumps Ltd</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Maruti Suzuki India Ltd</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Oil and Natural Gas Corp Ltd (ONGC)</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Ram Krishna Math</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Shri Sarada Math</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>TATA Motors</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Thermax Workmen Medical Trust</span></li>\n</ul>\n</div>\n
+              <div className="space-y-12 text-slate-700">
+                
+                {/* Admission Section */}
+                <section>
+                  <h3 className="text-2xl font-bold text-[#002b5c] mb-6 flex items-center gap-3">
+                    <FileText className="w-6 h-6 text-[#007a87]" />
+                    Admission Details
+                  </h3>
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div className="bg-slate-50 p-6 rounded-2xl border border-slate-100 hover:shadow-md transition-shadow">
+                      <h4 className="font-bold text-[#007a87] text-lg mb-4 border-b border-slate-200 pb-2">GS / Old Building</h4>
+                      <ul className="space-y-3">
+                        <li className="flex items-start gap-3">
+                          <MapPin className="w-5 h-5 mt-0.5 text-teal-600 shrink-0" /> 
+                          <span><strong className="text-slate-800">Location:</strong> Ground floor B wing</span>
+                        </li>
+                        <li className="flex items-start gap-3">
+                          <Clock className="w-5 h-5 mt-0.5 text-teal-600 shrink-0" /> 
+                          <span><strong className="text-slate-800">Time:</strong> 24/7</span>
+                        </li>
+                        <li className="flex items-start gap-3">
+                          <Phone className="w-5 h-5 mt-0.5 text-teal-600 shrink-0" /> 
+                          <span><strong className="text-slate-800">Direct contact:</strong> 020 40151019</span>
+                        </li>
+                      </ul>
+                    </div>
+                    <div className="bg-slate-50 p-6 rounded-2xl border border-slate-100 hover:shadow-md transition-shadow">
+                      <h4 className="font-bold text-[#007a87] text-lg mb-4 border-b border-slate-200 pb-2">SS / New Building</h4>
+                      <ul className="space-y-3">
+                        <li className="flex items-start gap-3">
+                          <MapPin className="w-5 h-5 mt-0.5 text-teal-600 shrink-0" /> 
+                          <span><strong className="text-slate-800">Location:</strong> Behind Reception</span>
+                        </li>
+                        <li className="flex items-start gap-3">
+                          <Clock className="w-5 h-5 mt-0.5 text-teal-600 shrink-0" /> 
+                          <span><strong className="text-slate-800">Time:</strong> 7am to 10pm (Sunday closed)</span>
+                        </li>
+                        <li className="flex items-start gap-3">
+                          <Phone className="w-5 h-5 mt-0.5 text-teal-600 shrink-0" /> 
+                          <span><strong className="text-slate-800">Direct contact:</strong> 020 49153024</span>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </section>
 
+                {/* Important Phone Numbers */}
+                <section>
+                  <h3 className="text-2xl font-bold text-[#002b5c] mb-6 flex items-center gap-3">
+                    <Phone className="w-6 h-6 text-[#007a87]" />
+                    Important Phone Numbers
+                  </h3>
+                  <div className="grid md:grid-cols-2 gap-8">
+                    <div>
+                      <h4 className="font-bold text-slate-800 text-lg mb-4">Main Building</h4>
+                      <ul className="space-y-3 text-sm">
+                        <li className="flex items-center justify-between border-b border-slate-100 pb-2">
+                          <span className="text-slate-600">Operator Assistance</span>
+                          <span className="font-semibold">40151000</span>
+                        </li>
+                        <li className="flex items-center justify-between border-b border-slate-100 pb-2">
+                          <span className="text-slate-600">Emergency</span>
+                          <span className="font-semibold">40151024 / 27 / 65</span>
+                        </li>
+                        <li className="flex items-center justify-between border-b border-slate-100 pb-2">
+                          <span className="text-slate-600">ICU</span>
+                          <span className="font-semibold">40151155 / 40151152</span>
+                        </li>
+                        <li className="flex items-center justify-between border-b border-slate-100 pb-2">
+                          <span className="text-slate-600">PICU</span>
+                          <span className="font-semibold">40151297 / 40151217</span>
+                        </li>
+                        <li className="flex items-center justify-between border-b border-slate-100 pb-2">
+                          <span className="text-slate-600">Public Relation</span>
+                          <span className="font-semibold">40151011 / 40151015</span>
+                        </li>
+                        <li className="flex items-center justify-between border-b border-slate-100 pb-2">
+                          <span className="text-slate-600">Pharmacy</span>
+                          <span className="font-semibold">40151041 / 40151040</span>
+                        </li>
+                      </ul>
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-slate-800 text-lg mb-4">Super Speciality Building</h4>
+                      <ul className="space-y-3 text-sm">
+                        <li className="flex items-center justify-between border-b border-slate-100 pb-2">
+                          <span className="text-slate-600">Operator Assistance</span>
+                          <span className="font-semibold">020 49153000</span>
+                        </li>
+                        <li className="flex items-center justify-between border-b border-slate-100 pb-2">
+                          <span className="text-slate-600">ICU</span>
+                          <span className="font-semibold">49153483 / 49153484</span>
+                        </li>
+                        <li className="flex items-center justify-between border-b border-slate-100 pb-2">
+                          <span className="text-slate-600">NICU</span>
+                          <span className="font-semibold">49153380 / 49153381</span>
+                        </li>
+                        <li className="flex items-center justify-between border-b border-slate-100 pb-2">
+                          <span className="text-slate-600">Pharmacy</span>
+                          <span className="font-semibold">49153009</span>
+                        </li>
+                        <li className="flex items-center justify-between border-b border-slate-100 pb-2">
+                          <span className="text-slate-600">Blood Bank</span>
+                          <span className="font-semibold">49153081 / 49153089</span>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </section>
+
+                {/* Important Guidelines */}
+                <section>
+                  <h3 className="text-2xl font-bold text-[#002b5c] mb-6 flex items-center gap-3">
+                    <CheckCircle2 className="w-6 h-6 text-[#007a87]" />
+                    Important Guidelines
+                  </h3>
+                  <div className="bg-teal-50/50 p-6 md:p-8 rounded-2xl border border-teal-100/50">
+                    <ul className="space-y-4">
+                      <li className="flex items-start gap-3">
+                        <ChevronRight className="w-5 h-5 text-teal-600 shrink-0 mt-0.5" />
+                        <span>Patient should be physically present in the hospital premises at the time of admission.</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <ChevronRight className="w-5 h-5 text-teal-600 shrink-0 mt-0.5" />
+                        <span>To facilitate the process of Registration/Admission/Charity/Mediclaim, please ensure to carry patients ID proof (Adhar card, Pan card, Voting card, Driving license, Passport).</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <ChevronRight className="w-5 h-5 text-teal-600 shrink-0 mt-0.5" />
+                        <span>Patients are advised not to keep any valuables, jewellery or other costly items with them during their stay at the Hospital.</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <ChevronRight className="w-5 h-5 text-teal-600 shrink-0 mt-0.5" />
+                        <span>You can ask for room service for: <strong>a. Pharmacy</strong>, <strong>b. Diet</strong>, <strong>c. WiFi</strong>.</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <ChevronRight className="w-5 h-5 text-teal-600 shrink-0 mt-0.5" />
+                        <span>Please do not Smoke or Spit in the Hospital premises.</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <ChevronRight className="w-5 h-5 text-teal-600 shrink-0 mt-0.5" />
+                        <span>Please remember that the total cost of Treatment/Procedure will vary as per your ward/room.</span>
+                      </li>
+                      <li className="flex items-start gap-3">
+                        <ChevronRight className="w-5 h-5 text-teal-600 shrink-0 mt-0.5" />
+                        <span><strong>No room booking service:</strong> rooms and hospital can not be booked in advance as exact discharge time of admitted patients can not be predicted and admission can not be denied to any patients needing treatment.</span>
+                      </li>
+                    </ul>
+                  </div>
+                </section>
+
+                {/* Room Details & Meal Timings */}
+                <section>
+                  <h3 className="text-2xl font-bold text-[#002b5c] mb-6 flex items-center gap-3">
+                    <Bed className="w-6 h-6 text-[#007a87]" />
+                    Room Details & Tariffs
+                  </h3>
+                  
+                  <div className="space-y-8">
+                    {/* Main Building Rooms */}
+                    <div>
+                      <h4 className="font-bold text-xl text-slate-800 mb-4 pb-2 border-b-2 border-teal-100 inline-block">Main Building Rooms</h4>
+                      <div className="grid md:grid-cols-2 gap-4">
+                        {[
+                          { name: "GS Special Room A (Patient Room)", rate: "15000/-", fac: "One Attendant Bed, Attached Toilet- Attendant Bathroom, A/C As Well As Windows, Fan, Tv, Telephone, Sofaset, Refrigerator, Ward Robe" },
+                          { name: "GS Special Room A (Relative Room)", rate: "-", fac: "-" },
+                          { name: "GS Special Room B", rate: "9000/-", fac: "One Attendant Bed, Attached Toilet- Attendant Bathroom, A/C As Well As Windows, Fan, Tv, Telephone, Sofaset, Refrigerator, Ward Robe" },
+                          { name: "GS Private A", rate: "4500/-", fac: "One Attendant Bed, Attached Toilet-Bathroom, A/C As Well As Windows, Tv, Telephone, Sofaset, Refrigerator, Ward Robe, Fan" },
+                          { name: "GS Private B", rate: "4000/-", fac: "One Attendant Bed, Attached Toilet-Bathroom, A/C As Well As Windows, Tv, Telephone, Sofaset, Ward Robe, Fan" },
+                          { name: "GS Private C", rate: "3000/-", fac: "One Attendant Bed, Attached Toilet-Bathroom, Ventilated Room, Tv, Telephone, Ward Robe, Fan,Non A/C" },
+                          { name: "GS Private D", rate: "2500/-", fac: "One Attendant Bed, Attached Toilet-Bathroom, A/C, Ventilation through A/C And Fan, Tv, Telephone, Ward Robe, No Window" },
+                          { name: "GS Semi Private", rate: "1700/-", fac: "Only One Patient In A Room, One Attendant Bed, Shared Toilet For 4 Rooms, Telephone, No Tv" },
+                          { name: "General Ward", rate: "600/-", fac: "Telephone" },
+                          { name: "GS Day Care (Non AC)", rate: "1100/-", fac: "Common Ward For Male And Female" }
+                        ].map((room, i) => (
+                          <div key={i} className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm hover:border-[#D9232D] hover:shadow-md transition-all group">
+                            <h5 className="font-bold text-[#007a87] group-hover:text-[#D9232D] transition-colors">{room.name}</h5>
+                            {room.rate !== "-" && <p className="text-slate-800 font-semibold mt-1">Rate: Rs. {room.rate}</p>}
+                            {room.fac !== "-" && <p className="text-sm text-slate-600 mt-2">{room.fac}</p>}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Super Speciality Building Rooms */}
+                    <div>
+                      <h4 className="font-bold text-xl text-slate-800 mb-4 pb-2 border-b-2 border-teal-100 inline-block">Super Speciality Building</h4>
+                      <div className="grid md:grid-cols-2 gap-4">
+                        {[
+                          { name: "SS Super Deluxe A (Patient Room)", rate: "9000/-", fac: "One attendant bed, Attached toilet-bathroom, A/C as well as windows, Tv, Telephone, Sofaset, Refrigerator, Ward Robe" },
+                          { name: "SS Super Deluxe A (Relative room)", rate: "-", fac: "No window, One bed, One sofa, TV, AC" },
+                          { name: "SS Super Deluxe B (Window room)", rate: "6700/-", fac: "One attendant bed, Attached toilet-bathroom, A/C, Tv, Telephone, Sofaset, Refrigerator, Ward robe" },
+                          { name: "SS Super Deluxe B (Non Window room)", rate: "6700/-", fac: "One attendant bed, Attached toilet-bathroom, A/C, Tv, Telephone, Sofaset, Refrigerator, Ward robe" },
+                          { name: "SS Super Deluxe C", rate: "6200/-", fac: "One attendant bed, A/C, Tv, Telephone, Sofaset, Refrigerator, Ward robe" },
+                          { name: "SS Private AC", rate: "4500/-", fac: "One Attendant Bed, Attached Toilet-Bathroom, A/C, Windows, Fan, Tv, Telephone, Sofaset, Refrigerator, WardRobe" },
+                          { name: "SS Private Non-AC", rate: "4000/-", fac: "One Attendant Bed, Attached Toilet-Bathroom, Ventilated Room, Fan, Tv, Telephone, Wardrobe, Non-AC" },
+                          { name: "SS Semi Private A (Obs-Gyn)", rate: "2200/-", fac: "One Attendant Bed, Separate Toilet-Bathroom, A/C, Telephone, No TV" },
+                          { name: "SS Semi Private B", rate: "1700/-", fac: "Only One Patient In A Room, One Attendant Bed, Shared Toilet For 4 Rooms, Telephone, No Tv" },
+                          { name: "SS Day Care (AC)", rate: "1300/-", fac: "Common Ward For Male And Female" }
+                        ].map((room, i) => (
+                          <div key={i} className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm hover:border-[#D9232D] hover:shadow-md transition-all group">
+                            <h5 className="font-bold text-[#007a87] group-hover:text-[#D9232D] transition-colors">{room.name}</h5>
+                            {room.rate !== "-" && <p className="text-slate-800 font-semibold mt-1">Rate: Rs. {room.rate}</p>}
+                            <p className="text-sm text-slate-600 mt-2">{room.fac}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    
+                    <p className="text-sm text-teal-700 bg-teal-50 p-3 rounded-lg border border-teal-100">* All the rooms have central oxygen & suction connection, attendant bed, bed-side locker.</p>
+                  </div>
+                </section>
+
+                {/* ICUs and Meal Timings */}
+                <div className="grid md:grid-cols-2 gap-8">
+                  <section>
+                    <h3 className="text-2xl font-bold text-[#002b5c] mb-6 flex items-center gap-3">
+                      <FileText className="w-6 h-6 text-[#007a87]" />
+                      Intensive Care Units
+                    </h3>
+                    <div className="space-y-6">
+                      <div>
+                        <h4 className="font-bold text-slate-800 mb-2">Intensive Care Unit</h4>
+                        <ul className="list-disc pl-5 text-slate-600 space-y-1">
+                          <li>High Dependency Unit (HDU)</li>
+                          <li>General Bed</li>
+                          <li>Private Room w/o AC</li>
+                          <li>Private Room with AC</li>
+                          <li>Deluxe Room</li>
+                        </ul>
+                      </div>
+                      <div>
+                        <h4 className="font-bold text-slate-800 mb-2">Neonatal Intensive Care Unit</h4>
+                        <ul className="list-disc pl-5 text-slate-600 space-y-1">
+                          <li>Nursery Care</li>
+                          <li>Intermidiate Care</li>
+                          <li>High Dependancy</li>
+                        </ul>
+                      </div>
+                      <div>
+                        <h4 className="font-bold text-slate-800 mb-2">Paediatric Intensive Care Unit</h4>
+                        <ul className="list-disc pl-5 text-slate-600 space-y-1">
+                          <li>Step Down Bed</li>
+                          <li>Non Ventilated Bed</li>
+                          <li>Ventilated Bed</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </section>
+
+                  <section>
+                    <h3 className="text-2xl font-bold text-[#002b5c] mb-6 flex items-center gap-3">
+                      <Clock className="w-6 h-6 text-[#007a87]" />
+                      Meal Timings
+                    </h3>
+                    <div className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
+                      <table className="w-full text-left">
+                        <tbody className="divide-y divide-slate-100">
+                          <tr className="group hover:bg-[#003360] transition-colors"><th className="px-4 py-3 text-slate-800 group-hover:text-white transition-colors">Morning Tea</th><td className="px-4 py-3 text-slate-600 group-hover:text-blue-100 transition-colors">07.00am - 07.30am</td></tr>
+                          <tr className="group hover:bg-[#003360] transition-colors"><th className="px-4 py-3 text-slate-800 group-hover:text-white transition-colors">Breakfast & Milk</th><td className="px-4 py-3 text-slate-600 group-hover:text-blue-100 transition-colors">08.30am - 09.00am</td></tr>
+                          <tr className="group hover:bg-[#003360] transition-colors"><th className="px-4 py-3 text-slate-800 group-hover:text-white transition-colors">Lunch</th><td className="px-4 py-3 text-slate-600 group-hover:text-blue-100 transition-colors">12.30pm - 01.30pm</td></tr>
+                          <tr className="group hover:bg-[#003360] transition-colors"><th className="px-4 py-3 text-slate-800 group-hover:text-white transition-colors">Afternoon Tea</th><td className="px-4 py-3 text-slate-600 group-hover:text-blue-100 transition-colors">03.30pm - 04.00pm</td></tr>
+                          <tr className="group hover:bg-[#003360] transition-colors"><th className="px-4 py-3 text-slate-800 group-hover:text-white transition-colors">Dinner</th><td className="px-4 py-3 text-slate-600 group-hover:text-blue-100 transition-colors">07.00pm - 08.00pm</td></tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <ul className="mt-4 space-y-2 text-sm text-slate-600">
+                      <li className="flex items-start gap-2"><CheckCircle2 className="w-4 h-4 text-teal-500 shrink-0 mt-0.5" /> Tea-Coffee vending machines on each floor.</li>
+                      <li className="flex items-start gap-2"><CheckCircle2 className="w-4 h-4 text-teal-500 shrink-0 mt-0.5" /> Coffee shop is open for 24 hours.</li>
+                      <li className="flex items-start gap-2"><CheckCircle2 className="w-4 h-4 text-teal-500 shrink-0 mt-0.5" /> The hospital diet is optional.</li>
+                    </ul>
+                  </section>
+                </div>
+
+                {/* Admission Procedure */}
+                <section>
+                  <h3 className="text-2xl font-bold text-[#002b5c] mb-6 flex items-center gap-3">
+                    <FileText className="w-6 h-6 text-[#007a87]" />
+                    Admission Procedure
+                  </h3>
+                  <p className="mb-4 text-slate-600">On admission to Deenanath Mangeshkar Hospital, you will be required to do the following:</p>
+                  <ul className="space-y-4">
+                    <li className="flex items-start gap-3 bg-white border border-slate-100 p-4 rounded-xl shadow-sm">
+                      <div className="w-8 h-8 rounded-full bg-teal-100 text-[#007a87] flex items-center justify-center font-bold shrink-0">1</div>
+                      <span className="mt-1">Confirm the room type which you will be staying in. All charges are based on a standard room, so please note your total bill may change in accordance to this.</span>
+                    </li>
+                    <li className="flex items-start gap-3 bg-white border border-slate-100 p-4 rounded-xl shadow-sm">
+                      <div className="w-8 h-8 rounded-full bg-teal-100 text-[#007a87] flex items-center justify-center font-bold shrink-0">2</div>
+                      <span className="mt-1">You will be asked to complete an 'Admission Form' and verify who will be responsible for your medical expenses.</span>
+                    </li>
+                    <li className="flex items-start gap-3 bg-white border border-slate-100 p-4 rounded-xl shadow-sm">
+                      <div className="w-8 h-8 rounded-full bg-teal-100 text-[#007a87] flex items-center justify-center font-bold shrink-0">3</div>
+                      <span className="mt-1">You will now be escorted to your room by one of the hospital porters.</span>
+                    </li>
+                    <li className="flex items-start gap-3 bg-white border border-slate-100 p-4 rounded-xl shadow-sm">
+                      <div className="w-8 h-8 rounded-full bg-teal-100 text-[#007a87] flex items-center justify-center font-bold shrink-0">4</div>
+                      <span className="mt-1">Once you arrive, a nurse or coordinator will explain about the facilities in your room and you will be asked to make a preference for your meals (meals are not compulsory in the hospital, you can bring meals from outside).</span>
+                    </li>
+                    <li className="flex items-start gap-3 bg-white border border-slate-100 p-4 rounded-xl shadow-sm">
+                      <div className="w-8 h-8 rounded-full bg-teal-100 text-[#007a87] flex items-center justify-center font-bold shrink-0">5</div>
+                      <span className="mt-1">The nurse will ask you to change your clothes into the hospital pyjamas and your temperature and blood pressure will be checked.</span>
+                    </li>
+                    <li className="flex items-start gap-3 bg-white border border-slate-100 p-4 rounded-xl shadow-sm">
+                      <div className="w-8 h-8 rounded-full bg-teal-100 text-[#007a87] flex items-center justify-center font-bold shrink-0">6</div>
+                      <span className="mt-1">Additionally, if you need to undergo any minor or major surgery, you will be asked to sign Consent form in order to give permission to the Hospital to proceed.</span>
+                    </li>
+                    <li className="flex items-start gap-3 bg-white border border-slate-100 p-4 rounded-xl shadow-sm">
+                      <div className="w-8 h-8 rounded-full bg-teal-100 text-[#007a87] flex items-center justify-center font-bold shrink-0">7</div>
+                      <span className="mt-1">If you have any questions at this point, please do not hesitate to ask our nurse or request for a coordinator.</span>
+                    </li>
+                  </ul>
+                </section>
+
+                {/* Cashless Hospitalization */}
+                <section>
+                  <h3 className="text-2xl font-bold text-[#002b5c] mb-6 flex items-center gap-3">
+                    <CheckCircle2 className="w-6 h-6 text-[#007a87]" />
+                    Cashless Hospitalization
+                  </h3>
+                  <div className="prose prose-slate max-w-none text-slate-600">
+                    <p>All Health Insurance Companies offer cashless hospitalization facility to their policy Holders. Most Insurance companies, particularly Public Sector Insurance companies provide cashless facility through TPA (Third Party Administrator). The insurance company, TPA and network hospital have entered into an agreement to ensure smooth cashless facility for all eligible policy holders.</p>
+                    <p>As a policy holder one should be familiar with the terms TPA, cashless process, Network Hospital and Non-Network Hospital.</p>
+                    <p>Name and Address of your TPA is usually mentioned on Policy document. In case of hospitalization, when you get admitted to a Network Hospital you will be eligible for cashless hospitalization, subject to the other terms and condition mentioned in your policy being fulfilled. If you are admitted to a Non-Network Hospital, you will have to settle the bill directly to the hospital and then seek re-imbursement through your TPA.</p>
+                    <p className="bg-amber-50 text-amber-800 p-4 rounded-lg border border-amber-200">
+                      <strong>Note:</strong> One must understand that cashless treatment does not mean free treatment. We as a network hospital have volunteered to provide this facility as a value added service to help you as our out-patient in this process.
+                    </p>
+                    <p>In short, Cashless hospitalization is a facility provided by health insurance Company that enables an insured customer to obtain admission and undergo the required treatment without a direct payment. The assigned TPA will mediate between the network hospital (DMH) and the insurance company to settle the bills on behalf of the insured customer.</p>
+                    <p>For planned admissions (where your surgery is already decided) you must get your initial approval prior to your admission date by visiting our Mediclaim help desk. However, for emergency and walk-in admission you can contact the Mediclaim help desk immediately on admission.</p>
+                  </div>
+
+                  <div className="mt-8 grid md:grid-cols-2 gap-6">
+                    <div className="bg-[#002b5c] text-white p-6 rounded-2xl shadow-lg">
+                      <h4 className="font-bold text-xl mb-4 border-b border-white/20 pb-2">DMHRC – Main Building</h4>
+                      <ul className="space-y-3 text-blue-100">
+                        <li className="flex items-start gap-3">
+                          <MapPin className="w-5 h-5 text-teal-400 shrink-0 mt-0.5" />
+                          <span>2nd floor 'C' wing</span>
+                        </li>
+                        <li className="flex items-start gap-3">
+                          <Phone className="w-5 h-5 text-teal-400 shrink-0 mt-0.5" />
+                          <span>020 40151258, 020 40151259,<br/>020 - 40151254</span>
+                        </li>
+                        <li className="flex items-start gap-3">
+                          <FileText className="w-5 h-5 text-teal-400 shrink-0 mt-0.5" />
+                          <span>mediclaim@dmhospital.org</span>
+                        </li>
+                      </ul>
+                    </div>
+                    <div className="bg-[#007a87] text-white p-6 rounded-2xl shadow-lg">
+                      <h4 className="font-bold text-xl mb-4 border-b border-white/20 pb-2">DMHSS – Super Speciality Building</h4>
+                      <ul className="space-y-3 text-teal-50">
+                        <li className="flex items-start gap-3">
+                          <MapPin className="w-5 h-5 text-teal-200 shrink-0 mt-0.5" />
+                          <span>Ground Floor, R. No 28<br/>For all patients: 8th Floor – 3877 / 3861</span>
+                        </li>
+                        <li className="flex items-start gap-3">
+                          <Phone className="w-5 h-5 text-teal-200 shrink-0 mt-0.5" />
+                          <span>020 49153070, 020 49153071<br/>020 49153038</span>
+                        </li>
+                        <li className="flex items-start gap-3">
+                          <FileText className="w-5 h-5 text-teal-200 shrink-0 mt-0.5" />
+                          <span>mediclaim@dmhospital.org</span>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </section>
+
+                {/* TPA and Corporate Companies */}
+                <section>
+                  <h3 className="text-2xl font-bold text-[#002b5c] mb-6 flex items-center gap-3">
+                    <FileText className="w-6 h-6 text-[#007a87]" />
+                    TPA & Corporate Companies
+                  </h3>
+                  <p className="mb-4 text-slate-600">Deenanath Mangeshkar Hospital is empanelled with following insurance companies / TPA’s for cashless facility.</p>
+                  
+                  <div className="grid md:grid-cols-2 gap-8 mt-6">
+                    <div>
+                      <h4 className="font-bold text-slate-800 text-lg mb-4 bg-teal-50 p-3 rounded-lg border border-teal-100">Insurance Companies & TPAs</h4>
+                      <div className="h-[400px] overflow-y-auto pr-4 space-y-3 custom-scrollbar">
+                        {[
+                          "Acko General Insurance Company / Ericson Tpa Healthcare",
+                          "Aditya Birla Health Insurance / Family Health Plan",
+                          "Bajaj Alliance General Insurance / Genins India Tpa",
+                          "Care Health Insurance Company / Good Health Insurance",
+                          "Cholamandalam Ms General Insurance / Health India Insurance",
+                          "Future Generali India Insurance / Heritage Health Tpa",
+                          "Go Digit General Insurance / Health Insurance Tpa",
+                          "Hdfc Ergo General Insurance / Md India Healthcare",
+                          "Hdfc Life Insurance / Medi Assist Healthcare",
+                          "Icici Lombard General Insurance / Medsave Healthcare",
+                          "Icici Prudential Life Insurance / Paramount Health Services",
+                          "Iffco Tokio General Insurance / Park Mediclaim",
+                          "Liberty General Insurance / Raksha Tpa",
+                          "Magma Hdi Gen Insurance / Safe Way Insurance",
+                          "Manipal (CIGNA) Ttk Health / United Health Care Parekh",
+                          "National Insurance / Vidal Health Insurance",
+                          "Navi General Insurance / Vipul Medcorp",
+                          "Niva Bupa Health Insurance / East West Assist",
+                          "Reliance General Insurance",
+                          "Royal Sundaram General Ins",
+                          "SBI General Insurance",
+                          "Star Health And Allied Insurance",
+                          "Tata Aig General Insurance",
+                          "The New India Assurance",
+                          "The Oriental Insurance",
+                          "United India Insurance"
+                        ].map((company, i) => (
+                          <div key={i} className="flex items-start gap-2 border-b border-slate-100 pb-2">
+                            <ChevronRight className="w-4 h-4 mt-1 text-teal-500 shrink-0" />
+                            <span className="text-sm text-slate-600 leading-tight">{company}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <h4 className="font-bold text-slate-800 text-lg mb-4 bg-blue-50 p-3 rounded-lg border border-blue-100">Corporate Companies</h4>
+                      <div className="h-[400px] overflow-y-auto pr-4 space-y-3 custom-scrollbar">
+                        {[
+                          "Assist Card Smalline Corp SA (ACI)",
+                          "Autovision Gmbh Caregroup Auslandsservice",
+                          "Automotive Research Asso. India (ARAI)",
+                          "Bharat Electronic Ltd",
+                          "Cummins India Ltd",
+                          "Hero MotoCorp Ltd",
+                          "Indian Oil Corporation Ltd (IOCL)",
+                          "KSB Pumps Ltd",
+                          "Lupin Ltd",
+                          "Maruti Suzuki India Ltd",
+                          "Oil and Natural Gas Corp Ltd (ONGC)",
+                          "Ram Krishna Math",
+                          "Shri Sarada Math",
+                          "TATA Motors",
+                          "Thermax Workmen Medical Trust",
+                          "UTI"
+                        ].map((company, i) => (
+                          <div key={i} className="flex items-start gap-2 border-b border-slate-100 pb-2">
+                            <CheckCircle2 className="w-4 h-4 mt-1 text-blue-500 shrink-0" />
+                            <span className="text-sm text-slate-600 leading-tight">{company}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </section>
+
+              </div>
             </div>
           </div>
 

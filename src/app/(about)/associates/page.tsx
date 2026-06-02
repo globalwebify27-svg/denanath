@@ -118,7 +118,7 @@ export default function AssociatesPage() {
                 {associates.map((associate, idx) => (
                   <div 
                     key={idx} 
-                    className="group flex flex-col md:flex-row gap-6 lg:gap-8 bg-slate-50 hover:bg-white p-4 md:p-6 rounded-3xl border border-slate-100 hover:border-teal-100 shadow-sm hover:shadow-[0_15px_40px_rgb(0,122,135,0.08)] transition-all duration-500"
+                    className={`group flex flex-col ${idx % 2 !== 0 ? 'md:flex-row-reverse' : 'md:flex-row'} gap-6 lg:gap-8 bg-slate-50 hover:bg-white p-4 md:p-6 rounded-3xl border border-slate-100 hover:border-[#D9232D] shadow-sm hover:shadow-[0_15px_40px_rgba(217,35,45,0.15)] transition-all duration-500`}
                   >
                     {/* Image Container */}
                     <div className="w-full md:w-64 lg:w-72 shrink-0 overflow-hidden rounded-2xl relative aspect-[4/3] md:aspect-auto">

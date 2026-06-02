@@ -140,7 +140,7 @@ export default function PatientGuidePage() {
                   <img 
                     src="https://www.dmhospital.org/cms/Media/image/opd-setup.jpg" 
                     alt="OP Consultation Room" 
-                    className="w-full max-w-lg rounded-2xl shadow-md border border-slate-200 mb-8"
+                    className="w-full h-auto object-cover rounded-2xl shadow-md border border-slate-200 mb-8"
                   />
                   
                   <p className="text-[#002b5c] font-semibold text-lg mb-6">Following are General OPDs and Superspeciality OPDs :</p>

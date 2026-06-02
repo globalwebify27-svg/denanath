@@ -2,9 +2,9 @@
 
 import React, { useEffect, useRef } from "react";
 import Link from "next/link";
-import { ChevronRight, Building2 } from "lucide-react";
+import { ChevronRight, Building, Building2, Pill, Droplets, Users, Coffee, Activity, Ambulance, Copy, AlertTriangle, Glasses, Ticket, FileText, MapPin, Phone, Clock, Info, CheckCircle2, CreditCard } from "lucide-react";
 
-export default function PatientGuidePage() {
+export default function FacilitiesPage() {
   const patientGuideOptions = [
     { name: "Out Patient Guide", href: "/out-patient", active: false },
     { name: "In Patient Guide", href: "/in-patient", active: false },
@@ -14,6 +14,113 @@ export default function PatientGuidePage() {
     { name: "Patient Rights & Responsibilities", href: "/patient-rights", active: false },
     { name: "Photos", href: "/gallery-photos", active: false },
     { name: "Videos", href: "/gallery-videos", active: false },
+  ];
+
+  const facilities = [
+    {
+      title: "Reception (GS Building)",
+      icon: <Building className="w-6 h-6" />,
+      time: "24 Hours",
+      location: "Ground Floor Center Core GS Building",
+      phone: "020 - 40151000 (General Enquiry)",
+      details: ["Information about Consultants / Doctors", "Coffee / Tea Tokens"]
+    },
+    {
+      title: "Reception (SS Building)",
+      icon: <Building2 className="w-6 h-6" />,
+      time: "24 Hours",
+      location: "Ground Floor Center Core SS Building",
+      phone: "020 - 49153000 (General Enquiry)",
+      details: ["Information about Consultants / Doctors", "Coffee / Tea Tokens"]
+    },
+    {
+      title: "Pharmacy",
+      icon: <Pill className="w-6 h-6" />,
+      time: "24 Hours",
+      location: "Ground Floor (Between B & C Wing, Main Bldg) | Ground Floor (New Bldg)",
+      phone: "(020) 40151040, 40151041 | (020) 49153009, 49153443",
+      details: ["24x7 hours Pharmacy (Day & Night)"]
+    },
+    {
+      title: "Blood Bank",
+      icon: <Droplets className="w-6 h-6" />,
+      time: "24 Hours",
+      location: "Ground Floor SS Building",
+      phone: "+91 20 49153081 / 49153089",
+      details: ["FDA approved regional blood bank transfusion center.", "Blood components: RBC, FFP, Random/Single Donor Platelet, Cryo Precipitate, Peripheral Blood Stemcells, Plasma pherisis, Granulocyte apheresis.", "Ultra modern equipments like chemiluminescence, irradiation, Snap freezer."]
+    },
+    {
+      title: "Public Relation Department",
+      icon: <Users className="w-6 h-6" />,
+      time: "Standard Hours",
+      location: "GS Building Ground Floor C Wing",
+      phone: "020-40151011 / 40151015",
+      details: ["Attend to complaints and suggestions", "Medical Certificates", "Insurance Claim Forms and related issues", "Periodical / Routine Medical Checkups"]
+    },
+    {
+      title: "Canteen",
+      icon: <Coffee className="w-6 h-6" />,
+      time: "Standard Hours",
+      location: "Basement C Wing (1941 / 1942)",
+      phone: "-",
+      details: ["Well-equipped Catering Facility for Patients, Relatives, Doctors & Staff.", "Provides quality and hygienically safe food."]
+    },
+    {
+      title: "Health Checkup",
+      icon: <Activity className="w-6 h-6" />,
+      time: "Standard Hours",
+      location: "Public Relation Dept - GS Building Ground Floor C Wing",
+      phone: "020-40151011, 020-40151015",
+      details: ["Know your health status with several Health Check-up packages.", "Done quickly, efficiently and offered at discounted rates."]
+    },
+    {
+      title: "Ambulance / Hospital Attendant",
+      icon: <Ambulance className="w-6 h-6" />,
+      time: "24 Hours",
+      location: "Ground Floor A Wing (Emergency Dept.)",
+      phone: "020-40151540, 40151027",
+      details: ["For going home and emergencies."]
+    },
+    {
+      title: "Photo-Copy / Xerox",
+      icon: <Copy className="w-6 h-6" />,
+      time: "Standard Hours",
+      location: "Ground Floor C Wing",
+      phone: "020-40151022",
+      details: ["For one A4 Size photocopy Rs. 1/- is charged."]
+    },
+    {
+      title: "Mortuary",
+      icon: <Info className="w-6 h-6" />,
+      time: "24 Hours",
+      location: "GS Building Basement C Wing",
+      phone: "Admission Dept: 020- 40151020",
+      details: ["For all relevant documentation and formalities contact Admission Department (Ground Floor B wing)."]
+    },
+    {
+      title: "Emergency",
+      icon: <AlertTriangle className="w-6 h-6" />,
+      time: "24 Hours",
+      location: "Ground Floor A Wing",
+      phone: "020-40151027, 40151065",
+      details: []
+    },
+    {
+      title: "Optician Shop",
+      icon: <Glasses className="w-6 h-6" />,
+      time: "08:00 a.m. to 04:30 p.m.",
+      location: "Second Floor B wing",
+      phone: "020-40151070",
+      details: []
+    },
+    {
+      title: "Pass Counter",
+      icon: <Ticket className="w-6 h-6" />,
+      time: "Standard Hours",
+      location: "SS Building Ground Floor",
+      phone: "New Reg: 020-49153006 | OPD: 49153005 | IPD: 49153018",
+      details: ["Entry to the SS Building is only with a valid pass."]
+    }
   ];
 
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -92,14 +199,142 @@ export default function PatientGuidePage() {
                   <span>Patient Guide</span>
                 </div>
                 <h2 className="text-3xl md:text-4xl font-extrabold text-[#002b5c] mb-6 tracking-tight">
-                  Facilities
+                  Facilities Offered
                 </h2>
-                
+                <div className="w-20 h-1.5 bg-[#007a87] rounded-full mb-8"></div>
               </div>
 
-              <div className="space-y-6 mt-8">\n  <ul className="list-none space-y-3 mb-6">\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Out Patient guide</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>In patient guide</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Health Packages</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Facilities</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Patients Stories / Feedbacks</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Patient Rights & Responsibilities</span></li>\n</ul>\n  <h3 className="text-2xl font-bold text-[#002b5c] mt-8 mb-4">FACILITIES OFFERED</h3>\n  <h3 className="text-2xl font-bold text-[#002b5c] mt-8 mb-4">1 (a). RECEPTION : 24 Hours.</h3>\n  <p className="text-slate-600 leading-relaxed font-light text-base">Location : Ground Floor Center Core GS Building</p>\n  <p className="text-slate-600 leading-relaxed font-light text-base">General Enquiry (020 - 40151000)</p>\n  <p className="text-slate-600 leading-relaxed font-light text-base">Information about Consultants / Doctors</p>\n  <p className="text-slate-600 leading-relaxed font-light text-base">Coffee / Tea Tokens</p>\n  <h3 className="text-2xl font-bold text-[#002b5c] mt-8 mb-4">1 (b). RECEPTION : 24 Hours</h3>\n  <p className="text-slate-600 leading-relaxed font-light text-base">Location : Ground Floor Center Core SS Building</p>\n  <p className="text-slate-600 leading-relaxed font-light text-base">General Enquiry (020 - 49153000)</p>\n  <p className="text-slate-600 leading-relaxed font-light text-base">Information about Consultants / Doctors</p>\n  <p className="text-slate-600 leading-relaxed font-light text-base">Coffee / Tea Tokens</p>\n  <h3 className="text-2xl font-bold text-[#002b5c] mt-8 mb-4">2 (a). BILLING IPD :</h3>\n  <p className="text-slate-600 leading-relaxed font-light text-base">1.Estimate of bill may change due to the type of room you are selecting.</p>\n  <p className="text-slate-600 leading-relaxed font-light text-base">2.We accept payment by cash (upto 2 lacs), Demand Draft, Debit/Credit Cards, NEFT/RTGS, UPI payments, Gateway payments. Cheque is the last option of the payment.</p>\n  <p className="text-slate-600 leading-relaxed font-light text-base">3.Please do all procedures related to cashless billing on the day of admission.</p>\n  <p className="text-slate-600 leading-relaxed font-light text-base">4.Please check your outstanding bill once in two days at the billing department.</p>\n  <p className="text-slate-600 leading-relaxed font-light text-base">5.For expensive treatments and surgeries (Cardiac, Neuro, Joint Replacements, Organ Transplants etc.) you may need to deposit advance.</p>\n  <p className="text-slate-600 leading-relaxed font-light text-base">6.Refunds are paid by cheque/NEFT where the amount is more then Rs 19999/- only.</p>\n  <h3 className="text-2xl font-bold text-[#002b5c] mt-8 mb-4">2 (b). BILLING OPD :</h3>\n  <p className="text-slate-600 leading-relaxed font-light text-base">1. OPD Billing Timings are 8am to 8pm and for Emergency Dept, billing counter runs 24hrs</p>\n  <p className="text-slate-600 leading-relaxed font-light text-base">2. For all Specialities consultaion with the same doctor is free within 10 days of 1st paid consultaion. Follow up charges will be applicable after 10 days and the same rule of free consultation is applicable for the next visit 3. For Dental, consultation with the same doctor is free for 3 months of 1st paid consultation.</p>\n  <p className="text-slate-600 leading-relaxed font-light text-base">3. Re-registration charges are applicable consultant wise, i.e. if a patient visits a particular consultant after a gap of 90 days, 1st visit consultation are applicable.</p>\n  <p className="text-slate-600 leading-relaxed font-light text-base">4. Few of the consultants also run private OPD in the hospital where in consultants could be seen with prior appointment. There would be no fixed consultation fees. Doctor will have the discretion to charge anything upto rs 750/-</p>\n  <p className="text-slate-600 leading-relaxed font-light text-base">5. Refunds are normally paid by cheque only where amounts are more then 19,990/-</p>\n  <p className="text-slate-600 leading-relaxed font-light text-base">6. We accept payment by Cash/Credit & Debit Card/Demand Draft/NEFT/RTGS/UPI payments/Gateway Payments</p>\n  <h3 className="text-2xl font-bold text-[#002b5c] mt-8 mb-4">3. PHARMACY: 24 Hours</h3>\n  <p className="text-slate-600 leading-relaxed font-light text-base">1. 24x7 hours Pharmacy (Day & Night)</p>\n  <p className="text-slate-600 leading-relaxed font-light text-base">2. Locations:</p>\n  <ul className="list-none space-y-3 mb-6">\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>a. Ground Floor, Between B & C Wing, Main Building</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Contact: (020) 40151040, 40151041</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>b. Ground Floor, New Building</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Contact: (020) 49153009, 49153443</span></li>\n</ul>\n  <h3 className="text-2xl font-bold text-[#002b5c] mt-8 mb-4">4. BLOOD BANK: 24 Hours</h3>\n  <p className="text-slate-600 leading-relaxed font-light text-base">Location: Ground Floor SS Building ( +91 20 49153081 / 49153089 )</p>\n  <p className="text-slate-600 leading-relaxed font-light text-base">Deenanath Mangeshkar Hospital and Research Center Blood Bank is a FDA approved regional blood bank transfusion center. Blood components like RBC,Fresh Frozen Plasma, Random Donar Platelet, Single Donar Platelet and Cryo Precipitate, Peripheral Blood Stemcells (leucopheresis), Plasma pherisis, Granulocyte apheresis are available on 24/7 x 365 basis. It is ultra modern Blood Bank with state of the art equipments like chemiluminescence, irradiation, Snap freezer and leucoreduction technologies</p>\n  <h3 className="text-2xl font-bold text-[#002b5c] mt-8 mb-4">5. PUBLIC RELATION DEPARTMENT:</h3>\n  <p className="text-slate-600 leading-relaxed font-light text-base">Location: GS Building Ground Floor C Wing ( 020-40151011/40151015)
-		We are committed to provide best quality services. If u have any problems about our services, Public Relation Department is always there to attend to your complaints and suggestions.</p>\n  <p className="text-slate-600 leading-relaxed font-light text-base">This department will also help you for the following:</p>\n  <p className="text-slate-600 leading-relaxed font-light text-base">Medical Certificates</p>\n  <p className="text-slate-600 leading-relaxed font-light text-base">Insurance Claim Forms and all related issues</p>\n  <p className="text-slate-600 leading-relaxed font-light text-base">Periodical / Routine Medical Checkups</p>\n  <h3 className="text-2xl font-bold text-[#002b5c] mt-8 mb-4">6. CANTEEN:</h3>\n  <p className="text-slate-600 leading-relaxed font-light text-base">Location: Basement C Wing ( 1941 / 1942 )</p>\n  <p className="text-slate-600 leading-relaxed font-light text-base">The Hospital has a well-equipped Catering Facility for Patients, their Relatives, Doctors & Staff and even for any walk in person. The primary aspect of canteen is to provide quality and hygienically safe food to all who come in.</p>\n  <h3 className="text-2xl font-bold text-[#002b5c] mt-8 mb-4">7. HEALTH CHECKUP:</h3>\n  <p className="text-slate-600 leading-relaxed font-light text-base">Location: Public Relation Department - GS Building Ground Floor C Wing ( 020-40151011, 020-40151015 )</p>\n  <p className="text-slate-600 leading-relaxed font-light text-base">Know your health status - We have several Health Check-up packages. Please contact Public Relation department to select a suitable package for you.</p>\n  <p className="text-slate-600 leading-relaxed font-light text-base">Health checkup is done quickly, efficiently and it is offered at discounted rates.</p>\n  <h3 className="text-2xl font-bold text-[#002b5c] mt-8 mb-4">8. AMBULANCE / HOSPITAL ATTENDANT FOR GOING HOME: 24 Hours</h3>\n  <p className="text-slate-600 leading-relaxed font-light text-base">Ground Floor A Wing (Emergency Dept.) (020-40151540, 40151027 )</p>\n  <h3 className="text-2xl font-bold text-[#002b5c] mt-8 mb-4">9. PHOTO-COPY / XEROX:</h3>\n  <p className="text-slate-600 leading-relaxed font-light text-base">Location: Ground Floor C Wing (020-40151022 )</p>\n  <p className="text-slate-600 leading-relaxed font-light text-base">For one A4 Size photocopy Rs. 1/- is charged.</p>\n  <h3 className="text-2xl font-bold text-[#002b5c] mt-8 mb-4">10. MORTUARY: 24 Hours</h3>\n  <p className="text-slate-600 leading-relaxed font-light text-base">Location: GS Building Basement C Wing</p>\n  <p className="text-slate-600 leading-relaxed font-light text-base">For all relevant documentation and formalities - please contact Admission Department (Ground Floor B wing - 020- 40151020)</p>\n  <h3 className="text-2xl font-bold text-[#002b5c] mt-8 mb-4">11. EMERGENCY: 24 Hours</h3>\n  <p className="text-slate-600 leading-relaxed font-light text-base">Location: Ground Floor A Wing (020-40151027, 40151065)</p>\n  <h3 className="text-2xl font-bold text-[#002b5c] mt-8 mb-4">12. OPTICIAN SHOP</h3>\n  <p className="text-slate-600 leading-relaxed font-light text-base">Location: Second Floor B wing (020-40151070)</p>\n  <p className="text-slate-600 leading-relaxed font-light text-base">Timings - 8.00 Hrs to 16:30 Hrs</p>\n  <h3 className="text-2xl font-bold text-[#002b5c] mt-8 mb-4">13. PASS COUNTER</h3>\n  <p className="text-slate-600 leading-relaxed font-light text-base">SS Building Ground Floor</p>\n  <p className="text-slate-600 leading-relaxed font-light text-base">New Registration- Pass Counter 1 (020-49153006)</p>\n  <p className="text-slate-600 leading-relaxed font-light text-base">OPD PASS - Pass Counter 2 (020-49153005)</p>\n  <p className="text-slate-600 leading-relaxed font-light text-base">IPD PASS - Pass Counter 3 (020-49153018)</p>\n  <p className="text-slate-600 leading-relaxed font-light text-base">Entry to the SS Building is only with a valid pass. Kindly Contact the Pass Counter for further details.</p>\n</div>\n
+              <div className="space-y-12 text-slate-700">
 
+                {/* Billing Section (Prominent) */}
+                <section>
+                  <h3 className="text-2xl font-bold text-[#002b5c] mb-6 flex items-center gap-3">
+                    <CreditCard className="w-6 h-6 text-[#007a87]" />
+                    Billing Facilities
+                  </h3>
+                  
+                  <div className="grid lg:grid-cols-2 gap-8">
+                    {/* IPD Billing */}
+                    <div className="bg-slate-50 p-6 rounded-2xl border border-slate-100 shadow-sm">
+                      <h4 className="font-bold text-lg text-[#007a87] mb-4 border-b border-slate-200 pb-2">IPD Billing</h4>
+                      
+                      <div className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm mb-6">
+                        <table className="w-full text-left text-sm">
+                          <thead className="bg-slate-100 text-slate-700 font-semibold">
+                            <tr><th className="px-4 py-3">Building & Floor</th><th className="px-4 py-3">Timing</th></tr>
+                          </thead>
+                          <tbody className="divide-y divide-slate-100">
+                            <tr className="hover:bg-slate-50"><td className="px-4 py-2">GS 2nd Floor</td><td className="px-4 py-2">08:00 a.m to 10:00 p.m</td></tr>
+                            <tr className="hover:bg-slate-50"><td className="px-4 py-2">GS Ground Floor - ER</td><td className="px-4 py-2">10:00 p.m to 08:00 a.m</td></tr>
+                            <tr className="hover:bg-slate-50"><td className="px-4 py-2">GS 4th Floor</td><td className="px-4 py-2">10:00 a.m to 06:30 p.m</td></tr>
+                            <tr className="hover:bg-slate-50"><td className="px-4 py-2">SS Ground Floor</td><td className="px-4 py-2 font-medium text-teal-600">24x7 x 365 days</td></tr>
+                            <tr className="hover:bg-slate-50"><td className="px-4 py-2">SS 8th Floor</td><td className="px-4 py-2">09:30 a.m to 06:00 p.m</td></tr>
+                            <tr className="hover:bg-slate-50"><td className="px-4 py-2">SS 10th Floor</td><td className="px-4 py-2">09:30 a.m to 06:00 p.m</td></tr>
+                            <tr className="hover:bg-slate-50"><td className="px-4 py-2">SS 2nd Floor</td><td className="px-4 py-2">09:30 a.m to 06:00 p.m</td></tr>
+                            <tr className="hover:bg-slate-50"><td className="px-4 py-2">SS 3rd Floor</td><td className="px-4 py-2">09:30 a.m to 06:00 p.m</td></tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      
+                      <ul className="space-y-3 text-sm">
+                        <li className="flex items-start gap-2"><CheckCircle2 className="w-4 h-4 text-teal-500 shrink-0 mt-0.5" /> <span>Estimate of bill may change due to the type of room you are selecting.</span></li>
+                        <li className="flex items-start gap-2"><CheckCircle2 className="w-4 h-4 text-teal-500 shrink-0 mt-0.5" /> <span>We accept payment by cash (upto 2 lacs), Demand Draft, Debit/Credit Cards, NEFT/RTGS, UPI payments, Gateway payments. Cheque is the last option.</span></li>
+                        <li className="flex items-start gap-2"><CheckCircle2 className="w-4 h-4 text-teal-500 shrink-0 mt-0.5" /> <span>Please do all procedures related to cashless billing on the day of admission.</span></li>
+                        <li className="flex items-start gap-2"><CheckCircle2 className="w-4 h-4 text-teal-500 shrink-0 mt-0.5" /> <span>Please check your outstanding bill once in two days at the billing department.</span></li>
+                        <li className="flex items-start gap-2"><CheckCircle2 className="w-4 h-4 text-teal-500 shrink-0 mt-0.5" /> <span>For expensive treatments and surgeries (Cardiac, Neuro, Joint Replacements, etc.) you may need to deposit advance.</span></li>
+                        <li className="flex items-start gap-2"><CheckCircle2 className="w-4 h-4 text-teal-500 shrink-0 mt-0.5" /> <span>Refunds are paid by cheque/NEFT where the amount is more than Rs 19999/- only.</span></li>
+                      </ul>
+                    </div>
+
+                    {/* OPD Billing */}
+                    <div className="bg-teal-50/50 p-6 rounded-2xl border border-teal-100 shadow-sm flex flex-col">
+                      <h4 className="font-bold text-lg text-[#007a87] mb-4 border-b border-teal-200/50 pb-2">OPD Billing</h4>
+                      <ul className="space-y-4 text-sm flex-1">
+                        <li className="flex items-start gap-3">
+                          <span className="font-bold text-teal-600 bg-teal-100 rounded-full w-5 h-5 flex items-center justify-center shrink-0 mt-0.5 text-xs">1</span>
+                          <span>OPD Billing Timings are 8am to 8pm and for Emergency Dept, billing counter runs 24hrs.</span>
+                        </li>
+                        <li className="flex items-start gap-3">
+                          <span className="font-bold text-teal-600 bg-teal-100 rounded-full w-5 h-5 flex items-center justify-center shrink-0 mt-0.5 text-xs">2</span>
+                          <span>For all Specialities consultation with the same doctor is free within 10 days of 1st paid consultation. Follow up charges will be applicable after 10 days. For Dental, consultation with the same doctor is free for 3 months of 1st paid consultation.</span>
+                        </li>
+                        <li className="flex items-start gap-3">
+                          <span className="font-bold text-teal-600 bg-teal-100 rounded-full w-5 h-5 flex items-center justify-center shrink-0 mt-0.5 text-xs">3</span>
+                          <span>Re-registration charges are applicable consultant wise, i.e. if a patient visits a particular consultant after a gap of 90 days, 1st visit consultation are applicable.</span>
+                        </li>
+                        <li className="flex items-start gap-3">
+                          <span className="font-bold text-teal-600 bg-teal-100 rounded-full w-5 h-5 flex items-center justify-center shrink-0 mt-0.5 text-xs">4</span>
+                          <span>Few of the consultants also run private OPD in the hospital where in consultants could be seen with prior appointment. There would be no fixed consultation fees. Doctor will have the discretion to charge anything upto rs 750/-.</span>
+                        </li>
+                        <li className="flex items-start gap-3">
+                          <span className="font-bold text-teal-600 bg-teal-100 rounded-full w-5 h-5 flex items-center justify-center shrink-0 mt-0.5 text-xs">5</span>
+                          <span>Refunds are normally paid by cheque only where amounts are more than 19,990/-.</span>
+                        </li>
+                        <li className="flex items-start gap-3">
+                          <span className="font-bold text-teal-600 bg-teal-100 rounded-full w-5 h-5 flex items-center justify-center shrink-0 mt-0.5 text-xs">6</span>
+                          <span>We accept payment by Cash / Credit & Debit Card / Demand Draft / NEFT / RTGS / UPI payments / Gateway Payments.</span>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </section>
+
+                {/* Other Facilities Grid */}
+                <section>
+                  <h3 className="text-2xl font-bold text-[#002b5c] mb-6 flex items-center gap-3">
+                    <Building className="w-6 h-6 text-[#007a87]" />
+                    Other Key Facilities
+                  </h3>
+                  
+                  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {facilities.map((facility, idx) => (
+                      <div key={idx} className="bg-white rounded-2xl border border-slate-200 p-6 hover:shadow-[0_8px_30px_rgba(217,35,45,0.12)] hover:border-[#D9232D]/30 transition-all duration-300 group flex flex-col">
+                        <div className="flex items-center gap-4 mb-4">
+                          <div className="w-12 h-12 rounded-xl bg-teal-50 text-[#007a87] flex items-center justify-center shrink-0 group-hover:bg-[#D9232D] group-hover:text-white transition-all duration-300 group-hover:shadow-[0_4px_12px_rgba(217,35,45,0.3)]">
+                            {facility.icon}
+                          </div>
+                          <h4 className="font-bold text-[#002b5c] leading-tight group-hover:text-[#D9232D] transition-colors">{facility.title}</h4>
+                        </div>
+                        
+                        <div className="space-y-3 mb-4 text-sm flex-1">
+                          {facility.time !== "-" && (
+                            <div className="flex items-start gap-2">
+                              <Clock className="w-4 h-4 text-slate-400 shrink-0 mt-0.5" />
+                              <span className="font-medium text-teal-600">{facility.time}</span>
+                            </div>
+                          )}
+                          {facility.location !== "-" && (
+                            <div className="flex items-start gap-2">
+                              <MapPin className="w-4 h-4 text-slate-400 shrink-0 mt-0.5" />
+                              <span className="text-slate-600">{facility.location}</span>
+                            </div>
+                          )}
+                          {facility.phone !== "-" && (
+                            <div className="flex items-start gap-2">
+                              <Phone className="w-4 h-4 text-slate-400 shrink-0 mt-0.5" />
+                              <span className="text-slate-600">{facility.phone}</span>
+                            </div>
+                          )}
+                        </div>
+
+                        {facility.details.length > 0 && (
+                          <div className="pt-4 border-t border-slate-100">
+                            <ul className="space-y-2">
+                              {facility.details.map((detail, dIdx) => (
+                                <li key={dIdx} className="flex items-start gap-2 text-xs text-slate-500">
+                                  <ChevronRight className="w-3 h-3 text-teal-400 shrink-0 mt-0.5" />
+                                  <span className="leading-tight">{detail}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </section>
+
+              </div>
             </div>
           </div>
 

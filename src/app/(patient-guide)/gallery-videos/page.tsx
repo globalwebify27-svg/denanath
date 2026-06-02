@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { ChevronRight, Video } from "lucide-react";
+import { ChevronRight, Video, PlayCircle } from "lucide-react";
 
-export default function PatientGuidePage() {
+export default function VideosPage() {
   const patientGuideOptions = [
     { name: "Out Patient Guide", href: "/out-patient", active: false },
     { name: "In Patient Guide", href: "/in-patient", active: false },
@@ -16,7 +16,46 @@ export default function PatientGuidePage() {
     { name: "Videos", href: "/gallery-videos", active: true },
   ];
 
+  const categories = [
+    "ALL", "PATIENT STORIES", "ICU-VISIT", "COVID-19", "WELLNESS AND LIFESTYLE", "MAAI MOTHER'S MILK BANK"
+  ];
+
+  const allVideos = [
+    { title: "COVID 19 VACCINE : Why When & How by Dr. Dhananjay Kelkar", category: "COVID-19" },
+    { title: "Covid-19 Home Isolation Instructions by DMH - Marathi", category: "COVID-19" },
+    { title: "Covid-19 Home Isolation Instructions by DMH- English", category: "COVID-19" },
+    { title: "Covid-19 Home Isolation Instructions by DMH- Hindi", category: "COVID-19" },
+    { title: "DMH covid-19 update (for doctors) Part 1: Overview, Prevention & Diagnosis", category: "COVID-19" },
+    { title: "DMH covid-19 update (for doctors) Part 2: Treatment", category: "COVID-19" },
+    { title: "DMH covid-19 update Part 3: Paediatric", category: "COVID-19" },
+    { title: "DMH Jalneti -1", category: "WELLNESS AND LIFESTYLE" },
+    { title: "DMH Jalneti-2 Q & A", category: "WELLNESS AND LIFESTYLE" },
+    { title: "Everything to know about covid-19 Part 1 of 3 : Prevention and Overview by Dr. Dhananjay Kelkar, DMH", category: "COVID-19" },
+    { title: "Everything to know about covid-19 part 2 of 3 : Diagnosis and Treatment by Dr. Dhananjay Kelkar, DMH", category: "COVID-19" },
+    { title: "Everything to know about covid-19 part 3 of 3 : Living with covid by Dr. Dhananjay Kelkar, DMH", category: "COVID-19" },
+    { title: "Guidance Lecture on Corona Virus | Dr. Dhananjay Kelkar", category: "COVID-19" },
+    { title: "ICU-Visit", category: "ICU-VISIT" },
+    { title: "In the shadow of virtual truth… Corona in our minds | Dr Dhananjay Kelkar", category: "COVID-19" },
+    { title: "Maai Mother's Milk Bank", category: "MAAI MOTHER'S MILK BANK" },
+    { title: "MIND over MATTER by Dr.Dhananjay Kelkar", category: "WELLNESS AND LIFESTYLE" },
+    { title: "Patient Stories - Testimonial 1", category: "PATIENT STORIES" },
+    { title: "Patient Stories - Testimonial 2", category: "PATIENT STORIES" },
+    { title: "Patient Stories - Testimonial 3", category: "PATIENT STORIES" },
+    { title: "Rehabilitation guidelines for patients recovering from Covid-19 (in English)", category: "COVID-19" },
+    { title: "Rehabilitation guidelines for patients recovering from Covid-19 (in marathi)", category: "COVID-19" },
+    { title: "Sukshma Yoga And Pranayama", category: "WELLNESS AND LIFESTYLE" },
+    { title: "Work Life Balance by Dr. Dhananjay Kelkar", category: "WELLNESS AND LIFESTYLE" },
+    { title: "माझे गुरु (कै. अप्पासाहेब पेंडसे , डॉ. मेहरू मेहता , मा. लता दीदी ) by Dr. Dhananjay Kelkar MS FRCS", category: "WELLNESS AND LIFESTYLE" }
+  ];
+
+  const [activeCategory, setActiveCategory] = useState("ALL");
+
+  const filteredVideos = activeCategory === "ALL" 
+    ? allVideos 
+    : allVideos.filter(v => v.category === activeCategory);
+
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const categoriesScrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (window.innerWidth < 1024 && scrollContainerRef.current) {
@@ -47,7 +86,7 @@ export default function PatientGuidePage() {
             <span className="text-white">Videos</span>
           </div>
           <h1 className="text-4xl md:text-5xl font-extrabold text-white tracking-tight flex items-center gap-4">
-            Videos
+            Video Gallery
           </h1>
         </div>
       </div>
@@ -89,15 +128,74 @@ export default function PatientGuidePage() {
               <div className="mb-10">
                 <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-teal-50 border border-teal-100 text-[#007a87] text-xs font-bold tracking-wider uppercase mb-4">
                   <Video className="w-4 h-4" />
-                  <span>Patient Guide</span>
+                  <span>Media</span>
                 </div>
                 <h2 className="text-3xl md:text-4xl font-extrabold text-[#002b5c] mb-6 tracking-tight">
-                  Videos
+                  Hospital Videos
                 </h2>
                 
+                {/* Categories Scrollable Row */}
+                <div 
+                  ref={categoriesScrollRef}
+                  className="flex gap-2 overflow-x-auto pb-4 pt-2 -mx-2 px-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+                >
+                  {categories.map((cat, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => setActiveCategory(cat)}
+                      className={"whitespace-nowrap px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 " + (
+                        activeCategory === cat 
+                          ? "bg-[#002b5c] text-white shadow-md transform scale-105" 
+                          : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                      )}
+                    >
+                      {cat}
+                    </button>
+                  ))}
+                </div>
               </div>
 
-              <div className="space-y-6 mt-8">\n  <ul className="list-none space-y-3 mb-6">\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Out Patient guide</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>In patient guide</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Health Packages</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Facilities</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Patients Stories / Feedbacks</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Patient Rights & Responsibilities</span></li>\n</ul>\n</div>\n
+              {/* Videos Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+                {filteredVideos.map((video, idx) => (
+                  <div key={idx} className="group cursor-pointer bg-white rounded-2xl border border-slate-200 overflow-hidden hover:shadow-xl hover:border-teal-300 transition-all duration-300 flex flex-col h-full">
+                    {/* Video Thumbnail Placeholder */}
+                    <div className="aspect-video bg-slate-800 flex items-center justify-center relative overflow-hidden">
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10"></div>
+                      {/* Simulated thumbnail background */}
+                      <div className="absolute inset-0 bg-slate-800 group-hover:scale-105 transition-transform duration-700"></div>
+                      
+                      <div className="relative z-20 w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center group-hover:bg-[#007a87] group-hover:scale-110 transition-all duration-300">
+                        <PlayCircle className="w-8 h-8 text-white ml-1" />
+                      </div>
+                      
+                      {/* Badge overlay */}
+                      <div className="absolute top-4 left-4 z-20">
+                        <span className="bg-teal-500/90 backdrop-blur-md text-white text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full">
+                          {video.category}
+                        </span>
+                      </div>
+                    </div>
+                    
+                    {/* Video Details */}
+                    <div className="p-5 flex-1 flex flex-col justify-between">
+                      <h3 className="font-bold text-[#002b5c] group-hover:text-[#007a87] transition-colors leading-snug line-clamp-2">
+                        {video.title}
+                      </h3>
+                      <div className="mt-4 flex items-center justify-between text-xs text-slate-500 font-medium">
+                        <span>Watch Video</span>
+                        <ChevronRight className="w-4 h-4 text-slate-300 group-hover:text-[#007a87] group-hover:translate-x-1 transition-all" />
+                      </div>
+                    </div>
+                  </div>
+                ))}
+                
+                {filteredVideos.length === 0 && (
+                  <div className="col-span-full py-12 text-center text-slate-500">
+                    No videos found for this category.
+                  </div>
+                )}
+              </div>
 
             </div>
           </div>

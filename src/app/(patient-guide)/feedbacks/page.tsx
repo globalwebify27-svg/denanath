@@ -2,9 +2,9 @@
 
 import React, { useEffect, useRef } from "react";
 import Link from "next/link";
-import { ChevronRight, MessageSquareHeart } from "lucide-react";
+import { ChevronRight, MessageSquareQuote, Quote, Calendar, User } from "lucide-react";
 
-export default function PatientGuidePage() {
+export default function FeedbacksPage() {
   const patientGuideOptions = [
     { name: "Out Patient Guide", href: "/out-patient", active: false },
     { name: "In Patient Guide", href: "/in-patient", active: false },
@@ -14,6 +14,39 @@ export default function PatientGuidePage() {
     { name: "Patient Rights & Responsibilities", href: "/patient-rights", active: false },
     { name: "Photos", href: "/gallery-photos", active: false },
     { name: "Videos", href: "/gallery-videos", active: false },
+  ];
+
+  const stories = [
+    {
+      title: "Generous help from Charity department made treatment possible",
+      date: "24-Feb-2023",
+      author: "Mrs Rajashri Anil Gavali",
+      content: "My son was diagnosed with cancer and doctor told to operate immediately. Surgery was successful but after surgery doctor recommended 6 cycles of chemotherapy which was non affordable. I approached charity department for monetary help. They verified the documents and after completing the formalities and with financial support I could avail the treatment. I am grateful to Charity department and doctors who helped me in all ways to recover my son from Cancer."
+    },
+    {
+      title: "Great support received from staff and doctors during transplant surgery",
+      date: "15-Feb-2023",
+      author: "Mrs Himali Pimpalkhare",
+      content: "My aunty was admitted for Liver Transplant surgery which was unfortunately not successful but I wasn't to give special thanks to Doctors for their generous support. I want to appreciate the response received from Blood bank, where many known and unknown donors came forward to help when blood transfusion was required. Last but not the least the transplant co-ordinator and Billing staff also co-operated a lot for smooth transactions during admission and after discharge."
+    },
+    {
+      title: "Where there is hope there is faith",
+      date: "16-Jan-2023",
+      author: "Mr Arvind Chintaman Daware",
+      content: "I was suffering from gall bladder stones and in Ahmednagar consulted various doctors and did numerous tests but due to age and co-morbidities doctors denied to do surgery. Due to abdominal pain I was frustrated, one of doctors recommended me to go to Deenanath Mangeshkar Hospital. After consultation surgery was done successfully. I am grateful to all doctors and staff who were involved in this surgery. All nurses in ward, doctors and reception staff are very polite and guide in proper manner whenever required."
+    },
+    {
+      title: "Prompt action by doctors and excellent service by Mediclaim department",
+      date: "21-Dec-2022",
+      author: "Mr Shankar Gundal",
+      content: "My wife got admitted in ICU for Hemodialysis, I appreciate the quick decision taken by doctors of admission and good treatment given. During discharge immediate help was provided by Mediclaim department for approval and excellent service during the complete process. I am thankful for the chance you gave me to appreciate you all."
+    },
+    {
+      title: "Good doctors and financial help from charity made treatment possible",
+      date: "27-Sep-2022",
+      author: "Mr Dilip Ramchandra Kale",
+      content: "My wife residing in Solapur is taking treatment for cancer in this hospital since last 7 days. Our experience through out the admission was great. Doctors guide us whenever we as queries and staff is also polite. When we needed financial help we were told to approach charity department as we did not have enough money to avail the further treatment. After approaching the charity department with proper documentation they helped us financially for the treatment. I am thankful to all the staff of Deenanath Mangeshkar Hospital who were involved and special thanks to the doctors."
+    }
   ];
 
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -88,16 +121,48 @@ export default function PatientGuidePage() {
               
               <div className="mb-10">
                 <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-teal-50 border border-teal-100 text-[#007a87] text-xs font-bold tracking-wider uppercase mb-4">
-                  <MessageSquareHeart className="w-4 h-4" />
-                  <span>Patient Guide</span>
+                  <MessageSquareQuote className="w-4 h-4" />
+                  <span>Patient Experiences</span>
                 </div>
                 <h2 className="text-3xl md:text-4xl font-extrabold text-[#002b5c] mb-6 tracking-tight">
                   Patients Stories / Feedbacks
                 </h2>
-                
+                <div className="w-20 h-1.5 bg-[#007a87] rounded-full mb-8"></div>
               </div>
 
-              <div className="space-y-6 mt-8">\n  <ul className="list-none space-y-3 mb-6">\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Out Patient guide</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>In patient guide</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Health Packages</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Facilities</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Patients Stories / Feedbacks</span></li>\n    <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" /><span>Patient Rights & Responsibilities</span></li>\n</ul>\n  <h3 className="text-2xl font-bold text-[#002b5c] mt-8 mb-4">Generous help from Charity department made treatment possible</h3>\n  <p className="text-slate-600 leading-relaxed font-light text-base">My son was diagnosed with cancer and doctor told to operate immediately. Surgery was successful but after surgery doctor recommended 6 cycles of chemotherapy which was non affordable. I approached charity department for monetary help. They verified the documents and after completing the formalities and with financial support I could avail the treatment. I am grateful to Charity department and doctors who helped me in all ways to recover my son from Cancer.</p>\n  <h3 className="text-2xl font-bold text-[#002b5c] mt-8 mb-4">Great support received from staff and doctors during transplant surgery</h3>\n  <p className="text-slate-600 leading-relaxed font-light text-base">My aunty was admitted for Liver Transplant surgery which was unfortunately not successful but I wasn’t to give special thanks to Doctors for their generous support . I want to appreciate the response received from Blood bank , where many known and unknown donors came forward to help when blood transfusion was required. Last but not the least the transplant co-ordinator and Billing staff also co-operated a lot for smooth transactions during admission and after discharge.</p>\n  <h3 className="text-2xl font-bold text-[#002b5c] mt-8 mb-4">Where there is hope there is faith</h3>\n  <p className="text-slate-600 leading-relaxed font-light text-base">I was suffering from gall bladder stones and in Ahmednagar consulted various doctors and did numerous tests but due to age and co-morbidities doctors denied to do surgery . Due to abdominal pain I was frustrated , one of doctors recommended me to go to Deenanath Mangeshkar Hospital. After consultation surgery was done successfully . I am grateful to all doctors and staff who were involved in this surgery. All nurses in ward, doctors and reception staff are very polite and guide in proper manner whenever required.</p>\n  <h3 className="text-2xl font-bold text-[#002b5c] mt-8 mb-4">Prompt action by doctors and excellent service by Mediclaim department</h3>\n  <p className="text-slate-600 leading-relaxed font-light text-base">My wife got admitted in ICU for Hemodialysis, I appreciate the quick decision taken by doctors of admission and good treatment given. During discharge immediate help was provided by Mediclaim department for approval and excellent service during the complete process. I am thankful for the chance you gave me to appreciate you all.</p>\n  <h3 className="text-2xl font-bold text-[#002b5c] mt-8 mb-4">Good doctors and financial help from charity made treatment possible</h3>\n</div>\n
+              <div className="space-y-8">
+                {stories.map((story, idx) => (
+                  <div key={idx} className="bg-slate-50 rounded-2xl p-6 md:p-8 border border-slate-100 hover:shadow-md transition-shadow relative overflow-hidden group">
+                    <Quote className="absolute -top-4 -left-4 w-24 h-24 text-teal-500/5 rotate-180 transform group-hover:text-teal-500/10 transition-colors" />
+                    
+                    <div className="relative z-10">
+                      <h3 className="text-xl md:text-2xl font-bold text-[#002b5c] mb-4 leading-snug">
+                        "{story.title}"
+                      </h3>
+                      
+                      <p className="text-slate-600 leading-relaxed mb-6 italic text-lg">
+                        {story.content}
+                      </p>
+                      
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-6 border-t border-slate-200">
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 rounded-full bg-teal-100 text-[#007a87] flex items-center justify-center shrink-0">
+                            <User className="w-5 h-5" />
+                          </div>
+                          <div>
+                            <p className="font-bold text-slate-800">{story.author}</p>
+                            <p className="text-sm text-slate-500">Patient / Relative</p>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2 text-sm text-slate-500 bg-white px-3 py-1.5 rounded-full border border-slate-200">
+                          <Calendar className="w-4 h-4 text-teal-600" />
+                          <span>{story.date}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
 
             </div>
           </div>

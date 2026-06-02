@@ -25,8 +25,8 @@ export default function Footer() {
           
           {/* Logo & Brand Column */}
           <div className="space-y-6">
-            <div className="flex items-center gap-3.5">
-              <div className="flex items-center justify-center w-12 h-12 rounded-2xl bg-white shadow-xl p-1.5 ring-4 ring-white/10">
+            <Link href="/" className="flex items-center gap-3.5 group">
+              <div className="flex items-center justify-center w-12 h-12 rounded-2xl bg-white shadow-xl p-1.5 ring-4 ring-white/10 group-hover:scale-105 transition-transform">
                 <img 
                   src="/logo.png" 
                   alt="Deenanath Mangeshkar Hospital Logo" 
@@ -37,7 +37,7 @@ export default function Footer() {
                 <span className="text-white font-black tracking-wider text-lg leading-none">DEENANATH</span>
                 <span className="text-[9px] font-bold text-[#a7ffeb] tracking-widest uppercase mt-1 leading-none">Mangeshkar Hospital</span>
               </div>
-            </div>
+            </Link>
             <p className="text-xs text-[#b2dfdb] leading-relaxed font-light">
               Deenanath Mangeshkar Hospital & Research Center is Pune&apos;s leading clinical landmark, combining state-of-the-art diagnostics with legendary medical experts and warm, ethical care.
             </p>

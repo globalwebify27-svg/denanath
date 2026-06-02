@@ -20,7 +20,7 @@ export default function QuickAccessWidget() {
     {
       label: "Book Appointment",
       icon: CalendarPlus,
-      href: "/appointment",
+      href: "/book-appointment",
       color: "bg-blue-600 hover:bg-blue-700",
     },
     {
@@ -38,7 +38,7 @@ export default function QuickAccessWidget() {
     {
       label: "Find a Doctor",
       icon: Stethoscope,
-      href: "/doctors",
+      href: "/doctor-details",
       color: "bg-slate-900 hover:bg-slate-800",
     },
   ];

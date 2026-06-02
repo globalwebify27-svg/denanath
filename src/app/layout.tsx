@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { HospitalProvider } from "@/context/HospitalContext";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+
 import QuickAccessWidget from "@/components/home/QuickAccessWidget";
+import ClientLayoutWrapper from "@/components/ClientLayoutWrapper";
 
 
 const plusJakartaSans = Plus_Jakarta_Sans({
@@ -31,13 +31,10 @@ export default function RootLayout({
         className={`${plusJakartaSans.className} min-h-full flex flex-col bg-slate-50 text-slate-800 antialiased`}
         suppressHydrationWarning
         >
-        <QuickAccessWidget/>
         <HospitalProvider>
-          <Navbar />
-          <main className="flex-grow flex flex-col">
+          <ClientLayoutWrapper>
             {children}
-          </main>
-          <Footer />
+          </ClientLayoutWrapper>
         </HospitalProvider>
       </body>
     </html>

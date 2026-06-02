@@ -40,7 +40,7 @@ export default function Navbar() {
     },
     {
       name: "Patient & Visitors",
-      href: "/patient-visitors",
+      href: "/out-patient",
       dropdown: [
         { name: "Out Patient guide", href: "/out-patient" },
         { name: "In patient guide", href: "/in-patient" },
@@ -54,47 +54,47 @@ export default function Navbar() {
     },
     {
       name: "Doctors & Departments",
-      href: "/doctors-departments",
+      href: "/doctor-details",
       dropdown: [
-        { name: "Doctor Details", href: "/doctors" },
-        { name: "Department Details", href: "/departments" },
+        { name: "Doctor Details", href: "/doctor-details" },
+        { name: "Department Details", href: "/department-details" },
         { name: "Services", href: "/services" },
       ],
     },
     {
       name: "Research",
-      href: "/research",
+      href: "/research-about",
       dropdown: [
-        { name: "About Us", href: "/research/about" },
-        { name: "Training And Events", href: "/research/events" },
-        { name: "Awards", href: "/research/awards" },
-        { name: "Newsletter Articles", href: "/research/newsletters" },
-        { name: "Publications", href: "/research/publications" },
-        { name: "Annual Reports", href: "/research/annual-reports" },
-        { name: "Sponsors & CROs", href: "/research/sponsors-cros" },
-        { name: "Contact Us", href: "/research/contact" },
+        { name: "About Us", href: "/research-about" },
+        { name: "Training And Events", href: "/training-events" },
+        { name: "Awards", href: "/awards" },
+        { name: "Newsletter Articles", href: "/newsletter-articles" },
+        { name: "Publications", href: "/publications" },
+        { name: "Annual Reports", href: "/annual-reports" },
+        { name: "Sponsors & CROs", href: "/sponsors-cros" },
+        { name: "Contact Us", href: "/research-contact" },
       ],
     },
     {
       name: "Academics",
       href: "/academics",
       dropdown: [
-        { name: "Academics", href: "/academics/overview" },
-        { name: "Simulation Center", href: "/academics/simulation-center" },
+        { name: "Academics", href: "/academics" },
+        { name: "Simulation Center", href: "/simulation-center" },
       ],
     },
     {
       name: "Online Facilities",
-      href: "/online-facilities",
+      href: "/email-login",
       dropdown: [
-        { name: "E-Mail Login (DMH Users)", href: "/online-facilities/email-login" },
-        { name: "Online Payment", href: "/online-facilities/payment" },
-        { name: "Patient Portal", href: "/online-facilities/portal" },
-        { name: "Patient Registration Form", href: "/online-facilities/registration" },
+        { name: "E-Mail Login (DMH Users)", href: "/email-login" },
+        { name: "Online Payment", href: "/online-payment" },
+        { name: "Patient Portal", href: "/patient-portal" },
+        { name: "Patient Registration Form", href: "/patient-registration" },
       ],
     },
     { name: "Careers", href: "/careers" },
-    { name: "Contact Us", href: "/contact" },
+    { name: "Contact Us", href: "/contact-us" },
   ];
 
   const toggleMobileDropdown = (name: string) => {
@@ -111,15 +111,15 @@ export default function Navbar() {
       <div className="hidden xl:block w-full bg-[#007a87] text-white text-[11px] py-2 px-4 font-medium border-b border-teal-600/30">
         <div className="max-w-[96%] mx-auto flex justify-between items-center">
           <div className="flex items-center gap-4 text-white/90">
-            <Link href="/doctors" className="hover:text-white transition-colors">Find a Doctor</Link>
+            <Link href="/doctor-details" className="hover:text-white transition-colors">Find a Doctor</Link>
             <span className="opacity-30">|</span>
-            <Link href="/facilities" className="hover:text-white transition-colors">Blogs</Link>
+            <Link href="/blogs" className="hover:text-white transition-colors">Blogs</Link>
             <span className="opacity-30">|</span>
             <Link href="/patient-guide" className="hover:text-white transition-colors">My Reports</Link>
             <span className="opacity-30">|</span>
-            <Link href="/facilities" className="hover:text-white transition-colors">Research</Link>
+            <Link href="/research-about" className="hover:text-white transition-colors">Research</Link>
             <span className="opacity-30">|</span>
-            <Link href="/contact" className="hover:text-white transition-colors">Contact Us</Link>
+            <Link href="/contact-us" className="hover:text-white transition-colors">Contact Us</Link>
           </div>
 
           <div className="flex items-center gap-4 font-bold tracking-wide">
@@ -153,9 +153,9 @@ export default function Navbar() {
           <div className="flex justify-between items-center">
 
             {/* DMH Logo Section */}
-            <div className="flex items-center shrink-0 max-w-[25%]">
+            <div className="flex items-center shrink-0 max-w-[70%] xl:max-w-[25%]">
               <Link href="/" className="flex items-center gap-1.5 group focus:outline-none">
-                <div className="relative flex items-center justify-center w-8 h-8 xl:w-9 h-9 rounded-lg bg-slate-50 border border-slate-100 p-1 shrink-0">
+                <div className="relative flex items-center justify-center w-[60px] h-[60px] rounded-lg bg-slate-50 border border-slate-100 p-1 shrink-0">
                   <img
                     src="/logo.png"
                     alt="DMH Logo"
@@ -228,7 +228,7 @@ export default function Navbar() {
               </button>
 
               <Link
-                href="/appointments"
+                href="/book-appointment"
                 className="bg-[#d9232d] hover:bg-[#b81d24] text-white px-3 2xl:px-4 py-2 rounded-md font-bold text-[10px] 2xl:text-[11px] uppercase tracking-wider flex items-center gap-1 transition-all shadow-sm whitespace-nowrap shrink-0"
               >
                 <span>Book Appointment</span>
@@ -318,7 +318,7 @@ export default function Navbar() {
               </a>
               
               <Link
-                href="/appointments"
+                href="/book-appointment"
                 onClick={() => setMobileMenuOpen(false)}
                 className="block w-full py-2.5 rounded-lg bg-[#d9232d] hover:bg-[#b81d24] text-white font-bold text-center text-xs uppercase tracking-wider shadow-sm transition-all"
               >

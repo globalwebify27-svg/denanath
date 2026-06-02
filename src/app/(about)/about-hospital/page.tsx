@@ -174,8 +174,8 @@ export default function page() {
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {coreValues.map((value, idx) => (
-                    <div key={idx} className="flex items-center gap-4 bg-slate-50 p-4 rounded-xl border border-slate-100 hover:border-teal-200 hover:bg-white hover:shadow-md transition-all duration-300">
-                      <div className="bg-teal-100/50 rounded-full p-1 text-teal-600 shrink-0">
+                    <div key={idx} className="group flex items-center gap-4 bg-slate-50 p-4 rounded-xl border border-slate-100 hover:border-[#D9232D] hover:bg-white hover:shadow-[0_8px_30px_rgba(217,35,45,0.15)] transition-all duration-300">
+                      <div className="bg-teal-100/50 rounded-full p-1 text-teal-600 group-hover:text-[#D9232D] shrink-0 transition-colors">
                         <CheckCircle2 className="w-5 h-5" />
                       </div>
                       <span className="font-semibold text-slate-700">{value}</span>
