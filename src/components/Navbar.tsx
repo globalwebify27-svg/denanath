@@ -105,9 +105,9 @@ export default function Navbar() {
   return (
     <header className="w-full z-50 flex flex-col select-none" style={{ fontFamily: 'var(--font-plus-jakarta), sans-serif' }}>
       {/* Tier 1: Teal Utility Bar */}
-      <div className="hidden xl:block w-full bg-[#007a87] text-white text-[11px] py-2 px-4 font-medium border-b border-teal-600/30">
+      <div className="hidden xl:block w-full bg-[#007a87] text-white text-[10px] 2xl:text-[11px] py-2 px-4 font-medium border-b border-teal-600/30">
         <div className="max-w-[96%] mx-auto flex justify-between items-center">
-          <div className="flex items-center gap-4 text-white/90">
+          <div className="flex items-center gap-2 xl:gap-3 2xl:gap-4 text-white/90">
             <Link href="/doctor-details" className="hover:text-white transition-colors">Find a Doctor</Link>
             <span className="opacity-30">|</span>
             <Link href="/blogs" className="hover:text-white transition-colors">Blogs</Link>
@@ -121,7 +121,7 @@ export default function Navbar() {
             <Link href="/contact-us" className="hover:text-white transition-colors">Contact Us</Link>
           </div>
 
-          <div className="flex items-center gap-4 font-bold tracking-wide">
+          <div className="flex items-center gap-2 xl:gap-3 2xl:gap-4 font-bold tracking-wide">
             <a 
               href="https://wa.me/912040151515" 
               target="_blank" 
@@ -185,12 +185,12 @@ export default function Navbar() {
             </div>
 
             {/* Desktop Navigation Links */}
-            <div className="hidden xl:flex items-center justify-center flex-1 mx-2 2xl:mx-4 gap-1 2xl:gap-4 transition-all">
+            <div className="hidden xl:flex items-center justify-center flex-1 mx-1 xl:mx-2 2xl:mx-4 gap-1 xl:gap-2 2xl:gap-5 transition-all">
               {navLinks.map((link, idx) => (
                 <div key={idx} className="relative group py-2">
                   <Link 
                     href={link.href} 
-                    className="text-[12px] leading-[18px] font-bold text-slate-700 hover:text-[#007a87] uppercase tracking-normal transition-colors flex items-center gap-0.5 whitespace-nowrap"
+                    className="text-[10px] xl:text-[11px] 2xl:text-[12px] leading-[18px] font-bold text-slate-700 hover:text-[#007a87] uppercase tracking-normal transition-colors flex items-center gap-0.5 whitespace-nowrap"
                   >
                     <span>{link.name}</span>
                     {link.dropdown && <ChevronDown className="w-2.5 h-2.5 opacity-60 group-hover:rotate-180 transition-transform shrink-0" />}
@@ -228,7 +228,7 @@ export default function Navbar() {
 
               <Link
                 href="/book-appointment"
-                className="bg-[#d9232d] hover:bg-[#b81d24] leading-[18px] text-white px-3 2xl:px-4 py-2 rounded-md font-bold text-[9px] 2xl:text-[11px] uppercase tracking-wider flex items-center gap-1 transition-all shadow-sm whitespace-nowrap shrink-0"
+                className="bg-[#d9232d] hover:bg-[#b81d24] leading-[18px] text-white px-3 xl:px-4 2xl:px-6 py-2 xl:py-2.5 2xl:py-3 rounded-md font-bold text-[10px] xl:text-[11px] 2xl:text-[13px] uppercase tracking-wider flex items-center gap-1 transition-all shadow-sm whitespace-nowrap shrink-0"
               >
                 <span>Book Appointment</span>
               </Link>
