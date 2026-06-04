@@ -105,7 +105,7 @@ export default function Navbar() {
   };
 
   return (
-    <header className="w-full z-50 flex flex-col font-sans select-none">
+    <header className="w-full z-50 flex flex-col select-none" style={{ fontFamily: 'var(--font-plus-jakarta), sans-serif' }}>
       {/* Tier 1: Teal Utility Bar */}
       <div className="hidden xl:block w-full bg-[#007a87] text-white text-[11px] py-2 px-4 font-medium border-b border-teal-600/30">
         <div className="max-w-[96%] mx-auto flex justify-between items-center">
@@ -154,7 +154,7 @@ export default function Navbar() {
             {/* DMH Logo Section */}
             <div className="flex items-center shrink-0">
               <Link href="/" className="flex items-center gap-1.5 group focus:outline-none">
-                <div className="relative flex items-center justify-center w-[75px] md:w-[90px] xl:w-[102px] h-[75px] md:h-[90px] xl:h-[102px] rounded-lg bg-slate-50 border border-slate-100 p-1 shrink-0 transition-all">
+                <div className="relative flex items-center justify-center w-[80px] h-[80px] rounded-lg bg-slate-50 border border-slate-100 p-1 shrink-0 transition-all">
                   <img
                     src="/logo.png"
                     alt="DMH Logo"
@@ -171,13 +171,13 @@ export default function Navbar() {
                 </div>
               </Link>
 
-              {/* Anniversary Badge - Visible on lg and 2xl, hidden on xl to save space for the full menu */}
-              <div className="hidden lg:flex xl:hidden 2xl:flex items-center ml-2 2xl:ml-3 pl-2 2xl:pl-3 border-l border-slate-200 whitespace-nowrap shrink-0 transition-all">
+              {/* Anniversary Badge - Visible on lg and above */}
+              <div className="hidden lg:flex items-center ml-2 xl:ml-3 pl-2 xl:pl-3 border-l border-slate-200 whitespace-nowrap shrink-0 transition-all">
                 <div className="flex flex-col text-left">
-                  <span className="text-[16px] 2xl:text-[22px] font-black text-amber-600 tracking-wider uppercase leading-none pb-[3px] transition-all">
+                  <span className="text-[16px] xl:text-[20px] 2xl:text-[22px] font-black text-amber-600 tracking-wider uppercase leading-none pb-[3px] transition-all">
                     25 YEARS
                   </span>
-                  <span className="text-[8px] 2xl:text-[10px] font-black text-slate-400 tracking-[0.2em] uppercase mt-0.5 leading-none transition-all">
+                  <span className="text-[8px] xl:text-[9px] 2xl:text-[10px] font-black text-slate-400 tracking-[0.2em] uppercase mt-0.5 leading-none transition-all">
                     Of Trust & Care
                   </span>
                 </div>
