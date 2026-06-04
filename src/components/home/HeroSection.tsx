@@ -121,6 +121,8 @@ export default function HeroSection() {
           <div
             className="
             mt-8
+            mb-12
+            sm:mb-16
             flex
             flex-col
             sm:flex-row

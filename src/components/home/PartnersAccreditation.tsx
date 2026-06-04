@@ -26,7 +26,7 @@ export default function PartnersAccreditation() {
             {/* Image Banner Header */}
             <div className="h-48 sm:h-56 w-full relative overflow-hidden">
               <img 
-                src="https://images.unsplash.com/photo-1586773860418-d37222d8fce3?q=80&w=800&auto=format&fit=crop" 
+                src="/images/OIP (4).jpg" 
                 alt="Medical Team Collaboration" 
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
               />
@@ -83,7 +83,7 @@ export default function PartnersAccreditation() {
             {/* Image Banner Header */}
             <div className="h-48 sm:h-56 w-full relative overflow-hidden">
               <img 
-                src="https://images.unsplash.com/photo-1516549655169-df83a0774514?q=80&w=800&auto=format&fit=crop" 
+                src="/images/hospital1.webp" 
                 alt="Compassionate Patient Care" 
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 object-top"
               />

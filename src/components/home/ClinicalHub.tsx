@@ -48,7 +48,7 @@ export default function ClinicalHub() {
   const hubDetails = [
     {
       title: "International Desk",
-      image: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&q=80&w=600",
+      image: "/images/unnamed (9).webp",
       description: "Dedicated global support tailored for international patients. We provide custom medical itineraries, language translation services, visa coordination, and luxury lodging guides to ensure a comfortable stay.",
       Icon: Globe,
       features: [
@@ -69,7 +69,7 @@ export default function ClinicalHub() {
     },
     {
       title: "DMH Diagnostics",
-      image: "https://images.unsplash.com/photo-1527613426441-4da17471b66d?q=80&w=1152&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      image: "/images/hospital (2).webp",
       description: "NABL-accredited diagnostic laboratory and imaging services utilizing high-precision medical machinery. Book clinical pathology, advanced radiology, MRI, CT scans, and other profiles with instant online report retrieval.",
       Icon: FlaskConical,
       features: [
@@ -90,7 +90,7 @@ export default function ClinicalHub() {
     },
     {
       title: "Wellness Packages",
-      image: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&q=80&w=600",
+      image: "/images/unnamed (10).webp",
       description: "Take charge of your health with preventive care screening programs. We offer multi-profile physicals, age-custom checkups, corporate screening packages, and dedicated wellness consultations.",
       Icon: Heart,
       features: [
@@ -111,7 +111,7 @@ export default function ClinicalHub() {
     },
     {
       title: "DMH @ Home",
-      image: "https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?auto=format&fit=crop&q=80&w=600",
+      image: "/images/unnamed (8).webp",
       description: "Access high-quality clinical care from the comfort of your home. Services include experienced visiting nurses, dedicated physical recovery therapy, home blood collection, and professional elder care assistance.",
       Icon: HomeIcon,
       features: [
@@ -132,7 +132,7 @@ export default function ClinicalHub() {
     },
     {
       title: "Trauma & ER Desk",
-      image: "https://images.unsplash.com/photo-1587351021759-3e566b6af7cc?auto=format&fit=crop&q=80&w=600",
+      image: "/images/hospita6.webp",
       description: "A state-of-the-art level-1 emergency response department operating 24 hours a day. Outfitted with cardiac monitors, ventilators, emergency response vehicles, and specialized trauma surgeons.",
       Icon: ShieldAlert,
       features: [

@@ -11,19 +11,41 @@ export default function DoctorDetailsPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('/api/doctors')
-      .then(res => res.json())
+    fetch('/api/doctors?t=' + Date.now(), { cache: 'no-store' })
+      .then(res => {
+        if (!res.ok) throw new Error("Failed to fetch doctors");
+        return res.json();
+      })
       .then(data => {
-        // Parse JSON strings back to objects/arrays for the UI
+        if (!Array.isArray(data)) {
+          console.error("Expected array but got:", data);
+          setDoctorsList([]);
+          return;
+        }
+
+        const safeParse = (str: any) => {
+          if (!str) return [];
+          try {
+            return JSON.parse(str);
+          } catch (e) {
+            console.error("Failed to parse JSON", str);
+            return [];
+          }
+        };
+
         const parsedData = data.map((doc: any) => ({
           ...doc,
-          timings: doc.timings ? JSON.parse(doc.timings) : [],
-          education: doc.education ? JSON.parse(doc.education) : [],
-          training: doc.training ? JSON.parse(doc.training) : [],
-          experience: doc.experience ? JSON.parse(doc.experience) : [],
-          publications: doc.publications ? JSON.parse(doc.publications) : [],
+          timings: safeParse(doc.timings),
+          education: safeParse(doc.education),
+          training: safeParse(doc.training),
+          experience: safeParse(doc.experience),
+          publications: safeParse(doc.publications),
         }));
         setDoctorsList(parsedData);
+      })
+      .catch(error => {
+        console.error("Error fetching doctors:", error);
+        setDoctorsList([]);
       })
       .finally(() => setLoading(false));
   }, []);
