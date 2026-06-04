@@ -1,15 +1,10 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.db"
+  provider = "mysql"
+  url      = env("DATABASE_URL")
 }
 
 model Doctor {
@@ -18,11 +13,11 @@ model Doctor {
   image          String?
   qualifications String?
   specialty      String?
-  timings        String? // JSON string
-  education      String? // JSON string
-  training       String? // JSON string
-  experience     String? // JSON string
-  publications   String? // JSON string
+  timings        String?
+  education      String?
+  training       String?
+  experience     String?
+  publications   String?
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 }
@@ -39,17 +34,17 @@ model Department {
 }
 
 model Service {
-  id          String   @id @default(cuid())
-  title       String
-  icon        String?
-  items       String   @default("[]") // JSON stringified array of strings
-  status      Boolean  @default(true)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id        String   @id @default(cuid())
+  title     String
+  icon      String?
+  items     String   @default("[]")
+  status    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model SiteSetting {
-  key         String   @id
-  value       String   // JSON stringified content
-  updatedAt   DateTime @updatedAt
+  key       String   @id
+  value     String
+  updatedAt DateTime @updatedAt
 }
