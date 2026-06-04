@@ -152,9 +152,9 @@ export default function Navbar() {
           <div className="flex justify-between items-center">
 
             {/* DMH Logo Section */}
-            <div className="flex items-center shrink-0 max-w-[70%] xl:max-w-[25%]">
+            <div className="flex items-center shrink-0">
               <Link href="/" className="flex items-center gap-1.5 group focus:outline-none">
-                <div className="relative flex items-center justify-center w-[102px] h-[102px] rounded-lg bg-slate-50 border border-slate-100 p-1 shrink-0">
+                <div className="relative flex items-center justify-center w-[75px] md:w-[90px] xl:w-[102px] h-[75px] md:h-[90px] xl:h-[102px] rounded-lg bg-slate-50 border border-slate-100 p-1 shrink-0 transition-all">
                   <img
                     src="/logo.png"
                     alt="DMH Logo"
@@ -162,43 +162,43 @@ export default function Navbar() {
                   />
                 </div>
                 <div className="flex flex-col text-left whitespace-nowrap">
-                  <span className="text-[22px] font-black tracking-tight leading-none text-[#002b5c] pb-[3px]">
+                  <span className="text-[18px] md:text-[20px] xl:text-[22px] font-black tracking-tight leading-none text-[#002b5c] pb-[3px] transition-all">
                     DEENANATH
                   </span>
-                  <span className="text-[10px] font-extrabold tracking-[0.2em] leading-none uppercase mt-0.5 text-[#007a87]">
+                  <span className="text-[8px] md:text-[9px] xl:text-[10px] font-extrabold tracking-[0.2em] leading-none uppercase mt-0.5 text-[#007a87] transition-all">
                     Mangeshkar Hospital
                   </span>
                 </div>
               </Link>
 
-              {/* Anniversary Badge - Hidden on small laptops to save horizontal space */}
-              <div className="hidden 2xl:flex items-center ml-3 pl-3 border-l border-slate-200 whitespace-nowrap shrink-0">
+              {/* Anniversary Badge - Visible on lg and 2xl, hidden on xl to save space for the full menu */}
+              <div className="hidden lg:flex xl:hidden 2xl:flex items-center ml-2 2xl:ml-3 pl-2 2xl:pl-3 border-l border-slate-200 whitespace-nowrap shrink-0 transition-all">
                 <div className="flex flex-col text-left">
-                  <span className="text-[22px] font-black text-amber-600 tracking-wider uppercase leading-none pb-[3px]">
+                  <span className="text-[16px] 2xl:text-[22px] font-black text-amber-600 tracking-wider uppercase leading-none pb-[3px] transition-all">
                     25 YEARS
                   </span>
-                  <span className="text-[10px] font-black text-slate-400 tracking-[0.2em] uppercase mt-0.5 leading-none">
+                  <span className="text-[8px] 2xl:text-[10px] font-black text-slate-400 tracking-[0.2em] uppercase mt-0.5 leading-none transition-all">
                     Of Trust & Care
                   </span>
                 </div>
               </div>
             </div>
 
-            {/* Desktop Navigation Links (Responsive Flex & Fluid Gap) */}
-            <div className="hidden xl:flex items-center justify-center flex-1 mr-2 ml-8 xl:ml-12 2xl:ml-16 gap-[0.6vw] 2xl:gap-3.5 max-w-[60%]">
+            {/* Desktop Navigation Links */}
+            <div className="hidden xl:flex items-center justify-center flex-1 mx-4 gap-2 2xl:gap-4 transition-all">
               {navLinks.map((link, idx) => (
                 <div key={idx} className="relative group py-2">
                   <Link 
                     href={link.href} 
-                    className="text-[10px] 2xl:text-[11px] leading-[18px] font-black text-slate-700 hover:text-[#007a87] uppercase tracking-wider transition-colors flex items-center gap-0.5 whitespace-nowrap"
+                    className="text-[9px] 2xl:text-[11px] leading-[18px] font-black text-slate-700 hover:text-[#007a87] uppercase tracking-wider transition-colors flex items-center gap-0.5 whitespace-nowrap"
                   >
                     <span>{link.name}</span>
                     {link.dropdown && <ChevronDown className="w-2.5 h-2.5 opacity-60 group-hover:rotate-180 transition-transform shrink-0" />}
                   </Link>
 
-                  {/* Dropdown Box Alignment Fix */}
+                  {/* Dropdown Box */}
                   {link.dropdown && (
-                    <div className={`absolute top-full pt-2 hidden group-hover:block w-64 z-50 animate-fadeIn ${
+                    <div className={`absolute top-full pt-2 hidden group-hover:block w-56 2xl:w-64 z-50 animate-fadeIn ${
                       idx > 4 ? "right-0" : "left-0"
                     }`}>
                       <div className="bg-white rounded-lg shadow-xl border border-slate-100 py-1.5 overflow-hidden">
@@ -206,7 +206,7 @@ export default function Navbar() {
                           <Link
                             key={sIdx}
                             href={subLink.href}
-                            className="block px-4 py-2 text-[11px] font-semibold text-slate-600 hover:bg-slate-50 hover:text-[#007a87] border-b border-slate-50 last:border-0 transition-colors"
+                            className="block px-4 py-2 text-[10px] 2xl:text-[11px] font-semibold text-slate-600 hover:bg-slate-50 hover:text-[#007a87] border-b border-slate-50 last:border-0 transition-colors whitespace-normal"
                           >
                             {subLink.name}
                           </Link>
@@ -219,8 +219,8 @@ export default function Navbar() {
             </div>
 
             {/* Right Action Stack */}
-            <div className="hidden xl:flex items-center gap-2 xl:gap-3 shrink-0 max-w-[20%] justify-end">
-              <button className="p-1 text-slate-500 hover:text-slate-900 transition-colors shrink-0">
+            <div className="hidden xl:flex items-center gap-2 xl:gap-3 shrink-0 justify-end">
+              <button className="p-1 text-slate-500 hover:text-slate-900 transition-colors shrink-0 hidden 2xl:block">
                 <svg className="w-[18px] h-[18px] stroke-current" fill="none" viewBox="0 0 24 24" strokeWidth="2.5">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
@@ -228,26 +228,26 @@ export default function Navbar() {
 
               <Link
                 href="/book-appointment"
-                className="bg-[#d9232d] hover:bg-[#b81d24] leading-[18px] text-white px-3 2xl:px-4 py-2 rounded-md font-bold text-[10px] 2xl:text-[11px] uppercase tracking-wider flex items-center gap-1 transition-all shadow-sm whitespace-nowrap shrink-0"
+                className="bg-[#d9232d] hover:bg-[#b81d24] leading-[18px] text-white px-3 2xl:px-4 py-2 rounded-md font-bold text-[9px] 2xl:text-[11px] uppercase tracking-wider flex items-center gap-1 transition-all shadow-sm whitespace-nowrap shrink-0"
               >
                 <span>Book Appointment</span>
               </Link>
             </div>
 
             {/* Mobile / Tablet View Trigger (Triggers under 1280px Screen width) */}
-            <div className="xl:hidden flex items-center gap-3 shrink-0">
+            <div className="xl:hidden flex items-center gap-2 md:gap-3 shrink-0">
               <button className="p-1.5 text-slate-500 hover:text-slate-900 transition-colors">
-                <svg className="w-4 h-4 stroke-current" fill="none" viewBox="0 0 24 24" strokeWidth="2.5">
+                <svg className="w-4 md:w-5 h-4 md:h-5 stroke-current" fill="none" viewBox="0 0 24 24" strokeWidth="2.5">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
               </button>
 
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="p-1.5 rounded-md bg-slate-50 border border-slate-200 text-slate-700 transition-colors"
+                className="p-1.5 md:p-2 rounded-md bg-slate-50 border border-slate-200 text-slate-700 transition-colors"
                 aria-label="Toggle Menu"
               >
-                {mobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
+                {mobileMenuOpen ? <X className="w-4 md:w-5 h-4 md:h-5" /> : <Menu className="w-4 md:w-5 h-4 md:h-5" />}
               </button>
             </div>
           </div>
