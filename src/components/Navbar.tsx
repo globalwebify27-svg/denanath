@@ -93,7 +93,6 @@ export default function Navbar() {
         { name: "Patient Registration Form", href: "/patient-registration" },
       ],
     },
-    { name: "Careers", href: "/careers" },
     { name: "Contact Us", href: "/contact-us" },
   ];
 
@@ -119,7 +118,7 @@ export default function Navbar() {
             <span className="opacity-30">|</span>
             <Link href="/research-about" className="hover:text-white transition-colors">Research</Link>
             <span className="opacity-30">|</span>
-            <Link href="/contact-us" className="hover:text-white transition-colors">Contact Us</Link>
+            <Link href="/careers" className="hover:text-white transition-colors">Careers</Link>
           </div>
 
           <div className="flex items-center gap-4 font-bold tracking-wide">
@@ -155,7 +154,7 @@ export default function Navbar() {
             {/* DMH Logo Section */}
             <div className="flex items-center shrink-0 max-w-[70%] xl:max-w-[25%]">
               <Link href="/" className="flex items-center gap-1.5 group focus:outline-none">
-                <div className="relative flex items-center justify-center w-[60px] h-[60px] rounded-lg bg-slate-50 border border-slate-100 p-1 shrink-0">
+                <div className="relative flex items-center justify-center w-[102px] h-[102px] rounded-lg bg-slate-50 border border-slate-100 p-1 shrink-0">
                   <img
                     src="/logo.png"
                     alt="DMH Logo"
@@ -163,10 +162,10 @@ export default function Navbar() {
                   />
                 </div>
                 <div className="flex flex-col text-left whitespace-nowrap">
-                  <span className="text-[12px] xl:text-[13px] 2xl:text-[14px] font-black tracking-tight leading-none text-[#002b5c]">
+                  <span className="text-[22px] font-black tracking-tight leading-none text-[#002b5c] pb-[3px]">
                     DEENANATH
                   </span>
-                  <span className="text-[7px] xl:text-[7.5px] 2xl:text-[8px] font-extrabold tracking-widest leading-none uppercase mt-0.5 text-[#007a87]">
+                  <span className="text-[10px] font-extrabold tracking-[0.2em] leading-none uppercase mt-0.5 text-[#007a87]">
                     Mangeshkar Hospital
                   </span>
                 </div>
@@ -175,10 +174,10 @@ export default function Navbar() {
               {/* Anniversary Badge - Hidden on small laptops to save horizontal space */}
               <div className="hidden 2xl:flex items-center ml-3 pl-3 border-l border-slate-200 whitespace-nowrap shrink-0">
                 <div className="flex flex-col text-left">
-                  <span className="text-[9px] font-black text-amber-600 tracking-wider uppercase leading-none">
+                  <span className="text-[22px] font-black text-amber-600 tracking-wider uppercase leading-none pb-[3px]">
                     25 YEARS
                   </span>
-                  <span className="text-[6.5px] font-black text-slate-400 tracking-widest uppercase mt-0.5 leading-none">
+                  <span className="text-[10px] font-black text-slate-400 tracking-[0.2em] uppercase mt-0.5 leading-none">
                     Of Trust & Care
                   </span>
                 </div>
@@ -186,12 +185,12 @@ export default function Navbar() {
             </div>
 
             {/* Desktop Navigation Links (Responsive Flex & Fluid Gap) */}
-            <div className="hidden xl:flex items-center justify-center flex-1 mx-2 gap-[0.6vw] 2xl:gap-3.5 max-w-[60%]">
+            <div className="hidden xl:flex items-center justify-center flex-1 mr-2 ml-8 xl:ml-12 2xl:ml-16 gap-[0.6vw] 2xl:gap-3.5 max-w-[60%]">
               {navLinks.map((link, idx) => (
                 <div key={idx} className="relative group py-2">
                   <Link 
                     href={link.href} 
-                    className="text-[10px] 2xl:text-[11px] font-black text-slate-700 hover:text-[#007a87] uppercase tracking-wider transition-colors flex items-center gap-0.5 whitespace-nowrap"
+                    className="text-[10px] 2xl:text-[11px] leading-[18px] font-black text-slate-700 hover:text-[#007a87] uppercase tracking-wider transition-colors flex items-center gap-0.5 whitespace-nowrap"
                   >
                     <span>{link.name}</span>
                     {link.dropdown && <ChevronDown className="w-2.5 h-2.5 opacity-60 group-hover:rotate-180 transition-transform shrink-0" />}
@@ -222,14 +221,14 @@ export default function Navbar() {
             {/* Right Action Stack */}
             <div className="hidden xl:flex items-center gap-2 xl:gap-3 shrink-0 max-w-[20%] justify-end">
               <button className="p-1 text-slate-500 hover:text-slate-900 transition-colors shrink-0">
-                <svg className="w-4 h-4 stroke-current" fill="none" viewBox="0 0 24 24" strokeWidth="2.5">
+                <svg className="w-[18px] h-[18px] stroke-current" fill="none" viewBox="0 0 24 24" strokeWidth="2.5">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
               </button>
 
               <Link
                 href="/book-appointment"
-                className="bg-[#d9232d] hover:bg-[#b81d24] text-white px-3 2xl:px-4 py-2 rounded-md font-bold text-[10px] 2xl:text-[11px] uppercase tracking-wider flex items-center gap-1 transition-all shadow-sm whitespace-nowrap shrink-0"
+                className="bg-[#d9232d] hover:bg-[#b81d24] leading-[18px] text-white px-3 2xl:px-4 py-2 rounded-md font-bold text-[10px] 2xl:text-[11px] uppercase tracking-wider flex items-center gap-1 transition-all shadow-sm whitespace-nowrap shrink-0"
               >
                 <span>Book Appointment</span>
               </Link>

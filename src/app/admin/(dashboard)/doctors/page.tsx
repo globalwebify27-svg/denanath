@@ -25,67 +25,110 @@ export default async function AdminDoctorsPage({
 
   return (
     <div className="p-8">
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">Doctors Directory</h1>
+      {/* Header Section */}
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+        <div>
+          <h1 className="text-[36px] font-[800] leading-[40px] text-[#002b5c] tracking-tight mb-2">Doctors Directory</h1>
+          <p className="text-[14px] font-[600] text-gray-500">Manage hospital medical staff and physician profiles.</p>
+        </div>
         <Link
           href="/admin/doctors/new"
-          className="flex items-center gap-2 bg-[#007a87] text-white px-4 py-2 rounded-lg hover:bg-[#005c66] transition-colors"
+          className="flex items-center gap-2 bg-[#007a87] text-white px-5 py-2.5 rounded-xl hover:bg-[#005c66] hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 font-[700] text-[13px] tracking-wide"
         >
-          <Plus size={20} />
+          <Plus size={18} />
           <span>Add New Doctor</span>
         </Link>
       </div>
 
-      {/* Search and Filters */}
-      <div className="bg-white p-4 rounded-xl shadow-sm mb-6 flex gap-4">
-        <div className="relative flex-1 max-w-md">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
+      {/* Modern Search & Filter Bar */}
+      <div className="bg-white p-2 rounded-2xl shadow-[0_4px_20px_rgb(0,0,0,0.03)] border border-gray-100 mb-6 flex flex-col md:flex-row gap-4 items-center justify-between">
+        <div className="relative w-full md:max-w-lg flex items-center">
+          <Search className="absolute left-4 text-gray-400" size={18} />
           <input
             type="text"
-            placeholder="Search doctors by name..."
+            placeholder="Search doctors by name or specialty..."
             defaultValue={query}
-            className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#007a87]"
+            className="w-full pl-11 pr-4 py-3 bg-gray-50/50 hover:bg-gray-50 border border-transparent focus:border-[#007a87]/30 rounded-xl focus:outline-none focus:ring-4 focus:ring-[#007a87]/10 transition-all font-[500] text-gray-700 text-[14px]"
           />
+        </div>
+        <div className="px-4 text-[13px] font-[600] text-gray-400">
+          Showing <span className="text-[#002b5c] font-[800]">{doctors.length}</span> physicians
         </div>
       </div>
 
-      {/* Doctors Table */}
-      <div className="bg-white rounded-xl shadow-sm overflow-hidden">
-        <table className="w-full text-left border-collapse">
-          <thead>
-            <tr className="bg-gray-50 border-b border-gray-200">
-              <th className="p-4 font-semibold text-gray-600">Name</th>
-              <th className="p-4 font-semibold text-gray-600">Specialty</th>
-              <th className="p-4 font-semibold text-gray-600">Qualifications</th>
-              <th className="p-4 font-semibold text-gray-600 text-right">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {doctors.map((doctor: any) => (
-              <tr key={doctor.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                <td className="p-4 font-medium text-gray-900">{doctor.name}</td>
-                <td className="p-4 text-gray-600">{doctor.specialty || "-"}</td>
-                <td className="p-4 text-gray-600">{doctor.qualifications || "-"}</td>
-                <td className="p-4 text-right">
-                  <Link
-                    href={`/admin/doctors/${doctor.id}`}
-                    className="inline-flex items-center gap-1 text-[#007a87] hover:text-[#005c66] font-medium"
-                  >
-                    <Edit size={16} />
-                    Edit
-                  </Link>
-                </td>
+      {/* Premium Data Table */}
+      <div className="bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100/80 overflow-hidden relative z-10">
+        <div className="overflow-x-auto">
+          <table className="w-full text-left border-collapse table-fixed min-w-[800px] md:min-w-full">
+            <thead>
+              <tr className="bg-gradient-to-r from-gray-50 to-white border-b border-gray-100">
+                <th className="p-5 font-[800] text-[12px] uppercase tracking-widest text-gray-400 w-[35%]">Physician Profile</th>
+                <th className="p-5 font-[800] text-[12px] uppercase tracking-widest text-gray-400 w-[25%]">Specialty</th>
+                <th className="p-5 font-[800] text-[12px] uppercase tracking-widest text-gray-400 w-[30%]">Qualifications</th>
+                <th className="p-5 font-[800] text-[12px] uppercase tracking-widest text-gray-400 text-right w-[10%]">Actions</th>
               </tr>
-            ))}
-            {doctors.length === 0 && (
-              <tr>
-                <td colSpan={4} className="p-8 text-center text-gray-500">
-                  No doctors found matching your search.
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="divide-y divide-gray-100/80">
+              {doctors.map((doctor: any) => {
+                // Generate initials for the avatar
+                const initials = doctor.name.replace("Dr. ", "").substring(0, 2).toUpperCase();
+                return (
+                  <tr key={doctor.id} className="hover:bg-gray-50/60 transition-colors group">
+                    <td className="p-5 break-words">
+                      <div className="flex items-center gap-4">
+                        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#002b5c]/10 to-[#007a87]/10 border border-[#007a87]/20 flex items-center justify-center shrink-0 shadow-sm group-hover:scale-105 transition-transform">
+                          <span className="text-[12px] font-[800] text-[#002b5c] tracking-wider">{initials}</span>
+                        </div>
+                        <div className="min-w-0">
+                          <p className="font-[800] text-[14px] text-gray-900 tracking-tight truncate">{doctor.name}</p>
+                          <p className="text-[12px] font-[600] text-gray-400 mt-0.5">ID: {doctor.id.substring(0, 8)}</p>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="p-5">
+                      {doctor.specialty ? (
+                        <div className="flex flex-wrap gap-1">
+                          <span className="inline-flex items-center px-3 py-1 rounded-lg bg-[#007a87]/10 border border-[#007a87]/20 text-[#007a87] text-[11px] font-[800] uppercase tracking-widest whitespace-normal break-words">
+                            {doctor.specialty}
+                          </span>
+                        </div>
+                      ) : (
+                        <span className="text-gray-300 text-[13px] font-[500] italic">-</span>
+                      )}
+                    </td>
+                    <td className="p-5 break-words">
+                      <p className="text-[13px] font-[600] text-gray-600 leading-relaxed whitespace-normal">
+                        {doctor.qualifications || <span className="text-gray-300 italic">-</span>}
+                      </p>
+                    </td>
+                    <td className="p-5 text-right">
+                      <Link
+                        href={`/admin/doctors/${doctor.id}`}
+                        className="inline-flex items-center justify-center p-2 rounded-xl bg-gray-50 text-gray-400 hover:bg-[#007a87] hover:text-white hover:shadow-md transition-all duration-300"
+                        title="Edit Doctor"
+                      >
+                        <Edit size={16} />
+                      </Link>
+                    </td>
+                  </tr>
+                );
+              })}
+              {doctors.length === 0 && (
+                <tr>
+                  <td colSpan={4} className="p-16 text-center">
+                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-50 mb-4 border border-gray-100">
+                      <Search className="w-8 h-8 text-gray-300" />
+                    </div>
+                    <p className="text-[16px] font-[800] text-gray-800 tracking-tight">No physicians found</p>
+                    <p className="text-[13px] font-[500] text-gray-400 mt-1 max-w-sm mx-auto">
+                      We couldn't find any doctors matching your search query. Try adjusting your filters or adding a new doctor.
+                    </p>
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

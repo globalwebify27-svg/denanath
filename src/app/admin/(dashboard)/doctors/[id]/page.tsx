@@ -24,7 +24,7 @@ export default async function EditDoctorPage({
 
   return (
     <div className="p-8">
-      <h1 className="text-3xl font-bold text-gray-900 mb-8">
+      <h1 className="text-[36px] font-[800] leading-[40px] text-[#002b5c] tracking-tight mb-8">
         {id === "new" ? "Add New Doctor" : "Edit Doctor Profile"}
       </h1>
       <DoctorForm doctor={doctor || {}} />

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { User, Lock, Eye, EyeOff, ArrowRight } from "lucide-react";
+import { User, Lock, Eye, EyeOff, ArrowRight, ShieldCheck, Globe } from "lucide-react";
 
 export default function AdminLogin() {
   const router = useRouter();
@@ -22,18 +22,63 @@ export default function AdminLogin() {
   };
 
   return (
-    <div className="min-h-screen bg-[#f8f9fa] flex flex-col items-center justify-center p-4">
-      <div className="w-full max-w-[600px]">
-        {/* Header Section */}
-        <div className="text-center mb-10">
-          <div className="inline-flex items-center justify-center gap-3 mb-6 bg-white px-6 py-2 rounded-lg shadow-sm border border-gray-100">
-            <div className="w-8 h-8 bg-[#007a87] rounded-full flex items-center justify-center text-white font-bold">
-              D
+    <div className="min-h-screen flex items-center justify-center bg-[#f0f2f5] p-4 sm:p-8">
+      <div className="w-full max-w-5xl bg-white rounded-3xl shadow-2xl flex flex-col lg:flex-row min-h-[600px] overflow-hidden">
+        {/* Left Side: Brand Cover */}
+        <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden bg-[#002b5c] p-12 flex-col justify-between">
+          <div className="absolute inset-0 bg-gradient-to-br from-[#002b5c] via-[#004799] to-[#007a87] z-0" />
+          <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-20 mix-blend-overlay z-0" />
+          
+          {/* Top Logo */}
+          <div className="relative z-10 flex items-center gap-3">
+            <div className="relative flex items-center justify-center w-12 h-12 rounded-lg bg-white p-1 shrink-0 shadow-sm">
+              <img src="/logo.png" alt="DMH Logo" className="w-full h-full object-contain" />
             </div>
-            <span className="text-xl font-bold tracking-wide text-[#002b5c]">DMH ADMIN</span>
+            <div className="flex flex-col text-left whitespace-nowrap">
+              <span className="text-[14px] font-black tracking-wide leading-none text-white">
+                DEENANATH
+              </span>
+              <span className="text-[8px] font-extrabold tracking-[0.15em] leading-none uppercase mt-0.5 text-teal-300">
+                Mangeshkar Hospital
+              </span>
+            </div>
           </div>
-          <h1 className="text-2xl md:text-3xl font-bold text-[#002b5c] mb-2">Management Portal</h1>
-          <p className="text-gray-500 text-sm">Please authenticate to manage institutional data</p>
+
+          {/* Middle Text */}
+          <div className="relative z-10">
+            <h2 className="text-5xl font-black text-white italic tracking-tight mb-8">
+              Command<br/>Center.
+            </h2>
+            <div className="text-[10px] font-bold text-blue-200/90 tracking-[0.2em] uppercase leading-relaxed space-y-2">
+              <p>Authorized Personnel Only.</p>
+              <p>Secure Administrative Control Gateway.</p>
+            </div>
+          </div>
+
+          {/* Bottom Icons/Text */}
+          <div className="relative z-10 flex items-center gap-8 pt-8">
+            <div className="flex items-center gap-2 text-[9px] font-bold text-white/50 tracking-wider uppercase">
+              <ShieldCheck className="w-4 h-4" />
+              <span>Enterprise Security</span>
+            </div>
+            <div className="flex items-center gap-2 text-[9px] font-bold text-white/50 tracking-wider uppercase">
+              <Globe className="w-4 h-4" />
+              <span>Global Ecosystem</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Right Side: Login Form */}
+        <div className="w-full lg:w-1/2 bg-white flex flex-col items-center justify-center p-8 sm:p-12 xl:p-16">
+          <div className="w-full max-w-[400px]">
+        {/* Header Section */}
+        <div className="mb-10 text-left w-full">
+          <h1 className="text-[22px] font-black text-[#002b5c] tracking-tight uppercase mb-1">
+            Secure Login
+          </h1>
+          <p className="text-[9px] font-bold text-[#007a87] tracking-[0.15em] uppercase">
+            Access your hospital dashboard
+          </p>
         </div>
 
         {/* Login Form */}
@@ -86,7 +131,7 @@ export default function AdminLogin() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full flex items-center justify-between bg-[#007a87] hover:bg-[#005c66] text-white py-3.5 px-6 rounded-lg font-bold text-sm transition-colors disabled:opacity-70 mt-4"
+            className="w-full flex items-center justify-center gap-3 bg-[#007a87] hover:bg-[#005c66] text-white py-3.5 px-6 rounded-lg font-bold text-[11px] uppercase tracking-[0.2em] transition-colors disabled:opacity-70 mt-4"
           >
             <span>{loading ? "Authenticating..." : "Log In to Dashboard"}</span>
             <ArrowRight className="h-4 w-4" />
@@ -100,6 +145,8 @@ export default function AdminLogin() {
           </p>
         </div>
       </div>
+    </div>
+    </div>
     </div>
   );
 }

@@ -431,7 +431,7 @@ export default function CareersPage() {
               </div>
               <button 
                 onClick={() => setApplyingJob(null)}
-                className="w-10 h-10 rounded-full bg-slate-50 text-slate-500 hover:bg-red-50 hover:text-red-500 flex items-center justify-center transition-colors shrink-0"
+                className="w-10 h-10 rounded-full bg-slate-50 text-slate-500 hover:bg-red-50 hover:text-red-500 flex items-center justify-center transition-all duration-300 hover:rotate-180 shrink-0"
               >
                 <X className="w-5 h-5" />
               </button>

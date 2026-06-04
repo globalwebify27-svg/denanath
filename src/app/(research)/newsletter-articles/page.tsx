@@ -1,67 +1,40 @@
-"use client";
-
-import React, { useEffect, useRef } from "react";
+import { prisma } from "@/lib/prisma";
+import React from "react";
 import Link from "next/link";
 import { ChevronRight, Microscope, FileText, Download } from "lucide-react";
 
-export default function NewsletterArticlesPage() {
+export default async function NewsletterArticlesPage() {
+  const setting = await prisma.siteSetting.findUnique({ where: { key: 'page_research_newsletter' } });
+  let pageData: any = { newsletters: [] };
+  try { if (setting) pageData = JSON.parse(setting.value); } catch (e) {}
+
+  const defaultNewsletters = [
+    { title: "May - August 2017", link: "https://www.dmhospital.org/cms/Media/file/DMHRC-Newsletter-May-2017-Epilepsy.pdf" },
+    { title: "January - April 2017", link: "https://www.dmhospital.org/cms/Media/file/Newsletter_Jan_Apr_2017.pdf" },
+    { title: "September - December 2016", link: "#" },
+    { title: "May - August 2016", link: "#" },
+    { title: "January - April 2016", link: "#" },
+    { title: "September - December 2015", link: "#" },
+    { title: "May - August 2015", link: "#" },
+    { title: "January - April 2015", link: "#" },
+    { title: "May - August Marathi 2013", link: "#" },
+    { title: "May - August 2013", link: "#" },
+    { title: "January - April Marathi 2013", link: "#" },
+    { title: "January - April 2013", link: "#" }
+  ];
+
+  const newsletters = pageData.newsletters?.length > 0 ? pageData.newsletters : defaultNewsletters;
+
   const options = [
-    {
-        "name": "About Us",
-        "href": "/research-about",
-        "active": false
-    },
-    {
-        "name": "Training And Events",
-        "href": "/training-events",
-        "active": false
-    },
-    {
-        "name": "Awards",
-        "href": "/awards",
-        "active": false
-    },
-    {
-        "name": "Newsletter Articles",
-        "href": "/newsletter-articles",
-        "active": true
-    },
-    {
-        "name": "Publications",
-        "href": "/publications",
-        "active": false
-    },
-    {
-        "name": "Annual Reports",
-        "href": "/annual-reports",
-        "active": false
-    },
-    {
-        "name": "Sponsors & CROs",
-        "href": "/sponsors-cros",
-        "active": false
-    },
-    {
-        "name": "Contact Us",
-        "href": "/research-contact",
-        "active": false
-    }
-];
-
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (window.innerWidth < 1024 && scrollContainerRef.current) {
-      const activeEl = scrollContainerRef.current.querySelector('[data-active="true"]') as HTMLElement;
-      if (activeEl) {
-        const container = scrollContainerRef.current;
-        const scrollPos = activeEl.offsetLeft - (container.offsetWidth / 2) + (activeEl.offsetWidth / 2);
-        setTimeout(() => {
-          container.scrollTo({ left: Math.max(0, scrollPos), behavior: 'smooth' });
-        }, 100);
-      }
-    }
-  }, []);
+    { "name": "About Us", "href": "/research-about", "active": false },
+    { "name": "Training And Events", "href": "/training-events", "active": false },
+    { "name": "Awards", "href": "/awards", "active": false },
+    { "name": "Newsletter Articles", "href": "/newsletter-articles", "active": true },
+    { "name": "Publications", "href": "/publications", "active": false },
+    { "name": "Annual Reports", "href": "/annual-reports", "active": false },
+    { "name": "Sponsors & CROs", "href": "/sponsors-cros", "active": false },
+    { "name": "Contact Us", "href": "/research-contact", "active": false }
+  ];
 
   return (
     <div className="min-h-screen bg-[#f8fafc] font-sans selection:bg-teal-500/30">
@@ -90,7 +63,7 @@ export default function NewsletterArticlesPage() {
           {/* Left Sidebar Navigation */}
           {options.length > 0 && (
             <div className="w-full lg:w-[280px] shrink-0 sticky top-14 lg:top-28 z-30 bg-[#f8fafc] py-2 lg:py-0">
-              <div ref={scrollContainerRef} className="bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 overflow-hidden flex flex-row lg:flex-col overflow-x-auto lg:overflow-x-visible scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden snap-x snap-mandatory">
+              <div className="bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 overflow-hidden flex flex-row lg:flex-col overflow-x-auto lg:overflow-x-visible scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden snap-x snap-mandatory">
                 {options.map((option, idx) => (
                   <Link
                     key={idx}
@@ -132,20 +105,7 @@ export default function NewsletterArticlesPage() {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {[
-                  { title: "May - August 2017", link: "https://www.dmhospital.org/cms/Media/file/DMHRC-Newsletter-May-2017-Epilepsy.pdf" },
-                  { title: "January - April 2017", link: "https://www.dmhospital.org/cms/Media/file/Newsletter_Jan_Apr_2017.pdf" },
-                  { title: "September - December 2016", link: "#" },
-                  { title: "May - August 2016", link: "#" },
-                  { title: "January - April 2016", link: "#" },
-                  { title: "September - December 2015", link: "#" },
-                  { title: "May - August 2015", link: "#" },
-                  { title: "January - April 2015", link: "#" },
-                  { title: "May - August Marathi 2013", link: "#" },
-                  { title: "May - August 2013", link: "#" },
-                  { title: "January - April Marathi 2013", link: "#" },
-                  { title: "January - April 2013", link: "#" }
-                ].map((item, idx) => (
+                {newsletters.map((item: any, idx: number) => (
                   <Link 
                     key={idx}
                     href={item.link}

@@ -178,13 +178,41 @@ export default function DoctorForm({ doctor }: { doctor: any }) {
         </div>
 
         <div className="md:col-span-2">
-          <label className="block text-sm font-medium text-gray-700 mb-1">Image URL (optional)</label>
-          <input
-            type="text"
-            value={formData.image}
-            onChange={(e) => setFormData({ ...formData, image: e.target.value })}
-            className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-          />
+          <label className="block text-sm font-medium text-gray-700 mb-2">Doctor Photo (optional)</label>
+          <div className="flex items-center gap-4">
+            {formData.image && (
+              <div className="shrink-0">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={formData.image} alt="Preview" className="w-16 h-16 object-cover rounded-lg border border-gray-200" />
+              </div>
+            )}
+            <div className="flex-1">
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) {
+                    const reader = new FileReader();
+                    reader.onloadend = () => {
+                      setFormData({ ...formData, image: reader.result as string });
+                    };
+                    reader.readAsDataURL(file);
+                  }
+                }}
+                className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#007a87] text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[#007a87]/10 file:text-[#007a87] hover:file:bg-[#007a87]/20 cursor-pointer"
+              />
+            </div>
+            {formData.image && (
+              <button
+                type="button"
+                onClick={() => setFormData({ ...formData, image: "" })}
+                className="text-red-500 hover:text-red-700 text-sm font-medium px-3 py-2 bg-red-50 rounded-lg hover:bg-red-100 transition-colors"
+              >
+                Remove
+              </button>
+            )}
+          </div>
         </div>
       </div>
 

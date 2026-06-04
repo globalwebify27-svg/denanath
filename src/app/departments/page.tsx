@@ -1,42 +1,31 @@
-"use client";
-
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import Link from "next/link";
-import { ChevronRight, Stethoscope } from "lucide-react";
+import { ChevronRight, Stethoscope, Search, ArrowRight, HeartPulse, Shield, Activity, Users } from "lucide-react";
+import { prisma } from "@/lib/prisma";
 
-export default function DepartmentDetailsPage() {
+export const dynamic = "force-dynamic";
+
+export default async function DepartmentDetailsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ q?: string }>;
+}) {
+  const resolvedParams = await searchParams;
+  const query = resolvedParams.q || "";
+
   const options = [
-    {
-        "name": "Doctor Details",
-        "href": "/doctors",
-        "active": false
-    },
-    {
-        "name": "Department Details",
-        "href": "/departments",
-        "active": true
-    },
-    {
-        "name": "Services",
-        "href": "/services",
-        "active": false
-    }
-];
+    { name: "Doctor Details", href: "/doctors", active: false },
+    { name: "Department Details", href: "/departments", active: true },
+    { name: "Services", href: "/services", active: false }
+  ];
 
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (window.innerWidth < 1024 && scrollContainerRef.current) {
-      const activeEl = scrollContainerRef.current.querySelector('[data-active="true"]') as HTMLElement;
-      if (activeEl) {
-        const container = scrollContainerRef.current;
-        const scrollPos = activeEl.offsetLeft - (container.offsetWidth / 2) + (activeEl.offsetWidth / 2);
-        setTimeout(() => {
-          container.scrollTo({ left: Math.max(0, scrollPos), behavior: 'smooth' });
-        }, 100);
-      }
-    }
-  }, []);
+  const departments = await prisma.department.findMany({
+    where: {
+      status: true,
+      name: { contains: query }
+    },
+    orderBy: { name: 'asc' }
+  });
 
   return (
     <div className="min-h-screen bg-[#f8fafc] font-sans selection:bg-teal-500/30">
@@ -63,37 +52,34 @@ export default function DepartmentDetailsPage() {
         <div className="flex flex-col lg:flex-row gap-8 xl:gap-12 items-start">
           
           {/* Left Sidebar Navigation */}
-          {options.length > 0 && (
-            <div className="w-full lg:w-[280px] shrink-0 sticky top-14 lg:top-28 z-30 bg-[#f8fafc] py-2 lg:py-0">
-              <div ref={scrollContainerRef} className="bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 overflow-hidden flex flex-row lg:flex-col overflow-x-auto lg:overflow-x-visible scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden snap-x snap-mandatory">
-                {options.map((option, idx) => (
-                  <Link
-                    key={idx}
-                    href={option.href}
-                    data-active={option.active}
-                    className={"snap-start shrink-0 group flex items-center justify-between px-6 py-4 lg:py-4 text-sm font-bold transition-all duration-300 lg:border-l-4 lg:border-b-0 border-b-4 whitespace-nowrap lg:whitespace-normal " + (
-                      option.active
-                        ? "border-[#007a87] bg-teal-50/40 text-[#007a87]"
-                        : "border-transparent text-slate-600 hover:bg-slate-50 hover:text-[#002b5c] lg:hover:border-slate-200 hover:border-slate-200"
-                    ) + " " + (idx !== options.length - 1 ? "lg:border-b lg:border-b-slate-50" : "")}
-                  >
-                    <span>{option.name}</span>
-                    <ChevronRight 
-                      className={"hidden lg:block w-4 h-4 transition-transform duration-300 " + (
-                        option.active 
-                          ? "text-[#007a87] translate-x-1" 
-                          : "text-slate-300 group-hover:translate-x-1 group-hover:text-[#002b5c]"
-                      )} 
-                    />
-                  </Link>
-                ))}
-              </div>
+          <div className="w-full lg:w-[280px] shrink-0 sticky top-14 lg:top-28 z-30 bg-[#f8fafc] py-2 lg:py-0">
+            <div className="bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 overflow-hidden flex flex-row lg:flex-col overflow-x-auto lg:overflow-x-visible">
+              {options.map((option, idx) => (
+                <Link
+                  key={idx}
+                  href={option.href}
+                  className={"group flex items-center justify-between px-6 py-4 text-sm font-bold transition-all duration-300 lg:border-l-4 lg:border-b-0 border-b-4 whitespace-nowrap lg:whitespace-normal " + (
+                    option.active
+                      ? "border-[#007a87] bg-teal-50/40 text-[#007a87]"
+                      : "border-transparent text-slate-600 hover:bg-slate-50 hover:text-[#002b5c] hover:border-slate-200"
+                  ) + " " + (idx !== options.length - 1 ? "lg:border-b lg:border-b-slate-50" : "")}
+                >
+                  <span>{option.name}</span>
+                  <ChevronRight 
+                    className={"hidden lg:block w-4 h-4 transition-transform duration-300 " + (
+                      option.active 
+                        ? "text-[#007a87] translate-x-1" 
+                        : "text-slate-300 group-hover:translate-x-1 group-hover:text-[#002b5c]"
+                    )} 
+                  />
+                </Link>
+              ))}
             </div>
-          )}
+          </div>
 
           {/* Right Main Content */}
           <div className="w-full flex-1">
-            <div className="bg-white rounded-3xl shadow-[0_8px_40px_rgb(0,0,0,0.03)] border border-slate-100/60 p-6 sm:p-10 md:p-14">
+            <div className="bg-white rounded-3xl shadow-[0_8px_40px_rgb(0,0,0,0.03)] border border-slate-100/60 p-6 sm:p-10">
               
               <div className="mb-10">
                 <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-teal-50 border border-teal-100 text-[#007a87] text-xs font-bold tracking-wider uppercase mb-4">
@@ -106,14 +92,54 @@ export default function DepartmentDetailsPage() {
                 <div className="w-20 h-1.5 bg-[#007a87] rounded-full mb-8"></div>
               </div>
 
-              <div className="py-16 text-center border-2 border-dashed border-slate-200 rounded-2xl bg-slate-50">
-                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-teal-100 mb-4">
-                  <Stethoscope className="w-8 h-8 text-[#007a87]" />
-                </div>
-                <h3 className="text-xl font-bold text-slate-700 mb-2">Content Coming Soon</h3>
-                <p className="text-slate-500 max-w-md mx-auto">
-                  The information for this section is currently being updated. Please check back later.
-                </p>
+              {/* Search Box Matching Image */}
+              <div className="bg-gray-50/50 rounded-2xl border border-gray-100 p-6 mb-8">
+                <form action="/departments" method="GET">
+                  <label className="block text-[#002b5c] font-[800] mb-3">Search Department:</label>
+                  <div className="relative">
+                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+                    <input
+                      type="text"
+                      name="q"
+                      defaultValue={query}
+                      placeholder="Enter department name..."
+                      className="w-full pl-11 pr-4 py-3 bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#007a87]/20 focus:border-[#007a87] font-[500] text-gray-700 shadow-sm"
+                    />
+                  </div>
+                </form>
+              </div>
+
+              {/* Vertical Stacked Cards Matching Image */}
+              <div className="space-y-4">
+                {departments.length > 0 ? (
+                  departments.map((dept, index) => {
+                    // Alternate some icons just for visual parity with the image if no icon specified
+                    const IconComponent = index % 2 === 0 ? HeartPulse : Shield;
+                    
+                    return (
+                      <div key={dept.id} className="bg-white border border-gray-100 rounded-2xl p-6 flex flex-col sm:flex-row sm:items-center gap-6 hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:-translate-y-0.5 transition-all duration-300">
+                        <div className="w-14 h-14 rounded-xl bg-[#007a87]/5 flex items-center justify-center shrink-0 border border-[#007a87]/10">
+                          <IconComponent className="w-7 h-7 text-[#007a87]" />
+                        </div>
+                        <div className="flex-1">
+                          <h3 className="text-[18px] font-[900] text-[#002b5c] uppercase tracking-wide mb-2 leading-tight">
+                            {dept.name}
+                          </h3>
+                          <Link 
+                            href={`/doctors?department=${encodeURIComponent(dept.name)}`} 
+                            className="inline-flex items-center gap-1.5 text-[12px] font-[800] text-[#007a87] uppercase tracking-widest hover:text-[#002b5c] transition-colors"
+                          >
+                            VIEW DOCTORS <ArrowRight size={14} />
+                          </Link>
+                        </div>
+                      </div>
+                    );
+                  })
+                ) : (
+                  <div className="py-16 text-center border-2 border-dashed border-slate-200 rounded-2xl bg-slate-50">
+                    <p className="text-slate-500 font-medium">No departments found matching your search.</p>
+                  </div>
+                )}
               </div>
 
             </div>

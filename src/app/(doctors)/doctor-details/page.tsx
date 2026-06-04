@@ -311,8 +311,8 @@ export default function DoctorDetailsPage() {
             
             {/* Modal Header */}
             <div className="flex items-start justify-between p-4 sm:p-6 md:p-8 border-b border-slate-100 shrink-0 sticky top-0 bg-white z-10 rounded-t-3xl gap-2">
-              <div className="flex items-center sm:items-start gap-3 sm:gap-5 flex-1 min-w-0 pr-2">
-                <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-[#002b5c] flex items-center justify-center shrink-0 border-2 sm:border-4 border-white shadow-sm overflow-hidden text-white font-bold text-xl">
+              <div className="flex items-center gap-3 sm:gap-5 flex-1 min-w-0 pr-2">
+                <div className="w-24 h-32 sm:w-32 sm:h-40 rounded-2xl bg-[#002b5c] flex items-center justify-center shrink-0 border-2 sm:border-4 border-white shadow-sm overflow-hidden text-white font-bold text-xl">
                   {selectedDoctor.image && (
                     <img 
                       src={selectedDoctor.image} 
