@@ -1,16 +1,8 @@
 import { prisma } from "@/lib/prisma";
 import CareersClient from "./CareersClient";
+import { jobsList, fallbackContacts } from "./careersData";
 
 export const dynamic = "force-dynamic";
-
-const fallbackContacts = [
-  { iconType: "building", title: "Admin Staff", phone: "020-40151615 / 1616 / 1660" },
-  { iconType: "stethoscope1", title: "Paramedical (Technician)", phone: "020-40151660 / 1664" },
-  { iconType: "stethoscope2", title: "Doctors / Physiotherapist", phone: "020-40151616" },
-  { iconType: "briefcase", title: "MPW", phone: "020-40151677" },
-  { iconType: "heart", title: "Nursing Staff", phone: "020-40151645 / 1698" },
-  { iconType: "pill", title: "Pharmacy", phone: "020-40151699" }
-];
 
 export default async function CareersPage() {
   const setting = await prisma.siteSetting.findUnique({
@@ -26,7 +18,12 @@ export default async function CareersPage() {
     }
   }
 
-  // Supply fallback contacts if not present
+  // Supply fallback jobs if not present or empty
+  if (!data.jobs || data.jobs.length === 0) {
+    data.jobs = jobsList;
+  }
+
+  // Supply fallback contacts if not present or empty
   if (!data.contacts || data.contacts.length === 0) {
     data.contacts = fallbackContacts;
   }

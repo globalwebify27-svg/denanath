@@ -51,7 +51,7 @@ export default function NbemsCoursesClientForm({ initialData }: { initialData: a
         <div className="pt-4 border-t border-gray-100">
           <div className="flex justify-between items-center mb-4">
             <label className="block text-sm font-bold text-slate-700">Announced Training Programs</label>
-            <button type="button" onClick={() => addToArray("announcedPrograms", "")} className="flex items-center gap-1 bg-teal-50 text-teal-700 px-3 py-1.5 rounded-lg text-sm font-bold">
+            <button type="button" onClick={() => addToArray("announcedPrograms", "")} className="flex items-center gap-1 bg-[#D9232D] text-white hover:bg-[#b81d26] px-3 py-1.5 rounded-lg text-sm font-bold transition-colors">
               <Plus size={16} /> Add Program
             </button>
           </div>

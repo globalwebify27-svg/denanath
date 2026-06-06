@@ -53,7 +53,7 @@ export default async function DoctorsDepartmentsPage() {
 
               {departments.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {departments.map((dept) => (
+                  {departments.map((dept: any) => (
                     <div key={dept.id} className="bg-white border border-gray-100 rounded-2xl p-6 hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] hover:-translate-y-1 transition-all duration-300 group">
                       <div className="w-12 h-12 rounded-xl bg-teal-50 flex items-center justify-center text-[#007a87] mb-5 group-hover:bg-[#007a87] group-hover:text-white transition-colors">
                         <Stethoscope className="w-6 h-6" />

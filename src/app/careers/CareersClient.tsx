@@ -3,187 +3,35 @@
 import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { ChevronRight, Building2, Briefcase, GraduationCap, Clock, FileText, Send, Phone, Mail, AlertCircle, Calendar, ArrowRight, Stethoscope, HeartPulse, Pill, X, Upload, User, ShieldCheck, RefreshCw } from "lucide-react";
-
-const jobsList = [
-  {
-    title: "Catering Guest Coordinator",
-    qualification: "BHMCT/ IHMCT- Specialization F&B",
-    experience: "Min. 2 years of Experience in F&B industry",
-    description: "Guest coordination, complaints & queries resolving, maintain TAT for order delivery.",
-    duty: "Rotational Shifts"
-  },
-  {
-    title: "Housekeeping Supervisor",
-    qualification: "Dip. In Hotel Management/ BHMCT",
-    experience: "2+ years of Experience",
-    description: "manpower handling, duty rostering & leave management.",
-    duty: "Rotational Shifts"
-  },
-  {
-    title: "Blood Bank Technician",
-    qualification: "DMLT/ BSC in Blood transfusion / PGDMLT",
-    experience: "1 to 3 years in Blood Bank/ Centre",
-    description: "Blood grouping, cross matching, component separation and blood donation camps",
-    duty: "Rotational shifts"
-  },
-  {
-    title: "Dialysis Technician",
-    qualification: "Diploma/ BSC in dialysis technology",
-    experience: "1 to 3 years- preferably in hospital set up",
-    description: "Haemodialysis, plasmapheresis, CRRT",
-    duty: "Rotational shifts"
-  },
-  {
-    title: "Biomedical Technician",
-    qualification: "ITI Electrician/ Diploma in electrical engineering",
-    experience: "1 to 2 years in maintenance department",
-    description: "House wiring, UPS systems, Breakdown maintenance, electrical equipment maintenance",
-    duty: "Rotational shifts"
-  },
-  {
-    title: "Front Desk Executive",
-    qualification: "BSc, BA, BCA, BBA or any other field graduate /post graduate",
-    experience: "Fresher",
-    description: "Patient/ guest coordination, front desk handling, queries resolving, call handling, etc.",
-    duty: "Rotational shifts"
-  },
-  {
-    title: "Pharmacy Retail / Jr. Trainee Pharmacist",
-    qualification: "B. Pharm - Fresher/D. Pharm with 1 Year Experience",
-    requirement: "Registration and PPP CARD Compulsory",
-    description: "For Hospital Retail unit, Dispensing medicine, handling customerâ€™s quires, Patient counseling, maintain inventory & record Keeping."
-  },
-  {
-    title: "Admin Executive",
-    qualification: "BDS/BHMS/BAMS with MBA in Hospital Administration",
-    experience: "3+ years in similar role",
-    description: "Coordination and supervision, Preparation of surgery list, maintenance of equipment, General administrative duties, Staff coordination.",
-    duty: "Rotational Shifts"
-  },
-  {
-    title: "Billing Cashier OPD Counter Staff",
-    qualification: "BCom, BBA, BAF, MCom",
-    experience: "Fresher",
-    description: "managing and processing patient billing and payments, maintaining records of financial transactions.",
-    duty: "Rotational Shifts"
-  },
-  {
-    title: "Staff Nurse",
-    qualification: "ANM, GNM, BSc- Nursing, PBBSc / Ward Care Nurse",
-    experience: "Fresher",
-    requirement: "MNC Registration Compulsory or applied for the MNC registration."
-  },
-  {
-    title: "Patient Assistant Charity MSW",
-    qualification: "MSW with medical and psychiatry specialization",
-    experience: "2 to 5 Years",
-    description: "This person will be responsible for supporting our charity programs. We are looking for experienced MSW who can manage data and records, communicate effectively with beneficiaries and team members, and ensure all activities are properly documented. The ideal candidate should be caring organized and able to handle day-to-day tasks smoothly."
-  },
-  {
-    title: "Patient Assistant (Part time)",
-    qualification: "Graduation pursuing students",
-    experience: "Fresher",
-    description: "Barcode Stickering and Scanning.",
-    duty: "9am to 1pm or 1pm to 5pm"
-  },
-  {
-    title: "Hostel Warden (Residential post)",
-    qualification: "Any Graduate",
-    experience: "Min. 2 years of experience",
-    description: "To up keep infrastructure and safe environment, handling gate pass or night pass, physical support, pleasant experience.",
-    duty: "24/7"
-  },
-  {
-    title: "Microbiologist",
-    qualification: "MBBS MD Microbiology",
-    experience: "1 to 5 years of experience",
-    description: "Interpretation, reporting and signing of routine aerobic culture results, smears with routine. Interpretation, reporting and signing AFB and fungal culture results. Verification of serology tests (routine and special).Interpretation of serology results and signing serology reports"
-  },
-  {
-    title: "Physician Assistant",
-    qualification: "BAMS + MS",
-    experience: "0 to 1 years of experience",
-    description: "Has experience in General Surgery, Transplant Surgery, and Onco Surgery. Freshers can also apply."
-  },
-  {
-    title: "Project Technical Assistant",
-    designation: "Project Technical Assistant / Technical Officer -III",
-    duration: "Till the end of the project or max of 36 months (subject to renewal at 12 months; and availability of funds)",
-    qualification: "3 years graduate degree in relevant subject / field + 3 years post qualification experience or PG in relevant subject / field"
-  },
-  {
-    title: "Quality Improvement Associate",
-    subtitle: "Quality NABH/A2C",
-    qualification: "BHMS/BAMS With MBA (Hospital Administration)",
-    experience: "More than 5 Years",
-    description: "To support and strengthen Hospitalâ€™s quality and accreditation initiatives. The Ideal candidate should have keen interest in quality management approaches, process optimization, patient safety and continuous improvement aligned with NABH and A2C Standards."
-  },
-  {
-    title: "Purchase Office Assistant",
-    qualification: "BCom",
-    experience: "1-5 Years",
-    description: "Support Day-to-day purchase activities and vendor coordination. Maintain Purchase records, follow up on orders and assist with documentation"
-  },
-  {
-    title: "Staff Doctor",
-    qualification: "MBBS",
-    experience: "2 to 4 Years Experience. Has experience in OPD handling"
-  },
-  {
-    title: "Neuro Monitoring Technologist",
-    qualification: "BSc in Neuroelectro physiology / Diploma in Neurology",
-    experience: "1 to 4 Years",
-    description: "The person at this position would be responsible for carrying out assigned clinical duties efficiently with regards to Intraoperative Monitoring (IOM) of patients undergoing Neuro and Spine surgeries that includes pre-operative assessment, IOM and post-operative findings review and report preparation."
-  },
-  {
-    title: "Junior Hr Executive",
-    qualification: "MBA HR",
-    experience: "Minimum 2 Years",
-    description: "We are hiring proactive and detail orientated Junior Hr Executive for recruitment process including Sourcing candidates through job portals, screening profiles, scheduling interviews, managing on boarding activities and documentation. Salary discussion and explaining benefits to candidate to successfully close open positions, manage in-house background verification process for shortlisted candidates, working in a group environment."
-  },
-  {
-    title: "Consultant Preventive Medicine",
-    qualification: "MBBS +PSM/MPH",
-    experience: "2 - 5 yrs. Experience in non-communicable diseases, maternal and adolescent health, diabetes, hypertension, cardiovascular diseases, obesity, and womenâ€™s cancers etc.",
-    preference: "Female"
-  },
-  {
-    title: "Nuclear Medicine Technologist",
-    qualification: "BSc/MSc Physics + PG Diploma in Nuclear Medicine (Approved by AERB) BSc/MSc Nuclear Medicine.",
-    experience: "0 to 5 Years",
-    description: "This position would be responsible for dealing with unsealed sources of radioisotopes for diagnosis and treatment and ensure the implementation of the protocols of the department as per the standards set by the management. To maintain records required for AERB in pre-defined format, make templates of PET CT reports, prepare radiopharmaceuticals for various scans like PSMA, DOTA etc."
-  },
-  {
-    title: "Biomedical Engineer",
-    qualification: "B.Tech / B.E, Diploma Course in biomedical/Instrumentation",
-    experience: "0 to 3 Years",
-    description: "The role includes maintenance, calibration, installation of medical devices and periodic performance evaluation with specialized duties focused on dialysis machines, USG machines, ICU Units and all accessories and disposables related to Medical Equipments."
-  },
-  {
-    title: "MRD Quality Auditor",
-    qualification: "BHMS/BAMS + MBA",
-    experience: "5+ years",
-    description: "Documentation before/ after discharge, Training to clinical staff, Documentation -clinical areas OPD and IPD, Timely meetings."
-  },
-  {
-    title: "Optometrist",
-    qualification: "BSc/ MSc Optometrist",
-    experience: "1 to 5 Years",
-    description: "The person at this position would be responsible for carrying out and assisting consultants in various examinations of patients and various types of procedures. To see patients in the OPD for refraction, Intra Ocular Pressure (IOP), slit lamp examination, power check, visual acuity testing (for all age group), color vision assessment, etc. and maintain software entries."
-  },
-  {
-    title: "System Engineer",
-    qualification: "B.E. / M.E. Computer Science, BCA/MCA, B.Sc./M.Sc. Computer Science, BCS/MCS",
-    experience: "5 + Years",
-    description: "To manage and monitor all installed systems and infrastructure, install, configure, test and maintain operating systems, application software and system management tools, maintain security, backup, and redundancy strategies, monitor and test application performance for potential bottlenecks, identify possible solutions, and work with developers to implement those fixes."
-  }
-];
+import { jobsList } from "./careersData";
 
 export default function CareersClient({ data }: { data: any }) {
   const options: any[] = [];
 
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const [activeCategory, setActiveCategory] = useState<string>("All Categories");
   const [applyingJob, setApplyingJob] = useState<any>(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
+
+  const generateCaptcha = () => {
+    const chars = "ABCDEFGHJKLMNOPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz023456789";
+    let result = "";
+    for (let i = 0; i < 6; i++) {
+      result += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return result;
+  };
+
+  const [captchaCode, setCaptchaCode] = useState("");
+
+  useEffect(() => {
+    if (applyingJob) {
+      setCaptchaCode(generateCaptcha());
+    }
+  }, [applyingJob]);
+
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (window.innerWidth < 1024 && scrollContainerRef.current) {
@@ -198,6 +46,40 @@ export default function CareersClient({ data }: { data: any }) {
     }
   }, []);
 
+  const handleJobSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    const formData = new FormData(e.currentTarget);
+    formData.append("formType", "Job Application");
+    formData.append("jobTitle", applyingJob?.title || "Unknown");
+
+    const userCaptcha = formData.get("captcha") as string;
+    if (userCaptcha.trim().toLowerCase() !== captchaCode.toLowerCase()) {
+      alert("Verification code is incorrect. Please try again.");
+      setIsSubmitting(false);
+      return;
+    }
+
+    try {
+      const res = await fetch("/api/submit-form", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (res.ok) {
+        setSubmitSuccess(true);
+      } else {
+        alert("There was an error submitting your application. Please try again.");
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Network error. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-[#f8fafc] font-sans selection:bg-teal-500/30">
       {/* Premium Page Header */}
@@ -211,10 +93,10 @@ export default function CareersClient({ data }: { data: any }) {
             <ChevronRight className="w-3.5 h-3.5" />
             <span className="hover:text-white transition-colors cursor-pointer">Hospital</span>
             <ChevronRight className="w-3.5 h-3.5" />
-            <span className="text-white">Careers</span>
+            <span className="text-white">{data.pageTitle || "Careers"}</span>
           </div>
           <h1 className="text-4xl md:text-5xl font-extrabold text-white tracking-tight flex items-center gap-4">
-            Careers
+            {data.pageTitle || "Careers"}
           </h1>
         </div>
       </div>
@@ -345,7 +227,7 @@ export default function CareersClient({ data }: { data: any }) {
                 {/* Apply Button */}
                 <div className="p-5 sm:p-6 pt-0 mt-auto">
                   <button 
-                    onClick={() => setApplyingJob(job)}
+                    onClick={() => { setApplyingJob(job); setSelectedFile(null); }}
                     className="w-full inline-flex items-center justify-center gap-2 py-3 bg-slate-100 hover:bg-[#002b5c] text-slate-700 hover:text-white font-bold rounded-xl transition-colors group/btn"
                   >
                     Apply Now
@@ -407,7 +289,7 @@ export default function CareersClient({ data }: { data: any }) {
                 <p className="text-sm font-semibold text-slate-500 mt-0.5">Applying for: {applyingJob.title}</p>
               </div>
               <button 
-                onClick={() => setApplyingJob(null)}
+                onClick={() => { setApplyingJob(null); setSelectedFile(null); setSubmitSuccess(false); }}
                 className="w-10 h-10 rounded-full bg-slate-50 text-slate-500 hover:bg-red-50 hover:text-red-500 flex items-center justify-center transition-all duration-300 hover:rotate-180 shrink-0"
               >
                 <X className="w-5 h-5" />
@@ -416,7 +298,22 @@ export default function CareersClient({ data }: { data: any }) {
 
             {/* Modal Body */}
             <div className="p-0 overflow-y-auto bg-slate-50">
-              <form className="p-6 sm:p-8 space-y-6">
+              {submitSuccess ? (
+                <div className="p-12 text-center flex flex-col items-center justify-center h-full">
+                  <div className="w-20 h-20 bg-teal-100 rounded-full flex items-center justify-center mb-6">
+                    <ShieldCheck className="w-10 h-10 text-teal-600" />
+                  </div>
+                  <h3 className="text-2xl font-extrabold text-[#002b5c] mb-3">Application Submitted!</h3>
+                  <p className="text-slate-600 mb-8 max-w-md">Thank you for applying to the {applyingJob?.title} position. Our HR team will review your application and contact you soon.</p>
+                  <button 
+                    onClick={() => { setApplyingJob(null); setSelectedFile(null); setSubmitSuccess(false); }}
+                    className="bg-[#002b5c] hover:bg-[#001a38] text-white px-8 py-3 rounded-xl font-bold transition-colors"
+                  >
+                    Close Window
+                  </button>
+                </div>
+              ) : (
+              <form className="p-6 sm:p-8 space-y-6" onSubmit={handleJobSubmit}>
                 
                 {/* Personal Information */}
                 <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm relative overflow-hidden group hover:shadow-md transition-shadow">
@@ -430,7 +327,7 @@ export default function CareersClient({ data }: { data: any }) {
                     <div className="md:col-span-1">
                       <label className="block text-sm font-semibold text-slate-700 mb-1.5">Salutation <span className="text-red-500">*</span></label>
                       <div className="relative">
-                        <select className="w-full appearance-none bg-slate-50 border border-slate-200 rounded-xl py-3 pl-4 pr-10 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all cursor-pointer" required>
+                        <select name="salutation" className="w-full appearance-none bg-slate-50 border border-slate-200 rounded-xl py-3 pl-4 pr-10 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all cursor-pointer" required>
                           <option value="">Select</option>
                           <option value="Mr">Mr.</option>
                           <option value="Ms">Ms.</option>
@@ -444,7 +341,7 @@ export default function CareersClient({ data }: { data: any }) {
                     <div className="md:col-span-3">
                       <label className="block text-sm font-semibold text-slate-700 mb-1.5">First Name <span className="text-red-500">*</span></label>
                       <div className="relative">
-                        <input type="text" placeholder="Enter your first name" className="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 pl-11 pr-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all placeholder-slate-400" required />
+                        <input name="firstName" type="text" placeholder="Enter your first name" className="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 pl-11 pr-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all placeholder-slate-400" required />
                         <User className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                       </div>
                     </div>
@@ -454,14 +351,14 @@ export default function CareersClient({ data }: { data: any }) {
                     <div>
                       <label className="block text-sm font-semibold text-slate-700 mb-1.5">Middle Name</label>
                       <div className="relative">
-                        <input type="text" placeholder="Enter middle name" className="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 pl-11 pr-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all placeholder-slate-400" />
+                        <input name="middleName" type="text" placeholder="Enter middle name" className="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 pl-11 pr-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all placeholder-slate-400" />
                         <User className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                       </div>
                     </div>
                     <div>
                       <label className="block text-sm font-semibold text-slate-700 mb-1.5">Surname <span className="text-red-500">*</span></label>
                       <div className="relative">
-                        <input type="text" placeholder="Enter surname" className="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 pl-11 pr-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all placeholder-slate-400" required />
+                        <input name="lastName" type="text" placeholder="Enter surname" className="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 pl-11 pr-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all placeholder-slate-400" required />
                         <User className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                       </div>
                     </div>
@@ -471,14 +368,14 @@ export default function CareersClient({ data }: { data: any }) {
                     <div>
                       <label className="block text-sm font-semibold text-slate-700 mb-1.5">Date of Birth <span className="text-red-500">*</span></label>
                       <div className="relative">
-                        <input type="date" className="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 pl-11 pr-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all" required />
+                        <input name="dob" type="date" className="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 pl-11 pr-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all" required />
                         <Calendar className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                       </div>
                     </div>
                     <div>
                       <label className="block text-sm font-semibold text-slate-700 mb-1.5">Gender <span className="text-red-500">*</span></label>
                       <div className="relative">
-                        <select className="w-full appearance-none bg-slate-50 border border-slate-200 rounded-xl py-3 pl-11 pr-10 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all cursor-pointer" required>
+                        <select name="gender" className="w-full appearance-none bg-slate-50 border border-slate-200 rounded-xl py-3 pl-11 pr-10 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all cursor-pointer" required>
                           <option value="">Select</option>
                           <option value="Male">Male</option>
                           <option value="Female">Female</option>
@@ -503,14 +400,14 @@ export default function CareersClient({ data }: { data: any }) {
                     <div>
                       <label className="block text-sm font-semibold text-slate-700 mb-1.5">Contact No <span className="text-red-500">*</span></label>
                       <div className="relative">
-                        <input type="tel" placeholder="Mobile Number" className="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 pl-11 pr-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all placeholder-slate-400" required />
+                        <input name="mobile" type="tel" placeholder="Mobile Number" className="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 pl-11 pr-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all placeholder-slate-400" required />
                         <Phone className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                       </div>
                     </div>
                     <div>
                       <label className="block text-sm font-semibold text-slate-700 mb-1.5">Email ID <span className="text-red-500">*</span></label>
                       <div className="relative">
-                        <input type="email" placeholder="Email Address" className="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 pl-11 pr-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all placeholder-slate-400" required />
+                        <input name="email" type="email" placeholder="Email Address" className="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 pl-11 pr-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all placeholder-slate-400" required />
                         <Mail className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                       </div>
                     </div>
@@ -529,14 +426,14 @@ export default function CareersClient({ data }: { data: any }) {
                     <div>
                       <label className="block text-sm font-semibold text-slate-700 mb-1.5">Highest Qualification <span className="text-red-500">*</span></label>
                       <div className="relative">
-                        <input type="text" placeholder="e.g. B.Sc Nursing" className="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 pl-11 pr-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all placeholder-slate-400" required />
+                        <input name="highestQualification" type="text" placeholder="e.g. B.Sc Nursing" className="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 pl-11 pr-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all placeholder-slate-400" required />
                         <FileText className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                       </div>
                     </div>
                     <div>
                       <label className="block text-sm font-semibold text-slate-700 mb-1.5">Joining Status <span className="text-red-500">*</span></label>
                       <div className="relative">
-                        <select className="w-full appearance-none bg-slate-50 border border-slate-200 rounded-xl py-3 pl-11 pr-10 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all cursor-pointer" required>
+                        <select name="joiningStatus" className="w-full appearance-none bg-slate-50 border border-slate-200 rounded-xl py-3 pl-11 pr-10 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all cursor-pointer" required>
                           <option value="">Select</option>
                           <option value="Immediate">Immediate</option>
                           <option value="15 Days">15 Days</option>
@@ -553,15 +450,15 @@ export default function CareersClient({ data }: { data: any }) {
                     <div>
                       <label className="block text-sm font-semibold text-slate-700 mb-1.5">Current Salary <span className="text-red-500">*</span></label>
                       <div className="relative flex items-center">
-                        <span className="absolute left-4 font-bold text-slate-400">â‚¹</span>
-                        <input type="text" placeholder="Amount" className="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 pl-9 pr-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all placeholder-slate-400" required />
+                        <span className="absolute left-4 font-bold text-slate-400">₹</span>
+                        <input name="currentSalary" type="text" placeholder="Amount" className="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 pl-9 pr-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all placeholder-slate-400" required />
                       </div>
                     </div>
                     <div>
                       <label className="block text-sm font-semibold text-slate-700 mb-1.5">Expected Salary <span className="text-red-500">*</span></label>
                       <div className="relative flex items-center">
-                        <span className="absolute left-4 font-bold text-slate-400">â‚¹</span>
-                        <input type="text" placeholder="Amount" className="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 pl-9 pr-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all placeholder-slate-400" required />
+                        <span className="absolute left-4 font-bold text-slate-400">₹</span>
+                        <input name="expectedSalary" type="text" placeholder="Amount" className="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 pl-9 pr-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all placeholder-slate-400" required />
                       </div>
                     </div>
                   </div>
@@ -570,11 +467,34 @@ export default function CareersClient({ data }: { data: any }) {
                     <label className="block text-sm font-semibold text-slate-700 mb-2">Resume / CV (PDF Max 2MB) <span className="text-red-500">*</span></label>
                     <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-slate-300 border-dashed rounded-xl cursor-pointer bg-slate-50 hover:bg-teal-50/50 hover:border-teal-400 transition-colors group">
                       <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                        <Upload className="w-8 h-8 text-slate-400 group-hover:text-teal-500 mb-3 transition-colors" />
-                        <p className="mb-1 text-sm text-slate-600 font-semibold group-hover:text-teal-700"><span className="font-bold">Click to upload</span> or drag and drop</p>
-                        <p className="text-xs text-slate-500">PDF Document (Max. 2MB)</p>
+                        {selectedFile ? (
+                          <>
+                            <FileText className="w-8 h-8 text-teal-500 mb-3" />
+                            <p className="mb-1 text-sm text-teal-700 font-bold max-w-[200px] truncate">{selectedFile.name}</p>
+                            <p className="text-xs text-teal-600">{(selectedFile.size / 1024 / 1024).toFixed(2)} MB</p>
+                          </>
+                        ) : (
+                          <>
+                            <Upload className="w-8 h-8 text-slate-400 group-hover:text-teal-500 mb-3 transition-colors" />
+                            <p className="mb-1 text-sm text-slate-600 font-semibold group-hover:text-teal-700"><span className="font-bold">Click to upload</span> or drag and drop</p>
+                            <p className="text-xs text-slate-500">PDF Document (Max. 2MB)</p>
+                          </>
+                        )}
                       </div>
-                      <input type="file" className="hidden" accept=".pdf" required />
+                      <input 
+                        name="resume"
+                        type="file" 
+                        className="hidden" 
+                        accept=".pdf" 
+                        required 
+                        onChange={(e) => {
+                          if (e.target.files && e.target.files[0]) {
+                            setSelectedFile(e.target.files[0]);
+                          } else {
+                            setSelectedFile(null);
+                          }
+                        }}
+                      />
                     </label>
                   </div>
                 </div>
@@ -591,13 +511,18 @@ export default function CareersClient({ data }: { data: any }) {
                     <div className="flex flex-col gap-3">
                       <div className="flex items-center gap-3">
                         <div className="flex-1 h-14 bg-slate-800 flex items-center justify-center rounded-xl border border-slate-700 font-mono text-2xl font-bold tracking-[0.3em] text-white select-none shadow-inner">
-                          ogOu3d
+                          {captchaCode}
                         </div>
-                        <button type="button" className="w-14 h-14 rounded-xl bg-blue-50 text-blue-600 hover:bg-blue-100 flex items-center justify-center transition-colors border border-blue-100">
+                        <button 
+                          type="button" 
+                          onClick={() => setCaptchaCode(generateCaptcha())}
+                          className="w-14 h-14 rounded-xl bg-blue-50 text-blue-600 hover:bg-blue-100 flex items-center justify-center transition-colors border border-blue-100"
+                        >
                           <RefreshCw className="w-5 h-5" />
                         </button>
                       </div>
                       <input 
+                        name="captcha"
                         type="text" 
                         placeholder="Enter the code above"
                         className="w-full bg-slate-50 border border-slate-200 rounded-xl py-3.5 px-4 text-center text-slate-700 font-bold tracking-wide focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all"
@@ -607,15 +532,17 @@ export default function CareersClient({ data }: { data: any }) {
                     
                     <button 
                       type="submit"
-                      className="group w-full mt-8 bg-[#003360] hover:bg-[#002b5c] text-white py-4 rounded-xl font-bold text-lg transition-all shadow-[0_8px_20px_rgba(0,51,96,0.3)] hover:-translate-y-1 hover:shadow-[0_12px_25px_rgba(0,51,96,0.4)] flex items-center justify-center gap-2"
+                      disabled={isSubmitting}
+                      className="group w-full mt-8 bg-[#003360] hover:bg-[#002b5c] text-white py-4 rounded-xl font-bold text-lg transition-all shadow-[0_8px_20px_rgba(0,51,96,0.3)] hover:-translate-y-1 hover:shadow-[0_12px_25px_rgba(0,51,96,0.4)] flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none"
                     >
-                      Submit Application
-                      <ArrowRight className="w-5 h-5 text-teal-300 group-hover:translate-x-1 transition-transform" />
+                      {isSubmitting ? "Submitting..." : "Submit Application"}
+                      {!isSubmitting && <ArrowRight className="w-5 h-5 text-teal-300 group-hover:translate-x-1 transition-transform" />}
                     </button>
                   </div>
                 </div>
 
               </form>
+              )}
             </div>
           </div>
         </div>

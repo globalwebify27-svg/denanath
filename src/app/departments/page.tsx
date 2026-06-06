@@ -112,7 +112,7 @@ export default async function DepartmentDetailsPage({
               {/* Vertical Stacked Cards Matching Image */}
               <div className="space-y-4">
                 {departments.length > 0 ? (
-                  departments.map((dept, index) => {
+                  departments.map((dept: any, index: number) => {
                     // Alternate some icons just for visual parity with the image if no icon specified
                     const IconComponent = index % 2 === 0 ? HeartPulse : Shield;
                     

@@ -8,7 +8,17 @@ export default function TrainingEventsClientForm({ initialData }: { initialData:
     {
       topic: "Training-cum-seminar program on guidelines and rules for clinical research",
       date: "8 February 2026",
-      details: "Training organizer: Dr Shweta A. Chitharanjan...\\nSpeakers: Dr Ravindra Ghooi..."
+      details: "Training organizer: Dr Shweta A. Chitharanjan, In-charge regulation and Member Secretary, EC (CTR), DMHRC, Pune<br/>Patron, support and Director: Dr Dhananjay S. Kelkar<br/>Preamble: Dr Tejashri Patole, DMHRC, Pune<br/>Speakers / Trainers: Dr Ravindra Ghooi (ICH-GCP E6 [R3] guidelines, ICMR guidelines, NDCTR 2019)"
+    },
+    {
+      topic: "Training-cum-seminar program on guidelines for clinical research",
+      date: "9 March 2025",
+      details: "Training organizers: Dr Shweta A. Chitharanjan, Dr Amrita P. Prayag<br/>Speakers: Dr Ravindra Ghooi, Dr. Aditi Apte, Dr Sarita Mulkalwar"
+    },
+    {
+      topic: "Training on rules and guidelines in Clinical research",
+      date: "6 October 2024",
+      details: "Trainers: Dr Shweta A. Chitharanjan, Dr Amrita P. Prayag, Dr Ravindra Ghooi"
     }
   ]);
 
@@ -19,7 +29,7 @@ export default function TrainingEventsClientForm({ initialData }: { initialData:
   };
 
   const addEvent = () => {
-    setEvents([{ topic: "", date: "", details: "" }, ...events]);
+    setEvents([...events, { topic: "", date: "", details: "" }]);
   };
 
   const removeEvent = (index: number) => {
@@ -33,8 +43,8 @@ export default function TrainingEventsClientForm({ initialData }: { initialData:
       <div className="space-y-6">
         <div className="flex justify-between items-center mb-4">
           <h3 className="text-xl text-[20px] font-black text-[#002b5c]">Events List</h3>
-          <button type="button" onClick={addEvent} className="flex items-center gap-2 bg-teal-50 text-[#007a87] px-4 py-2 rounded-xl font-bold hover:bg-teal-100 transition-colors">
-            <Plus size={16} /> Add Event
+          <button type="button" onClick={addEvent} className="flex items-center gap-2 bg-[#002b5c] text-white px-4 py-2 rounded-xl font-bold hover:bg-[#001c3d] transition-colors shadow-sm">
+            <Plus size={16} strokeWidth={2.5} /> Add Event
           </button>
         </div>
 

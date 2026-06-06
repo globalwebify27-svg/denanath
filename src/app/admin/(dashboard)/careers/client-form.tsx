@@ -2,21 +2,16 @@
 
 import React, { useState } from "react";
 import { Plus, Trash2, GripVertical, Building2, Briefcase, GraduationCap, Clock, FileText, Send, Phone, Mail, AlertCircle, Calendar, ChevronDown, ChevronUp, User, ShieldCheck, HeartPulse, Pill, Stethoscope } from "lucide-react";
+import { jobsList, fallbackContacts } from "@/app/careers/careersData";
 
 export default function CareersClientForm({ initialData }: { initialData: any }) {
   const [data, setData] = useState({
+    pageTitle: initialData?.pageTitle || "Careers",
     pageHeader: initialData?.pageHeader || "Active Requirements at DMH",
     applyInstruction: initialData?.applyInstruction || "Please send an email with your CV, mentioning the Job Title in the subject line.",
     applyEmail: initialData?.applyEmail || "jobs@dmhospital.org",
-    jobs: initialData?.jobs || [],
-    contacts: initialData?.contacts || [
-      { iconType: "building", title: "Admin Staff", phone: "020-40151615 / 1616 / 1660" },
-      { iconType: "stethoscope1", title: "Paramedical (Technician)", phone: "020-40151660 / 1664" },
-      { iconType: "stethoscope2", title: "Doctors / Physiotherapist", phone: "020-40151616" },
-      { iconType: "briefcase", title: "MPW", phone: "020-40151677" },
-      { iconType: "heart", title: "Nursing Staff", phone: "020-40151645 / 1698" },
-      { iconType: "pill", title: "Pharmacy", phone: "020-40151699" }
-    ]
+    jobs: initialData?.jobs && initialData.jobs.length > 0 ? initialData.jobs : jobsList,
+    contacts: initialData?.contacts && initialData.contacts.length > 0 ? initialData.contacts : fallbackContacts
   });
 
   const [expandedJobIndex, setExpandedJobIndex] = useState<number | null>(null);
@@ -25,6 +20,7 @@ export default function CareersClientForm({ initialData }: { initialData: any })
     setData({
       ...data,
       jobs: [
+        ...data.jobs,
         {
           title: "New Job Posting",
           subtitle: "",
@@ -36,11 +32,10 @@ export default function CareersClientForm({ initialData }: { initialData: any })
           description: "",
           duty: "",
           duration: ""
-        },
-        ...data.jobs
+        }
       ]
     });
-    setExpandedJobIndex(0);
+    setExpandedJobIndex(data.jobs.length);
   };
 
   const removeJob = (index: number) => {
@@ -86,6 +81,15 @@ export default function CareersClientForm({ initialData }: { initialData: any })
         </h2>
         
         <div className="space-y-6">
+          <div>
+            <label className="block text-sm font-bold text-slate-700 mb-2 uppercase tracking-wide">Page Title</label>
+            <input 
+              type="text" 
+              value={data.pageTitle}
+              onChange={(e) => setData({...data, pageTitle: e.target.value})}
+              className="w-full bg-slate-50 border border-slate-200 rounded-xl py-3.5 px-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-[#007a87]/50 focus:border-[#007a87] transition-all"
+            />
+          </div>
           <div>
             <label className="block text-sm font-bold text-slate-700 mb-2 uppercase tracking-wide">Page Header Title</label>
             <input 

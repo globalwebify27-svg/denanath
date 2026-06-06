@@ -5,11 +5,14 @@ import {  Plus, Trash2 } from "lucide-react";
 
 export default function PublicationsClientForm({ initialData }: { initialData: any }) {
   const [recentPubs, setRecentPubs] = useState<any[]>(initialData?.recentPubs?.length ? initialData.recentPubs : [
-    { title: "Closing the implementation gap: Process outcomes...", authors_date: "<span className=\"font-semibold text-slate-800\">Baliga J, et al.</span> (March 2026)", journal: "Indian Journal of Anaesthesia. 70(3):477-484.", doi: "10.4103/ija.ija_1716_25" }
+    { title: "Closing the implementation gap: Process outcomes following a structured intraoperative bundle for emergency laparotomy.", authors_date: "<span className=\"font-semibold text-slate-800\">Baliga J, Iau P, Kavishwar P, Joseph J, Sebastian A.</span> (March 2026)", journal: "Indian Journal of Anaesthesia. 70(3):477-484.", doi: "10.4103/ija.ija_1716_25" },
+    { title: "Intraperitoneal Chemotherapy as a Maintenance Treatment for Advanced Ovarian Cancer: Early Experience from Tertiary Care Center in India.", authors_date: "<span className=\"font-semibold text-slate-800\">Jagatap M, Tamhankar AS, Tamhankar T, Kulkarni P.</span> (February 2026)", journal: "Indian Journal of Medical and Paediatric Oncology.", doi: "10.1055/s-0045-1815747" },
+    { title: "Tapia Syndrome: Clinical Presentation, Diagnosis and Management of 40 Patients During Covid-19 Pandemic.", authors_date: "<span className=\"font-semibold text-slate-800\">Gandhi S, Saindani S.</span> (February 2026)", journal: "Acta Scientific Otolaryngology. 8(2):19-22.", doi: "10.31080/ASOL.2026.08.0790" }
   ]);
   const [archiveYears, setArchiveYears] = useState<any[]>(initialData?.archiveYears?.length ? initialData.archiveYears : [
-    { year: "2024 - 2025", link: "#" },
-    { year: "2023 - 2024", link: "#" }
+    { year: "2024 - 2025", link: "#" }, { year: "2023 - 2024", link: "#" }, { year: "2022 - 2023", link: "#" },
+    { year: "2021 - 2022", link: "#" }, { year: "2020 - 2021", link: "#" }, { year: "2019 - 2020", link: "#" },
+    { year: "2018 - 2019", link: "#" }, { year: "2017 - 2018", link: "#" }
   ]);
 
   const addPub = () => setRecentPubs([...recentPubs, { title: "", authors_date: "", journal: "", doi: "" }]);
@@ -36,8 +39,8 @@ export default function PublicationsClientForm({ initialData }: { initialData: a
         <div>
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-xl text-[20px] font-black text-[#002b5c]">Recent Publications</h3>
-            <button type="button" onClick={addPub} className="flex items-center gap-2 bg-teal-50 text-[#007a87] px-4 py-2 rounded-xl font-bold hover:bg-teal-100 transition-colors">
-              <Plus size={16} /> Add Publication
+            <button type="button" onClick={addPub} className="flex items-center gap-2 bg-[#D9232D] text-white px-4 py-2 rounded-xl font-bold hover:bg-[#b01c24] transition-colors shadow-sm">
+              <Plus size={16} strokeWidth={2.5} /> Add Publication
             </button>
           </div>
 
@@ -77,8 +80,8 @@ export default function PublicationsClientForm({ initialData }: { initialData: a
         <div>
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-xl text-[20px] font-black text-[#002b5c]">Archive Years</h3>
-            <button type="button" onClick={addArchive} className="flex items-center gap-2 bg-blue-50 text-blue-700 px-4 py-2 rounded-xl font-bold hover:bg-blue-100 transition-colors">
-              <Plus size={16} /> Add Archive
+            <button type="button" onClick={addArchive} className="flex items-center gap-2 bg-[#003360] text-white px-4 py-2 rounded-xl font-bold hover:bg-[#001f3d] transition-colors shadow-sm">
+              <Plus size={16} strokeWidth={2.5} /> Add Archive
             </button>
           </div>
           

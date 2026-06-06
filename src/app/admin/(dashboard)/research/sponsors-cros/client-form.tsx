@@ -5,10 +5,26 @@ import {  Plus, Trash2 } from "lucide-react";
 
 export default function SponsorsCrosClientForm({ initialData }: { initialData: any }) {
   const [sponsors, setSponsors] = useState<string[]>(initialData?.sponsors?.length ? initialData.sponsors : [
-    "Abbott Vascular", "Adventrix Pharmaceutical Ltd."
+    "Abbott Vascular", "Adventrix Pharmaceutical Ltd.", "Amgen Inc", "Astellas Pharma", "Astra Zeneca",
+    "Aveo Pharma Limited", "Bayer Healthcare Ag.", "Bharat Serum &Vaccines Ltd", "Biocon International",
+    "Boehringer Ingelheim", "Boston Scientific", "Bristol & Myers Research & Development", "Bristol-Myers Squibb India Pvt. Ltd.",
+    "Cadila Pharmaceutical Inc.", "Celltrion Healthcare", "Cipla Ltd", "Curetech Ltd.", "Daichi Sankyo Company Ltd.",
+    "Dr Reddy’s Laboratories", "Eisai Inc.", "Eli Lilly & Company Ltd.", "Emcure Biotech Ltd.", "Forest Research Institute",
+    "Fortis Escorts Heart Institute", "Fresenius Kabi Oncology Limited.", "G.W.Pharma Ltd", "Gilead Galapagos, EV",
+    "Gennova Biopharmaceuticals Ltd..", "Glaxosmithkline (GSK)", "Hexal Ag Sandoz", "Hoffmann-La Roche.",
+    "Inspiration Biopharmaceuticals", "Insys Therapeutics Inc.", "International Clinical Research H. Lundbeck",
+    "J.W. Medical System", "Johnson & Johnson Pharmaceutical Research & Development.", "Leo Pharma", "Lundbeck A/S",
+    "Lupin Bioresearch Centre", "Meril Life Sciences", "Merk Sharp & Dohme Corp", "Novartis Ltd", "Novo Nordisk Ltd",
+    "Pfizer Inc", "Roche Inc", "Samsung Bioepis", "Sun Pharma", "Torrent Pharma", "V Life Sciences", "Wockhardt Bio Ag",
+    "Watson Pharma", "Zimmer Ltd"
   ]);
   const [cros, setCros] = useState<string[]>(initialData?.cros?.length ? initialData.cros : [
-    "Accutest Research Laboratories", "Boston Medtech"
+    "Accutest Research Laboratories", "Boston Medtech", "Cinigene International Ltd.", "Clininvent Research Pvt. Ltd.",
+    "Covance", "i3 Research Limited", "Icon clinical research", "Igate Clinical Research International Inc.",
+    "Lambda Therapeutic Research limited.", "Manipal Acunova Ltd.", "Max Neeman International Ltd.", "Novartis",
+    "Oncology Services India Ltd.", "Parexel International Ltd.", "PharmaNet Clinical Services", "Pharm-Olam International",
+    "Pharmaceutical Product Development (PPD) International", "PRA International", "Quintiles Research Pvt. Ltd",
+    "Reliance Life Science", "SIRO Clinpharm Pvt.Ltd", "Veeda Clinical Research"
   ]);
 
   const addSponsor = () => setSponsors([...sponsors, ""]);
@@ -35,8 +51,8 @@ export default function SponsorsCrosClientForm({ initialData }: { initialData: a
         <div>
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-xl text-[20px] font-black text-[#002b5c]">Sponsors</h3>
-            <button type="button" onClick={addSponsor} className="flex items-center gap-2 bg-blue-50 text-blue-700 px-4 py-2 rounded-xl font-bold hover:bg-blue-100 transition-colors">
-              <Plus size={16} /> Add Sponsor
+            <button type="button" onClick={addSponsor} className="flex items-center gap-2 bg-[#002b5c] text-white px-4 py-2 rounded-xl font-bold hover:bg-[#001c3d] transition-colors shadow-sm">
+              <Plus size={16} strokeWidth={2.5} /> Add Sponsor
             </button>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
@@ -56,8 +72,8 @@ export default function SponsorsCrosClientForm({ initialData }: { initialData: a
         <div>
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-xl text-[20px] font-black text-[#002b5c]">CROs</h3>
-            <button type="button" onClick={addCro} className="flex items-center gap-2 bg-teal-50 text-teal-700 px-4 py-2 rounded-xl font-bold hover:bg-teal-100 transition-colors">
-              <Plus size={16} /> Add CRO
+            <button type="button" onClick={addCro} className="flex items-center gap-2 bg-[#007a87] text-white px-4 py-2 rounded-xl font-bold hover:bg-[#005c66] transition-colors shadow-sm">
+              <Plus size={16} strokeWidth={2.5} /> Add CRO
             </button>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">

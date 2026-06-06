@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { ChevronRight, Globe, RefreshCw, Lock, CreditCard, User, Phone, Mail, MapPin, Building, ShieldCheck, IndianRupee, MessageSquare, Map } from "lucide-react";
 
@@ -29,6 +29,32 @@ export default function OnlinePaymentClient({ initialData }: { initialData: any 
   ];
 
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  const generateCaptcha = () => {
+    const chars = "ABCDEFGHJKLMNOPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz023456789";
+    let result = "";
+    for (let i = 0; i < 4; i++) {
+      result += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return result;
+  };
+
+  const [captchaCode, setCaptchaCode] = useState("");
+
+  useEffect(() => {
+    setCaptchaCode(generateCaptcha());
+  }, []);
+
+  const handlePay = (e: React.FormEvent) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget as HTMLFormElement);
+    const userCaptcha = formData.get("captcha") as string;
+    if (userCaptcha?.trim().toLowerCase() !== captchaCode.toLowerCase()) {
+      alert("Verification code is incorrect. Please try again.");
+      return;
+    }
+    alert("Proceeding to payment gateway...");
+  };
 
   useEffect(() => {
     if (window.innerWidth < 1024 && scrollContainerRef.current) {
@@ -122,7 +148,7 @@ export default function OnlinePaymentClient({ initialData }: { initialData: any 
               </div>
               <div className="w-20 h-1.5 bg-[#007a87] rounded-full mb-10"></div>
 
-              <form className="max-w-4xl space-y-8">
+              <form className="max-w-4xl space-y-8" onSubmit={handlePay}>
                 
                 {/* 1. Payment Details Section */}
                 <div className="bg-slate-50 border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-sm relative overflow-hidden">
@@ -277,18 +303,22 @@ export default function OnlinePaymentClient({ initialData }: { initialData: any 
                       <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
                         <div className="flex items-center gap-3">
                           <div className="bg-slate-800 text-white px-5 py-2.5 rounded-lg tracking-widest font-mono font-bold text-lg select-none shadow-inner border border-slate-700">
-                            x N i R
+                            {captchaCode}
                           </div>
-                          <button type="button" className="text-blue-500 hover:text-blue-600 transition-colors bg-blue-50 p-2.5 rounded-lg hover:bg-blue-100">
+                          <button 
+                            type="button" 
+                            onClick={() => setCaptchaCode(generateCaptcha())}
+                            className="text-blue-500 hover:text-blue-600 transition-colors bg-blue-50 p-2.5 rounded-lg hover:bg-blue-100"
+                          >
                             <RefreshCw className="w-5 h-5" />
                           </button>
                         </div>
-                        <input type="text" placeholder="Enter text" className="w-full sm:w-40 px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-slate-50 transition-all font-medium" />
+                        <input name="captcha" type="text" placeholder="Enter text" className="w-full sm:w-40 px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-slate-50 transition-all font-medium" required />
                       </div>
                     </div>
                     
                     <div className="flex justify-end pt-4 md:pt-0 border-t border-slate-100 md:border-none">
-                      <button type="button" className="group w-full md:w-auto inline-flex items-center justify-center gap-2 md:gap-3 px-6 md:px-10 py-4 bg-[#003360] hover:bg-[#002b5c] text-white font-bold text-base md:text-lg whitespace-nowrap rounded-xl transition-all shadow-md hover:shadow-xl hover:-translate-y-1">
+                      <button type="submit" className="group w-full md:w-auto inline-flex items-center justify-center gap-2 md:gap-3 px-6 md:px-10 py-4 bg-[#003360] hover:bg-[#002b5c] text-white font-bold text-base md:text-lg whitespace-nowrap rounded-xl transition-all shadow-md hover:shadow-xl hover:-translate-y-1">
                         <Lock className="w-5 h-5 shrink-0 text-teal-300" />
                         Proceed to Pay
                         <ChevronRight className="w-5 h-5 text-teal-300 group-hover:translate-x-1 transition-transform" />

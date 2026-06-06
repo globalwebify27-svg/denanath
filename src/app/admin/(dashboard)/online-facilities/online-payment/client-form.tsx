@@ -34,15 +34,6 @@ export default function OnlinePaymentClientForm({ initialData }: { initialData: 
         </div>
       </div>
 
-      <div className="flex justify-end pt-8">
-        <button 
-          type="submit" 
-          className="flex items-center gap-2 bg-[#002b5c] text-white px-8 py-3 rounded-xl font-bold hover:bg-[#001f44] transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5"
-        >
-          <Save size={20} />
-          Save Changes
-        </button>
-      </div>
     </div>
   );
 }

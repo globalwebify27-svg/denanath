@@ -10,6 +10,22 @@ export default async function AdminAcademicsInfoPage() {
 
   let pageData: any = { 
     introText: "Deenanath Mangeshkar Hospital & Research Center (DMHRC) is a multi speciality hospital managed by a Public Charitable Trust. It is accredited by National Board of Examinations in Medical Sciences, New Delhi for Post Graduate Training Programme (DNB, DrNB and FNB) across twenty five specialities. Academic Centre is situated on 14th floor Super Speciality Building.",
+    pgProgrammes: [
+      { title: "DNB, DrNB AND FNB", desc: "Accredited by NBEMS", items: [] },
+      { 
+        title: "Fellowship Programme:", 
+        desc: "", 
+        items: [
+          "NNF in Neonatology",
+          "IAP in Neonatology",
+          "IACTA – Cardiac Anaesthesia",
+          "Indian Diploma in Critical Care Medicine (IDCCM)",
+          "Indian Fellowship in Critical Care Medicine (IFCCM)"
+        ] 
+      },
+      { title: "Laryngology Fellowship", desc: "RCS Senior Clinical Fellowship Scheme", items: [] },
+      { title: "Vasant & Nirmala Oswal Centre", desc: "Post graduate training and education (RCS accredited)", items: [] }
+    ],
     shortTermFellowships: [
       "Fellowship in Advanced Obstetric Ultrasonography",
       "Laryngology Speech Language Pathology",

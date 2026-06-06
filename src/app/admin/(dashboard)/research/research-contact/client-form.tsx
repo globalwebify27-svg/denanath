@@ -1,12 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import {  Plus, Trash2 } from "lucide-react";
+import { Plus, X, Trash2 } from "lucide-react";
 
 export default function ResearchContactClientForm({ initialData }: { initialData: any }) {
-  const [address, setAddress] = useState(initialData.address || "");
-  const [emails, setEmails] = useState<string[]>(initialData.emails || []);
-  const [personnel, setPersonnel] = useState<any[]>(initialData.personnel || []);
+  const [address, setAddress] = useState(initialData?.address || "14th Floor Super Speciality Building,\nDeenanath Mangeshkar Hospital and Research Centre");
+  const [emails, setEmails] = useState<string[]>(initialData?.emails?.length ? initialData.emails : ["research@dmhospital.org", "iec@dmhospital.org"]);
+  const [personnel, setPersonnel] = useState<any[]>(initialData?.personnel?.length ? initialData.personnel : [{ name: "Dr. Vaijayanti V. Pethe", designation: "Assistant Director, Research", email: "pethev@dmhospital.org" }]);
 
   const addEmail = () => setEmails([...emails, ""]);
   const removeEmail = (idx: number) => setEmails(emails.filter((_, i) => i !== idx));
@@ -39,16 +39,16 @@ export default function ResearchContactClientForm({ initialData }: { initialData
         <div>
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-xl text-[20px] font-black text-[#002b5c]">Contact Emails</h3>
-            <button type="button" onClick={addEmail} className="flex items-center gap-2 bg-blue-50 text-blue-700 px-4 py-2 rounded-xl font-bold hover:bg-blue-100 transition-colors">
-              <Plus size={16} /> Add Email
+            <button type="button" onClick={addEmail} className="flex items-center gap-2 bg-[#002b5c] text-white px-4 py-2 rounded-xl font-bold hover:bg-[#001c3d] transition-colors shadow-sm">
+              <Plus size={16} strokeWidth={2.5} /> Add Email
             </button>
           </div>
           <div className="space-y-3">
             {emails.map((item, idx) => (
               <div key={idx} className="flex gap-2 items-center bg-slate-50 p-2 rounded-xl border border-slate-200 w-full md:w-1/2">
                 <input value={item} onChange={(e) => updateEmail(idx, e.target.value)} className="flex-1 p-2 bg-transparent focus:outline-none text-sm" placeholder="email@example.com" />
-                <button type="button" onClick={() => removeEmail(idx)} className="text-[#D9232D] hover:text-[#D9232D] p-2">
-                  <Trash2 size={16} color="#D9232D" />
+                <button type="button" onClick={() => removeEmail(idx)} className="text-[#D9232D] hover:bg-red-50 p-2 rounded-lg transition-colors">
+                  <X size={16} strokeWidth={2.5} />
                 </button>
               </div>
             ))}
@@ -60,8 +60,8 @@ export default function ResearchContactClientForm({ initialData }: { initialData
         <div>
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-xl text-[20px] font-black text-[#002b5c]">Key Personnel</h3>
-            <button type="button" onClick={addPerson} className="flex items-center gap-2 bg-teal-50 text-teal-700 px-4 py-2 rounded-xl font-bold hover:bg-teal-100 transition-colors">
-              <Plus size={16} /> Add Person
+            <button type="button" onClick={addPerson} className="flex items-center gap-2 bg-[#007a87] text-white px-4 py-2 rounded-xl font-bold hover:bg-[#005c66] transition-colors shadow-sm">
+              <Plus size={16} strokeWidth={2.5} /> Add Person
             </button>
           </div>
           <div className="space-y-4">

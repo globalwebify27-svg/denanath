@@ -32,7 +32,7 @@ export default function TrainingProgramsClientForm({ initialData }: { initialDat
         <div>
           <div className="flex justify-between items-center mb-4">
             <label className="block text-sm font-bold text-slate-700">Programs List</label>
-            <button type="button" onClick={() => addToArray("programs", "")} className="flex items-center gap-1 bg-teal-50 text-teal-700 px-3 py-1.5 rounded-lg text-sm font-bold">
+            <button type="button" onClick={() => addToArray("programs", "")} className="flex items-center gap-1 bg-[#D9232D] text-white hover:bg-[#b81d26] px-3 py-1.5 rounded-lg text-sm font-bold transition-colors">
               <Plus size={16} /> Add Program
             </button>
           </div>

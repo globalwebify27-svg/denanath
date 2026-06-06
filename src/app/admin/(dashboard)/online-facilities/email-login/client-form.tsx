@@ -53,7 +53,7 @@ export default function EmailLoginClientForm({ initialData }: { initialData: any
           <button 
             type="button" 
             onClick={addCard}
-            className="flex items-center gap-2 bg-[#007a87] text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-[#005f6b] transition-colors"
+            className="flex items-center gap-2 bg-[#D9232D] text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-[#b81d26] transition-colors"
           >
             <Plus size={16} />
             Add Portal
@@ -76,7 +76,7 @@ export default function EmailLoginClientForm({ initialData }: { initialData: any
                   <GripVertical size={20} />
                 </div>
                 
-                <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-4 pr-12">
                   <div className="md:col-span-2">
                     <label className="block text-xs font-bold text-gray-600 mb-1 uppercase tracking-wider">Title</label>
                     <input 
@@ -128,15 +128,6 @@ export default function EmailLoginClientForm({ initialData }: { initialData: any
         </div>
       </div>
 
-      <div className="flex justify-end pt-8">
-        <button 
-          type="submit" 
-          className="flex items-center gap-2 bg-[#002b5c] text-white px-8 py-3 rounded-xl font-bold hover:bg-[#001f44] transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5"
-        >
-          <Save size={20} />
-          Save Changes
-        </button>
-      </div>
     </div>
   );
 }

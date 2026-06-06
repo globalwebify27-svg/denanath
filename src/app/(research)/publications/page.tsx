@@ -161,6 +161,8 @@ export default async function PublicationsPage() {
                       <Link 
                         key={idx} 
                         href={item.link} 
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="bg-white border border-slate-200 p-4 rounded-xl font-bold text-[#007a87] hover:bg-[#003360] hover:text-white hover:border-[#003360] hover:shadow-[0_8px_30px_rgba(0,51,96,0.15)] hover:-translate-y-1 transition-all shadow-sm flex items-center justify-center text-sm md:text-base"
                       >
                         {item.year}

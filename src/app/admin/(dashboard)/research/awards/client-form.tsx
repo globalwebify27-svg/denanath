@@ -1,17 +1,73 @@
 "use client";
 
 import { useState } from "react";
-import {  Plus, Trash2 } from "lucide-react";
+import { Plus, Trash2, X } from "lucide-react";
 
 export default function AwardsClientForm({ initialData }: { initialData: any }) {
   const [awards, setAwards] = useState<any[]>(initialData?.awards?.length ? initialData.awards : [
-    { year: "2015-2016", items: ["Item 1..."] }
+    {
+      year: "2015-2016",
+      items: [
+        "<strong className=\"text-slate-800\">Dr Pradnya Manglekar, Dr Sheetal Biradar, Dr Vishnu Biradar and Dr Vijayshri Bhide</strong> – Received 2nd prize for poster presentation at MAPCON...",
+        "<strong className=\"text-slate-800\">Dr. Pradyumna Pai Raiturker, Dr. Veena Joshi, Mrs. Aditi Kulkarni</strong> – received Best Paper Award (2nd place) at Maharashtra Orthopedics Association Conference (MOACON)...",
+        "<strong className=\"text-slate-800\">Dr. Umesh Kalane</strong> – Received 1st prize for poster presentation at Child NeuroCon..."
+      ]
+    },
+    {
+      year: "2014-2015",
+      items: [
+        "<strong className=\"text-slate-800\">Dr. Ashish Babhulkar</strong> – Gold Medal for paper entitled: “Bony Morphology of Shoulder-Indian Cadaver study of 66 Shoulders”, at Shoulder Elbow Conference 2015, Delhi.",
+        "<strong className=\"text-slate-800\">Dr. Namita Parikshit Mahalle</strong> – received Dr. C. Sita Devi award for best paper entitled -“Vitamin B12-deficiency is associated with Dyslipidemia..."
+      ]
+    },
+    {
+      year: "2013-2014",
+      items: [
+        "<strong className=\"text-slate-800\">Dr. Amol Bapaye</strong> – received “Pioneer in Gastroenterology and Endoscopy” award...",
+        "<strong className=\"text-slate-800\">Dr. Koumudi Godbole</strong> – received international Scholarship..."
+      ]
+    }
   ]);
   const [grants, setGrants] = useState<any[]>(initialData?.grants?.length ? initialData.grants : [
-    { year: "2014-15", name: "Dr. Sadanand S. Naik", dept: "Department of Pathology...", details: "Received DBT-Denmark..." }
+    {
+      year: "Year 2014-15",
+      name: "Dr. Sadanand S. Naik",
+      dept: "[Department of Pathology, Division of Clinical Biochemistry, DMHRC]",
+      details: "Received DBT-Denmark joint proposal Grant for study entitled “Identification of a suitable milk-derived product, the consumption of which could prevent Vitamin B12 deficiency” – [IMPROVIT], Jan 2015."
+    },
+    {
+      year: "Year 2013-14",
+      name: "Dr. Mrinalini Moghe",
+      dept: "(Genetics, DMHRC)",
+      details: "Received Department of Biotechnology (DBT), Delhi Grant for her in-house research project entitled “Analysis of human developmental EMT in vitro - and establishment of ex vivo models of embryogenesis”."
+    }
   ]);
   const [pastGrants, setPastGrants] = useState<any[]>(initialData?.pastGrants?.length ? initialData.pastGrants : [
-    { name: "Dr. Sameer Jog", grant: "lothian Health board Scotland Grant", details: "European Society of intensive care..." }
+    {
+      name: "Dr. Sameer Jog",
+      grant: "lothian Health board Scotland Grant",
+      details: "European Society of intensive care medicine study of therapeutic hypothermia (32-350 C) for ICP reduction after traumatic brain injury."
+    },
+    {
+      name: "Dr. Mrinalini Moghe",
+      grant: "CSIR Grant",
+      details: "Studies on alteration in spindle Assembly checkpoint genes in Aneuploid Abortuses."
+    },
+    {
+      name: "Dr. Mrinalini Moghe",
+      grant: "CSIR Grant",
+      details: "Localization of MAD 2 protein on centromere of human chromosome."
+    },
+    {
+      name: "Dr. Amol Rege",
+      grant: "AO Spine grant",
+      details: "Evaluation of Efficacy of Iyengar yoga therapy in chronic low back pain."
+    },
+    {
+      name: "Dr. Pradyumna",
+      grant: "AO Spine grant",
+      details: "Prevalence of vitamin D deficiency and its implications with low back pain among people working in BPO office."
+    }
   ]);
 
   // --- Awards ---
@@ -85,8 +141,8 @@ export default function AwardsClientForm({ initialData }: { initialData: any }) 
                   {award.items.map((item: string, itemIdx: number) => (
                     <div key={itemIdx} className="flex gap-2 items-start">
                       <textarea value={item} onChange={(e) => updateAwardItem(yearIdx, itemIdx, e.target.value)} rows={2} className="flex-1 p-3 border border-gray-200 rounded-xl focus:ring-[#007a87] focus:outline-none text-sm" />
-                      <button type="button" onClick={() => removeAwardItem(yearIdx, itemIdx)} className="p-3 text-[#D9232D] hover:bg-red-50 rounded-xl">
-                        <Trash2 size={16} color="#D9232D" />
+                      <button type="button" onClick={() => removeAwardItem(yearIdx, itemIdx)} className="p-3 text-[#D9232D] hover:bg-red-50 rounded-xl" title="Remove Item">
+                        <X size={16} color="#D9232D" />
                       </button>
                     </div>
                   ))}
@@ -103,8 +159,8 @@ export default function AwardsClientForm({ initialData }: { initialData: any }) 
         <div>
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-xl text-[20px] font-black text-[#002b5c]">Grants Received</h3>
-            <button type="button" onClick={addGrant} className="flex items-center gap-2 bg-green-50 text-green-700 px-4 py-2 rounded-xl font-bold hover:bg-green-100 transition-colors">
-              <Plus size={16} /> Add Grant
+            <button type="button" onClick={addGrant} className="flex items-center gap-2 bg-[#007a87] text-white px-4 py-2 rounded-xl font-bold hover:bg-[#005c66] transition-colors shadow-sm">
+              <Plus size={16} strokeWidth={2.5} /> Add Grant
             </button>
           </div>
           <div className="space-y-4">

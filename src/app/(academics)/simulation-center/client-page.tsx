@@ -15,6 +15,34 @@ export default function SimulationCenterClient({ initialData }: { initialData: a
 
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
+  const generateCaptcha = () => {
+    const chars = "ABCDEFGHJKLMNOPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz023456789";
+    let result = "";
+    for (let i = 0; i < 4; i++) {
+      result += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return result;
+  };
+
+  const [captchaCode, setCaptchaCode] = useState("");
+
+  useEffect(() => {
+    if (activeTab === "Payments") {
+      setCaptchaCode(generateCaptcha());
+    }
+  }, [activeTab]);
+
+  const handleSub = (e: React.FormEvent) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget as HTMLFormElement);
+    const userCaptcha = formData.get("captcha") as string;
+    if (userCaptcha?.trim().toLowerCase() !== captchaCode.toLowerCase()) {
+      alert("Verification code is incorrect. Please try again.");
+      return;
+    }
+    alert("Form submitted successfully!");
+  };
+
   useEffect(() => {
     if (window.innerWidth < 1024 && scrollContainerRef.current) {
       const activeEl = scrollContainerRef.current.querySelector('[data-active="true"]') as HTMLElement;
@@ -137,7 +165,7 @@ export default function SimulationCenterClient({ initialData }: { initialData: a
                 {activeTab === "Payments" && (
                   <div className="bg-white border border-slate-200 rounded-3xl p-6 md:p-10 shadow-sm">
                     <h3 className="text-2xl font-bold text-[#002b5c] mb-6 border-b border-slate-100 pb-4">Online Payment</h3>
-                    <form className="space-y-6">
+                    <form className="space-y-6" onSubmit={handleSub}>
                       {/* Row 1 */}
                       <div>
                         <label className="block text-sm font-semibold text-slate-700 mb-1">Purpose of Payment <span className="text-red-500">*</span></label>
@@ -210,23 +238,25 @@ export default function SimulationCenterClient({ initialData }: { initialData: a
                         <textarea rows={2} placeholder="Enter ..." className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500/50 bg-slate-50 resize-none"></textarea>
                       </div>
 
-                      {/* Captcha */}
                       <div>
                         <label className="block text-sm font-semibold text-slate-700 mb-2">Captcha <span className="text-red-500">*</span></label>
                         <div className="flex items-center gap-3 mb-2">
                           <div className="bg-slate-200 px-4 py-2 rounded-lg tracking-widest font-mono font-bold text-lg text-slate-800 select-none">
-                            v D N Z
+                            {captchaCode}
                           </div>
-                          <button type="button" className="text-blue-500 hover:text-blue-600 transition-colors">
+                          <button 
+                            type="button" 
+                            onClick={() => setCaptchaCode(generateCaptcha())}
+                            className="text-blue-500 hover:text-blue-600 transition-colors"
+                          >
                             <RefreshCw className="w-5 h-5" />
                           </button>
                         </div>
-                        <input type="text" placeholder="Enter Captcha Text" className="w-full md:w-1/2 px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500/50 bg-slate-50" />
+                        <input name="captcha" type="text" placeholder="Enter Captcha Text" className="w-full md:w-1/2 px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500/50 bg-slate-50" required />
                       </div>
 
-                      {/* Submit */}
                       <div className="pt-4 flex justify-center md:justify-start">
-                        <button type="button" className="w-full md:w-[200px] py-3 bg-[#003360] text-white font-bold rounded-md hover:bg-[#002b5c] transition-colors shadow-sm">
+                        <button type="submit" className="w-full md:w-[200px] py-3 bg-[#003360] text-white font-bold rounded-md hover:bg-[#002b5c] transition-colors shadow-sm">
                           Submit
                         </button>
                       </div>

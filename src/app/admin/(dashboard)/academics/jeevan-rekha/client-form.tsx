@@ -160,7 +160,7 @@ export default function JeevanRekhaClientForm({ initialData }: { initialData: an
           {openSections["Announced Programs"] && (
             <div className="p-6 md:p-8 bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden space-y-6 animate-in fade-in relative mt-4">
               <div className="flex justify-end">
-                <button type="button" onClick={() => addToArray("announcedPrograms", "")} className="flex items-center gap-1 bg-teal-50 text-teal-700 px-3 py-1.5 rounded-lg text-sm font-bold">
+                <button type="button" onClick={() => addToArray("announcedPrograms", "")} className="flex items-center gap-1 bg-[#D9232D] text-white hover:bg-[#b81d26] px-3 py-1.5 rounded-lg text-sm font-bold transition-colors">
                   <Plus size={16} /> Add Program
                 </button>
               </div>

@@ -1,13 +1,42 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { ChevronRight, CalendarCheck, User, Phone, Mail, Stethoscope, Clock, FileText, Send, Building2 } from "lucide-react";
 
 export default function BookAppointmentPage() {
   const options: any[] = [];
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    const formData = new FormData(e.currentTarget);
+    formData.append("formType", "Book Appointment");
+
+    try {
+      const res = await fetch("/api/submit-form", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (res.ok) {
+        setSubmitSuccess(true);
+        (e.target as HTMLFormElement).reset();
+      } else {
+        alert("Error submitting request. Please try again.");
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Network error. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   useEffect(() => {
     if (window.innerWidth < 1024 && scrollContainerRef.current) {
@@ -62,7 +91,22 @@ export default function BookAppointmentPage() {
 
           <div className="max-w-3xl mx-auto">
             <div className="bg-slate-50 rounded-3xl p-8 md:p-10 border border-slate-200 shadow-sm">
-              <form className="space-y-8">
+              {submitSuccess ? (
+                <div className="text-center py-12">
+                  <div className="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <CalendarCheck className="w-10 h-10 text-emerald-600" />
+                  </div>
+                  <h3 className="text-3xl font-extrabold text-[#002b5c] mb-4">Request Submitted!</h3>
+                  <p className="text-slate-600 text-lg mb-8">Your appointment request has been successfully received. Our team will contact you shortly to confirm the exact time slot.</p>
+                  <button 
+                    onClick={() => setSubmitSuccess(false)}
+                    className="bg-[#002b5c] hover:bg-[#001a38] text-white px-8 py-3 rounded-xl font-bold transition-colors"
+                  >
+                    Book Another Appointment
+                  </button>
+                </div>
+              ) : (
+              <form className="space-y-8" onSubmit={handleSubmit}>
                 
                 {/* Patient Details */}
                 <div>
@@ -72,11 +116,11 @@ export default function BookAppointmentPage() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                       <label className="block text-sm font-bold text-slate-700 mb-2">First Name <span className="text-red-500">*</span></label>
-                      <input type="text" className="w-full bg-white border border-slate-300 rounded-xl py-3 px-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-[#007a87] transition-shadow" placeholder="e.g. John" required />
+                      <input name="firstName" type="text" className="w-full bg-white border border-slate-300 rounded-xl py-3 px-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-[#007a87] transition-shadow" placeholder="e.g. John" required />
                     </div>
                     <div>
                       <label className="block text-sm font-bold text-slate-700 mb-2">Last Name <span className="text-red-500">*</span></label>
-                      <input type="text" className="w-full bg-white border border-slate-300 rounded-xl py-3 px-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-[#007a87] transition-shadow" placeholder="e.g. Doe" required />
+                      <input name="lastName" type="text" className="w-full bg-white border border-slate-300 rounded-xl py-3 px-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-[#007a87] transition-shadow" placeholder="e.g. Doe" required />
                     </div>
                   </div>
 
@@ -87,7 +131,7 @@ export default function BookAppointmentPage() {
                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                           <Phone className="h-5 w-5 text-slate-400" />
                         </div>
-                        <input type="tel" className="w-full bg-white border border-slate-300 rounded-xl py-3 pl-10 pr-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-[#007a87] transition-shadow" placeholder="10-digit number" required />
+                        <input name="phone" type="tel" className="w-full bg-white border border-slate-300 rounded-xl py-3 pl-10 pr-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-[#007a87] transition-shadow" placeholder="10-digit number" required />
                       </div>
                     </div>
                     <div>
@@ -96,7 +140,7 @@ export default function BookAppointmentPage() {
                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                           <Mail className="h-5 w-5 text-slate-400" />
                         </div>
-                        <input type="email" className="w-full bg-white border border-slate-300 rounded-xl py-3 pl-10 pr-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-[#007a87] transition-shadow" placeholder="john@example.com" required />
+                        <input name="email" type="email" className="w-full bg-white border border-slate-300 rounded-xl py-3 pl-10 pr-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-[#007a87] transition-shadow" placeholder="john@example.com" required />
                       </div>
                     </div>
                   </div>
@@ -114,7 +158,7 @@ export default function BookAppointmentPage() {
                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                           <Building2 className="h-5 w-5 text-slate-400" />
                         </div>
-                        <select className="w-full bg-white border border-slate-300 rounded-xl py-3 pl-10 pr-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-[#007a87] transition-shadow appearance-none cursor-pointer" required>
+                        <select name="department" className="w-full bg-white border border-slate-300 rounded-xl py-3 pl-10 pr-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-[#007a87] transition-shadow appearance-none cursor-pointer" required>
                           <option value="">Select Department</option>
                           <option value="cardiology">Cardiology</option>
                           <option value="neurology">Neurology</option>
@@ -130,7 +174,7 @@ export default function BookAppointmentPage() {
                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                           <Stethoscope className="h-5 w-5 text-slate-400" />
                         </div>
-                        <select className="w-full bg-white border border-slate-300 rounded-xl py-3 pl-10 pr-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-[#007a87] transition-shadow appearance-none cursor-pointer">
+                        <select name="doctor" className="w-full bg-white border border-slate-300 rounded-xl py-3 pl-10 pr-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-[#007a87] transition-shadow appearance-none cursor-pointer">
                           <option value="">Any Available Doctor</option>
                           <option value="dr1">Dr. Nikhil Agarkhedkar</option>
                           <option value="dr2">Dr. Renu Agarkhedkar</option>
@@ -144,7 +188,7 @@ export default function BookAppointmentPage() {
                     <div>
                       <label className="block text-sm font-bold text-slate-700 mb-2">Preferred Date <span className="text-red-500">*</span></label>
                       <div className="relative">
-                        <input type="date" className="w-full bg-white border border-slate-300 rounded-xl py-3 px-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-[#007a87] transition-shadow cursor-pointer" required />
+                        <input name="preferredDate" type="date" className="w-full bg-white border border-slate-300 rounded-xl py-3 px-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-[#007a87] transition-shadow cursor-pointer" required />
                       </div>
                     </div>
                     <div>
@@ -153,7 +197,7 @@ export default function BookAppointmentPage() {
                         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                           <Clock className="h-5 w-5 text-slate-400" />
                         </div>
-                        <select className="w-full bg-white border border-slate-300 rounded-xl py-3 pl-10 pr-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-[#007a87] transition-shadow appearance-none cursor-pointer" required>
+                        <select name="preferredTime" className="w-full bg-white border border-slate-300 rounded-xl py-3 pl-10 pr-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-[#007a87] transition-shadow appearance-none cursor-pointer" required>
                           <option value="">Select Time Slot</option>
                           <option value="morning">Morning (9:00 AM - 12:00 PM)</option>
                           <option value="afternoon">Afternoon (1:00 PM - 4:00 PM)</option>
@@ -170,6 +214,7 @@ export default function BookAppointmentPage() {
                         <FileText className="h-5 w-5 text-slate-400" />
                       </div>
                       <textarea 
+                        name="comments"
                         rows={4}
                         className="w-full bg-white border border-slate-300 rounded-xl py-3 pl-10 pr-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-[#007a87] transition-shadow resize-none" 
                         placeholder="Please briefly describe your symptoms or reason for visit..."
@@ -181,10 +226,11 @@ export default function BookAppointmentPage() {
                 <div className="pt-6 border-t border-slate-200 mt-8">
                   <button 
                     type="submit"
-                    className="w-full bg-[#002b5c] hover:bg-[#001a38] text-white py-4 rounded-xl font-extrabold tracking-wider uppercase transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 group"
+                    disabled={isSubmitting}
+                    className="w-full bg-[#002b5c] hover:bg-[#001a38] text-white py-4 rounded-xl font-extrabold tracking-wider uppercase transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 group disabled:opacity-70 disabled:cursor-not-allowed"
                   >
-                    Confirm Appointment Request
-                    <Send className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    {isSubmitting ? "Submitting..." : "Confirm Appointment Request"}
+                    {!isSubmitting && <Send className="w-4 h-4 group-hover:translate-x-1 transition-transform" />}
                   </button>
                   <p className="text-xs text-center text-slate-500 mt-4 font-medium">
                     By submitting this form, you agree to our Terms and Conditions and Privacy Policy. Our team will call you to confirm the exact time slot.
@@ -192,6 +238,7 @@ export default function BookAppointmentPage() {
                 </div>
 
               </form>
+              )}
             </div>
           </div>
           

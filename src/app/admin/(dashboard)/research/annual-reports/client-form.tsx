@@ -5,7 +5,18 @@ import {  Plus, Trash2 } from "lucide-react";
 
 export default function AnnualReportsClientForm({ initialData }: { initialData: any }) {
   const [reports, setReports] = useState<any[]>(initialData?.reports?.length ? initialData.reports : [
-    { title: "Annual Report 2024-2025", description: "", link: "#" }
+    { title: "Annual Report 2024-2025", link: "#" },
+    { title: "Annual Report 2023-2024", link: "#" },
+    { title: "Annual Report 2022-2023", link: "#" },
+    { title: "Tribute issue (2021-2022)", description: "A tribute to Lata Mangeshkar (1929 - 2022)", link: "#" },
+    { title: "Annual Report 2020-2021", link: "#" },
+    { title: "Annual Report 2019-2020", link: "#" },
+    { title: "Annual Report 2018-2019", link: "#" },
+    { title: "Annual Report 2017-2018", link: "#" },
+    { title: "Annual Report 2016-2017", link: "#" },
+    { title: "Annual Report 2015-2016", link: "#" },
+    { title: "Annual Report 2014-2015", link: "#" },
+    { title: "Annual Report 2013-2014", link: "#" }
   ]);
 
   const addReport = () => setReports([...reports, { title: "", description: "", link: "#" }]);
@@ -23,8 +34,8 @@ export default function AnnualReportsClientForm({ initialData }: { initialData: 
       <div className="space-y-6">
         <div className="flex justify-between items-center mb-4">
           <h3 className="text-xl text-[20px] font-black text-[#002b5c]">Reports List</h3>
-          <button type="button" onClick={addReport} className="flex items-center gap-2 bg-teal-50 text-[#007a87] px-4 py-2 rounded-xl font-bold hover:bg-teal-100 transition-colors">
-            <Plus size={16} /> Add Report
+          <button type="button" onClick={addReport} className="flex items-center gap-2 bg-[#002b5c] text-white px-4 py-2 rounded-xl font-bold hover:bg-[#001c3d] transition-colors shadow-sm">
+            <Plus size={16} strokeWidth={2.5} /> Add Report
           </button>
         </div>
 

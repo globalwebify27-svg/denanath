@@ -10,6 +10,22 @@ export default async function AcademicsPage() {
   
   let pageData: any = { 
     introText: "Deenanath Mangeshkar Hospital & Research Center (DMHRC) is a multi speciality hospital managed by a Public Charitable Trust. It is accredited by National Board of Examinations in Medical Sciences, New Delhi for Post Graduate Training Programme (DNB, DrNB and FNB) across twenty five specialities. Academic Centre is situated on 14th floor Super Speciality Building.",
+    pgProgrammes: [
+      { title: "DNB, DrNB AND FNB", desc: "Accredited by NBEMS", items: [] },
+      { 
+        title: "Fellowship Programme:", 
+        desc: "", 
+        items: [
+          "NNF in Neonatology",
+          "IAP in Neonatology",
+          "IACTA – Cardiac Anaesthesia",
+          "Indian Diploma in Critical Care Medicine (IDCCM)",
+          "Indian Fellowship in Critical Care Medicine (IFCCM)"
+        ] 
+      },
+      { title: "Laryngology Fellowship", desc: "RCS Senior Clinical Fellowship Scheme", items: [] },
+      { title: "Vasant & Nirmala Oswal Centre", desc: "Post graduate training and education (RCS accredited)", items: [] }
+    ],
     shortTermFellowships: [
       "Fellowship in Advanced Obstetric Ultrasonography",
       "Laryngology Speech Language Pathology",
@@ -173,36 +189,31 @@ export default async function AcademicsPage() {
                 </section>
 
                 {/* PG Training Programmes */}
-                <section>
-                  <h3 className="text-2xl font-bold text-[#002b5c] mb-6 flex items-center gap-3">
-                    <BookOpen className="w-6 h-6 text-[#007a87]" />
-                    Post Graduates Training Programmes
-                  </h3>
-                  <div className="bg-white border border-slate-200 rounded-2xl p-6 md:p-8 shadow-sm space-y-6">
-                    <div>
-                      <h4 className="font-bold text-lg text-slate-800 mb-2 flex gap-2"><span className="text-[#007a87]">1.</span> DNB, DrNB AND FNB</h4>
-                      <p className="text-slate-600 ml-6">• Accredited by NBEMS</p>
+                {pageData.pgProgrammes?.length > 0 && (
+                  <section>
+                    <h3 className="text-2xl font-bold text-[#002b5c] mb-6 flex items-center gap-3">
+                      <BookOpen className="w-6 h-6 text-[#007a87]" />
+                      Post Graduates Training Programmes
+                    </h3>
+                    <div className="bg-white border border-slate-200 rounded-2xl p-6 md:p-8 shadow-sm space-y-6">
+                      {pageData.pgProgrammes.map((prog: any, idx: number) => (
+                        <div key={idx}>
+                          <h4 className="font-bold text-lg text-slate-800 mb-2 flex gap-2">
+                            <span className="text-[#007a87]">{idx + 1}.</span> {prog.title}
+                          </h4>
+                          {prog.desc && <p className="text-slate-600 ml-6">{prog.desc}</p>}
+                          {prog.items && prog.items.length > 0 && (
+                            <ul className="list-disc ml-10 text-slate-600 space-y-1 mt-2">
+                              {prog.items.map((item: string, itemIdx: number) => (
+                                <li key={itemIdx}>{item}</li>
+                              ))}
+                            </ul>
+                          )}
+                        </div>
+                      ))}
                     </div>
-                    <div>
-                      <h4 className="font-bold text-lg text-slate-800 mb-2 flex gap-2"><span className="text-[#007a87]">2.</span> Fellowship Programme:</h4>
-                      <ul className="list-disc ml-10 text-slate-600 space-y-1">
-                        <li>NNF in Neonatology</li>
-                        <li>IAP in Neonatology</li>
-                        <li>IACTA – Cardiac Anaesthesia</li>
-                        <li>Indian Diploma in Critical Care Medicine (IDCCM)</li>
-                        <li>Indian Fellowship in Critical Care Medicine (IFCCM)</li>
-                      </ul>
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-lg text-slate-800 mb-2 flex gap-2"><span className="text-[#007a87]">3.</span> Laryngology Fellowship</h4>
-                      <p className="text-slate-600 ml-6">• RCS Senior Clinical Fellowship Scheme</p>
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-lg text-slate-800 mb-2 flex gap-2"><span className="text-[#007a87]">4.</span> Vasant & Nirmala Oswal Centre</h4>
-                      <p className="text-slate-600 ml-6">• Post graduate training and education (RCS accredited)</p>
-                    </div>
-                  </div>
-                </section>
+                  </section>
+                )}
 
                 {/* In-house Short term Fellowship Programs */}
                 {pageData.shortTermFellowships?.length > 0 && (

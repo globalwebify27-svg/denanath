@@ -17,6 +17,7 @@ export default function AdminLogin() {
     
     // Simulate authentication
     setTimeout(() => {
+      document.cookie = "adminAuth=true; path=/; max-age=86400";
       router.push("/admin");
     }, 800);
   };

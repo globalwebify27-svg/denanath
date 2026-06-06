@@ -48,3 +48,12 @@ model SiteSetting {
   value     String   @db.LongText
   updatedAt DateTime @updatedAt
 }
+
+model FormSubmission {
+  id        String   @id @default(cuid())
+  formType  String
+  data      String   @db.LongText
+  files     String?  @db.LongText
+  status    String   @default("NEW")
+  createdAt DateTime @default(now())
+}

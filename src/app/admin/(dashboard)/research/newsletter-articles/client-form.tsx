@@ -5,11 +5,22 @@ import {  Plus, Trash2 } from "lucide-react";
 
 export default function NewsletterClientForm({ initialData }: { initialData: any }) {
   const [newsletters, setNewsletters] = useState<any[]>(initialData?.newsletters?.length ? initialData.newsletters : [
-    { title: "May - August 2017", link: "https://www.dmhospital.org/cms/Media/file/DMHRC-Newsletter-May-2017-Epilepsy.pdf" }
+    { title: "May - August 2017", link: "https://www.dmhospital.org/cms/Media/file/DMHRC-Newsletter-May-2017-Epilepsy.pdf" },
+    { title: "January - April 2017", link: "https://www.dmhospital.org/cms/Media/file/Newsletter_Jan_Apr_2017.pdf" },
+    { title: "September - December 2016", link: "#" },
+    { title: "May - August 2016", link: "#" },
+    { title: "January - April 2016", link: "#" },
+    { title: "September - December 2015", link: "#" },
+    { title: "May - August 2015", link: "#" },
+    { title: "January - April 2015", link: "#" },
+    { title: "May - August Marathi 2013", link: "#" },
+    { title: "May - August 2013", link: "#" },
+    { title: "January - April Marathi 2013", link: "#" },
+    { title: "January - April 2013", link: "#" }
   ]);
 
   const addNewsletter = () => {
-    setNewsletters([{ title: "", link: "#" }, ...newsletters]);
+    setNewsletters([...newsletters, { title: "", link: "#" }]);
   };
 
   const removeNewsletter = (idx: number) => {
@@ -29,8 +40,8 @@ export default function NewsletterClientForm({ initialData }: { initialData: any
       <div className="space-y-6">
         <div className="flex justify-between items-center mb-4">
           <h3 className="text-xl text-[20px] font-black text-[#002b5c]">Newsletters List</h3>
-          <button type="button" onClick={addNewsletter} className="flex items-center gap-2 bg-teal-50 text-[#007a87] px-4 py-2 rounded-xl font-bold hover:bg-teal-100 transition-colors">
-            <Plus size={16} /> Add Newsletter
+          <button type="button" onClick={addNewsletter} className="flex items-center gap-2 bg-[#002b5c] text-white px-4 py-2 rounded-xl font-bold hover:bg-[#001c3d] transition-colors shadow-sm">
+            <Plus size={16} strokeWidth={2.5} /> Add Newsletter
           </button>
         </div>
 

@@ -7,11 +7,17 @@ export const metadata = {
 };
 
 export default async function PatientRegistrationPage() {
-  const setting = await prisma.siteSetting.findUnique({
-    where: { key: "online-facilities-patient-registration" },
-  });
-
-  const initialData = setting ? JSON.parse(setting.value) : null;
+  let initialData = null;
+  try {
+    const setting = await prisma.siteSetting.findUnique({
+      where: { key: "online-facilities-patient-registration" },
+    });
+    if (setting) {
+      initialData = JSON.parse(setting.value);
+    }
+  } catch (error) {
+    console.error("Database connection error on patient registration page:", error);
+  }
 
   return <PatientRegistrationClient initialData={initialData} />;
 }
