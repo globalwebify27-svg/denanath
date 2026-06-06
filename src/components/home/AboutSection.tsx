@@ -46,7 +46,7 @@ export default function AboutSection() {
             </h2>
             
             <p className="text-slate-600 text-base sm:text-lg font-light leading-relaxed mb-8">
-              Deenanath Mangeshkar Hospital is a premier multi-specialty establishment dedicated to providing exceptional medical care. We combine state-of-the-art facilities with renowned medical experts to ensure comprehensive, compassionate treatment for every patient.
+              Deenanath Mangeshkar Hospital and Research Center is a premier multi-specialty establishment dedicated to providing exceptional medical care. We combine state-of-the-art facilities with renowned medical experts to ensure comprehensive, compassionate treatment for every patient.
             </p>
             
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">

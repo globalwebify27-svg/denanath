@@ -38,7 +38,18 @@ export default function OutPatientClientPage({ pageData }: { pageData: any }) {
     chargesTable = [],
     rules = [],
     privateOpdText = "",
-    exceptionalOpdText = ""
+    exceptionalOpdText = "",
+    additionalSteps = [
+      "2. After registration, the patient goes to the respective OPD billing counter.",
+      "3. Make the receipt for respective consultant and visit to the respective OPD reception for further guidance regarding the consultation."
+    ],
+    appointmentInfo = [
+      "Some of the Outpatient Departments (OPDs) operate on an appointment system. To schedule an appointment, you can call 020-40151100.",
+      "Walk-in patients will be accommodated alongside appointment patients; however, priority is given to those with appointments.",
+      "In addition, some consultants offer private OPD services in the hospital, which are available by appointment only.",
+      "Please note that OPDs are closed on Sundays and national holidays"
+    ],
+    opConsultationImage = "/images/op-consultation.jpg"
   } = pageData || {};
 
   return (
@@ -128,15 +139,32 @@ export default function OutPatientClientPage({ pageData }: { pageData: any }) {
                     </div>
 
                     <ul className="list-none space-y-4 font-medium text-[#002b5c]">
-                      <li>2. After registration, the patient goes to the respective OPD billing counter.</li>
-                      <li>3. Make the receipt for respective consultant and visit to the respective OPD reception for further guidance regarding the consultation.</li>
+                      {additionalSteps.map((step: string, i: number) => (
+                        <li key={i}>{step}</li>
+                      ))}
                     </ul>
 
                     <ul className="list-none space-y-3 mt-6 pl-2 md:pl-4 border-t border-slate-200 pt-6">
-                      <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><div className="w-1.5 h-1.5 rounded-full bg-[#007a87] shrink-0 mt-2.5" /><span>Some of the Outpatient Departments (OPDs) operate on an appointment system. To schedule an appointment, you can call <strong>020-40151100</strong>.</span></li>
-                      <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><div className="w-1.5 h-1.5 rounded-full bg-[#007a87] shrink-0 mt-2.5" /><span>Walk-in patients will be accommodated alongside appointment patients; however, priority is given to those with appointments.</span></li>
-                      <li className="flex items-start gap-3 text-slate-600 leading-relaxed"><div className="w-1.5 h-1.5 rounded-full bg-[#007a87] shrink-0 mt-2.5" /><span>In addition, some consultants offer private OPD services in the hospital, which are available by appointment only.</span></li>
-                      <li className="flex items-start gap-3 text-slate-600 leading-relaxed font-semibold"><div className="w-1.5 h-1.5 rounded-full bg-red-500 shrink-0 mt-2.5" /><span>Please note that OPDs are closed on Sundays and national holidays</span></li>
+                      {appointmentInfo.map((info: string, i: number) => {
+                        const isRed = info.toLowerCase().includes("closed on sundays") || info.toLowerCase().includes("national holidays");
+                        const bgClass = isRed ? "bg-red-500" : "bg-[#007a87]";
+                        const textClass = isRed ? "font-semibold" : "";
+                        
+                        return (
+                          <li key={i} className={`flex items-start gap-3 text-slate-600 leading-relaxed ${textClass}`}>
+                            <div className={`w-1.5 h-1.5 rounded-full ${bgClass} shrink-0 mt-2.5`} />
+                            {info.includes("020-40151100") ? (
+                              <span>
+                                {info.split("020-40151100")[0]}
+                                <strong>020-40151100</strong>
+                                {info.split("020-40151100")[1]}
+                              </span>
+                            ) : (
+                              <span>{info}</span>
+                            )}
+                          </li>
+                        );
+                      })}
                     </ul>
                   </div>
                 </section>
@@ -145,16 +173,16 @@ export default function OutPatientClientPage({ pageData }: { pageData: any }) {
                 <section>
                   <h3 className="text-2xl font-bold text-[#002b5c] mb-6">OP Consultation Room :</h3>
                   <img 
-                    src="https://www.dmhospital.org/cms/Media/image/opd-setup.jpg" 
+                    src={opConsultationImage} 
                     alt="OP Consultation Room" 
                     className="w-full h-auto object-cover rounded-2xl shadow-md border border-slate-200 mb-8"
                   />
                   
                   <p className="text-[#002b5c] font-semibold text-lg mb-6">Following are General OPDs and Superspeciality OPDs :</p>
                   
-                  <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 items-start">
+                  <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 items-stretch">
                     {/* General OPDs */}
-                    <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+                    <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm h-full">
                       <h4 className="text-lg font-bold text-[#002b5c] mb-4 pb-4 border-b border-slate-100">General OPDs: Main Building :</h4>
                       <ul className="grid grid-cols-1 sm:grid-cols-2 gap-y-3 gap-x-6">
                         {generalOpds.map((opd: string, i: number) => (
@@ -167,7 +195,7 @@ export default function OutPatientClientPage({ pageData }: { pageData: any }) {
                     </div>
 
                     {/* Superspeciality OPDs */}
-                    <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+                    <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm h-full">
                       <h4 className="text-lg font-bold text-[#002b5c] mb-4 pb-4 border-b border-slate-100">Superspeciality OPDs : SS Building / Annexe Building :</h4>
                       <ul className="grid grid-cols-1 sm:grid-cols-2 gap-y-3 gap-x-6">
                         {superOpds.map((opd: string, i: number) => (

@@ -155,8 +155,11 @@ export default function AdminSidebar() {
             <span className="text-[13px] font-black tracking-tight leading-none text-[#002b5c]">
               DEENANATH
             </span>
-            <span className="text-[7.5px] font-extrabold tracking-widest leading-none uppercase mt-0.5 text-[#007a87]">
+            <span className="text-[7.5px] font-extrabold tracking-[0.05em] leading-none uppercase mt-0.5 text-[#007a87]">
               Mangeshkar Hospital
+            </span>
+            <span className="text-[7.5px] font-extrabold tracking-[0.05em] leading-none uppercase mt-0.5 text-[#007a87]">
+              & Research Center
             </span>
           </div>
         </div>

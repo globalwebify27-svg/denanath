@@ -29,6 +29,16 @@ export default async function FacilitiesPage() {
           "Refunds are normally paid by cheque only where amounts are more than 19,990/-.",
           "We accept payment by Cash / Credit & Debit Card / Demand Draft / NEFT / RTGS / UPI payments / Gateway Payments."
         ],
+        ipdBillingTimings: [
+          { building: "GS 2nd Floor", timing: "08:00 a.m to 10:00 p.m" },
+          { building: "GS Ground Floor - ER", timing: "10:00 p.m to 08:00 a.m" },
+          { building: "GS 4th Floor", timing: "10:00 a.m to 06:30 p.m" },
+          { building: "SS Ground Floor", timing: "24x7 x 365 days" },
+          { building: "SS 8th Floor", timing: "09:30 a.m to 06:00 p.m" },
+          { building: "SS 10th Floor", timing: "09:30 a.m to 06:00 p.m" },
+          { building: "SS 2nd Floor", timing: "09:30 a.m to 06:00 p.m" },
+          { building: "SS 3rd Floor", timing: "09:30 a.m to 06:00 p.m" }
+        ],
         facilities: [
           {
             title: "Reception (GS Building)",

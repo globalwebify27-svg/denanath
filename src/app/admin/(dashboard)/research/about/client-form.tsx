@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Save, FileText } from "lucide-react";
+import {  FileText } from "lucide-react";
 
 export default function AboutClientForm({ initialData }: { initialData: any }) {
   const [data, setData] = useState({
@@ -38,7 +38,7 @@ export default function AboutClientForm({ initialData }: { initialData: any }) {
         
         {/* Intro */}
         <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200">
-          <h3 className="text-lg font-bold text-[#002b5c] mb-4 flex items-center gap-2">
+          <h3 className="text-lg text-[20px] font-black text-[#002b5c] mb-4 flex items-center gap-2">
             <FileText className="w-5 h-5 text-[#007a87]" />
             Introduction Text
           </h3>
@@ -51,32 +51,26 @@ export default function AboutClientForm({ initialData }: { initialData: any }) {
 
         {/* Arms */}
         <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200">
-          <h3 className="text-lg font-bold text-[#002b5c] mb-4">Research Arms</h3>
+          <h3 className="text-lg text-[20px] font-black text-[#002b5c] mb-4">Research Arms</h3>
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-bold text-slate-700 mb-1">A] Investigator-initiated In-house Research</label>
+              <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">A] Investigator-initiated In-house Research</label>
               <textarea value={data.armA} onChange={(e) => handleChange('armA', e.target.value)} rows={6} className="w-full p-4 border border-gray-200 rounded-xl focus:ring-[#007a87] focus:outline-none text-sm" />
             </div>
             <div>
-              <label className="block text-sm font-bold text-slate-700 mb-1">Ongoing Research Areas</label>
+              <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Ongoing Research Areas</label>
               <textarea value={data.ongoingResearchAreas} onChange={(e) => handleChange('ongoingResearchAreas', e.target.value)} rows={4} className="w-full p-4 border border-gray-200 rounded-xl focus:ring-[#007a87] focus:outline-none text-sm" />
             </div>
             <div>
-              <label className="block text-sm font-bold text-slate-700 mb-1">B] Sponsored Clinical Trial Research</label>
+              <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">B] Sponsored Clinical Trial Research</label>
               <textarea value={data.armB} onChange={(e) => handleChange('armB', e.target.value)} rows={6} className="w-full p-4 border border-gray-200 rounded-xl focus:ring-[#007a87] focus:outline-none text-sm" />
             </div>
           </div>
         </div>
 
-        {/* Committees */}
-        <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200">
-          <h3 className="text-lg font-bold text-[#002b5c] mb-4">Research Review Committees</h3>
-          <textarea value={data.committeesText} onChange={(e) => handleChange('committeesText', e.target.value)} rows={6} className="w-full p-4 border border-gray-200 rounded-xl focus:ring-[#007a87] focus:outline-none text-sm" />
-        </div>
-
         {/* Awards Table */}
         <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200">
-          <h3 className="text-lg font-bold text-[#002b5c] mb-4">Awards & Publications Table Data</h3>
+          <h3 className="text-lg text-[20px] font-black text-[#002b5c] mb-4">Awards & Publications Table Data</h3>
           <div className="space-y-3">
             {data.awardsTableData.map((row: any, i: number) => (
               <div key={i} className="grid grid-cols-4 gap-3">
@@ -89,13 +83,15 @@ export default function AboutClientForm({ initialData }: { initialData: any }) {
           </div>
         </div>
 
+        {/* Committees */}
+        <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200">
+          <h3 className="text-lg text-[20px] font-black text-[#002b5c] mb-4">Research Review Committees</h3>
+          <textarea value={data.committeesText} onChange={(e) => handleChange('committeesText', e.target.value)} rows={6} className="w-full p-4 border border-gray-200 rounded-xl focus:ring-[#007a87] focus:outline-none text-sm" />
+        </div>
+
       </div>
 
-      <div className="pt-6 mt-6 border-t border-gray-100 flex justify-end">
-        <button type="submit" className="flex items-center gap-2 bg-[#007a87] text-white px-8 py-3.5 rounded-xl hover:bg-[#005c66] font-bold shadow-md transition-all hover:-translate-y-0.5">
-          <Save size={18} /> Save About Us Content
-        </button>
-      </div>
+      
     </>
   );
 }

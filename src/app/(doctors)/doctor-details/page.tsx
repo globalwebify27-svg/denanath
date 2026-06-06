@@ -456,6 +456,22 @@ export default function DoctorDetailsPage() {
                     </div>
                   )}
 
+                  {selectedDoctor.publications && selectedDoctor.publications.length > 0 && (
+                    <div className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-100 shadow-sm">
+                      <h3 className="text-lg font-extrabold text-[#002b5c] mb-6 flex items-center gap-3">
+                        <BookOpen className="w-6 h-6 text-[#007a87]" /> Publications
+                      </h3>
+                      <ul className="space-y-4">
+                        {selectedDoctor.publications.map((item: string, i: number) => (
+                          <li key={i} className="flex gap-3 text-slate-600 font-medium text-sm sm:text-base leading-relaxed">
+                            <div className="w-1.5 h-1.5 rounded-full bg-indigo-400 shrink-0 mt-2.5"></div>
+                            {item}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+
                 </div>
               </div>
             </div>

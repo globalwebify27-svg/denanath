@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef } from "react";
 import Link from "next/link";
-import { ChevronRight, HeartHandshake, Users, ActivitySquare } from "lucide-react";
+import { ChevronRight, HeartHandshake, Users, ActivitySquare, Building2 } from "lucide-react";
 
 export default function CharityDetailsClientPage({ charityData }: { charityData: any[] }) {
   const aboutOptions = [
@@ -88,16 +88,24 @@ export default function CharityDetailsClientPage({ charityData }: { charityData:
             <div className="bg-white rounded-3xl shadow-[0_8px_40px_rgb(0,0,0,0.03)] border border-slate-100/60 p-6 sm:p-10 md:p-12">
               
               <div className="mb-10">
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-teal-50 border border-teal-100 text-[#007a87] text-xs font-bold tracking-wider uppercase mb-4">
+                  <Building2 className="w-4 h-4" />
+                  <span>Charity Details</span>
+                </div>
+                <h2 className="text-3xl md:text-4xl font-extrabold text-[#002b5c] mb-6 tracking-tight">
+                  Charity Details
+                </h2>
+
                 {/* Intro Section */}
-                <div className="mb-10 text-center md:text-left">
+                <div className="mb-10 text-center md:text-left mt-8">
                   <div className="inline-flex items-center justify-center md:justify-start gap-2 px-4 py-2 rounded-full bg-rose-50 border border-rose-100 text-rose-600 text-xs sm:text-sm font-bold tracking-wider uppercase mb-5">
                     <HeartHandshake className="w-4 h-4" />
                     <span>Our Commitment to Society</span>
                   </div>
                   
-                  <h2 className="text-3xl md:text-4xl font-extrabold text-[#002b5c] mb-5 tracking-tight">
+                  <h3 className="text-2xl md:text-3xl font-extrabold text-[#002b5c] mb-5 tracking-tight">
                     Information Regarding Charity
-                  </h2>
+                  </h3>
                   
                   <p className="text-slate-600 text-base md:text-lg leading-relaxed max-w-3xl">
                     Deenanath Mangeshkar Hospital actively provides world-class medical treatment to patients from indigent (निर्धन) and weaker sections (दुर्बल) of society. Below is a detailed breakdown of the patients we have recently assisted.

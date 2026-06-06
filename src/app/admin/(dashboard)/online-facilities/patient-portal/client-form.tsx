@@ -30,7 +30,7 @@ export default function PatientPortalClientForm({ initialData }: { initialData: 
 
       {/* Basic Settings */}
       <div className="space-y-4">
-        <h2 className="text-xl font-bold text-[#002b5c] border-b pb-2">Page Content</h2>
+        <h2 className="text-xl text-[20px] font-black text-[#002b5c] border-b pb-2">Page Content</h2>
         
         <div>
           <label className="block text-sm font-bold text-gray-700 mb-1">Page Title</label>
@@ -67,7 +67,7 @@ export default function PatientPortalClientForm({ initialData }: { initialData: 
       {/* Features */}
       <div className="space-y-4 pt-4 border-t border-gray-100">
         <div className="flex items-center justify-between">
-          <h2 className="text-xl font-bold text-[#002b5c]">Portal Features</h2>
+          <h2 className="text-xl text-[20px] font-black text-[#002b5c]">Portal Features</h2>
           <button 
             type="button" 
             onClick={addFeature}
@@ -90,9 +90,9 @@ export default function PatientPortalClientForm({ initialData }: { initialData: 
               <button 
                 type="button" 
                 onClick={() => removeFeature(index)}
-                className="text-red-400 hover:text-red-600 p-2 hover:bg-red-50 rounded-lg transition-colors"
+                className="text-[#D9232D] hover:text-[#D9232D] p-2 hover:bg-red-50 rounded-lg transition-colors"
               >
-                <Trash2 size={18} />
+                <Trash2 size={18} color="#D9232D" />
               </button>
             </div>
           ))}

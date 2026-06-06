@@ -4,20 +4,23 @@ import React, { useEffect, useRef } from "react";
 import Link from "next/link";
 import { ChevronRight, Building, Building2, Pill, Droplets, Users, Coffee, Activity, Ambulance, Copy, AlertTriangle, Glasses, Ticket, FileText, MapPin, Phone, Clock, Info, CheckCircle2, CreditCard } from "lucide-react";
 
-const getIconForTitle = (title: string) => {
-  const t = title.toLowerCase();
-  if (t.includes('reception')) return <Building className="w-6 h-6" />;
-  if (t.includes('pharmacy')) return <Pill className="w-6 h-6" />;
-  if (t.includes('blood')) return <Droplets className="w-6 h-6" />;
-  if (t.includes('public')) return <Users className="w-6 h-6" />;
-  if (t.includes('canteen')) return <Coffee className="w-6 h-6" />;
-  if (t.includes('health')) return <Activity className="w-6 h-6" />;
-  if (t.includes('ambulance')) return <Ambulance className="w-6 h-6" />;
-  if (t.includes('photo')) return <Copy className="w-6 h-6" />;
-  if (t.includes('mortuary')) return <Info className="w-6 h-6" />;
-  if (t.includes('emergency')) return <AlertTriangle className="w-6 h-6" />;
-  if (t.includes('optic')) return <Glasses className="w-6 h-6" />;
-  if (t.includes('pass')) return <Ticket className="w-6 h-6" />;
+const renderIcon = (iconName?: string, title?: string) => {
+  const name = iconName || "";
+  const t = (title || "").toLowerCase();
+  
+  if (name === "Building" || (!name && t.includes('reception'))) return <Building className="w-6 h-6" />;
+  if (name === "Pill" || (!name && t.includes('pharmacy'))) return <Pill className="w-6 h-6" />;
+  if (name === "Droplets" || (!name && t.includes('blood'))) return <Droplets className="w-6 h-6" />;
+  if (name === "Users" || (!name && t.includes('public'))) return <Users className="w-6 h-6" />;
+  if (name === "Coffee" || (!name && t.includes('canteen'))) return <Coffee className="w-6 h-6" />;
+  if (name === "Activity" || (!name && t.includes('health'))) return <Activity className="w-6 h-6" />;
+  if (name === "Ambulance" || (!name && t.includes('ambulance'))) return <Ambulance className="w-6 h-6" />;
+  if (name === "Copy" || (!name && t.includes('photo'))) return <Copy className="w-6 h-6" />;
+  if (name === "Info" || (!name && t.includes('mortuary'))) return <Info className="w-6 h-6" />;
+  if (name === "AlertTriangle" || (!name && t.includes('emergency'))) return <AlertTriangle className="w-6 h-6" />;
+  if (name === "Glasses" || (!name && t.includes('optic'))) return <Glasses className="w-6 h-6" />;
+  if (name === "Ticket" || (!name && t.includes('pass'))) return <Ticket className="w-6 h-6" />;
+  
   return <Building2 className="w-6 h-6" />;
 };
 
@@ -51,6 +54,7 @@ export default function FacilitiesClientPage({ pageData }: { pageData: any }) {
   const {
     ipdBillingRules = [],
     opdBillingRules = [],
+    ipdBillingTimings = [],
     facilities = []
   } = pageData || {};
 
@@ -140,14 +144,14 @@ export default function FacilitiesClientPage({ pageData }: { pageData: any }) {
                             <tr><th className="px-4 py-3">Building & Floor</th><th className="px-4 py-3">Timing</th></tr>
                           </thead>
                           <tbody className="divide-y divide-slate-100">
-                            <tr className="hover:bg-slate-50"><td className="px-4 py-2">GS 2nd Floor</td><td className="px-4 py-2">08:00 a.m to 10:00 p.m</td></tr>
-                            <tr className="hover:bg-slate-50"><td className="px-4 py-2">GS Ground Floor - ER</td><td className="px-4 py-2">10:00 p.m to 08:00 a.m</td></tr>
-                            <tr className="hover:bg-slate-50"><td className="px-4 py-2">GS 4th Floor</td><td className="px-4 py-2">10:00 a.m to 06:30 p.m</td></tr>
-                            <tr className="hover:bg-slate-50"><td className="px-4 py-2">SS Ground Floor</td><td className="px-4 py-2 font-medium text-teal-600">24x7 x 365 days</td></tr>
-                            <tr className="hover:bg-slate-50"><td className="px-4 py-2">SS 8th Floor</td><td className="px-4 py-2">09:30 a.m to 06:00 p.m</td></tr>
-                            <tr className="hover:bg-slate-50"><td className="px-4 py-2">SS 10th Floor</td><td className="px-4 py-2">09:30 a.m to 06:00 p.m</td></tr>
-                            <tr className="hover:bg-slate-50"><td className="px-4 py-2">SS 2nd Floor</td><td className="px-4 py-2">09:30 a.m to 06:00 p.m</td></tr>
-                            <tr className="hover:bg-slate-50"><td className="px-4 py-2">SS 3rd Floor</td><td className="px-4 py-2">09:30 a.m to 06:00 p.m</td></tr>
+                            {ipdBillingTimings.map((item: any, idx: number) => (
+                              <tr key={idx} className="hover:bg-slate-50">
+                                <td className="px-4 py-2">{item.building}</td>
+                                <td className={`px-4 py-2 ${item.timing.toLowerCase().includes('24x7') ? 'font-medium text-teal-600' : ''}`}>
+                                  {item.timing}
+                                </td>
+                              </tr>
+                            ))}
                           </tbody>
                         </table>
                       </div>
@@ -186,7 +190,7 @@ export default function FacilitiesClientPage({ pageData }: { pageData: any }) {
                       <div key={idx} className="bg-white rounded-2xl border border-slate-200 p-6 hover:shadow-[0_8px_30px_rgba(217,35,45,0.12)] hover:border-[#D9232D]/30 transition-all duration-300 group flex flex-col">
                         <div className="flex items-center gap-4 mb-4">
                           <div className="w-12 h-12 rounded-xl bg-teal-50 text-[#007a87] flex items-center justify-center shrink-0 group-hover:bg-[#D9232D] group-hover:text-white transition-all duration-300 group-hover:shadow-[0_4px_12px_rgba(217,35,45,0.3)]">
-                            {getIconForTitle(facility.title)}
+                            {renderIcon(facility.iconName, facility.title)}
                           </div>
                           <h4 className="font-bold text-[#002b5c] leading-tight group-hover:text-[#D9232D] transition-colors">{facility.title}</h4>
                         </div>

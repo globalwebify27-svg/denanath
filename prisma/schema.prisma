@@ -10,14 +10,14 @@ datasource db {
 model Doctor {
   id             String   @id @default(cuid())
   name           String
-  image          String?
+  image          String?  @db.LongText
   qualifications String?
   specialty      String?
-  timings        String?
-  education      String?
-  training       String?
-  experience     String?
-  publications   String?
+  timings        String?  @db.LongText
+  education      String?  @db.LongText
+  training       String?  @db.LongText
+  experience     String?  @db.LongText
+  publications   String?  @db.LongText
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 }
@@ -45,6 +45,6 @@ model Service {
 
 model SiteSetting {
   key       String   @id
-  value     String
+  value     String   @db.LongText
   updatedAt DateTime @updatedAt
 }

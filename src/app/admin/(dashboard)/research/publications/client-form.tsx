@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Save, Plus, Trash2 } from "lucide-react";
+import {  Plus, Trash2 } from "lucide-react";
 
 export default function PublicationsClientForm({ initialData }: { initialData: any }) {
   const [recentPubs, setRecentPubs] = useState<any[]>(initialData?.recentPubs?.length ? initialData.recentPubs : [
@@ -35,7 +35,7 @@ export default function PublicationsClientForm({ initialData }: { initialData: a
       <div className="space-y-10">
         <div>
           <div className="flex justify-between items-center mb-4">
-            <h3 className="text-xl font-bold text-[#002b5c]">Recent Publications</h3>
+            <h3 className="text-xl text-[20px] font-black text-[#002b5c]">Recent Publications</h3>
             <button type="button" onClick={addPub} className="flex items-center gap-2 bg-teal-50 text-[#007a87] px-4 py-2 rounded-xl font-bold hover:bg-teal-100 transition-colors">
               <Plus size={16} /> Add Publication
             </button>
@@ -44,26 +44,26 @@ export default function PublicationsClientForm({ initialData }: { initialData: a
           <div className="space-y-4">
             {recentPubs.map((pub, idx) => (
               <div key={idx} className="bg-slate-50 p-6 rounded-2xl border border-slate-200 relative">
-                <button type="button" onClick={() => removePub(idx)} className="absolute top-4 right-4 text-red-400 hover:text-red-600">
-                  <Trash2 size={20} />
+                <button type="button" onClick={() => removePub(idx)} className="absolute top-4 right-4 text-[#D9232D] hover:text-[#D9232D]">
+                  <Trash2 size={20} color="#D9232D" />
                 </button>
                 <div className="space-y-4 pr-8">
                   <div>
-                    <label className="block text-sm font-bold text-slate-700 mb-1">Title</label>
-                    <input value={pub.title} onChange={(e) => updatePub(idx, 'title', e.target.value)} className="w-full p-3 border border-gray-200 rounded-xl focus:ring-[#007a87] focus:outline-none text-sm" />
+                    <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Title</label>
+                    <input value={pub.title} onChange={(e) => updatePub(idx, 'title', e.target.value)} className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium leading-relaxed text-sm" />
                   </div>
                   <div>
-                    <label className="block text-sm font-bold text-slate-700 mb-1">Authors & Date (HTML allowed)</label>
-                    <input value={pub.authors_date} onChange={(e) => updatePub(idx, 'authors_date', e.target.value)} className="w-full p-3 border border-gray-200 rounded-xl focus:ring-[#007a87] focus:outline-none text-sm" />
+                    <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Authors & Date (HTML allowed)</label>
+                    <input value={pub.authors_date} onChange={(e) => updatePub(idx, 'authors_date', e.target.value)} className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium leading-relaxed text-sm" />
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-bold text-slate-700 mb-1">Journal</label>
-                      <input value={pub.journal} onChange={(e) => updatePub(idx, 'journal', e.target.value)} className="w-full p-3 border border-gray-200 rounded-xl focus:ring-[#007a87] focus:outline-none text-sm" />
+                      <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Journal</label>
+                      <input value={pub.journal} onChange={(e) => updatePub(idx, 'journal', e.target.value)} className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium leading-relaxed text-sm" />
                     </div>
                     <div>
-                      <label className="block text-sm font-bold text-slate-700 mb-1">DOI (e.g., 10.4103/...)</label>
-                      <input value={pub.doi} onChange={(e) => updatePub(idx, 'doi', e.target.value)} className="w-full p-3 border border-gray-200 rounded-xl focus:ring-[#007a87] focus:outline-none text-sm" />
+                      <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">DOI (e.g., 10.4103/...)</label>
+                      <input value={pub.doi} onChange={(e) => updatePub(idx, 'doi', e.target.value)} className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium leading-relaxed text-sm" />
                     </div>
                   </div>
                 </div>
@@ -76,7 +76,7 @@ export default function PublicationsClientForm({ initialData }: { initialData: a
 
         <div>
           <div className="flex justify-between items-center mb-4">
-            <h3 className="text-xl font-bold text-[#002b5c]">Archive Years</h3>
+            <h3 className="text-xl text-[20px] font-black text-[#002b5c]">Archive Years</h3>
             <button type="button" onClick={addArchive} className="flex items-center gap-2 bg-blue-50 text-blue-700 px-4 py-2 rounded-xl font-bold hover:bg-blue-100 transition-colors">
               <Plus size={16} /> Add Archive
             </button>
@@ -86,15 +86,15 @@ export default function PublicationsClientForm({ initialData }: { initialData: a
             {archiveYears.map((item, idx) => (
               <div key={idx} className="bg-slate-50 p-4 rounded-xl border border-slate-200 flex gap-4 items-end">
                 <div className="flex-1">
-                  <label className="block text-sm font-bold text-slate-700 mb-1">Year</label>
+                  <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Year</label>
                   <input value={item.year} onChange={(e) => updateArchive(idx, 'year', e.target.value)} className="w-full p-2 border border-gray-200 rounded-lg text-sm" placeholder="2024 - 2025" />
                 </div>
                 <div className="flex-1">
-                  <label className="block text-sm font-bold text-slate-700 mb-1">Link</label>
+                  <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Link</label>
                   <input value={item.link} onChange={(e) => updateArchive(idx, 'link', e.target.value)} className="w-full p-2 border border-gray-200 rounded-lg text-sm" placeholder="#" />
                 </div>
-                <button type="button" onClick={() => removeArchive(idx)} className="p-2 text-red-400 hover:bg-red-50 rounded-lg mb-1">
-                  <Trash2 size={20} />
+                <button type="button" onClick={() => removeArchive(idx)} className="p-2 text-[#D9232D] hover:bg-red-50 rounded-lg mb-1">
+                  <Trash2 size={20} color="#D9232D" />
                 </button>
               </div>
             ))}
@@ -102,11 +102,7 @@ export default function PublicationsClientForm({ initialData }: { initialData: a
         </div>
       </div>
 
-      <div className="pt-6 mt-6 border-t border-gray-100 flex justify-end">
-        <button type="submit" className="flex items-center gap-2 bg-[#007a87] text-white px-8 py-3.5 rounded-xl hover:bg-[#005c66] font-bold shadow-md transition-all hover:-translate-y-0.5">
-          <Save size={18} /> Save Publications
-        </button>
-      </div>
+      
     </>
   );
 }

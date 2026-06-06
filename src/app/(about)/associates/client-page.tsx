@@ -84,9 +84,12 @@ export default function AssociatesClientPage({ associates }: { associates: any[]
             <div className="bg-white rounded-3xl shadow-[0_8px_40px_rgb(0,0,0,0.03)] border border-slate-100/60 p-6 sm:p-10 md:p-14">
               
               <div className="mb-10">
-                <h2 className="text-3xl font-extrabold text-[#002b5c] tracking-tight mb-4 flex items-center gap-3">
-                  <Building2 className="w-8 h-8 text-[#007a87]" />
-                  Our Associates
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-teal-50 border border-teal-100 text-[#007a87] text-xs font-bold tracking-wider uppercase mb-4">
+                  <Building2 className="w-4 h-4" />
+                  <span>Associates</span>
+                </div>
+                <h2 className="text-3xl md:text-4xl font-extrabold text-[#002b5c] mb-6 tracking-tight">
+                  Associates
                 </h2>
                 <p className="text-lg text-slate-500 font-light leading-relaxed max-w-3xl">
                   Collaborating with dedicated institutions and foundations to expand the reach of quality healthcare and charitable services across the region.

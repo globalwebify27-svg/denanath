@@ -11,7 +11,7 @@ export default function OnlinePaymentClientForm({ initialData }: { initialData: 
       <input type="hidden" name="pageJson" value={JSON.stringify(data)} />
 
       <div className="space-y-4">
-        <h2 className="text-xl font-bold text-[#002b5c] border-b pb-2">Page Content</h2>
+        <h2 className="text-xl text-[20px] font-black text-[#002b5c] border-b pb-2">Page Content</h2>
         
         <div>
           <label className="block text-sm font-bold text-gray-700 mb-1">Page Title</label>

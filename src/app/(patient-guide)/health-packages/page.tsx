@@ -110,7 +110,11 @@ export default async function HealthPackagesPage() {
           "Please wear minimum jewellery on the day of health check-up.",
           "Access your investigation reports electronically on the patient portal the same day or following day.",
           "Any additional tests suggested by the Doctor during the consultation that are not included in the package will incur extra charge."
-        ]
+        ],
+        womenNote: "Pregnant woman or those suspecting pregnancy should inform us and are advised to avoid X-rays or similar test. It is advisable to refrain from undergoing any health check up during menstruation.",
+        appointmentPhones: ["020 – 40151011", "020 – 40151015", "9158885173"],
+        appointmentTimings: "Mon to Sat, 10 a.m. to 6 p.m.",
+        appointmentEmail: "pr@dmhospital.org"
       };
     }
   } catch (e) {}

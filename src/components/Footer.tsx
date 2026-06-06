@@ -35,7 +35,8 @@ export default function Footer() {
               </div>
               <div className="flex flex-col">
                 <span className="text-white font-black tracking-wider text-lg leading-none">DEENANATH</span>
-                <span className="text-[9px] font-bold text-[#a7ffeb] tracking-widest uppercase mt-1 leading-none">Mangeshkar Hospital</span>
+                <span className="text-[9px] font-bold text-[#a7ffeb] tracking-[0.08em] uppercase mt-1 leading-none">Mangeshkar Hospital</span>
+                <span className="text-[9px] font-bold text-[#a7ffeb] tracking-[0.08em] uppercase mt-1 leading-none">& Research Center</span>
               </div>
             </Link>
             <p className="text-xs text-[#b2dfdb] leading-relaxed font-light">
@@ -47,31 +48,7 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Clinical Departments Column */}
-          <div className="space-y-6">
-            <h4 className="text-white font-bold text-xs uppercase tracking-[0.2em] relative">
-              Clinical Specialities
-              <span className="absolute -bottom-2 left-0 w-8 h-[2px] bg-[#a7ffeb] rounded-full" />
-            </h4>
-            <ul className="space-y-3.5 text-xs pt-2">
-              {[
-                "Cardiology & Cardiac Surgery",
-                "Neurology & Neurosurgery",
-                "Oncology & Cancer Care",
-                "Nephrology & Kidney Transplants",
-                "Orthopaedics & Spine Care"
-              ].map((specialty, idx) => (
-                <li key={idx} className="group flex items-center gap-2">
-                  <ArrowRight className="w-3.5 h-3.5 text-[#a7ffeb] opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all duration-300 shrink-0" />
-                  <Link href="/departments" className="text-[#b2dfdb] hover:text-white transition-colors leading-normal font-light">
-                    {specialty}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Quick Access Column */}
+          {/* Quick Channels Column 1 */}
           <div className="space-y-6">
             <h4 className="text-white font-bold text-xs uppercase tracking-[0.2em] relative">
               Quick Channels
@@ -79,11 +56,36 @@ export default function Footer() {
             </h4>
             <ul className="space-y-3.5 text-xs pt-2">
               {[
-                { label: "Find Medical Specialists", href: "/doctors" },
-                { label: "Schedule Consultations", href: "/appointments" },
-                { label: "Wellness Screening Profiles", href: "/health-packages" },
-                { label: "24/7 Support Facilities", href: "/facilities" },
-                { label: "Clinical Staff Portal Login", href: "/cms" }
+                { label: "About Us", href: "/about-hospital" },
+                { label: "Patient & Visitors", href: "/out-patient" },
+                { label: "Doctors & Departments", href: "/doctor-details" },
+                { label: "Research", href: "/research-about" },
+                { label: "Academics", href: "/academics" },
+                { label: "Online Facilities", href: "/email-login" }
+              ].map((item, idx) => (
+                <li key={idx} className="group flex items-center gap-2">
+                  <ArrowRight className="w-3.5 h-3.5 text-[#a7ffeb] opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all duration-300 shrink-0" />
+                  <Link href={item.href} className="text-[#b2dfdb] hover:text-white transition-colors leading-normal font-light">
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Quick Channels Column 2 */}
+          <div className="space-y-6">
+            <h4 className="text-white font-bold text-xs uppercase tracking-[0.2em] relative select-none opacity-0">
+              Quick Channels
+            </h4>
+            <ul className="space-y-3.5 text-xs pt-2">
+              {[
+                { label: "Book Appointment", href: "/book-appointment" },
+                { label: "Find a Doctor", href: "/doctor-details" },
+                { label: "Blogs", href: "/blogs" },
+                { label: "My Reports", href: "/patient-guide" },
+                { label: "Careers", href: "/careers" },
+                { label: "Contact Us", href: "/contact-us" }
               ].map((item, idx) => (
                 <li key={idx} className="group flex items-center gap-2">
                   <ArrowRight className="w-3.5 h-3.5 text-[#a7ffeb] opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all duration-300 shrink-0" />
@@ -141,7 +143,7 @@ export default function Footer() {
       <div className="w-full bg-[#00343a] py-6 px-4 sm:px-6 lg:px-8 border-t border-white/10 relative z-10">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4 md:gap-0 text-xs text-[#80cbc4] font-medium">
           <div className="text-center md:text-left">
-            © {new Date().getFullYear()} Deenanath Mangeshkar Hospital. All rights reserved.
+            © {new Date().getFullYear()} Deenanath Mangeshkar Hospital and Research Center. All rights reserved.
           </div>
           <div className="flex items-center justify-center gap-1.5">
             <span>Delivering Clinical Excellence with</span>

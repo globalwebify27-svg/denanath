@@ -1,6 +1,8 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import Link from "next/link";
+
 
 export default function HeroSection() {
   const text = "Advanced Healthcare With Human Care";
@@ -136,7 +138,8 @@ export default function HeroSection() {
             mx-auto
             "
           >
-            <button
+            <Link
+              href="/book-appointment"
               className="
               w-full sm:w-auto
               px-6 py-3.5
@@ -148,12 +151,14 @@ export default function HeroSection() {
               text-sm
               shadow-lg
               hover:-translate-y-1
+              text-center
               "
             >
               Book Appointment
-            </button>
+            </Link>
 
-            <button
+            <Link
+              href="/doctor-details"
               className="
               w-full sm:w-auto
               px-6 py-3.5
@@ -167,12 +172,14 @@ export default function HeroSection() {
               text-sm
               shadow-lg
               hover:-translate-y-1
+              text-center
               "
             >
               Find a Doctor
-            </button>
+            </Link>
 
-            <button
+            <a
+              href="tel:+912040151515"
               className="
               w-full sm:w-auto
               px-6 py-3.5
@@ -186,10 +193,11 @@ export default function HeroSection() {
               text-sm
               shadow-lg
               hover:-translate-y-1
+              text-center
               "
             >
               Emergency Support
-            </button>
+            </a>
           </div>
         </div>
       </div>

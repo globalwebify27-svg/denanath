@@ -1,16 +1,51 @@
 "use client";
 
 import { useState } from "react";
-import { Save, Plus, Trash2, Image as ImageIcon, Folder } from "lucide-react";
+import {  Plus, Trash2, Image as ImageIcon, Folder } from "lucide-react";
 
 export default function GalleryPhotosClientForm({ initialData }: { initialData: any }) {
+  const [filterCategory, setFilterCategory] = useState("ALL");
   const [data, setData] = useState({
-    categories: initialData?.categories ? initialData.categories.join("\n") : "ALL\nDMH\nDMH MAIN BUILDING\nSUPER SPECIALITY BUILDING",
+    categories: initialData?.categories ? initialData.categories.join("\n") : "DMH\nDMH MAIN BUILDING\nSUPER SPECIALITY BUILDING\nWORLD THYROID DAY 2024",
     photos: initialData?.photos ? initialData.photos.map((p: any) => ({
       ...p,
       id: p.id || Date.now() + Math.random()
     })) : [
-      { id: Date.now(), title: "Deenanath Mangeshkar", category: "DMH", url: "https://www.dmhospital.org/Images/PhotoGallery/medium/dmangeshkar1.jpg" }
+          { id: Date.now() + 1, title: "Deenanath Mangeshkar", category: "DMH", url: "https://www.dmhospital.org/Images/PhotoGallery/medium/dmangeshkar1.jpg" },
+          { id: Date.now() + 2, title: "Dr. APJ Abdul Kalam Visit", category: "DMH", url: "https://www.dmhospital.org/Images/PhotoGallery/medium/abdul-kalam.jpg" },
+          { id: Date.now() + 3, title: "Sachin Tendulkar Visit", category: "DMH", url: "https://www.dmhospital.org/Images/PhotoGallery/medium/tendulkar.jpg" },
+          { id: Date.now() + 4, title: "Obesity Clinic Inauguration", category: "DMH", url: "https://www.dmhospital.org/Images/PhotoGallery/medium/obesity-clinic-inauguration.jpg" },
+          { id: Date.now() + 5, title: "8th March Women's Day", category: "DMH", url: "https://www.dmhospital.org/Images/PhotoGallery/medium/8th%20march.JPG" },
+          { id: Date.now() + 6, title: "Advance Wound Care", category: "DMH", url: "https://www.dmhospital.org/Images/PhotoGallery/medium/adv%20wound%20care3.JPG" },
+          { id: Date.now() + 7, title: "Event Photo 1", category: "DMH", url: "https://www.dmhospital.org/Images/PhotoGallery/medium/DSC_0064.JPG" },
+          { id: Date.now() + 8, title: "Event Photo 2", category: "DMH", url: "https://www.dmhospital.org/Images/PhotoGallery/medium/feb.jpg" },
+          { id: Date.now() + 9, title: "Event Photo 3", category: "DMH", url: "https://www.dmhospital.org/Images/PhotoGallery/medium/oct.jpg" },
+          { id: Date.now() + 10, title: "Event Photo 4", category: "DMH", url: "https://www.dmhospital.org/Images/PhotoGallery/medium/4th%20april.jpg" },
+          { id: Date.now() + 11, title: "Event Photo 5", category: "DMH", url: "https://www.dmhospital.org/Images/PhotoGallery/medium/26th%20april.jpg" },
+          { id: Date.now() + 12, title: "Dr. Arundhati Khare", category: "DMH", url: "https://www.dmhospital.org/Images/PhotoGallery/medium/Dr.Arundhati-Khare.jpg" },
+          { id: Date.now() + 13, title: "WTD 2024 Event Photo 1", category: "WORLD THYROID DAY 2024", url: "https://www.dmhospital.org/Images/PhotoGallery/medium/WTD%20(4).jpg" },
+          { id: Date.now() + 14, title: "WTD 2024 Event Photo 2", category: "WORLD THYROID DAY 2024", url: "https://www.dmhospital.org/Images/PhotoGallery/medium/WTD%20(5).jpg" },
+          { id: Date.now() + 15, title: "WTD 2024 Event Photo 3", category: "WORLD THYROID DAY 2024", url: "https://www.dmhospital.org/Images/PhotoGallery/medium/WTD%20(6).jpg" },
+          { id: Date.now() + 16, title: "WTD 2024 Event Photo 4", category: "WORLD THYROID DAY 2024", url: "https://www.dmhospital.org/Images/PhotoGallery/medium/1_WTD%20(8).jpg" },
+          { id: Date.now() + 17, title: "WTD 2024 Event Photo 5", category: "WORLD THYROID DAY 2024", url: "https://www.dmhospital.org/Images/PhotoGallery/medium/WTD%2024%20(2).jpg" },
+          { id: Date.now() + 18, title: "WTD 2024 Event Photo 6", category: "WORLD THYROID DAY 2024", url: "https://www.dmhospital.org/Images/PhotoGallery/medium/WTD%2024%20(3).jpg" },
+          { id: Date.now() + 19, title: "WTD 2024 Event Photo 7", category: "WORLD THYROID DAY 2024", url: "https://www.dmhospital.org/Images/PhotoGallery/medium/WTD%2024.jpg" },
+          { id: Date.now() + 20, title: "WDD 2025 Event Photo 1", category: "WORLD DIABETES DAY 2025", url: "https://www.dmhospital.org/Images/PhotoGallery/medium/IMG-20251130-WA0007%20(1).jpg" },
+          { id: Date.now() + 21, title: "WDD 2025 Event Photo 2", category: "WORLD DIABETES DAY 2025", url: "https://www.dmhospital.org/Images/PhotoGallery/medium/IMG-20251130-WA0017.jpg" },
+          { id: Date.now() + 22, title: "WDD 2025 Event Photo 3", category: "WORLD DIABETES DAY 2025", url: "https://www.dmhospital.org/Images/PhotoGallery/medium/IMG-20251130-WA0045.jpg" },
+          { id: Date.now() + 23, title: "WDD 2025 Event Photo 4", category: "WORLD DIABETES DAY 2025", url: "https://www.dmhospital.org/Images/PhotoGallery/medium/IMG-20251130-WA0069%20(1).jpg" },
+          { id: Date.now() + 24, title: "WDD 2025 Event Photo 5", category: "WORLD DIABETES DAY 2025", url: "https://www.dmhospital.org/Images/PhotoGallery/medium/IMG-20251130-WA0091.jpg" },
+          { id: Date.now() + 25, title: "GS_ Private B (Deluxe Room)", category: "DMH MAIN BUILDING", url: "https://www.dmhospital.org/Images/PhotoGallery/medium/GS_Private%20B%20(Deluxe%20Room).JPG" },
+          { id: Date.now() + 26, title: "GS_Non AC Day Care", category: "DMH MAIN BUILDING", url: "https://www.dmhospital.org/Images/PhotoGallery/medium/GS_Non%20AC%20Day%20Care.jpg" },
+          { id: Date.now() + 27, title: "GS_Private C (Non AC)", category: "DMH MAIN BUILDING", url: "https://www.dmhospital.org/Images/PhotoGallery/medium/GS_Private%20C%20(Non%20AC).JPG" },
+          { id: Date.now() + 28, title: "GS_Private D (Small AC Room)", category: "DMH MAIN BUILDING", url: "https://www.dmhospital.org/Images/PhotoGallery/medium/GS_Private%20D%20(Small%20AC%20Room).JPG" },
+          { id: Date.now() + 29, title: "GS_Semi Private Room", category: "DMH MAIN BUILDING", url: "https://www.dmhospital.org/Images/PhotoGallery/medium/GS_Semi%20Private%20Room.JPG" },
+          { id: Date.now() + 30, title: "GS_SUPER_DELUX_A", category: "DMH MAIN BUILDING", url: "https://www.dmhospital.org/Images/PhotoGallery/medium/GS_SUPER_DELUX_A.JPG" },
+          { id: Date.now() + 31, title: "GS_SUPER_DELUX_B", category: "DMH MAIN BUILDING", url: "https://www.dmhospital.org/Images/PhotoGallery/medium/GS.SUPER_DELUX_B.JPG" },
+          { id: Date.now() + 32, title: "SS_Day Care", category: "SUPER SPECIALITY BUILDING", url: "https://www.dmhospital.org/Images/PhotoGallery/medium/SS%20Day%20Care.jpg" },
+          { id: Date.now() + 33, title: "SS_Private A", category: "SUPER SPECIALITY BUILDING", url: "https://www.dmhospital.org/Images/PhotoGallery/medium/SS%20Private%20A.JPG" },
+          { id: Date.now() + 34, title: "SS_Private B", category: "SUPER SPECIALITY BUILDING", url: "https://www.dmhospital.org/Images/PhotoGallery/medium/SS_Private%20B.JPG" },
+          { id: Date.now() + 35, title: "SS_Semi Private A (Only For Gynaec)", category: "SUPER SPECIALITY BUILDING", url: "https://www.dmhospital.org/Images/PhotoGallery/medium/SS_Semi%20Private%20A%20(Only%20For%20Gynaec).JPG" }
     ]
   });
 
@@ -21,7 +56,12 @@ export default function GalleryPhotosClientForm({ initialData }: { initialData: 
   const addPhoto = () => {
     setData({
       ...data,
-      photos: [{ id: Date.now(), title: "", category: "DMH", url: "" }, ...data.photos]
+      photos: [...data.photos, { 
+        id: Date.now(), 
+        title: "", 
+        category: filterCategory === "ALL" ? "DMH" : filterCategory, 
+        url: "" 
+      }]
     });
   };
 
@@ -60,11 +100,11 @@ export default function GalleryPhotosClientForm({ initialData }: { initialData: 
         
         {/* Categories */}
         <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200">
-          <h3 className="text-lg font-bold text-[#002b5c] mb-4 flex items-center gap-2">
+          <h3 className="text-lg text-[20px] font-black text-[#002b5c] mb-4 flex items-center gap-2">
             <Folder className="w-5 h-5 text-[#007a87]" />
             Photo Categories
           </h3>
-          <p className="text-sm text-slate-500 mb-4">Enter one category per line. "ALL" will be automatically handled but you can include it if you want it first.</p>
+          <p className="text-sm text-slate-500 mb-4">Enter one category per line. These categories will appear in the dropdown for each photo.</p>
           <textarea 
             value={data.categories} 
             onChange={(e) => handleChange('categories', e.target.value)}
@@ -76,28 +116,38 @@ export default function GalleryPhotosClientForm({ initialData }: { initialData: 
         {/* Photos List */}
         <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200">
           <div className="flex items-center justify-between mb-6">
-            <h3 className="text-lg font-bold text-[#002b5c] flex items-center gap-2">
+            <h3 className="text-lg text-[20px] font-black text-[#002b5c] flex items-center gap-2">
               <ImageIcon className="w-5 h-5 text-[#007a87]" />
               Hospital Photos
             </h3>
-            <button 
-              type="button"
-              onClick={addPhoto}
-              className="text-xs font-bold text-[#007a87] bg-teal-50 px-3 py-1.5 rounded-lg hover:bg-teal-100 flex items-center gap-1 transition-colors"
-            >
-              <Plus size={14} /> Add Photo
-            </button>
+            <div className="flex items-center gap-4">
+              <select 
+                value={filterCategory} 
+                onChange={(e) => setFilterCategory(e.target.value)}
+                className="px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-sm font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-[#007a87]/30 cursor-pointer"
+              >
+                <option value="ALL">All Categories</option>
+                {availableCategories.map((c: string, i: number) => <option key={i} value={c}>{c}</option>)}
+              </select>
+              <button 
+                type="button"
+                onClick={addPhoto}
+                className="text-xs font-bold text-white bg-[#003360] px-3 py-1.5 rounded-lg hover:bg-[#002b5c] flex items-center gap-1 transition-colors"
+              >
+                <Plus size={14} /> Add Photo
+              </button>
+            </div>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {data.photos.map((photo: any) => (
+            {(filterCategory === "ALL" ? data.photos : data.photos.filter((p: any) => p.category === filterCategory)).map((photo: any) => (
               <div key={photo.id} className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm relative group flex flex-col">
                 <button 
                   type="button" 
                   onClick={() => removePhoto(photo.id)}
                   className="absolute top-2 right-2 p-1.5 bg-white/80 hover:bg-rose-50 text-rose-500 rounded z-10 opacity-0 group-hover:opacity-100 transition-opacity"
                 >
-                  <Trash2 size={16} />
+                  <Trash2 size={16} color="#D9232D" />
                 </button>
                 
                 <div className="aspect-[4/3] bg-slate-100 rounded-lg mb-4 flex items-center justify-center overflow-hidden border border-slate-100">
@@ -110,19 +160,36 @@ export default function GalleryPhotosClientForm({ initialData }: { initialData: 
 
                 <div className="space-y-3 flex-1">
                   <div>
-                    <label className="block text-[10px] font-[800] text-gray-700 uppercase tracking-widest mb-1">Image URL</label>
-                    <input type="text" value={photo.url} onChange={(e) => updatePhoto(photo.id, 'url', e.target.value)} className="w-full p-2 border border-slate-200 rounded-lg text-xs" placeholder="https://..." />
+                    <label className="block text-[10px] font-[800] text-gray-700 uppercase tracking-widest mb-1">Upload Photo</label>
+                    <input 
+                      type="file" 
+                      accept="image/*"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (file) {
+                          const reader = new FileReader();
+                          reader.onloadend = () => {
+                            updatePhoto(photo.id, 'url', reader.result as string);
+                          };
+                          reader.readAsDataURL(file);
+                        }
+                      }}
+                      className="w-full p-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-[#007a87] text-[10px] font-medium file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-[10px] file:font-bold file:bg-[#003360] file:text-white hover:file:bg-[#002b5c] cursor-pointer" 
+                    />
+                    {photo.url && photo.url.startsWith('data:image') && (
+                      <p className="mt-1 text-[9px] text-teal-600 font-bold">✓ Custom image selected</p>
+                    )}
                   </div>
                   <div>
                     <label className="block text-[10px] font-[800] text-gray-700 uppercase tracking-widest mb-1">Title</label>
-                    <input type="text" value={photo.title} onChange={(e) => updatePhoto(photo.id, 'title', e.target.value)} className="w-full p-2 border border-slate-200 rounded-lg text-sm font-bold text-[#002b5c]" placeholder="Photo Title" />
+                    <input type="text" value={photo.title} onChange={(e) => updatePhoto(photo.id, 'title', e.target.value)} className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium text-[20px] font-black text-[#002b5c]" placeholder="Photo Title" />
                   </div>
                   <div>
                     <label className="block text-[10px] font-[800] text-gray-700 uppercase tracking-widest mb-1">Category</label>
                     <select 
                       value={photo.category} 
                       onChange={(e) => updatePhoto(photo.id, 'category', e.target.value)}
-                      className="w-full p-2 border border-slate-200 rounded-lg text-sm bg-white"
+                      className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium bg-white"
                     >
                       {availableCategories.map((c: string, i: number) => <option key={i} value={c}>{c}</option>)}
                       {!availableCategories.includes(photo.category) && <option value={photo.category}>{photo.category}</option>}
@@ -136,11 +203,7 @@ export default function GalleryPhotosClientForm({ initialData }: { initialData: 
 
       </div>
 
-      <div className="pt-6 mt-6 border-t border-gray-100 flex justify-end">
-        <button type="submit" className="flex items-center gap-2 bg-[#007a87] text-white px-8 py-3.5 rounded-xl hover:bg-[#005c66] font-bold shadow-md transition-all hover:-translate-y-0.5">
-          <Save size={18} /> Save Photo Gallery
-        </button>
-      </div>
+      
     </>
   );
 }

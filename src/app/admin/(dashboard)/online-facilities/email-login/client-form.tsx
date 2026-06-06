@@ -33,7 +33,7 @@ export default function EmailLoginClientForm({ initialData }: { initialData: any
 
       {/* Basic Settings */}
       <div className="space-y-4">
-        <h2 className="text-xl font-bold text-[#002b5c] border-b pb-2">Basic Settings</h2>
+        <h2 className="text-xl text-[20px] font-black text-[#002b5c] border-b pb-2">Basic Settings</h2>
         
         <div>
           <label className="block text-sm font-bold text-gray-700 mb-1">Page Title</label>
@@ -49,7 +49,7 @@ export default function EmailLoginClientForm({ initialData }: { initialData: any
       {/* Cards */}
       <div className="space-y-4 pt-4 border-t border-gray-100">
         <div className="flex items-center justify-between">
-          <h2 className="text-xl font-bold text-[#002b5c]">Login Portals</h2>
+          <h2 className="text-xl text-[20px] font-black text-[#002b5c]">Login Portals</h2>
           <button 
             type="button" 
             onClick={addCard}
@@ -66,9 +66,9 @@ export default function EmailLoginClientForm({ initialData }: { initialData: any
               <button 
                 type="button" 
                 onClick={() => removeCard(index)}
-                className="absolute top-4 right-4 text-red-400 hover:text-red-600 p-2 hover:bg-red-50 rounded-lg transition-colors"
+                className="absolute top-4 right-4 text-[#D9232D] hover:text-[#D9232D] p-2 hover:bg-red-50 rounded-lg transition-colors"
               >
-                <Trash2 size={18} />
+                <Trash2 size={18} color="#D9232D" />
               </button>
               
               <div className="flex items-start gap-4">

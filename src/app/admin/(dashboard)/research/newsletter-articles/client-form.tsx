@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Save, Plus, Trash2 } from "lucide-react";
+import {  Plus, Trash2 } from "lucide-react";
 
 export default function NewsletterClientForm({ initialData }: { initialData: any }) {
   const [newsletters, setNewsletters] = useState<any[]>(initialData?.newsletters?.length ? initialData.newsletters : [
@@ -28,7 +28,7 @@ export default function NewsletterClientForm({ initialData }: { initialData: any
       
       <div className="space-y-6">
         <div className="flex justify-between items-center mb-4">
-          <h3 className="text-xl font-bold text-[#002b5c]">Newsletters List</h3>
+          <h3 className="text-xl text-[20px] font-black text-[#002b5c]">Newsletters List</h3>
           <button type="button" onClick={addNewsletter} className="flex items-center gap-2 bg-teal-50 text-[#007a87] px-4 py-2 rounded-xl font-bold hover:bg-teal-100 transition-colors">
             <Plus size={16} /> Add Newsletter
           </button>
@@ -38,26 +38,22 @@ export default function NewsletterClientForm({ initialData }: { initialData: any
           {newsletters.map((item, idx) => (
             <div key={idx} className="bg-slate-50 p-6 rounded-2xl border border-slate-200 relative group flex gap-4 items-end">
               <div className="flex-1">
-                <label className="block text-sm font-bold text-slate-700 mb-1">Title</label>
-                <input value={item.title} onChange={(e) => updateNewsletter(idx, 'title', e.target.value)} className="w-full p-3 border border-gray-200 rounded-xl focus:ring-[#007a87] focus:outline-none text-sm" placeholder="e.g. May - August 2017" />
+                <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Title</label>
+                <input value={item.title} onChange={(e) => updateNewsletter(idx, 'title', e.target.value)} className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium leading-relaxed text-sm" placeholder="e.g. May - August 2017" />
               </div>
               <div className="flex-1">
-                <label className="block text-sm font-bold text-slate-700 mb-1">PDF Link</label>
-                <input value={item.link} onChange={(e) => updateNewsletter(idx, 'link', e.target.value)} className="w-full p-3 border border-gray-200 rounded-xl focus:ring-[#007a87] focus:outline-none text-sm" placeholder="https://..." />
+                <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">PDF Link</label>
+                <input value={item.link} onChange={(e) => updateNewsletter(idx, 'link', e.target.value)} className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium leading-relaxed text-sm" placeholder="https://..." />
               </div>
-              <button type="button" onClick={() => removeNewsletter(idx)} className="p-3 text-red-400 hover:bg-red-50 hover:text-red-600 rounded-xl transition-colors">
-                <Trash2 size={24} />
+              <button type="button" onClick={() => removeNewsletter(idx)} className="p-3 text-[#D9232D] hover:bg-red-50 hover:text-[#D9232D] rounded-xl transition-colors">
+                <Trash2 size={24} color="#D9232D" />
               </button>
             </div>
           ))}
         </div>
       </div>
 
-      <div className="pt-6 mt-6 border-t border-gray-100 flex justify-end">
-        <button type="submit" className="flex items-center gap-2 bg-[#007a87] text-white px-8 py-3.5 rounded-xl hover:bg-[#005c66] font-bold shadow-md transition-all hover:-translate-y-0.5">
-          <Save size={18} /> Save Newsletters
-        </button>
-      </div>
+      
     </>
   );
 }

@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef } from "react";
 import Link from "next/link";
-import { ChevronRight, Target, Eye, Heart, ShieldCheck, Activity, Award, CheckCircle2 } from "lucide-react";
+import { ChevronRight, Target, Eye, Heart, ShieldCheck, Activity, Award, CheckCircle2, Building2 } from "lucide-react";
 
 export default function AboutHospitalClient({ data }: { data: any }) {
   const aboutOptions = [
@@ -80,9 +80,19 @@ export default function AboutHospitalClient({ data }: { data: any }) {
           </div>
 
           {/* Right Main Content */}
-          <div className="w-full flex-1">
+          <div className="w-full flex-1 min-w-0">
             <div className="bg-white rounded-3xl shadow-[0_8px_40px_rgb(0,0,0,0.03)] border border-slate-100/60 p-6 sm:p-10 md:p-14">
               
+              <div className="mb-10">
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-teal-50 border border-teal-100 text-[#007a87] text-xs font-bold tracking-wider uppercase mb-4">
+                  <Building2 className="w-4 h-4" />
+                  <span>About Hospital</span>
+                </div>
+                <h2 className="text-3xl md:text-4xl font-extrabold text-[#002b5c] mb-6 tracking-tight">
+                  About Hospital
+                </h2>
+              </div>
+
               {/* Introduction */}
               <div className="prose prose-slate max-w-none">
                 <div className="text-lg md:text-xl text-slate-700 leading-relaxed font-light mb-6" dangerouslySetInnerHTML={{ __html: data?.introduction || '' }} />

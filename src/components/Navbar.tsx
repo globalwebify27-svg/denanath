@@ -165,8 +165,11 @@ export default function Navbar() {
                   <span className="text-[16px] sm:text-[18px] lg:text-[18px] xl:text-[20px] 2xl:text-[22px] font-black tracking-tight leading-none text-[#002b5c] pb-[3px] transition-all">
                     DEENANATH
                   </span>
-                  <span className="text-[7px] sm:text-[8px] lg:text-[8px] xl:text-[9px] 2xl:text-[10px] font-extrabold tracking-[0.2em] leading-none uppercase mt-0.5 text-[#007a87] transition-all">
+                  <span className="text-[7px] sm:text-[8px] lg:text-[8px] xl:text-[9px] 2xl:text-[10px] font-extrabold tracking-[0.08em] leading-none uppercase mt-0.5 text-[#007a87] transition-all">
                     Mangeshkar Hospital
+                  </span>
+                  <span className="text-[7px] sm:text-[8px] lg:text-[8px] xl:text-[9px] 2xl:text-[10px] font-extrabold tracking-[0.08em] leading-none uppercase mt-0.5 text-[#007a87] transition-all">
+                    & Research Center
                   </span>
                 </div>
               </Link>

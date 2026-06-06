@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef } from "react";
 import Link from "next/link";
-import { ChevronRight, Phone, Heart, ArrowRight } from "lucide-react";
+import { ChevronRight, Phone, Heart, ArrowRight, Building2 } from "lucide-react";
 
 export default function SupportDonationsClientPage({ donationsData }: { donationsData: any }) {
   const aboutOptions = [
@@ -94,6 +94,14 @@ export default function SupportDonationsClientPage({ donationsData }: { donation
               
               {/* Introduction & Contact */}
               <div className="mb-10">
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-teal-50 border border-teal-100 text-[#007a87] text-xs font-bold tracking-wider uppercase mb-4">
+                  <Building2 className="w-4 h-4" />
+                  <span>Support Hospital / Donations</span>
+                </div>
+                <h2 className="text-3xl md:text-4xl font-extrabold text-[#002b5c] mb-6 tracking-tight">
+                  Support Hospital / Donations
+                </h2>
+                
                 <div className="flex items-center gap-3 text-[#007a87] bg-teal-50 border border-teal-100 p-4 rounded-xl mb-8">
                   <Phone className="w-6 h-6 shrink-0" />
                   <p className="text-sm md:text-base font-semibold">

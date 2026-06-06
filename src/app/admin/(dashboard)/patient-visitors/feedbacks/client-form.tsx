@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Save, Plus, Trash2, MessageSquareQuote } from "lucide-react";
+import {  Plus, Trash2, MessageSquareQuote } from "lucide-react";
 
 export default function FeedbacksClientForm({ initialData }: { initialData: any }) {
   const [data, setData] = useState({
@@ -9,14 +9,48 @@ export default function FeedbacksClientForm({ initialData }: { initialData: any 
       ...s,
       id: s.id || Date.now() + Math.random()
     })) : [
-      { id: Date.now(), title: "Great support received", date: "15-Feb-2023", author: "Mrs Himali", content: "Great support from staff." }
+      { 
+        id: Date.now() + 1, 
+        title: "Generous help from Charity department made treatment possible", 
+        date: "24-Feb-2023", 
+        author: "Mrs Rajashri Anil Gavali", 
+        content: "My son was diagnosed with cancer and doctor told to operate immediately. Surgery was successful but after surgery doctor recommended 6 cycles of chemotherapy which was non affordable. I approached charity department for monetary help. They verified the documents and after completing the formalities and with financial support I could avail the treatment. I am grateful to Charity department and doctors who helped me in all ways to recover my son from Cancer." 
+      },
+      { 
+        id: Date.now() + 2, 
+        title: "Great support received from staff and doctors during transplant surgery", 
+        date: "15-Feb-2023", 
+        author: "Mrs Himali Pimpalkhare", 
+        content: "My aunty was admitted for Liver Transplant surgery which was unfortunately not successful but I wasn't to give special thanks to Doctors for their generous support. I want to appreciate the response received from Blood bank, where many known and unknown donors came forward to help when blood transfusion was required. Last but not the least the transplant co-ordinator and Billing staff also co-operated a lot for smooth transactions during admission and after discharge." 
+      },
+      { 
+        id: Date.now() + 3, 
+        title: "Where there is hope there is faith", 
+        date: "16-Jan-2023", 
+        author: "Mr Arvind Chintaman Daware", 
+        content: "I was suffering from gall bladder stones and in Ahmednagar consulted various doctors and did numerous tests but due to age and co-morbidities doctors denied to do surgery. Due to abdominal pain I was frustrated, one of doctors recommended me to go to Deenanath Mangeshkar Hospital. After consultation surgery was done successfully. I am grateful to all doctors and staff who were involved in this surgery. All nurses in ward, doctors and reception staff are very polite and guide in proper manner whenever required." 
+      },
+      { 
+        id: Date.now() + 4, 
+        title: "Prompt action by doctors and excellent service by Mediclaim department", 
+        date: "21-Dec-2022", 
+        author: "Mr Shankar Gundal", 
+        content: "My wife got admitted in ICU for Hemodialysis, I appreciate the quick decision taken by doctors of admission and good treatment given. During discharge immediate help was provided by Mediclaim department for approval and excellent service during the complete process. I am thankful for the chance you gave me to appreciate you all." 
+      },
+      { 
+        id: Date.now() + 5, 
+        title: "Good doctors and financial help from charity made treatment possible", 
+        date: "27-Sep-2022", 
+        author: "Mr Dilip Ramchandra Kale", 
+        content: "My wife residing in Solapur is taking treatment for cancer in this hospital since last 7 days. Our experience through out the admission was great. Doctors guide us whenever we as queries and staff is also polite. When we needed financial help we were told to approach charity department as we did not have enough money to avail the further treatment. After approaching the charity department with proper documentation they helped us financially for the treatment. I am thankful to all the staff of Deenanath Mangeshkar Hospital who were involved and special thanks to the doctors." 
+      }
     ]
   });
 
   const addStory = () => {
     setData({
       ...data,
-      stories: [{ id: Date.now(), title: "", date: "", author: "", content: "" }, ...data.stories]
+      stories: [...data.stories, { id: Date.now(), title: "", date: "", author: "", content: "" }]
     });
   };
 
@@ -54,14 +88,14 @@ export default function FeedbacksClientForm({ initialData }: { initialData: any 
         {/* Stories List */}
         <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200">
           <div className="flex items-center justify-between mb-6">
-            <h3 className="text-lg font-bold text-[#002b5c] flex items-center gap-2">
+            <h3 className="text-lg text-[20px] font-black text-[#002b5c] flex items-center gap-2">
               <MessageSquareQuote className="w-5 h-5 text-[#007a87]" />
               Patient Stories & Feedbacks
             </h3>
             <button 
               type="button"
               onClick={addStory}
-              className="text-xs font-bold text-[#007a87] bg-teal-50 px-3 py-1.5 rounded-lg hover:bg-teal-100 flex items-center gap-1 transition-colors"
+              className="text-xs font-bold text-white bg-[#003360] px-3 py-1.5 rounded-lg hover:bg-[#002b5c] flex items-center gap-1 transition-colors"
             >
               <Plus size={14} /> Add Story
             </button>
@@ -75,22 +109,22 @@ export default function FeedbacksClientForm({ initialData }: { initialData: any 
                   onClick={() => removeStory(story.id)}
                   className="absolute top-4 right-4 p-1.5 text-rose-500 hover:bg-rose-50 rounded"
                 >
-                  <Trash2 size={16} />
+                  <Trash2 size={16} color="#D9232D" />
                 </button>
                 
                 <div className="space-y-4 pr-8">
                   <div>
                     <label className="block text-[10px] font-[800] text-gray-700 uppercase tracking-widest mb-1">Title / Headline</label>
-                    <input type="text" value={story.title} onChange={(e) => updateStory(story.id, 'title', e.target.value)} className="w-full p-2 border border-slate-200 rounded-lg text-sm font-bold text-[#002b5c]" placeholder="e.g. Great support received from staff" />
+                    <input type="text" value={story.title} onChange={(e) => updateStory(story.id, 'title', e.target.value)} className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium text-[20px] font-black text-[#002b5c]" placeholder="e.g. Great support received from staff" />
                   </div>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <label className="block text-[10px] font-[800] text-gray-700 uppercase tracking-widest mb-1">Author / Patient Name</label>
-                      <input type="text" value={story.author} onChange={(e) => updateStory(story.id, 'author', e.target.value)} className="w-full p-2 border border-slate-200 rounded-lg text-sm" placeholder="e.g. Mrs Himali Pimpalkhare" />
+                      <input type="text" value={story.author} onChange={(e) => updateStory(story.id, 'author', e.target.value)} className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium" placeholder="e.g. Mrs Himali Pimpalkhare" />
                     </div>
                     <div>
                       <label className="block text-[10px] font-[800] text-gray-700 uppercase tracking-widest mb-1">Date</label>
-                      <input type="text" value={story.date} onChange={(e) => updateStory(story.id, 'date', e.target.value)} className="w-full p-2 border border-slate-200 rounded-lg text-sm" placeholder="e.g. 15-Feb-2023" />
+                      <input type="text" value={story.date} onChange={(e) => updateStory(story.id, 'date', e.target.value)} className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium" placeholder="e.g. 15-Feb-2023" />
                     </div>
                   </div>
                   <div>
@@ -111,11 +145,7 @@ export default function FeedbacksClientForm({ initialData }: { initialData: any 
 
       </div>
 
-      <div className="pt-6 mt-6 border-t border-gray-100 flex justify-end">
-        <button type="submit" className="flex items-center gap-2 bg-[#007a87] text-white px-8 py-3.5 rounded-xl hover:bg-[#005c66] font-bold shadow-md transition-all hover:-translate-y-0.5">
-          <Save size={18} /> Save Feedbacks
-        </button>
-      </div>
+      
     </>
   );
 }

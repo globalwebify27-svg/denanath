@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Save, Plus, Trash2, Calendar, FileText } from "lucide-react";
+import {  Plus, Trash2, Calendar, FileText } from "lucide-react";
 
 export default function ForeignContributionClientForm({ initialData }: { initialData: any[] }) {
   const [quarters, setQuarters] = useState<any[]>(initialData.length > 0 ? initialData.map(q => ({
@@ -86,17 +86,8 @@ export default function ForeignContributionClientForm({ initialData }: { initial
     <>
       <input type="hidden" name="fcraJson" value={getJsonPayload()} />
       
-      <div className="space-y-8">
-        <button 
-          type="button"
-          onClick={addQuarter}
-          className="w-full py-4 border-2 border-dashed border-slate-300 rounded-2xl text-slate-500 font-bold hover:bg-slate-50 hover:text-[#007a87] hover:border-[#007a87] transition-all flex items-center justify-center gap-2 mb-8"
-        >
-          <Plus size={20} /> Add New Quarter
-        </button>
-
-        {quarters.map((q, qIndex) => (
-          <div key={q.id} className="p-6 bg-slate-50 border border-slate-200 rounded-2xl relative shadow-sm">
+      <div className="space-y-8">        {quarters.map((q, qIndex) => (
+          <div key={q.id} className="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden group hover:shadow-md transition-shadow duration-300 relative p-6 md:p-8 shadow-sm">
             <div className="absolute top-4 right-4 flex items-center gap-2">
               <button 
                 type="button" 
@@ -104,36 +95,36 @@ export default function ForeignContributionClientForm({ initialData }: { initial
                 className="p-2 text-rose-500 hover:bg-rose-100 rounded-lg transition-colors"
                 title="Remove Quarter"
               >
-                <Trash2 size={18} />
+                <Trash2 size={18} color="#D9232D" />
               </button>
             </div>
             
-            <div className="flex items-center gap-3 mb-6 border-b border-slate-200 pb-4">
-              <div className="w-8 h-8 rounded-full bg-[#007a87] text-white flex items-center justify-center font-bold text-sm">
+            <div className="bg-slate-50/50 border-b border-slate-100 p-5 md:p-6 flex items-center gap-4 -mx-6 md:-mx-8 -mt-6 md:-mt-8 mb-6">
+              <div className="w-10 h-10 rounded-2xl bg-[#007a87]/10 text-[#007a87] flex items-center justify-center font-black text-lg">
                 <Calendar size={16} />
               </div>
-              <h3 className="font-bold text-[#002b5c]">Quarter Report {qIndex + 1}</h3>
+              <h3 className="text-[20px] font-black text-[#002b5c]">Quarter Report {qIndex + 1}</h3>
             </div>
 
             <div className="grid grid-cols-1 gap-6 mb-8">
               <div>
-                <label className="block text-[12px] font-[800] text-gray-700 uppercase tracking-widest mb-2">Quarter Title / Period</label>
+                <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Quarter Title / Period</label>
                 <input 
                   type="text" 
                   value={q.quarter} 
                   onChange={(e) => updateQuarter(q.id, 'quarter', e.target.value)}
-                  className="w-full p-3 border border-gray-200 rounded-xl focus:ring-[#007a87] focus:outline-none font-medium"
+                  className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium leading-relaxed font-medium"
                   placeholder="e.g. Quarter: 4 - FY 2025-26 (Period: 01/01/2026 to 31/03/2026)"
                 />
               </div>
 
               <div>
-                <label className="block text-[12px] font-[800] text-gray-700 uppercase tracking-widest mb-2">Empty Message (if no donations)</label>
+                <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Empty Message (if no donations)</label>
                 <input 
                   type="text" 
                   value={q.emptyMessage} 
                   onChange={(e) => updateQuarter(q.id, 'emptyMessage', e.target.value)}
-                  className="w-full p-3 border border-gray-200 rounded-xl focus:ring-[#007a87] focus:outline-none"
+                  className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium leading-relaxed"
                   placeholder="e.g. Donations not received during this Quarter"
                 />
               </div>
@@ -148,7 +139,7 @@ export default function ForeignContributionClientForm({ initialData }: { initial
                 <button 
                   type="button"
                   onClick={() => addDonation(q.id)}
-                  className="text-xs font-bold text-[#007a87] bg-teal-50 px-3 py-1.5 rounded-lg hover:bg-teal-100 flex items-center gap-1 transition-colors"
+                  className="text-xs font-bold text-white bg-[#D9232D] px-3 py-1.5 rounded-lg hover:bg-red-700 flex items-center gap-1 transition-colors"
                 >
                   <Plus size={14} /> Add Donation
                 </button>
@@ -183,7 +174,7 @@ export default function ForeignContributionClientForm({ initialData }: { initial
                       <div className="md:col-span-2">
                         <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Date</label>
                         <input 
-                          type="text" 
+                          type="date" 
                           value={d.date} 
                           onChange={(e) => updateDonation(q.id, d.id, 'date', e.target.value)}
                           className="w-full p-2 text-sm border border-gray-200 rounded-lg focus:ring-[#007a87] focus:outline-none"
@@ -207,7 +198,7 @@ export default function ForeignContributionClientForm({ initialData }: { initial
                           onClick={() => removeDonation(q.id, d.id)}
                           className="p-1.5 text-rose-400 hover:text-rose-600 hover:bg-rose-50 rounded-md transition-colors"
                         >
-                          <Trash2 size={16} />
+                          <Trash2 size={16} color="#D9232D" />
                         </button>
                       </div>
                     </div>
@@ -217,13 +208,17 @@ export default function ForeignContributionClientForm({ initialData }: { initial
             </div>
           </div>
         ))}
-      </div>
 
-      <div className="pt-6 mt-6 border-t border-gray-100 flex justify-end">
-        <button type="submit" className="flex items-center gap-2 bg-[#007a87] text-white px-8 py-3.5 rounded-xl hover:bg-[#005c66] font-bold shadow-md transition-all hover:-translate-y-0.5">
-          <Save size={18} /> Save FCRA Records
+        <button 
+          type="button"
+          onClick={addQuarter}
+          className="w-full py-5 border-2 border-dashed border-slate-300 rounded-3xl text-slate-500 font-extrabold hover:bg-slate-50 hover:text-[#007a87] hover:border-[#007a87] transition-all flex items-center justify-center gap-2 text-[15px] mt-8"
+        >
+          <Plus size={20} /> Add New Quarter
         </button>
       </div>
+
+      
     </>
   );
 }

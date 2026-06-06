@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Save, Plus, Trash2 } from "lucide-react";
+import {  Plus, Trash2 } from "lucide-react";
 
 export default function AssociatesClientForm({ initialData }: { initialData: any[] }) {
   const [items, setItems] = useState<any[]>(initialData.length > 0 ? initialData : [{
@@ -36,7 +36,7 @@ export default function AssociatesClientForm({ initialData }: { initialData: any
       
       <div className="space-y-6">
         {items.map((item, index) => (
-          <div key={item.id} className="p-6 bg-slate-50 border border-slate-200 rounded-2xl relative">
+          <div key={item.id} className="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden group hover:shadow-md transition-shadow duration-300 relative p-6 md:p-8">
             <div className="absolute top-4 right-4 flex items-center gap-2">
               <button 
                 type="button" 
@@ -44,63 +44,84 @@ export default function AssociatesClientForm({ initialData }: { initialData: any
                 className="p-2 text-rose-500 hover:bg-rose-100 rounded-lg transition-colors"
                 title="Remove Item"
               >
-                <Trash2 size={18} />
+                <Trash2 size={18} color="#D9232D" />
               </button>
             </div>
             
-            <div className="flex items-center gap-3 mb-6 border-b border-slate-200 pb-4">
-              <div className="w-8 h-8 rounded-full bg-[#007a87] text-white flex items-center justify-center font-bold text-sm">
+            <div className="bg-slate-50/50 border-b border-slate-100 p-5 md:p-6 flex items-center gap-4 -mx-6 md:-mx-8 -mt-6 md:-mt-8 mb-6">
+              <div className="w-10 h-10 rounded-2xl bg-[#007a87]/10 text-[#007a87] flex items-center justify-center font-black text-lg">
                 {index + 1}
               </div>
-              <h3 className="font-bold text-[#002b5c]">Associate Organization</h3>
+              <h3 className="text-[20px] font-black text-[#002b5c]">Associate Organization</h3>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="md:col-span-2">
-                <label className="block text-[12px] font-[800] text-gray-700 uppercase tracking-widest mb-2">Name</label>
+                <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Name</label>
                 <input 
                   type="text" 
                   value={item.name} 
                   onChange={(e) => updateItem(item.id, 'name', e.target.value)}
-                  className="w-full p-3 border border-gray-200 rounded-xl focus:ring-[#007a87] focus:outline-none"
+                  className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium leading-relaxed"
                   placeholder="e.g. Kamla Mehta Eye Hospital"
                 />
               </div>
 
               <div className="md:col-span-2">
-                <label className="block text-[12px] font-[800] text-gray-700 uppercase tracking-widest mb-2">Description</label>
+                <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Description</label>
                 <textarea 
                   value={item.description} 
                   onChange={(e) => updateItem(item.id, 'description', e.target.value)}
                   rows={3}
-                  className="w-full p-3 border border-gray-200 rounded-xl focus:ring-[#007a87] focus:outline-none"
+                  className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium leading-relaxed"
                   placeholder="Enter associate description..."
                 />
               </div>
 
               <div className="md:col-span-2">
-                <label className="block text-[12px] font-[800] text-gray-700 uppercase tracking-widest mb-2">Image URL</label>
-                <input 
-                  type="text" 
-                  value={item.image} 
-                  onChange={(e) => updateItem(item.id, 'image', e.target.value)}
-                  className="w-full p-3 border border-gray-200 rounded-xl focus:ring-[#007a87] focus:outline-none"
-                  placeholder="e.g. https://images.unsplash.com/photo-..."
-                />
-                {item.image && (
-                  <div className="mt-4 w-48 h-32 rounded-lg overflow-hidden border border-gray-200">
-                    <img src={item.image} alt="Preview" className="w-full h-full object-cover" />
+                <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Image Upload / URL</label>
+                <div className="flex items-center gap-4">
+                  {item.image && (
+                    <div className="shrink-0">
+                      <img src={item.image} alt="Preview" className="w-16 h-16 object-cover rounded-lg border border-gray-200" />
+                    </div>
+                  )}
+                  <div className="flex-1">
+                    <input 
+                      type="file" 
+                      accept="image/*"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (file) {
+                          const reader = new FileReader();
+                          reader.onloadend = () => {
+                            updateItem(item.id, 'image', reader.result as string);
+                          };
+                          reader.readAsDataURL(file);
+                        }
+                      }}
+                      className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#007a87] text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[#007a87]/10 file:text-[#007a87] hover:file:bg-[#007a87]/20 cursor-pointer"
+                    />
                   </div>
-                )}
+                  {item.image && (
+                    <button
+                      type="button"
+                      onClick={() => updateItem(item.id, 'image', "")}
+                      className="text-white hover:text-white text-sm font-bold px-4 py-2 bg-[#003360] rounded-lg hover:bg-[#002b5c] transition-colors"
+                    >
+                      Remove
+                    </button>
+                  )}
+                </div>
               </div>
 
               <div className="md:col-span-2">
-                <label className="block text-[12px] font-[800] text-gray-700 uppercase tracking-widest mb-2">More Info Link</label>
+                <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">More Info Link</label>
                 <input 
                   type="text" 
                   value={item.link} 
                   onChange={(e) => updateItem(item.id, 'link', e.target.value)}
-                  className="w-full p-3 border border-gray-200 rounded-xl focus:ring-[#007a87] focus:outline-none"
+                  className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium leading-relaxed"
                   placeholder="e.g. #"
                 />
               </div>
@@ -111,17 +132,13 @@ export default function AssociatesClientForm({ initialData }: { initialData: any
         <button 
           type="button"
           onClick={addItem}
-          className="w-full py-4 border-2 border-dashed border-slate-300 rounded-2xl text-slate-500 font-bold hover:bg-slate-50 hover:text-[#007a87] hover:border-[#007a87] transition-all flex items-center justify-center gap-2"
+          className="w-full py-5 border-2 border-dashed border-slate-300 rounded-3xl text-slate-500 font-extrabold hover:bg-slate-50 hover:text-[#007a87] hover:border-[#007a87] transition-all flex items-center justify-center gap-2 text-[15px]"
         >
           <Plus size={20} /> Add New Associate
         </button>
       </div>
 
-      <div className="pt-6 mt-6 border-t border-gray-100 flex justify-end">
-        <button type="submit" className="flex items-center gap-2 bg-[#007a87] text-white px-8 py-3.5 rounded-xl hover:bg-[#005c66] font-bold shadow-md transition-all hover:-translate-y-0.5">
-          <Save size={18} /> Save Associates
-        </button>
-      </div>
+      
     </>
   );
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Save, Plus, Trash2, HeartHandshake } from "lucide-react";
+import {  Plus, Trash2, HeartHandshake } from "lucide-react";
 
 export default function CharityDetailsClientForm({ initialData }: { initialData: any[] }) {
   const [items, setItems] = useState<any[]>(initialData.length > 0 ? initialData.map(item => ({
@@ -48,7 +48,7 @@ export default function CharityDetailsClientForm({ initialData }: { initialData:
       <div className="space-y-6">
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h3 className="text-xl font-bold text-[#002b5c] flex items-center gap-2">
+            <h3 className="text-xl text-[20px] font-black text-[#002b5c] flex items-center gap-2">
               <HeartHandshake className="w-5 h-5 text-[#007a87]" />
               Charity Statistics
             </h3>
@@ -57,7 +57,7 @@ export default function CharityDetailsClientForm({ initialData }: { initialData:
           <button 
             type="button"
             onClick={addItem}
-            className="flex items-center gap-2 bg-teal-50 text-[#007a87] border border-teal-100 px-4 py-2 rounded-lg hover:bg-teal-100 font-bold transition-colors"
+            className="flex items-center gap-2 bg-[#D9232D] text-white px-4 py-2 rounded-lg hover:bg-red-700 font-bold transition-colors"
           >
             <Plus size={16} /> Add Month
           </button>
@@ -108,7 +108,7 @@ export default function CharityDetailsClientForm({ initialData }: { initialData:
                     className="p-2 text-rose-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
                     title="Remove Item"
                   >
-                    <Trash2 size={18} />
+                    <Trash2 size={18} color="#D9232D" />
                   </button>
                 </div>
               </div>
@@ -123,11 +123,7 @@ export default function CharityDetailsClientForm({ initialData }: { initialData:
         </div>
       </div>
 
-      <div className="pt-6 mt-6 border-t border-gray-100 flex justify-end">
-        <button type="submit" className="flex items-center gap-2 bg-[#007a87] text-white px-8 py-3.5 rounded-xl hover:bg-[#005c66] font-bold shadow-md transition-all hover:-translate-y-0.5">
-          <Save size={18} /> Save Statistics
-        </button>
-      </div>
+      
     </>
   );
 }

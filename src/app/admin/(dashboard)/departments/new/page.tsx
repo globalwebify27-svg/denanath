@@ -1,7 +1,9 @@
 import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, Save } from "lucide-react";
+import { ArrowLeft, Save, HeartPulse } from "lucide-react";
+
+import IconPicker from "@/components/IconPicker";
 
 export default function NewDepartmentPage() {
   async function createDepartment(formData: FormData) {
@@ -27,15 +29,24 @@ export default function NewDepartmentPage() {
   }
 
   return (
-    <div className="p-8 max-w-4xl mx-auto">
-      <div className="flex items-center justify-between mb-8">
-        <div>
-          <Link href="/admin/departments" className="inline-flex items-center gap-2 text-sm font-[700] text-gray-500 hover:text-[#007a87] transition-colors mb-4">
-            <ArrowLeft size={16} />
-            Back to Departments
+    <div className="p-4 md:p-8 max-w-6xl mx-auto pb-32">
+      {/* Header Section */}
+      <div className="mb-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 bg-white p-6 md:p-10 rounded-3xl shadow-sm border border-slate-100 relative overflow-hidden group">
+        <div className="absolute top-0 left-0 w-2 h-full bg-gradient-to-b from-[#002b5c] to-[#007a87]"></div>
+        <div className="z-10 relative">
+          <Link href="/admin/departments" className="inline-flex items-center gap-2 text-sm font-bold text-[#007a87] hover:text-[#005c66] transition-colors mb-3">
+            <ArrowLeft size={16} /> Back to Departments
           </Link>
-          <h1 className="text-[36px] font-[800] leading-[40px] text-[#002b5c] tracking-tight mb-2">Add New Department</h1>
-          <p className="text-[14px] font-[600] text-gray-500">Create a new medical department or unit for the hospital.</p>
+          <h1 className="text-[32px] md:text-[40px] font-black text-[#002b5c] tracking-tight leading-tight mb-2">
+            Add New Department
+          </h1>
+          <p className="text-[15px] font-medium text-slate-500 max-w-xl leading-relaxed">
+            Create a new medical department or unit for the hospital.
+          </p>
+        </div>
+        {/* subtle background decoration */}
+        <div className="absolute right-0 top-0 opacity-[0.03] pointer-events-none group-hover:scale-110 transition-transform duration-700">
+           <HeartPulse size={200} className="text-[#007a87] -mt-10 -mr-10" />
         </div>
       </div>
 
@@ -66,15 +77,9 @@ export default function NewDepartmentPage() {
             </div>
 
             <div className="space-y-2 md:col-span-2">
-              <label htmlFor="icon" className="text-[12px] font-[800] text-gray-700 uppercase tracking-widest">Department Icon Name</label>
-              <input
-                type="text"
-                id="icon"
-                name="icon"
-                placeholder="e.g. HeartPulse, Shield, Activity, Users"
-                className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#007a87]/20 focus:border-[#007a87] font-[500] text-[14px] transition-all"
-              />
-              <p className="text-[11px] font-[600] text-gray-400 mt-1">Enter a valid Lucide React icon name to display on the frontend.</p>
+              <label className="text-[12px] font-[800] text-gray-700 uppercase tracking-widest">Department Icon Name</label>
+              <IconPicker name="icon" placeholder="Select department icon" />
+              <p className="text-[11px] font-[600] text-gray-400 mt-1">Select a Lucide React icon visual representation.</p>
             </div>
           </div>
 
@@ -111,7 +116,7 @@ export default function NewDepartmentPage() {
             </Link>
             <button
               type="submit"
-              className="flex items-center gap-2 bg-[#007a87] text-white px-6 py-3 rounded-xl hover:bg-[#005c66] hover:shadow-lg transition-all duration-300 font-[700] text-[13px] tracking-wide"
+              className="flex items-center gap-2 bg-[#007a87] text-white px-6 py-3 rounded-xl hover:bg-[#005c66] hover:shadow-lg transition-all duration-300 font-[700] text-[13px] tracking-wide hover:shadow-[0_8px_20px_rgba(0,122,135,0.3)]"
             >
               <Save size={18} />
               Save Department

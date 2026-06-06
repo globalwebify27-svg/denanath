@@ -38,8 +38,11 @@ export default function AdminLogin() {
               <span className="text-[14px] font-black tracking-wide leading-none text-white">
                 DEENANATH
               </span>
-              <span className="text-[8px] font-extrabold tracking-[0.15em] leading-none uppercase mt-0.5 text-teal-300">
+              <span className="text-[8px] font-extrabold tracking-[0.05em] leading-none uppercase mt-0.5 text-teal-300">
                 Mangeshkar Hospital
+              </span>
+              <span className="text-[8px] font-extrabold tracking-[0.05em] leading-none uppercase mt-0.5 text-teal-300">
+                & Research Center
               </span>
             </div>
           </div>
@@ -141,7 +144,7 @@ export default function AdminLogin() {
         {/* Footer */}
         <div className="mt-16 text-center">
           <p className="text-[10px] font-semibold text-gray-400 tracking-wider uppercase">
-            © 2026 DEENANATH MANGESHKAR HOSPITAL. ALL RIGHTS RESERVED.
+            © 2026 DEENANATH MANGESHKAR HOSPITAL & RESEARCH CENTER. ALL RIGHTS RESERVED.
           </p>
         </div>
       </div>

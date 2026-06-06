@@ -2,24 +2,36 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Save, ArrowLeft, Plus, Trash2 } from "lucide-react";
 import Link from "next/link";
+import { Save, Plus, Trash2, ArrowLeft, HeartPulse } from "lucide-react";
 
-export default function DoctorForm({ doctor }: { doctor: any }) {
+
+export default function DoctorForm({ doctor, id }: { doctor: any; id: string }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   
-  // Parse JSON strings to objects/arrays for the form
+  // Parse JSON strings to objects/arrays safely
+  const safeParse = (data: any) => {
+    if (!data) return [];
+    if (typeof data !== 'string') return data;
+    try {
+      return JSON.parse(data);
+    } catch (e) {
+      console.error("Error parsing JSON:", e);
+      return [];
+    }
+  };
+
   const [formData, setFormData] = useState({
     name: doctor?.name || "",
     specialty: doctor?.specialty || "",
     qualifications: doctor?.qualifications || "",
     image: doctor?.image || "",
-    timings: doctor?.timings ? JSON.parse(doctor.timings) : [],
-    education: doctor?.education ? JSON.parse(doctor.education) : [],
-    training: doctor?.training ? JSON.parse(doctor.training) : [],
-    experience: doctor?.experience ? JSON.parse(doctor.experience) : [],
-    publications: doctor?.publications ? JSON.parse(doctor.publications) : [],
+    timings: safeParse(doctor?.timings),
+    education: safeParse(doctor?.education),
+    training: safeParse(doctor?.training),
+    experience: safeParse(doctor?.experience),
+    publications: safeParse(doctor?.publications),
   });
 
   const handleArrayChange = (field: string, index: number, value: string) => {
@@ -58,6 +70,24 @@ export default function DoctorForm({ doctor }: { doctor: any }) {
     const newTimings = [...formData.timings];
     newTimings.splice(index, 1);
     setFormData({ ...formData, timings: newTimings });
+  };
+
+  const handleDelete = async () => {
+    if (!confirm("Are you sure you want to delete this doctor?")) return;
+    setLoading(true);
+    try {
+      const response = await fetch(`/api/doctors/${doctor.id}`, {
+        method: "DELETE",
+      });
+      if (!response.ok) throw new Error("Failed to delete");
+      router.push("/admin/doctors");
+      router.refresh();
+    } catch (error) {
+      console.error(error);
+      alert("Failed to delete doctor");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -100,9 +130,9 @@ export default function DoctorForm({ doctor }: { doctor: any }) {
         <button
           type="button"
           onClick={() => handleArrayAdd(field)}
-          className="flex items-center gap-1 text-sm text-blue-600 hover:text-blue-800"
+          className="flex items-center gap-1.5 px-4 py-2.5 bg-[#003360] text-white hover:bg-[#002545] rounded-xl text-xs font-bold transition-all duration-300 shadow-sm hover:shadow"
         >
-          <Plus size={16} /> Add Item
+          <Plus size={14} /> Add Item
         </button>
       </div>
       {formData[field].map((item: string, index: number) => (
@@ -117,9 +147,9 @@ export default function DoctorForm({ doctor }: { doctor: any }) {
           <button
             type="button"
             onClick={() => handleArrayRemove(field, index)}
-            className="p-2 text-red-500 hover:bg-red-50 rounded-lg"
+            className="p-2 text-[#D9232D] hover:bg-red-50 rounded-lg"
           >
-            <Trash2 size={20} />
+            <Trash2 size={20} color="#D9232D" />
           </button>
         </div>
       ))}
@@ -130,19 +160,52 @@ export default function DoctorForm({ doctor }: { doctor: any }) {
   );
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-4xl mx-auto pb-12">
-      <div className="flex justify-between items-center mb-6">
-        <Link href="/admin/doctors" className="flex items-center gap-2 text-gray-600 hover:text-gray-900">
-          <ArrowLeft size={20} /> Back to Directory
-        </Link>
-        <button
-          type="submit"
-          disabled={loading}
-          className="flex items-center gap-2 bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50"
-        >
-          <Save size={20} />
-          <span>{loading ? "Saving..." : "Save Doctor"}</span>
-        </button>
+    <form onSubmit={handleSubmit} className="max-w-6xl mx-auto pb-12">
+      {/* Header Section with Save button */}
+      <div className="mb-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 bg-white p-6 md:p-10 rounded-3xl shadow-sm border border-slate-100 relative overflow-hidden group">
+        <div className="absolute top-0 left-0 w-2 h-full bg-gradient-to-b from-[#002b5c] to-[#007a87]"></div>
+        <div className="z-10 relative">
+          <Link href="/admin/doctors" className="inline-flex items-center gap-2 text-sm font-bold text-[#007a87] hover:text-[#005c66] transition-colors mb-3">
+            <ArrowLeft size={16} /> Back to Directory
+          </Link>
+          <h1 className="text-[32px] md:text-[40px] font-black text-[#002b5c] tracking-tight leading-tight mb-2">
+            {id === "new" ? "Add New Doctor" : "Edit Doctor Profile"}
+          </h1>
+          <p className="text-[15px] font-medium text-slate-500 max-w-xl leading-relaxed">
+            {id === "new" 
+              ? "Create a new physician profile for the hospital doctors directory." 
+              : `Update profile details, OPD timings, and credentials for ${doctor?.name || "this doctor"}.`}
+          </p>
+        </div>
+        
+        {/* Actions in Header */}
+        <div className="z-10 relative shrink-0 flex items-center gap-3">
+          <button
+            type="submit"
+            disabled={loading}
+            className="flex items-center gap-2 bg-[#007a87] text-white px-6 py-3 rounded-xl hover:bg-[#006570] hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 font-bold text-xs shadow-md hover:shadow-[0_8px_20px_rgba(0,122,135,0.3)]"
+          >
+            <Save size={18} />
+            <span>{loading ? "Saving..." : "Save Doctor"}</span>
+          </button>
+
+          {id !== "new" && (
+            <button
+              type="button"
+              onClick={handleDelete}
+              disabled={loading}
+              className="p-3 text-rose-600 bg-rose-50 border border-rose-200 rounded-xl hover:bg-rose-100 transition-colors shadow-sm"
+              title="Delete Doctor"
+            >
+              <Trash2 size={18} />
+            </button>
+          )}
+        </div>
+
+        {/* subtle background decoration */}
+        <div className="absolute right-0 top-0 opacity-[0.03] pointer-events-none group-hover:scale-110 transition-transform duration-700">
+           <HeartPulse size={200} className="text-[#007a87] -mt-10 -mr-10" />
+        </div>
       </div>
 
       <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 mb-6 grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -207,7 +270,7 @@ export default function DoctorForm({ doctor }: { doctor: any }) {
               <button
                 type="button"
                 onClick={() => setFormData({ ...formData, image: "" })}
-                className="text-red-500 hover:text-red-700 text-sm font-medium px-3 py-2 bg-red-50 rounded-lg hover:bg-red-100 transition-colors"
+                className="text-[#D9232D] hover:text-red-700 text-sm font-bold px-4 py-2 bg-red-50 rounded-lg hover:bg-red-100 transition-colors"
               >
                 Remove
               </button>
@@ -222,9 +285,9 @@ export default function DoctorForm({ doctor }: { doctor: any }) {
           <button
             type="button"
             onClick={handleTimingAdd}
-            className="flex items-center gap-1 text-sm text-blue-600 hover:text-blue-800"
+            className="flex items-center gap-1.5 px-4 py-2.5 bg-[#003360] text-white hover:bg-[#002545] rounded-xl text-xs font-bold transition-all duration-300 shadow-sm hover:shadow"
           >
-            <Plus size={16} /> Add Timing
+            <Plus size={14} /> Add Timing
           </button>
         </div>
         {formData.timings.map((timing: any, index: number) => (
@@ -253,9 +316,9 @@ export default function DoctorForm({ doctor }: { doctor: any }) {
             <button
               type="button"
               onClick={() => handleTimingRemove(index)}
-              className="p-2 text-red-500 hover:bg-red-50 rounded-lg"
+              className="p-2 text-[#D9232D] hover:bg-red-50 rounded-lg"
             >
-              <Trash2 size={20} />
+              <Trash2 size={20} color="#D9232D" />
             </button>
           </div>
         ))}

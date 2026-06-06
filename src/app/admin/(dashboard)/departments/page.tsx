@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
-import { Search, Plus, Edit } from "lucide-react";
+import { Search, Plus, Edit, HeartPulse } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
@@ -40,18 +40,28 @@ export default async function AdminDepartmentsPage({
   return (
     <div className="p-8">
       {/* Header Section */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
-        <div>
-          <h1 className="text-[36px] font-[800] leading-[40px] text-[#002b5c] tracking-tight mb-2">Departments Directory</h1>
-          <p className="text-[14px] font-[600] text-gray-500">Manage hospital departments and medical units.</p>
+      <div className="mb-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 bg-white p-6 md:p-10 rounded-3xl shadow-sm border border-slate-100 relative overflow-hidden group">
+        <div className="absolute top-0 left-0 w-2 h-full bg-gradient-to-b from-[#002b5c] to-[#007a87]"></div>
+        <div className="z-10 relative">
+          <h1 className="text-[32px] md:text-[40px] font-black text-[#002b5c] tracking-tight leading-tight mb-2 flex items-center gap-3">
+            Departments Directory
+          </h1>
+          <p className="text-[15px] font-medium text-slate-500 max-w-xl leading-relaxed">
+            Manage hospital departments and medical units.
+          </p>
         </div>
-        <Link
-          href="/admin/departments/new"
-          className="flex items-center gap-2 bg-[#007a87] text-white px-5 py-2.5 rounded-xl hover:bg-[#005c66] hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 font-[700] text-[13px] tracking-wide"
-        >
-          <Plus size={18} />
-          <span>Add New Department</span>
-        </Link>
+        <div className="z-10 shrink-0 mt-4 md:mt-0">
+          <Link
+            href="/admin/departments/new"
+            className="flex items-center gap-2 bg-[#007a87] text-white px-7 py-3.5 rounded-xl hover:bg-[#006570] hover:shadow-[0_8px_20px_rgba(0,122,135,0.3)] font-bold transition-all duration-300 transform hover:-translate-y-0.5"
+          >
+            <Plus size={20} strokeWidth={2.5} /> Add New Department
+          </Link>
+        </div>
+        {/* subtle background decoration */}
+        <div className="absolute right-0 top-0 opacity-[0.03] pointer-events-none group-hover:scale-110 transition-transform duration-700">
+           <HeartPulse size={200} className="text-[#007a87] -mt-10 -mr-10" />
+        </div>
       </div>
 
       {/* Modern Search & Filter Bar */}
@@ -113,7 +123,7 @@ export default async function AdminDepartmentsPage({
                     <td className="p-5 text-right">
                       <Link
                         href={`/admin/departments/${department.id}`}
-                        className="inline-flex items-center justify-center p-2 rounded-xl bg-gray-50 text-gray-400 hover:bg-[#007a87] hover:text-white hover:shadow-md transition-all duration-300"
+                        className="inline-flex items-center justify-center p-2 rounded-xl bg-gray-50 text-gray-400 hover:bg-red-600 hover:text-white hover:shadow-md transition-all duration-300 [&>svg]:hover:stroke-[3]"
                         title="Edit Department"
                       >
                         <Edit size={16} />

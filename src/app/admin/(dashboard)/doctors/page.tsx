@@ -1,16 +1,28 @@
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
-import { Search, Plus, Edit } from "lucide-react";
+import { Search, Plus, Edit, HeartPulse } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
 export default async function AdminDoctorsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ q?: string }>;
+  searchParams: Promise<{ q?: string; page?: string }>;
 }) {
   const resolvedParams = await searchParams;
   const query = resolvedParams.q || "";
+  const page = Math.max(1, parseInt(resolvedParams.page || "1", 10));
+  const itemsPerPage = 20;
+
+  const totalCount = await prisma.doctor.count({
+    where: {
+      name: {
+        contains: query,
+      },
+    },
+  });
+
+  const totalPages = Math.ceil(totalCount / itemsPerPage);
 
   const doctors = await prisma.doctor.findMany({
     where: {
@@ -21,38 +33,51 @@ export default async function AdminDoctorsPage({
     orderBy: {
       name: "asc",
     },
+    skip: (page - 1) * itemsPerPage,
+    take: itemsPerPage,
   });
 
   return (
     <div className="p-8">
       {/* Header Section */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
-        <div>
-          <h1 className="text-[36px] font-[800] leading-[40px] text-[#002b5c] tracking-tight mb-2">Doctors Directory</h1>
-          <p className="text-[14px] font-[600] text-gray-500">Manage hospital medical staff and physician profiles.</p>
+      <div className="mb-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 bg-white p-6 md:p-10 rounded-3xl shadow-sm border border-slate-100 relative overflow-hidden group">
+        <div className="absolute top-0 left-0 w-2 h-full bg-gradient-to-b from-[#002b5c] to-[#007a87]"></div>
+        <div className="z-10 relative">
+          <h1 className="text-[32px] md:text-[40px] font-black text-[#002b5c] tracking-tight leading-tight mb-2 flex items-center gap-3">
+            Doctors Directory
+          </h1>
+          <p className="text-[15px] font-medium text-slate-500 max-w-xl leading-relaxed">
+            Manage hospital medical staff and physician profiles.
+          </p>
         </div>
-        <Link
-          href="/admin/doctors/new"
-          className="flex items-center gap-2 bg-[#007a87] text-white px-5 py-2.5 rounded-xl hover:bg-[#005c66] hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 font-[700] text-[13px] tracking-wide"
-        >
-          <Plus size={18} />
-          <span>Add New Doctor</span>
-        </Link>
+        <div className="z-10 shrink-0 mt-4 md:mt-0">
+          <Link
+            href="/admin/doctors/new"
+            className="flex items-center gap-2 bg-[#007a87] text-white px-7 py-3.5 rounded-xl hover:bg-[#006570] hover:shadow-[0_8px_20px_rgba(0,122,135,0.3)] font-bold transition-all duration-300 transform hover:-translate-y-0.5"
+          >
+            <Plus size={20} strokeWidth={2.5} /> Add New Doctor
+          </Link>
+        </div>
+        {/* subtle background decoration */}
+        <div className="absolute right-0 top-0 opacity-[0.03] pointer-events-none group-hover:scale-110 transition-transform duration-700">
+           <HeartPulse size={200} className="text-[#007a87] -mt-10 -mr-10" />
+        </div>
       </div>
 
       {/* Modern Search & Filter Bar */}
       <div className="bg-white p-2 rounded-2xl shadow-[0_4px_20px_rgb(0,0,0,0.03)] border border-gray-100 mb-6 flex flex-col md:flex-row gap-4 items-center justify-between">
-        <div className="relative w-full md:max-w-lg flex items-center">
+        <form method="GET" action="" className="relative w-full md:max-w-lg flex items-center">
           <Search className="absolute left-4 text-gray-400" size={18} />
           <input
             type="text"
+            name="q"
             placeholder="Search doctors by name or specialty..."
             defaultValue={query}
             className="w-full pl-11 pr-4 py-3 bg-gray-50/50 hover:bg-gray-50 border border-transparent focus:border-[#007a87]/30 rounded-xl focus:outline-none focus:ring-4 focus:ring-[#007a87]/10 transition-all font-[500] text-gray-700 text-[14px]"
           />
-        </div>
+        </form>
         <div className="px-4 text-[13px] font-[600] text-gray-400">
-          Showing <span className="text-[#002b5c] font-[800]">{doctors.length}</span> physicians
+          Showing <span className="text-[#002b5c] font-[800]">{totalCount}</span> physicians
         </div>
       </div>
 
@@ -104,7 +129,7 @@ export default async function AdminDoctorsPage({
                     <td className="p-5 text-right">
                       <Link
                         href={`/admin/doctors/${doctor.id}`}
-                        className="inline-flex items-center justify-center p-2 rounded-xl bg-gray-50 text-gray-400 hover:bg-[#007a87] hover:text-white hover:shadow-md transition-all duration-300"
+                        className="inline-flex items-center justify-center p-2 rounded-xl bg-gray-50 text-gray-400 hover:bg-red-600 hover:text-white hover:shadow-md transition-all duration-300 [&>svg]:hover:stroke-[3]"
                         title="Edit Doctor"
                       >
                         <Edit size={16} />
@@ -129,6 +154,27 @@ export default async function AdminDoctorsPage({
             </tbody>
           </table>
         </div>
+        {totalPages > 1 && (
+          <div className="px-6 py-4 border-t border-gray-100 flex items-center justify-between bg-gray-50/50">
+            <span className="text-[13px] font-[600] text-gray-500">
+              Page <span className="text-gray-800">{page}</span> of <span className="text-gray-800">{totalPages}</span>
+            </span>
+            <div className="flex gap-2">
+              <Link
+                href={`/admin/doctors?q=${query}&page=${Math.max(1, page - 1)}`}
+                className={`px-4 py-2 text-[12px] font-[700] rounded-lg border transition-all ${page === 1 ? 'border-gray-200 text-gray-400 pointer-events-none bg-gray-50' : 'border-gray-300 text-[#002b5c] bg-white hover:border-[#007a87] hover:text-[#007a87] hover:shadow-sm'}`}
+              >
+                PREVIOUS
+              </Link>
+              <Link
+                href={`/admin/doctors?q=${query}&page=${Math.min(totalPages, page + 1)}`}
+                className={`px-4 py-2 text-[12px] font-[700] rounded-lg border transition-all ${page === totalPages ? 'border-gray-200 text-gray-400 pointer-events-none bg-gray-50' : 'border-gray-300 text-[#002b5c] bg-white hover:border-[#007a87] hover:text-[#007a87] hover:shadow-sm'}`}
+              >
+                NEXT
+              </Link>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

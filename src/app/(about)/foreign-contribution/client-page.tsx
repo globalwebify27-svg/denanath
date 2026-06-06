@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef } from "react";
 import Link from "next/link";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, Building2 } from "lucide-react";
 
 export default function ForeignContributionClientPage({ fcraData }: { fcraData: any[] }) {
   const aboutOptions = [
@@ -84,9 +84,17 @@ export default function ForeignContributionClientPage({ fcraData }: { fcraData: 
             <div className="bg-white rounded-3xl shadow-[0_8px_40px_rgb(0,0,0,0.03)] border border-slate-100/60 p-6 sm:p-10 md:p-12">
               
               <div className="mb-10">
-                <h2 className="text-3xl font-extrabold text-[#002b5c] tracking-tight mb-4">
-                  Information regarding receipt of Foreign Contribution
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-teal-50 border border-teal-100 text-[#007a87] text-xs font-bold tracking-wider uppercase mb-4">
+                  <Building2 className="w-4 h-4" />
+                  <span>Foreign Contribution</span>
+                </div>
+                <h2 className="text-3xl md:text-4xl font-extrabold text-[#002b5c] mb-6 tracking-tight">
+                  Foreign Contribution
                 </h2>
+                
+                <h3 className="text-xl md:text-2xl font-bold text-[#002b5c] tracking-tight mb-4 mt-8">
+                  Information regarding receipt of Foreign Contribution
+                </h3>
                 <div className="w-24 h-1.5 bg-teal-500/20 rounded-full mt-6 mb-8" />
               </div>
 

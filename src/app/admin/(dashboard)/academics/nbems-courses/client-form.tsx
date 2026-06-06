@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Save, Plus, Trash2 } from "lucide-react";
+import {  Plus, Trash2 } from "lucide-react";
 
 export default function NbemsCoursesClientForm({ initialData }: { initialData: any }) {
   const [data, setData] = useState(initialData);
@@ -30,21 +30,21 @@ export default function NbemsCoursesClientForm({ initialData }: { initialData: a
       
       <div className="space-y-6">
         <div>
-          <label className="block text-sm font-bold text-slate-700 mb-1">Introductory Text</label>
+          <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Introductory Text</label>
           <textarea 
             value={data.introText || ""} 
             onChange={(e) => handleChange("introText", e.target.value)}
             rows={4} 
-            className="w-full p-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-[#007a87]"
+            className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium leading-relaxed"
           />
         </div>
         <div>
-          <label className="block text-sm font-bold text-slate-700 mb-1">Note / Warning Text</label>
+          <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Note / Warning Text</label>
           <textarea 
             value={data.noteText || ""} 
             onChange={(e) => handleChange("noteText", e.target.value)}
             rows={3} 
-            className="w-full p-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-[#007a87]"
+            className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium leading-relaxed"
           />
         </div>
 
@@ -65,21 +65,17 @@ export default function NbemsCoursesClientForm({ initialData }: { initialData: a
                 <input 
                   value={item} 
                   onChange={(e) => handleArrayChange("announcedPrograms", idx, e.target.value)} 
-                  className="flex-1 p-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-[#007a87]"
+                  className="flex-1 p-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium"
                   placeholder="Program Name or Details"
                 />
-                <button type="button" onClick={() => removeFromArray("announcedPrograms", idx)} className="text-red-400 hover:text-red-600 p-2"><Trash2 size={20} /></button>
+                <button type="button" onClick={() => removeFromArray("announcedPrograms", idx)} className="text-[#D9232D] hover:text-[#D9232D] p-2"><Trash2 size={20} color="#D9232D" /></button>
               </div>
             ))}
           </div>
         </div>
       </div>
 
-      <div className="pt-6 mt-6 border-t border-gray-100 flex justify-end">
-        <button type="submit" className="flex items-center gap-2 bg-[#007a87] text-white px-8 py-3.5 rounded-xl hover:bg-[#005c66] font-bold shadow-md transition-all hover:-translate-y-0.5">
-          <Save size={18} /> Save Details
-        </button>
-      </div>
+      
     </>
   );
 }

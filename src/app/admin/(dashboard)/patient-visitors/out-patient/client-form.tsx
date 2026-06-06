@@ -1,11 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { Save, Plus, Trash2, Edit2, List, Activity, Settings, Info } from "lucide-react";
+import {  Plus, Trash2, Edit2, List, Activity, Settings, Info } from "lucide-react";
 
 export default function OutPatientClientForm({ initialData }: { initialData: any }) {
   const [data, setData] = useState({
     instructions: initialData?.instructions ? initialData.instructions.join("\n") : "For availing services provided by Deenanath Mangeshkar Hospital, registration of patient is necessary.\nRegistration is one-time activity whereby a unique MRD number is provided to every patient and patient’s medical information is linked to this number.\nTo make Registration Procedure hassle-free please make sure that you have either of these documents ready with you - Passport, PAN card, Adhaar card, Voter ID, Driving Licence.",
+    additionalSteps: initialData?.additionalSteps ? initialData.additionalSteps.join("\n") : "2. After registration, the patient goes to the respective OPD billing counter.\n3. Make the receipt for respective consultant and visit to the respective OPD reception for further guidance regarding the consultation.",
+    appointmentInfo: initialData?.appointmentInfo ? initialData.appointmentInfo.join("\n") : "Some of the Outpatient Departments (OPDs) operate on an appointment system. To schedule an appointment, you can call 020-40151100.\nWalk-in patients will be accommodated alongside appointment patients; however, priority is given to those with appointments.\nIn addition, some consultants offer private OPD services in the hospital, which are available by appointment only.\nPlease note that OPDs are closed on Sundays and national holidays",
+    opConsultationImage: initialData?.opConsultationImage || "",
     generalOpds: initialData?.generalOpds ? initialData.generalOpds.join("\n") : "General Surgery\nMedicine\nOrthopaedics",
     superOpds: initialData?.superOpds ? initialData.superOpds.join("\n") : "Oncology\nNeurosurgery\nCardiology",
     chargesTable: initialData?.chargesTable || [
@@ -44,6 +47,9 @@ export default function OutPatientClientForm({ initialData }: { initialData: any
   const getJsonPayload = () => {
     return JSON.stringify({
       instructions: data.instructions.split('\n').map((s: string) => s.trim()).filter((s: string) => s),
+      additionalSteps: data.additionalSteps.split('\n').map((s: string) => s.trim()).filter((s: string) => s),
+      appointmentInfo: data.appointmentInfo.split('\n').map((s: string) => s.trim()).filter((s: string) => s),
+      opConsultationImage: data.opConsultationImage,
       generalOpds: data.generalOpds.split('\n').map((s: string) => s.trim()).filter((s: string) => s),
       superOpds: data.superOpds.split('\n').map((s: string) => s.trim()).filter((s: string) => s),
       chargesTable: data.chargesTable,
@@ -61,28 +67,81 @@ export default function OutPatientClientForm({ initialData }: { initialData: any
         
         {/* Guidelines */}
         <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200">
-          <h3 className="text-lg font-bold text-[#002b5c] mb-4 flex items-center gap-2">
+          <h3 className="text-lg text-[20px] font-black text-[#002b5c] mb-4 flex items-center gap-2">
             <List className="w-5 h-5 text-[#007a87]" />
             1. Registration Instructions
           </h3>
-          <p className="text-sm text-slate-500 mb-4">Enter each instruction bullet point on a new line.</p>
+          <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Part 1 Instructions (One per line)</label>
           <textarea 
             value={data.instructions} 
             onChange={(e) => handleChange('instructions', e.target.value)}
-            rows={8}
-            className="w-full p-4 border border-gray-200 rounded-xl focus:ring-[#007a87] focus:outline-none font-mono text-sm leading-relaxed"
+            rows={5}
+            className="w-full p-4 border border-gray-200 rounded-xl focus:ring-[#007a87] focus:outline-none font-mono text-sm leading-relaxed mb-6"
           />
+
+          <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Additional Steps (One per line)</label>
+          <textarea 
+            value={data.additionalSteps} 
+            onChange={(e) => handleChange('additionalSteps', e.target.value)}
+            rows={3}
+            className="w-full p-4 border border-gray-200 rounded-xl focus:ring-[#007a87] focus:outline-none font-mono text-sm leading-relaxed mb-6"
+          />
+
+          <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Appointment & Walk-in Info (One per line)</label>
+          <textarea 
+            value={data.appointmentInfo} 
+            onChange={(e) => handleChange('appointmentInfo', e.target.value)}
+            rows={4}
+            className="w-full p-4 border border-gray-200 rounded-xl focus:ring-[#007a87] focus:outline-none font-mono text-sm leading-relaxed mb-6"
+          />
+
+          <div className="border-t border-slate-200 pt-6 mt-6">
+            <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">OP Consultation Room Image</label>
+            <div className="flex items-center gap-4">
+              {data.opConsultationImage && (
+                <div className="shrink-0">
+                  <img src={data.opConsultationImage} alt="Preview" className="w-16 h-16 object-cover rounded-lg border border-gray-200" />
+                </div>
+              )}
+              <div className="flex-1">
+                <input 
+                  type="file" 
+                  accept="image/*"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) {
+                      const reader = new FileReader();
+                      reader.onloadend = () => {
+                        handleChange('opConsultationImage', reader.result as string);
+                      };
+                      reader.readAsDataURL(file);
+                    }
+                  }}
+                  className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#007a87] text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[#007a87]/10 file:text-[#007a87] hover:file:bg-[#007a87]/20 cursor-pointer"
+                />
+              </div>
+              {data.opConsultationImage && (
+                <button
+                  type="button"
+                  onClick={() => handleChange('opConsultationImage', "")}
+                  className="text-white hover:text-white text-sm font-bold px-4 py-2 bg-[#003360] rounded-lg hover:bg-[#002b5c] transition-colors"
+                >
+                  Remove
+                </button>
+              )}
+            </div>
+          </div>
         </div>
 
         {/* OPD Lists */}
         <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200">
-          <h3 className="text-lg font-bold text-[#002b5c] mb-4 flex items-center gap-2">
+          <h3 className="text-lg text-[20px] font-black text-[#002b5c] mb-4 flex items-center gap-2">
             <Activity className="w-5 h-5 text-[#007a87]" />
             OPD Categories
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-[12px] font-[800] text-gray-700 uppercase tracking-widest mb-2">General OPDs (One per line)</label>
+              <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">General OPDs (One per line)</label>
               <textarea 
                 value={data.generalOpds} 
                 onChange={(e) => handleChange('generalOpds', e.target.value)}
@@ -91,7 +150,7 @@ export default function OutPatientClientForm({ initialData }: { initialData: any
               />
             </div>
             <div>
-              <label className="block text-[12px] font-[800] text-gray-700 uppercase tracking-widest mb-2">Superspeciality OPDs (One per line)</label>
+              <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Superspeciality OPDs (One per line)</label>
               <textarea 
                 value={data.superOpds} 
                 onChange={(e) => handleChange('superOpds', e.target.value)}
@@ -105,14 +164,14 @@ export default function OutPatientClientForm({ initialData }: { initialData: any
         {/* Charges Table */}
         <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200 overflow-hidden">
           <div className="flex items-center justify-between mb-6">
-            <h3 className="text-lg font-bold text-[#002b5c] flex items-center gap-2">
+            <h3 className="text-lg text-[20px] font-black text-[#002b5c] flex items-center gap-2">
               <Settings className="w-5 h-5 text-[#007a87]" />
               Charges Table
             </h3>
             <button 
               type="button"
               onClick={addTableRow}
-              className="text-xs font-bold text-[#007a87] bg-teal-50 px-3 py-1.5 rounded-lg hover:bg-teal-100 flex items-center gap-1 transition-colors"
+              className="text-xs font-bold text-white bg-[#D9232D] px-3 py-1.5 rounded-lg hover:bg-red-700 flex items-center gap-1 transition-colors"
             >
               <Plus size={14} /> Add Row
             </button>
@@ -158,7 +217,7 @@ export default function OutPatientClientForm({ initialData }: { initialData: any
                     </td>
                     <td className="p-2 text-center">
                       <button type="button" onClick={() => removeTableRow(row.id)} className="p-1.5 text-rose-500 hover:bg-rose-50 rounded">
-                        <Trash2 size={16} />
+                        <Trash2 size={16} color="#D9232D" />
                       </button>
                     </td>
                   </tr>
@@ -170,14 +229,14 @@ export default function OutPatientClientForm({ initialData }: { initialData: any
 
         {/* Other Information */}
         <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200">
-          <h3 className="text-lg font-bold text-[#002b5c] mb-4 flex items-center gap-2">
+          <h3 className="text-lg text-[20px] font-black text-[#002b5c] mb-4 flex items-center gap-2">
             <Info className="w-5 h-5 text-[#007a87]" />
             Additional Information
           </h3>
           
           <div className="space-y-6">
             <div>
-              <label className="block text-[12px] font-[800] text-gray-700 uppercase tracking-widest mb-2">General Rules (One per line)</label>
+              <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">General Rules (One per line)</label>
               <textarea 
                 value={data.rules} 
                 onChange={(e) => handleChange('rules', e.target.value)}
@@ -187,7 +246,7 @@ export default function OutPatientClientForm({ initialData }: { initialData: any
             </div>
             
             <div>
-              <label className="block text-[12px] font-[800] text-gray-700 uppercase tracking-widest mb-2">Private OPD Text</label>
+              <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Private OPD Text</label>
               <textarea 
                 value={data.privateOpdText} 
                 onChange={(e) => handleChange('privateOpdText', e.target.value)}
@@ -197,7 +256,7 @@ export default function OutPatientClientForm({ initialData }: { initialData: any
             </div>
 
             <div>
-              <label className="block text-[12px] font-[800] text-gray-700 uppercase tracking-widest mb-2">Exceptional OPD Text</label>
+              <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Exceptional OPD Text</label>
               <input 
                 type="text" 
                 value={data.exceptionalOpdText} 
@@ -210,11 +269,7 @@ export default function OutPatientClientForm({ initialData }: { initialData: any
 
       </div>
 
-      <div className="pt-6 mt-6 border-t border-gray-100 flex justify-end">
-        <button type="submit" className="flex items-center gap-2 bg-[#007a87] text-white px-8 py-3.5 rounded-xl hover:bg-[#005c66] font-bold shadow-md transition-all hover:-translate-y-0.5">
-          <Save size={18} /> Save Out Patient Guide
-        </button>
-      </div>
+      
     </>
   );
 }

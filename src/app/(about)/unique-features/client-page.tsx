@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef } from "react";
 import Link from "next/link";
-import { ChevronRight, ShieldCheck } from "lucide-react";
+import { ChevronRight, ShieldCheck, Building2 } from "lucide-react";
 import * as Icons from "lucide-react";
 
 export default function UniqueFeaturesClientPage({ featuresData }: { featuresData: any[] }) {
@@ -86,11 +86,11 @@ export default function UniqueFeaturesClientPage({ featuresData }: { featuresDat
               
               <div className="mb-10">
                 <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-teal-50 border border-teal-100 text-[#007a87] text-xs font-bold tracking-wider uppercase mb-4">
-                  <ShieldCheck className="w-4 h-4" />
-                  <span>Excellence in Healthcare</span>
+                  <Building2 className="w-4 h-4" />
+                  <span>Unique features of DMH</span>
                 </div>
                 <h2 className="text-3xl md:text-4xl font-extrabold text-[#002b5c] mb-6 tracking-tight">
-                  Why Choose Deenanath Mangeshkar Hospital?
+                  Unique features of DMH
                 </h2>
                 <p className="text-slate-600 leading-relaxed font-light text-lg">
                   We are committed to providing world-class medical care with a patient-centric approach. Our hospital is equipped with cutting-edge technology and staffed by renowned specialists to ensure the highest quality of treatment and recovery.

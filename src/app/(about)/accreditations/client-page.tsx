@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef } from "react";
 import Link from "next/link";
-import { ChevronRight, ShieldCheck, FileText, Download, Award } from "lucide-react";
+import { ChevronRight, ShieldCheck, FileText, Download, Award, Building2 } from "lucide-react";
 
 export default function AccreditationsClient({ data }: { data: any[] }) {
   const aboutOptions = [
@@ -82,9 +82,19 @@ export default function AccreditationsClient({ data }: { data: any[] }) {
           </div>
 
           {/* Right Main Content */}
-          <div className="w-full flex-1">
+          <div className="w-full flex-1 min-w-0">
             <div className="bg-white rounded-3xl shadow-[0_8px_40px_rgb(0,0,0,0.03)] border border-slate-100/60 p-6 sm:p-10 md:p-14">
               
+              <div className="mb-10">
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-teal-50 border border-teal-100 text-[#007a87] text-xs font-bold tracking-wider uppercase mb-4">
+                  <Building2 className="w-4 h-4" />
+                  <span>Accreditations</span>
+                </div>
+                <h2 className="text-3xl md:text-4xl font-extrabold text-[#002b5c] mb-6 tracking-tight">
+                  Accreditations
+                </h2>
+              </div>
+
               {/* Introduction Text */}
               <div className="text-center mb-14 bg-slate-50/50 p-8 rounded-2xl border border-slate-100">
                 <ShieldCheck className="w-12 h-12 text-[#007a87] mx-auto mb-4 opacity-80" />
@@ -122,9 +132,9 @@ export default function AccreditationsClient({ data }: { data: any[] }) {
                             : "border-[#1565c0] bg-white text-[#1565c0]"
                         }`}>
                           <div className={`absolute inset-2 rounded-full border-[3px] flex items-center justify-center flex-col ${
-                            item.theme === 'red' ? "border-[#0277bd]/20" : "border-[#1565c0]/20"
+                            item.theme === 'red' ? "border-[#d32f2f]/20" : "border-[#1565c0]/20"
                           }`}>
-                            <Award className={`w-12 h-12 mb-1 ${item.theme === 'red' ? "text-[#0277bd]" : "text-[#1565c0]"}`} />
+                            <Award className={`w-12 h-12 mb-1 ${item.theme === 'red' ? "text-[#d32f2f]" : "text-[#1565c0]"}`} />
                             <span className="font-black text-xl tracking-wider">{item.certType}</span>
                             <span className="text-[9px] font-bold tracking-widest uppercase mt-0.5">Accredited</span>
                           </div>
@@ -159,16 +169,19 @@ export default function AccreditationsClient({ data }: { data: any[] }) {
                           </p>
                         </div>
 
-                        <div className="pt-4 border-t border-slate-100">
-                          <span className="text-sm text-slate-500 mr-2">Scope of accreditation:</span>
-                          <Link 
-                            href={item.link}
-                            className="inline-flex items-center gap-1.5 text-[#007a87] hover:text-teal-600 font-semibold transition-colors group/link"
-                          >
-                            Please find the: {item.linkText}
-                            <Download className="w-4 h-4 transform group-hover/link:-translate-y-0.5 transition-transform" />
-                          </Link>
-                        </div>
+                        {((item.link && item.link !== "#" && item.link !== "") || (item.linkText && item.linkText.startsWith('http'))) && (
+                          <div className="pt-4 border-t border-slate-100">
+                            <span className="text-sm text-slate-500 mr-2">Scope of accreditation:</span>
+                            <Link 
+                              href={(item.link && item.link !== "#" && item.link.startsWith('http')) ? item.link : item.linkText}
+                              target="_blank"
+                              className="inline-flex items-center gap-1.5 text-[#007a87] hover:text-teal-600 font-semibold transition-colors group/link break-all"
+                            >
+                              Please find the:
+                              <Download className="w-4 h-4 shrink-0 transform group-hover/link:-translate-y-0.5 transition-transform" />
+                            </Link>
+                          </div>
+                        )}
                       </div>
 
                     </div>

@@ -34,7 +34,11 @@ export default function HealthPackagesClientPage({ pageData }: { pageData: any }
   const {
     packages = [],
     companyList = [],
-    instructions = []
+    instructions = [],
+    womenNote = "Pregnant woman or those suspecting pregnancy should inform us and are advised to avoid X-rays or similar test. It is advisable to refrain from undergoing any health check up during menstruation.",
+    appointmentPhones = ["020 – 40151011", "020 – 40151015", "9158885173"],
+    appointmentTimings = "Mon to Sat, 10 a.m. to 6 p.m.",
+    appointmentEmail = "pr@dmhospital.org"
   } = pageData || {};
 
   return (
@@ -155,15 +159,17 @@ export default function HealthPackagesClientPage({ pageData }: { pageData: any }
                         ))}
                       </ul>
                       
-                      <div className="mt-6 pt-6 border-t border-blue-100">
-                        <h4 className="font-bold text-slate-800 mb-3 flex items-center gap-2">
-                          <AlertCircle className="w-5 h-5 text-amber-500" />
-                          For Women
-                        </h4>
-                        <p className="text-sm text-slate-600 leading-relaxed">
-                          Pregnant woman or those suspecting pregnancy should inform us and are advised to avoid X-rays or similar test. It is advisable to refrain from undergoing any health check up during menstruation.
-                        </p>
-                      </div>
+                      {womenNote && (
+                        <div className="mt-6 pt-6 border-t border-blue-100">
+                          <h4 className="font-bold text-slate-800 mb-3 flex items-center gap-2">
+                            <AlertCircle className="w-5 h-5 text-amber-500" />
+                            For Women
+                          </h4>
+                          <p className="text-sm text-slate-600 leading-relaxed whitespace-pre-line">
+                            {womenNote}
+                          </p>
+                        </div>
+                      )}
                     </div>
                   </section>
 
@@ -180,16 +186,20 @@ export default function HealthPackagesClientPage({ pageData }: { pageData: any }
                           <div className="flex items-start gap-3">
                             <Phone className="w-5 h-5 text-teal-400 shrink-0 mt-1" />
                             <div>
-                              <p className="font-semibold text-lg">020 – 40151011</p>
-                              <p className="font-semibold text-lg">020 – 40151015</p>
-                              <p className="font-semibold text-lg">9158885173</p>
-                              <p className="text-blue-200 text-sm mt-1">Mon to Sat, 10 a.m. to 6 p.m.</p>
+                              {appointmentPhones.map((phone: string, idx: number) => (
+                                <p key={idx} className="font-semibold text-lg">{phone}</p>
+                              ))}
+                              {appointmentTimings && (
+                                <p className="text-blue-200 text-sm mt-1 whitespace-pre-line">{appointmentTimings}</p>
+                              )}
                             </div>
                           </div>
-                          <div className="flex items-center gap-3 pt-4 border-t border-white/10">
-                            <Mail className="w-5 h-5 text-teal-400 shrink-0" />
-                            <a href="mailto:pr@dmhospital.org" className="text-teal-100 hover:text-white transition-colors">pr@dmhospital.org</a>
-                          </div>
+                          {appointmentEmail && (
+                            <div className="flex items-center gap-3 pt-4 border-t border-white/10">
+                              <Mail className="w-5 h-5 text-teal-400 shrink-0" />
+                              <a href={`mailto:${appointmentEmail}`} className="text-teal-100 hover:text-white transition-colors">{appointmentEmail}</a>
+                            </div>
+                          )}
                         </div>
                       </div>
                     </section>

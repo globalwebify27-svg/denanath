@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Save, Plus, Trash2, ChevronDown, ChevronRight } from "lucide-react";
+import {  Plus, Trash2, ChevronDown, ChevronRight } from "lucide-react";
 
 export default function JeevanRekhaClientForm({ initialData }: { initialData: any }) {
   const [data, setData] = useState(initialData);
@@ -56,10 +56,10 @@ export default function JeevanRekhaClientForm({ initialData }: { initialData: an
 
   const SectionHeader = ({ title }: { title: string }) => (
     <div 
-      className="flex justify-between items-center bg-slate-100 p-4 rounded-xl cursor-pointer hover:bg-slate-200 transition-colors"
+      className="flex justify-between items-center bg-slate-50/50 border border-slate-200 p-5 md:p-6 cursor-pointer hover:bg-slate-100 transition-colors rounded-2xl shadow-sm"
       onClick={() => toggleSection(title)}
     >
-      <h3 className="font-bold text-[#002b5c] text-lg">{title}</h3>
+      <h3 className="text-[20px] font-black text-[#002b5c]">{title}</h3>
       {openSections[title] ? <ChevronDown size={20} /> : <ChevronRight size={20} />}
     </div>
   );
@@ -74,32 +74,32 @@ export default function JeevanRekhaClientForm({ initialData }: { initialData: an
         <div className="space-y-4">
           <SectionHeader title="General Information" />
           {openSections["General Information"] && (
-            <div className="p-4 border border-slate-200 rounded-xl space-y-4 animate-in fade-in">
+            <div className="p-6 md:p-8 bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden space-y-6 animate-in fade-in relative mt-4">
               <div>
-                <label className="block text-sm font-bold text-slate-700 mb-1">Highlight Text</label>
+                <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Highlight Text</label>
                 <textarea 
                   value={data.highlightText || ""} 
                   onChange={(e) => handleChange("highlightText", e.target.value)}
                   rows={2} 
-                  className="w-full p-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-[#007a87]"
+                  className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium leading-relaxed"
                 />
               </div>
               <div>
-                <label className="block text-sm font-bold text-slate-700 mb-1">Introductory Text 1</label>
+                <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Introductory Text 1</label>
                 <textarea 
                   value={data.introText1 || ""} 
                   onChange={(e) => handleChange("introText1", e.target.value)}
                   rows={4} 
-                  className="w-full p-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-[#007a87]"
+                  className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium leading-relaxed"
                 />
               </div>
               <div>
-                <label className="block text-sm font-bold text-slate-700 mb-1">Introductory Text 2</label>
+                <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Introductory Text 2</label>
                 <textarea 
                   value={data.introText2 || ""} 
                   onChange={(e) => handleChange("introText2", e.target.value)}
                   rows={2} 
-                  className="w-full p-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-[#007a87]"
+                  className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium leading-relaxed"
                 />
               </div>
             </div>
@@ -110,14 +110,14 @@ export default function JeevanRekhaClientForm({ initialData }: { initialData: an
         <div className="space-y-4">
           <SectionHeader title="Contact Information" />
           {openSections["Contact Information"] && (
-            <div className="p-4 border border-slate-200 rounded-xl space-y-4 animate-in fade-in">
+            <div className="p-6 md:p-8 bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden space-y-6 animate-in fade-in relative mt-4">
               <div>
-                <label className="block text-sm font-bold text-slate-700 mb-1">Address</label>
+                <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Address</label>
                 <textarea 
                   value={data.contactInfo?.address || ""} 
                   onChange={(e) => handleNestedChange("contactInfo", "address", e.target.value)}
                   rows={2} 
-                  className="w-full p-3 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-[#007a87]"
+                  className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium leading-relaxed"
                 />
               </div>
               
@@ -129,8 +129,8 @@ export default function JeevanRekhaClientForm({ initialData }: { initialData: an
                 <div className="space-y-2">
                   {data.contactInfo?.phones?.map((item: string, idx: number) => (
                     <div key={idx} className="flex gap-2">
-                      <input value={item} onChange={(e) => handleNestedArrayChange("contactInfo", "phones", idx, e.target.value)} className="flex-1 p-2 border border-slate-200 rounded-lg text-sm" />
-                      <button type="button" onClick={() => removeNestedArray("contactInfo", "phones", idx)} className="text-red-400 p-2"><Trash2 size={16} /></button>
+                      <input value={item} onChange={(e) => handleNestedArrayChange("contactInfo", "phones", idx, e.target.value)} className="flex-1 p-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium" />
+                      <button type="button" onClick={() => removeNestedArray("contactInfo", "phones", idx)} className="text-[#D9232D] p-2"><Trash2 size={16} color="#D9232D" /></button>
                     </div>
                   ))}
                 </div>
@@ -144,8 +144,8 @@ export default function JeevanRekhaClientForm({ initialData }: { initialData: an
                 <div className="space-y-2">
                   {data.contactInfo?.emails?.map((item: string, idx: number) => (
                     <div key={idx} className="flex gap-2">
-                      <input value={item} onChange={(e) => handleNestedArrayChange("contactInfo", "emails", idx, e.target.value)} className="flex-1 p-2 border border-slate-200 rounded-lg text-sm" />
-                      <button type="button" onClick={() => removeNestedArray("contactInfo", "emails", idx)} className="text-red-400 p-2"><Trash2 size={16} /></button>
+                      <input value={item} onChange={(e) => handleNestedArrayChange("contactInfo", "emails", idx, e.target.value)} className="flex-1 p-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium" />
+                      <button type="button" onClick={() => removeNestedArray("contactInfo", "emails", idx)} className="text-[#D9232D] p-2"><Trash2 size={16} color="#D9232D" /></button>
                     </div>
                   ))}
                 </div>
@@ -158,7 +158,7 @@ export default function JeevanRekhaClientForm({ initialData }: { initialData: an
         <div className="space-y-4">
           <SectionHeader title="Announced Programs" />
           {openSections["Announced Programs"] && (
-            <div className="p-4 border border-slate-200 rounded-xl space-y-4 animate-in fade-in">
+            <div className="p-6 md:p-8 bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden space-y-6 animate-in fade-in relative mt-4">
               <div className="flex justify-end">
                 <button type="button" onClick={() => addToArray("announcedPrograms", "")} className="flex items-center gap-1 bg-teal-50 text-teal-700 px-3 py-1.5 rounded-lg text-sm font-bold">
                   <Plus size={16} /> Add Program
@@ -173,10 +173,10 @@ export default function JeevanRekhaClientForm({ initialData }: { initialData: an
                     <input 
                       value={item} 
                       onChange={(e) => handleArrayChange("announcedPrograms", idx, e.target.value)} 
-                      className="flex-1 p-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:border-[#007a87]"
+                      className="flex-1 p-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium"
                       placeholder="Program Name"
                     />
-                    <button type="button" onClick={() => removeFromArray("announcedPrograms", idx)} className="text-red-400 hover:text-red-600 p-2"><Trash2 size={20} /></button>
+                    <button type="button" onClick={() => removeFromArray("announcedPrograms", idx)} className="text-[#D9232D] hover:text-[#D9232D] p-2"><Trash2 size={20} color="#D9232D" /></button>
                   </div>
                 ))}
               </div>
@@ -186,11 +186,7 @@ export default function JeevanRekhaClientForm({ initialData }: { initialData: an
 
       </div>
 
-      <div className="pt-6 mt-6 border-t border-gray-100 flex justify-end">
-        <button type="submit" className="flex items-center gap-2 bg-[#007a87] text-white px-8 py-3.5 rounded-xl hover:bg-[#005c66] font-bold shadow-md transition-all hover:-translate-y-0.5">
-          <Save size={18} /> Save Details
-        </button>
-      </div>
+      
     </>
   );
 }
