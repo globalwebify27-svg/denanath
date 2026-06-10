@@ -400,7 +400,7 @@ export default function CareersClient({ data }: { data: any }) {
                     <div>
                       <label className="block text-sm font-semibold text-slate-700 mb-1.5">Contact No <span className="text-red-500">*</span></label>
                       <div className="relative">
-                        <input name="mobile" type="tel" placeholder="Mobile Number" className="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 pl-11 pr-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all placeholder-slate-400" required />
+                        <input name="mobile" type="tel" placeholder="Mobile Number" maxLength={10} pattern="[0-9]{10}" title="Please enter a valid 10-digit mobile number" onInput={(e) => { e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/g, ''); }} className="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 pl-11 pr-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all placeholder-slate-400" required />
                         <Phone className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                       </div>
                     </div>

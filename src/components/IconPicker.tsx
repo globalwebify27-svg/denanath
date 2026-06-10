@@ -182,13 +182,13 @@ export default function IconPicker({ name, defaultValue = "", placeholder = "Sel
               />
             </div>
             
-            <div className="flex gap-1.5">
+            <div className="flex gap-1.5 overflow-x-auto pb-0.5 scrollbar-none">
               {(["All", "Medical", "General"] as const).map((cat) => (
                 <button
                   key={cat}
                   type="button"
                   onClick={() => setSelectedCategory(cat)}
-                  className={`px-3 py-1 rounded-md text-[11px] font-[700] uppercase tracking-wider transition-colors ${
+                  className={`shrink-0 px-3 py-1 rounded-md text-[11px] font-[700] uppercase tracking-wider transition-colors ${
                     selectedCategory === cat
                       ? "bg-[#007a87] text-white"
                       : "bg-white text-gray-500 border border-gray-250 hover:bg-gray-50"

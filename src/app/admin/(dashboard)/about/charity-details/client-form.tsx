@@ -46,7 +46,7 @@ export default function CharityDetailsClientForm({ initialData }: { initialData:
       <input type="hidden" name="charityJson" value={getJsonPayload()} />
       
       <div className="space-y-6">
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
           <div>
             <h3 className="text-xl text-[20px] font-black text-[#002b5c] flex items-center gap-2">
               <HeartHandshake className="w-5 h-5 text-[#007a87]" />
@@ -57,14 +57,14 @@ export default function CharityDetailsClientForm({ initialData }: { initialData:
           <button 
             type="button"
             onClick={addItem}
-            className="flex items-center gap-2 bg-[#D9232D] text-white px-4 py-2 rounded-lg hover:bg-red-700 font-bold transition-colors"
+            className="flex items-center justify-center gap-2 bg-[#D9232D] text-white px-4 py-2 rounded-lg hover:bg-red-700 font-bold transition-colors w-full sm:w-auto shrink-0"
           >
             <Plus size={16} /> Add Month
           </button>
         </div>
 
         <div className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
-          <div className="grid grid-cols-12 bg-slate-50 border-b border-slate-200 p-4 font-bold text-slate-700 text-sm uppercase tracking-wider">
+          <div className="hidden sm:grid grid-cols-12 bg-slate-50 border-b border-slate-200 p-4 font-bold text-slate-700 text-sm uppercase tracking-wider">
             <div className="col-span-4">Month</div>
             <div className="col-span-3">Indigent Patients (निर्धन)</div>
             <div className="col-span-4">Weaker Section (दुर्बल)</div>
@@ -73,42 +73,46 @@ export default function CharityDetailsClientForm({ initialData }: { initialData:
 
           <div className="divide-y divide-slate-100">
             {items.map((item, index) => (
-              <div key={item.id} className="grid grid-cols-12 gap-4 p-4 items-center hover:bg-slate-50 transition-colors">
-                <div className="col-span-4">
+              <div key={item.id} className="grid grid-cols-1 gap-4 p-4 sm:grid-cols-12 sm:gap-4 sm:items-center hover:bg-slate-50 transition-colors">
+                <div className="col-span-1 sm:col-span-4">
+                  <label className="block sm:hidden text-xs font-bold text-slate-500 uppercase mb-1">Month</label>
                   <input 
                     type="text" 
                     value={item.month} 
                     onChange={(e) => updateItem(item.id, 'month', e.target.value)}
-                    className="w-full p-2.5 border border-gray-200 rounded-lg focus:ring-[#007a87] focus:outline-none font-medium"
+                    className="w-full p-2.5 border border-gray-200 rounded-lg focus:ring-[#007a87] focus:outline-none font-medium text-sm sm:text-base"
                     placeholder="e.g. April 2026"
                   />
                 </div>
-                <div className="col-span-3">
+                <div className="col-span-1 sm:col-span-3">
+                  <label className="block sm:hidden text-xs font-bold text-slate-500 uppercase mb-1">Indigent Patients (निर्धन)</label>
                   <input 
                     type="text" 
                     value={item.indigent} 
                     onChange={(e) => updateItem(item.id, 'indigent', e.target.value)}
-                    className="w-full p-2.5 border border-gray-200 rounded-lg focus:ring-[#007a87] focus:outline-none"
+                    className="w-full p-2.5 border border-gray-200 rounded-lg focus:ring-[#007a87] focus:outline-none text-sm sm:text-base"
                     placeholder="e.g. 81"
                   />
                 </div>
-                <div className="col-span-4">
+                <div className="col-span-1 sm:col-span-4">
+                  <label className="block sm:hidden text-xs font-bold text-slate-500 uppercase mb-1">Weaker Section (दुर्बल)</label>
                   <input 
                     type="text" 
                     value={item.weaker} 
                     onChange={(e) => updateItem(item.id, 'weaker', e.target.value)}
-                    className="w-full p-2.5 border border-gray-200 rounded-lg focus:ring-[#007a87] focus:outline-none"
+                    className="w-full p-2.5 border border-gray-200 rounded-lg focus:ring-[#007a87] focus:outline-none text-sm sm:text-base"
                     placeholder="e.g. 520"
                   />
                 </div>
-                <div className="col-span-1 flex justify-center">
+                <div className="col-span-1 sm:col-span-1 flex justify-end sm:justify-center pt-2 sm:pt-0 border-t border-slate-100 sm:border-t-0">
                   <button 
                     type="button" 
                     onClick={() => removeItem(item.id)}
-                    className="p-2 text-rose-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
+                    className="flex items-center justify-center gap-2 p-2.5 bg-rose-50 sm:bg-transparent text-rose-600 hover:bg-rose-100 sm:hover:bg-rose-50 rounded-lg transition-colors w-full sm:w-auto"
                     title="Remove Item"
                   >
                     <Trash2 size={18} color="#D9232D" />
+                    <span className="sm:hidden text-sm font-bold text-[#D9232D]">Remove Month</span>
                   </button>
                 </div>
               </div>

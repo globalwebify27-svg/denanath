@@ -199,9 +199,9 @@ export default function InPatientClientForm({ initialData }: { initialData: any 
           </h3>
           <div className="grid md:grid-cols-2 gap-8">
             <div>
-              <div className="flex justify-between items-center mb-4">
-                <h4 className="font-bold text-slate-700">Main Building</h4>
-                <button type="button" onClick={() => addPhone('mainBuildingPhones')} className="text-xs font-bold text-white bg-[#D9232D] px-3 py-1.5 rounded-lg hover:bg-red-700">Add Phone</button>
+              <div className="flex justify-between items-center mb-4 gap-4">
+                <h4 className="font-bold text-slate-700 min-w-0">Main Building</h4>
+                <button type="button" onClick={() => addPhone('mainBuildingPhones')} className="text-xs font-bold text-white bg-[#D9232D] px-3 py-1.5 rounded-lg hover:bg-red-700 shrink-0 whitespace-nowrap">Add Phone</button>
               </div>
               <div className="space-y-3">
                 {data.mainBuildingPhones.map((p: any) => (
@@ -214,9 +214,9 @@ export default function InPatientClientForm({ initialData }: { initialData: any 
               </div>
             </div>
             <div>
-              <div className="flex justify-between items-center mb-4">
-                <h4 className="font-bold text-slate-700">Super Speciality Building</h4>
-                <button type="button" onClick={() => addPhone('superSpecialityPhones')} className="text-xs font-bold text-white bg-[#D9232D] px-3 py-1.5 rounded-lg hover:bg-red-700">Add Phone</button>
+              <div className="flex justify-between items-center mb-4 gap-4">
+                <h4 className="font-bold text-slate-700 min-w-0">Super Speciality Building</h4>
+                <button type="button" onClick={() => addPhone('superSpecialityPhones')} className="text-xs font-bold text-white bg-[#D9232D] px-3 py-1.5 rounded-lg hover:bg-red-700 shrink-0 whitespace-nowrap">Add Phone</button>
               </div>
               <div className="space-y-3">
                 {data.superSpecialityPhones.map((p: any) => (
@@ -256,9 +256,9 @@ export default function InPatientClientForm({ initialData }: { initialData: any 
           <div className="space-y-8">
             {/* Main Building Rooms */}
             <div>
-              <div className="flex justify-between items-center mb-4">
-                <h4 className="font-bold text-slate-700">Main Building Rooms</h4>
-                <button type="button" onClick={addMainRoom} className="text-xs font-bold text-white bg-[#003360] px-3 py-1.5 rounded-lg hover:bg-[#002b5c]">Add Room</button>
+              <div className="flex justify-between items-center mb-4 gap-4">
+                <h4 className="font-bold text-slate-700 min-w-0">Main Building Rooms</h4>
+                <button type="button" onClick={addMainRoom} className="text-xs font-bold text-white bg-[#003360] px-3 py-1.5 rounded-lg hover:bg-[#002b5c] shrink-0 whitespace-nowrap">Add Room</button>
               </div>
               <div className="space-y-3">
                 {data.mainBuildingRooms.map((r: any) => (
@@ -284,9 +284,9 @@ export default function InPatientClientForm({ initialData }: { initialData: any 
 
             {/* Super Speciality Rooms */}
             <div>
-              <div className="flex justify-between items-center mb-4">
-                <h4 className="font-bold text-slate-700">Super Speciality Building Rooms</h4>
-                <button type="button" onClick={addSuperRoom} className="text-xs font-bold text-white bg-[#003360] px-3 py-1.5 rounded-lg hover:bg-[#002b5c]">Add Room</button>
+              <div className="flex justify-between items-center mb-4 gap-4">
+                <h4 className="font-bold text-slate-700 min-w-0">Super Speciality Building Rooms</h4>
+                <button type="button" onClick={addSuperRoom} className="text-xs font-bold text-white bg-[#003360] px-3 py-1.5 rounded-lg hover:bg-[#002b5c] shrink-0 whitespace-nowrap">Add Room</button>
               </div>
               <div className="space-y-3">
                 {data.superSpecialityRooms.map((r: any) => (

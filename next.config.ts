@@ -1,5 +1,6 @@
 import type { NextConfig } from "next";
 
+// Trigger dev server reload to rebuild routing cache
 const nextConfig: NextConfig = {
 
   // @ts-ignore: typescript config is valid but missing in strict NextConfig type

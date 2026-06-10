@@ -145,29 +145,29 @@ export default function CareersClientForm({ initialData }: { initialData: any })
           {data.jobs.map((job: any, index: number) => (
             <div key={index} className="border border-slate-200 rounded-2xl overflow-hidden bg-slate-50">
               <div 
-                className="flex items-center justify-between p-4 bg-white cursor-pointer hover:bg-slate-50 transition-colors"
+                className="flex items-center gap-2 p-4 bg-white cursor-pointer hover:bg-slate-50 transition-colors"
                 onClick={() => setExpandedJobIndex(expandedJobIndex === index ? null : index)}
               >
-                <div className="flex items-center gap-4">
-                  <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 font-bold text-sm">
-                    {index + 1}
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-[#002b5c]">{job.title || "Untitled Job"}</h3>
-                    <p className="text-xs text-slate-500 font-medium">{job.qualification || "No qualification set"}</p>
-                  </div>
+                {/* Serial number */}
+                <div className="w-7 h-7 shrink-0 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 font-bold text-sm">
+                  {index + 1}
                 </div>
-                <div className="flex items-center gap-3">
-                  <button 
-                    type="button"
-                    onClick={(e) => { e.stopPropagation(); removeJob(index); }}
-                    className="p-2 text-slate-400 hover:text-[#D9232D] hover:bg-red-50 rounded-lg transition-colors"
-                  >
-                    <Trash2 size={18} color="#D9232D" />
-                  </button>
-                  <div className="p-2 text-slate-400">
-                    {expandedJobIndex === index ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
-                  </div>
+                {/* Title + subtitle — takes remaining space */}
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-bold text-[#002b5c] truncate">{job.title || "Untitled Job"}</h3>
+                  <p className="text-xs text-slate-500 font-medium truncate">{job.qualification || "No qualification set"}</p>
+                </div>
+                {/* Delete button — always visible */}
+                <button 
+                  type="button"
+                  onClick={(e) => { e.stopPropagation(); removeJob(index); }}
+                  className="shrink-0 p-2 hover:bg-red-50 rounded-lg transition-colors"
+                >
+                  <Trash2 size={18} color="#D9232D" />
+                </button>
+                {/* Chevron arrow — always visible */}
+                <div className="shrink-0 p-2 text-slate-400">
+                  {expandedJobIndex === index ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
                 </div>
               </div>
 
@@ -306,11 +306,11 @@ export default function CareersClientForm({ initialData }: { initialData: any })
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {data.contacts.map((contact: any, index: number) => (
-            <div key={index} className="border border-slate-200 bg-slate-50 rounded-2xl p-5 relative group">
+            <div key={index} className="border border-slate-200 bg-slate-50 rounded-2xl p-5 relative">
               <button 
                 type="button"
                 onClick={() => removeContact(index)}
-                className="absolute top-3 right-3 p-1.5 text-slate-400 hover:text-[#D9232D] hover:bg-red-50 rounded-lg transition-colors opacity-0 group-hover:opacity-100"
+                className="absolute top-3 right-3 p-1.5 hover:bg-red-50 rounded-lg transition-colors"
               >
                 <Trash2 size={16} color="#D9232D" />
               </button>

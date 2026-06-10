@@ -4,6 +4,175 @@ import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { ChevronRight, Globe, RefreshCw, Upload, Info, User, Calendar, MapPin, Phone, Mail, FileText, ArrowRight, ShieldCheck, HeartPulse } from "lucide-react";
 
+const COUNTRIES = [
+  "India",
+  "Afghanistan",
+  "Albania",
+  "Algeria",
+  "Argentina",
+  "Australia",
+  "Austria",
+  "Bangladesh",
+  "Belgium",
+  "Brazil",
+  "Canada",
+  "Chile",
+  "China",
+  "Colombia",
+  "Denmark",
+  "Dominica",
+  "Egypt",
+  "Ethiopia",
+  "Finland",
+  "France",
+  "Germany",
+  "Greece",
+  "Hungary",
+  "Indonesia",
+  "Iran",
+  "Iraq",
+  "Ireland",
+  "Italy",
+  "Japan",
+  "Jordan",
+  "Kenya",
+  "Kuwait",
+  "Lebanon",
+  "Malaysia",
+  "Mexico",
+  "Morocco",
+  "Nepal",
+  "Netherlands",
+  "New Zealand",
+  "Oman",
+  "Pakistan",
+  "Philippines",
+  "Poland",
+  "Portugal",
+  "Qatar",
+  "Romania",
+  "Russia",
+  "Saudi Arabia",
+  "Singapore",
+  "South Africa",
+  "Spain",
+  "Sri Lanka",
+  "Sweden",
+  "Switzerland",
+  "Thailand",
+  "Turkey",
+  "Ukraine",
+  "United Arab Emirates",
+  "United Kingdom",
+  "United States",
+  "Vietnam",
+  "Yemen",
+  "Zimbabwe"
+].sort((a, b) => {
+  if (a === "India") return -1;
+  if (b === "India") return 1;
+  return a.localeCompare(b);
+});
+
+const STATES_INDIA = [
+  "Andhra Pradesh",
+  "Arunachal Pradesh",
+  "Assam",
+  "Bihar",
+  "Chhattisgarh",
+  "Goa",
+  "Gujarat",
+  "Haryana",
+  "Himachal Pradesh",
+  "Jharkhand",
+  "Karnataka",
+  "Kerala",
+  "Madhya Pradesh",
+  "Maharashtra",
+  "Manipur",
+  "Meghalaya",
+  "Mizoram",
+  "Nagaland",
+  "Odisha",
+  "Punjab",
+  "Rajasthan",
+  "Sikkim",
+  "Tamil Nadu",
+  "Telangana",
+  "Tripura",
+  "Uttar Pradesh",
+  "Uttarakhand",
+  "West Bengal",
+  "Andaman and Nicobar Islands",
+  "Chandigarh",
+  "Dadra and Nagar Haveli and Daman and Diu",
+  "Delhi",
+  "Jammu and Kashmir",
+  "Ladakh",
+  "Lakshadweep",
+  "Puducherry"
+].sort();
+
+const CITIES_MAHARASHTRA = [
+  "Pune",
+  "Mumbai",
+  "Nagpur",
+  "Thane",
+  "Nashik",
+  "Aurangabad (Chhatrapati Sambhajinagar)",
+  "Solapur",
+  "Amravati",
+  "Navi Mumbai",
+  "Kolhapur",
+  "Nanded",
+  "Sangli",
+  "Jalgaon",
+  "Akola",
+  "Latur",
+  "Dhule",
+  "Ahmednagar",
+  "Chandrapur",
+  "Parbhani",
+  "Jalna",
+  "Satara",
+  "Alibag",
+  "Ratnagiri",
+  "Sindhudurg",
+  "Wardha",
+  "Bhandara",
+  "Gondia",
+  "Gadchiroli",
+  "Washim",
+  "Hingoli",
+  "Yavatmal",
+  "Buldhana",
+  "Nandurbar",
+  "Osmanabad (Dharashiv)",
+  "Beed"
+].sort((a, b) => {
+  if (a === "Pune") return -1;
+  if (b === "Pune") return 1;
+  return a.localeCompare(b);
+});
+
+const CITIES_BY_STATE: Record<string, string[]> = {
+  "Maharashtra": CITIES_MAHARASHTRA,
+  "Delhi": ["New Delhi", "North Delhi", "South Delhi", "West Delhi", "East Delhi"],
+  "Karnataka": ["Bengaluru (Bangalore)", "Mysore", "Hubli", "Dharwad", "Mangalore", "Belgaum", "Gulbarga", "Davangere"],
+  "Tamil Nadu": ["Chennai", "Coimbatore", "Madurai", "Tiruchirappalli", "Salem", "Tirunelveli", "Tiruppur", "Vellore"],
+  "Telangana": ["Hyderabad", "Warangal", "Nizamabad", "Karimnagar", "Ramagundam", "Khammam"],
+  "Andhra Pradesh": ["Visakhapatnam", "Vijayawada", "Guntur", "Nellore", "Kurnool", "Rajahmundry", "Tirupati"],
+  "Gujarat": ["Ahmedabad", "Surat", "Vadodara", "Rajkot", "Bhavnagar", "Jamnagar", "Gandhinagar", "Junagadh"],
+  "West Bengal": ["Kolkata", "Howrah", "Darjeeling", "Asansol", "Siliguri", "Durgapur", "Kharagpur"],
+  "Uttar Pradesh": ["Lucknow", "Kanpur", "Ghaziabad", "Agra", "Meerut", "Varanasi", "Allahabad", "Noida", "Aligarh", "Bareilly"],
+  "Rajasthan": ["Jaipur", "Jodhpur", "Udaipur", "Kota", "Bikaner", "Ajmer", "Bhilwara", "Alwar"],
+  "Madhya Pradesh": ["Bhopal", "Indore", "Jabalpur", "Gwalior", "Ujjain", "Sagar", "Dewas"],
+  "Bihar": ["Patna", "Gaya", "Bhagalpur", "Muzaffarpur", "Darbhanga", "Bihar Sharif"],
+  "Punjab": ["Ludhiana", "Amritsar", "Jalandhar", "Patiala", "Bathinda", "Mohali"],
+  "Haryana": ["Faridabad", "Gurugram (Gurgaon)", "Panipat", "Ambala", "Yamunanagar", "Rohtak", "Hisar"],
+  "Kerala": ["Thiruvananthapuram", "Kochi", "Kozhikode", "Thrissur", "Kollam", "Alappuzha", "Palakkad"]
+};
+
 export default function PatientRegistrationClient({ initialData }: { initialData: any }) {
   const options = [
     {
@@ -33,6 +202,89 @@ export default function PatientRegistrationClient({ initialData }: { initialData
   const [selectedDoc, setSelectedDoc] = useState<File | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
+
+  // Local address states
+  const [localAddress1, setLocalAddress1] = useState("");
+  const [localAddress2, setLocalAddress2] = useState("");
+  const [localTown, setLocalTown] = useState("");
+  const [localCountry, setLocalCountry] = useState("India");
+  const [localState, setLocalState] = useState("Maharashtra");
+  const [localCity, setLocalCity] = useState("Pune");
+  const [localPincode, setLocalPincode] = useState("");
+
+  // Permanent address states
+  const [permAddress1, setPermAddress1] = useState("");
+  const [permAddress2, setPermAddress2] = useState("");
+  const [permTown, setPermTown] = useState("");
+  const [permCountry, setPermCountry] = useState("India");
+  const [permState, setPermState] = useState("Maharashtra");
+  const [permCity, setPermCity] = useState("Pune");
+  const [permPincode, setPermPincode] = useState("");
+
+  // Copy checkbox state
+  const [copyChecked, setCopyChecked] = useState(false);
+
+  const handleCopyCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const checked = e.target.checked;
+    setCopyChecked(checked);
+    if (checked) {
+      setPermAddress1(localAddress1);
+      setPermAddress2(localAddress2);
+      setPermTown(localTown);
+      setPermCountry(localCountry);
+      setPermState(localState);
+      setPermCity(localCity);
+      setPermPincode(localPincode);
+    }
+  };
+
+  const updateLocalAddress1 = (val: string) => {
+    setLocalAddress1(val);
+    if (copyChecked) setPermAddress1(val);
+  };
+  const updateLocalAddress2 = (val: string) => {
+    setLocalAddress2(val);
+    if (copyChecked) setPermAddress2(val);
+  };
+  const updateLocalTown = (val: string) => {
+    setLocalTown(val);
+    if (copyChecked) setPermTown(val);
+  };
+  const updateLocalPincode = (val: string) => {
+    setLocalPincode(val);
+    if (copyChecked) setPermPincode(val);
+  };
+  const updateLocalCountry = (val: string) => {
+    setLocalCountry(val);
+    if (copyChecked) setPermCountry(val);
+    if (val !== "India") {
+      setLocalState("");
+      setLocalCity("");
+      if (copyChecked) {
+        setPermState("");
+        setPermCity("");
+      }
+    } else {
+      setLocalState("Maharashtra");
+      setLocalCity("Pune");
+      if (copyChecked) {
+        setPermState("Maharashtra");
+        setPermCity("Pune");
+      }
+    }
+  };
+  const updateLocalState = (val: string) => {
+    setLocalState(val);
+    if (copyChecked) setPermState(val);
+    const cities = CITIES_BY_STATE[val] || [];
+    const defaultCity = cities[0] || "";
+    setLocalCity(defaultCity);
+    if (copyChecked) setPermCity(defaultCity);
+  };
+  const updateLocalCity = (val: string) => {
+    setLocalCity(val);
+    if (copyChecked) setPermCity(val);
+  };
 
   const generateCaptcha = () => {
     const chars = "ABCDEFGHJKLMNOPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz023456789";
@@ -252,17 +504,17 @@ export default function PatientRegistrationClient({ initialData }: { initialData
                       </div>
 
                       <div>
-                        <label className="block text-sm font-semibold text-slate-700 mb-2">Last Name <span className="text-red-500">*</span></label>
+                        <label className="block text-sm font-semibold text-slate-700 mb-2">First Name <span className="text-red-500">*</span></label>
                         <div className="relative">
-                          <input name="lastName" type="text" placeholder="Last Name" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
+                          <input name="firstName" type="text" placeholder="First Name" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
                           <User className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                         </div>
                       </div>
 
                       <div>
-                        <label className="block text-sm font-semibold text-slate-700 mb-2">First Name <span className="text-red-500">*</span></label>
+                        <label className="block text-sm font-semibold text-slate-700 mb-2">Last Name <span className="text-red-500">*</span></label>
                         <div className="relative">
-                          <input name="firstName" type="text" placeholder="First Name" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
+                          <input name="lastName" type="text" placeholder="Last Name" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
                           <User className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                         </div>
                       </div>
@@ -357,7 +609,7 @@ export default function PatientRegistrationClient({ initialData }: { initialData
                       <div className="lg:col-span-2">
                         <label className="block text-sm font-semibold text-slate-700 mb-2">House Name/Appt.No <span className="text-red-500">*</span></label>
                         <div className="relative">
-                          <input name="localAddress1" type="text" placeholder="Street Address 1" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
+                          <input name="localAddress1" type="text" value={localAddress1} onChange={(e) => updateLocalAddress1(e.target.value)} placeholder="Street Address 1" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
                           <MapPin className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                         </div>
                       </div>
@@ -365,22 +617,22 @@ export default function PatientRegistrationClient({ initialData }: { initialData
                       <div className="lg:col-span-2">
                         <label className="block text-sm font-semibold text-slate-700 mb-2">Address 2</label>
                         <div className="relative">
-                          <input name="localAddress2" type="text" placeholder="Street Address 2 (Optional)" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
+                          <input name="localAddress2" type="text" value={localAddress2} onChange={(e) => updateLocalAddress2(e.target.value)} placeholder="Street Address 2 (Optional)" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
                           <MapPin className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                         </div>
                       </div>
 
                       <div>
                         <label className="block text-sm font-semibold text-slate-700 mb-2">PostOffice/Town</label>
-                        <input name="localTown" type="text" placeholder="Town Name" className="w-full px-4 py-3.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
+                        <input name="localTown" type="text" value={localTown} onChange={(e) => updateLocalTown(e.target.value)} placeholder="Town Name" className="w-full px-4 py-3.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
                       </div>
 
                       <div>
                         <label className="block text-sm font-semibold text-slate-700 mb-2">Country <span className="text-red-500">*</span></label>
                         <div className="relative">
-                          <select name="localCountry" className="w-full appearance-none px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium cursor-pointer">
-                            <option>-- Select --</option>
-                            <option>India</option>
+                          <select name="localCountry" value={localCountry} onChange={(e) => updateLocalCountry(e.target.value)} className="w-full appearance-none px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium cursor-pointer">
+                            <option value="">-- Select --</option>
+                            {COUNTRIES.map(c => <option key={c} value={c}>{c}</option>)}
                           </select>
                           <Globe className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                           <ChevronRight className="w-5 h-5 text-slate-400 absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none rotate-90" />
@@ -390,34 +642,46 @@ export default function PatientRegistrationClient({ initialData }: { initialData
                       <div>
                         <label className="block text-sm font-semibold text-slate-700 mb-2">State <span className="text-red-500">*</span></label>
                         <div className="relative">
-                          <select name="localState" className="w-full appearance-none px-4 py-3.5 pl-4 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium cursor-pointer">
-                            <option>-- Select --</option>
-                            <option>Maharashtra</option>
-                          </select>
-                          <ChevronRight className="w-5 h-5 text-slate-400 absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none rotate-90" />
+                          {localCountry === "India" ? (
+                            <select name="localState" value={localState} onChange={(e) => updateLocalState(e.target.value)} className="w-full appearance-none px-4 py-3.5 pl-4 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium cursor-pointer">
+                              <option value="">-- Select --</option>
+                              {STATES_INDIA.map(s => <option key={s} value={s}>{s}</option>)}
+                            </select>
+                          ) : (
+                            <input type="text" name="localState" value={localState} onChange={(e) => { setLocalState(e.target.value); if (copyChecked) setPermState(e.target.value); }} placeholder="Enter State" className="w-full px-4 py-3.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
+                          )}
+                          {localCountry === "India" && (
+                            <ChevronRight className="w-5 h-5 text-slate-400 absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none rotate-90" />
+                          )}
                         </div>
                       </div>
 
                       <div>
                         <label className="block text-sm font-semibold text-slate-700 mb-2">District/City <span className="text-red-500">*</span></label>
                         <div className="relative">
-                          <select name="localCity" className="w-full appearance-none px-4 py-3.5 pl-4 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium cursor-pointer">
-                            <option>-- Select --</option>
-                            <option>Pune</option>
-                          </select>
-                          <ChevronRight className="w-5 h-5 text-slate-400 absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none rotate-90" />
+                          {localCountry === "India" ? (
+                            <select name="localCity" value={localCity} onChange={(e) => updateLocalCity(e.target.value)} className="w-full appearance-none px-4 py-3.5 pl-4 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium cursor-pointer">
+                              <option value="">-- Select --</option>
+                              {(CITIES_BY_STATE[localState] || ["Other"]).map(c => <option key={c} value={c}>{c}</option>)}
+                            </select>
+                          ) : (
+                            <input type="text" name="localCity" value={localCity} onChange={(e) => { setLocalCity(e.target.value); if (copyChecked) setPermCity(e.target.value); }} placeholder="Enter City" className="w-full px-4 py-3.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
+                          )}
+                          {localCountry === "India" && (
+                            <ChevronRight className="w-5 h-5 text-slate-400 absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none rotate-90" />
+                          )}
                         </div>
                       </div>
 
                       <div>
                         <label className="block text-sm font-semibold text-slate-700 mb-2">Pincode</label>
-                        <input name="localPincode" type="text" placeholder="Postal Code" className="w-full px-4 py-3.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
+                        <input name="localPincode" type="text" value={localPincode} onChange={(e) => updateLocalPincode(e.target.value)} placeholder="Postal Code" className="w-full px-4 py-3.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
                       </div>
 
                       <div>
                         <label className="block text-sm font-semibold text-slate-700 mb-2">Phone (Home)</label>
                         <div className="relative">
-                          <input name="localPhone" type="text" placeholder="Landline" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
+                          <input name="localPhone" type="tel" maxLength={10} pattern="[0-9]{10}" title="Please enter a valid 10-digit phone number" onInput={(e) => { e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/g, ''); }} placeholder="Landline" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
                           <Phone className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                         </div>
                       </div>
@@ -425,7 +689,7 @@ export default function PatientRegistrationClient({ initialData }: { initialData
                       <div>
                         <label className="block text-sm font-semibold text-slate-700 mb-2">Office Phone</label>
                         <div className="relative">
-                          <input name="localOfficePhone" type="text" placeholder="Office Contact" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
+                          <input name="localOfficePhone" type="tel" maxLength={10} pattern="[0-9]{10}" title="Please enter a valid 10-digit phone number" onInput={(e) => { e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/g, ''); }} placeholder="Office Contact" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
                           <Phone className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                         </div>
                       </div>
@@ -433,7 +697,7 @@ export default function PatientRegistrationClient({ initialData }: { initialData
                       <div>
                         <label className="block text-sm font-semibold text-slate-700 mb-2">Cell Phone <span className="text-red-500">*</span></label>
                         <div className="relative">
-                          <input name="localMobile" type="text" placeholder="Mobile Number" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
+                          <input name="localMobile" type="tel" required maxLength={10} pattern="[0-9]{10}" title="Please enter a valid 10-digit mobile number" onInput={(e) => { e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/g, ''); }} placeholder="Mobile Number" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
                           <Phone className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                         </div>
                       </div>
@@ -454,7 +718,7 @@ export default function PatientRegistrationClient({ initialData }: { initialData
 
                   {/* Copy to Permanent */}
                   <label className="flex items-center gap-3 bg-white p-5 rounded-2xl border-2 border-dashed border-[#007a87]/30 hover:border-[#007a87]/60 hover:bg-teal-50/30 transition-all cursor-pointer group shadow-sm">
-                    <input name="copyAddress" type="checkbox" id="copy-address" className="w-5 h-5 text-[#007a87] rounded-md border-slate-300 focus:ring-[#007a87] cursor-pointer" />
+                    <input name="copyAddress" type="checkbox" id="copy-address" checked={copyChecked} onChange={handleCopyCheckboxChange} className="w-5 h-5 text-[#007a87] rounded-md border-slate-300 focus:ring-[#007a87] cursor-pointer" />
                     <span className="text-base font-bold text-[#002b5c] group-hover:text-[#007a87] transition-colors">
                       Copy Local Address to Permanent Address
                     </span>
@@ -475,7 +739,7 @@ export default function PatientRegistrationClient({ initialData }: { initialData
                       <div className="lg:col-span-2">
                         <label className="block text-sm font-semibold text-slate-700 mb-2">House Name/Appt.No <span className="text-red-500">*</span></label>
                         <div className="relative">
-                          <input name="permAddress1" type="text" placeholder="Street Address 1" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
+                          <input name="permAddress1" type="text" value={permAddress1} disabled={copyChecked} onChange={(e) => setPermAddress1(e.target.value)} placeholder="Street Address 1" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400 disabled:bg-slate-50 disabled:cursor-not-allowed" />
                           <MapPin className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                         </div>
                       </div>
@@ -483,22 +747,32 @@ export default function PatientRegistrationClient({ initialData }: { initialData
                       <div className="lg:col-span-2">
                         <label className="block text-sm font-semibold text-slate-700 mb-2">Address 2</label>
                         <div className="relative">
-                          <input name="permAddress2" type="text" placeholder="Street Address 2 (Optional)" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
+                          <input name="permAddress2" type="text" value={permAddress2} disabled={copyChecked} onChange={(e) => setPermAddress2(e.target.value)} placeholder="Street Address 2 (Optional)" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400 disabled:bg-slate-50 disabled:cursor-not-allowed" />
                           <MapPin className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                         </div>
                       </div>
 
                       <div>
                         <label className="block text-sm font-semibold text-slate-700 mb-2">PostOffice/Town</label>
-                        <input name="permTown" type="text" placeholder="Town Name" className="w-full px-4 py-3.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
+                        <input name="permTown" type="text" value={permTown} disabled={copyChecked} onChange={(e) => setPermTown(e.target.value)} placeholder="Town Name" className="w-full px-4 py-3.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400 disabled:bg-slate-50 disabled:cursor-not-allowed" />
                       </div>
 
                       <div>
                         <label className="block text-sm font-semibold text-slate-700 mb-2">Country <span className="text-red-500">*</span></label>
                         <div className="relative">
-                          <select name="permCountry" className="w-full appearance-none px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium cursor-pointer">
-                            <option>-- Select --</option>
-                            <option>India</option>
+                          <select name="permCountry" value={permCountry} disabled={copyChecked} onChange={(e) => {
+                            const val = e.target.value;
+                            setPermCountry(val);
+                            if (val !== "India") {
+                              setPermState("");
+                              setPermCity("");
+                            } else {
+                              setPermState("Maharashtra");
+                              setPermCity("Pune");
+                            }
+                          }} className="w-full appearance-none px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium cursor-pointer disabled:bg-slate-50 disabled:cursor-not-allowed">
+                            <option value="">-- Select --</option>
+                            {COUNTRIES.map(c => <option key={c} value={c}>{c}</option>)}
                           </select>
                           <Globe className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                           <ChevronRight className="w-5 h-5 text-slate-400 absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none rotate-90" />
@@ -508,34 +782,51 @@ export default function PatientRegistrationClient({ initialData }: { initialData
                       <div>
                         <label className="block text-sm font-semibold text-slate-700 mb-2">State <span className="text-red-500">*</span></label>
                         <div className="relative">
-                          <select name="permState" className="w-full appearance-none px-4 py-3.5 pl-4 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium cursor-pointer">
-                            <option>-- Select --</option>
-                            <option>Maharashtra</option>
-                          </select>
-                          <ChevronRight className="w-5 h-5 text-slate-400 absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none rotate-90" />
+                          {permCountry === "India" ? (
+                            <select name="permState" value={permState} disabled={copyChecked} onChange={(e) => {
+                              const val = e.target.value;
+                              setPermState(val);
+                              const cities = CITIES_BY_STATE[val] || [];
+                              setPermCity(cities[0] || "");
+                            }} className="w-full appearance-none px-4 py-3.5 pl-4 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium cursor-pointer disabled:bg-slate-50 disabled:cursor-not-allowed">
+                              <option value="">-- Select --</option>
+                              {STATES_INDIA.map(s => <option key={s} value={s}>{s}</option>)}
+                            </select>
+                          ) : (
+                            <input type="text" name="permState" value={permState} disabled={copyChecked} onChange={(e) => setPermState(e.target.value)} placeholder="Enter State" className="w-full px-4 py-3.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400 disabled:bg-slate-50 disabled:cursor-not-allowed" />
+                          )}
+                          {permCountry === "India" && (
+                            <ChevronRight className="w-5 h-5 text-slate-400 absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none rotate-90" />
+                          )}
                         </div>
                       </div>
 
                       <div>
                         <label className="block text-sm font-semibold text-slate-700 mb-2">District/City <span className="text-red-500">*</span></label>
                         <div className="relative">
-                          <select name="permCity" className="w-full appearance-none px-4 py-3.5 pl-4 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium cursor-pointer">
-                            <option>-- Select --</option>
-                            <option>Pune</option>
-                          </select>
-                          <ChevronRight className="w-5 h-5 text-slate-400 absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none rotate-90" />
+                          {permCountry === "India" ? (
+                            <select name="permCity" value={permCity} disabled={copyChecked} onChange={(e) => setPermCity(e.target.value)} className="w-full appearance-none px-4 py-3.5 pl-4 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium cursor-pointer disabled:bg-slate-50 disabled:cursor-not-allowed">
+                              <option value="">-- Select --</option>
+                              {(CITIES_BY_STATE[permState] || ["Other"]).map(c => <option key={c} value={c}>{c}</option>)}
+                            </select>
+                          ) : (
+                            <input type="text" name="permCity" value={permCity} disabled={copyChecked} onChange={(e) => setPermCity(e.target.value)} placeholder="Enter City" className="w-full px-4 py-3.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400 disabled:bg-slate-50 disabled:cursor-not-allowed" />
+                          )}
+                          {permCountry === "India" && (
+                            <ChevronRight className="w-5 h-5 text-slate-400 absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none rotate-90" />
+                          )}
                         </div>
                       </div>
 
                       <div>
                         <label className="block text-sm font-semibold text-slate-700 mb-2">Pincode</label>
-                        <input name="permPincode" type="text" placeholder="Postal Code" className="w-full px-4 py-3.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
+                        <input name="permPincode" type="text" value={permPincode} disabled={copyChecked} onChange={(e) => setPermPincode(e.target.value)} placeholder="Postal Code" className="w-full px-4 py-3.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400 disabled:bg-slate-50 disabled:cursor-not-allowed" />
                       </div>
 
                       <div>
                         <label className="block text-sm font-semibold text-slate-700 mb-2">Phone</label>
                         <div className="relative">
-                          <input name="permPhone" type="text" placeholder="Landline" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
+                          <input name="permPhone" type="tel" maxLength={10} pattern="[0-9]{10}" title="Please enter a valid 10-digit phone number" onInput={(e) => { e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/g, ''); }} placeholder="Landline" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
                           <Phone className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                         </div>
                       </div>
@@ -556,17 +847,17 @@ export default function PatientRegistrationClient({ initialData }: { initialData
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                       
                       <div>
-                        <label className="block text-sm font-semibold text-slate-700 mb-2">Last Name</label>
+                        <label className="block text-sm font-semibold text-slate-700 mb-2">First Name</label>
                         <div className="relative">
-                          <input name="emLastName" type="text" placeholder="Last Name" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-red-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
+                          <input name="emFirstName" type="text" placeholder="First Name" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-red-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
                           <User className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                         </div>
                       </div>
 
                       <div>
-                        <label className="block text-sm font-semibold text-slate-700 mb-2">First Name</label>
+                        <label className="block text-sm font-semibold text-slate-700 mb-2">Last Name</label>
                         <div className="relative">
-                          <input name="emFirstName" type="text" placeholder="First Name" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-red-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
+                          <input name="emLastName" type="text" placeholder="Last Name" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-red-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
                           <User className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                         </div>
                       </div>
@@ -595,7 +886,7 @@ export default function PatientRegistrationClient({ initialData }: { initialData
                       <div>
                         <label className="block text-sm font-semibold text-slate-700 mb-2">Emergency Contact No</label>
                         <div className="relative">
-                          <input name="emPhone" type="text" placeholder="Contact Number" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-red-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
+                          <input name="emPhone" type="tel" maxLength={10} pattern="[0-9]{10}" title="Please enter a valid 10-digit phone number" onInput={(e) => { e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/g, ''); }} placeholder="Contact Number" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-red-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
                           <Phone className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                         </div>
                       </div>

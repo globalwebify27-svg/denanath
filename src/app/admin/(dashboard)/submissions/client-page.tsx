@@ -433,14 +433,14 @@ export default function SubmissionsClientPage({
             <div className="bg-white w-full max-w-2xl max-h-[90vh] rounded-3xl shadow-2xl flex flex-col relative my-auto animate-slideUp overflow-hidden">
               
               {/* Header */}
-              <div className="p-6 bg-[#003360] text-white flex items-center justify-between shrink-0">
-                <div className="flex items-center gap-3">
-                  <div className="bg-white/20 p-2 rounded-xl">
-                    <FormIcon size={24} />
+              <div className="p-4 sm:p-6 bg-[#003360] text-white flex items-center justify-between shrink-0">
+                <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+                  <div className="bg-white/20 p-1.5 sm:p-2 rounded-xl shrink-0">
+                    <FormIcon size={20} />
                   </div>
-                  <div>
-                    <h2 className="text-xl font-black">{selectedSubmission.formType}</h2>
-                    <p className="text-xs font-semibold text-white/80 mt-0.5">
+                  <div className="min-w-0">
+                    <h2 className="text-base sm:text-xl font-black leading-snug break-words">{selectedSubmission.formType}</h2>
+                    <p className="text-[10px] sm:text-xs font-semibold text-white/80 mt-0.5 break-words">
                       Submitted on {new Date(selectedSubmission.createdAt).toLocaleString()}
                     </p>
                   </div>
@@ -532,9 +532,13 @@ export default function SubmissionsClientPage({
                   <>
                     {/* Dynamically Render Form Fields (View Mode) */}
                     <div className="bg-slate-50 rounded-2xl border border-slate-100 p-5 space-y-4">
-                      <div className="flex items-center justify-between border-b border-slate-200/60 pb-2">
-                        <h3 className="text-sm font-black text-slate-400 uppercase tracking-widest flex items-center gap-2">
-                          <User size={16} /> Submission Payload
+                      <div className="flex items-start sm:items-center justify-between gap-2 border-b border-slate-200/60 pb-2">
+                        <h3 className="text-[11px] sm:text-sm font-black text-slate-400 uppercase tracking-normal sm:tracking-widest flex items-start sm:items-center gap-1.5 leading-tight">
+                          <User size={14} className="shrink-0 mt-0.5 sm:mt-0" />
+                          <span>
+                            <span className="block sm:inline">Submission</span>
+                            <span className="block sm:inline sm:ml-1">Payload</span>
+                          </span>
                         </h3>
                         <button
                           onClick={() => {
@@ -542,7 +546,7 @@ export default function SubmissionsClientPage({
                             setEditFormType(selectedSubmission.formType);
                             setEditData(parseData(selectedSubmission));
                           }}
-                          className="text-xs font-bold text-[#007a87] hover:text-[#005c66] flex items-center gap-1 hover:underline"
+                          className="text-[11px] sm:text-xs font-bold text-[#007a87] hover:text-[#005c66] flex items-center gap-1 hover:underline shrink-0 whitespace-nowrap"
                         >
                           <Pencil size={12} /> Edit Fields
                         </button>
@@ -579,16 +583,16 @@ export default function SubmissionsClientPage({
                                 href={file}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="bg-white border border-slate-200 rounded-xl p-3.5 flex items-center justify-between hover:bg-slate-50 hover:border-teal-500 transition-all group/file shadow-sm"
+                                className="bg-white border border-slate-200 rounded-xl p-3 sm:p-3.5 flex items-center justify-between gap-2 hover:bg-slate-50 hover:border-teal-500 transition-all group/file shadow-sm"
                               >
-                                <div className="flex items-center gap-3">
+                                <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
                                   <FileText className="text-[#007a87] w-5 h-5 shrink-0" />
-                                  <span className="text-sm font-bold text-slate-700 truncate max-w-[280px]">
+                                  <span className="text-xs sm:text-sm font-bold text-slate-700 truncate min-w-0 flex-1">
                                     {filename}
                                   </span>
                                 </div>
-                                <span className="text-xs font-bold text-[#007a87] group-hover/file:underline flex items-center gap-1">
-                                  Download <ChevronRight size={14} />
+                                <span className="text-xs font-bold text-[#007a87] group-hover/file:underline flex items-center gap-1 shrink-0">
+                                  <span className="hidden sm:inline">Download</span> <ChevronRight size={14} />
                                 </span>
                               </a>
                             );

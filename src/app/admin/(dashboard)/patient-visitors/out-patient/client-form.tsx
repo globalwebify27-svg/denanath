@@ -97,13 +97,13 @@ export default function OutPatientClientForm({ initialData }: { initialData: any
 
           <div className="border-t border-slate-200 pt-6 mt-6">
             <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">OP Consultation Room Image</label>
-            <div className="flex items-center gap-4">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-4">
               {data.opConsultationImage && (
                 <div className="shrink-0">
                   <img src={data.opConsultationImage} alt="Preview" className="w-16 h-16 object-cover rounded-lg border border-gray-200" />
                 </div>
               )}
-              <div className="flex-1">
+              <div className="flex-1 w-full min-w-0">
                 <input 
                   type="file" 
                   accept="image/*"
@@ -124,7 +124,7 @@ export default function OutPatientClientForm({ initialData }: { initialData: any
                 <button
                   type="button"
                   onClick={() => handleChange('opConsultationImage', "")}
-                  className="text-white hover:text-white text-sm font-bold px-4 py-2 bg-[#003360] rounded-lg hover:bg-[#002b5c] transition-colors"
+                  className="text-white hover:text-white text-sm font-bold px-4 py-2 bg-[#003360] rounded-lg hover:bg-[#002b5c] transition-colors w-full sm:w-auto text-center shrink-0 self-start sm:self-auto"
                 >
                   Remove
                 </button>
@@ -163,15 +163,15 @@ export default function OutPatientClientForm({ initialData }: { initialData: any
 
         {/* Charges Table */}
         <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200 overflow-hidden">
-          <div className="flex items-center justify-between mb-6">
-            <h3 className="text-lg text-[20px] font-black text-[#002b5c] flex items-center gap-2">
-              <Settings className="w-5 h-5 text-[#007a87]" />
-              Charges Table
+          <div className="flex justify-between items-center gap-4 mb-6">
+            <h3 className="text-lg text-[20px] font-black text-[#002b5c] flex items-center gap-2 min-w-0">
+              <Settings className="w-5 h-5 text-[#007a87] shrink-0" />
+              <span>Charges Table</span>
             </h3>
             <button 
               type="button"
               onClick={addTableRow}
-              className="text-xs font-bold text-white bg-[#D9232D] px-3 py-1.5 rounded-lg hover:bg-red-700 flex items-center gap-1 transition-colors"
+              className="text-xs font-bold text-white bg-[#D9232D] px-3 py-1.5 rounded-lg hover:bg-red-700 flex items-center gap-1 transition-colors shrink-0 whitespace-nowrap"
             >
               <Plus size={14} /> Add Row
             </button>
@@ -181,14 +181,14 @@ export default function OutPatientClientForm({ initialData }: { initialData: any
             <table className="w-full text-left min-w-[900px]">
               <thead>
                 <tr className="bg-slate-200 text-slate-700 text-[11px] font-bold uppercase tracking-wider">
-                  <th className="p-3">Category</th>
-                  <th className="p-3">1st Visit</th>
-                  <th className="p-3">Continuum</th>
-                  <th className="p-3">Sr Citizen 1st</th>
-                  <th className="p-3">Sr Cit Continuum</th>
-                  <th className="p-3">Cross Ref</th>
-                  <th className="p-3">Cross Ref Sr Cit</th>
-                  <th className="p-3 text-center">Action</th>
+                  <th className="p-3 whitespace-nowrap">Category</th>
+                  <th className="p-3 whitespace-nowrap">1st Visit</th>
+                  <th className="p-3 whitespace-nowrap">Continuum</th>
+                  <th className="p-3 whitespace-nowrap">Sr Citizen 1st</th>
+                  <th className="p-3 whitespace-nowrap">Sr Cit Continuum</th>
+                  <th className="p-3 whitespace-nowrap">Cross Ref</th>
+                  <th className="p-3 whitespace-nowrap">Cross Ref Sr Cit</th>
+                  <th className="p-3 text-center whitespace-nowrap">Action</th>
                 </tr>
               </thead>
               <tbody>

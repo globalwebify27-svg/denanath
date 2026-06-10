@@ -40,7 +40,7 @@ export default async function AdminDoctorsPage({
   return (
     <div className="p-8">
       {/* Header Section */}
-      <div className="mb-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 bg-white p-6 md:p-10 rounded-3xl shadow-sm border border-slate-100 relative overflow-hidden group">
+      <div className="mb-10 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 bg-white p-6 md:p-10 rounded-3xl shadow-sm border border-slate-100 relative overflow-hidden group">
         <div className="absolute top-0 left-0 w-2 h-full bg-gradient-to-b from-[#002b5c] to-[#007a87]"></div>
         <div className="z-10 relative">
           <h1 className="text-[32px] md:text-[40px] font-black text-[#002b5c] tracking-tight leading-tight mb-2 flex items-center gap-3">
@@ -50,7 +50,7 @@ export default async function AdminDoctorsPage({
             Manage hospital medical staff and physician profiles.
           </p>
         </div>
-        <div className="z-10 shrink-0 mt-4 md:mt-0">
+        <div className="z-10 shrink-0 mt-4 lg:mt-0">
           <Link
             href="/admin/doctors/new"
             className="flex items-center gap-2 bg-[#007a87] text-white px-7 py-3.5 rounded-xl hover:bg-[#006570] hover:shadow-[0_8px_20px_rgba(0,122,135,0.3)] font-bold transition-all duration-300 transform hover:-translate-y-0.5"
@@ -155,20 +155,20 @@ export default async function AdminDoctorsPage({
           </table>
         </div>
         {totalPages > 1 && (
-          <div className="px-6 py-4 border-t border-gray-100 flex items-center justify-between bg-gray-50/50">
-            <span className="text-[13px] font-[600] text-gray-500">
-              Page <span className="text-gray-800">{page}</span> of <span className="text-gray-800">{totalPages}</span>
+          <div className="px-4 sm:px-6 py-4 border-t border-gray-100 flex flex-wrap items-center justify-between gap-x-3 gap-y-2 bg-gray-50/50">
+            <span className="text-[13px] font-[600] text-gray-500 whitespace-nowrap shrink-0">
+              Page <span className="text-gray-800 font-[800]">{page}</span> of <span className="text-gray-800 font-[800]">{totalPages}</span>
             </span>
-            <div className="flex gap-2">
+            <div className="flex gap-2 shrink-0">
               <Link
                 href={`/admin/doctors?q=${query}&page=${Math.max(1, page - 1)}`}
-                className={`px-4 py-2 text-[12px] font-[700] rounded-lg border transition-all ${page === 1 ? 'border-gray-200 text-gray-400 pointer-events-none bg-gray-50' : 'border-gray-300 text-[#002b5c] bg-white hover:border-[#007a87] hover:text-[#007a87] hover:shadow-sm'}`}
+                className={`px-4 py-2 text-[12px] font-[700] rounded-lg border transition-all whitespace-nowrap ${page === 1 ? 'border-gray-200 text-gray-400 pointer-events-none bg-gray-50' : 'border-gray-300 text-[#002b5c] bg-white hover:border-[#007a87] hover:text-[#007a87] hover:shadow-sm'}`}
               >
                 PREVIOUS
               </Link>
               <Link
                 href={`/admin/doctors?q=${query}&page=${Math.min(totalPages, page + 1)}`}
-                className={`px-4 py-2 text-[12px] font-[700] rounded-lg border transition-all ${page === totalPages ? 'border-gray-200 text-gray-400 pointer-events-none bg-gray-50' : 'border-gray-300 text-[#002b5c] bg-white hover:border-[#007a87] hover:text-[#007a87] hover:shadow-sm'}`}
+                className={`px-4 py-2 text-[12px] font-[700] rounded-lg border transition-all whitespace-nowrap ${page === totalPages ? 'border-gray-200 text-gray-400 pointer-events-none bg-gray-50' : 'border-[#003360] text-white bg-[#003360] hover:bg-[#002347] hover:shadow-sm'}`}
               >
                 NEXT
               </Link>

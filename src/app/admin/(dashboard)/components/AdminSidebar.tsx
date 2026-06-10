@@ -149,7 +149,7 @@ export default function AdminSidebar() {
         ${isMobileOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
       `}>
         {/* Logo Section */}
-        <div className="bg-white p-5 shrink-0 flex items-center gap-2">
+        <Link href="/admin" onClick={() => setIsMobileOpen(false)} className="bg-white p-5 shrink-0 flex items-center gap-2 hover:bg-slate-50 transition-colors">
           <div className="relative flex items-center justify-center w-12 h-12 rounded-lg bg-slate-50 border border-slate-100 p-1 shrink-0">
             <img
               src="/logo.png"
@@ -168,7 +168,7 @@ export default function AdminSidebar() {
               & Research Center
             </span>
           </div>
-        </div>
+        </Link>
 
         {/* Navigation */}
         <nav className="flex-1 overflow-y-auto no-scrollbar p-4 space-y-1 mt-4">

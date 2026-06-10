@@ -80,13 +80,13 @@ export default function AssociatesClientForm({ initialData }: { initialData: any
 
               <div className="md:col-span-2">
                 <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Image Upload / URL</label>
-                <div className="flex items-center gap-4">
+                <div className="flex flex-col sm:flex-row sm:items-center gap-3">
                   {item.image && (
                     <div className="shrink-0">
                       <img src={item.image} alt="Preview" className="w-16 h-16 object-cover rounded-lg border border-gray-200" />
                     </div>
                   )}
-                  <div className="flex-1">
+                  <div className="flex-1 min-w-0">
                     <input 
                       type="file" 
                       accept="image/*"
@@ -107,7 +107,7 @@ export default function AssociatesClientForm({ initialData }: { initialData: any
                     <button
                       type="button"
                       onClick={() => updateItem(item.id, 'image', "")}
-                      className="text-white hover:text-white text-sm font-bold px-4 py-2 bg-[#003360] rounded-lg hover:bg-[#002b5c] transition-colors"
+                      className="text-white hover:text-white text-sm font-bold px-4 py-2 bg-[#003360] rounded-lg hover:bg-[#002b5c] transition-colors shrink-0 self-start sm:self-auto"
                     >
                       Remove
                     </button>

@@ -162,8 +162,8 @@ export default function ContactUsClient({ initialData }: { initialData?: any }) 
                         <input name="email" type="email" className="w-full bg-white border border-slate-300 rounded-xl py-3 px-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-[#007a87] focus:border-transparent transition-shadow" required />
                       </div>
                       <div>
-                        <label className="block text-sm font-bold text-slate-700 mb-2">Phone:</label>
-                        <input name="phone" type="tel" className="w-full bg-white border border-slate-300 rounded-xl py-3 px-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-[#007a87] focus:border-transparent transition-shadow" />
+                        <label className="block text-sm font-bold text-slate-700 mb-2">Phone: <span className="text-red-500">*</span></label>
+                        <input name="phone" type="tel" required maxLength={10} pattern="[0-9]{10}" title="Please enter a valid 10-digit phone number" onInput={(e) => { e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/g, ''); }} className="w-full bg-white border border-slate-300 rounded-xl py-3 px-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-[#007a87] focus:border-transparent transition-shadow" />
                       </div>
                     </div>
                     <div>

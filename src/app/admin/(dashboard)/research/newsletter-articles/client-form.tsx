@@ -38,10 +38,10 @@ export default function NewsletterClientForm({ initialData }: { initialData: any
       <input type="hidden" name="pageJson" value={JSON.stringify({ newsletters })} />
       
       <div className="space-y-6">
-        <div className="flex justify-between items-center mb-4">
-          <h3 className="text-xl text-[20px] font-black text-[#002b5c]">Newsletters List</h3>
-          <button type="button" onClick={addNewsletter} className="flex items-center gap-2 bg-[#002b5c] text-white px-4 py-2 rounded-xl font-bold hover:bg-[#001c3d] transition-colors shadow-sm">
-            <Plus size={16} strokeWidth={2.5} /> Add Newsletter
+        <div className="flex items-start justify-between gap-2 mb-4">
+          <h3 className="text-[18px] font-black text-[#002b5c] leading-snug max-w-[calc(100%-110px)]">Newsletters List</h3>
+          <button type="button" onClick={addNewsletter} className="inline-flex items-center gap-1 bg-[#002b5c] text-white px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-[#001c3d] transition-colors shadow-sm shrink-0 whitespace-nowrap mt-0.5">
+            <Plus size={13} strokeWidth={2.5} /> Add Newsletter
           </button>
         </div>
 

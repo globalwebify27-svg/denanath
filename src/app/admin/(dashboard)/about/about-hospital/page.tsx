@@ -223,16 +223,16 @@ Surgical facilities include one cardiac catheterization labs, 12 operating theat
             
             <div className="space-y-8">
               <div>
-                <label className="flex items-center justify-between text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">
-                   Imaging Capabilities
-                   <span className="text-[9px] bg-[#D9232D] text-white px-2 py-0.5 rounded-md normal-case tracking-normal">1 item/line</span>
+                <label className="flex items-start justify-between gap-2 text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">
+                   <span>Imaging Capabilities</span>
+                   <span className="text-[9px] bg-[#D9232D] text-white px-2 py-0.5 rounded-md normal-case tracking-normal whitespace-nowrap shrink-0">1 item/line</span>
                 </label>
                 <textarea name="capabilities_imaging" defaultValue={(aboutData.capabilities?.imaging || []).join("\n")} rows={4} className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-rose-500/30 focus:border-rose-500 transition-all duration-200 text-slate-700 font-medium leading-relaxed resize-none text-sm" placeholder="MRI 3 Tesla&#10;CT Scan 128 Slice" />
               </div>
               <div>
-                <label className="flex items-center justify-between text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">
-                   Radiation Capabilities
-                   <span className="text-[9px] bg-[#D9232D] text-white px-2 py-0.5 rounded-md normal-case tracking-normal">1 item/line</span>
+                <label className="flex items-start justify-between gap-2 text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">
+                   <span>Radiation Capabilities</span>
+                   <span className="text-[9px] bg-[#D9232D] text-white px-2 py-0.5 rounded-md normal-case tracking-normal whitespace-nowrap shrink-0">1 item/line</span>
                 </label>
                 <textarea name="capabilities_radiation" defaultValue={(aboutData.capabilities?.radiation || []).join("\n")} rows={4} className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-rose-500/30 focus:border-rose-500 transition-all duration-200 text-slate-700 font-medium leading-relaxed resize-none text-sm" placeholder="Linear Accelerator&#10;Brachytherapy" />
               </div>

@@ -3,8 +3,13 @@
 import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { ChevronRight, Globe, RefreshCw, Lock, CreditCard, User, Phone, Mail, MapPin, Building, ShieldCheck, IndianRupee, MessageSquare, Map } from "lucide-react";
+import { COUNTRIES, STATES_INDIA, CITIES_BY_STATE } from "../../../lib/geoData";
 
 export default function OnlinePaymentClient({ initialData }: { initialData: any }) {
+  const [country, setCountry] = useState("India");
+  const [state, setState] = useState("Maharashtra");
+  const [city, setCity] = useState("Pune");
+
   const options = [
     {
         "name": "E-Mail Login (DMH Users)",
@@ -206,7 +211,7 @@ export default function OnlinePaymentClient({ initialData }: { initialData: any 
                     <div>
                       <label className="block text-sm font-semibold text-slate-700 mb-2">Contact Number <span className="text-red-500">*</span></label>
                       <div className="relative">
-                        <input type="tel" placeholder="Mobile Number" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
+                        <input name="contactNumber" type="tel" placeholder="Mobile Number" maxLength={10} pattern="[0-9]{10}" title="Please enter a valid 10-digit phone number" onInput={(e) => { e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/g, ''); }} className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" required />
                         <Phone className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                       </div>
                     </div>
@@ -241,11 +246,10 @@ export default function OnlinePaymentClient({ initialData }: { initialData: any 
                     <div>
                       <label className="block text-sm font-semibold text-slate-700 mb-2">Country <span className="text-red-500">*</span></label>
                       <div className="relative">
-                        <select className="w-full appearance-none px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium cursor-pointer">
-                        <option>-- Select --</option>
-                        <option>India</option>
-                        <option>OTHER</option>
-                      </select>
+                        <select name="country" value={country} onChange={(e) => { setCountry(e.target.value); setState(""); setCity(""); }} className="w-full appearance-none px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium cursor-pointer" required>
+                          <option value="">-- Select --</option>
+                          {COUNTRIES.map(c => <option key={c} value={c}>{c}</option>)}
+                        </select>
                         <Globe className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                         <ChevronRight className="w-5 h-5 text-slate-400 absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none rotate-90" />
                       </div>
@@ -254,26 +258,36 @@ export default function OnlinePaymentClient({ initialData }: { initialData: any 
                     <div>
                       <label className="block text-sm font-semibold text-slate-700 mb-2">State <span className="text-red-500">*</span></label>
                       <div className="relative">
-                        <select className="w-full appearance-none px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium cursor-pointer">
-                        <option>-- Select --</option>
-                        <option>Maharashtra</option>
-                        <option>OTHER</option>
-                      </select>
+                        {country === "India" ? (
+                          <select name="state" value={state} onChange={(e) => { setState(e.target.value); setCity(""); }} className="w-full appearance-none px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium cursor-pointer" required>
+                            <option value="">-- Select --</option>
+                            {STATES_INDIA.map(s => <option key={s} value={s}>{s}</option>)}
+                          </select>
+                        ) : (
+                          <input type="text" name="state" value={state} onChange={(e) => setState(e.target.value)} placeholder="Enter State" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" required />
+                        )}
                         <Map className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
-                        <ChevronRight className="w-5 h-5 text-slate-400 absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none rotate-90" />
+                        {country === "India" && (
+                          <ChevronRight className="w-5 h-5 text-slate-400 absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none rotate-90" />
+                        )}
                       </div>
                     </div>
                     
                     <div className="md:col-span-2">
                       <label className="block text-sm font-semibold text-slate-700 mb-2">City <span className="text-red-500">*</span></label>
                       <div className="relative">
-                        <select className="w-full md:w-1/2 appearance-none px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium cursor-pointer">
-                    <option>-- Select --</option>
-                    <option>Pune</option>
-                    <option>Mumbai</option>
-                  </select>
+                        {country === "India" ? (
+                          <select name="city" value={city} onChange={(e) => setCity(e.target.value)} className="w-full md:w-1/2 appearance-none px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium cursor-pointer" required>
+                            <option value="">-- Select --</option>
+                            {(CITIES_BY_STATE[state] || ["Other"]).map(c => <option key={c} value={c}>{c}</option>)}
+                          </select>
+                        ) : (
+                          <input type="text" name="city" value={city} onChange={(e) => setCity(e.target.value)} placeholder="Enter City" className="w-full md:w-1/2 px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" required />
+                        )}
                         <MapPin className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
-                        <ChevronRight className="w-5 h-5 text-slate-400 absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none rotate-90 md:right-[calc(50%+1rem)]" />
+                        {country === "India" && (
+                          <ChevronRight className="w-5 h-5 text-slate-400 absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none rotate-90 md:right-[calc(50%+1rem)]" />
+                        )}
                       </div>
                     </div>
                   </div>

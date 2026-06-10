@@ -66,15 +66,16 @@ export default function PatientPortalClientForm({ initialData }: { initialData: 
 
       {/* Features */}
       <div className="space-y-4 pt-4 border-t border-gray-100">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between gap-2">
           <h2 className="text-xl text-[20px] font-black text-[#002b5c]">Portal Features</h2>
           <button 
             type="button" 
             onClick={addFeature}
-            className="flex items-center gap-2 bg-[#007a87] text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-[#005f6b] transition-colors"
+            className="flex items-center gap-1 sm:gap-2 bg-[#007a87] text-white px-2 py-1 sm:px-4 sm:py-2 rounded-lg text-xs sm:text-sm font-bold hover:bg-[#005f6b] transition-colors shrink-0"
           >
-            <Plus size={16} />
-            Add Feature
+            <Plus size={14} className="sm:hidden" />
+            <Plus size={16} className="hidden sm:block" />
+            <span>Add Feature</span>
           </button>
         </div>
 

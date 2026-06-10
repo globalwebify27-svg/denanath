@@ -37,10 +37,10 @@ export default function ResearchContactClientForm({ initialData }: { initialData
         <div className="h-px bg-gray-200 w-full" />
 
         <div>
-          <div className="flex justify-between items-center mb-4">
-            <h3 className="text-xl text-[20px] font-black text-[#002b5c]">Contact Emails</h3>
-            <button type="button" onClick={addEmail} className="flex items-center gap-2 bg-[#002b5c] text-white px-4 py-2 rounded-xl font-bold hover:bg-[#001c3d] transition-colors shadow-sm">
-              <Plus size={16} strokeWidth={2.5} /> Add Email
+          <div className="flex items-start justify-between gap-2 mb-4">
+            <h3 className="text-[18px] font-black text-[#002b5c] leading-snug max-w-[calc(100%-100px)]">Contact Emails</h3>
+            <button type="button" onClick={addEmail} className="inline-flex items-center gap-1 bg-[#002b5c] text-white px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-[#001c3d] transition-colors shadow-sm shrink-0 whitespace-nowrap mt-0.5">
+              <Plus size={13} strokeWidth={2.5} /> Add Email
             </button>
           </div>
           <div className="space-y-3">
@@ -58,10 +58,10 @@ export default function ResearchContactClientForm({ initialData }: { initialData
         <div className="h-px bg-gray-200 w-full" />
 
         <div>
-          <div className="flex justify-between items-center mb-4">
-            <h3 className="text-xl text-[20px] font-black text-[#002b5c]">Key Personnel</h3>
-            <button type="button" onClick={addPerson} className="flex items-center gap-2 bg-[#007a87] text-white px-4 py-2 rounded-xl font-bold hover:bg-[#005c66] transition-colors shadow-sm">
-              <Plus size={16} strokeWidth={2.5} /> Add Person
+          <div className="flex items-start justify-between gap-2 mb-4">
+            <h3 className="text-[18px] font-black text-[#002b5c] leading-snug max-w-[calc(100%-105px)]">Key Personnel</h3>
+            <button type="button" onClick={addPerson} className="inline-flex items-center gap-1 bg-[#007a87] text-white px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-[#005c66] transition-colors shadow-sm shrink-0 whitespace-nowrap mt-0.5">
+              <Plus size={13} strokeWidth={2.5} /> Add Person
             </button>
           </div>
           <div className="space-y-4">

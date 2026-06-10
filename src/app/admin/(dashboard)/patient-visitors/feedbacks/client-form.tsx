@@ -87,7 +87,7 @@ export default function FeedbacksClientForm({ initialData }: { initialData: any 
         
         {/* Stories List */}
         <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200">
-          <div className="flex items-center justify-between mb-6">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6">
             <h3 className="text-lg text-[20px] font-black text-[#002b5c] flex items-center gap-2">
               <MessageSquareQuote className="w-5 h-5 text-[#007a87]" />
               Patient Stories & Feedbacks
@@ -95,7 +95,7 @@ export default function FeedbacksClientForm({ initialData }: { initialData: any 
             <button 
               type="button"
               onClick={addStory}
-              className="text-xs font-bold text-white bg-[#003360] px-3 py-1.5 rounded-lg hover:bg-[#002b5c] flex items-center gap-1 transition-colors"
+              className="text-xs font-bold text-white bg-[#003360] px-3 py-1.5 rounded-lg hover:bg-[#002b5c] flex items-center gap-1 transition-colors shrink-0 whitespace-nowrap self-start sm:self-auto"
             >
               <Plus size={14} /> Add Story
             </button>
@@ -117,14 +117,14 @@ export default function FeedbacksClientForm({ initialData }: { initialData: any 
                     <label className="block text-[10px] font-[800] text-gray-700 uppercase tracking-widest mb-1">Title / Headline</label>
                     <input type="text" value={story.title} onChange={(e) => updateStory(story.id, 'title', e.target.value)} className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium text-[20px] font-black text-[#002b5c]" placeholder="e.g. Great support received from staff" />
                   </div>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-[10px] font-[800] text-gray-700 uppercase tracking-widest mb-1">Author / Patient Name</label>
-                      <input type="text" value={story.author} onChange={(e) => updateStory(story.id, 'author', e.target.value)} className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium" placeholder="e.g. Mrs Himali Pimpalkhare" />
+                  <div className="grid grid-cols-2 gap-3 items-start">
+                    <div className="min-w-0">
+                      <label className="block text-[10px] font-[800] text-gray-700 uppercase tracking-widest mb-1">Patient Name</label>
+                      <input type="text" value={story.author} onChange={(e) => updateStory(story.id, 'author', e.target.value)} className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium text-sm" placeholder="Mrs Himali..." />
                     </div>
-                    <div>
+                    <div className="min-w-0">
                       <label className="block text-[10px] font-[800] text-gray-700 uppercase tracking-widest mb-1">Date</label>
-                      <input type="text" value={story.date} onChange={(e) => updateStory(story.id, 'date', e.target.value)} className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium" placeholder="e.g. 15-Feb-2023" />
+                      <input type="text" value={story.date} onChange={(e) => updateStory(story.id, 'date', e.target.value)} className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium text-sm" placeholder="15-Feb-2023" />
                     </div>
                   </div>
                   <div>

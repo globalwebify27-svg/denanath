@@ -88,22 +88,21 @@ export default function ForeignContributionClientForm({ initialData }: { initial
       
       <div className="space-y-8">        {quarters.map((q, qIndex) => (
           <div key={q.id} className="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden group hover:shadow-md transition-shadow duration-300 relative p-6 md:p-8 shadow-sm">
-            <div className="absolute top-4 right-4 flex items-center gap-2">
+            <div className="bg-slate-50/50 border-b border-slate-100 p-5 md:p-6 flex items-center justify-between gap-3 -mx-6 md:-mx-8 -mt-6 md:-mt-8 mb-6">
+              <div className="flex items-center gap-4">
+                <div className="w-10 h-10 rounded-2xl bg-[#007a87]/10 text-[#007a87] flex items-center justify-center font-black text-lg shrink-0">
+                  <Calendar size={16} />
+                </div>
+                <h3 className="text-[18px] sm:text-[20px] font-black text-[#002b5c]">Quarter Report {qIndex + 1}</h3>
+              </div>
               <button 
                 type="button" 
                 onClick={() => removeQuarter(q.id)}
-                className="p-2 text-rose-500 hover:bg-rose-100 rounded-lg transition-colors"
+                className="p-2 text-rose-500 hover:bg-rose-100 rounded-lg transition-colors shrink-0"
                 title="Remove Quarter"
               >
                 <Trash2 size={18} color="#D9232D" />
               </button>
-            </div>
-            
-            <div className="bg-slate-50/50 border-b border-slate-100 p-5 md:p-6 flex items-center gap-4 -mx-6 md:-mx-8 -mt-6 md:-mt-8 mb-6">
-              <div className="w-10 h-10 rounded-2xl bg-[#007a87]/10 text-[#007a87] flex items-center justify-center font-black text-lg">
-                <Calendar size={16} />
-              </div>
-              <h3 className="text-[20px] font-black text-[#002b5c]">Quarter Report {qIndex + 1}</h3>
             </div>
 
             <div className="grid grid-cols-1 gap-6 mb-8">
@@ -131,17 +130,17 @@ export default function ForeignContributionClientForm({ initialData }: { initial
             </div>
 
             <div className="bg-white p-4 rounded-xl border border-slate-200">
-              <div className="flex items-center justify-between mb-4 border-b border-slate-100 pb-3">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-4 border-b border-slate-100 pb-3">
                 <h4 className="font-bold text-slate-700 flex items-center gap-2">
-                  <FileText size={16} className="text-teal-600" />
-                  Donations List
+                  <FileText size={16} className="text-teal-600 shrink-0" />
+                  <span>Donations List</span>
                 </h4>
                 <button 
                   type="button"
                   onClick={() => addDonation(q.id)}
-                  className="text-xs font-bold text-white bg-[#D9232D] px-3 py-1.5 rounded-lg hover:bg-red-700 flex items-center gap-1 transition-colors"
+                  className="text-xs font-bold text-white bg-[#D9232D] px-3 py-2 rounded-lg hover:bg-red-700 flex items-center justify-center gap-1 transition-colors w-full sm:w-auto whitespace-nowrap"
                 >
-                  <Plus size={14} /> Add Donation
+                  <Plus size={13} /> Add Donation
                 </button>
               </div>
 

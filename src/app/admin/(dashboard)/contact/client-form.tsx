@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Plus, Trash2, Save, Phone, Mail, MapPin, ShieldAlert, HeartPulse, Baby, Droplet, Pill, Activity, Stethoscope } from "lucide-react";
+import { Plus, Trash2, Save, Phone, Mail, MapPin, ShieldAlert, HeartPulse, Baby, Droplet, Pill, Activity, Stethoscope, X } from "lucide-react";
 
 export default function ContactClientForm({ initialData }: { initialData: any }) {
   const [data, setData] = useState({
@@ -111,13 +111,13 @@ export default function ContactClientForm({ initialData }: { initialData: any })
             <div>
               <div className="flex items-center justify-between mb-2">
                 <label className="block text-sm font-bold text-slate-700">Phone/Fax Lines</label>
-                <button type="button" onClick={addPhoneLine} className="text-sm text-[#007a87] font-bold hover:underline">+ Add Line</button>
+                <button type="button" onClick={addPhoneLine} className="text-sm text-[#003360] font-bold hover:underline">+ Add Line</button>
               </div>
               <div className="space-y-2">
                 {data.phoneLines.map((line: string, idx: number) => (
-                  <div key={idx} className="flex gap-2">
+                  <div key={idx} className="flex gap-2 items-center">
                     <input type="text" value={line} onChange={(e) => updatePhoneLine(idx, e.target.value)} className="flex-1 p-3 border border-slate-200 rounded-xl" />
-                    <button type="button" onClick={() => removePhoneLine(idx)} className="p-3 text-red-500 hover:bg-red-50 rounded-xl"><Trash2 size={18} /></button>
+                    <button type="button" onClick={() => removePhoneLine(idx)} className="p-1.5 text-red-500 hover:bg-red-50 rounded-md transition-colors shrink-0"><X size={14} strokeWidth={2.5} /></button>
                   </div>
                 ))}
               </div>
@@ -127,19 +127,23 @@ export default function ContactClientForm({ initialData }: { initialData: any })
 
         {/* Departments Directory */}
         <div className="bg-white p-8 rounded-2xl border border-slate-100 shadow-sm">
-          <div className="flex items-center justify-between mb-6 border-b pb-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 border-b pb-4">
             <h2 className="text-xl font-bold text-[#002b5c]">Department Contacts</h2>
-            <button type="button" onClick={addDept} className="flex items-center gap-2 bg-[#007a87] text-white px-4 py-2 rounded-xl text-sm font-bold">
-              <Plus size={16} /> Add Department
+            <button type="button" onClick={addDept} className="flex items-center gap-1.5 bg-[#007a87] text-white px-3 py-1.5 sm:px-4 sm:py-2 rounded-xl text-xs sm:text-sm font-bold self-start sm:self-auto whitespace-nowrap">
+              <Plus size={14} /> <span>Add Department</span>
             </button>
           </div>
           
           <div className="space-y-4">
             {data.departments.map((dept: any, idx: number) => (
-              <div key={dept.id} className="p-6 bg-slate-50 border border-slate-200 rounded-2xl relative">
-                <button type="button" onClick={() => removeDept(idx)} className="absolute top-4 right-4 text-red-500 hover:bg-red-50 p-2 rounded-lg">
-                  <Trash2 size={18} />
-                </button>
+              <div key={dept.id} className="p-4 sm:p-6 bg-slate-50 border border-slate-200 rounded-2xl">
+                {/* Card header row with delete button */}
+                <div className="flex items-center justify-between gap-2 mb-4">
+                  <span className="text-xs font-bold text-slate-500 uppercase tracking-wide">Department {idx + 1}</span>
+                  <button type="button" onClick={() => removeDept(idx)} className="text-red-500 hover:bg-red-50 p-1.5 rounded-lg transition-colors shrink-0">
+                    <Trash2 size={16} />
+                  </button>
+                </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                   <div>
                     <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Department Name</label>
@@ -162,13 +166,13 @@ export default function ContactClientForm({ initialData }: { initialData: any })
                 <div>
                   <div className="flex items-center justify-between mb-2">
                     <label className="block text-xs font-bold text-slate-500 uppercase">Contact Lines</label>
-                    <button type="button" onClick={() => addDeptLine(idx)} className="text-xs text-[#007a87] font-bold">+ Add Line</button>
+                    <button type="button" onClick={() => addDeptLine(idx)} className="text-xs text-[#003360] font-bold">+ Add Line</button>
                   </div>
                   <div className="space-y-2">
                     {dept.lines.map((line: string, lIdx: number) => (
-                      <div key={lIdx} className="flex gap-2">
+                      <div key={lIdx} className="flex gap-2 items-center">
                         <input type="text" value={line} onChange={(e) => updateDeptLine(idx, lIdx, e.target.value)} className="flex-1 p-2 border border-slate-200 rounded-lg text-sm" />
-                        <button type="button" onClick={() => removeDeptLine(idx, lIdx)} className="p-2 text-red-500 hover:bg-red-50 rounded-lg"><Trash2 size={16} /></button>
+                        <button type="button" onClick={() => removeDeptLine(idx, lIdx)} className="p-1.5 text-red-500 hover:bg-red-50 rounded-md transition-colors shrink-0"><X size={14} strokeWidth={2.5} /></button>
                       </div>
                     ))}
                   </div>

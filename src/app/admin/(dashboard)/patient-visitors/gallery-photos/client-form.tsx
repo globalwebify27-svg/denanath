@@ -115,16 +115,16 @@ export default function GalleryPhotosClientForm({ initialData }: { initialData: 
 
         {/* Photos List */}
         <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200">
-          <div className="flex items-center justify-between mb-6">
+          <div className="flex flex-col gap-3 mb-6">
             <h3 className="text-lg text-[20px] font-black text-[#002b5c] flex items-center gap-2">
               <ImageIcon className="w-5 h-5 text-[#007a87]" />
               Hospital Photos
             </h3>
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2 w-full">
               <select 
                 value={filterCategory} 
                 onChange={(e) => setFilterCategory(e.target.value)}
-                className="px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-sm font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-[#007a87]/30 cursor-pointer"
+                className="flex-1 min-w-0 px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-sm font-medium text-slate-700 focus:outline-none focus:ring-2 focus:ring-[#007a87]/30 cursor-pointer"
               >
                 <option value="ALL">All Categories</option>
                 {availableCategories.map((c: string, i: number) => <option key={i} value={c}>{c}</option>)}
@@ -132,7 +132,7 @@ export default function GalleryPhotosClientForm({ initialData }: { initialData: 
               <button 
                 type="button"
                 onClick={addPhoto}
-                className="text-xs font-bold text-white bg-[#003360] px-3 py-1.5 rounded-lg hover:bg-[#002b5c] flex items-center gap-1 transition-colors"
+                className="text-xs font-bold text-white bg-[#003360] px-3 py-1.5 rounded-lg hover:bg-[#002b5c] flex items-center gap-1 transition-colors shrink-0 whitespace-nowrap"
               >
                 <Plus size={14} /> Add Photo
               </button>

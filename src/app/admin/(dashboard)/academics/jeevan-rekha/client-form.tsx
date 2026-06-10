@@ -122,30 +122,34 @@ export default function JeevanRekhaClientForm({ initialData }: { initialData: an
               </div>
               
               <div>
-                <div className="flex justify-between items-center mb-2">
+                <div className="flex justify-between items-center mb-3 gap-2">
                   <label className="block text-sm font-bold text-slate-700">Phone Numbers</label>
-                  <button type="button" onClick={() => addNestedArray("contactInfo", "phones", "")} className="text-teal-600 text-sm font-bold">+ Add Phone</button>
+                  <button type="button" onClick={() => addNestedArray("contactInfo", "phones", "")} className="flex items-center gap-1 bg-[#003360] text-white hover:bg-[#002240] px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-lg text-xs sm:text-sm font-bold transition-colors shrink-0 shadow-sm">
+                    <Plus className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> Add Phone
+                  </button>
                 </div>
                 <div className="space-y-2">
                   {data.contactInfo?.phones?.map((item: string, idx: number) => (
-                    <div key={idx} className="flex gap-2">
-                      <input value={item} onChange={(e) => handleNestedArrayChange("contactInfo", "phones", idx, e.target.value)} className="flex-1 p-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium" />
-                      <button type="button" onClick={() => removeNestedArray("contactInfo", "phones", idx)} className="text-[#D9232D] p-2"><Trash2 size={16} color="#D9232D" /></button>
+                    <div key={idx} className="flex gap-2 items-center bg-slate-50 p-2 rounded-xl border border-slate-200 sm:bg-transparent sm:border-0 sm:rounded-none sm:p-0">
+                      <input value={item} onChange={(e) => handleNestedArrayChange("contactInfo", "phones", idx, e.target.value)} className="flex-1 min-w-0 p-3 bg-white sm:bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium" />
+                      <button type="button" onClick={() => removeNestedArray("contactInfo", "phones", idx)} className="text-[#D9232D] hover:bg-red-50 p-2 rounded-lg transition-colors shrink-0"><Trash2 size={18} color="#D9232D" /></button>
                     </div>
                   ))}
                 </div>
               </div>
 
               <div>
-                <div className="flex justify-between items-center mb-2">
+                <div className="flex justify-between items-center mb-3 gap-2">
                   <label className="block text-sm font-bold text-slate-700">Email Addresses</label>
-                  <button type="button" onClick={() => addNestedArray("contactInfo", "emails", "")} className="text-teal-600 text-sm font-bold">+ Add Email</button>
+                  <button type="button" onClick={() => addNestedArray("contactInfo", "emails", "")} className="flex items-center gap-1 bg-[#003360] text-white hover:bg-[#002240] px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-lg text-xs sm:text-sm font-bold transition-colors shrink-0 shadow-sm">
+                    <Plus className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> Add Email
+                  </button>
                 </div>
                 <div className="space-y-2">
                   {data.contactInfo?.emails?.map((item: string, idx: number) => (
-                    <div key={idx} className="flex gap-2">
-                      <input value={item} onChange={(e) => handleNestedArrayChange("contactInfo", "emails", idx, e.target.value)} className="flex-1 p-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium" />
-                      <button type="button" onClick={() => removeNestedArray("contactInfo", "emails", idx)} className="text-[#D9232D] p-2"><Trash2 size={16} color="#D9232D" /></button>
+                    <div key={idx} className="flex gap-2 items-center bg-slate-50 p-2 rounded-xl border border-slate-200 sm:bg-transparent sm:border-0 sm:rounded-none sm:p-0">
+                      <input value={item} onChange={(e) => handleNestedArrayChange("contactInfo", "emails", idx, e.target.value)} className="flex-1 min-w-0 p-3 bg-white sm:bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium" />
+                      <button type="button" onClick={() => removeNestedArray("contactInfo", "emails", idx)} className="text-[#D9232D] hover:bg-red-50 p-2 rounded-lg transition-colors shrink-0"><Trash2 size={18} color="#D9232D" /></button>
                     </div>
                   ))}
                 </div>

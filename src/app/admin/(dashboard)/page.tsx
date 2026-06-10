@@ -53,7 +53,7 @@ export default async function AdminDashboardOverview() {
         <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-[#007a87]/10 via-[#d9232d]/5 to-transparent rounded-full blur-3xl -translate-y-1/2 translate-x-1/3 pointer-events-none" />
         <div className="absolute bottom-0 left-0 w-64 h-64 bg-gradient-to-tr from-[#002b5c]/5 to-transparent rounded-full blur-2xl translate-y-1/2 -translate-x-1/4 pointer-events-none" />
         
-        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#007a87]/10 border border-[#007a87]/20 text-[#007a87] text-xs font-bold tracking-widest uppercase mb-4">
               <Activity className="w-4 h-4" />
@@ -67,7 +67,7 @@ export default async function AdminDashboardOverview() {
             </p>
           </div>
           
-          <div className="shrink-0 flex flex-col items-end gap-3 bg-gray-50/90 backdrop-blur-md p-5 rounded-2xl border border-gray-200 shadow-sm relative z-20">
+          <div className="shrink-0 flex flex-col items-center lg:items-end gap-3 bg-gray-50/90 backdrop-blur-md p-5 rounded-2xl border border-gray-200 shadow-sm relative z-20 self-center lg:self-auto">
             <span className="text-[10px] font-[800] text-gray-400 uppercase tracking-[0.2em]">Current Session</span>
             <div className="flex items-center gap-3 bg-white px-5 py-3 rounded-xl shadow-md border border-gray-100 hover:shadow-lg transition-all cursor-pointer">
               <ShieldCheck className="w-5 h-5 text-emerald-500" />

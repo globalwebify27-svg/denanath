@@ -89,7 +89,7 @@ export default function HealthPackagesClientForm({ initialData }: { initialData:
             <button 
               type="button"
               onClick={addPackage}
-              className="text-xs font-bold text-white bg-[#D9232D] px-3 py-1.5 rounded-lg hover:bg-red-700 flex items-center gap-1 transition-colors"
+              className="text-xs font-bold text-white bg-[#D9232D] px-3 py-1.5 rounded-lg hover:bg-red-700 flex items-center gap-1 transition-colors shrink-0 whitespace-nowrap"
             >
               <Plus size={14} /> Add Package
             </button>
@@ -114,11 +114,11 @@ export default function HealthPackagesClientForm({ initialData }: { initialData:
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <label className="block text-[10px] font-[800] text-gray-700 uppercase tracking-widest mb-1">Total Cost</label>
-                      <input type="text" value={pkg.cost} onChange={(e) => updatePackage(pkg.id, 'cost', e.target.value)} className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium" placeholder="3820.00" />
+                      <input type="text" value={pkg.cost} onChange={(e) => updatePackage(pkg.id, 'cost', e.target.value)} className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium text-sm" placeholder="3820.00" />
                     </div>
                     <div>
                       <label className="block text-[10px] font-[800] text-[#007a87] uppercase tracking-widest mb-1">Payable Amount</label>
-                      <input type="text" value={pkg.payable} onChange={(e) => updatePackage(pkg.id, 'payable', e.target.value)} className="w-full p-2 border border-teal-200 bg-teal-50 rounded-lg text-sm font-bold" placeholder="3450.00" />
+                      <input type="text" value={pkg.payable} onChange={(e) => updatePackage(pkg.id, 'payable', e.target.value)} className="w-full p-3 bg-teal-50 border border-teal-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium text-sm" placeholder="3450.00" />
                     </div>
                   </div>
                   <div>

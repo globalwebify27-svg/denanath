@@ -242,14 +242,14 @@ export default function DoctorForm({ doctor, id }: { doctor: any; id: string }) 
 
         <div className="md:col-span-2">
           <label className="block text-sm font-medium text-gray-700 mb-2">Doctor Photo (optional)</label>
-          <div className="flex items-center gap-4">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-3">
             {formData.image && (
               <div className="shrink-0">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={formData.image} alt="Preview" className="w-16 h-16 object-cover rounded-lg border border-gray-200" />
               </div>
             )}
-            <div className="flex-1">
+            <div className="flex-1 min-w-0">
               <input
                 type="file"
                 accept="image/*"
@@ -270,7 +270,7 @@ export default function DoctorForm({ doctor, id }: { doctor: any; id: string }) 
               <button
                 type="button"
                 onClick={() => setFormData({ ...formData, image: "" })}
-                className="text-[#D9232D] hover:text-red-700 text-sm font-bold px-4 py-2 bg-red-50 rounded-lg hover:bg-red-100 transition-colors"
+                className="text-[#D9232D] hover:text-red-700 text-sm font-bold px-4 py-2 bg-red-50 rounded-lg hover:bg-red-100 transition-colors shrink-0 self-start sm:self-auto"
               >
                 Remove
               </button>
@@ -280,43 +280,43 @@ export default function DoctorForm({ doctor, id }: { doctor: any; id: string }) 
       </div>
 
       <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 mb-6">
-        <div className="flex justify-between items-center mb-4">
-          <h3 className="text-lg font-semibold text-gray-800">OPD Timings</h3>
+        <div className="flex items-center justify-between mb-4 gap-2">
+          <h3 className="text-base sm:text-lg font-semibold text-gray-800 truncate min-w-0">OPD Timings</h3>
           <button
             type="button"
             onClick={handleTimingAdd}
-            className="flex items-center gap-1.5 px-4 py-2.5 bg-[#003360] text-white hover:bg-[#002545] rounded-xl text-xs font-bold transition-all duration-300 shadow-sm hover:shadow"
+            className="flex items-center gap-1.5 px-3 py-2 sm:px-4 sm:py-2.5 bg-[#003360] text-white hover:bg-[#002545] rounded-xl text-xs font-bold transition-all duration-300 shadow-sm hover:shadow shrink-0 whitespace-nowrap ml-auto"
           >
             <Plus size={14} /> Add Timing
           </button>
         </div>
         {formData.timings.map((timing: any, index: number) => (
-          <div key={index} className="flex gap-2 mb-2 bg-gray-50 p-3 rounded-lg border border-gray-200">
+          <div key={index} className="flex flex-col sm:flex-row gap-2 mb-3 bg-gray-50 p-3 rounded-lg border border-gray-200">
             <input
               type="text"
               placeholder="Branch"
               value={timing.branch}
               onChange={(e) => handleTimingChange(index, "branch", e.target.value)}
-              className="flex-1 p-2 border border-gray-300 rounded-lg"
+              className="w-full sm:flex-1 p-2 border border-gray-300 rounded-lg text-sm"
             />
             <input
               type="text"
               placeholder="Day"
               value={timing.day}
               onChange={(e) => handleTimingChange(index, "day", e.target.value)}
-              className="flex-1 p-2 border border-gray-300 rounded-lg"
+              className="w-full sm:flex-1 p-2 border border-gray-300 rounded-lg text-sm"
             />
             <input
               type="text"
               placeholder="Time"
               value={timing.time}
               onChange={(e) => handleTimingChange(index, "time", e.target.value)}
-              className="flex-1 p-2 border border-gray-300 rounded-lg"
+              className="w-full sm:flex-1 p-2 border border-gray-300 rounded-lg text-sm"
             />
             <button
               type="button"
               onClick={() => handleTimingRemove(index)}
-              className="p-2 text-[#D9232D] hover:bg-red-50 rounded-lg"
+              className="self-end sm:self-auto p-2 text-[#D9232D] hover:bg-red-50 rounded-lg"
             >
               <Trash2 size={20} color="#D9232D" />
             </button>
