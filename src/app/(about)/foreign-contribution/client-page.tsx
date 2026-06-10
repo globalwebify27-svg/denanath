@@ -4,7 +4,10 @@ import React, { useEffect, useRef } from "react";
 import Link from "next/link";
 import { ChevronRight, Building2 } from "lucide-react";
 
-export default function ForeignContributionClientPage({ fcraData }: { fcraData: any[] }) {
+export default function ForeignContributionClientPage({ fcraData }: { fcraData: any }) {
+  const introduction = fcraData.introduction || "Information regarding receipt of Foreign Contribution";
+  const quarters = fcraData.quarters || [];
+
   const aboutOptions = [
     { name: "About Hospital", href: "/about-hospital", active: false },
     { name: "Associates", href: "/associates", active: false },
@@ -92,15 +95,14 @@ export default function ForeignContributionClientPage({ fcraData }: { fcraData: 
                   Foreign Contribution
                 </h2>
                 
-                <h3 className="text-xl md:text-2xl font-bold text-[#002b5c] tracking-tight mb-4 mt-8">
-                  Information regarding receipt of Foreign Contribution
-                </h3>
-                <div className="w-24 h-1.5 bg-teal-500/20 rounded-full mt-6 mb-8" />
+                <p className="text-slate-600 leading-relaxed font-light mb-8 whitespace-pre-wrap mt-8">
+                  {introduction}
+                </p>
               </div>
 
               {/* FCRA Data Blocks */}
               <div className="space-y-12">
-                {fcraData.map((quarterData, qIdx) => (
+                {quarters.map((quarterData: any, qIdx: number) => (
                   <div key={qIdx} className="overflow-hidden rounded-2xl border border-slate-200 shadow-sm">
                     {/* Quarter Header */}
                     <div className="bg-[#1eb7a6] text-white py-4 px-6 font-bold text-lg">

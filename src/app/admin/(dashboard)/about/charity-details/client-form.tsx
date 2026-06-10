@@ -3,8 +3,12 @@
 import { useState } from "react";
 import {  Plus, Trash2, HeartHandshake } from "lucide-react";
 
-export default function CharityDetailsClientForm({ initialData }: { initialData: any[] }) {
-  const [items, setItems] = useState<any[]>(initialData.length > 0 ? initialData.map(item => ({
+export default function CharityDetailsClientForm({ initialData }: { initialData: any }) {
+  const [badgeText, setBadgeText] = useState(initialData.badgeText || "Our Commitment to Society");
+  const [heading, setHeading] = useState(initialData.heading || "Information Regarding Charity");
+  const [introduction, setIntroduction] = useState(initialData.introduction || "Deenanath Mangeshkar Hospital actively provides world-class medical treatment to patients from indigent (निर्धन) and weaker sections (दुर्बल) of society. Below is a detailed breakdown of the patients we have recently assisted.");
+  
+  const [items, setItems] = useState<any[]>(initialData.records?.length > 0 ? initialData.records.map((item: any) => ({
     ...item,
     id: item.id || Date.now() + Math.random(),
   })) : [{
@@ -33,11 +37,16 @@ export default function CharityDetailsClientForm({ initialData }: { initialData:
 
   // Convert state to JSON payload format
   const getJsonPayload = () => {
-    const payload = items.map(item => ({
-      month: item.month,
-      indigent: item.indigent,
-      weaker: item.weaker
-    }));
+    const payload = {
+      badgeText,
+      heading,
+      introduction,
+      records: items.map(item => ({
+        month: item.month,
+        indigent: item.indigent,
+        weaker: item.weaker
+      }))
+    };
     return JSON.stringify(payload);
   };
 
@@ -46,10 +55,54 @@ export default function CharityDetailsClientForm({ initialData }: { initialData:
       <input type="hidden" name="charityJson" value={getJsonPayload()} />
       
       <div className="space-y-6">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
-          <div>
-            <h3 className="text-xl text-[20px] font-black text-[#002b5c] flex items-center gap-2">
-              <HeartHandshake className="w-5 h-5 text-[#007a87]" />
+        
+        {/* Static Content */}
+        <div className="bg-white p-6 rounded-2xl border border-slate-200">
+          <h3 className="text-xl text-[20px] font-black text-[#002b5c] flex items-center gap-2 mb-6">
+            <HeartHandshake className="w-5 h-5 text-[#007a87]" />
+            Page Static Content
+          </h3>
+          <div className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Badge Text</label>
+                <input 
+                  type="text" 
+                  value={badgeText} 
+                  onChange={(e) => setBadgeText(e.target.value)}
+                  className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium text-sm"
+                  placeholder="e.g. Our Commitment to Society"
+                />
+              </div>
+              <div>
+                <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Heading Text</label>
+                <input 
+                  type="text" 
+                  value={heading} 
+                  onChange={(e) => setHeading(e.target.value)}
+                  className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium text-sm"
+                  placeholder="e.g. Information Regarding Charity"
+                />
+              </div>
+            </div>
+            <div>
+              <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Introduction Text</label>
+              <textarea 
+                value={introduction} 
+                onChange={(e) => setIntroduction(e.target.value)}
+                rows={4}
+                className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium leading-relaxed text-sm"
+                placeholder="e.g. Deenanath Mangeshkar Hospital actively provides..."
+              />
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-white p-6 rounded-2xl border border-slate-200">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+            <div>
+              <h3 className="text-xl text-[20px] font-black text-[#002b5c] flex items-center gap-2">
+                <HeartHandshake className="w-5 h-5 text-[#007a87]" />
               Charity Statistics
             </h3>
             <p className="text-slate-500 text-sm mt-1">Manage the monthly charity patient numbers.</p>
@@ -124,6 +177,7 @@ export default function CharityDetailsClientForm({ initialData }: { initialData:
               </div>
             )}
           </div>
+        </div>
         </div>
       </div>
 

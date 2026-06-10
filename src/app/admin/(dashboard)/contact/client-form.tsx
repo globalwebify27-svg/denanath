@@ -117,7 +117,7 @@ export default function ContactClientForm({ initialData }: { initialData: any })
                 {data.phoneLines.map((line: string, idx: number) => (
                   <div key={idx} className="flex gap-2 items-center">
                     <input type="text" value={line} onChange={(e) => updatePhoneLine(idx, e.target.value)} className="flex-1 p-3 border border-slate-200 rounded-xl" />
-                    <button type="button" onClick={() => removePhoneLine(idx)} className="p-1.5 text-red-500 hover:bg-red-50 rounded-md transition-colors shrink-0"><X size={14} strokeWidth={2.5} /></button>
+                    <button type="button" onClick={() => removePhoneLine(idx)} className="w-8 h-8 flex items-center justify-center text-white bg-[#D9232D] rounded-lg hover:bg-red-700 transition-colors font-bold shrink-0">x</button>
                   </div>
                 ))}
               </div>
@@ -172,7 +172,7 @@ export default function ContactClientForm({ initialData }: { initialData: any })
                     {dept.lines.map((line: string, lIdx: number) => (
                       <div key={lIdx} className="flex gap-2 items-center">
                         <input type="text" value={line} onChange={(e) => updateDeptLine(idx, lIdx, e.target.value)} className="flex-1 p-2 border border-slate-200 rounded-lg text-sm" />
-                        <button type="button" onClick={() => removeDeptLine(idx, lIdx)} className="p-1.5 text-red-500 hover:bg-red-50 rounded-md transition-colors shrink-0"><X size={14} strokeWidth={2.5} /></button>
+                        <button type="button" onClick={() => removeDeptLine(idx, lIdx)} className="w-8 h-8 flex items-center justify-center text-white bg-[#D9232D] rounded-lg hover:bg-red-700 transition-colors font-bold shrink-0">x</button>
                       </div>
                     ))}
                   </div>

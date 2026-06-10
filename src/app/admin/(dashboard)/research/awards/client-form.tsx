@@ -153,8 +153,8 @@ export default function AwardsClientForm({ initialData }: { initialData: any }) 
                   {award.items.map((item: string, itemIdx: number) => (
                     <div key={itemIdx} className="flex gap-2 items-start">
                       <textarea value={item} onChange={(e) => updateAwardItem(yearIdx, itemIdx, e.target.value)} rows={2} className="flex-1 p-3 border border-gray-200 rounded-xl focus:ring-[#007a87] focus:outline-none text-sm" />
-                      <button type="button" onClick={() => removeAwardItem(yearIdx, itemIdx)} className="p-3 text-[#D9232D] hover:bg-red-50 rounded-xl" title="Remove Item">
-                        <X size={16} color="#D9232D" />
+                      <button type="button" onClick={() => removeAwardItem(yearIdx, itemIdx)} className="w-8 h-8 flex items-center justify-center text-white bg-[#D9232D] rounded-lg hover:bg-red-700 transition-colors font-bold shrink-0" title="Remove Item">
+                        x
                       </button>
                     </div>
                   ))}

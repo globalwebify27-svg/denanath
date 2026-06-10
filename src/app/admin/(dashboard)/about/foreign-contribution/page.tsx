@@ -8,8 +8,17 @@ export const dynamic = "force-dynamic";
 export default async function AdminForeignContributionPage() {
   const setting = await prisma.siteSetting.findUnique({ where: { key: 'page_foreign_contribution' } });
 
-  let fcraData: any[] = [];
-  try { if (setting) fcraData = JSON.parse(setting.value); } catch (e) {}
+  let fcraData: any = { introduction: "Information regarding receipt of Foreign Contribution", quarters: [] };
+  try { 
+    if (setting) {
+      const parsed = JSON.parse(setting.value);
+      if (Array.isArray(parsed)) {
+        fcraData.quarters = parsed;
+      } else {
+        fcraData = parsed;
+      }
+    } 
+  } catch (e) {}
 
   async function saveFcra(formData: FormData) {
     "use server";

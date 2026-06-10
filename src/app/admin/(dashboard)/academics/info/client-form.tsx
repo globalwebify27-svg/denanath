@@ -241,9 +241,9 @@ export default function AcademicsInfoClientForm({ initialData }: { initialData: 
                               const newItems = prog.items.filter((_: any, i: number) => i !== itemIdx);
                               handleObjectArrayChange("pgProgrammes", progIdx, "items", newItems);
                             }} 
-                            className="text-[#D9232D] hover:bg-red-50 p-2 rounded-lg transition-colors"
+                            className="w-8 h-8 flex items-center justify-center text-white bg-[#D9232D] rounded-lg hover:bg-red-700 transition-colors font-bold shrink-0"
                           >
-                            <X size={16} strokeWidth={2.5} />
+                            x
                           </button>
                         </div>
                       ))}
@@ -284,8 +284,8 @@ export default function AcademicsInfoClientForm({ initialData }: { initialData: 
                       className="flex-1 p-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium"
                       placeholder="Fellowship Name"
                     />
-                    <button type="button" onClick={() => removeFromArray("shortTermFellowships", idx)} className="text-[#D9232D] hover:bg-red-50 p-2 rounded-lg transition-colors">
-                      <X size={16} strokeWidth={2.5} />
+                    <button type="button" onClick={() => removeFromArray("shortTermFellowships", idx)} className="w-8 h-8 flex items-center justify-center text-white bg-[#D9232D] rounded-lg hover:bg-red-700 transition-colors font-bold shrink-0">
+                      x
                     </button>
                   </div>
                 ))}
@@ -306,7 +306,7 @@ export default function AcademicsInfoClientForm({ initialData }: { initialData: 
               </div>
               <div className="space-y-4">
                 {data.teachingInstitutions?.map((item: any, idx: number) => (
-                  <div key={idx} className="flex gap-4 items-center bg-slate-50 p-4 rounded-xl border border-slate-200 relative group">
+                  <div key={idx} className="flex gap-4 items-center bg-slate-50 p-4 rounded-xl border border-slate-200 group">
                     <div className="flex-1 space-y-3">
                       <div>
                         <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-2">Institution Name</label>
@@ -317,8 +317,8 @@ export default function AcademicsInfoClientForm({ initialData }: { initialData: 
                         <input value={item.desc} onChange={(e) => handleObjectArrayChange("teachingInstitutions", idx, "desc", e.target.value)} className="w-full p-3 bg-white border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium" placeholder="e.g. runs B.Sc. Nursing" />
                       </div>
                     </div>
-                    <button type="button" onClick={() => removeFromArray("teachingInstitutions", idx)} className="text-[#D9232D] hover:bg-red-50 p-2 rounded-lg transition-colors absolute top-4 right-4">
-                      <X size={20} strokeWidth={2.5} />
+                    <button type="button" onClick={() => removeFromArray("teachingInstitutions", idx)} className="w-8 h-8 flex items-center justify-center text-white bg-[#D9232D] rounded-lg hover:bg-red-700 transition-colors font-bold shrink-0">
+                      x
                     </button>
                   </div>
                 ))}
@@ -339,14 +339,14 @@ export default function AcademicsInfoClientForm({ initialData }: { initialData: 
               </div>
               <div className="space-y-2">
                 {data.dnbSpecialities?.map((item: any, idx: number) => (
-                  <div key={idx} className="relative bg-slate-50 p-3 rounded-xl border border-slate-200">
-                    <button type="button" onClick={() => removeFromArray("dnbSpecialities", idx)} className="absolute top-2 right-2 text-[#D9232D] hover:bg-red-50 p-1.5 rounded-lg transition-colors z-10">
-                      <X size={15} strokeWidth={2.5} />
-                    </button>
-                    <div className="flex flex-row gap-2 pr-8 overflow-x-auto pb-1 flex-nowrap [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                  <div key={idx} className="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                    <div className="flex flex-row items-center gap-2 overflow-x-auto pb-1 flex-nowrap [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                       <input value={item.srNo} onChange={(e) => handleObjectArrayChange("dnbSpecialities", idx, "srNo", e.target.value)} className="w-12 sm:w-16 shrink-0 p-2.5 bg-white border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium text-center text-sm" placeholder="Sr No" />
                       <input value={item.speciality} onChange={(e) => handleObjectArrayChange("dnbSpecialities", idx, "speciality", e.target.value)} className="min-w-[180px] sm:min-w-0 flex-1 p-2.5 bg-white border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium text-sm" placeholder="Speciality Name" />
                       <input value={item.accreditedFrom} onChange={(e) => handleObjectArrayChange("dnbSpecialities", idx, "accreditedFrom", e.target.value)} className="w-20 sm:w-28 shrink-0 p-2.5 bg-white border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium text-center text-sm" placeholder="Year" />
+                      <button type="button" onClick={() => removeFromArray("dnbSpecialities", idx)} className="w-8 h-8 flex items-center justify-center text-white bg-[#D9232D] rounded-lg hover:bg-red-700 transition-colors font-bold shrink-0">
+                        x
+                      </button>
                     </div>
                   </div>
                 ))}
@@ -367,14 +367,14 @@ export default function AcademicsInfoClientForm({ initialData }: { initialData: 
               </div>
               <div className="space-y-2">
                 {data.drnbSpecialities?.map((item: any, idx: number) => (
-                  <div key={idx} className="relative bg-slate-50 p-3 rounded-xl border border-slate-200">
-                    <button type="button" onClick={() => removeFromArray("drnbSpecialities", idx)} className="absolute top-2 right-2 text-[#D9232D] hover:bg-red-50 p-1.5 rounded-lg transition-colors z-10">
-                      <X size={15} strokeWidth={2.5} />
-                    </button>
-                    <div className="flex flex-row gap-2 pr-8 overflow-x-auto pb-1 flex-nowrap [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                  <div key={idx} className="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                    <div className="flex flex-row items-center gap-2 overflow-x-auto pb-1 flex-nowrap [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                       <input value={item.srNo} onChange={(e) => handleObjectArrayChange("drnbSpecialities", idx, "srNo", e.target.value)} className="w-12 sm:w-16 shrink-0 p-2.5 bg-white border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium text-center text-sm" placeholder="Sr No" />
                       <input value={item.speciality} onChange={(e) => handleObjectArrayChange("drnbSpecialities", idx, "speciality", e.target.value)} className="min-w-[180px] sm:min-w-0 flex-1 p-2.5 bg-white border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium text-sm" placeholder="Speciality Name" />
                       <input value={item.accreditedFrom} onChange={(e) => handleObjectArrayChange("drnbSpecialities", idx, "accreditedFrom", e.target.value)} className="w-20 sm:w-28 shrink-0 p-2.5 bg-white border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium text-center text-sm" placeholder="Year" />
+                      <button type="button" onClick={() => removeFromArray("drnbSpecialities", idx)} className="w-8 h-8 flex items-center justify-center text-white bg-[#D9232D] rounded-lg hover:bg-red-700 transition-colors font-bold shrink-0">
+                        x
+                      </button>
                     </div>
                   </div>
                 ))}
@@ -395,14 +395,14 @@ export default function AcademicsInfoClientForm({ initialData }: { initialData: 
               </div>
               <div className="space-y-2">
                 {data.fnbSpecialities?.map((item: any, idx: number) => (
-                  <div key={idx} className="relative bg-slate-50 p-3 rounded-xl border border-slate-200">
-                    <button type="button" onClick={() => removeFromArray("fnbSpecialities", idx)} className="absolute top-2 right-2 text-[#D9232D] hover:bg-red-50 p-1.5 rounded-lg transition-colors z-10">
-                      <X size={15} strokeWidth={2.5} />
-                    </button>
-                    <div className="flex flex-row gap-2 pr-8 overflow-x-auto pb-1 flex-nowrap [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                  <div key={idx} className="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                    <div className="flex flex-row items-center gap-2 overflow-x-auto pb-1 flex-nowrap [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                       <input value={item.srNo} onChange={(e) => handleObjectArrayChange("fnbSpecialities", idx, "srNo", e.target.value)} className="w-12 sm:w-16 shrink-0 p-2.5 bg-white border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium text-center text-sm" placeholder="Sr No" />
                       <input value={item.speciality} onChange={(e) => handleObjectArrayChange("fnbSpecialities", idx, "speciality", e.target.value)} className="min-w-[180px] sm:min-w-0 flex-1 p-2.5 bg-white border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium text-sm" placeholder="Speciality Name" />
                       <input value={item.accreditedFrom} onChange={(e) => handleObjectArrayChange("fnbSpecialities", idx, "accreditedFrom", e.target.value)} className="w-20 sm:w-28 shrink-0 p-2.5 bg-white border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium text-center text-sm" placeholder="Year" />
+                      <button type="button" onClick={() => removeFromArray("fnbSpecialities", idx)} className="w-8 h-8 flex items-center justify-center text-white bg-[#D9232D] rounded-lg hover:bg-red-700 transition-colors font-bold shrink-0">
+                        x
+                      </button>
                     </div>
                   </div>
                 ))}
@@ -423,14 +423,14 @@ export default function AcademicsInfoClientForm({ initialData }: { initialData: 
               </div>
               <div className="space-y-2">
                 {data.awards?.map((item: any, idx: number) => (
-                  <div key={idx} className="relative bg-slate-50 p-3 rounded-xl border border-slate-200">
-                    <button type="button" onClick={() => removeFromArray("awards", idx)} className="absolute top-2 right-2 text-[#D9232D] hover:bg-red-50 p-1.5 rounded-lg transition-colors z-10">
-                      <X size={15} strokeWidth={2.5} />
-                    </button>
-                    <div className="flex flex-row gap-2 pr-8 overflow-x-auto pb-1 flex-nowrap [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+                  <div key={idx} className="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                    <div className="flex flex-row items-center gap-2 overflow-x-auto pb-1 flex-nowrap [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
                       <input value={item.department} onChange={(e) => handleObjectArrayChange("awards", idx, "department", e.target.value)} className="w-28 sm:w-1/3 shrink-0 p-3 bg-white border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium" placeholder="Department" />
                       <input value={item.year} onChange={(e) => handleObjectArrayChange("awards", idx, "year", e.target.value)} className="w-20 sm:w-32 shrink-0 p-3 bg-white border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium text-center" placeholder="Year" />
                       <input value={item.studentName} onChange={(e) => handleObjectArrayChange("awards", idx, "studentName", e.target.value)} className="min-w-[180px] sm:min-w-0 flex-1 p-3 bg-white border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium" placeholder="Student Name" />
+                      <button type="button" onClick={() => removeFromArray("awards", idx)} className="w-8 h-8 flex items-center justify-center text-white bg-[#D9232D] rounded-lg hover:bg-red-700 transition-colors font-bold shrink-0">
+                        x
+                      </button>
                     </div>
                   </div>
                 ))}
@@ -451,13 +451,13 @@ export default function AcademicsInfoClientForm({ initialData }: { initialData: 
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
                 {data.statistics?.map((item: any, idx: number) => (
-                  <div key={idx} className="flex gap-2 items-center bg-slate-50 p-2 rounded-xl border border-slate-200 relative group">
+                  <div key={idx} className="flex gap-2 items-center bg-slate-50 p-2 rounded-xl border border-slate-200 group">
                     <div className="flex-1 space-y-2">
                       <input value={item.value} onChange={(e) => handleObjectArrayChange("statistics", idx, "value", e.target.value)} className="w-full p-3 bg-white border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium" placeholder="Value (e.g. 761)" />
                       <input value={item.label} onChange={(e) => handleObjectArrayChange("statistics", idx, "label", e.target.value)} className="w-full p-3 bg-white border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium" placeholder="Label (e.g. Admitted)" />
                     </div>
-                    <button type="button" onClick={() => removeFromArray("statistics", idx)} className="text-[#D9232D] hover:bg-red-50 p-2 rounded-lg transition-colors absolute top-4 right-4">
-                      <X size={20} strokeWidth={2.5} />
+                    <button type="button" onClick={() => removeFromArray("statistics", idx)} className="w-8 h-8 flex items-center justify-center text-white bg-[#D9232D] rounded-lg hover:bg-red-700 transition-colors font-bold shrink-0">
+                      x
                     </button>
                   </div>
                 ))}

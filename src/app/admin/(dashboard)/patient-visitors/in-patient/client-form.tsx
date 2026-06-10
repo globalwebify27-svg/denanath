@@ -201,14 +201,14 @@ export default function InPatientClientForm({ initialData }: { initialData: any 
             <div>
               <div className="flex justify-between items-center mb-4 gap-4">
                 <h4 className="font-bold text-slate-700 min-w-0">Main Building</h4>
-                <button type="button" onClick={() => addPhone('mainBuildingPhones')} className="text-xs font-bold text-white bg-[#D9232D] px-3 py-1.5 rounded-lg hover:bg-red-700 shrink-0 whitespace-nowrap">Add Phone</button>
+                <button type="button" onClick={() => addPhone('mainBuildingPhones')} className="text-xs font-bold text-white bg-[#003360] px-3 py-1.5 rounded-lg hover:bg-[#002b5c] shrink-0 whitespace-nowrap">Add Phone</button>
               </div>
               <div className="space-y-3">
                 {data.mainBuildingPhones.map((p: any) => (
                   <div key={p.id} className="flex gap-2">
                     <input type="text" value={p.label} onChange={(e) => updatePhone('mainBuildingPhones', p.id, 'label', e.target.value)} className="w-1/2 p-2 border border-slate-200 rounded text-sm" placeholder="Label" />
                     <input type="text" value={p.number} onChange={(e) => updatePhone('mainBuildingPhones', p.id, 'number', e.target.value)} className="w-1/2 p-2 border border-slate-200 rounded text-sm" placeholder="Number" />
-                    <button type="button" onClick={() => removePhone('mainBuildingPhones', p.id)} className="px-2 text-rose-500">X</button>
+                    <button type="button" onClick={() => removePhone('mainBuildingPhones', p.id)} className="w-8 h-8 flex items-center justify-center text-white bg-[#D9232D] rounded-lg hover:bg-red-700 transition-colors font-bold shrink-0">x</button>
                   </div>
                 ))}
               </div>
@@ -216,14 +216,14 @@ export default function InPatientClientForm({ initialData }: { initialData: any 
             <div>
               <div className="flex justify-between items-center mb-4 gap-4">
                 <h4 className="font-bold text-slate-700 min-w-0">Super Speciality Building</h4>
-                <button type="button" onClick={() => addPhone('superSpecialityPhones')} className="text-xs font-bold text-white bg-[#D9232D] px-3 py-1.5 rounded-lg hover:bg-red-700 shrink-0 whitespace-nowrap">Add Phone</button>
+                <button type="button" onClick={() => addPhone('superSpecialityPhones')} className="text-xs font-bold text-white bg-[#003360] px-3 py-1.5 rounded-lg hover:bg-[#002b5c] shrink-0 whitespace-nowrap">Add Phone</button>
               </div>
               <div className="space-y-3">
                 {data.superSpecialityPhones.map((p: any) => (
                   <div key={p.id} className="flex gap-2">
                     <input type="text" value={p.label} onChange={(e) => updatePhone('superSpecialityPhones', p.id, 'label', e.target.value)} className="w-1/2 p-2 border border-slate-200 rounded text-sm" placeholder="Label" />
                     <input type="text" value={p.number} onChange={(e) => updatePhone('superSpecialityPhones', p.id, 'number', e.target.value)} className="w-1/2 p-2 border border-slate-200 rounded text-sm" placeholder="Number" />
-                    <button type="button" onClick={() => removePhone('superSpecialityPhones', p.id)} className="px-2 text-rose-500">X</button>
+                    <button type="button" onClick={() => removePhone('superSpecialityPhones', p.id)} className="w-8 h-8 flex items-center justify-center text-white bg-[#D9232D] rounded-lg hover:bg-red-700 transition-colors font-bold shrink-0">x</button>
                   </div>
                 ))}
               </div>
@@ -273,8 +273,8 @@ export default function InPatientClientForm({ initialData }: { initialData: any 
                       <input type="text" value={r.fac} onChange={(e) => updateMainRoom(r.id, 'fac', e.target.value)} className="w-full p-2 border border-slate-200 rounded text-sm" placeholder="Facilities..." />
                     </div>
                     <div className="col-span-1 flex items-center justify-center">
-                      <button type="button" onClick={() => removeMainRoom(r.id)} className="text-white hover:text-white text-xs font-bold px-3 py-2 bg-[#D9232D] rounded-lg hover:bg-red-700 transition-colors">
-                        X
+                      <button type="button" onClick={() => removeMainRoom(r.id)} className="w-8 h-8 flex items-center justify-center text-white bg-[#D9232D] rounded-lg hover:bg-red-700 transition-colors font-bold shrink-0">
+                        x
                       </button>
                     </div>
                   </div>
@@ -301,8 +301,8 @@ export default function InPatientClientForm({ initialData }: { initialData: any 
                       <input type="text" value={r.fac} onChange={(e) => updateSuperRoom(r.id, 'fac', e.target.value)} className="w-full p-2 border border-slate-200 rounded text-sm" placeholder="Facilities..." />
                     </div>
                     <div className="col-span-1 flex items-center justify-center">
-                      <button type="button" onClick={() => removeSuperRoom(r.id)} className="text-white hover:text-white text-xs font-bold px-3 py-2 bg-[#D9232D] rounded-lg hover:bg-red-700 transition-colors">
-                        X
+                      <button type="button" onClick={() => removeSuperRoom(r.id)} className="w-8 h-8 flex items-center justify-center text-white bg-[#D9232D] rounded-lg hover:bg-red-700 transition-colors font-bold shrink-0">
+                        x
                       </button>
                     </div>
                   </div>

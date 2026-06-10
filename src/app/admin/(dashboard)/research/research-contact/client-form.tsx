@@ -47,8 +47,8 @@ export default function ResearchContactClientForm({ initialData }: { initialData
             {emails.map((item, idx) => (
               <div key={idx} className="flex gap-2 items-center bg-slate-50 p-2 rounded-xl border border-slate-200 w-full md:w-1/2">
                 <input value={item} onChange={(e) => updateEmail(idx, e.target.value)} className="flex-1 p-2 bg-transparent focus:outline-none text-sm" placeholder="email@example.com" />
-                <button type="button" onClick={() => removeEmail(idx)} className="text-[#D9232D] hover:bg-red-50 p-2 rounded-lg transition-colors">
-                  <X size={16} strokeWidth={2.5} />
+                <button type="button" onClick={() => removeEmail(idx)} className="w-8 h-8 flex items-center justify-center text-white bg-[#D9232D] rounded-lg hover:bg-red-700 transition-colors font-bold shrink-0">
+                  x
                 </button>
               </div>
             ))}

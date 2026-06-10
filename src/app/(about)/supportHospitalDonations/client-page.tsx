@@ -31,6 +31,17 @@ export default function SupportDonationsClientPage({ donationsData }: { donation
   }, []);
 
   const {
+    contactPhone = "+912040151000",
+    contactDisplayPhone = "(+91) 20 4015 1000",
+    introText = "Deenanath Mangeshkar Hospital also relies on philanthropy to provide essential health care services in Pune. Gifts may be made to support efforts to help educate patients and families, provide necessary supplies and state-of-the-art equipment and enhancements for patient care needs for people of the community.",
+    countOnUsPoints = [
+      "100% dedicated to bringing you specialists who are highly trained at some of the best institutions in the country – Our focus remains solely on hiring and training the most highly skilled, talented professionals, expanding our education and screening programs and continuing to invest in the latest life-saving technology.",
+      "100% committed to patient safety and long-term recovery – Deenanath Mangeshkar Hospital is nationally recognized not only for their quality of care, but for their advanced and proactive approach toward integrated long-term care and support for patients."
+    ],
+    donateForms = [
+      "Money (As Donation or Deposit)",
+      "Real Estate ( Open space or a apartment – on rent / sale )"
+    ],
     institutionalDonors = [],
     donationInKind = [],
     individualDonors50to1Cr = [],
@@ -105,30 +116,35 @@ export default function SupportDonationsClientPage({ donationsData }: { donation
                 <div className="flex items-center gap-3 text-[#007a87] bg-teal-50 border border-teal-100 p-4 rounded-xl mb-8">
                   <Phone className="w-6 h-6 shrink-0" />
                   <p className="text-sm md:text-base font-semibold">
-                    Please call Deenanath Mangeshkar Hospital at <a href="tel:+912040151000" className="underline hover:text-teal-700">(+91) 20 4015 1000</a> for more information or to make a credit card donation.
+                    Please call Deenanath Mangeshkar Hospital at <a href={`tel:${contactPhone}`} className="underline hover:text-teal-700">{contactDisplayPhone}</a> for more information or to make a credit card donation.
                   </p>
                 </div>
                 
-                <p className="text-slate-600 leading-relaxed font-light mb-6">
-                  Deenanath Mangeshkar Hospital also relies on philanthropy to provide essential health care services in Pune. Gifts may be made to support efforts to help educate patients and families, provide necessary supplies and state-of-the-art equipment and enhancements for patient care needs for people of the community.
+                <p className="text-slate-600 leading-relaxed font-light mb-6 whitespace-pre-wrap">
+                  {introText}
                 </p>
 
                 <p className="text-slate-700 font-medium mb-4">
                   Your contributions will help us, You can count on us to be:
                 </p>
                 <ul className="space-y-4 mb-8">
-                  <li className="flex items-start gap-3">
-                    <ArrowRight className="w-5 h-5 text-teal-600 shrink-0 mt-0.5" />
-                    <p className="text-slate-600 leading-relaxed text-sm">
-                      <strong className="text-slate-700">100% dedicated to bringing you specialists who are highly trained at some of the best institutions in the country</strong> – Our focus remains solely on hiring and training the most highly skilled, talented professionals, expanding our education and screening programs and continuing to invest in the latest life-saving technology.
-                    </p>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <ArrowRight className="w-5 h-5 text-teal-600 shrink-0 mt-0.5" />
-                    <p className="text-slate-600 leading-relaxed text-sm">
-                      <strong className="text-slate-700">100% committed to patient safety and long-term recovery</strong> – Deenanath Mangeshkar Hospital is nationally recognized not only for their quality of care, but for their advanced and proactive approach toward integrated long-term care and support for patients.
-                    </p>
-                  </li>
+                  {countOnUsPoints.map((point: string, idx: number) => {
+                    const parts = point.includes(" - ") ? point.split(" - ") : (point.includes(" – ") ? point.split(" – ") : [point]);
+                    return (
+                      <li key={idx} className="flex items-start gap-3">
+                        <ArrowRight className="w-5 h-5 text-teal-600 shrink-0 mt-0.5" />
+                        <p className="text-slate-600 leading-relaxed text-sm">
+                          {parts.length > 1 ? (
+                            <>
+                              <strong className="text-slate-700">{parts[0]}</strong> – {parts.slice(1).join(" - ")}
+                            </>
+                          ) : (
+                            <>{point}</>
+                          )}
+                        </p>
+                      </li>
+                    );
+                  })}
                 </ul>
 
                 <h3 className="text-xl font-bold text-[#002b5c] mb-4 flex items-center gap-2">
@@ -136,14 +152,12 @@ export default function SupportDonationsClientPage({ donationsData }: { donation
                   You can donate in form of
                 </h3>
                 <ul className="space-y-3 mb-10 border-l-2 border-teal-100 pl-4 py-1">
-                  <li className="flex items-center gap-2 text-slate-600 text-sm font-medium">
-                    <div className="w-1.5 h-1.5 rounded-full bg-teal-500" />
-                    Money (As Donation or Deposit)
-                  </li>
-                  <li className="flex items-center gap-2 text-slate-600 text-sm font-medium">
-                    <div className="w-1.5 h-1.5 rounded-full bg-teal-500" />
-                    Real Estate ( Open space or a apartment – on rent / sale )
-                  </li>
+                  {donateForms.map((form: string, idx: number) => (
+                    <li key={idx} className="flex items-center gap-2 text-slate-600 text-sm font-medium">
+                      <div className="w-1.5 h-1.5 rounded-full bg-teal-500" />
+                      {form}
+                    </li>
+                  ))}
                 </ul>
 
                 <h2 className="text-2xl font-extrabold text-[#002b5c] border-b pb-4 mb-8">

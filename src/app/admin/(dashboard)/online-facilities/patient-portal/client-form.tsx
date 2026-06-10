@@ -71,7 +71,7 @@ export default function PatientPortalClientForm({ initialData }: { initialData: 
           <button 
             type="button" 
             onClick={addFeature}
-            className="flex items-center gap-1 sm:gap-2 bg-[#007a87] text-white px-2 py-1 sm:px-4 sm:py-2 rounded-lg text-xs sm:text-sm font-bold hover:bg-[#005f6b] transition-colors shrink-0"
+            className="flex items-center gap-1 sm:gap-2 bg-[#002b5c] text-white px-2 py-1 sm:px-4 sm:py-2 rounded-xl text-xs sm:text-sm font-bold hover:bg-[#001c3d] transition-colors shadow-sm shrink-0"
           >
             <Plus size={14} className="sm:hidden" />
             <Plus size={16} className="hidden sm:block" />

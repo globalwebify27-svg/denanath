@@ -8,11 +8,22 @@ export const dynamic = "force-dynamic";
 export default async function AdminCharityDetailsPage() {
   const setting = await prisma.siteSetting.findUnique({ where: { key: 'page_charity_details' } });
 
-  let charityData: any = null;
-  try { if (setting) charityData = JSON.parse(setting.value); } catch (e) {}
-  if (!charityData) {
-    charityData = [];
-  }
+  let charityData: any = { 
+    badgeText: "Our Commitment to Society",
+    heading: "Information Regarding Charity",
+    introduction: "Deenanath Mangeshkar Hospital actively provides world-class medical treatment to patients from indigent (निर्धन) and weaker sections (दुर्बल) of society. Below is a detailed breakdown of the patients we have recently assisted.",
+    records: [] 
+  };
+  try { 
+    if (setting) {
+      const parsed = JSON.parse(setting.value);
+      if (Array.isArray(parsed)) {
+        charityData.records = parsed;
+      } else {
+        charityData = parsed;
+      }
+    } 
+  } catch (e) {}
 
   async function saveCharityData(formData: FormData) {
     "use server";

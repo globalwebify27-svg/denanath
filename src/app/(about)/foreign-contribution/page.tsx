@@ -6,13 +6,18 @@ export const dynamic = "force-dynamic";
 export default async function ForeignContributionPage() {
   const setting = await prisma.siteSetting.findUnique({ where: { key: 'page_foreign_contribution' } });
 
-  let fcraData: any[] = [];
+  let fcraData: any = { introduction: "Information regarding receipt of Foreign Contribution", quarters: [] };
   try { 
     if (setting) {
-      fcraData = JSON.parse(setting.value);
+      const parsed = JSON.parse(setting.value);
+      if (Array.isArray(parsed)) {
+        fcraData.quarters = parsed;
+      } else {
+        fcraData = parsed;
+      }
     } else {
       // Fallback data (recent quarters)
-      fcraData = [
+      fcraData.quarters = [
         {
             "quarter": "Quarter: 4 - FY 2025-26 (Period: 01/01/2026 to 31/03/2026)",
             "donations": [

@@ -4,7 +4,12 @@ import React, { useEffect, useRef } from "react";
 import Link from "next/link";
 import { ChevronRight, HeartHandshake, Users, ActivitySquare, Building2 } from "lucide-react";
 
-export default function CharityDetailsClientPage({ charityData }: { charityData: any[] }) {
+export default function CharityDetailsClientPage({ charityData }: { charityData: any }) {
+  const badgeText = charityData.badgeText || "Our Commitment to Society";
+  const heading = charityData.heading || "Information Regarding Charity";
+  const introduction = charityData.introduction || "Deenanath Mangeshkar Hospital actively provides world-class medical treatment to patients from indigent (निर्धन) and weaker sections (दुर्बल) of society. Below is a detailed breakdown of the patients we have recently assisted.";
+  const records = charityData.records || [];
+
   const aboutOptions = [
     { name: "About Hospital", href: "/about-hospital", active: false },
     { name: "Associates", href: "/associates", active: false },
@@ -31,8 +36,8 @@ export default function CharityDetailsClientPage({ charityData }: { charityData:
   }, []);
 
   // Calculate totals for the dashboard cards
-  const totalIndigent = charityData.reduce((acc, curr) => acc + (parseInt(curr.indigent) || 0), 0);
-  const totalWeaker = charityData.reduce((acc, curr) => acc + (parseInt(curr.weaker) || 0), 0);
+  const totalIndigent = records.reduce((acc: number, curr: any) => acc + (parseInt(curr.indigent) || 0), 0);
+  const totalWeaker = records.reduce((acc: number, curr: any) => acc + (parseInt(curr.weaker) || 0), 0);
 
   return (
     <div className="min-h-screen bg-[#f8fafc] font-sans selection:bg-teal-500/30">
@@ -100,15 +105,15 @@ export default function CharityDetailsClientPage({ charityData }: { charityData:
                 <div className="mb-10 text-center md:text-left mt-8">
                   <div className="inline-flex items-center justify-center md:justify-start gap-2 px-4 py-2 rounded-full bg-rose-50 border border-rose-100 text-rose-600 text-xs sm:text-sm font-bold tracking-wider uppercase mb-5">
                     <HeartHandshake className="w-4 h-4" />
-                    <span>Our Commitment to Society</span>
+                    <span>{badgeText}</span>
                   </div>
                   
                   <h3 className="text-2xl md:text-3xl font-extrabold text-[#002b5c] mb-5 tracking-tight">
-                    Information Regarding Charity
+                    {heading}
                   </h3>
                   
-                  <p className="text-slate-600 text-base md:text-lg leading-relaxed max-w-3xl">
-                    Deenanath Mangeshkar Hospital actively provides world-class medical treatment to patients from indigent (निर्धन) and weaker sections (दुर्बल) of society. Below is a detailed breakdown of the patients we have recently assisted.
+                  <p className="text-slate-600 text-base md:text-lg leading-relaxed max-w-3xl whitespace-pre-wrap">
+                    {introduction}
                   </p>
                 </div>
 
@@ -161,7 +166,7 @@ export default function CharityDetailsClientPage({ charityData }: { charityData:
                         </tr>
                       </thead>
                       <tbody>
-                        {charityData.map((row, idx) => (
+                        {records.map((row: any, idx: number) => (
                           <tr key={idx} className="border-b border-slate-100 hover:bg-slate-50 transition-colors last:border-0 group">
                             <td className="py-4 px-6 text-[14px] font-bold text-[#002b5c] border-r border-slate-100 whitespace-nowrap group-hover:text-teal-600 transition-colors">
                               {row.month}

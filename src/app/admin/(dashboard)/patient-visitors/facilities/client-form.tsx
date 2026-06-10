@@ -156,8 +156,8 @@ export default function FacilitiesClientForm({ initialData }: { initialData: any
                     <input type="text" value={t.timing} onChange={(e) => updateIpdTiming(t.id, 'timing', e.target.value)} className="w-full p-2 border border-slate-200 rounded text-sm focus:ring-[#007a87] focus:outline-none" placeholder="Timing (e.g. 08:00 a.m to 10:00 p.m)" />
                   </div>
                   <div className="col-span-1 flex items-center justify-center">
-                    <button type="button" onClick={() => removeIpdTiming(t.id)} className="text-white text-xs font-bold px-3 py-2 bg-[#D9232D] rounded-lg hover:bg-red-700 transition-colors">
-                      X
+                    <button type="button" onClick={() => removeIpdTiming(t.id)} className="w-8 h-8 flex items-center justify-center text-white bg-[#D9232D] rounded-lg hover:bg-red-700 transition-colors font-bold shrink-0">
+                      x
                     </button>
                   </div>
                 </div>

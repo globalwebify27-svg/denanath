@@ -3,8 +3,9 @@
 import { useState } from "react";
 import {  Plus, Trash2, Calendar, FileText } from "lucide-react";
 
-export default function ForeignContributionClientForm({ initialData }: { initialData: any[] }) {
-  const [quarters, setQuarters] = useState<any[]>(initialData.length > 0 ? initialData.map(q => ({
+export default function ForeignContributionClientForm({ initialData }: { initialData: any }) {
+  const [introduction, setIntroduction] = useState(initialData.introduction || "Information regarding receipt of Foreign Contribution");
+  const [quarters, setQuarters] = useState<any[]>(initialData.quarters.length > 0 ? initialData.quarters.map((q: any) => ({
     ...q,
     id: q.id || Date.now() + Math.random(),
     donations: q.donations.map((d: any) => ({ ...d, id: d.id || Date.now() + Math.random() }))
@@ -68,17 +69,20 @@ export default function ForeignContributionClientForm({ initialData }: { initial
   };
 
   const getJsonPayload = () => {
-    const payload = quarters.map(q => ({
-      id: q.id,
-      quarter: q.quarter,
-      emptyMessage: q.emptyMessage,
-      donations: q.donations.map((d: any) => ({
-        name: d.name,
-        inr: d.inr,
-        date: d.date,
-        purpose: d.purpose
+    const payload = {
+      introduction,
+      quarters: quarters.map(q => ({
+        id: q.id,
+        quarter: q.quarter,
+        emptyMessage: q.emptyMessage,
+        donations: q.donations.map((d: any) => ({
+          name: d.name,
+          inr: d.inr,
+          date: d.date,
+          purpose: d.purpose
+        }))
       }))
-    }));
+    };
     return JSON.stringify(payload);
   };
 
@@ -86,7 +90,20 @@ export default function ForeignContributionClientForm({ initialData }: { initial
     <>
       <input type="hidden" name="fcraJson" value={getJsonPayload()} />
       
-      <div className="space-y-8">        {quarters.map((q, qIndex) => (
+      <div className="space-y-8">
+        {/* Introduction Field */}
+        <div className="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden relative p-6 md:p-8 shadow-sm">
+          <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Introduction Text</label>
+          <input 
+            type="text" 
+            value={introduction} 
+            onChange={(e) => setIntroduction(e.target.value)}
+            className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium"
+            placeholder="e.g. Information regarding receipt of Foreign Contribution"
+          />
+        </div>
+
+        {quarters.map((q, qIndex) => (
           <div key={q.id} className="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden group hover:shadow-md transition-shadow duration-300 relative p-6 md:p-8 shadow-sm">
             <div className="bg-slate-50/50 border-b border-slate-100 p-5 md:p-6 flex items-center justify-between gap-3 -mx-6 md:-mx-8 -mt-6 md:-mt-8 mb-6">
               <div className="flex items-center gap-4">
