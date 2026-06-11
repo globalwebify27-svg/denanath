@@ -32,20 +32,10 @@ export default function AdminLogin() {
           
           {/* Top Logo */}
           <div className="relative z-10 flex items-center gap-3">
-            <div className="relative flex items-center justify-center w-12 h-12 rounded-lg bg-white p-1 shrink-0 shadow-sm">
-              <img src="/logo.png" alt="DMH Logo" className="w-full h-full object-contain" />
+            <div className="relative flex items-center justify-center w-48 h-12 rounded-lg bg-white p-1 shrink-0 shadow-sm">
+              <img src="/images/Deenanath Logo.png" alt="DMH Logo" className="w-full h-full object-contain" />
             </div>
-            <div className="flex flex-col text-left whitespace-nowrap">
-              <span className="text-[14px] font-black tracking-wide leading-none text-white">
-                DEENANATH
-              </span>
-              <span className="text-[8px] font-extrabold tracking-[0.05em] leading-none uppercase mt-0.5 text-teal-300">
-                Mangeshkar Hospital
-              </span>
-              <span className="text-[8px] font-extrabold tracking-[0.05em] leading-none uppercase mt-0.5 text-teal-300">
-                & Research Center
-              </span>
-            </div>
+
           </div>
 
           {/* Middle Text */}
@@ -145,7 +135,7 @@ export default function AdminLogin() {
         {/* Footer */}
         <div className="mt-16 text-center">
           <p className="text-[10px] font-semibold text-gray-400 tracking-wider uppercase">
-            © 2026 DEENANATH MANGESHKAR HOSPITAL & RESEARCH CENTER. ALL RIGHTS RESERVED.
+            © 2026 DEENANATH MANGESHKAR HOSPITAL AND RESEARCH CENTER. ALL RIGHTS RESERVED.
           </p>
         </div>
       </div>

@@ -9,7 +9,7 @@ export default function ContactUsClient({ initialData }: { initialData?: any }) 
     pageTitle: "Contact Us",
     introTitle: "We Are Here To Help You",
     introDesc: "Whether you have a question about our services, need to reach a specific department, or want to provide feedback, our team is ready to assist you.",
-    addressTitle: "Deenanath Mangeshkar Hospital & Research Center",
+    addressTitle: "Deenanath Mangeshkar Hospital and Research Center",
     address: "Near Mhatre Bridge,\nErandwane, Pune 411004",
     phoneLines: ["Tel: +91 20 4015 1000 / 49153000", "Fax: (+91) 20 2542 0104"],
     email: "info@dmhospital.org",

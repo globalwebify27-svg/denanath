@@ -15,7 +15,7 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Deenanath Mangeshkar Hospital & Research Center | Pune",
+  title: "Deenanath Mangeshkar Hospital and Research Center | Pune",
   description: "Official web portal of Deenanath Mangeshkar Hospital, Pune. Experience state-of-the-art clinical super-specialties, Pune's finest doctor roster, 24/7 trauma emergency response, and preventative health care. Delivering medical excellence with human warmth.",
   keywords: ["Deenanath Mangeshkar Hospital", "DMH Pune", "Erandwane Hospital", "Best Hospital in Pune", "Book Doctor Appointment Pune", "Emergency Trauma Care Pune", "Mangeshkar Hospital Pune"],
 };

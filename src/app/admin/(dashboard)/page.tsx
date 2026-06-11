@@ -7,6 +7,49 @@ export const dynamic = "force-dynamic";
 export default async function AdminDashboardOverview() {
   const doctorsCount = await prisma.doctor.count();
 
+  const recentDoctors = await prisma.doctor.findMany({ orderBy: { createdAt: 'desc' }, take: 2 });
+  const recentSubmissions = await prisma.formSubmission.findMany({ orderBy: { createdAt: 'desc' }, take: 2 });
+  const recentDepartments = await prisma.department.findMany({ orderBy: { updatedAt: 'desc' }, take: 2 });
+
+  const activities = [
+    ...recentDoctors.map(d => ({
+      action: "New Doctor Profile Created",
+      desc: `Added ${d.name} to ${d.specialty || 'General'}`,
+      date: d.createdAt,
+      user: "Admin User",
+      color: "bg-[#007a87]"
+    })),
+    ...recentSubmissions.map(s => ({
+      action: "New Form Submission",
+      desc: `Received ${s.formType.replace(/_/g, ' ')} submission`,
+      date: s.createdAt,
+      user: "System",
+      color: "bg-amber-500"
+    })),
+    ...recentDepartments.map(d => ({
+      action: "Department Updated",
+      desc: `Modified details for ${d.name}`,
+      date: d.updatedAt,
+      user: "Admin User",
+      color: "bg-[#d9232d]"
+    }))
+  ].sort((a, b) => b.date.getTime() - a.date.getTime()).slice(0, 4);
+
+  const getTimeAgo = (date: Date) => {
+    const seconds = Math.floor((new Date().getTime() - date.getTime()) / 1000);
+    let interval = seconds / 31536000;
+    if (interval > 1) return Math.floor(interval) + " years ago";
+    interval = seconds / 2592000;
+    if (interval > 1) return Math.floor(interval) + " months ago";
+    interval = seconds / 86400;
+    if (interval > 1) return Math.floor(interval) + " days ago";
+    interval = seconds / 3600;
+    if (interval > 1) return Math.floor(interval) + " hours ago";
+    interval = seconds / 60;
+    if (interval >= 1) return Math.floor(interval) + " minutes ago";
+    return Math.floor(seconds) + " seconds ago";
+  };
+
   const stats = [
     {
       title: "Doctors",
@@ -134,24 +177,19 @@ export default async function AdminDashboardOverview() {
             </h2>
             <p className="text-[13px] font-[600] text-gray-500">Tracking administrative actions across the portal.</p>
           </div>
-          <Link href="/admin/contact" className="hidden sm:flex text-[12px] font-[700] text-[#007a87] hover:text-white border-2 border-[#007a87]/20 hover:border-[#007a87] hover:bg-[#007a87] px-5 py-2 rounded-xl transition-all items-center gap-2 shadow-sm">
+          <Link href="/admin/activity" className="hidden sm:flex text-[12px] font-[700] text-[#007a87] hover:text-white border-2 border-[#007a87]/20 hover:border-[#007a87] hover:bg-[#007a87] px-5 py-2 rounded-xl transition-all items-center gap-2 shadow-sm">
             View Full Log
             <ChevronRight className="w-4 h-4" />
           </Link>
         </div>
 
         <div className="p-8 space-y-6">
-          {[
-            { action: "New Doctor Profile Created", desc: "Added Dr. Nikhil Agarkhedkar to Plastic Surgery", time: "2 hours ago", user: "Admin User", color: "bg-[#007a87]" },
-            { action: "Updated Department Details", desc: "Modified OPD timings for Cardiology", time: "5 hours ago", user: "Admin User", color: "bg-[#d9232d]" },
-            { action: "New Job Posting Added", desc: "Published 'Senior Staff Nurse' position", time: "1 day ago", user: "HR Team", color: "bg-amber-500" },
-            { action: "Resolved Patient Inquiry", desc: "Responded to appointment request #4092", time: "1 day ago", user: "Support Staff", color: "bg-[#002b5c]" }
-          ].map((log, i) => (
+          {activities.length > 0 ? activities.map((log, i) => (
             <div key={i} className="flex gap-6 group">
               {/* Timeline Indicator */}
               <div className="flex flex-col items-center pt-2">
                 <div className={`w-3.5 h-3.5 rounded-full ${log.color} ring-[6px] ring-white shadow-sm z-10`} />
-                {i !== 3 && <div className="w-0.5 h-full bg-gradient-to-b from-gray-200 to-transparent mt-2 group-hover:from-gray-300 transition-colors" />}
+                {i !== activities.length - 1 && <div className="w-0.5 h-full bg-gradient-to-b from-gray-200 to-transparent mt-2 group-hover:from-gray-300 transition-colors" />}
               </div>
               
               {/* Activity Card */}
@@ -167,7 +205,7 @@ export default async function AdminDashboardOverview() {
                     
                     {/* Requested #003360 Timing Button */}
                     <span className="text-[10px] font-[800] text-white uppercase tracking-widest bg-[#003360] px-3 py-1.5 rounded-lg border border-[#003360] shadow-sm whitespace-nowrap shrink-0 group-hover:bg-[#002240] group-hover:border-[#002240] transition-colors">
-                      {log.time}
+                      {getTimeAgo(log.date)}
                     </span>
                   </div>
                   
@@ -180,7 +218,9 @@ export default async function AdminDashboardOverview() {
                 </div>
               </div>
             </div>
-          ))}
+          )) : (
+            <div className="text-center text-gray-500 py-8">No recent activity found.</div>
+          )}
         </div>
       </div>
     </div>

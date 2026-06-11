@@ -26,21 +26,17 @@ export default function Footer() {
           {/* Logo & Brand Column */}
           <div className="space-y-6">
             <Link href="/" className="flex items-center gap-3.5 group">
-              <div className="flex items-center justify-center w-12 h-12 rounded-2xl bg-white shadow-xl p-1.5 ring-4 ring-white/10 group-hover:scale-105 transition-transform">
+              <div className="flex items-center justify-center w-48 h-12 rounded-lg bg-white shadow-xl p-1.5 ring-4 ring-white/10 group-hover:scale-105 transition-transform">
                 <img 
-                  src="/logo.png" 
+                  src="/images/Deenanath Logo.png" 
                   alt="Deenanath Mangeshkar Hospital Logo" 
                   className="w-full h-full object-contain"
                 />
               </div>
-              <div className="flex flex-col">
-                <span className="text-white font-black tracking-wider text-lg leading-none">DEENANATH</span>
-                <span className="text-[9px] font-bold text-[#a7ffeb] tracking-[0.08em] uppercase mt-1 leading-none">Mangeshkar Hospital</span>
-                <span className="text-[9px] font-bold text-[#a7ffeb] tracking-[0.08em] uppercase mt-1 leading-none">& Research Center</span>
-              </div>
+
             </Link>
             <p className="text-xs text-[#b2dfdb] leading-relaxed font-light">
-              Deenanath Mangeshkar Hospital & Research Center is Pune&apos;s leading clinical landmark, combining state-of-the-art diagnostics with legendary medical experts and warm, ethical care.
+              Deenanath Mangeshkar Hospital and Research Center is Pune&apos;s leading clinical landmark, combining state-of-the-art diagnostics with legendary medical experts and warm, ethical care.
             </p>
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-white/10 text-[10px] font-semibold text-white">
               <span className="w-1.5 h-1.5 rounded-full bg-[#a7ffeb] animate-ping" />

@@ -8,7 +8,7 @@ export default function ContactClientForm({ initialData }: { initialData: any })
     pageTitle: initialData?.pageTitle || "Contact Us",
     introTitle: initialData?.introTitle || "We Are Here To Help You",
     introDesc: initialData?.introDesc || "Whether you have a question about our services, need to reach a specific department, or want to provide feedback, our team is ready to assist you.",
-    addressTitle: initialData?.addressTitle || "Deenanath Mangeshkar Hospital & Research Center",
+    addressTitle: initialData?.addressTitle || "Deenanath Mangeshkar Hospital and Research Center",
     address: initialData?.address || "Near Mhatre Bridge,\nErandwane, Pune 411004",
     phoneLines: initialData?.phoneLines || ["Tel: +91 20 4015 1000 / 49153000", "Fax: (+91) 20 2542 0104"],
     email: initialData?.email || "info@dmhospital.org",

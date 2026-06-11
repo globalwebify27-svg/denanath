@@ -150,24 +150,14 @@ export default function AdminSidebar() {
       `}>
         {/* Logo Section */}
         <Link href="/admin" onClick={() => setIsMobileOpen(false)} className="bg-white p-5 shrink-0 flex items-center gap-2 hover:bg-slate-50 transition-colors">
-          <div className="relative flex items-center justify-center w-12 h-12 rounded-lg bg-slate-50 border border-slate-100 p-1 shrink-0">
+          <div className="relative flex items-center justify-center w-48 h-12 rounded-lg bg-slate-50 border border-slate-100 p-1 shrink-0">
             <img
-              src="/logo.png"
+              src="/images/Deenanath Logo.png"
               alt="DMH Logo"
               className="w-full h-full object-contain"
             />
           </div>
-          <div className="flex flex-col text-left whitespace-nowrap">
-            <span className="text-[13px] font-black tracking-tight leading-none text-[#002b5c]">
-              DEENANATH
-            </span>
-            <span className="text-[7.5px] font-extrabold tracking-[0.05em] leading-none uppercase mt-0.5 text-[#007a87]">
-              Mangeshkar Hospital
-            </span>
-            <span className="text-[7.5px] font-extrabold tracking-[0.05em] leading-none uppercase mt-0.5 text-[#007a87]">
-              & Research Center
-            </span>
-          </div>
+
         </Link>
 
         {/* Navigation */}

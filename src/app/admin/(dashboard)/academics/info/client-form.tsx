@@ -6,7 +6,7 @@ import { Plus, X, Trash2, ChevronDown, ChevronRight } from "lucide-react";
 export default function AcademicsInfoClientForm({ initialData }: { initialData: any }) {
   const [data, setData] = useState(() => {
     const defaults = {
-      introText: "Deenanath Mangeshkar Hospital & Research Center (DMHRC) is a multi speciality hospital managed by a Public Charitable Trust. It is accredited by National Board of Examinations in Medical Sciences, New Delhi for Post Graduate Training Programme (DNB, DrNB and FNB) across twenty five specialities. Academic Centre is situated on 14th floor Super Speciality Building.",
+      introText: "Deenanath Mangeshkar Hospital and Research Center (DMHRC) is a multi speciality hospital managed by a Public Charitable Trust. It is accredited by National Board of Examinations in Medical Sciences, New Delhi for Post Graduate Training Programme (DNB, DrNB and FNB) across twenty five specialities. Academic Centre is situated on 14th floor Super Speciality Building.",
       pgProgrammes: [
         { title: "DNB, DrNB AND FNB", desc: "Accredited by NBEMS", items: [] },
         { 

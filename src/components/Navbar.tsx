@@ -154,24 +154,14 @@ export default function Navbar() {
             {/* DMH Logo Section */}
             <div className="flex items-center shrink-0">
               <Link href="/" className="flex items-center gap-1.5 sm:gap-2 group focus:outline-none">
-                <div className="relative flex items-center justify-center w-[50px] h-[50px] sm:w-[60px] sm:h-[60px] lg:w-[60px] lg:h-[60px] xl:w-[65px] xl:h-[65px] 2xl:w-[80px] 2xl:h-[80px] rounded-lg bg-slate-50 border border-slate-100 p-1 shrink-0 transition-all">
+                <div className="relative flex items-center justify-center w-[150px] h-[50px] sm:w-[180px] sm:h-[60px] lg:w-[180px] lg:h-[60px] xl:w-[200px] xl:h-[65px] 2xl:w-[240px] 2xl:h-[80px] rounded-lg bg-slate-50 border border-slate-100 p-1 shrink-0 transition-all">
                   <img
-                    src="/logo.png"
+                    src="/images/Deenanath Logo.png"
                     alt="DMH Logo"
                     className="w-full h-full object-contain"
                   />
                 </div>
-                <div className="flex flex-col text-left whitespace-nowrap">
-                  <span className="text-[16px] sm:text-[18px] lg:text-[18px] xl:text-[20px] 2xl:text-[22px] font-black tracking-tight leading-none text-[#002b5c] pb-[3px] transition-all">
-                    DEENANATH
-                  </span>
-                  <span className="text-[7px] sm:text-[8px] lg:text-[8px] xl:text-[9px] 2xl:text-[10px] font-extrabold tracking-[0.08em] leading-none uppercase mt-0.5 text-[#007a87] transition-all">
-                    Mangeshkar Hospital
-                  </span>
-                  <span className="text-[7px] sm:text-[8px] lg:text-[8px] xl:text-[9px] 2xl:text-[10px] font-extrabold tracking-[0.08em] leading-none uppercase mt-0.5 text-[#007a87] transition-all">
-                    & Research Center
-                  </span>
-                </div>
+
               </Link>
 
               {/* Anniversary Badge - Visible on lg and above */}
