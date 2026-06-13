@@ -122,10 +122,10 @@ export default function AccreditationsClient({ data }: { data: any[] }) {
                       </div>
                     )}
 
-                    <div className="flex flex-col md:flex-row gap-8 lg:gap-12 items-center md:items-start group">
+                    <div className="flex flex-col md:flex-row gap-8 lg:gap-12 items-center md:items-center group">
                       
                       {/* Styled Seal / Badge Graphic */}
-                      <div className="shrink-0 flex flex-col items-center gap-3">
+                      <div className="shrink-0 w-[220px] flex flex-col items-center gap-3">
                         <div className={`relative w-40 h-40 rounded-full flex items-center justify-center border-[8px] shadow-lg transition-transform duration-500 group-hover:scale-105 ${
                           item.theme === 'red' 
                             ? "border-[#d32f2f] bg-white text-[#d32f2f]" 
