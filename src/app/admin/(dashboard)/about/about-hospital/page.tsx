@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { Save, Info, Target, List, Award, HeartPulse } from "lucide-react";
 import { revalidatePath } from "next/cache";
+import SubmitButton from "@/app/admin/(dashboard)/components/SubmitButton";
 
 export const dynamic = "force-dynamic";
 
@@ -110,9 +111,7 @@ Surgical facilities include one cardiac catheterization labs, 12 operating theat
             </p>
           </div>
           <div className="z-10 shrink-0">
-             <button type="submit" className="flex items-center gap-2 bg-[#007a87] text-white px-7 py-3.5 rounded-xl hover:bg-[#006570] hover:shadow-[0_8px_20px_rgba(0,122,135,0.3)] font-bold transition-all duration-300 transform hover:-translate-y-0.5">
-               <Save size={20} strokeWidth={2.5} /> Save Changes
-             </button>
+               <SubmitButton text="Save Changes" loadingText="Saving..." />
           </div>
           {/* subtle background decoration */}
           <div className="absolute right-0 top-0 opacity-[0.03] pointer-events-none group-hover:scale-110 transition-transform duration-700">

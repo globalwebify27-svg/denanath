@@ -5,6 +5,7 @@ import { ArrowLeft, Save, Trash2, HeartPulse } from "lucide-react";
 import { notFound } from "next/navigation";
 
 import IconPicker from "@/components/IconPicker";
+import SubmitButton from "@/app/admin/(dashboard)/components/SubmitButton";
 
 export default async function EditDepartmentPage({
   params,
@@ -74,13 +75,7 @@ export default async function EditDepartmentPage({
           
           {/* Actions in Header */}
           <div className="z-10 shrink-0 mt-4 lg:mt-0 flex flex-wrap items-center gap-3">
-            <button
-              type="submit"
-              className="whitespace-nowrap flex items-center gap-2 bg-[#007a87] text-white px-5 py-3 rounded-xl hover:bg-[#006570] hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 font-bold text-xs shadow-md hover:shadow-[0_8px_20px_rgba(0,122,135,0.3)]"
-            >
-              <Save size={16} />
-              <span>Save Changes</span>
-            </button>
+            <SubmitButton text="Save Changes" loadingText="Saving..." />
             <button
               formAction={deleteDepartment}
               formNoValidate

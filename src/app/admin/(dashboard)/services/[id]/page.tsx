@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ArrowLeft, Save, Trash2, HeartPulse } from "lucide-react";
 
 import IconPicker from "@/components/IconPicker";
+import SubmitButton from "@/app/admin/(dashboard)/components/SubmitButton";
 
 export default async function EditServicePage({
   params,
@@ -81,13 +82,7 @@ export default async function EditServicePage({
           
           {/* Actions in Header */}
           <div className="z-10 shrink-0 mt-4 lg:mt-0 flex items-center gap-3">
-            <button
-              type="submit"
-              className="flex items-center gap-2 bg-[#007a87] text-white px-6 py-3 rounded-xl hover:bg-[#006570] hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 font-bold text-xs shadow-md hover:shadow-[0_8px_20px_rgba(0,122,135,0.3)]"
-            >
-              <Save size={16} />
-              <span>Save Changes</span>
-            </button>
+            <SubmitButton text="Save Changes" loadingText="Saving..." />
             <button
               formAction={deleteService}
               formNoValidate

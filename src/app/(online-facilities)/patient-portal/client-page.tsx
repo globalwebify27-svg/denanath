@@ -151,7 +151,7 @@ export default function PatientPortalClient({ initialData }: { initialData: any 
                   <div className="flex flex-col items-center mb-2">
                     <div className="relative w-64 h-24 mb-4">
                       <Image 
-                        src="/images/Deenanath Logo.png" 
+                        src="/images/Png Logo.png" 
                         alt="Deenanath Mangeshkar Hospital Logo" 
                         fill 
                         className="object-contain"

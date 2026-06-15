@@ -156,7 +156,7 @@ export default function Navbar() {
               <Link href="/" className="flex items-center gap-1.5 sm:gap-2 group focus:outline-none">
                 <div className="relative flex items-center justify-center w-[150px] h-[50px] sm:w-[180px] sm:h-[60px] lg:w-[180px] lg:h-[60px] xl:w-[200px] xl:h-[65px] 2xl:w-[240px] 2xl:h-[80px] rounded-lg bg-slate-50 border border-slate-100 p-1 shrink-0 transition-all">
                   <img
-                    src="/images/Deenanath Logo.png"
+                    src="/images/Png Logo.png"
                     alt="DMH Logo"
                     className="w-full h-full object-contain"
                   />
