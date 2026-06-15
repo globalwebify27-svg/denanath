@@ -33,7 +33,7 @@ export default function AdminLogin() {
           {/* Top Logo */}
           <div className="relative z-10 flex items-center gap-3">
             <div className="relative flex items-center justify-center w-48 h-12 rounded-lg bg-white p-1 shrink-0 shadow-sm">
-              <img src="/images/Png Logo.png" alt="DMH Logo" className="w-full h-full object-contain" />
+              <img src="/images/PNG.png" alt="DMH Logo" className="w-full h-full object-contain" />
             </div>
 
           </div>
