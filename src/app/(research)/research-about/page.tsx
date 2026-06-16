@@ -125,7 +125,7 @@ export default async function AboutUsPage() {
                 </p>
                 
                 <p className="text-slate-600 leading-relaxed mb-6 whitespace-pre-wrap">
-                  {pageData.introText2 || "We continue with our vision that the department will advocate research at Deenanath Mangeshkar Hospital & Research Centre (DMHRC) to the high degree of merit, quality and activity by supporting the staff, research consultants, clinical fellows – and students in the initialization, implementation and completion of research projects. The prime research goal is to encourage quality human research in strict adherence to Lata Mangeshkar Medical Foundation’s Trust Deed objects and objectives. It will promote innovation by assuring research ethics to help researchers achieve high research standards and productivity through peer-reviewed papers for benefit of community health at large."}
+                  {pageData.introText2 || "We continue with our vision that the department will advocate research at Deenanath Mangeshkar Hospital and Research Center (DMHRC) to the high degree of merit, quality and activity by supporting the staff, research consultants, clinical fellows – and students in the initialization, implementation and completion of research projects. The prime research goal is to encourage quality human research in strict adherence to Lata Mangeshkar Medical Foundation’s Trust Deed objects and objectives. It will promote innovation by assuring research ethics to help researchers achieve high research standards and productivity through peer-reviewed papers for benefit of community health at large."}
                 </p>
 
                 <p className="text-slate-600 leading-relaxed mb-10 whitespace-pre-wrap">

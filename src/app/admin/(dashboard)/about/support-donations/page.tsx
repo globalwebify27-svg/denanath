@@ -15,10 +15,10 @@ export default async function AdminSupportDonationsPage() {
     donationsData = {
         contactPhone: "+912040151000",
         contactDisplayPhone: "(+91) 20 4015 1000",
-        introText: "Deenanath Mangeshkar Hospital also relies on philanthropy to provide essential health care services in Pune. Gifts may be made to support efforts to help educate patients and families, provide necessary supplies and state-of-the-art equipment and enhancements for patient care needs for people of the community.",
+        introText: "Deenanath Mangeshkar Hospital and Research Center also relies on philanthropy to provide essential health care services in Pune. Gifts may be made to support efforts to help educate patients and families, provide necessary supplies and state-of-the-art equipment and enhancements for patient care needs for people of the community.",
         countOnUsPoints: [
           "100% dedicated to bringing you specialists who are highly trained at some of the best institutions in the country – Our focus remains solely on hiring and training the most highly skilled, talented professionals, expanding our education and screening programs and continuing to invest in the latest life-saving technology.",
-          "100% committed to patient safety and long-term recovery – Deenanath Mangeshkar Hospital is nationally recognized not only for their quality of care, but for their advanced and proactive approach toward integrated long-term care and support for patients."
+          "100% committed to patient safety and long-term recovery – Deenanath Mangeshkar Hospital and Research Center is nationally recognized not only for their quality of care, but for their advanced and proactive approach toward integrated long-term care and support for patients."
         ],
         donateForms: [
           "Money (As Donation or Deposit)",

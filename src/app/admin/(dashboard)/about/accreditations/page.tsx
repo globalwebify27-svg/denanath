@@ -19,7 +19,7 @@ export default async function AdminAccreditationsPage() {
       certNumber: "H-2019-0663",
       certType: "NABH",
       theme: "red",
-      policy: "Deenanath Mangeshkar Hospital believes in highest professional competence with a human touch and will deliver excellent medical treatment to everyone. We will follow rational and ethical medical practices implicitly. We are committed to medico-social services.",
+      policy: "Deenanath Mangeshkar Hospital and Research Center believes in highest professional competence with a human touch and will deliver excellent medical treatment to everyone. We will follow rational and ethical medical practices implicitly. We are committed to medico-social services.",
       linkText: "NABH accreditation certificate",
       link: "#"
     },

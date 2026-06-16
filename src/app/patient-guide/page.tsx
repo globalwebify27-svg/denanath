@@ -98,7 +98,7 @@ export default function PatientGuidePage() {
                 </h2>
                 <div className="w-20 h-1.5 bg-[#007a87] rounded-full mb-8"></div>
                 <p className="text-slate-600 leading-relaxed max-w-3xl text-sm md:text-base">
-                  Welcome to the Deenanath Mangeshkar Hospital Patient Guide. We are committed to making your visit as comfortable and stress-free as possible. Please select a section below to find detailed information tailored to your needs.
+                  Welcome to the Deenanath Mangeshkar Hospital and Research Center Patient Guide. We are committed to making your visit as comfortable and stress-free as possible. Please select a section below to find detailed information tailored to your needs.
                 </p>
               </div>
 

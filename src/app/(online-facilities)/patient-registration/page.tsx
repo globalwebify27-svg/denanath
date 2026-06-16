@@ -2,7 +2,7 @@ import { prisma } from "@/lib/prisma";
 import PatientRegistrationClient from "./client-page";
 
 export const metadata = {
-  title: "Patient Registration Form | Deenanath Mangeshkar Hospital",
+  title: "Patient Registration Form | Deenanath Mangeshkar Hospital and Research Center",
   description: "Register online for hospital services.",
 };
 

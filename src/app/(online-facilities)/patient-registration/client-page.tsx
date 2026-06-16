@@ -999,7 +999,7 @@ export default function PatientRegistrationClient({ initialData }: { initialData
                 )}
 
                 <div className="mt-12 text-center border-t border-slate-100 pt-6">
-                  <p className="text-sm text-slate-500 font-medium">© 2020-2021 Deenanath Mangeshkar Hospital</p>
+                  <p className="text-sm text-slate-500 font-medium">© 2020-2021 Deenanath Mangeshkar Hospital and Research Center</p>
                 </div>
               </div>
           </div>

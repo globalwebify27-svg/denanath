@@ -2,7 +2,7 @@ import { prisma } from "@/lib/prisma";
 import PatientPortalClient from "./client-page";
 
 export const metadata = {
-  title: "Patient Portal | Deenanath Mangeshkar Hospital",
+  title: "Patient Portal | Deenanath Mangeshkar Hospital and Research Center",
   description: "Access your medical records and appointments securely.",
 };
 

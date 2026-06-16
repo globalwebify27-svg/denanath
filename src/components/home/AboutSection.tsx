@@ -16,7 +16,7 @@ export default function AboutSection() {
             <div className="relative rounded-[2rem] overflow-hidden shadow-2xl ring-1 ring-slate-900/5">
               <img 
                 src="/images/hospital12.png" 
-                alt="Deenanath Mangeshkar Hospital Facility" 
+                alt="Deenanath Mangeshkar Hospital and Research Center Facility" 
                 className="w-full h-auto object-cover aspect-[4/3] hover:scale-105 transition-transform duration-700 ease-out"
               />
               

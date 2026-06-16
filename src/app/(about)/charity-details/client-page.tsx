@@ -7,7 +7,7 @@ import { ChevronRight, HeartHandshake, Users, ActivitySquare, Building2 } from "
 export default function CharityDetailsClientPage({ charityData }: { charityData: any }) {
   const badgeText = charityData.badgeText || "Our Commitment to Society";
   const heading = charityData.heading || "Information Regarding Charity";
-  const introduction = charityData.introduction || "Deenanath Mangeshkar Hospital actively provides world-class medical treatment to patients from indigent (निर्धन) and weaker sections (दुर्बल) of society. Below is a detailed breakdown of the patients we have recently assisted.";
+  const introduction = charityData.introduction || "Deenanath Mangeshkar Hospital and Research Center actively provides world-class medical treatment to patients from indigent (निर्धन) and weaker sections (दुर्बल) of society. Below is a detailed breakdown of the patients we have recently assisted.";
   const records = charityData.records || [];
 
   const aboutOptions = [

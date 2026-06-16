@@ -10,7 +10,7 @@ export default async function AdminResearchContactPage() {
   const setting = await prisma.siteSetting.findUnique({ where: { key: 'page_research_contact' } });
 
   let pageData: any = { 
-    address: "14th Floor Super Speciality Building,\\nDeenanath Mangeshkar Hospital and Research Centre",
+    address: "14th Floor Super Speciality Building,\\nDeenanath Mangeshkar Hospital and Research Center",
     emails: ["research@dmhospital.org", "iec@dmhospital.org"],
     personnel: [{ name: "Dr. Vaijayanti V. Pethe", designation: "Assistant Director, Research", email: "pethev@dmhospital.org" }]
   };

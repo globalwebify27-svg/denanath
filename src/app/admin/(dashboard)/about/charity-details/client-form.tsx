@@ -6,7 +6,7 @@ import {  Plus, Trash2, HeartHandshake } from "lucide-react";
 export default function CharityDetailsClientForm({ initialData }: { initialData: any }) {
   const [badgeText, setBadgeText] = useState(initialData.badgeText || "Our Commitment to Society");
   const [heading, setHeading] = useState(initialData.heading || "Information Regarding Charity");
-  const [introduction, setIntroduction] = useState(initialData.introduction || "Deenanath Mangeshkar Hospital actively provides world-class medical treatment to patients from indigent (निर्धन) and weaker sections (दुर्बल) of society. Below is a detailed breakdown of the patients we have recently assisted.");
+  const [introduction, setIntroduction] = useState(initialData.introduction || "Deenanath Mangeshkar Hospital and Research Center actively provides world-class medical treatment to patients from indigent (निर्धन) and weaker sections (दुर्बल) of society. Below is a detailed breakdown of the patients we have recently assisted.");
   
   const [items, setItems] = useState<any[]>(initialData.records?.length > 0 ? initialData.records.map((item: any) => ({
     ...item,
@@ -92,7 +92,7 @@ export default function CharityDetailsClientForm({ initialData }: { initialData:
                 onChange={(e) => setIntroduction(e.target.value)}
                 rows={4}
                 className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium leading-relaxed text-sm"
-                placeholder="e.g. Deenanath Mangeshkar Hospital actively provides..."
+                placeholder="e.g. Deenanath Mangeshkar Hospital and Research Center actively provides..."
               />
             </div>
           </div>

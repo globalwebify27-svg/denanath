@@ -372,7 +372,7 @@ export default function InPatientClientPage({ pageData }: { pageData: any }) {
                     <FileText className="w-6 h-6 text-[#007a87]" />
                     Admission Procedure
                   </h3>
-                  <p className="mb-4 text-slate-600">On admission to Deenanath Mangeshkar Hospital, you will be required to do the following:</p>
+                  <p className="mb-4 text-slate-600">On admission to Deenanath Mangeshkar Hospital and Research Center, you will be required to do the following:</p>
                   <ul className="space-y-4">
                     {admissionProcedure.map((step: string, i: number) => (
                       <li key={i} className="flex items-start gap-3 bg-white border border-slate-100 p-4 rounded-xl shadow-sm">
@@ -458,7 +458,7 @@ export default function InPatientClientPage({ pageData }: { pageData: any }) {
                     <FileText className="w-6 h-6 text-[#007a87]" />
                     TPA & Corporate Companies
                   </h3>
-                  <p className="mb-4 text-slate-600">Deenanath Mangeshkar Hospital is empanelled with following insurance companies / TPA’s for cashless facility.</p>
+                  <p className="mb-4 text-slate-600">Deenanath Mangeshkar Hospital and Research Center is empanelled with following insurance companies / TPA’s for cashless facility.</p>
                   
                   <div className="grid md:grid-cols-2 gap-8 mt-6">
                     <div>

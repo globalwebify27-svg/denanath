@@ -14,7 +14,7 @@ export default async function OutPatientPage() {
       // Fallback data
       pageData = {
         instructions: [
-          "For availing services provided by Deenanath Mangeshkar Hospital, registration of patient is necessary.",
+          "For availing services provided by Deenanath Mangeshkar Hospital and Research Center, registration of patient is necessary.",
           "Registration is one-time activity whereby a unique MRD number is provided to every patient and patient’s medical information is linked to this number.",
           "To make Registration Procedure hassle-free please make sure that you have either of these documents ready with you - Passport, PAN card, Adhaar card, Voter ID, Driving Licence.",
           "DMH considers Registration as important process as Information given during Registration cannot be changed in future under any circumstances. DMH therefore requests you to fill the Registration Form very carefully.",

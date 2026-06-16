@@ -9,7 +9,7 @@
       "timings": "[{\"branch\":\"PLASTIC SURGERY\",\"day\":\"Wednesday\",\"time\":\"11.00 am to 1.00 pm (SS Building First Floor)\"},{\"branch\":\"PLASTIC SURGERY\",\"day\":\"Saturday\",\"time\":\"2.00 pm to 4.00 pm (SS Building First Floor)\"}]",
       "education": "[\"MBBS from TNMC & BYL Nair Hospital, Mumbai in 2003\",\"M.S. (Gen. Surg.) from GMC & Sir J J hospital, Mumbai in 2008\",\"M.Ch (Plastic Surgery) from TNMC BYL Nair Hospital, Mumbai in 2011\"]",
       "training": "[\"Observer at Tata Memorial hospital, Mumbai for 3 Months\",\"International visiting scholar – Reconstructive Microsurgery and Craniofacial surgery at Chan Gung Memorial Hospital , Taiwan for 3 Months\",\"Observer – JSRM 2018 at Osaka, Japan for 1 Week\"]",
-      "experience": "[\"Assistant Professor in Plastic surgery at GSMC & KEM Hospital, Mumbai for 1 Years\",\"Assistant Professor in Plastic surgery at Dr D Y Patil Medical College, Pune for 3 Years\",\"Consultant Plastic & Cosmetic Surgeon at Deenanath Mangeshkar Hospital & Research Center, Pune for 13 Years\",\"Post Graduate teacher in Plastic Surgery at Deenanath Mangeshkar Hospital & Research Center, Pune for 5 Years\"]",
+      "experience": "[\"Assistant Professor in Plastic surgery at GSMC & KEM Hospital, Mumbai for 1 Years\",\"Assistant Professor in Plastic surgery at Dr D Y Patil Medical College, Pune for 3 Years\",\"Consultant Plastic & Cosmetic Surgeon at Deenanath Mangeshkar Hospital and Research Center, Pune for 13 Years\",\"Post Graduate teacher in Plastic Surgery at Deenanath Mangeshkar Hospital and Research Center, Pune for 5 Years\"]",
       "publications": "[]",
       "createdAt": "2026-06-02T06:38:55.079Z",
       "updatedAt": "2026-06-02T11:31:59.035Z"
@@ -23,7 +23,7 @@
       "timings": "[{\"branch\":\"OPHTHALMOLOGY\",\"day\":\"Tuesday & Thursday\",\"time\":\"02.00 pm to 04.00 pm\"},{\"branch\":\"OPHTHALMOLOGY\",\"day\":\"Friday\",\"time\":\"11.00 am to 01.00 pm\"}]",
       "education": "[\"MBBS from D.Y. Patil Medical College, Nerul in 2006\",\"DNB from Sankara Netralaya, Chennai in 2010\",\"PED. Ophthalmology from Sankara Netralaya, Chennai in 2012\",\"Neuro from Johns Hopkins USA in 2014\"]",
       "training": null,
-      "experience": "[\"Honorary Consultant at Deenanath Mangeshkar Hospital, Pune for 10 Years\"]",
+      "experience": "[\"Honorary Consultant at Deenanath Mangeshkar Hospital and Research Center, Pune for 10 Years\"]",
       "publications": null,
       "createdAt": "2026-06-02T06:38:55.116Z",
       "updatedAt": "2026-06-02T06:38:55.116Z"
@@ -37,7 +37,7 @@
       "timings": "[{\"branch\":\"CARDIO RESPIRATORY PHYSIOTHERAPY\",\"day\":\"Wednesday\",\"time\":\"11.00 am to 1.00 pm and 2.30 pm to 4.30 pm\"}]",
       "education": "[\"Masters Of Cardiovascular & Respiratory Physiotherapy from Sancheti Institute Of Orthopedics & Rehabilitation College Of Physiotherapy in 2024\",\"Bachelors Of Physiotherapy from Smt Kashibai Navale College Of Physiotherapy in 2021\"]",
       "training": null,
-      "experience": "[\"Physiotherapist at Deenanath Mangeshkar Hospital & Research Centre, Pune for 1 Year\",\"Physiotherapist at Aloha Lifestyle & Reversal Studio for 5 Months\"]",
+      "experience": "[\"Physiotherapist at Deenanath Mangeshkar Hospital and Research Center, Pune for 1 Year\",\"Physiotherapist at Aloha Lifestyle & Reversal Studio for 5 Months\"]",
       "publications": "[]",
       "createdAt": "2026-06-02T06:38:55.123Z",
       "updatedAt": "2026-06-02T06:38:55.123Z"
@@ -49,8 +49,8 @@
       "qualifications": "MBBS, D- Ortho, DNB Ortho Fellowship In Shoulder, Knee And Sports Injuries (Germany, South Korea)",
       "specialty": "SHOULDER AND SPORTS INJURIES",
       "timings": "[{\"branch\":\"SHOULDER AND SPORTS INJURIES\",\"day\":\"Tuesday, Thursday and Saturday\",\"time\":\"2.00 pm to 4.00 pm\"}]",
-      "education": "[\"MBBS from B. J. Medical College, Pune in 2005\",\"D-ORTHO from Sancheti Hospital, Pune in 2008\",\"DNB - ORTHO from Deenanath Mangeshkar Hospital, Pune in 2010\"]",
-      "training": "[\"Fellowship In Shoulder Knee And Sports Injuries at Arcus Sports Klinic, Germany for 3 Months\",\"Shoulder, Knee And Sports Injuries at Deenanath Mangeshkar Hospital, Pune\",\"Fellowship In Shoulder Surgery at Samsung Medical Center, South Korea for 3 Months\"]",
+      "education": "[\"MBBS from B. J. Medical College, Pune in 2005\",\"D-ORTHO from Sancheti Hospital, Pune in 2008\",\"DNB - ORTHO from Deenanath Mangeshkar Hospital and Research Center, Pune in 2010\"]",
+      "training": "[\"Fellowship In Shoulder Knee And Sports Injuries at Arcus Sports Klinic, Germany for 3 Months\",\"Shoulder, Knee And Sports Injuries at Deenanath Mangeshkar Hospital and Research Center, Pune\",\"Fellowship In Shoulder Surgery at Samsung Medical Center, South Korea for 3 Months\"]",
       "experience": "[\"Orthopaedics at Navle Hospital for 1 Year\",\"Consultant - Orthopaedics at Preethi Hosptial -Madhurai for 2 Years\",\"Practicing Shoulder And Knee Specialtist for Till date\"]",
       "publications": "[]",
       "createdAt": "2026-06-02T06:38:55.136Z",
@@ -65,7 +65,7 @@
       "timings": "[{\"branch\":\"NEUROPHYSIOTHERAPY\",\"day\":\"Monday and Wednesday\",\"time\":\"1.00 pm to 5 pm\"},{\"branch\":\"NEUROPHYSIOTHERAPY\",\"day\":\"Tuesday and Saturday\",\"time\":\"9.00 am to 1.00 pm\"}]",
       "education": "[\"Bachelor of Physiotherapy from College of Physiotherapy, Tilak Maharashtra Vidyapeeth, Pune in 2010\",\"Masters of Physiotherpy (Neurological and Psychosomtic Disorders) from Rajiv Gandhi University of Health Sciences, Bangalore in 2012\"]",
       "training": "[\"Certified DNS (Dynamic Neuromuscular Stabilization) Level 2 Practitioner at The Prague School of Rehabilitation, Prague.\",\"Certified Constraint Induced Movement Therapy (CIMT) Practitioner at The University of Alabama at Birmingham for 1 Month\",\"Vestibular Rehabilitation at Medbridge Courses\"]",
-      "experience": "[\"Honorary Consultant NeuroPhysiotherapy at Deenanath Mangeshkar Hospital, Pune for 10 Years\",\"Consultant NeuroPhysiotherapist at TEAM Physiotherapy Services for 12 Years\"]",
+      "experience": "[\"Honorary Consultant NeuroPhysiotherapy at Deenanath Mangeshkar Hospital and Research Center, Pune for 10 Years\",\"Consultant NeuroPhysiotherapist at TEAM Physiotherapy Services for 12 Years\"]",
       "publications": null,
       "createdAt": "2026-06-02T06:38:55.150Z",
       "updatedAt": "2026-06-02T06:38:55.150Z"
@@ -79,7 +79,7 @@
       "timings": "[{\"branch\":\"PSYCHIATRY\",\"day\":\"Friday\",\"time\":\"11.00 am to 1.00 pm\"}]",
       "education": "[\"MBBS from Bharati Vidyapeeth’s Medical College Pune in 1996\",\"DPM from KEM Hospital, Pune in 1999\",\"MRCP from Royal College of Psychiatrists, London in 2004\",\"PG Dip. Psychiatry from University of Leeds, U.K. in 2004\"]",
       "training": "[\"Old Age Psychiatry at United Kingdom\",\"General Adult Psychiatry at United Kingdom\",\"Learning Disability at United Kingdom\",\"Various Hospitals\"]",
-      "experience": "[\"Consultant Psychiatrist at United Kingdom for 2004\",\"Consultant Psychiatrist at Deenanath Mangeshkar Hospital, Pune for 18 Years\",\"Consultant Psychiatrist at Private Practice for 1999\"]",
+      "experience": "[\"Consultant Psychiatrist at United Kingdom for 2004\",\"Consultant Psychiatrist at Deenanath Mangeshkar Hospital and Research Center, Pune for 18 Years\",\"Consultant Psychiatrist at Private Practice for 1999\"]",
       "publications": "[]",
       "createdAt": "2026-06-02T06:38:55.163Z",
       "updatedAt": "2026-06-02T06:38:55.163Z"
@@ -93,7 +93,7 @@
       "timings": "[{\"branch\":\"CRITICAL CARE MEDICINE\",\"day\":\"Daily\",\"time\":\"\"}]",
       "education": "[\"MBBS from B.J. Medical College, Pune. in 1996\",\"DA from Tata Memorial Hospital, Mumbai. in 1999\",\"DNB (Anaesthesiology) from Tata Memorial Hospital, Mumbai. in 2001\",\"IDCCM (Critical Care) from Ruby Hall Clinic, Pune in 2004\"]",
       "training": "[\"Anaesthesiology residency (DA and DNB) at Tata Memorial Hospital, Mumbai. (with rotations in KEM, J.J. and Cooper Hospitals, Mumbai) for 3 Years\",\"Senior Residency in Anaesthesiology, Critical care and Pain at Tata Memorial Hospital, Mumbai. for 1.5 Years\",\"Critical care and Neuro-trauma at Ruby Hall Clinic, Pune for 3 Years\"]",
-      "experience": "[\"Consultant Neuro- trauma ICU at Ruby Hall Clinic, Pune for 3 Years\",\"Consultant Intensivist (ICU consultant) at Deenanath Mangeshkar Hospital and research center, Pune for 20 Years\"]",
+      "experience": "[\"Consultant Neuro- trauma ICU at Ruby Hall Clinic, Pune for 3 Years\",\"Consultant Intensivist (ICU consultant) at Deenanath Mangeshkar Hospital and Research Center, Pune for 20 Years\"]",
       "publications": "[]",
       "createdAt": "2026-06-02T06:38:55.169Z",
       "updatedAt": "2026-06-02T06:38:55.169Z"
@@ -121,7 +121,7 @@
       "timings": "[{\"branch\":\"SURGERY\",\"day\":\"Thursday\",\"time\":\"9.00 am to 1.00 pm (Main Building, Ground Floor)\"}]",
       "education": "[\"MBBS from MGM Medical College, Indore in 1995\",\"DNB (Gen. Surg.) from Ruby Hall clinic, Pune in 2003\",\"MRCS from Edinburgh in 2009\"]",
       "training": "[\"FIAGES\",\"FALS – Robotic Surgery\",\"Liver Transplant Fellowship at King’s College Hospital, London, U.K.\"]",
-      "experience": "[\"Consultant Surgeon at Ruby Hall Clinic for 15 Years\",\"Consultant Surgeon at Deenanath Mangeshkar Hospital, Pune for 2 Years\"]",
+      "experience": "[\"Consultant Surgeon at Ruby Hall Clinic for 15 Years\",\"Consultant Surgeon at Deenanath Mangeshkar Hospital and Research Center, Pune for 2 Years\"]",
       "publications": "[]",
       "createdAt": "2026-06-02T06:38:55.193Z",
       "updatedAt": "2026-06-02T06:38:55.193Z"
@@ -133,9 +133,9 @@
       "qualifications": "MBBS, MS, MCh (PLASTIC SURGERY)",
       "specialty": "PLASTIC SURGERY",
       "timings": "[{\"branch\":\"PLASTIC SURGERY\",\"day\":\"Monday\",\"time\":\"2.00 pm to 4.00 pm (SS Building First Floor)\"}]",
-      "education": "[\"MBBS from RMC Loni, MUHS, Maharashtra in 2005\",\"DNB (Gen. Surg.) from Deenanath Mangeshkar Hospital, Pune in 2010\",\"M.Ch (Plastic Surgery) from BMCRI, Bangalore in 2015\"]",
+      "education": "[\"MBBS from RMC Loni, MUHS, Maharashtra in 2005\",\"DNB (Gen. Surg.) from Deenanath Mangeshkar Hospital and Research Center, Pune in 2010\",\"M.Ch (Plastic Surgery) from BMCRI, Bangalore in 2015\"]",
       "training": "[\"Surgical oncology resident at Tata Memorial hospital, Mumbai for 6 Months\",\"Observer, hand surgery at Ganga Hospital, Coimbatore for 1 Month\",\"Observer, cosmetic surgery at Medanta Hospital, Gurugram for 1 Month\",\"Observer, microvascular surgery at Tata Memorial hospital, Mumbai for 1 Month\",\"Breast aesthetic and reconstruction fellowship at St. Thomas Hospital, London for 1 Month\"]",
-      "experience": "[\"Assistant Professor in Plastic surgery at SKNMC, Pune for 5 Years\",\"Consultant Plastic & Cosmetic Surgeon at Deenanath Mangeshkar Hospital & Research Center, Pune for 10 Years\",\"Post Graduate teacher in Plastic Surgery at Deenanath Mangeshkar Hospital & Research Center, Pune for 10 Years\"]",
+      "experience": "[\"Assistant Professor in Plastic surgery at SKNMC, Pune for 5 Years\",\"Consultant Plastic & Cosmetic Surgeon at Deenanath Mangeshkar Hospital and Research Center, Pune for 10 Years\",\"Post Graduate teacher in Plastic Surgery at Deenanath Mangeshkar Hospital and Research Center, Pune for 10 Years\"]",
       "publications": "[]",
       "createdAt": "2026-06-02T06:38:55.208Z",
       "updatedAt": "2026-06-02T06:38:55.208Z"
@@ -149,7 +149,7 @@
       "timings": "[{\"branch\":\"DENTISTRY\",\"day\":\"Wednesday\",\"time\":\"1.30 pm to 4.30 pm (Main Building, Ground Floor C wing)\"},{\"branch\":\"DENTISTRY\",\"day\":\"Thursday\",\"time\":\"10.00 am to 1.30 pm(Main Building, Ground Floor C wing)\"}]",
       "education": "[\"B. D. S. from Nair Hospital Dental College, Mumbai in 1990\",\"M. D. S. from Nair Hospital Dental College, Mumbai in 1993\"]",
       "training": "[\"Geriatric Medicine & Gerontology at Geriatric Society of India for 6 Months\"]",
-      "experience": "[\"Dentistry Prosthodontics at Private practice for 30 Years\",\"Prosthodontics at Teaching experience for 22 Years\",\"Consultant Prosthodontist at Deenanath Mangeshkar Hospital for 25 Years\"]",
+      "experience": "[\"Dentistry Prosthodontics at Private practice for 30 Years\",\"Prosthodontics at Teaching experience for 22 Years\",\"Consultant Prosthodontist at Deenanath Mangeshkar Hospital and Research Center for 25 Years\"]",
       "publications": "[]",
       "createdAt": "2026-06-02T06:38:55.214Z",
       "updatedAt": "2026-06-02T06:38:55.214Z"
@@ -163,7 +163,7 @@
       "timings": "[{\"branch\":\"OPHTHALMOLOGY\",\"day\":\"Monday and Thursday\",\"time\":\"11.00 am – 1.00 pm\"}]",
       "education": "[\"MBBS from Krishna Institute of Medical Sciences, Karad in 2009\",\"MS from B. J. Govt. Medical College, Pune in 2014\"]",
       "training": "[\"Fellowship in Phacoemulsification at Nethradhama Super Speciality Eye Hospital, Bengaluru for 2 Months\",\"Fellowship in Medical Retina and ROP at P.B.M.A.’s H.V.Desai Eye Hospital, Pune for 2 Months\",\"Fellowship in Vitreo-retina at Sankara Nethralaya, Chennai for 2 Years\"]",
-      "experience": "[\"Consultant in Vitreo-retina and Uvea at Deenanath Mangeshkar Hospital, Pune for Ongoing\",\"Consultant in Vitreo-retina and Uvea at Jehangir Hospital, Pune for Ongoing\",\"Consultant in Vitreo-retina and Uvea at B.J. Govt Medical College and Sassoon Hospital for Ongoing\",\"Consultant in Vitreo-retina and Uvea at Sadguru Netra Chikitsalaya Chitrakoot for 2 Years 2 months\",\"Medical Officer in Ophthalmology at Civil Hospital, Jalgaon for 1 Year\",\"Speciality Medical Officer at Sion Hospital, Mumbai for 4 months\"]",
+      "experience": "[\"Consultant in Vitreo-retina and Uvea at Deenanath Mangeshkar Hospital and Research Center, Pune for Ongoing\",\"Consultant in Vitreo-retina and Uvea at Jehangir Hospital, Pune for Ongoing\",\"Consultant in Vitreo-retina and Uvea at B.J. Govt Medical College and Sassoon Hospital for Ongoing\",\"Consultant in Vitreo-retina and Uvea at Sadguru Netra Chikitsalaya Chitrakoot for 2 Years 2 months\",\"Medical Officer in Ophthalmology at Civil Hospital, Jalgaon for 1 Year\",\"Speciality Medical Officer at Sion Hospital, Mumbai for 4 months\"]",
       "publications": "[]",
       "createdAt": "2026-06-02T06:38:55.226Z",
       "updatedAt": "2026-06-02T06:38:55.226Z"
@@ -177,7 +177,7 @@
       "timings": "[{\"branch\":\"NEUROLOGY\",\"day\":\"Tuesday, Wednesday, Thursday\",\"time\":\"11:00 am to 1:00 pm\"}]",
       "education": "[\"B.A.S.L.P from BV(DU) School of Audiology and Speech Language Pathology, Pune in 2021\",\"Masters SLP from BV(DU) School of Audiology and Speech Language Pathology, Pune in 2023\"]",
       "training": null,
-      "experience": "[\"Consultant Speech Language Pathologist (Neurology) at Deenanath Mangeshkar Hospital, Pune for 1 Year\"]",
+      "experience": "[\"Consultant Speech Language Pathologist (Neurology) at Deenanath Mangeshkar Hospital and Research Center, Pune for 1 Year\"]",
       "publications": "[]",
       "createdAt": "2026-06-02T06:38:55.234Z",
       "updatedAt": "2026-06-02T06:38:55.234Z"
@@ -191,7 +191,7 @@
       "timings": "[{\"branch\":\"SHOULDER AND SPORTS INJURIES\",\"day\":\"Monday and Friday\",\"time\":\"09:00 am to 13:30 pm\"},{\"branch\":\"SHOULDER AND SPORTS INJURIES\",\"day\":\"Wednesday\",\"time\":\"12:00 pm to 14:00 pm\"}]",
       "education": "[\"MBBS from JNMC in 1989\",\"D.Orth from CPS in 2005\",\"DNB Orth from National Board of Examinations in 2006\",\"MCh.Orth from Royal Liverpool University, UK in 1998\",\"FRCS Tr & Orth from Royal Coll of Surgeons, UK in 2001\"]",
       "training": "[\"Rotary International Ambassadorial scholarship at Royal Liverpool University, UK for 1 Year\",\"Registrar Rotation at Mersey Deanery, Liverpool for 3 Years\",\"Fellowship at Dr Joe DeBeer, Cape Town for 1 Month\",\"Fellowship at Stuttgart for 1 Month\"]",
-      "experience": "[\"Head of Dept Shoulder Dept at Sancheti Institute of Orthopedics & rehab for 10 Years\",\"Consultant Shoulder & Sports injuries dept at Deenanath Mangeshkar Hospital, Pune for 25 Years\",\"PG teacher Shoulder & Sports injuries dept at Deenanath Mangeshkar Hospital, Pune for 7 Years\"]",
+      "experience": "[\"Head of Dept Shoulder Dept at Sancheti Institute of Orthopedics & rehab for 10 Years\",\"Consultant Shoulder & Sports injuries dept at Deenanath Mangeshkar Hospital and Research Center, Pune for 25 Years\",\"PG teacher Shoulder & Sports injuries dept at Deenanath Mangeshkar Hospital and Research Center, Pune for 7 Years\"]",
       "publications": "[]",
       "createdAt": "2026-06-02T06:38:55.247Z",
       "updatedAt": "2026-06-02T06:38:55.247Z"
@@ -205,7 +205,7 @@
       "timings": "[{\"branch\":\"SHOULDER AND SPORTS INJURIES\",\"day\":\"Monday, Friday\",\"time\":\"9:00 am to 1:30 pm\"},{\"branch\":\"SHOULDER AND SPORTS INJURIES\",\"day\":\"Wednesday\",\"time\":\"12:00 pm to 2:00 pm\"}]",
       "education": "[\"MBBS from Seth G. S. Medical College, Mumbai in 1996\",\"DMRD from KEM Hospital, Mumbai in 1999\",\"DNB ( Radiology) from KEM Hospital, Mumbai in 2001\"]",
       "training": "[\"Observership Musculoskeletal Ultrasound at Royal Liverpool Hospital for 6 Months\"]",
-      "experience": "[\"Consultant Radiologist at Ratna Hospital for 1 Year\",\"Consultant Radiologist at Sanjeevan Hospital for 4 Year\",\"Consultant Musculoskeletal Ultrasonologist at Deenanath Mangeshkar Hospital, Pune for >11 Years\",\"Training post graduates in Musculoskeletal Ultrasound at Deenanath Mangeshkar Hospital, Pune for 7 Years\"]",
+      "experience": "[\"Consultant Radiologist at Ratna Hospital for 1 Year\",\"Consultant Radiologist at Sanjeevan Hospital for 4 Year\",\"Consultant Musculoskeletal Ultrasonologist at Deenanath Mangeshkar Hospital and Research Center, Pune for >11 Years\",\"Training post graduates in Musculoskeletal Ultrasound at Deenanath Mangeshkar Hospital and Research Center, Pune for 7 Years\"]",
       "publications": "[]",
       "createdAt": "2026-06-02T06:38:55.260Z",
       "updatedAt": "2026-06-02T06:38:55.260Z"
@@ -219,7 +219,7 @@
       "timings": "[{\"branch\":\"MEDICINE\",\"day\":\"Monday, Wednesday, Friday (walk - in)\",\"time\":\"2.00 pm to 4.00 pm (Main Building Ground Floor)\"},{\"branch\":\"MEDICINE\",\"day\":\"2nd Sunday (walk - in)\",\"time\":\"11.00 pm to 1.00 pm (Main Building Ground Floor)\"}]",
       "education": "[\"MBBS from NDMVPS Medical College,Nasik. University of Pune in 2002\",\"PGDEMS. from Symbiosis International University, Pune in 2003\",\"MD . Medicine from Grant Medical College, JJ Government Hospital, University of Mumbai. in 2008\"]",
       "training": "[\"Residency in Medicine. at JJ Hospital,Byculla, Mumbai for 3 Years\"]",
-      "experience": "[\"Consultant Physician at Deenanath Mangeshkar Hospital for 6 Years\",\"Senior ICU Registrar. at Deenanath Mangeshkar Hospital for 6 months\",\"Senior Consulting Physician. at Rural Government Hospital, Mangaon. for 6 months\",\"Owner, Physician. at Bagade Hospital,Kolad,Roha, Raigad. for 7 Years\",\"Senior Consulting and Emergency Physician at Hanumant Charitable Hospital,Bhavnagar, Gujarat for 17 months\"]",
+      "experience": "[\"Consultant Physician at Deenanath Mangeshkar Hospital and Research Center for 6 Years\",\"Senior ICU Registrar. at Deenanath Mangeshkar Hospital and Research Center for 6 months\",\"Senior Consulting Physician. at Rural Government Hospital, Mangaon. for 6 months\",\"Owner, Physician. at Bagade Hospital,Kolad,Roha, Raigad. for 7 Years\",\"Senior Consulting and Emergency Physician at Hanumant Charitable Hospital,Bhavnagar, Gujarat for 17 months\"]",
       "publications": "[]",
       "createdAt": "2026-06-02T06:38:55.267Z",
       "updatedAt": "2026-06-02T06:38:55.267Z"
@@ -247,7 +247,7 @@
       "timings": "[{\"branch\":\"CLINICAL HAEMATOLOGY\",\"day\":\"Tuesday and Thursday\",\"time\":\"11.00 am - 2.00 pm\"},{\"branch\":\"CLINICAL HAEMATOLOGY\",\"day\":\"Friday\",\"time\":\"10.00 am - 1.00 pm\"}]",
       "education": "[\"MBBS from KIMS , Karad in 2008\",\"MD (Gen Medicine) from BJGMC Pune in 2012\",\"DM (Clinical Hematology) from CMC Vellore in 2018\",\"DNB (Clinical Hematology) from CMC Vellore in 2019\"]",
       "training": "[\"General Medicine Residency at BJGMC Pune for 3 Years\",\"Consultant In Dept of Medicine at BJGMC Pune for 1 Year\",\"Residency in Clinical Hematology at CMC Vellore for 5 Years\"]",
-      "experience": "[\"Assistant Professor in Medicine at BJGMC Pune for 1 Year\",\"Consultant Hematologist at Deenanath Mangeshkar Hospital Pune for 7 Years\"]",
+      "experience": "[\"Assistant Professor in Medicine at BJGMC Pune for 1 Year\",\"Consultant Hematologist at Deenanath Mangeshkar Hospital and Research Center Pune for 7 Years\"]",
       "publications": "[]",
       "createdAt": "2026-06-02T06:38:55.295Z",
       "updatedAt": "2026-06-02T06:38:55.295Z"
@@ -259,9 +259,9 @@
       "qualifications": "DNB , ( Obs & Gyn ) , M.R.C.O.G.",
       "specialty": "OBSTETRICS AND GYNAECOLOGY",
       "timings": "[{\"branch\":\"OBSTETRICS AND GYNAECOLOGY\",\"day\":\"Monday\",\"time\":\"9:00 pm to 1:00 pm (Main Building, Ground Floor)\"},{\"branch\":\"OBSTETRICS AND GYNAECOLOGY\",\"day\":\"Thursday\",\"time\":\"2:00 pm to 4:00 pm (Main Building, Ground Floor)\"},{\"branch\":\"OBSTETRICS AND GYNAECOLOGY\",\"day\":\"Tuesday and Wednesday (PVT)\",\"time\":\"2:00 pm to 4:00 pm (New Building, 3rd Floor)\"}]",
-      "education": "[\"MBBS from M.I.M.E.R., Talegaon in 2009\",\"DNB from Deenanath Mangeshkar Hospital, Pune in 2013\",\"MRCOG from Royal College, London in 2018\"]",
+      "education": "[\"MBBS from M.I.M.E.R., Talegaon in 2009\",\"DNB from Deenanath Mangeshkar Hospital and Research Center, Pune in 2013\",\"MRCOG from Royal College, London in 2018\"]",
       "training": "[\"FOGSI fellowship in laparoscopy at FOGSI\"]",
-      "experience": "[\"Lecturer at S.K. Navale Hospital & Medical college for 1 Year\",\"Lecturer at Deenanath Mangeshkar Hospital for 4 Years\",\"Consultant Obs &Gyn at Deenanath Mangeshkar Hospital\"]",
+      "experience": "[\"Lecturer at S.K. Navale Hospital & Medical college for 1 Year\",\"Lecturer at Deenanath Mangeshkar Hospital and Research Center for 4 Years\",\"Consultant Obs &Gyn at Deenanath Mangeshkar Hospital and Research Center\"]",
       "publications": "[]",
       "createdAt": "2026-06-02T06:38:55.311Z",
       "updatedAt": "2026-06-02T06:38:55.311Z"
@@ -275,7 +275,7 @@
       "timings": "[{\"branch\":\"MEDICINE\",\"day\":\"Friday (walk - in)\",\"time\":\"2.00 pm to 4.00 pm (Main Building Ground Floor)\"}]",
       "education": "[\"MBBS from BVP Medical College Pune in 2005\",\"M D General Medicine from Dr D Y Patil Medical College Kolhapur in 2010\"]",
       "training": null,
-      "experience": "[\"Consultant Physician at Mai Mangeshkar Hospital for 12 Years\",\"Consultant Physician at MJM Hospital Pune for 13 Years\",\"ICU Incharge at Ratna Memorial Hospital Pune for 4 Years\",\"Consultant Physician at Deenanath Mangeshkar Hospital, Pune for 4 Years\"]",
+      "experience": "[\"Consultant Physician at Mai Mangeshkar Hospital for 12 Years\",\"Consultant Physician at MJM Hospital Pune for 13 Years\",\"ICU Incharge at Ratna Memorial Hospital Pune for 4 Years\",\"Consultant Physician at Deenanath Mangeshkar Hospital and Research Center, Pune for 4 Years\"]",
       "publications": "[]",
       "createdAt": "2026-06-02T06:38:55.325Z",
       "updatedAt": "2026-06-02T06:38:55.325Z"
@@ -303,7 +303,7 @@
       "timings": "[{\"branch\":\"NEUROPHYSIOTHERAPY\",\"day\":\"Wednesday\",\"time\":\"9.00 am- 1.00 pm (New building, 2nd Floor)\"},{\"branch\":\"NEUROPHYSIOTHERAPY\",\"day\":\"Saturday\",\"time\":\"1.00 pm- 5.00 pm (New building, 2nd Floor)\"}]",
       "education": "[\"Bachelor in Physiotherapy from Smt. KashibaiNavale College of Physiotherapy, Pune in 2016\",\"Master in Physiotherapy (Neurological and Psychosomatic disorders) from MS. Ramaiah College of Physiotherapy, Bengaluru in 2018\"]",
       "training": "[\"Pelvic Floor Rehabilitation at Pelviheal Academy of Rehabilitation & Research\"]",
-      "experience": "[\"Physiotherapist at Deenanath Mangeshkar Hospital for 6 Years\"]",
+      "experience": "[\"Physiotherapist at Deenanath Mangeshkar Hospital and Research Center for 6 Years\"]",
       "publications": "[]",
       "createdAt": "2026-06-02T06:38:55.344Z",
       "updatedAt": "2026-06-02T06:38:55.344Z"
@@ -317,7 +317,7 @@
       "timings": "[{\"branch\":\"NEONATOLOGY\",\"day\":\"Wednesday\",\"time\":\"5.00 pm to 6.00 pm\"}]",
       "education": "[\"MBBS from Seth GS Medical College and KEM Hospital,Mumbai in 2014\",\"MD Pediatrics from Government Medical college,Miraj, Maharashtra in 2019\",\"DrNB Neonatology from Manipal Hospital,Old Airport Road,Bangalore,Karnataka in 2023\"]",
       "training": "[\"Objective Assesment of Sickness in Neonates Using Sonography (POCUS in Neonate) at Manipal Hospital,Old Airport Road,Bangalore,Karnataka for 3 months\"]",
-      "experience": "[\"Assistant Professor , Department of Pediatrics at King Edward Memorial Hospital,Parel, Mumbai for 14 Months\",\"Senior Resident, Department of Neonatology at Nowrosjee Wadia Maternity Hospital & Bai Jerbai Wadia Hospital for Children,Parel, Mumbai for 12 months\",\"Consultant Neonatologist, Department of Neonatology at Deenanath Mangeshkar Hospital, Pune for 10 months\"]",
+      "experience": "[\"Assistant Professor , Department of Pediatrics at King Edward Memorial Hospital,Parel, Mumbai for 14 Months\",\"Senior Resident, Department of Neonatology at Nowrosjee Wadia Maternity Hospital & Bai Jerbai Wadia Hospital for Children,Parel, Mumbai for 12 months\",\"Consultant Neonatologist, Department of Neonatology at Deenanath Mangeshkar Hospital and Research Center, Pune for 10 months\"]",
       "publications": "[]",
       "createdAt": "2026-06-02T06:38:55.359Z",
       "updatedAt": "2026-06-02T06:38:55.359Z"
@@ -331,7 +331,7 @@
       "timings": "[{\"branch\":\"DENTISTRY\",\"day\":\"Thursday\",\"time\":\"10.00 am - 1.30 pm (Main Building, Ground Floor, C wing)\"},{\"branch\":\"DENTISTRY\",\"day\":\"Saturday\",\"time\":\"1.30 pm - 4.30 pm (Main Building, Ground Floor, c Wing)\"}]",
       "education": "[\"BDS from Sinhgad Dental college,Pune in 2014\",\"MDS (orthodontics) from KLE Vishwanath Katti Institute of Dental Sciences,Belgaum in 2019\"]",
       "training": null,
-      "experience": "[\"Consultant Orthodontist at Deenanath Mangeshkar Hospital for 5 Years\"]",
+      "experience": "[\"Consultant Orthodontist at Deenanath Mangeshkar Hospital and Research Center for 5 Years\"]",
       "publications": "[]",
       "createdAt": "2026-06-02T06:38:55.374Z",
       "updatedAt": "2026-06-02T06:38:55.374Z"
@@ -345,7 +345,7 @@
       "timings": "[{\"branch\":\"ANAESTHESIOLOGY\",\"day\":\"\",\"time\":\"\"}]",
       "education": "[\"MBBS from B. J. Medical College in 2011\",\"MD from B. J. Medical College in 2015\",\"DNB from National Board of Education in 2016\",\"PDCC from Amrita Institute of Medical Sciences in 2019\"]",
       "training": "[\"Fellowship in solid organ transplant anaesthesia at Amrita Institute of Medical Sciences for 1.5 Years\"]",
-      "experience": "[\"Senior Registrar at B. J. Medical College for 1 Year\",\"Assistant Professor at KLE University, Belagavi for 1.5 Years\",\"Clinical Associate at Deenanath Mangeshkar Hospital for 1.5 Years\",\"Associate Consultant at Deenanath Mangeshkar Hospital for 4.5 Years\"]",
+      "experience": "[\"Senior Registrar at B. J. Medical College for 1 Year\",\"Assistant Professor at KLE University, Belagavi for 1.5 Years\",\"Clinical Associate at Deenanath Mangeshkar Hospital and Research Center for 1.5 Years\",\"Associate Consultant at Deenanath Mangeshkar Hospital and Research Center for 4.5 Years\"]",
       "publications": "[]",
       "createdAt": "2026-06-02T06:38:55.387Z",
       "updatedAt": "2026-06-02T06:38:55.387Z"
@@ -359,7 +359,7 @@
       "timings": "[{\"branch\":\"EPILEPSY MONITORING AND SURGERY\",\"day\":\"Tuesday, Thurday, Saturday\",\"time\":\"09:00 am - 5:30 pm\"}]",
       "education": "[\"Doctor of Psychology (Clinical Neuropsychology) from Macquarie University, Sydney, Australia in 2012\",\"Bachelor of Psychology (Honours) from Macquarie University, Sydney, Australia in 2008\"]",
       "training": null,
-      "experience": "[\"Clinical Neuropsychologist at Fortis Hospital, Mulund for 3 Years\",\"Clinical Neuropsychologist at Child Development Centre, Hinduja Hospital for 3 Years\",\"Assistant Professor at FLAME University, Pune for 3 Years\",\"Adjunct Faculty at FLAME University, Pune for 6 Years\",\"Clinical Neuropsychologist at Bajaj Allianz Centre for Comprehensive Epilepsy Care, Deenanath Mangeshkar Hospital and Research Centre for 7 Years\"]",
+      "experience": "[\"Clinical Neuropsychologist at Fortis Hospital, Mulund for 3 Years\",\"Clinical Neuropsychologist at Child Development Centre, Hinduja Hospital for 3 Years\",\"Assistant Professor at FLAME University, Pune for 3 Years\",\"Adjunct Faculty at FLAME University, Pune for 6 Years\",\"Clinical Neuropsychologist at Bajaj Allianz Centre for Comprehensive Epilepsy Care, Deenanath Mangeshkar Hospital and Research Center for 7 Years\"]",
       "publications": "[]",
       "createdAt": "2026-06-02T06:38:55.395Z",
       "updatedAt": "2026-06-02T06:38:55.395Z"
@@ -373,7 +373,7 @@
       "timings": "[{\"branch\":\"ANAESTHESIOLOGY\",\"day\":\"\",\"time\":\"\"}]",
       "education": "[\"MBBS from Pravara Medical College in 1993\",\"DGO from K.E.M Hospital ( Pune University) in 1996\",\"M.D from Pravara Medical College (Pune University) in 2000\"]",
       "training": "[\"Lecturer in Anesthesia at KEMH Pune for 1 Year\",\"Clinical Observer at Mt.Goudines Belgium for 1 Month\"]",
-      "experience": "[\"Consultant in Anaesthesia at Sanjeevan Hospital for 6 Years\",\"Consultant in Anaesthesia at Deenanath Mangeshkar Hospital, Pune for 21 Years\"]",
+      "experience": "[\"Consultant in Anaesthesia at Sanjeevan Hospital for 6 Years\",\"Consultant in Anaesthesia at Deenanath Mangeshkar Hospital and Research Center, Pune for 21 Years\"]",
       "publications": "[]",
       "createdAt": "2026-06-02T06:38:55.404Z",
       "updatedAt": "2026-06-02T06:38:55.404Z"
@@ -387,7 +387,7 @@
       "timings": "[{\"branch\":\"GASTROENTEROLOGY\",\"day\":\"Monday to Saturday\",\"time\":\"11.00 am – 2.00 pm (Super-specialty building, 2nd floor)\"},{\"branch\":\"GASTROENTEROLOGY\",\"day\":\"Monday to Friday (Pvt. OPD) ( no appointment)\",\"time\":\"2.00 pm – 4.00 pm (Super-specialty building, 2nd floor)\"}]",
       "education": "[\"MBBS from B J Medical College in 1990\",\"MS from B J Medical College in 1993\",\"Fellowship in GI Endoscopy from SMS Endoscopy Center, Bhatia General Hospital, Mumbai in 1997\",\"Fellow of American Society of Gastrointestinal Endoscopy (FASGE) (Honorary) from American Society of Gastrointestinal Endoscopy in 2014\",\"Fellow of Japanese Society of Gastrointestinal Endoscopy (FJGES) (Honorary) from Japanese Society of Gastrointestinal Endoscopy in 2020\",\"Fellow of Indian Society of Gastroenterology (FISG) (Honorary) from Indian Society of Gastroenterology in 2022\",\"Master of Society of Gastrointestinal Endoscopists of India (SGEI) (Honorary) from Society of Gastrointestinal Endoscopists of India in 2024\"]",
       "training": "[\"Advanced Fellowship in Gastroenterology & G. I. Endoscopy at SMS Endoscopy Center, Bhatia General Hospital, Mumbai, India for 18 Months\",\"Trainee Fellow in Interventional GI Endoscopy at Department of Endoscopic Surgery, Hamburg University Hospital, Germany, for 3 Months\",\"Training in Endoscopic Ultrasonography at Department of Gastroenterology and Endoscopy, University of Innsbruck, Austria for 1 Week\",\"Trainee Fellow in Endoscopic Ultrasonography at Department of Gastroenterology and Endoscopy, Institut Pauli Calmettes, Marseille, France for 1 Month\",\"Training in ESD, POEM, STER, Third Space Endoscopy at Fudan University, Zhongshang Hospital, Shanghai, China for 1 Week\",\"Hands on training in NOTES at Institute of Advanced Endoscopic Surgery (IRCAD), Strasbourg, France for 1 Week\"]",
-      "experience": "[\"Cons. Gastroenterologist & GI Endoscopist at Sanjeevan Hospital for 4 Years\",\"Cons. Gastroenterologist & GI Endoscopist at Deenanath Mangeshkar Hospital & Research Centre for 24 Years\"]",
+      "experience": "[\"Cons. Gastroenterologist & GI Endoscopist at Sanjeevan Hospital for 4 Years\",\"Cons. Gastroenterologist & GI Endoscopist at Deenanath Mangeshkar Hospital and Research Center for 24 Years\"]",
       "publications": "[]",
       "createdAt": "2026-06-02T06:38:55.418Z",
       "updatedAt": "2026-06-02T06:38:55.418Z"
@@ -401,7 +401,7 @@
       "timings": "[{\"branch\":\"ORTHOPAEDICS\",\"day\":\"Saturday\",\"time\":\"9.00 am to 3.00 pm (GS Building, Ground Floor)\"},{\"branch\":\"JOINT REPLACEMENT\",\"day\":\"Tuesday\",\"time\":\"3.00 pm to 5.00 pm (SS Building, 1st Floor)\"}]",
       "education": "[\"MBBS from Dr V M M C And General Hospital, Solapur in 1989\",\"M.S. from Dr V M M C And General Hospital, Solapur in 1993\",\"DNB from Jaslok Hospital, Mumbai in 1994\",\"Fellowship from Oxford UK in 1998\"]",
       "training": "[\"House Officer Genral Surgery at Dr V M M C And General Hospital, Solapur for 6 Months\",\"House Officer Orthopaedic at Dr V M M C And General Hospital, Solapur for 6 Months\",\"Ragistrar Orthopaedic at Dr V M M C And General Hospital, Solapur for 24 Months\",\"Clinical Assitant at Jaslok Hospital, Mumbai for 18 Months\",\"Clinical Observer at Nuffield Orthopaedic Oxford for 3 Months\",\"S.H.O at Northampton General Hospital UK for 6 Month\",\"Ragistrar at Northampton General Hospital UK for 24 Months\"]",
-      "experience": "[\"Ruby Hall Clinic, Pune for April. 1998 onwards\",\"Deenanath Mangeshkar Hospital, Pune for 16 Years\"]",
+      "experience": "[\"Ruby Hall Clinic, Pune for April. 1998 onwards\",\"Deenanath Mangeshkar Hospital and Research Center, Pune for 16 Years\"]",
       "publications": "[]",
       "createdAt": "2026-06-02T06:38:55.429Z",
       "updatedAt": "2026-06-02T06:38:55.429Z"
@@ -415,7 +415,7 @@
       "timings": "[{\"branch\":\"OPHTHALMOLOGY\",\"day\":\"Tuesday, Wednesday,Friday, Saturday\",\"time\":\"11.00 am to 01.00pm\"}]",
       "education": "[\"M.B.B.S from B.J. Medical college, Pune in 2006\",\"MS (ophthalmology) from Post-graduate institute of medical education and research, Chandigarh in 2010\"]",
       "training": "[\"Retina (Medical/Surgical) and Uveitis at P.G.I.M.E.R. for 3 Years\"]",
-      "experience": "[\"Consultant eye surgeon at Deenanath Mangeshkar Hospital and research center for 11 Years\",\"Consultant eye surgeon at H.V.Desai for Since February 2014\"]",
+      "experience": "[\"Consultant eye surgeon at Deenanath Mangeshkar Hospital and Research Center for 11 Years\",\"Consultant eye surgeon at H.V.Desai for Since February 2014\"]",
       "publications": "[]",
       "createdAt": "2026-06-02T06:38:55.474Z",
       "updatedAt": "2026-06-02T06:38:55.474Z"
@@ -7511,7 +7511,7 @@
     {
       "id": "cmpxpxqyv0021p31mh0btui4g",
       "name": "RADIATION ONCOLOGY",
-      "description": "The V. L. Mutha Cancer Center at the Deenanath Mangeshkar Hospital provides combined modality treatment with surgery, chemotherapy as well as Radiation Therapy.",
+      "description": "The V. L. Mutha Cancer Center at the Deenanath Mangeshkar Hospital and Research Center provides combined modality treatment with surgery, chemotherapy as well as Radiation Therapy.",
       "headOfDepartment": null,
       "icon": "Radiation",
       "status": true,
@@ -7941,12 +7941,12 @@
   "siteSettings": [
     {
       "key": "page_about_hospital",
-      "value": "{\"introduction\":\"<strong className=\\\"font-semibold text-[#002b5c]\\\">Deenanath Mangeshkar Hospital & Research Center</strong> is a charitable, multi-specialty hospital located in the heart of Pune, India. Founded in 2001, today it is one of the largest hospital in Pune, with 800 beds. Deenanath Mangeshkar Hospital offers state-of-the-art diagnostic, therapeutic and intensive care facilities in a one-stop medical center.\",\"description\":\"The Deenanath Mangeshkar Hospital is beautifully designed, having a central atrium with four wings built around it. It is a 800-bed hospital with 12 operation theaters, a sophisticated ICU, blood bank, a digital radiology unit, a kidney transplant unit, and many other facilities. It has some of the best equipment for diagnostics as well as treatment, and is staffed by some of the finest medical and administrative personnel available in Pune. We are Pioneers in EMS in India, EMS with Cardiac & Trauma Ambulances. Great attention is given to the needs of the patients and their relatives. It is a truly multispecialty hospital, providing super-specialty care in cancer, voice disorders, cardiology and cardiothoracic surgery, gastroenterology, Joint Replacement, Urology, Nephrology and Neurology.\",\"vision\":\"\\\"To provide Rational Ethical Medical Services of Highest Quality to all Patients at affordable cost without any discrimination.\\\"\",\"mission\":\"\\\"To provide competent, ethical, tertiary healthcare services with charity as a core value.\\\"\",\"qualityPolicy\":\"Deenanath Mangeshkar Hospital believes in highest professional competence with a human touch and will deliver excellent medical treatment to everyone. We will follow rational and ethical medical practices implicitly. We are committed to deliver quality healthcare.\",\"qualityObjective\":\"We will sincerely work together as a team to make Deenanath Mangeshkar Hospital a medical centre of international reputation. We will provide excellent health education pre and post hospital care. We will not discriminate between rich and poor with regard to medical treatment.\",\"coreValues\":[\"Compassionate Care\",\"Patient Safety\",\"Integrity & Ethics\",\"Continuous Learning\",\"Teamwork\",\"Excellence\"],\"history\":[\"Bharat Ratna Smt. Lata Mangeshkar has ruled the hearts of India's music lovers for over 65 years. Her mellifluous voice has weaved a magical and melodious web across the world, transcending all boundaries of caste, creed, gender, faith or nationality.\",\"Daughter of the great Marathi singer and actor of the early twentieth century, Late Master Deenanath Mangeshkar, Smt. Lata Mangeshkar is the eldest of five siblings, all extraordinarily talented in the field of music. It was in 1989 that the five siblings, viz. Smt. Lata Mangeshkar, Smt. Asha Bhonsale, Smt. Usha Mangeshkar, Smt. Meena Khadikar and Shri. Hridaynath Mangeshkar constituted the <strong className=\\\"text-slate-800 font-semibold\\\">Lata Mangeshkar Medical Foundation</strong>.\",\"<strong className=\\\"text-slate-800 font-semibold\\\">Jnana Prabodhini</strong>, an institution, which motivates intelligent students for social change. Appa Pendse was the Founder of Jnana Prabodhini. Past students of this school came together in 1993 to establish the Jnana Prabodhini Medical Trust.\",\"Deenanath Mangeshkar Hospital features a 24-hour Emergency, 12 operating theatres; four types of intensive care units (adult, pediatric, cardiac and a neo-natal ICU); and a rehabilitation center.\",\"Surgical facilities include one cardiac catheterization labs, 12 operating theaters (two specifically set up for cardiac surgery), a surgical navigation system; plus endoscopy, arthroscopy, lithotripsy and interventional radiology capabilities.\"],\"courses\":[\"Orthopaedics : Clubfoot Course 26_July_2026\",\"Critical Edge - Comprehensive ICU Exam Preparatory Course, May 2026 to Oct 2026\",\"Neuro Radiology Fellowship\",\"Oncology Imaging Fellowship\",\"Fellowship in Musculoskeletal Imaging\",\"World Thyroid Day 24_May_2026\",\"Autism Coach Brochure\",\"Befriending Parkinsons Program\",\"Yoga Classes Schedule\",\"Eye Donation form\",\"Garbha-Swasthya Helpline\",\"Organ Donation & Transplantation\"],\"capabilities\":{\"imaging\":[\"3 Tesla MRI; CT; 64 slices CT scanning; Portable CT\",\"PACS digital imaging management\"],\"radiation\":[\"Siemens Linear accelerator\",\"CT Simulator\",\"Simulator topometric devices for pre-radiation preparation of patients to ensure accuracy\",\"3-D computer planning system with direct connection to CT & MRI imaging systems\",\"State-of-the-art-treatment Planning\",\"3D conformal brachytherapy treatment planning\",\"Custom block fabrication ; Allows the radiation oncologists to protect healthy tissue and organs by using custom made protection\"]}}",
+      "value": "{\"introduction\":\"<strong className=\\\"font-semibold text-[#002b5c]\\\">Deenanath Mangeshkar Hospital and Research Center</strong> is a charitable, multi-specialty hospital located in the heart of Pune, India. Founded in 2001, today it is one of the largest hospital in Pune, with 800 beds. Deenanath Mangeshkar Hospital and Research Center offers state-of-the-art diagnostic, therapeutic and intensive care facilities in a one-stop medical center.\",\"description\":\"The Deenanath Mangeshkar Hospital and Research Center is beautifully designed, having a central atrium with four wings built around it. It is a 800-bed hospital with 12 operation theaters, a sophisticated ICU, blood bank, a digital radiology unit, a kidney transplant unit, and many other facilities. It has some of the best equipment for diagnostics as well as treatment, and is staffed by some of the finest medical and administrative personnel available in Pune. We are Pioneers in EMS in India, EMS with Cardiac & Trauma Ambulances. Great attention is given to the needs of the patients and their relatives. It is a truly multispecialty hospital, providing super-specialty care in cancer, voice disorders, cardiology and cardiothoracic surgery, gastroenterology, Joint Replacement, Urology, Nephrology and Neurology.\",\"vision\":\"\\\"To provide Rational Ethical Medical Services of Highest Quality to all Patients at affordable cost without any discrimination.\\\"\",\"mission\":\"\\\"To provide competent, ethical, tertiary healthcare services with charity as a core value.\\\"\",\"qualityPolicy\":\"Deenanath Mangeshkar Hospital and Research Center believes in highest professional competence with a human touch and will deliver excellent medical treatment to everyone. We will follow rational and ethical medical practices implicitly. We are committed to deliver quality healthcare.\",\"qualityObjective\":\"We will sincerely work together as a team to make Deenanath Mangeshkar Hospital and Research Center a medical centre of international reputation. We will provide excellent health education pre and post hospital care. We will not discriminate between rich and poor with regard to medical treatment.\",\"coreValues\":[\"Compassionate Care\",\"Patient Safety\",\"Integrity & Ethics\",\"Continuous Learning\",\"Teamwork\",\"Excellence\"],\"history\":[\"Bharat Ratna Smt. Lata Mangeshkar has ruled the hearts of India's music lovers for over 65 years. Her mellifluous voice has weaved a magical and melodious web across the world, transcending all boundaries of caste, creed, gender, faith or nationality.\",\"Daughter of the great Marathi singer and actor of the early twentieth century, Late Master Deenanath Mangeshkar, Smt. Lata Mangeshkar is the eldest of five siblings, all extraordinarily talented in the field of music. It was in 1989 that the five siblings, viz. Smt. Lata Mangeshkar, Smt. Asha Bhonsale, Smt. Usha Mangeshkar, Smt. Meena Khadikar and Shri. Hridaynath Mangeshkar constituted the <strong className=\\\"text-slate-800 font-semibold\\\">Lata Mangeshkar Medical Foundation</strong>.\",\"<strong className=\\\"text-slate-800 font-semibold\\\">Jnana Prabodhini</strong>, an institution, which motivates intelligent students for social change. Appa Pendse was the Founder of Jnana Prabodhini. Past students of this school came together in 1993 to establish the Jnana Prabodhini Medical Trust.\",\"Deenanath Mangeshkar Hospital and Research Center features a 24-hour Emergency, 12 operating theatres; four types of intensive care units (adult, pediatric, cardiac and a neo-natal ICU); and a rehabilitation center.\",\"Surgical facilities include one cardiac catheterization labs, 12 operating theaters (two specifically set up for cardiac surgery), a surgical navigation system; plus endoscopy, arthroscopy, lithotripsy and interventional radiology capabilities.\"],\"courses\":[\"Orthopaedics : Clubfoot Course 26_July_2026\",\"Critical Edge - Comprehensive ICU Exam Preparatory Course, May 2026 to Oct 2026\",\"Neuro Radiology Fellowship\",\"Oncology Imaging Fellowship\",\"Fellowship in Musculoskeletal Imaging\",\"World Thyroid Day 24_May_2026\",\"Autism Coach Brochure\",\"Befriending Parkinsons Program\",\"Yoga Classes Schedule\",\"Eye Donation form\",\"Garbha-Swasthya Helpline\",\"Organ Donation & Transplantation\"],\"capabilities\":{\"imaging\":[\"3 Tesla MRI; CT; 64 slices CT scanning; Portable CT\",\"PACS digital imaging management\"],\"radiation\":[\"Siemens Linear accelerator\",\"CT Simulator\",\"Simulator topometric devices for pre-radiation preparation of patients to ensure accuracy\",\"3-D computer planning system with direct connection to CT & MRI imaging systems\",\"State-of-the-art-treatment Planning\",\"3D conformal brachytherapy treatment planning\",\"Custom block fabrication ; Allows the radiation oncologists to protect healthy tissue and organs by using custom made protection\"]}}",
       "updatedAt": "2026-06-03T10:24:59.763Z"
     },
     {
       "key": "page_accreditations",
-      "value": "[{\"id\":1,\"title\":\"National Accreditation Board for Hospitals and Healthcare Providers (NABH)\",\"certNumber\":\"H-2019-0663\",\"certType\":\"NABH\",\"theme\":\"red\",\"policy\":\"Deenanath Mangeshkar Hospital believes in highest professional competence with a human touch and will deliver excellent medical treatment to everyone. We will follow rational and ethical medical practices implicitly. We are committed to medico-social services.\",\"linkText\":\"NABH accreditation certificate\",\"link\":\"#\"},{\"id\":2,\"title\":\"National Accreditation Board for Testing and Calibration Laboratories (NABL)\",\"certNumber\":\"MC-2177\",\"certType\":\"NABL\",\"theme\":\"blue\",\"policy\":\"The laboratory will strive to provide diagnostic services of best quality to its patients through a competent, motivated team of laboratory staff at a reasonable cost, for an accurate and timely diagnosis on an ethical basis and will be committed to achieve continual quality improvement.\",\"linkText\":\"NABL accreditation certificate\",\"link\":\"#\"},{\"id\":3,\"title\":\"National Accreditation Board for Hospitals and Healthcare Providers (NABH)\",\"certNumber\":\"EC-CT-2018-0012\",\"certType\":\"NABH\",\"theme\":\"red\",\"policy\":\"We strive to promote scientifically sound and ethical health research in the best interest of patient care.\",\"linkText\":\"NABH accreditation certificate\",\"link\":\"#\"}]",
+      "value": "[{\"id\":1,\"title\":\"National Accreditation Board for Hospitals and Healthcare Providers (NABH)\",\"certNumber\":\"H-2019-0663\",\"certType\":\"NABH\",\"theme\":\"red\",\"policy\":\"Deenanath Mangeshkar Hospital and Research Center believes in highest professional competence with a human touch and will deliver excellent medical treatment to everyone. We will follow rational and ethical medical practices implicitly. We are committed to medico-social services.\",\"linkText\":\"NABH accreditation certificate\",\"link\":\"#\"},{\"id\":2,\"title\":\"National Accreditation Board for Testing and Calibration Laboratories (NABL)\",\"certNumber\":\"MC-2177\",\"certType\":\"NABL\",\"theme\":\"blue\",\"policy\":\"The laboratory will strive to provide diagnostic services of best quality to its patients through a competent, motivated team of laboratory staff at a reasonable cost, for an accurate and timely diagnosis on an ethical basis and will be committed to achieve continual quality improvement.\",\"linkText\":\"NABL accreditation certificate\",\"link\":\"#\"},{\"id\":3,\"title\":\"National Accreditation Board for Hospitals and Healthcare Providers (NABH)\",\"certNumber\":\"EC-CT-2018-0012\",\"certType\":\"NABH\",\"theme\":\"red\",\"policy\":\"We strive to promote scientifically sound and ethical health research in the best interest of patient care.\",\"linkText\":\"NABH accreditation certificate\",\"link\":\"#\"}]",
       "updatedAt": "2026-06-03T08:07:58.159Z"
     },
     {

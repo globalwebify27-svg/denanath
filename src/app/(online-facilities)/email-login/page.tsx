@@ -2,7 +2,7 @@ import { prisma } from "@/lib/prisma";
 import EMailLoginDMHUsersClient from "./client-page";
 
 export const metadata = {
-  title: "E-Mail Login (DMH Users) | Deenanath Mangeshkar Hospital",
+  title: "E-Mail Login (DMH Users) | Deenanath Mangeshkar Hospital and Research Center",
   description: "Access the updated DMH staff email portal securely.",
 };
 

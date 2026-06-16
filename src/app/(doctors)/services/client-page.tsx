@@ -109,7 +109,7 @@ export default function ServicesClient({ servicesList }: { servicesList: Service
                 </h2>
                 <div className="w-20 h-1.5 bg-[#007a87] rounded-full mb-8"></div>
                 <p className="text-slate-600 text-lg leading-relaxed max-w-3xl">
-                  Deenanath Mangeshkar Hospital offers a comprehensive range of advanced medical services, specialized departments, and state-of-the-art therapeutic facilities designed to provide world-class care to our patients.
+                  Deenanath Mangeshkar Hospital and Research Center offers a comprehensive range of advanced medical services, specialized departments, and state-of-the-art therapeutic facilities designed to provide world-class care to our patients.
                 </p>
               </div>
 

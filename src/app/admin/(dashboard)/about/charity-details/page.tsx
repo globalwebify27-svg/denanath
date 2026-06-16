@@ -12,7 +12,7 @@ export default async function AdminCharityDetailsPage() {
   let charityData: any = { 
     badgeText: "Our Commitment to Society",
     heading: "Information Regarding Charity",
-    introduction: "Deenanath Mangeshkar Hospital actively provides world-class medical treatment to patients from indigent (निर्धन) and weaker sections (दुर्बल) of society. Below is a detailed breakdown of the patients we have recently assisted.",
+    introduction: "Deenanath Mangeshkar Hospital and Research Center actively provides world-class medical treatment to patients from indigent (निर्धन) and weaker sections (दुर्बल) of society. Below is a detailed breakdown of the patients we have recently assisted.",
     records: [] 
   };
   try { 

@@ -28,7 +28,7 @@ export default function FeedbacksClientForm({ initialData }: { initialData: any 
         title: "Where there is hope there is faith", 
         date: "16-Jan-2023", 
         author: "Mr Arvind Chintaman Daware", 
-        content: "I was suffering from gall bladder stones and in Ahmednagar consulted various doctors and did numerous tests but due to age and co-morbidities doctors denied to do surgery. Due to abdominal pain I was frustrated, one of doctors recommended me to go to Deenanath Mangeshkar Hospital. After consultation surgery was done successfully. I am grateful to all doctors and staff who were involved in this surgery. All nurses in ward, doctors and reception staff are very polite and guide in proper manner whenever required." 
+        content: "I was suffering from gall bladder stones and in Ahmednagar consulted various doctors and did numerous tests but due to age and co-morbidities doctors denied to do surgery. Due to abdominal pain I was frustrated, one of doctors recommended me to go to Deenanath Mangeshkar Hospital and Research Center. After consultation surgery was done successfully. I am grateful to all doctors and staff who were involved in this surgery. All nurses in ward, doctors and reception staff are very polite and guide in proper manner whenever required." 
       },
       { 
         id: Date.now() + 4, 
@@ -42,7 +42,7 @@ export default function FeedbacksClientForm({ initialData }: { initialData: any 
         title: "Good doctors and financial help from charity made treatment possible", 
         date: "27-Sep-2022", 
         author: "Mr Dilip Ramchandra Kale", 
-        content: "My wife residing in Solapur is taking treatment for cancer in this hospital since last 7 days. Our experience through out the admission was great. Doctors guide us whenever we as queries and staff is also polite. When we needed financial help we were told to approach charity department as we did not have enough money to avail the further treatment. After approaching the charity department with proper documentation they helped us financially for the treatment. I am thankful to all the staff of Deenanath Mangeshkar Hospital who were involved and special thanks to the doctors." 
+        content: "My wife residing in Solapur is taking treatment for cancer in this hospital since last 7 days. Our experience through out the admission was great. Doctors guide us whenever we as queries and staff is also polite. When we needed financial help we were told to approach charity department as we did not have enough money to avail the further treatment. After approaching the charity department with proper documentation they helped us financially for the treatment. I am thankful to all the staff of Deenanath Mangeshkar Hospital and Research Center who were involved and special thanks to the doctors." 
       }
     ]
   });

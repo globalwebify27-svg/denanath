@@ -2,7 +2,7 @@ import { prisma } from "@/lib/prisma";
 import OnlinePaymentClient from "./client-page";
 
 export const metadata = {
-  title: "Online Payment | Deenanath Mangeshkar Hospital",
+  title: "Online Payment | Deenanath Mangeshkar Hospital and Research Center",
   description: "Secure online payment facility for DMH patients.",
 };
 
