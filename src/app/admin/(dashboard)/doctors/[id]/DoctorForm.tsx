@@ -31,7 +31,7 @@ export default function DoctorForm({ doctor, id }: { doctor: any; id: string }) 
     education: safeParse(doctor?.education),
     training: safeParse(doctor?.training),
     experience: safeParse(doctor?.experience),
-    publications: safeParse(doctor?.publications),
+    publications: safeParse(doctor?.publications).map((p: any) => typeof p === 'string' ? { title: p, link: "" } : p),
   });
 
   const handleArrayChange = (field: string, index: number, value: string) => {
@@ -72,6 +72,25 @@ export default function DoctorForm({ doctor, id }: { doctor: any; id: string }) 
     setFormData({ ...formData, timings: newTimings });
   };
 
+  const handlePublicationChange = (index: number, key: string, value: string) => {
+    const newPubs = [...formData.publications];
+    newPubs[index] = { ...newPubs[index], [key]: value };
+    setFormData({ ...formData, publications: newPubs });
+  };
+
+  const handlePublicationAdd = () => {
+    setFormData({
+      ...formData,
+      publications: [...formData.publications, { title: "", link: "" }],
+    });
+  };
+
+  const handlePublicationRemove = (index: number) => {
+    const newPubs = [...formData.publications];
+    newPubs.splice(index, 1);
+    setFormData({ ...formData, publications: newPubs });
+  };
+
   const handleDelete = async () => {
     if (!confirm("Are you sure you want to delete this doctor?")) return;
     setLoading(true);
@@ -107,7 +126,7 @@ export default function DoctorForm({ doctor, id }: { doctor: any; id: string }) 
           education: JSON.stringify(formData.education.filter(Boolean)),
           training: JSON.stringify(formData.training.filter(Boolean)),
           experience: JSON.stringify(formData.experience.filter(Boolean)),
-          publications: JSON.stringify(formData.publications.filter(Boolean)),
+          publications: JSON.stringify(formData.publications.filter((p: any) => p.title || p.link)),
         }),
       });
 
@@ -123,7 +142,7 @@ export default function DoctorForm({ doctor, id }: { doctor: any; id: string }) 
     }
   };
 
-  const renderStringArrayField = (label: string, field: "education" | "training" | "experience" | "publications") => (
+  const renderStringArrayField = (label: string, field: "education" | "training" | "experience") => (
     <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 mb-6">
       <div className="flex justify-between items-center mb-4">
         <h3 className="text-lg font-semibold text-gray-800">{label}</h3>
@@ -330,7 +349,47 @@ export default function DoctorForm({ doctor, id }: { doctor: any; id: string }) 
       {renderStringArrayField("Education", "education")}
       {renderStringArrayField("Training", "training")}
       {renderStringArrayField("Experience", "experience")}
-      {renderStringArrayField("Publications", "publications")}
+
+      <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 mb-6">
+        <div className="flex items-center justify-between mb-4 gap-2">
+          <h3 className="text-base sm:text-lg font-semibold text-gray-800 truncate min-w-0">Publications</h3>
+          <button
+            type="button"
+            onClick={handlePublicationAdd}
+            className="flex items-center gap-1.5 px-3 py-2 sm:px-4 sm:py-2.5 bg-[#003360] text-white hover:bg-[#002545] rounded-xl text-xs font-bold transition-all duration-300 shadow-sm hover:shadow shrink-0 whitespace-nowrap ml-auto"
+          >
+            <Plus size={14} /> Add Publication
+          </button>
+        </div>
+        {formData.publications.map((pub: any, index: number) => (
+          <div key={index} className="flex flex-col sm:flex-row gap-2 mb-3 bg-gray-50 p-3 rounded-lg border border-gray-200">
+            <input
+              type="text"
+              placeholder="Publication Title"
+              value={pub.title}
+              onChange={(e) => handlePublicationChange(index, "title", e.target.value)}
+              className="w-full sm:flex-[2] p-2 border border-gray-300 rounded-lg text-sm"
+            />
+            <input
+              type="text"
+              placeholder="PDF Link (Optional)"
+              value={pub.link}
+              onChange={(e) => handlePublicationChange(index, "link", e.target.value)}
+              className="w-full sm:flex-1 p-2 border border-gray-300 rounded-lg text-sm"
+            />
+            <button
+              type="button"
+              onClick={() => handlePublicationRemove(index)}
+              className="self-end sm:self-auto p-2 text-[#D9232D] hover:bg-red-50 rounded-lg"
+            >
+              <Trash2 size={20} color="#D9232D" />
+            </button>
+          </div>
+        ))}
+        {formData.publications.length === 0 && (
+          <p className="text-gray-500 text-sm italic">No publications added yet.</p>
+        )}
+      </div>
 
     </form>
   );

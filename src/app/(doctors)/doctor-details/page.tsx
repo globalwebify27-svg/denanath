@@ -462,12 +462,25 @@ export default function DoctorDetailsPage() {
                         <BookOpen className="w-6 h-6 text-[#007a87]" /> Publications
                       </h3>
                       <ul className="space-y-4">
-                        {selectedDoctor.publications.map((item: string, i: number) => (
-                          <li key={i} className="flex gap-3 text-slate-600 font-medium text-sm sm:text-base leading-relaxed">
-                            <div className="w-1.5 h-1.5 rounded-full bg-indigo-400 shrink-0 mt-2.5"></div>
-                            {item}
-                          </li>
-                        ))}
+                        {selectedDoctor.publications.map((item: any, i: number) => {
+                          const isObj = typeof item === 'object' && item !== null;
+                          const title = isObj ? item.title : item;
+                          const link = isObj ? item.link : null;
+                          
+                          return (
+                            <li key={i} className="flex gap-3 text-slate-600 font-medium text-sm sm:text-base leading-relaxed">
+                              <div className="w-1.5 h-1.5 rounded-full bg-indigo-400 shrink-0 mt-2.5"></div>
+                              <div className="flex-1">
+                                {title}
+                                {link && (
+                                  <a href={link} target="_blank" rel="noopener noreferrer" className="ml-2 inline-flex items-center text-[#d9232d] hover:text-[#b81d24] hover:underline text-xs font-bold uppercase tracking-wide">
+                                    [PDF]
+                                  </a>
+                                )}
+                              </div>
+                            </li>
+                          );
+                        })}
                       </ul>
                     </div>
                   )}
