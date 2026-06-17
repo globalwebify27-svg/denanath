@@ -8,6 +8,15 @@ export default function ForeignContributionClientPage({ fcraData }: { fcraData: 
   const introduction = fcraData.introduction || "Information regarding receipt of Foreign Contribution";
   const quarters = fcraData.quarters || [];
 
+  const formatDate = (dateStr: string) => {
+    if (!dateStr) return "";
+    const parts = dateStr.split('-');
+    if (parts.length === 3 && parts[0].length === 4) {
+      return `${parts[2]}-${parts[1]}-${parts[0]}`;
+    }
+    return dateStr;
+  };
+
   const aboutOptions = [
     { name: "About Hospital", href: "/about-hospital", active: false },
     { name: "Associates", href: "/associates", active: false },
@@ -128,7 +137,7 @@ export default function ForeignContributionClientPage({ fcraData }: { fcraData: 
                                   <td className="py-4 px-4 text-slate-500 font-medium text-center">{dIdx + 1}</td>
                                   <td className="py-4 px-4 text-slate-700 font-medium">{donation.name}</td>
                                   <td className="py-4 px-4 text-slate-600 font-semibold">{donation.inr}</td>
-                                  <td className="py-4 px-4 text-slate-500">{donation.date}</td>
+                                  <td className="py-4 px-4 text-slate-500">{formatDate(donation.date)}</td>
                                   <td className="py-4 px-4">
                                     <span className={`inline-flex items-center justify-center px-3 py-1 rounded-full text-xs font-bold ${
                                       donation.purpose.toLowerCase() === 'medical' 
