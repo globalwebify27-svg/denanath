@@ -154,7 +154,7 @@ export default function Navbar() {
             {/* DMH Logo Section */}
             <div className="flex items-center shrink-0">
               <Link href="/" className="flex items-center gap-1.5 sm:gap-2 group focus:outline-none">
-                <div className="relative flex items-center justify-center w-[150px] h-[50px] sm:w-[180px] sm:h-[60px] lg:w-[180px] lg:h-[60px] xl:w-[200px] xl:h-[65px] 2xl:w-[240px] 2xl:h-[80px] shrink-0 transition-all">
+                <div className="relative flex items-center justify-center w-[160px] h-[55px] sm:w-[200px] sm:h-[65px] lg:w-[220px] lg:h-[70px] xl:w-[240px] xl:h-[75px] 2xl:w-[280px] 2xl:h-[90px] shrink-0 transition-all">
                   <img
                     src="/images/JPG.png"
                     alt="DMH Logo"
@@ -164,29 +164,19 @@ export default function Navbar() {
 
               </Link>
 
-              {/* Anniversary Badge - Visible on lg and above */}
-              <div className="hidden lg:flex items-center ml-1.5 xl:ml-2 2xl:ml-3 pl-1.5 xl:pl-2 2xl:pl-3 border-l border-slate-200 whitespace-nowrap shrink-0 transition-all">
-                <div className="flex flex-col text-left">
-                  <span className="text-[16px] xl:text-[18px] 2xl:text-[22px] font-black text-amber-600 tracking-wider uppercase leading-none pb-[3px] transition-all">
-                    25 YEARS
-                  </span>
-                  <span className="text-[8px] xl:text-[8px] 2xl:text-[10px] font-black text-slate-400 tracking-[0.2em] uppercase mt-0.5 leading-none transition-all">
-                    Of Trust & Care
-                  </span>
-                </div>
-              </div>
+
             </div>
 
             {/* Desktop Navigation Links */}
-            <div className="hidden xl:flex items-center justify-center flex-1 mx-1 xl:mx-2 2xl:mx-4 gap-1 xl:gap-2 2xl:gap-5 transition-all">
+            <div className="hidden xl:flex items-center justify-center flex-1 mx-2 xl:mx-4 2xl:mx-8 gap-2 xl:gap-3 2xl:gap-6 transition-all">
               {navLinks.map((link, idx) => (
                 <div key={idx} className="relative group py-2">
                   <Link 
                     href={link.href} 
-                    className="text-[10px] xl:text-[11px] 2xl:text-[12px] leading-[18px] font-bold text-slate-700 hover:text-[#007a87] uppercase tracking-normal transition-colors flex items-center gap-0.5 whitespace-nowrap"
+                    className="text-[10px] xl:text-[11px] 2xl:text-[13px] leading-[18px] font-semibold text-slate-700 hover:text-[#007a87] uppercase tracking-wide transition-colors flex items-center gap-1 whitespace-nowrap"
                   >
                     <span>{link.name}</span>
-                    {link.dropdown && <ChevronDown className="w-2.5 h-2.5 opacity-60 group-hover:rotate-180 transition-transform shrink-0" />}
+                    {link.dropdown && <ChevronDown className="w-3 h-3 opacity-60 group-hover:rotate-180 transition-transform shrink-0" />}
                   </Link>
 
                   {/* Dropdown Box */}
@@ -199,7 +189,7 @@ export default function Navbar() {
                           <Link
                             key={sIdx}
                             href={subLink.href}
-                            className="block px-4 py-2 text-[12px] font-semibold text-slate-600 hover:bg-slate-50 hover:text-[#007a87] border-b border-slate-50 last:border-0 transition-colors whitespace-normal"
+                            className="block px-4 py-2 text-[13px] 2xl:text-[14px] font-semibold text-slate-600 hover:bg-slate-50 hover:text-[#007a87] border-b border-slate-50 last:border-0 transition-colors whitespace-normal"
                           >
                             {subLink.name}
                           </Link>
@@ -259,7 +249,7 @@ export default function Navbar() {
                   <>
                     <button
                       onClick={() => toggleMobileDropdown(link.name)}
-                      className="w-full flex justify-between items-center px-3 py-2 rounded-lg text-[12px] font-bold uppercase tracking-wider text-slate-700 hover:bg-slate-50"
+                      className="w-full flex justify-between items-center px-3 py-2.5 rounded-lg text-[13px] font-semibold uppercase tracking-wider text-slate-700 hover:bg-slate-50"
                     >
                       <span>{link.name}</span>
                       <ChevronDown
@@ -279,7 +269,7 @@ export default function Navbar() {
                           key={sIdx}
                           href={subLink.href}
                           onClick={() => setMobileMenuOpen(false)}
-                          className="block px-3 py-1.5 text-[12px] font-semibold text-slate-600 hover:text-[#007a87]"
+                          className="block px-3 py-2 text-[13px] md:text-[14px] font-semibold text-slate-600 hover:text-[#007a87]"
                         >
                           {subLink.name}
                         </Link>
@@ -290,7 +280,7 @@ export default function Navbar() {
                   <Link
                     href={link.href}
                     onClick={() => setMobileMenuOpen(false)}
-                    className="flex items-center px-3 py-2 rounded-lg text-[12px] font-bold uppercase tracking-wider text-slate-700 hover:bg-slate-50"
+                    className="flex items-center px-3 py-2.5 rounded-lg text-[13px] font-semibold uppercase tracking-wider text-slate-700 hover:bg-slate-50"
                   >
                     {link.name}
                   </Link>
