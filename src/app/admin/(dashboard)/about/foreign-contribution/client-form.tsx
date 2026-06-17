@@ -19,12 +19,12 @@ export default function ForeignContributionClientForm({ initialData }: { initial
   ]);
 
   const addQuarter = () => {
-    setQuarters([{
+    setQuarters([...quarters, {
       id: Date.now(),
       quarter: "New Quarter...",
       emptyMessage: "",
       donations: []
-    }, ...quarters]);
+    }]);
   };
 
   const removeQuarter = (id: number) => {

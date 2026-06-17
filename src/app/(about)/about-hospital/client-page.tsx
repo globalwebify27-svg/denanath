@@ -194,20 +194,7 @@ export default function AboutHospitalClient({ data }: { data: any }) {
                 </div>
               </div>
 
-              {/* Courses & Conferences */}
-              <div className="mb-14">
-                <h3 className="text-3xl font-extrabold text-[#002b5c] mb-8 tracking-tight">Courses & Conferences</h3>
-                <div className="bg-slate-50 border border-slate-100 rounded-2xl p-6 md:p-8 shadow-sm">
-                  <ul className="grid grid-cols-1 sm:grid-cols-2 gap-y-4 gap-x-8">
-                    {(data?.courses || []).map((course: string, idx: number) => (
-                      <li key={idx} className="flex items-start gap-3">
-                        <div className="w-1.5 h-1.5 rounded-full bg-teal-500 mt-2 shrink-0" />
-                        <span className="text-slate-700 text-sm md:text-base leading-relaxed">{course}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
+
 
               {/* Facilities / Capabilities */}
               <div>

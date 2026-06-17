@@ -35,20 +35,7 @@ Jnana Prabodhini, an institution, which motivates intelligent students for socia
 Deenanath Mangeshkar Hospital and Research Center features a 24-hour Emergency, 12 operating theatres; four types of intensive care units (adult, pediatric, cardiac and a neo-natal ICU); and a rehabilitation center.
 
 Surgical facilities include one cardiac catheterization labs, 12 operating theaters (two specifically set up for cardiac surgery), a surgical navigation system; plus endoscopy, arthroscopy, lithotripsy and interventional radiology capabilities.`.split('\n\n'),
-        courses: [
-    "Orthopaedics : Clubfoot Course 26_July_2026",
-    "Critical Edge - Comprehensive ICU Exam Preparatory Course, May 2026 to Oct 2026",
-    "Neuro Radiology Fellowship",
-    "Oncology Imaging Fellowship",
-    "Fellowship in Musculoskeletal Imaging",
-    "World Thyroid Day 24_May_2026",
-    "Autism Coach Brochure",
-    "Befriending Parkinsons Program",
-    "Yoga Classes Schedule",
-    "Eye Donation form",
-    "Garbha-Swasthya Helpline",
-    "Organ Donation & Transplantation"
-  ],
+
         capabilities: {
           imaging: [
     "3 Tesla MRI; CT; 64 slices CT scanning; Portable CT",
@@ -79,7 +66,6 @@ Surgical facilities include one cardiac catheterization labs, 12 operating theat
       qualityObjective: formData.get("qualityObjective") || "",
       coreValues: ((formData.get("coreValues") as string) || "").split("\n").map(v => v.trim()).filter(v => v),
       history: ((formData.get("history") as string) || "").split("\n").map(v => v.trim()).filter(v => v),
-      courses: ((formData.get("courses") as string) || "").split("\n").map(v => v.trim()).filter(v => v),
       capabilities: {
         imaging: ((formData.get("capabilities_imaging") as string) || "").split("\n").map(v => v.trim()).filter(v => v),
         radiation: ((formData.get("capabilities_radiation") as string) || "").split("\n").map(v => v.trim()).filter(v => v),
@@ -181,7 +167,7 @@ Surgical facilities include one cardiac catheterization labs, 12 operating theat
              </div>
              <span className="hidden sm:inline-block text-[10px] font-bold text-white uppercase tracking-widest bg-[#D9232D] border border-transparent px-3 py-1.5 rounded-lg shadow-sm">One item per line</span>
           </div>
-          <div className="p-6 md:p-8 grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
+          <div className="p-6 md:p-8 grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
             <div>
               <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Core Values</label>
               <textarea name="coreValues" defaultValue={(aboutData.coreValues || []).join("\n")} rows={8} className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium leading-relaxed resize-none text-sm" placeholder="Excellence&#10;Compassion&#10;Integrity" />
@@ -189,10 +175,6 @@ Surgical facilities include one cardiac catheterization labs, 12 operating theat
             <div>
               <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">History Highlights</label>
               <textarea name="history" defaultValue={(aboutData.history || []).join("\n")} rows={8} className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium leading-relaxed resize-none text-sm" placeholder="Established in 1999...&#10;Expanded in 2005..." />
-            </div>
-            <div>
-              <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Courses & Conferences</label>
-              <textarea name="courses" defaultValue={(aboutData.courses || []).join("\n")} rows={8} className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium leading-relaxed resize-none text-sm" placeholder="Annual Medical Conference&#10;Nursing Training Program" />
             </div>
           </div>
         </div>

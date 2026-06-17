@@ -44,8 +44,8 @@ export default function SupportDonationsClientPage({ donationsData }: { donation
     ],
     institutionalDonors = [],
     donationInKind = [],
+    individualDonorsMoreThan1Cr = [],
     individualDonors50to1Cr = [],
-    individualDonors25to50 = [],
     individualDonors1to25 = [],
     individualDonorsUpto1 = []
   } = donationsData || {};
@@ -229,13 +229,13 @@ export default function SupportDonationsClientPage({ donationsData }: { donation
                   </div>
                   
                   <div className="overflow-y-auto flex-1 custom-scrollbar relative">
-                    {/* Category 1 */}
-                    {individualDonors50to1Cr.length > 0 && (
+                    {/* Category 0 */}
+                    {individualDonorsMoreThan1Cr.length > 0 && (
                       <>
                         <div className="bg-slate-50 text-slate-500 font-semibold py-3 px-4 text-[13px] text-center border-b border-slate-200 sticky top-0 z-20 shadow-sm">
-                          Donation Rs. 50 Lakh to 1 crore
+                          Donation More than Rs. 1 Crore
                         </div>
-                        {individualDonors50to1Cr.map((donor: string, idx: number) => (
+                        {individualDonorsMoreThan1Cr.map((donor: string, idx: number) => (
                           <div key={idx} className="flex border-b border-slate-100 text-[13px] hover:bg-slate-50 transition-colors">
                             <div className="w-16 py-3 border-r border-slate-100 text-center text-slate-400 shrink-0">{idx + 1}</div>
                             <div className="flex-1 py-3 px-4 text-slate-600">{donor}</div>
@@ -244,13 +244,13 @@ export default function SupportDonationsClientPage({ donationsData }: { donation
                       </>
                     )}
 
-                    {/* Category 2 */}
-                    {individualDonors25to50.length > 0 && (
+                    {/* Category 1 */}
+                    {individualDonors50to1Cr.length > 0 && (
                       <>
-                        <div className="bg-slate-50 text-slate-500 font-semibold py-3 px-4 text-[13px] text-center border-y border-slate-200 sticky top-0 z-20 shadow-sm">
-                          Donation Rs. 25 Lakh to 50 Lakh
+                        <div className={`bg-slate-50 text-slate-500 font-semibold py-3 px-4 text-[13px] text-center border-slate-200 sticky top-0 z-20 shadow-sm ${individualDonorsMoreThan1Cr.length > 0 ? 'border-y' : 'border-b'}`}>
+                          Donation Rs. 50 Lakh to 1 crore
                         </div>
-                        {individualDonors25to50.map((donor: string, idx: number) => (
+                        {individualDonors50to1Cr.map((donor: string, idx: number) => (
                           <div key={idx} className="flex border-b border-slate-100 text-[13px] hover:bg-slate-50 transition-colors">
                             <div className="w-16 py-3 border-r border-slate-100 text-center text-slate-400 shrink-0">{idx + 1}</div>
                             <div className="flex-1 py-3 px-4 text-slate-600">{donor}</div>
@@ -289,7 +289,7 @@ export default function SupportDonationsClientPage({ donationsData }: { donation
                       </>
                     )}
                     
-                    {individualDonors50to1Cr.length === 0 && individualDonors25to50.length === 0 && individualDonors1to25.length === 0 && individualDonorsUpto1.length === 0 && (
+                    {individualDonorsMoreThan1Cr.length === 0 && individualDonors50to1Cr.length === 0 && individualDonors1to25.length === 0 && individualDonorsUpto1.length === 0 && (
                       <div className="p-4 text-center text-slate-400 text-sm">No data available</div>
                     )}
                   </div>

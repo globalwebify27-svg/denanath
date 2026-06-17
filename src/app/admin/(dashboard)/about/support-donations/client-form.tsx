@@ -14,8 +14,8 @@ export default function SupportDonationsClientForm({ initialData }: { initialDat
     
     institutionalDonors: (initialData.institutionalDonors || []).join("\n"),
     donationInKind: (initialData.donationInKind || []).join("\n"),
+    individualDonorsMoreThan1Cr: (initialData.individualDonorsMoreThan1Cr || []).join("\n"),
     individualDonors50to1Cr: (initialData.individualDonors50to1Cr || []).join("\n"),
-    individualDonors25to50: (initialData.individualDonors25to50 || []).join("\n"),
     individualDonors1to25: (initialData.individualDonors1to25 || []).join("\n"),
     individualDonorsUpto1: (initialData.individualDonorsUpto1 || []).join("\n")
   });
@@ -34,8 +34,8 @@ export default function SupportDonationsClientForm({ initialData }: { initialDat
     
     institutionalDonors: data.institutionalDonors.split('\n').map((s: string) => s.trim()).filter((s: string) => s),
     donationInKind: data.donationInKind.split('\n').map((s: string) => s.trim()).filter((s: string) => s),
+    individualDonorsMoreThan1Cr: data.individualDonorsMoreThan1Cr.split('\n').map((s: string) => s.trim()).filter((s: string) => s),
     individualDonors50to1Cr: data.individualDonors50to1Cr.split('\n').map((s: string) => s.trim()).filter((s: string) => s),
-    individualDonors25to50: data.individualDonors25to50.split('\n').map((s: string) => s.trim()).filter((s: string) => s),
     individualDonors1to25: data.individualDonors1to25.split('\n').map((s: string) => s.trim()).filter((s: string) => s),
     individualDonorsUpto1: data.individualDonorsUpto1.split('\n').map((s: string) => s.trim()).filter((s: string) => s)
   });
@@ -147,20 +147,20 @@ export default function SupportDonationsClientForm({ initialData }: { initialDat
           <p className="text-sm text-slate-500 mb-6">Enter one donor name per line in the respective categories.</p>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">50 Lakh to 1 Crore</label>
+            <div className="md:col-span-2">
+              <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">More than 1 Crore</label>
               <textarea 
-                value={data.individualDonors50to1Cr} 
-                onChange={(e) => handleChange('individualDonors50to1Cr', e.target.value)}
+                value={data.individualDonorsMoreThan1Cr} 
+                onChange={(e) => handleChange('individualDonorsMoreThan1Cr', e.target.value)}
                 rows={8}
                 className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium leading-relaxed font-mono text-sm"
               />
             </div>
             <div>
-              <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">25 Lakh to 50 Lakh</label>
+              <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">50 Lakh to 1 Crore</label>
               <textarea 
-                value={data.individualDonors25to50} 
-                onChange={(e) => handleChange('individualDonors25to50', e.target.value)}
+                value={data.individualDonors50to1Cr} 
+                onChange={(e) => handleChange('individualDonors50to1Cr', e.target.value)}
                 rows={8}
                 className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium leading-relaxed font-mono text-sm"
               />
