@@ -139,10 +139,10 @@ export default function AccreditationsClient({ data }: { data: any[] }) {
                             <span className="text-[9px] font-bold tracking-widest uppercase mt-0.5">Accredited</span>
                           </div>
                         </div>
-                        <span className={`text-sm font-bold tracking-wider ${
+                        <span className={`text-sm font-bold tracking-wider text-center ${
                           item.theme === 'red' ? "text-[#d32f2f]" : "text-[#1565c0]"
                         }`}>
-                          {item.certNumber}
+                          {item.certNumber?.replace(/-/g, '\u2011')}
                         </span>
                       </div>
 
