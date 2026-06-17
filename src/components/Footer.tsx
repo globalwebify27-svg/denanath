@@ -28,8 +28,8 @@ export default function Footer() {
             <Link href="/" className="flex items-center gap-3.5 group">
               <div className="flex items-center justify-center w-48 h-12 rounded-lg bg-white shadow-xl p-1.5 ring-4 ring-white/10 group-hover:scale-105 transition-transform">
                 <img 
-                  src="/images/JPG.png" 
-                  alt="Deenanath Mangeshkar Hospital and Research Center Logo" 
+                  src="/images/Untitled design11.png" 
+                  alt="Deenanath Mangeshkar Hospital & Research Center" 
                   className="w-full h-full object-contain"
                 />
               </div>

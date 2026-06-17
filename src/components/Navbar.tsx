@@ -156,9 +156,9 @@ export default function Navbar() {
               <Link href="/" className="flex items-center gap-1.5 sm:gap-2 group focus:outline-none">
                 <div className="relative flex items-center justify-center w-[160px] h-[55px] sm:w-[200px] sm:h-[65px] lg:w-[220px] lg:h-[70px] xl:w-[240px] xl:h-[75px] 2xl:w-[280px] 2xl:h-[90px] shrink-0 transition-all">
                   <img
-                    src="/images/JPG.png"
+                    src="/images/Untitled design11.png"
                     alt="DMH Logo"
-                    className="w-full h-full object-contain"
+                    className="w-full h-full object-contain mix-blend-multiply"
                   />
                 </div>
 

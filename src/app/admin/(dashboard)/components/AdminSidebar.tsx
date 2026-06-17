@@ -152,7 +152,7 @@ export default function AdminSidebar() {
         <Link href="/admin" onClick={() => setIsMobileOpen(false)} className="bg-white p-5 shrink-0 flex items-center gap-2 hover:bg-slate-50 transition-colors">
           <div className="relative flex items-center justify-center w-48 h-12 shrink-0">
             <img
-              src="/images/JPG.png"
+              src="/images/Untitled design11.png"
               alt="DMH Logo"
               className="w-full h-full object-contain"
             />
