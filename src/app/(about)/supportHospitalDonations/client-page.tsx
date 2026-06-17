@@ -46,7 +46,6 @@ export default function SupportDonationsClientPage({ donationsData }: { donation
     donationInKind = [],
     individualDonorsMoreThan1Cr = [],
     individualDonors50to1Cr = [],
-    individualDonors1to25 = [],
     individualDonorsUpto1 = []
   } = donationsData || {};
 
@@ -259,21 +258,6 @@ export default function SupportDonationsClientPage({ donationsData }: { donation
                       </>
                     )}
 
-                    {/* Category 3 */}
-                    {individualDonors1to25.length > 0 && (
-                      <>
-                        <div className="bg-slate-50 text-slate-500 font-semibold py-3 px-4 text-[13px] text-center border-y border-slate-200 sticky top-0 z-20 shadow-sm">
-                          Donation Rs. 1 Lakh to 25 Lakh
-                        </div>
-                        {individualDonors1to25.map((donor: string, idx: number) => (
-                          <div key={idx} className="flex border-b border-slate-100 text-[13px] hover:bg-slate-50 transition-colors">
-                            <div className="w-16 py-3 border-r border-slate-100 text-center text-slate-400 shrink-0">{idx + 1}</div>
-                            <div className="flex-1 py-3 px-4 text-slate-600">{donor}</div>
-                          </div>
-                        ))}
-                      </>
-                    )}
-
                     {/* Category 4 */}
                     {individualDonorsUpto1.length > 0 && (
                       <>
@@ -289,7 +273,7 @@ export default function SupportDonationsClientPage({ donationsData }: { donation
                       </>
                     )}
                     
-                    {individualDonorsMoreThan1Cr.length === 0 && individualDonors50to1Cr.length === 0 && individualDonors1to25.length === 0 && individualDonorsUpto1.length === 0 && (
+                    {individualDonorsMoreThan1Cr.length === 0 && individualDonors50to1Cr.length === 0 && individualDonorsUpto1.length === 0 && (
                       <div className="p-4 text-center text-slate-400 text-sm">No data available</div>
                     )}
                   </div>
