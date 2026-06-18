@@ -8,36 +8,32 @@ import { useEffect, useRef } from "react";
 export default function DoctorsSection() {
   const doctors = [
     {
-      name: "Dr. Rajesh Sharma",
+      name: "Dr. GADRE ANIKET",
       specialization: "Cardiologist",
-      experience: "18+ Years Experience",
-      qualification: "MD, DM Cardiology",
-      image:
-        "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?q=80&w=1200&auto=format&fit=crop",
-    },
-    {
-      name: "Dr. Priya Mehta",
-      specialization: "Neurologist",
       experience: "12+ Years Experience",
-      qualification: "MBBS, MD Neurology",
-      image:
-        "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?q=80&w=1200&auto=format&fit=crop",
+      qualification: "MBBS, MD Medicine, DNB Cardiology",
+      image: "/images/1084_Pic.jpg",
     },
     {
-      name: "Dr. Aman Verma",
+      name: "Dr. BHAGWAT ANIRUDDHA ABHAY",
+      specialization: "Neurosurgeon",
+      experience: "2+ Years Experience",
+      qualification: "MBBS, MS, M.Ch. Neurosurgery",
+      image: "/images/2076_Pic.jpg",
+    },
+    {
+      name: "Dr. BARVE RAGHAV",
       specialization: "Orthopedic Surgeon",
-      experience: "15+ Years Experience",
-      qualification: "MS Orthopedics",
-      image:
-        "https://images.unsplash.com/photo-1622253692010-333f2da6031d?q=80&w=1200&auto=format&fit=crop",
+      experience: "16+ Years Experience",
+      qualification: "MBBS, MS (Ortho), DNB (Ortho)",
+      image: "/images/1025_Pic.jpg",
     },
     {
-      name: "Dr. Neha Kapoor",
+      name: "Dr. BHIDE GAYATRI",
       specialization: "Pediatrician",
-      experience: "10+ Years Experience",
-      qualification: "MD Pediatrics",
-      image:
-        "https://images.unsplash.com/photo-1594824476967-48c8b964273f?q=80&w=1200&auto=format&fit=crop",
+      experience: "3+ Years Experience",
+      qualification: "MBBS, MD (Paediatrics), DNB (Paediatrics)",
+      image: "/images/73_Pic.jpg",
     },
   ];
 
@@ -109,7 +105,7 @@ export default function DoctorsSection() {
                 className="
                   min-w-full sm:min-w-[260px] max-w-[260px]
                   rounded-[1.5rem] text-center border border-slate-200 bg-white shadow-sm
-                  snap-start overflow-hidden flex-shrink-0
+                  snap-start overflow-hidden flex-shrink-0 flex flex-col
                 "
               >
                 <div className="relative h-[280px] sm:h-[340px] w-full overflow-hidden">
@@ -126,7 +122,7 @@ export default function DoctorsSection() {
                   </div>
                 </div>
 
-                <div className="p-4 sm:p-6">
+                <div className="p-4 sm:p-6 flex flex-col flex-1">
                   <h3 className="text-lg sm:text-xl font-bold text-slate-900">
                     {doctor.name}
                   </h3>
@@ -135,11 +131,11 @@ export default function DoctorsSection() {
                     {doctor.qualification}
                   </p>
 
-                  <p className="mt-2 text-xs sm:text-sm text-slate-600">
+                  <p className="mt-2 text-xs sm:text-sm text-slate-600 mb-5">
                     {doctor.experience}
                   </p>
 
-                  <button className="mt-5 w-full rounded-xl bg-[#002b5c] px-4 py-2.5 text-sm font-semibold text-white hover:bg-[#007a87] transition">
+                  <button className="mt-auto w-full rounded-xl bg-[#002b5c] px-4 py-2.5 text-sm font-semibold text-white hover:bg-[#007a87] transition">
                     Book Appointment
                   </button>
                 </div>
