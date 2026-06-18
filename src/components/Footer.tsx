@@ -26,14 +26,13 @@ export default function Footer() {
           {/* Logo & Brand Column */}
           <div className="space-y-6">
             <Link href="/" className="flex items-center gap-3.5 group">
-              <div className="flex items-center justify-center w-48 h-12 rounded-lg bg-white shadow-xl p-1.5 ring-4 ring-white/10 group-hover:scale-105 transition-transform">
+              <div className="flex items-center justify-center w-10/12 h-auto py-2 px-3 rounded-lg bg-white shadow-xl ring-4 ring-white/10 group-hover:scale-105 transition-transform">
                 <img 
                   src="/images/Untitled design11.png" 
                   alt="Deenanath Mangeshkar Hospital & Research Center" 
                   className="w-full h-full object-contain"
                 />
               </div>
-
             </Link>
             <p className="text-xs text-[#b2dfdb] leading-relaxed font-light">
               Deenanath Mangeshkar Hospital and Research Center is Pune&apos;s leading clinical landmark, combining state-of-the-art diagnostics with legendary medical experts and warm, ethical care.

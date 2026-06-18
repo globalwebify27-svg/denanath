@@ -2,11 +2,11 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { ChevronRight, Activity, Info, CreditCard, BookOpen, RefreshCw } from "lucide-react";
+import { ChevronRight, Activity, Info, CreditCard, BookOpen, RefreshCw, Building2 } from "lucide-react";
 
 // Client component wrapper for tabs
 export default function SimulationCenterClient({ initialData }: { initialData: any }) {
-  const [activeTab, setActiveTab] = useState("Overview");
+  const [activeTab, setActiveTab] = useState("Simulation Center");
 
   const options = [
     { name: "Academics", href: "/academics", active: false },
@@ -127,6 +127,7 @@ export default function SimulationCenterClient({ initialData }: { initialData: a
               {/* In-Page Navigation / Tabs */}
               <div className="flex flex-wrap gap-2 mb-10 border-b border-slate-200 pb-4">
                 {[
+                  { id: "Simulation Center", icon: Activity },
                   { id: "Overview", icon: Info },
                   { id: "Payments", icon: CreditCard },
                   { id: "Courses", icon: BookOpen }
@@ -147,17 +148,53 @@ export default function SimulationCenterClient({ initialData }: { initialData: a
               </div>
 
               <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+                {activeTab === "Simulation Center" && (
+                  <div className="bg-white border border-slate-200 rounded-3xl p-6 md:p-10 shadow-sm relative overflow-hidden group">
+                    <div className="absolute top-0 left-0 w-2 h-full bg-[#007a87]"></div>
+                    <div className="prose max-w-none text-slate-700 space-y-6">
+                      {initialData?.introText1 && <p className="text-lg leading-relaxed">{initialData.introText1}</p>}
+                      {initialData?.introText2 && <p className="text-lg leading-relaxed">{initialData.introText2}</p>}
+                    </div>
+                    {initialData?.image && (
+                      <div className="mt-8 rounded-2xl overflow-hidden border border-slate-100 shadow-sm">
+                        <img 
+                          src={initialData.image} 
+                          alt="Simulation Center" 
+                          className="w-full h-auto max-h-[500px] object-cover"
+                        />
+                      </div>
+                    )}
+                  </div>
+                )}
+
                 {activeTab === "Overview" && (
-                  <div className="bg-white border border-slate-200 rounded-3xl p-8 md:p-10 shadow-sm relative overflow-hidden group">
+                  <div className="bg-white border border-slate-200 rounded-3xl p-6 md:p-10 shadow-sm relative overflow-hidden group">
                     <div className="absolute top-0 left-0 w-2 h-full bg-[#003360]"></div>
                     
-                    <div className="prose prose-slate max-w-none prose-p:leading-relaxed prose-p:text-slate-700">
-                      <p className="text-lg font-medium text-slate-800 mb-6 whitespace-pre-wrap">
-                        {initialData.introText1}
-                      </p>
-                      <p className="whitespace-pre-wrap">
-                        {initialData.introText2}
-                      </p>
+                    <h3 className="text-2xl font-bold text-[#002b5c] mb-2">Simulation Overview</h3>
+                    <p className="text-slate-600 mb-8 border-b border-slate-100 pb-4">
+                      Explore our state-of-the-art simulation facilities and labs.
+                    </p>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      {[
+                        { title: "Simulation Lab 1", href: "/simulation-center/lab-1", icon: <Info className="w-6 h-6" /> },
+                        { title: "Simulation Lab 2", href: "/simulation-center/lab-2", icon: <Info className="w-6 h-6" /> },
+                        { title: "Simulation Lab 3", href: "/simulation-center/lab-3", icon: <Info className="w-6 h-6" /> },
+                        { title: "Other facilities on 14th floor", href: "/simulation-center/other-facilities", icon: <Building2 className="w-6 h-6" /> }
+                      ].map((card, idx) => (
+                        <Link key={idx} href={card.href} className="group/card block p-6 border border-slate-200 rounded-2xl hover:border-[#D9232D] hover:shadow-[0_8px_30px_rgba(217,35,45,0.15)] hover:-translate-y-1 transition-all duration-300 bg-slate-50 hover:bg-white relative overflow-hidden">
+                          <div className="w-12 h-12 rounded-full bg-teal-100 flex items-center justify-center mb-4 group-hover/card:scale-110 transition-transform text-[#007a87] group-hover/card:text-[#D9232D]">
+                            {card.icon}
+                          </div>
+                          <h4 className="text-lg font-bold text-slate-800 mb-2 group-hover/card:text-[#002b5c] transition-colors pr-6">
+                            {card.title}
+                          </h4>
+                          <div className="absolute bottom-6 right-6 opacity-0 group-hover/card:opacity-100 transform translate-x-4 group-hover/card:translate-x-0 transition-all duration-300">
+                            <ChevronRight className="w-5 h-5 text-[#007a87]" />
+                          </div>
+                        </Link>
+                      ))}
                     </div>
                   </div>
                 )}

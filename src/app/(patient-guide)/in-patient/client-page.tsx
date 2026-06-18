@@ -44,6 +44,7 @@ export default function InPatientClientPage({ pageData }: { pageData: any }) {
     mainBuildingRooms = [],
     superSpecialityRooms = [],
     tpaCompanies = [],
+    insuranceCompanies = [],
     corporateCompanies = [],
     admissionDetails = {
       gsBuilding: { location: "Ground floor B wing", time: "24/7", contact: "020 40151019" },
@@ -95,6 +96,18 @@ export default function InPatientClientPage({ pageData }: { pageData: any }) {
     cashlessContacts = {
       gsBuilding: { location: "2nd floor 'C' wing", phone: "020 40151258, 020 40151259,\n020 - 40151254", email: "mediclaim@dmhospital.org" },
       ssBuilding: { location: "Ground Floor, R. No 28\nFor all patients: 8th Floor – 3877 / 3861", phone: "020 49153070, 020 49153071\n020 49153038", email: "mediclaim@dmhospital.org" }
+    },
+    preAuthDetails = {
+      timing: "For pre-authorization\n10.00 a.m. to 1.30 p.m. & 3 p.m. to 6 p.m. Mon. to Sat. & Sun. 10 a.m. to 2 p.m.",
+      requirements: [
+        "Health Insurance Policy copy, must for individual policy holders. Photo ID card if issued by TPA, Employee ID card (corporate policy holder)",
+        "Patient and Policy holder Aadhar Card, PAN card.",
+        "Passport size photo only for (Max Bhupa, Applo Munich, SBI General Ins., Manipal and Cigna TTK)",
+        "Admission note given by your treating doctor.",
+        "All necessary investigations reports.",
+        "Address proof (electricity bill) telephone bill / Rental agreement copy / bank statement.",
+        "Our liaison officer will guide you for filling pre-authorization."
+      ]
     }
   } = pageData || {};
 
@@ -285,10 +298,21 @@ export default function InPatientClientPage({ pageData }: { pageData: any }) {
                       <h4 className="font-bold text-xl text-slate-800 mb-4 pb-2 border-b-2 border-teal-100 inline-block">Main Building Rooms</h4>
                       <div className="grid md:grid-cols-2 gap-4">
                         {mainBuildingRooms.map((room: any, i: number) => (
-                          <div key={i} className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm hover:border-[#D9232D] hover:shadow-md transition-all group">
-                            <h5 className="font-bold text-[#007a87] group-hover:text-[#D9232D] transition-colors">{room.name}</h5>
-                            {room.rate && room.rate !== "-" && <p className="text-slate-800 font-semibold mt-1">Rate: Rs. {room.rate}</p>}
-                            {room.fac && room.fac !== "-" && <p className="text-sm text-slate-600 mt-2">{room.fac}</p>}
+                          <div key={i} className="bg-white rounded-2xl border border-slate-200 shadow-sm hover:border-[#D9232D] hover:shadow-md transition-all group overflow-hidden flex flex-col">
+                            <div className="relative h-48 bg-slate-100 flex items-center justify-center overflow-hidden">
+                              <img src={room.image || "/images/hospital.webp"} alt="Room" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                              <div className="absolute inset-0 bg-gradient-to-t from-[#002b5c]/90 via-[#002b5c]/20 to-transparent" />
+                              <Bed className="absolute bottom-4 right-4 w-6 h-6 text-white/90 drop-shadow-md" />
+                              {room.rate && room.rate !== "-" && (
+                                <div className="absolute bottom-4 left-4 bg-white/95 backdrop-blur-sm text-[#007a87] px-3 py-1 rounded-lg font-extrabold text-sm shadow-sm">
+                                  Rs. {room.rate}
+                                </div>
+                              )}
+                            </div>
+                            <div className="p-5 flex flex-col flex-1">
+                              <h5 className="font-bold text-lg text-[#002b5c] group-hover:text-[#D9232D] transition-colors mb-3 leading-tight">{room.name}</h5>
+                              {room.fac && room.fac !== "-" && <p className="text-sm text-slate-600 leading-relaxed flex-1">{room.fac}</p>}
+                            </div>
                           </div>
                         ))}
                       </div>
@@ -299,10 +323,21 @@ export default function InPatientClientPage({ pageData }: { pageData: any }) {
                       <h4 className="font-bold text-xl text-slate-800 mb-4 pb-2 border-b-2 border-teal-100 inline-block">Super Speciality Building</h4>
                       <div className="grid md:grid-cols-2 gap-4">
                         {superSpecialityRooms.map((room: any, i: number) => (
-                          <div key={i} className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm hover:border-[#D9232D] hover:shadow-md transition-all group">
-                            <h5 className="font-bold text-[#007a87] group-hover:text-[#D9232D] transition-colors">{room.name}</h5>
-                            {room.rate && room.rate !== "-" && <p className="text-slate-800 font-semibold mt-1">Rate: Rs. {room.rate}</p>}
-                            {room.fac && room.fac !== "-" && <p className="text-sm text-slate-600 mt-2">{room.fac}</p>}
+                          <div key={i} className="bg-white rounded-2xl border border-slate-200 shadow-sm hover:border-[#D9232D] hover:shadow-md transition-all group overflow-hidden flex flex-col">
+                            <div className="relative h-48 bg-slate-100 flex items-center justify-center overflow-hidden">
+                              <img src={room.image || "/images/hospital1.webp"} alt="Room" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                              <div className="absolute inset-0 bg-gradient-to-t from-[#002b5c]/90 via-[#002b5c]/20 to-transparent" />
+                              <Bed className="absolute bottom-4 right-4 w-6 h-6 text-white/90 drop-shadow-md" />
+                              {room.rate && room.rate !== "-" && (
+                                <div className="absolute bottom-4 left-4 bg-white/95 backdrop-blur-sm text-[#007a87] px-3 py-1 rounded-lg font-extrabold text-sm shadow-sm">
+                                  Rs. {room.rate}
+                                </div>
+                              )}
+                            </div>
+                            <div className="p-5 flex flex-col flex-1">
+                              <h5 className="font-bold text-lg text-[#002b5c] group-hover:text-[#D9232D] transition-colors mb-3 leading-tight">{room.name}</h5>
+                              {room.fac && room.fac !== "-" && <p className="text-sm text-slate-600 leading-relaxed flex-1">{room.fac}</p>}
+                            </div>
                           </div>
                         ))}
                       </div>
@@ -452,17 +487,59 @@ export default function InPatientClientPage({ pageData }: { pageData: any }) {
                   </div>
                 </section>
 
+                {/* Pre-Authorization Details */}
+                <section>
+                  <h3 className="text-2xl font-bold text-[#002b5c] mb-6 flex items-center gap-3">
+                    <Clock className="w-6 h-6 text-[#007a87]" />
+                    Timing & Requirements for Pre-authorization
+                  </h3>
+                  
+                  <div className="bg-amber-50/50 p-6 rounded-2xl border border-amber-100 mb-6">
+                    <h4 className="font-bold text-amber-800 mb-2 flex items-center gap-2">
+                      <Clock className="w-5 h-5" />
+                      Timing
+                    </h4>
+                    <p className="text-amber-900 whitespace-pre-line leading-relaxed">{preAuthDetails.timing}</p>
+                  </div>
+
+                  <div className="bg-white border border-slate-200 p-6 md:p-8 rounded-2xl shadow-sm">
+                    <h4 className="font-bold text-slate-800 mb-4 flex items-center gap-2">
+                      <CheckCircle2 className="w-5 h-5 text-teal-600" />
+                      At the Mediclaim Department, you need to bring:
+                    </h4>
+                    <ul className="space-y-3">
+                      {preAuthDetails.requirements.map((req: string, i: number) => (
+                        <li key={i} className="flex items-start gap-3 text-slate-600">
+                          <ChevronRight className="w-5 h-5 text-teal-500 shrink-0 mt-0.5" />
+                          <span>{req}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </section>
+
                 {/* TPA and Corporate Companies */}
                 <section>
                   <h3 className="text-2xl font-bold text-[#002b5c] mb-6 flex items-center gap-3">
                     <FileText className="w-6 h-6 text-[#007a87]" />
-                    TPA & Corporate Companies
+                    Insurance Companies, TPA & Corporate Companies
                   </h3>
                   <p className="mb-4 text-slate-600">Deenanath Mangeshkar Hospital and Research Center is empanelled with following insurance companies / TPA’s for cashless facility.</p>
                   
-                  <div className="grid md:grid-cols-2 gap-8 mt-6">
+                  <div className="grid md:grid-cols-3 gap-8 mt-6">
                     <div>
-                      <h4 className="font-bold text-slate-800 text-lg mb-4 bg-teal-50 p-3 rounded-lg border border-teal-100">Insurance Companies & TPAs</h4>
+                      <h4 className="font-bold text-slate-800 text-lg mb-4 bg-teal-50 p-3 rounded-lg border border-teal-100">Insurance Companies</h4>
+                      <div className="h-[400px] overflow-y-auto pr-4 space-y-3 custom-scrollbar">
+                        {insuranceCompanies.map((company: string, i: number) => (
+                          <div key={i} className="flex items-start gap-2 border-b border-slate-100 pb-2">
+                            <ChevronRight className="w-4 h-4 mt-1 text-teal-500 shrink-0" />
+                            <span className="text-sm text-slate-600 leading-tight">{company}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-slate-800 text-lg mb-4 bg-teal-50 p-3 rounded-lg border border-teal-100">TPAs</h4>
                       <div className="h-[400px] overflow-y-auto pr-4 space-y-3 custom-scrollbar">
                         {tpaCompanies.map((company: string, i: number) => (
                           <div key={i} className="flex items-start gap-2 border-b border-slate-100 pb-2">

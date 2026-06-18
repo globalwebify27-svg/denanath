@@ -63,7 +63,7 @@ export default function TrustSection() {
             </span>
           </h2>
 
-          <p className="mx-auto mt-5 max-w-2xl text-sm text-slate-600">
+          <p className="mx-auto mt-5 max-w-2xl text-base sm:text-lg text-slate-600">
             Delivering compassionate healthcare with advanced medical expertise,
             modern infrastructure, and trusted specialists.
           </p>

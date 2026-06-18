@@ -4,6 +4,24 @@ import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { ChevronRight, Video, PlayCircle } from "lucide-react";
 
+function getYouTubeEmbedUrl(url: string) {
+  if (!url) return null;
+  let videoId = "";
+  try {
+    if (url.includes("youtu.be/")) {
+      videoId = url.split("youtu.be/")[1]?.split("?")[0];
+    } else if (url.includes("youtube.com/watch")) {
+      const urlObj = new URL(url);
+      videoId = urlObj.searchParams.get("v") || "";
+    } else if (url.includes("youtube.com/embed/")) {
+      return url;
+    }
+  } catch (e) {
+    return null;
+  }
+  return videoId ? `https://www.youtube.com/embed/${videoId}` : null;
+}
+
 export default function GalleryVideosClientPage({ pageData }: { pageData: any }) {
   const patientGuideOptions = [
     { name: "Out Patient Guide", href: "/out-patient", active: false },
@@ -133,42 +151,55 @@ export default function GalleryVideosClientPage({ pageData }: { pageData: any })
               {/* Videos Grid */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
                 {filteredVideos.map((video: any, idx: number) => {
-                  const Wrapper = video.url ? 'a' : 'div';
-                  const wrapperProps = video.url ? { href: video.url, target: "_blank", rel: "noopener noreferrer" } : {};
+                  const embedUrl = getYouTubeEmbedUrl(video.url);
                   
                   return (
-                    <Wrapper key={idx} {...wrapperProps} className="group cursor-pointer bg-white rounded-2xl border border-slate-200 overflow-hidden hover:shadow-xl hover:border-teal-300 transition-all duration-300 flex flex-col h-full">
-                      {/* Video Thumbnail Placeholder */}
-                      <div className="aspect-video bg-slate-800 flex items-center justify-center relative overflow-hidden">
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10"></div>
-                        {/* Simulated thumbnail background */}
-                        <div className="absolute inset-0 bg-slate-800 group-hover:scale-105 transition-transform duration-700"></div>
-                        
-                        <div className="relative z-20 w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center group-hover:bg-[#007a87] group-hover:scale-110 transition-all duration-300">
-                          <PlayCircle className="w-8 h-8 text-white ml-1" />
+                    <div key={idx} className="group bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-lg hover:border-teal-300 transition-all duration-300 flex flex-col h-full">
+                      {embedUrl ? (
+                        <div className="aspect-video w-full bg-slate-900 relative">
+                          <iframe 
+                            src={embedUrl}
+                            className="absolute top-0 left-0 w-full h-full"
+                            frameBorder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowFullScreen
+                            title={video.title}
+                          ></iframe>
                         </div>
-                        
-                        {/* Badge overlay */}
-                        {video.category && (
-                          <div className="absolute top-4 left-4 z-20">
-                            <span className="bg-teal-500/90 backdrop-blur-md text-white text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full">
-                              {video.category}
-                            </span>
+                      ) : (
+                        <div className="aspect-video bg-slate-800 flex items-center justify-center relative overflow-hidden">
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10"></div>
+                          {/* Simulated thumbnail background */}
+                          <div className="absolute inset-0 bg-slate-800"></div>
+                          
+                          <div className="relative z-20 w-16 h-16 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                            <PlayCircle className="w-8 h-8 text-white ml-1 opacity-50" />
                           </div>
-                        )}
-                      </div>
+                          
+                          {/* Badge overlay */}
+                          {video.category && (
+                            <div className="absolute top-4 left-4 z-20 pointer-events-none">
+                              <span className="bg-teal-500/90 backdrop-blur-md text-white text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full">
+                                {video.category}
+                              </span>
+                            </div>
+                          )}
+                        </div>
+                      )}
                       
                       {/* Video Details */}
-                      <div className="p-5 flex-1 flex flex-col justify-between">
-                        <h3 className="font-bold text-[#002b5c] group-hover:text-[#007a87] transition-colors leading-snug line-clamp-2">
+                      <div className="p-4 flex-1 flex flex-col justify-center bg-gray-50">
+                        <h3 className="font-[600] text-[#002b5c] leading-snug line-clamp-2">
                           {video.title}
                         </h3>
-                        <div className="mt-4 flex items-center justify-between text-xs text-slate-500 font-medium">
-                          <span>Watch Video</span>
-                          <ChevronRight className="w-4 h-4 text-slate-300 group-hover:text-[#007a87] group-hover:translate-x-1 transition-all" />
-                        </div>
+                        {video.url && !embedUrl && (
+                           <a href={video.url} target="_blank" rel="noopener noreferrer" className="mt-4 inline-flex items-center gap-1 text-xs text-[#007a87] font-bold hover:underline">
+                             <span>Watch on YouTube</span>
+                             <ChevronRight className="w-4 h-4" />
+                           </a>
+                        )}
                       </div>
-                    </Wrapper>
+                    </div>
                   );
                 })}
                 

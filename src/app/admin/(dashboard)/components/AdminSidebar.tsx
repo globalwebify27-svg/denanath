@@ -88,6 +88,10 @@ const MENU_ITEMS = [
     links: [
       { name: "Academics Info", href: "/admin/academics/info" },
       { name: "Simulation Center", href: "/admin/academics/simulation-center" },
+      { name: "Sim. Lab 1", href: "/admin/academics/simulation-center/lab-1" },
+      { name: "Sim. Lab 2", href: "/admin/academics/simulation-center/lab-2" },
+      { name: "Sim. Lab 3", href: "/admin/academics/simulation-center/lab-3" },
+      { name: "Sim. Other Facilities", href: "/admin/academics/simulation-center/other-facilities" },
       { name: "NBEMS Courses", href: "/admin/academics/nbems-courses" },
       { name: "Jeevan Rekha", href: "/admin/academics/jeevan-rekha" },
       { name: "Training Programs", href: "/admin/academics/training-programs" },

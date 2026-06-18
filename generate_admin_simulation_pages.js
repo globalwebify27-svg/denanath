@@ -1,10 +1,44 @@
-"use client";
+const fs = require('fs');
+const path = require('path');
+
+const pages = [
+  { path: 'home', title: 'Simulation Home', key: 'page_simulation_home', description: 'Manage Simulation Home content.' },
+  { path: 'lab-1', title: 'Simulation Lab 1', key: 'page_simulation_lab1', description: 'Manage Simulation Lab 1 content.' },
+  { path: 'lab-2', title: 'Simulation Lab 2', key: 'page_simulation_lab2', description: 'Manage Simulation Lab 2 content.' },
+  { path: 'lab-3', title: 'Simulation Lab 3', key: 'page_simulation_lab3', description: 'Manage Simulation Lab 3 content.' },
+  { path: 'other-facilities', title: 'Other Facilities on 14th Floor', key: 'page_simulation_other_facilities', description: 'Manage Other Facilities content.' }
+];
+
+const pageTemplate = (title, key, description) => `import { prisma } from "@/lib/prisma";
+import ${title.replace(/\s+/g, '')}ClientForm from "./client-form";
+
+export const dynamic = "force-dynamic";
+
+export default async function Admin${title.replace(/\s+/g, '')}Page() {
+  const setting = await prisma.siteSetting.findUnique({ where: { key: '${key}' } });
+
+  let pageData: any = { title: "${title}", content: "", image: "" };
+  try { if (setting) pageData = JSON.parse(setting.value); } catch (e) {}
+
+  return (
+    <div className="p-4 md:p-8 max-w-6xl mx-auto pb-32">
+      <${title.replace(/\s+/g, '')}ClientForm initialData={pageData} />
+    </div>
+  );
+}
+`;
+
+const clientFormTemplate = (title, key, description, frontendPath) => `"use client";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Save, HeartPulse } from "lucide-react";
+import dynamic from 'next/dynamic';
+import 'react-quill/dist/quill.snow.css';
 
-export default function SimulationCenterClientForm({ initialData }: { initialData: any }) {
+const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
+
+export default function ${title.replace(/\s+/g, '')}ClientForm({ initialData }: { initialData: any }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState(initialData);
@@ -31,11 +65,11 @@ export default function SimulationCenterClientForm({ initialData }: { initialDat
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          key: "page_academics_simulation_center",
+          key: "${key}",
           value: JSON.stringify(data),
           pathsToRevalidate: [
-            "/admin/academics/simulation-center",
-            "/simulation-center"
+            "/admin/academics/simulation-center/${frontendPath}",
+            "/simulation-center/${frontendPath}"
           ]
         })
       });
@@ -57,18 +91,17 @@ export default function SimulationCenterClientForm({ initialData }: { initialDat
         <div className="absolute top-0 left-0 w-2 h-full bg-gradient-to-b from-[#002b5c] to-[#007a87]"></div>
         <div className="z-10 relative">
           <h1 className="text-[32px] md:text-[40px] font-black text-[#002b5c] tracking-tight leading-tight mb-2 flex items-center gap-3">
-            Simulation Center
+            ${title}
           </h1>
           <p className="text-[15px] font-medium text-slate-500 max-w-xl leading-relaxed">
-            Manage simulation center overview content.
+            ${description}
           </p>
         </div>
         <div className="z-10 shrink-0 mt-4 lg:mt-0">
           <button
-            type="button"
             onClick={handleSave}
             disabled={loading}
-            className="flex items-center gap-2 px-6 py-3 bg-[#007a87] text-white font-bold rounded-xl hover:bg-[#00606a] transition-colors shadow-sm disabled:opacity-50"
+            className="flex items-center gap-2 px-6 py-3 bg-[#D9232D] text-white font-bold rounded-full hover:bg-red-700 transition-colors shadow-sm disabled:opacity-50"
           >
             <Save size={20} />
             {loading ? "Saving..." : "Save Changes"}
@@ -82,25 +115,16 @@ export default function SimulationCenterClientForm({ initialData }: { initialDat
 
       <div className="space-y-6">
         <div>
-          <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Introductory Text 1</label>
-          <textarea 
-            value={data.introText1 || ""} 
-            onChange={(e) => handleChange("introText1", e.target.value)}
-            rows={4} 
+          <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Page Title</label>
+          <input 
+            value={data.title || ""} 
+            onChange={(e) => handleChange("title", e.target.value)}
             className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium leading-relaxed"
           />
         </div>
+        
         <div>
-          <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Introductory Text 2</label>
-          <textarea 
-            value={data.introText2 || ""} 
-            onChange={(e) => handleChange("introText2", e.target.value)}
-            rows={4} 
-            className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium leading-relaxed"
-          />
-        </div>
-        <div>
-          <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Center Image</label>
+          <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Header Image</label>
           <div className="flex flex-col sm:flex-row sm:items-center gap-4 bg-slate-50 p-4 rounded-2xl border border-slate-200">
             {data.image && (
               <div className="shrink-0 relative group">
@@ -122,7 +146,28 @@ export default function SimulationCenterClientForm({ initialData }: { initialDat
             />
           </div>
         </div>
+
+        <div>
+          <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Content</label>
+          <div className="bg-white rounded-2xl overflow-hidden border border-slate-200">
+            <ReactQuill 
+              theme="snow" 
+              value={data.content || ""} 
+              onChange={(val) => handleChange("content", val)} 
+              className="h-[300px] pb-10"
+            />
+          </div>
+        </div>
       </div>
     </div>
   );
 }
+`;
+
+pages.forEach(p => {
+  const dir = path.join(__dirname, 'src', 'app', 'admin', '(dashboard)', 'academics', 'simulation-center', p.path);
+  if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+  fs.writeFileSync(path.join(dir, 'page.tsx'), pageTemplate(p.title, p.key, p.description));
+  fs.writeFileSync(path.join(dir, 'client-form.tsx'), clientFormTemplate(p.title, p.key, p.description, p.path));
+  console.log('Created admin ' + p.path);
+});

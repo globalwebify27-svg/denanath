@@ -17,7 +17,7 @@ export default async function GalleryVideosPage() {
           "ALL", "PATIENT STORIES", "ICU-VISIT", "COVID-19", "WELLNESS AND LIFESTYLE", "MAAI MOTHER'S MILK BANK"
         ],
         videos: [
-          { title: "COVID 19 VACCINE : Why When & How by Dr. Dhananjay Kelkar", category: "COVID-19", url: "" },
+          { title: "COVID 19 VACCINE : Why When & How by Dr. Dhananjay Kelkar", category: "COVID-19", url: "https://www.youtube.com/watch?v=VMilo10Hbh4&t=15s" },
           { title: "Covid-19 Home Isolation Instructions by DMH - Marathi", category: "COVID-19", url: "" },
           { title: "Covid-19 Home Isolation Instructions by DMH- English", category: "COVID-19", url: "" },
           { title: "Covid-19 Home Isolation Instructions by DMH- Hindi", category: "COVID-19", url: "" },

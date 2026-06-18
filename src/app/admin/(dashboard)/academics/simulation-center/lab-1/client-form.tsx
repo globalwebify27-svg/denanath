@@ -3,8 +3,12 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Save, HeartPulse } from "lucide-react";
+import dynamic from 'next/dynamic';
+import 'react-quill-new/dist/quill.snow.css';
 
-export default function SimulationCenterClientForm({ initialData }: { initialData: any }) {
+const ReactQuill = dynamic(() => import('react-quill-new'), { ssr: false });
+
+export default function SimulationLab1ClientForm({ initialData }: { initialData: any }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState(initialData);
@@ -31,11 +35,11 @@ export default function SimulationCenterClientForm({ initialData }: { initialDat
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          key: "page_academics_simulation_center",
+          key: "page_simulation_lab1",
           value: JSON.stringify(data),
           pathsToRevalidate: [
-            "/admin/academics/simulation-center",
-            "/simulation-center"
+            "/admin/academics/simulation-center/lab-1",
+            "/simulation-center/lab-1"
           ]
         })
       });
@@ -57,15 +61,14 @@ export default function SimulationCenterClientForm({ initialData }: { initialDat
         <div className="absolute top-0 left-0 w-2 h-full bg-gradient-to-b from-[#002b5c] to-[#007a87]"></div>
         <div className="z-10 relative">
           <h1 className="text-[32px] md:text-[40px] font-black text-[#002b5c] tracking-tight leading-tight mb-2 flex items-center gap-3">
-            Simulation Center
+            Simulation Lab 1
           </h1>
           <p className="text-[15px] font-medium text-slate-500 max-w-xl leading-relaxed">
-            Manage simulation center overview content.
+            Manage Simulation Lab 1 content.
           </p>
         </div>
         <div className="z-10 shrink-0 mt-4 lg:mt-0">
           <button
-            type="button"
             onClick={handleSave}
             disabled={loading}
             className="flex items-center gap-2 px-6 py-3 bg-[#007a87] text-white font-bold rounded-xl hover:bg-[#00606a] transition-colors shadow-sm disabled:opacity-50"
@@ -82,25 +85,16 @@ export default function SimulationCenterClientForm({ initialData }: { initialDat
 
       <div className="space-y-6">
         <div>
-          <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Introductory Text 1</label>
-          <textarea 
-            value={data.introText1 || ""} 
-            onChange={(e) => handleChange("introText1", e.target.value)}
-            rows={4} 
+          <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Page Title</label>
+          <input 
+            value={data.title || ""} 
+            onChange={(e) => handleChange("title", e.target.value)}
             className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium leading-relaxed"
           />
         </div>
+        
         <div>
-          <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Introductory Text 2</label>
-          <textarea 
-            value={data.introText2 || ""} 
-            onChange={(e) => handleChange("introText2", e.target.value)}
-            rows={4} 
-            className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium leading-relaxed"
-          />
-        </div>
-        <div>
-          <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Center Image</label>
+          <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Header Image</label>
           <div className="flex flex-col sm:flex-row sm:items-center gap-4 bg-slate-50 p-4 rounded-2xl border border-slate-200">
             {data.image && (
               <div className="shrink-0 relative group">
@@ -119,6 +113,18 @@ export default function SimulationCenterClientForm({ initialData }: { initialDat
               accept="image/*"
               onChange={handleImageChange}
               className="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-teal-50 file:text-[#007a87] hover:file:bg-teal-100 transition-all cursor-pointer"
+            />
+          </div>
+        </div>
+
+        <div>
+          <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Content</label>
+          <div className="bg-white rounded-2xl overflow-hidden border border-slate-200">
+            <ReactQuill 
+              theme="snow" 
+              value={data.content || ""} 
+              onChange={(val) => handleChange("content", val)} 
+              className="h-[300px] pb-10"
             />
           </div>
         </div>

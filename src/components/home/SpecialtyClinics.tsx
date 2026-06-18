@@ -135,14 +135,14 @@ export default function SpecialtyClinics() {
       <div className="relative z-10 max-w-7xl mx-auto">
         
         {/* Section Heading */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10 border-b border-emerald-200/60 pb-8 text-center md:text-left">
+        <div className="flex flex-col md:flex-row md:items-start justify-between gap-6 mb-10 border-b border-emerald-200/60 pb-8 text-center md:text-left">
           <div>
             <p className="text-[10px] font-bold text-[#007a87] uppercase tracking-[0.2em] mb-2">Specialized Medical Care</p>
             <h2 className="text-3xl sm:text-4xl font-light text-slate-900 tracking-tight">
               Our Specialty <span className="font-bold text-emerald-700">Care Clinics</span>
             </h2>
           </div>
-          <p className="text-slate-600 text-sm font-light max-w-md leading-relaxed mx-auto md:mx-0">
+          <p className="text-slate-600 text-base sm:text-lg font-light max-w-md leading-relaxed mx-auto md:mx-0">
             Highly focused clinical programs and centers of excellence addressing specialized therapeutic and medical disciplines.
           </p>
         </div>

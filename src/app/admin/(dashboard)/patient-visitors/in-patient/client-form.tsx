@@ -1,22 +1,40 @@
 "use client";
 
 import { useState } from "react";
-import {  List, Bed, ShieldCheck, Phone, CheckCircle2 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { Save, HeartPulse, List, Bed, ShieldCheck, Phone, CheckCircle2 } from "lucide-react";
 
 export default function InPatientClientForm({ initialData }: { initialData: any }) {
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
   const [data, setData] = useState({
     guidelines: initialData?.guidelines ? initialData.guidelines.join("\n") : "Patient should be physically present in the hospital premises at the time of admission.\nTo facilitate the process of Registration/Admission/Charity/Mediclaim, please ensure to carry patients ID proof (Adhar card, Pan card, Voting card, Driving license, Passport).\nPatients are advised not to keep any valuables, jewellery or other costly items with them during their stay at the Hospital.\nYou can ask for room service for: a. Pharmacy, b. Diet, c. WiFi.\nPlease do not Smoke or Spit in the Hospital premises.\nPlease remember that the total cost of Treatment/Procedure will vary as per your ward/room.\nNo room booking service: rooms and hospital can not be booked in advance as exact discharge time of admitted patients can not be predicted and admission can not be denied to any patients needing treatment.",
     mainBuildingRooms: initialData?.mainBuildingRooms ? initialData.mainBuildingRooms : [
-      { id: 1, name: "GS Special Room A (Patient Room)", rate: "15000/-", fac: "One Attendant Bed, Attached Toilet-Bathroom, A/C, Tv, Telephone" },
-      { id: 2, name: "GS Special Room B", rate: "9000/-", fac: "One Attendant Bed, Attached Toilet-Bathroom, A/C, Tv, Telephone" },
-      { id: 3, name: "General Ward", rate: "600/-", fac: "Telephone" }
+      { id: 1, name: "GS Special Room A (Patient Room)", rate: "15000/-", fac: "One Attendant Bed, Attached Toilet- Attendant Bathroom, A/C As Well As Windows, Fan, Tv, Telephone, Sofaset, Refrigerator, Ward Robe" },
+      { id: 2, name: "GS Special Room A (Relative Room)", rate: "-", fac: "-" },
+      { id: 3, name: "GS Special Room B", rate: "9000/-", fac: "One Attendant Bed, Attached Toilet- Attendant Bathroom, A/C As Well As Windows, Fan, Tv, Telephone, Sofaset, Refrigerator, Ward Robe," },
+      { id: 4, name: "GS Private A", rate: "4500/-", fac: "One Attendant Bed, Attached Toilet-Bathroom, A/C As Well As Windows, Tv, Telephone, Sofaset, Refrigerator, Ward Robe, Fan" },
+      { id: 5, name: "GS Private B", rate: "4000/-", fac: "One Attendant Bed, Attached Toilet-Bathroom, A/C As Well As Windows, Tv, Telephone, Sofaset, Ward Robe, Fan" },
+      { id: 6, name: "GS Private C", rate: "3000/-", fac: "One Attendant Bed, Attached Toilet-Bathroom, Ventilated Room, Tv, Telephone, Ward Robe, Fan,Non A/C" },
+      { id: 7, name: "GS Private D", rate: "2500/-", fac: "One Attendant Bed, Attached Toilet-Bathroom, A/C, Ventilation through A/C And Fan, Tv, Telephone, Ward Robe, No Window" },
+      { id: 8, name: "GS Semi Private", rate: "1700/-", fac: "Only One Patient In A Room, One Attendant Bed, Shared Toilet For 4 Rooms, Telephone, No Tv" },
+      { id: 9, name: "General Ward", rate: "600/-", fac: "Telephone" },
+      { id: 10, name: "GS Day Care (Non AC)", rate: "1100/-", fac: "Common Ward For Male And Female" }
     ],
     superSpecialityRooms: initialData?.superSpecialityRooms ? initialData.superSpecialityRooms : [
-      { id: 1, name: "SS Super Deluxe A", rate: "9000/-", fac: "One attendant bed, Attached toilet-bathroom, A/C, Tv, Telephone" },
-      { id: 2, name: "SS Private AC", rate: "4500/-", fac: "One Attendant Bed, Attached Toilet-Bathroom, A/C, Tv, Telephone" },
-      { id: 3, name: "SS Day Care (AC)", rate: "1300/-", fac: "Common Ward" }
+      { id: 1, name: "SS Super Deluxe A (Patient Room)", rate: "9000/-", fac: "One attendant bed, Attached toilet-bathroom, A/C as well as windows, Tv, Telephone, Sofaset, Refrigerator, Ward Robe" },
+      { id: 2, name: "SS Super Deluxe A (Relative room)", rate: "-", fac: "No window, One bed, One sofa, TV, AC" },
+      { id: 3, name: "SS Super Deluxe B (Window room)", rate: "6700/-", fac: "One attendant bed, Attached toilet-bathroom, A/C, Tv, Telephone, Sofaset, Refrigerator, Ward robe" },
+      { id: 4, name: "SS Super Deluxe B (Non Window room)", rate: "6700/-", fac: "One attendant bed, Attached toilet-bathroom, A/C, Tv, Telephone, Sofaset, Refrigerator, Ward robe" },
+      { id: 5, name: "SS Super Deluxe C", rate: "6200/-", fac: "One attendant bed, A/C, Tv, Telephone, Sofaset, Refrigerator, Ward robe" },
+      { id: 6, name: "SS Private AC", rate: "4500/-", fac: "One Attendant Bed, Attached Toilet-Bathroom, A/C, Windows, Fan, Tv, Telephone, Sofaset, Refrigerator, WardRobe" },
+      { id: 7, name: "SS Private Non-AC", rate: "4000/-", fac: "One Attendant Bed, Attached Toilet-Bathroom, Ventilated Room, Fan, Tv, Telephone, Wardrobe, Non-AC" },
+      { id: 8, name: "SS Semi Private A (Obs-Gyn)", rate: "2200/-", fac: "One Attendant Bed, Separate Toilet-Bathroom, A/C, Telephone, No TV" },
+      { id: 9, name: "SS Semi Private B", rate: "1700/-", fac: "Only One Patient In A Room, One Attendant Bed, Shared Toilet For 4 Rooms, Telephone, No Tv" },
+      { id: 10, name: "SS Day Care (AC)", rate: "1300/-", fac: "Common Ward For Male And Female" }
     ],
-    tpaCompanies: initialData?.tpaCompanies ? initialData.tpaCompanies.join("\n") : "Acko General Insurance Company\nAditya Birla Health Insurance\nBajaj Alliance General Insurance",
+    tpaCompanies: initialData?.tpaCompanies ? initialData.tpaCompanies.join("\n") : "Ericson Tpa Healthcare Pvt Ltd\nFamily Health Plan Insurance Tpa Ltd\nGenins India Tpa Ltd",
+    insuranceCompanies: initialData?.insuranceCompanies ? initialData.insuranceCompanies.join("\n") : "Acko General Insurance Company\nAditya Birla Health Insurance Co.Ltd\nBajaj Alliance General Insurance Co. Ltd.",
     corporateCompanies: initialData?.corporateCompanies ? initialData.corporateCompanies.join("\n") : "Bharat Electronic Ltd\nCummins India Ltd\nTATA Motors",
     admissionDetails: initialData?.admissionDetails || {
       gsBuilding: { location: "Ground floor B wing", time: "24/7", contact: "020 40151019" },
@@ -53,6 +71,10 @@ export default function InPatientClientForm({ initialData }: { initialData: any 
     cashlessContacts: initialData?.cashlessContacts || {
       gsBuilding: { location: "2nd floor 'C' wing", phone: "020 40151258, 020 40151259,\n020 - 40151254", email: "mediclaim@dmhospital.org" },
       ssBuilding: { location: "Ground Floor, R. No 28\nFor all patients: 8th Floor – 3877 / 3861", phone: "020 49153070, 020 49153071\n020 49153038", email: "mediclaim@dmhospital.org" }
+    },
+    preAuthDetails: {
+      timing: initialData?.preAuthDetails?.timing || "For pre-authorization\n10.00 a.m. to 1.30 p.m. & 3 p.m. to 6 p.m. Mon. to Sat. & Sun. 10 a.m. to 2 p.m.",
+      requirements: initialData?.preAuthDetails?.requirements ? initialData.preAuthDetails.requirements.join("\n") : "Health Insurance Policy copy, must for individual policy holders. Photo ID card if issued by TPA, Employee ID card (corporate policy holder)\nPatient and Policy holder Aadhar Card, PAN card.\nPassport size photo only for (Max Bhupa, Applo Munich, SBI General Ins., Manipal and Cigna TTK)\nAdmission note given by your treating doctor.\nAll necessary investigations reports.\nAddress proof (electricity bill) telephone bill / Rental agreement copy / bank statement.\nOur liaison officer will guide you for filling pre-authorization."
     }
   });
 
@@ -75,11 +97,11 @@ export default function InPatientClientForm({ initialData }: { initialData: any 
   };
 
   const addMainRoom = () => {
-    setData({ ...data, mainBuildingRooms: [...data.mainBuildingRooms, { id: Date.now(), name: "", rate: "", fac: "" }] });
+    setData({ ...data, mainBuildingRooms: [...data.mainBuildingRooms, { id: Date.now(), name: "", rate: "", fac: "", image: "/images/hospital.webp" }] });
   };
 
   const addSuperRoom = () => {
-    setData({ ...data, superSpecialityRooms: [...data.superSpecialityRooms, { id: Date.now(), name: "", rate: "", fac: "" }] });
+    setData({ ...data, superSpecialityRooms: [...data.superSpecialityRooms, { id: Date.now(), name: "", rate: "", fac: "", image: "/images/hospital1.webp" }] });
   };
 
   const removeMainRoom = (id: number) => {
@@ -124,6 +146,7 @@ export default function InPatientClientForm({ initialData }: { initialData: any 
       mainBuildingRooms: data.mainBuildingRooms,
       superSpecialityRooms: data.superSpecialityRooms,
       tpaCompanies: data.tpaCompanies.split('\n').map((s: string) => s.trim()).filter((s: string) => s),
+      insuranceCompanies: data.insuranceCompanies.split('\n').map((s: string) => s.trim()).filter((s: string) => s),
       corporateCompanies: data.corporateCompanies.split('\n').map((s: string) => s.trim()).filter((s: string) => s),
       admissionDetails: data.admissionDetails,
       mainBuildingPhones: data.mainBuildingPhones,
@@ -134,8 +157,20 @@ export default function InPatientClientForm({ initialData }: { initialData: any 
       mealTimings: data.mealTimings,
       mealNotes: data.mealNotes.split('\n').map((s: string) => s.trim()).filter((s: string) => s),
       admissionProcedure: data.admissionProcedure.split('\n').map((s: string) => s.trim()).filter((s: string) => s),
+      cashlessProcedure: data.cashlessProcedure,
       cashlessDescription: data.cashlessDescription.split('\n').map((s: string) => s.trim()).filter((s: string) => s),
-      cashlessContacts: data.cashlessContacts
+      cashlessContacts: data.cashlessContacts,
+      preAuthDetails: {
+        timing: data.preAuthDetails.timing,
+        requirements: data.preAuthDetails.requirements.split('\n').map((s: string) => s.trim()).filter((s: string) => s)
+      }
+    });
+  };
+
+  const updatePreAuthDetails = (field: string, value: string) => {
+    setData({
+      ...data,
+      preAuthDetails: { ...data.preAuthDetails, [field]: value }
     });
   };
 
@@ -159,10 +194,65 @@ export default function InPatientClientForm({ initialData }: { initialData: any 
     });
   };
 
+  const handleSave = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      const payload = getJsonPayload();
+      const res = await fetch('/api/settings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          key: 'page_in_patient', 
+          value: payload,
+          pathsToRevalidate: ["/admin/patient-visitors/in-patient", "/in-patient"]
+        })
+      });
+      if (!res.ok) throw new Error("Failed to save");
+      alert("Saved successfully!");
+      router.refresh();
+    } catch (e) {
+      console.error(e);
+      alert("Failed to save. Payload might be too large.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <>
-      <input type="hidden" name="inPatientJson" value={getJsonPayload()} />
+    <form onSubmit={handleSave} className="space-y-8">
       
+      {/* Header */}
+      <div className="mb-10 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 bg-white p-6 md:p-10 rounded-3xl shadow-sm border border-slate-100 relative overflow-hidden group">
+        <div className="absolute top-0 left-0 w-2 h-full bg-gradient-to-b from-[#002b5c] to-[#007a87]"></div>
+        <div className="z-10 relative">
+          <h1 className="text-[32px] md:text-[40px] font-black text-[#002b5c] tracking-tight leading-tight mb-2 flex items-center gap-3">
+            In Patient Guide
+          </h1>
+          <p className="text-[15px] font-medium text-slate-500 max-w-xl leading-relaxed">
+            Manage the information displayed on the In Patient Guide page.
+          </p>
+        </div>
+        <div className="z-10 shrink-0 mt-4 lg:mt-0 flex gap-3">
+          <button
+            type="submit"
+            disabled={loading}
+            className="flex items-center justify-center gap-2 bg-[#007a87] text-white px-6 py-3 rounded-xl hover:bg-[#006570] hover:shadow-lg transition-all duration-300 font-bold text-sm shadow-md disabled:opacity-70 disabled:cursor-not-allowed"
+          >
+            {loading ? (
+              <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+            ) : (
+              <Save size={18} />
+            )}
+            <span>{loading ? "Saving..." : "Save Changes"}</span>
+          </button>
+        </div>
+        {/* subtle background decoration */}
+        <div className="absolute right-0 top-0 opacity-[0.03] pointer-events-none group-hover:scale-110 transition-transform duration-700">
+           <HeartPulse size={200} className="text-[#007a87] -mt-10 -mr-10" />
+        </div>
+      </div>
+
       <div className="space-y-8">
 
         {/* Admission Details */}
@@ -277,6 +367,40 @@ export default function InPatientClientForm({ initialData }: { initialData: any 
                         x
                       </button>
                     </div>
+                    <div className="col-span-12 flex flex-col sm:flex-row sm:items-center gap-3 bg-slate-50 p-3 rounded border border-slate-200 mt-2">
+                      {r.image && (
+                        <div className="shrink-0">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img src={r.image} alt="Preview" className="w-12 h-12 object-cover rounded border border-gray-200 bg-white" />
+                        </div>
+                      )}
+                      <div className="flex-1 min-w-0">
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={(e) => {
+                            const file = e.target.files?.[0];
+                            if (file) {
+                              const reader = new FileReader();
+                              reader.onloadend = () => {
+                                updateMainRoom(r.id, 'image', reader.result as string);
+                              };
+                              reader.readAsDataURL(file);
+                            }
+                          }}
+                          className="w-full text-sm file:mr-4 file:py-1.5 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-[#007a87]/10 file:text-[#007a87] hover:file:bg-[#007a87]/20 cursor-pointer"
+                        />
+                      </div>
+                      {r.image && (
+                        <button
+                          type="button"
+                          onClick={() => updateMainRoom(r.id, 'image', "")}
+                          className="text-[#D9232D] text-xs font-bold px-3 py-1.5 bg-red-50 rounded-lg hover:bg-red-100 transition-colors shrink-0"
+                        >
+                          Remove Image
+                        </button>
+                      )}
+                    </div>
                   </div>
                 ))}
               </div>
@@ -304,6 +428,40 @@ export default function InPatientClientForm({ initialData }: { initialData: any 
                       <button type="button" onClick={() => removeSuperRoom(r.id)} className="w-8 h-8 flex items-center justify-center text-white bg-[#D9232D] rounded-lg hover:bg-red-700 transition-colors font-bold shrink-0">
                         x
                       </button>
+                    </div>
+                    <div className="col-span-12 flex flex-col sm:flex-row sm:items-center gap-3 bg-slate-50 p-3 rounded border border-slate-200 mt-2">
+                      {r.image && (
+                        <div className="shrink-0">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img src={r.image} alt="Preview" className="w-12 h-12 object-cover rounded border border-gray-200 bg-white" />
+                        </div>
+                      )}
+                      <div className="flex-1 min-w-0">
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={(e) => {
+                            const file = e.target.files?.[0];
+                            if (file) {
+                              const reader = new FileReader();
+                              reader.onloadend = () => {
+                                updateSuperRoom(r.id, 'image', reader.result as string);
+                              };
+                              reader.readAsDataURL(file);
+                            }
+                          }}
+                          className="w-full text-sm file:mr-4 file:py-1.5 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-[#007a87]/10 file:text-[#007a87] hover:file:bg-[#007a87]/20 cursor-pointer"
+                        />
+                      </div>
+                      {r.image && (
+                        <button
+                          type="button"
+                          onClick={() => updateSuperRoom(r.id, 'image', "")}
+                          className="text-[#D9232D] text-xs font-bold px-3 py-1.5 bg-red-50 rounded-lg hover:bg-red-100 transition-colors shrink-0"
+                        >
+                          Remove Image
+                        </button>
+                      )}
                     </div>
                   </div>
                 ))}
@@ -428,20 +586,59 @@ export default function InPatientClientForm({ initialData }: { initialData: any 
           </div>
         </div>
 
+        {/* Pre-Authorization Details */}
+        <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200">
+          <h3 className="text-lg text-[20px] font-black text-[#002b5c] mb-4 flex items-center gap-2">
+            <ShieldCheck className="w-5 h-5 text-[#007a87]" />
+            Timing & Requirements for Pre-authorization
+          </h3>
+          <div className="grid md:grid-cols-2 gap-6">
+            <div>
+              <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Timing</label>
+              <textarea 
+                value={data.preAuthDetails.timing} 
+                onChange={(e) => updatePreAuthDetails('timing', e.target.value)}
+                rows={3}
+                className="w-full p-4 border border-gray-200 rounded-xl focus:ring-[#007a87] focus:outline-none text-sm leading-relaxed"
+              />
+            </div>
+            <div>
+              <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Requirements (One per line)</label>
+              <textarea 
+                value={data.preAuthDetails.requirements} 
+                onChange={(e) => updatePreAuthDetails('requirements', e.target.value)}
+                rows={8}
+                className="w-full p-4 border border-gray-200 rounded-xl focus:ring-[#007a87] focus:outline-none text-sm leading-relaxed"
+              />
+            </div>
+          </div>
+        </div>
+
         {/* TPA and Corporate Lists */}
         <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200">
           <h3 className="text-lg text-[20px] font-black text-[#002b5c] mb-4 flex items-center gap-2">
             <ShieldCheck className="w-5 h-5 text-[#007a87]" />
             TPA & Corporate Empanelments
           </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div>
-              <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">TPA / Insurance Companies (One per line)</label>
+              <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Insurance Companies (One per line)</label>
+              <textarea 
+                value={data.insuranceCompanies} 
+                onChange={(e) => handleChange('insuranceCompanies', e.target.value)}
+                rows={10}
+                className="w-full p-4 border border-gray-200 rounded-xl focus:ring-[#007a87] focus:outline-none text-sm leading-relaxed"
+                placeholder="Acko General Insurance Company..."
+              />
+            </div>
+            <div>
+              <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">TPAs (One per line)</label>
               <textarea 
                 value={data.tpaCompanies} 
                 onChange={(e) => handleChange('tpaCompanies', e.target.value)}
                 rows={10}
                 className="w-full p-4 border border-gray-200 rounded-xl focus:ring-[#007a87] focus:outline-none text-sm leading-relaxed"
+                placeholder="Ericson Tpa Healthcare..."
               />
             </div>
             <div>
@@ -458,7 +655,6 @@ export default function InPatientClientForm({ initialData }: { initialData: any 
 
       </div>
 
-      
-    </>
+    </form>
   );
 }

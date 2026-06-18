@@ -26,7 +26,7 @@ export default function PartnersAccreditation() {
             {/* Image Banner Header */}
             <div className="h-48 sm:h-56 w-full relative overflow-hidden">
               <img 
-                src="/images/OIP (4).jpg" 
+                src="/images/unnamed (13).webp" 
                 alt="Medical Team Collaboration" 
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
               />
@@ -72,6 +72,16 @@ export default function PartnersAccreditation() {
                   </span>
                   <span>Charity</span>
                 </Link>
+
+                <Link 
+                  href="/indoor-map" 
+                  className="inline-flex items-center gap-3 text-slate-700 hover:text-[#002b5c] text-xs font-bold transition-colors group/link"
+                >
+                  <span className="w-7 h-7 rounded-full bg-[#002b5c] text-white flex items-center justify-center group-hover/link:bg-[#007a87] transition-colors shadow-sm">
+                    <ArrowRight className="w-3.5 h-3.5 group-hover/link:translate-x-0.5 transition-transform" />
+                  </span>
+                  <span>Indoor Map</span>
+                </Link>
               </div>
             </div>
 
@@ -83,7 +93,7 @@ export default function PartnersAccreditation() {
             {/* Image Banner Header */}
             <div className="h-48 sm:h-56 w-full relative overflow-hidden">
               <img 
-                src="/images/hospital1.webp" 
+                src="/images/unnamed (14).webp" 
                 alt="Compassionate Patient Care" 
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 object-top"
               />
@@ -175,36 +185,36 @@ export default function PartnersAccreditation() {
             </div>
 
             {/* Right Side: Button and Stamps */}
-            <div className="lg:col-span-5 flex flex-wrap sm:flex-nowrap items-center gap-6 lg:justify-end w-full">
+            <div className="lg:col-span-5 flex flex-col sm:flex-row items-center gap-6 lg:justify-end w-full overflow-hidden">
               
               <Link 
                 href="/facilities" 
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-[#007a87] text-white hover:bg-[#c70909] font-bold text-xs uppercase tracking-widest transition-all duration-300 shadow-md hover:shadow-lg whitespace-nowrap"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-[#007a87] text-white hover:bg-[#c70909] font-bold text-xs uppercase tracking-widest transition-all duration-300 shadow-md hover:shadow-lg text-center"
               >
                 <span>Accreditation & Quality</span>
-                <ArrowRight className="w-4 h-4" />
+                <ArrowRight className="w-4 h-4 flex-shrink-0" />
               </Link>
 
               {/* Rendered SVG Logos of NABH and NABL */}
               <div className="flex items-center gap-4 flex-shrink-0">
                 
                 {/* NABH Badge Logo */}
-                <div className="w-14 h-14 rounded-full bg-white flex items-center justify-center border-2 border-orange-500 shadow-sm p-1.5 cursor-help" title="NABH Accredited">
+                <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-white flex items-center justify-center shadow-sm cursor-help" title="NABH Accredited">
                   <svg className="w-full h-full" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="50" cy="50" r="45" stroke="#E65100" strokeWidth="3" />
-                    <circle cx="50" cy="50" r="40" stroke="#0D47A1" strokeWidth="1" strokeDasharray="2 2" />
-                    <path d="M25,55 C25,70 40,75 55,75 C70,75 75,65 75,55" stroke="#2E7D32" strokeWidth="6" strokeLinecap="round" fill="none" />
-                    <path d="M25,45 C25,30 40,25 55,25 C70,25 75,35 75,45" stroke="#EF6C00" strokeWidth="6" strokeLinecap="round" fill="none" />
-                    <text x="50%" y="47%" dominantBaseline="middle" textAnchor="middle" fill="#0D47A1" fontSize="18" fontWeight="900" fontFamily="sans-serif">NABH</text>
-                    <text x="50%" y="62%" dominantBaseline="middle" textAnchor="middle" fill="#E65100" fontSize="8" fontWeight="700" fontFamily="sans-serif" letterSpacing="0.5">ACCREDITED</text>
+                    <circle cx="50" cy="50" r="48" stroke="#E65100" strokeWidth="2" />
+                    <circle cx="50" cy="50" r="42" stroke="#0D47A1" strokeWidth="1" strokeDasharray="2 2" />
+                    <path d="M40,51 A10,10 0 0,0 60,51" stroke="#2E7D32" strokeWidth="2" strokeLinecap="round" fill="none" />
+                    <path d="M60,49 A10,10 0 0,0 40,49" stroke="#EF6C00" strokeWidth="2" strokeLinecap="round" fill="none" />
+                    <text x="50%" y="32%" dominantBaseline="middle" textAnchor="middle" fill="#0D47A1" fontSize="16" fontWeight="900" fontFamily="sans-serif">NABH</text>
+                    <text x="50%" y="72%" dominantBaseline="middle" textAnchor="middle" fill="#E65100" fontSize="8" fontWeight="700" fontFamily="sans-serif" letterSpacing="0.5">ACCREDITED</text>
                   </svg>
                 </div>
 
                 {/* NABL Badge Logo */}
-                <div className="w-14 h-14 rounded-full bg-white flex items-center justify-center border-2 border-blue-600 shadow-sm p-1.5 cursor-help" title="NABL Accredited">
+                <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-white flex items-center justify-center shadow-sm cursor-help" title="NABL Accredited">
                   <svg className="w-full h-full" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="50" cy="50" r="45" stroke="#0D47A1" strokeWidth="3" />
-                    <circle cx="50" cy="50" r="40" stroke="#EF6C00" strokeWidth="1" strokeDasharray="2 2" />
+                    <circle cx="50" cy="50" r="48" stroke="#0D47A1" strokeWidth="2" />
+                    <circle cx="50" cy="50" r="42" stroke="#EF6C00" strokeWidth="1" strokeDasharray="2 2" />
                     <circle cx="50" cy="50" r="10" stroke="#0D47A1" strokeWidth="1.5" fill="none" />
                     <path d="M50,40 L50,60 M40,50 L60,50" stroke="#0D47A1" strokeWidth="1" />
                     <text x="50%" y="32%" dominantBaseline="middle" textAnchor="middle" fill="#0D47A1" fontSize="16" fontWeight="900" fontFamily="sans-serif">NABL</text>
