@@ -34,12 +34,14 @@ export default function Footer() {
                 />
               </div>
             </Link>
-            <p className="text-xs text-[#b2dfdb] leading-relaxed font-light">
-              Deenanath Mangeshkar Hospital and Research Center is Pune&apos;s leading clinical landmark, combining state-of-the-art diagnostics with legendary medical experts and warm, ethical care.
-            </p>
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-white/10 text-[10px] font-semibold text-white">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#a7ffeb] animate-ping" />
-              <span>Managed by Lata Mangeshkar Foundation</span>
+            <div className="w-10/12 sm:w-full space-y-6">
+              <p className="text-xs text-[#b2dfdb] leading-relaxed font-light">
+                Deenanath Mangeshkar Hospital and Research Center is Pune&apos;s leading clinical landmark, combining state-of-the-art diagnostics with legendary medical experts and warm, ethical care.
+              </p>
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-white/10 text-[10px] font-semibold text-white">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#a7ffeb] animate-ping" />
+                <span>Managed by Lata Mangeshkar Foundation</span>
+              </div>
             </div>
           </div>
 

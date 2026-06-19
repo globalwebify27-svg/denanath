@@ -1,38 +1,67 @@
-import { prisma } from "@/lib/prisma";
-import React from "react";
+"use client";
+
+import React, { useEffect, useRef } from "react";
 import Link from "next/link";
 import { ChevronRight, Microscope } from "lucide-react";
 
-export default async function PublicationsPage() {
-  const setting = await prisma.siteSetting.findUnique({ where: { key: 'page_research_publications' } });
-  let pageData: any = { recentPubs: [], archiveYears: [] };
-  try { if (setting) pageData = JSON.parse(setting.value); } catch (e) {}
-
-  const defaultRecentPubs = [
-    { title: "Closing the implementation gap: Process outcomes following a structured intraoperative bundle for emergency laparotomy.", authors_date: "<span className=\"font-semibold text-slate-800\">Baliga J, Iau P, Kavishwar P, Joseph J, Sebastian A.</span> (March 2026)", journal: "Indian Journal of Anaesthesia. 70(3):477-484.", doi: "10.4103/ija.ija_1716_25" },
-    { title: "Intraperitoneal Chemotherapy as a Maintenance Treatment for Advanced Ovarian Cancer: Early Experience from Tertiary Care Center in India.", authors_date: "<span className=\"font-semibold text-slate-800\">Jagatap M, Tamhankar AS, Tamhankar T, Kulkarni P.</span> (February 2026)", journal: "Indian Journal of Medical and Paediatric Oncology.", doi: "10.1055/s-0045-1815747" },
-    { title: "Tapia Syndrome: Clinical Presentation, Diagnosis and Management of 40 Patients During Covid-19 Pandemic.", authors_date: "<span className=\"font-semibold text-slate-800\">Gandhi S, Saindani S.</span> (February 2026)", journal: "Acta Scientific Otolaryngology. 8(2):19-22.", doi: "10.31080/ASOL.2026.08.0790" }
-  ];
-
-  const defaultArchiveYears = [
-    { year: "2024 - 2025", link: "#" }, { year: "2023 - 2024", link: "#" }, { year: "2022 - 2023", link: "#" },
-    { year: "2021 - 2022", link: "#" }, { year: "2020 - 2021", link: "#" }, { year: "2019 - 2020", link: "#" },
-    { year: "2018 - 2019", link: "#" }, { year: "2017 - 2018", link: "#" }
-  ];
-
-  const recentPubs = pageData.recentPubs?.length > 0 ? pageData.recentPubs : defaultRecentPubs;
-  const archiveYears = pageData.archiveYears?.length > 0 ? pageData.archiveYears : defaultArchiveYears;
-
+export default function PublicationsPage() {
   const options = [
-    { "name": "About Us", "href": "/research-about", "active": false },
-    { "name": "Training And Events", "href": "/training-events", "active": false },
-    { "name": "Awards", "href": "/awards", "active": false },
-    { "name": "Newsletter Articles", "href": "/newsletter-articles", "active": false },
-    { "name": "Publications", "href": "/publications", "active": true },
-    { "name": "Annual Reports", "href": "/annual-reports", "active": false },
-    { "name": "Sponsors & CROs", "href": "/sponsors-cros", "active": false },
-    { "name": "Contact Us", "href": "/research-contact", "active": false }
-  ];
+    {
+        "name": "About Us",
+        "href": "/research-about",
+        "active": false
+    },
+    {
+        "name": "Training And Events",
+        "href": "/training-events",
+        "active": false
+    },
+    {
+        "name": "Awards",
+        "href": "/awards",
+        "active": false
+    },
+    {
+        "name": "Newsletter Articles",
+        "href": "/newsletter-articles",
+        "active": false
+    },
+    {
+        "name": "Publications",
+        "href": "/publications",
+        "active": true
+    },
+    {
+        "name": "Annual Reports",
+        "href": "/annual-reports",
+        "active": false
+    },
+    {
+        "name": "Sponsors & CROs",
+        "href": "/sponsors-cros",
+        "active": false
+    },
+    {
+        "name": "Contact Us",
+        "href": "/research-contact",
+        "active": false
+    }
+];
+
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (window.innerWidth < 1024 && scrollContainerRef.current) {
+      const activeEl = scrollContainerRef.current.querySelector('[data-active="true"]') as HTMLElement;
+      if (activeEl) {
+        const container = scrollContainerRef.current;
+        const scrollPos = activeEl.offsetLeft - (container.offsetWidth / 2) + (activeEl.offsetWidth / 2);
+        setTimeout(() => {
+          container.scrollTo({ left: Math.max(0, scrollPos), behavior: 'smooth' });
+        }, 100);
+      }
+    }
+  }, []);
 
   return (
     <div className="min-h-screen bg-[#f8fafc] font-sans selection:bg-teal-500/30">
@@ -61,7 +90,7 @@ export default async function PublicationsPage() {
           {/* Left Sidebar Navigation */}
           {options.length > 0 && (
             <div className="w-full lg:w-[280px] shrink-0 sticky top-14 lg:top-28 z-30 bg-[#f8fafc] py-2 lg:py-0">
-              <div className="bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 overflow-hidden flex flex-row lg:flex-col overflow-x-auto lg:overflow-x-visible scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden snap-x snap-mandatory">
+              <div ref={scrollContainerRef} className="bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 overflow-hidden flex flex-row lg:flex-col overflow-x-auto lg:overflow-x-visible scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden snap-x snap-mandatory">
                 {options.map((option, idx) => (
                   <Link
                     key={idx}
@@ -102,75 +131,14 @@ export default async function PublicationsPage() {
                 <div className="w-20 h-1.5 bg-[#007a87] rounded-full mb-8"></div>
               </div>
 
-              <div className="space-y-12">
-                
-                {/* Recent Publications */}
-                <div>
-                  <div className="flex items-center justify-between mb-8 pb-4 border-b border-slate-200">
-                    <h3 className="text-2xl md:text-3xl font-extrabold text-[#002b5c] flex items-center gap-3">
-                      <span className="w-10 h-10 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-                      </span>
-                      Recent Publications
-                    </h3>
-                  </div>
-
-                  <h4 className="text-xl font-bold text-[#007a87] mb-6 flex items-center gap-2">
-                    A] National / International Publications
-                  </h4>
-                  
-                  <div className="space-y-6">
-                    {recentPubs.map((pub: any, idx: number) => (
-                      <div key={idx} className="bg-white border border-slate-200 p-6 rounded-2xl hover:shadow-[0_8px_30px_rgba(217,35,45,0.15)] hover:border-[#D9232D] hover:-translate-y-1 transition-all group">
-                        <p className="text-[#002b5c] font-bold mb-2 group-hover:text-[#007a87] transition-colors">
-                          {pub.title}
-                        </p>
-                        <p 
-                          className="text-slate-600 text-sm mb-3"
-                          dangerouslySetInnerHTML={{ __html: pub.authors_date }}
-                        />
-                        <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">
-                          {pub.journal && (
-                            <span className="inline-flex items-center text-slate-500 bg-slate-50 px-2 py-1 rounded">
-                              {pub.journal}
-                            </span>
-                          )}
-                          {pub.doi && (
-                            <a href={`https://doi.org/${pub.doi.replace('DOI: ', '')}`} target="_blank" rel="noopener noreferrer" className="text-[#007a87] hover:underline font-medium inline-flex items-center gap-1">
-                              DOI: {pub.doi.replace('DOI: ', '')}
-                            </a>
-                          )}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
+              <div className="py-16 text-center border-2 border-dashed border-slate-200 rounded-2xl bg-slate-50">
+                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-teal-100 mb-4">
+                  <Microscope className="w-8 h-8 text-[#007a87]" />
                 </div>
-
-                <div className="h-px bg-slate-200 w-full my-12"></div>
-
-                {/* Archive Publications Summary Block */}
-                <div className="bg-slate-50 border border-slate-200 rounded-3xl p-8 text-center relative overflow-hidden group">
-                  <div className="absolute inset-0 bg-gradient-to-br from-white/50 to-transparent pointer-events-none"></div>
-                  <h3 className="text-2xl font-extrabold text-[#002b5c] mb-3 relative z-10">Archive: 2017 – 2025</h3>
-                  <p className="text-slate-600 max-w-xl mx-auto mb-8 relative z-10 leading-relaxed">
-                    Explore our extensive history of clinical research, including hundreds of national and international publications across various medical disciplines.
-                  </p>
-                  
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 relative z-10">
-                    {archiveYears.map((item: any, idx: number) => (
-                      <Link 
-                        key={idx} 
-                        href={item.link} 
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="bg-white border border-slate-200 p-4 rounded-xl font-bold text-[#007a87] hover:bg-[#003360] hover:text-white hover:border-[#003360] hover:shadow-[0_8px_30px_rgba(0,51,96,0.15)] hover:-translate-y-1 transition-all shadow-sm flex items-center justify-center text-sm md:text-base"
-                      >
-                        {item.year}
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-
+                <h3 className="text-xl font-bold text-slate-700 mb-2">Content Coming Soon</h3>
+                <p className="text-slate-500 max-w-md mx-auto">
+                  The information for this section is currently being updated. Please check back later.
+                </p>
               </div>
 
             </div>

@@ -111,7 +111,7 @@ export default function ClinicalHub() {
     },
     {
       title: "DMH @ Home",
-      image: "/images/unnamed (8).webp",
+      image: "/images/unnamed (15).webp",
       description: "Access high-quality clinical care from the comfort of your home. Services include experienced visiting nurses, dedicated physical recovery therapy, home blood collection, and professional elder care assistance.",
       Icon: HomeIcon,
       features: [

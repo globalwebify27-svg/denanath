@@ -96,7 +96,7 @@ export default function DoctorsSection() {
         <div className="relative">
           <div
             ref={scrollRef}
-            className="flex md:justify-center gap-4 sm:gap-6 overflow-x-auto scroll-smooth pb-4 snap-x snap-mandatory"
+            className="flex md:justify-center gap-4 sm:gap-6 overflow-x-auto scroll-smooth pb-4 snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
           >
             {doctors.map((doctor, index) => (
               <motion.div

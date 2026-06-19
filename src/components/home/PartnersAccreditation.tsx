@@ -155,7 +155,7 @@ export default function PartnersAccreditation() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center relative z-10">
             
             {/* Left Side: Hexagonal Clipboard Icon & Text */}
-            <div className="lg:col-span-7 flex flex-col sm:flex-row items-start sm:items-center gap-5">
+            <div className="lg:col-span-7 flex flex-col sm:flex-row items-center text-center sm:text-left gap-5">
               
               {/* Hexagon Clipboard Icon Pod */}
               <div className="relative w-16 h-18 sm:w-20 sm:h-20 flex-shrink-0 flex items-center justify-center filter drop-shadow-sm">

@@ -1,42 +1,13 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import Link from "next/link";
-import { ChevronRight, CalendarCheck, User, Phone, Mail, Stethoscope, Clock, FileText, Send, Building2 } from "lucide-react";
+import { ChevronRight, Building2 } from "lucide-react";
 
 export default function BookAppointmentPage() {
-  const options: any[] = [];
+  const options = [];
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitSuccess, setSubmitSuccess] = useState(false);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-
-    const formData = new FormData(e.currentTarget);
-    formData.append("formType", "Book Appointment");
-
-    try {
-      const res = await fetch("/api/submit-form", {
-        method: "POST",
-        body: formData,
-      });
-
-      if (res.ok) {
-        setSubmitSuccess(true);
-        (e.target as HTMLFormElement).reset();
-      } else {
-        alert("Error submitting request. Please try again.");
-      }
-    } catch (error) {
-      console.error(error);
-      alert("Network error. Please try again.");
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
 
   useEffect(() => {
     if (window.innerWidth < 1024 && scrollContainerRef.current) {
@@ -73,175 +44,65 @@ export default function BookAppointmentPage() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-16">
-        <div className="bg-white rounded-3xl shadow-[0_8px_40px_rgb(0,0,0,0.03)] border border-slate-100/60 p-6 sm:p-10 md:p-14">
+        <div className="flex flex-col lg:flex-row gap-8 xl:gap-12 items-start">
           
-          <div className="mb-12 text-center max-w-2xl mx-auto">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-teal-50 border border-teal-100 text-[#007a87] text-xs font-bold tracking-wider uppercase mb-4">
-              <CalendarCheck className="w-4 h-4" />
-              <span>Appointments</span>
+          {/* Left Sidebar Navigation */}
+          {options.length > 0 && (
+            <div className="w-full lg:w-[280px] shrink-0 sticky top-14 lg:top-28 z-30 bg-[#f8fafc] py-2 lg:py-0">
+              <div ref={scrollContainerRef} className="bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 overflow-hidden flex flex-row lg:flex-col overflow-x-auto lg:overflow-x-visible scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden snap-x snap-mandatory">
+                {options.map((option, idx) => (
+                  <Link
+                    key={idx}
+                    href={option.href}
+                    data-active={option.active}
+                    className={"snap-start shrink-0 group flex items-center justify-between px-6 py-4 lg:py-4 text-sm font-bold transition-all duration-300 lg:border-l-4 lg:border-b-0 border-b-4 whitespace-nowrap lg:whitespace-normal " + (
+                      option.active
+                        ? "border-[#007a87] bg-teal-50/40 text-[#007a87]"
+                        : "border-transparent text-slate-600 hover:bg-slate-50 hover:text-[#002b5c] lg:hover:border-slate-200 hover:border-slate-200"
+                    ) + " " + (idx !== options.length - 1 ? "lg:border-b lg:border-b-slate-50" : "")}
+                  >
+                    <span>{option.name}</span>
+                    <ChevronRight 
+                      className={"hidden lg:block w-4 h-4 transition-transform duration-300 " + (
+                        option.active 
+                          ? "text-[#007a87] translate-x-1" 
+                          : "text-slate-300 group-hover:translate-x-1 group-hover:text-[#002b5c]"
+                      )} 
+                    />
+                  </Link>
+                ))}
+              </div>
             </div>
-            <h2 className="text-3xl md:text-4xl font-extrabold text-[#002b5c] mb-6 tracking-tight">
-              Book an Appointment
-            </h2>
-            <div className="w-20 h-1.5 bg-[#007a87] rounded-full mx-auto mb-6"></div>
-            <p className="text-slate-500 text-lg">
-              Schedule your visit with our expert doctors. Please fill out the form below and our team will contact you to confirm your appointment.
-            </p>
-          </div>
+          )}
 
-          <div className="max-w-3xl mx-auto">
-            <div className="bg-slate-50 rounded-3xl p-8 md:p-10 border border-slate-200 shadow-sm">
-              {submitSuccess ? (
-                <div className="text-center py-12">
-                  <div className="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                    <CalendarCheck className="w-10 h-10 text-emerald-600" />
-                  </div>
-                  <h3 className="text-3xl font-extrabold text-[#002b5c] mb-4">Request Submitted!</h3>
-                  <p className="text-slate-600 text-lg mb-8">Your appointment request has been successfully received. Our team will contact you shortly to confirm the exact time slot.</p>
-                  <button 
-                    onClick={() => setSubmitSuccess(false)}
-                    className="bg-[#002b5c] hover:bg-[#001a38] text-white px-8 py-3 rounded-xl font-bold transition-colors"
-                  >
-                    Book Another Appointment
-                  </button>
+          {/* Right Main Content */}
+          <div className="w-full flex-1">
+            <div className="bg-white rounded-3xl shadow-[0_8px_40px_rgb(0,0,0,0.03)] border border-slate-100/60 p-6 sm:p-10 md:p-14">
+              
+              <div className="mb-10">
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-teal-50 border border-teal-100 text-[#007a87] text-xs font-bold tracking-wider uppercase mb-4">
+                  <Building2 className="w-4 h-4" />
+                  <span>Hospital</span>
                 </div>
-              ) : (
-              <form className="space-y-8" onSubmit={handleSubmit}>
-                
-                {/* Patient Details */}
-                <div>
-                  <h3 className="text-xl font-extrabold text-[#002b5c] mb-6 border-b border-slate-200 pb-3 flex items-center gap-2">
-                    <User className="w-5 h-5 text-[#007a87]" /> Patient Details
-                  </h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                      <label className="block text-sm font-bold text-slate-700 mb-2">First Name <span className="text-red-500">*</span></label>
-                      <input name="firstName" type="text" className="w-full bg-white border border-slate-300 rounded-xl py-3 px-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-[#007a87] transition-shadow" placeholder="e.g. John" required />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-bold text-slate-700 mb-2">Last Name <span className="text-red-500">*</span></label>
-                      <input name="lastName" type="text" className="w-full bg-white border border-slate-300 rounded-xl py-3 px-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-[#007a87] transition-shadow" placeholder="e.g. Doe" required />
-                    </div>
-                  </div>
+                <h2 className="text-3xl md:text-4xl font-extrabold text-[#002b5c] mb-6 tracking-tight">
+                  Book Appointment
+                </h2>
+                <div className="w-20 h-1.5 bg-[#007a87] rounded-full mb-8"></div>
+              </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-                    <div>
-                      <label className="block text-sm font-bold text-slate-700 mb-2">Phone Number <span className="text-red-500">*</span></label>
-                      <div className="relative">
-                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                          <Phone className="h-5 w-5 text-slate-400" />
-                        </div>
-                        <input name="phone" type="tel" maxLength={10} pattern="[0-9]{10}" title="Please enter a valid 10-digit phone number" onInput={(e) => { e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/g, ''); }} className="w-full bg-white border border-slate-300 rounded-xl py-3 pl-10 pr-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-[#007a87] transition-shadow" placeholder="10-digit number" required />
-                      </div>
-                    </div>
-                    <div>
-                      <label className="block text-sm font-bold text-slate-700 mb-2">Email Address <span className="text-red-500">*</span></label>
-                      <div className="relative">
-                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                          <Mail className="h-5 w-5 text-slate-400" />
-                        </div>
-                        <input name="email" type="email" className="w-full bg-white border border-slate-300 rounded-xl py-3 pl-10 pr-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-[#007a87] transition-shadow" placeholder="john@example.com" required />
-                      </div>
-                    </div>
-                  </div>
+              <div className="py-16 text-center border-2 border-dashed border-slate-200 rounded-2xl bg-slate-50">
+                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-teal-100 mb-4">
+                  <Building2 className="w-8 h-8 text-[#007a87]" />
                 </div>
+                <h3 className="text-xl font-bold text-slate-700 mb-2">Content Coming Soon</h3>
+                <p className="text-slate-500 max-w-md mx-auto">
+                  The information for this section is currently being updated. Please check back later.
+                </p>
+              </div>
 
-                {/* Appointment Details */}
-                <div className="pt-4">
-                  <h3 className="text-xl font-extrabold text-[#002b5c] mb-6 border-b border-slate-200 pb-3 flex items-center gap-2">
-                    <CalendarCheck className="w-5 h-5 text-[#007a87]" /> Appointment Details
-                  </h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                      <label className="block text-sm font-bold text-slate-700 mb-2">Department <span className="text-red-500">*</span></label>
-                      <div className="relative">
-                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                          <Building2 className="h-5 w-5 text-slate-400" />
-                        </div>
-                        <select name="department" className="w-full bg-white border border-slate-300 rounded-xl py-3 pl-10 pr-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-[#007a87] transition-shadow appearance-none cursor-pointer" required>
-                          <option value="">Select Department</option>
-                          <option value="cardiology">Cardiology</option>
-                          <option value="neurology">Neurology</option>
-                          <option value="orthopaedics">Orthopaedics</option>
-                          <option value="pediatrics">Pediatrics</option>
-                          <option value="general">General Medicine</option>
-                        </select>
-                      </div>
-                    </div>
-                    <div>
-                      <label className="block text-sm font-bold text-slate-700 mb-2">Doctor (Optional)</label>
-                      <div className="relative">
-                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                          <Stethoscope className="h-5 w-5 text-slate-400" />
-                        </div>
-                        <select name="doctor" className="w-full bg-white border border-slate-300 rounded-xl py-3 pl-10 pr-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-[#007a87] transition-shadow appearance-none cursor-pointer">
-                          <option value="">Any Available Doctor</option>
-                          <option value="dr1">Dr. Nikhil Agarkhedkar</option>
-                          <option value="dr2">Dr. Renu Agarkhedkar</option>
-                          <option value="dr3">Dr. Neha Agashe</option>
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-                    <div>
-                      <label className="block text-sm font-bold text-slate-700 mb-2">Preferred Date <span className="text-red-500">*</span></label>
-                      <div className="relative">
-                        <input name="preferredDate" type="date" className="w-full bg-white border border-slate-300 rounded-xl py-3 px-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-[#007a87] transition-shadow cursor-pointer" required />
-                      </div>
-                    </div>
-                    <div>
-                      <label className="block text-sm font-bold text-slate-700 mb-2">Preferred Time <span className="text-red-500">*</span></label>
-                      <div className="relative">
-                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                          <Clock className="h-5 w-5 text-slate-400" />
-                        </div>
-                        <select name="preferredTime" className="w-full bg-white border border-slate-300 rounded-xl py-3 pl-10 pr-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-[#007a87] transition-shadow appearance-none cursor-pointer" required>
-                          <option value="">Select Time Slot</option>
-                          <option value="morning">Morning (9:00 AM - 12:00 PM)</option>
-                          <option value="afternoon">Afternoon (1:00 PM - 4:00 PM)</option>
-                          <option value="evening">Evening (5:00 PM - 8:00 PM)</option>
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="mt-6">
-                    <label className="block text-sm font-bold text-slate-700 mb-2">Reason for Visit / Comments</label>
-                    <div className="relative">
-                      <div className="absolute top-3 left-3 pointer-events-none">
-                        <FileText className="h-5 w-5 text-slate-400" />
-                      </div>
-                      <textarea 
-                        name="comments"
-                        rows={4}
-                        className="w-full bg-white border border-slate-300 rounded-xl py-3 pl-10 pr-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-[#007a87] transition-shadow resize-none" 
-                        placeholder="Please briefly describe your symptoms or reason for visit..."
-                      ></textarea>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="pt-6 border-t border-slate-200 mt-8">
-                  <button 
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="w-full bg-[#002b5c] hover:bg-[#001a38] text-white py-4 rounded-xl font-extrabold tracking-wider uppercase transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 group disabled:opacity-70 disabled:cursor-not-allowed"
-                  >
-                    {isSubmitting ? "Submitting..." : "Confirm Appointment Request"}
-                    {!isSubmitting && <Send className="w-4 h-4 group-hover:translate-x-1 transition-transform" />}
-                  </button>
-                  <p className="text-xs text-center text-slate-500 mt-4 font-medium">
-                    By submitting this form, you agree to our Terms and Conditions and Privacy Policy. Our team will call you to confirm the exact time slot.
-                  </p>
-                </div>
-
-              </form>
-              )}
             </div>
           </div>
-          
+
         </div>
       </div>
     </div>

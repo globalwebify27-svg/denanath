@@ -37,7 +37,7 @@ export default async function SimulationHomePage() {
         <div className="bg-white rounded-3xl shadow-sm border border-slate-200 p-8 md:p-12">
           {pageData.image && (
             <div className="mb-10 rounded-2xl overflow-hidden border border-slate-200">
-              <img src={pageData.image} alt={pageData.title} className="w-full h-auto object-cover max-h-[500px]" />
+              <img src={pageData.image} alt={pageData.title} className="w-full h-auto object-contain max-h-[500px] bg-slate-50" />
             </div>
           )}
           

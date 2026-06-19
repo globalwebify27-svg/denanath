@@ -1,43 +1,67 @@
-import { prisma } from "@/lib/prisma";
-import React from "react";
+"use client";
+
+import React, { useEffect, useRef } from "react";
 import Link from "next/link";
 import { ChevronRight, Microscope } from "lucide-react";
 
-export default async function TrainingAndEventsPage() {
-  const setting = await prisma.siteSetting.findUnique({ where: { key: 'page_research_training_events' } });
-  let pageData: any = { events: [] };
-  try { if (setting) pageData = JSON.parse(setting.value); } catch (e) {}
-
-  const defaultEvents = [
-    {
-      topic: "Training-cum-seminar program on guidelines and rules for clinical research",
-      date: "8 February 2026",
-      details: "Training organizer: Dr Shweta A. Chitharanjan, In-charge regulation and Member Secretary, EC (CTR), DMHRC, Pune<br/>Patron, support and Director: Dr Dhananjay S. Kelkar<br/>Preamble: Dr Tejashri Patole, DMHRC, Pune<br/>Speakers / Trainers: Dr Ravindra Ghooi (ICH-GCP E6 [R3] guidelines, ICMR guidelines, NDCTR 2019)"
-    },
-    {
-      topic: "Training-cum-seminar program on guidelines for clinical research",
-      date: "9 March 2025",
-      details: "Training organizers: Dr Shweta A. Chitharanjan, Dr Amrita P. Prayag<br/>Speakers: Dr Ravindra Ghooi, Dr. Aditi Apte, Dr Sarita Mulkalwar"
-    },
-    {
-      topic: "Training on rules and guidelines in Clinical research",
-      date: "6 October 2024",
-      details: "Trainers: Dr Shweta A. Chitharanjan, Dr Amrita P. Prayag, Dr Ravindra Ghooi"
-    }
-  ];
-
-  const eventsToDisplay = pageData.events?.length > 0 ? pageData.events : defaultEvents;
-
+export default function TrainingAndEventsPage() {
   const options = [
-    { "name": "About Us", "href": "/research-about", "active": false },
-    { "name": "Training And Events", "href": "/training-events", "active": true },
-    { "name": "Awards", "href": "/awards", "active": false },
-    { "name": "Newsletter Articles", "href": "/newsletter-articles", "active": false },
-    { "name": "Publications", "href": "/publications", "active": false },
-    { "name": "Annual Reports", "href": "/annual-reports", "active": false },
-    { "name": "Sponsors & CROs", "href": "/sponsors-cros", "active": false },
-    { "name": "Contact Us", "href": "/research-contact", "active": false }
-  ];
+    {
+        "name": "About Us",
+        "href": "/research-about",
+        "active": false
+    },
+    {
+        "name": "Training And Events",
+        "href": "/training-events",
+        "active": true
+    },
+    {
+        "name": "Awards",
+        "href": "/awards",
+        "active": false
+    },
+    {
+        "name": "Newsletter Articles",
+        "href": "/newsletter-articles",
+        "active": false
+    },
+    {
+        "name": "Publications",
+        "href": "/publications",
+        "active": false
+    },
+    {
+        "name": "Annual Reports",
+        "href": "/annual-reports",
+        "active": false
+    },
+    {
+        "name": "Sponsors & CROs",
+        "href": "/sponsors-cros",
+        "active": false
+    },
+    {
+        "name": "Contact Us",
+        "href": "/research-contact",
+        "active": false
+    }
+];
+
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (window.innerWidth < 1024 && scrollContainerRef.current) {
+      const activeEl = scrollContainerRef.current.querySelector('[data-active="true"]') as HTMLElement;
+      if (activeEl) {
+        const container = scrollContainerRef.current;
+        const scrollPos = activeEl.offsetLeft - (container.offsetWidth / 2) + (activeEl.offsetWidth / 2);
+        setTimeout(() => {
+          container.scrollTo({ left: Math.max(0, scrollPos), behavior: 'smooth' });
+        }, 100);
+      }
+    }
+  }, []);
 
   return (
     <div className="min-h-screen bg-[#f8fafc] font-sans selection:bg-teal-500/30">
@@ -66,7 +90,7 @@ export default async function TrainingAndEventsPage() {
           {/* Left Sidebar Navigation */}
           {options.length > 0 && (
             <div className="w-full lg:w-[280px] shrink-0 sticky top-14 lg:top-28 z-30 bg-[#f8fafc] py-2 lg:py-0">
-              <div className="bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 overflow-hidden flex flex-row lg:flex-col overflow-x-auto lg:overflow-x-visible scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden snap-x snap-mandatory">
+              <div ref={scrollContainerRef} className="bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 overflow-hidden flex flex-row lg:flex-col overflow-x-auto lg:overflow-x-visible scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden snap-x snap-mandatory">
                 {options.map((option, idx) => (
                   <Link
                     key={idx}
@@ -107,23 +131,14 @@ export default async function TrainingAndEventsPage() {
                 <div className="w-20 h-1.5 bg-[#007a87] rounded-full mb-8"></div>
               </div>
 
-              <div className="space-y-6">
-                {eventsToDisplay.map((event: any, idx: number) => (
-                  <div key={idx} className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm hover:shadow-[0_8px_30px_rgba(217,35,45,0.15)] hover:border-[#D9232D] hover:-translate-y-1 transition-all group">
-                    <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 mb-4">
-                      <h3 className="text-xl font-bold text-[#002b5c] group-hover:text-[#007a87] transition-colors flex-1">
-                        {event.topic}
-                      </h3>
-                      <div className="inline-flex items-center justify-center whitespace-nowrap bg-teal-50 border border-teal-100 text-[#007a87] px-4 py-2 rounded-lg text-sm font-bold shrink-0">
-                        {event.date}
-                      </div>
-                    </div>
-                    <div 
-                      className="text-slate-600 text-sm leading-relaxed space-y-2"
-                      dangerouslySetInnerHTML={{ __html: event.details }}
-                    />
-                  </div>
-                ))}
+              <div className="py-16 text-center border-2 border-dashed border-slate-200 rounded-2xl bg-slate-50">
+                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-teal-100 mb-4">
+                  <Microscope className="w-8 h-8 text-[#007a87]" />
+                </div>
+                <h3 className="text-xl font-bold text-slate-700 mb-2">Content Coming Soon</h3>
+                <p className="text-slate-500 max-w-md mx-auto">
+                  The information for this section is currently being updated. Please check back later.
+                </p>
               </div>
 
             </div>

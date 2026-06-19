@@ -1,27 +1,67 @@
-import { prisma } from "@/lib/prisma";
-import React from "react";
+"use client";
+
+import React, { useEffect, useRef } from "react";
 import Link from "next/link";
-import { ChevronRight, Microscope, MapPin, Mail, User, Building } from "lucide-react";
+import { ChevronRight, Microscope } from "lucide-react";
 
-export default async function ContactUsPage() {
-  const setting = await prisma.siteSetting.findUnique({ where: { key: 'page_research_contact' } });
-  let pageData: any = { 
-    address: "14th Floor Super Speciality Building,\\nDeenanath Mangeshkar Hospital and Research Center",
-    emails: ["research@dmhospital.org", "iec@dmhospital.org"],
-    personnel: [{ name: "Dr. Vaijayanti V. Pethe", designation: "Assistant Director, Research", email: "pethev@dmhospital.org" }]
-  };
-  try { if (setting) pageData = JSON.parse(setting.value); } catch (e) {}
-
+export default function ContactUsPage() {
   const options = [
-    { "name": "About Us", "href": "/research-about", "active": false },
-    { "name": "Training And Events", "href": "/training-events", "active": false },
-    { "name": "Awards", "href": "/awards", "active": false },
-    { "name": "Newsletter Articles", "href": "/newsletter-articles", "active": false },
-    { "name": "Publications", "href": "/publications", "active": false },
-    { "name": "Annual Reports", "href": "/annual-reports", "active": false },
-    { "name": "Sponsors & CROs", "href": "/sponsors-cros", "active": false },
-    { "name": "Contact Us", "href": "/research-contact", "active": true }
-  ];
+    {
+        "name": "About Us",
+        "href": "/research-about",
+        "active": false
+    },
+    {
+        "name": "Training And Events",
+        "href": "/training-events",
+        "active": false
+    },
+    {
+        "name": "Awards",
+        "href": "/awards",
+        "active": false
+    },
+    {
+        "name": "Newsletter Articles",
+        "href": "/newsletter-articles",
+        "active": false
+    },
+    {
+        "name": "Publications",
+        "href": "/publications",
+        "active": false
+    },
+    {
+        "name": "Annual Reports",
+        "href": "/annual-reports",
+        "active": false
+    },
+    {
+        "name": "Sponsors & CROs",
+        "href": "/sponsors-cros",
+        "active": false
+    },
+    {
+        "name": "Contact Us",
+        "href": "/research-contact",
+        "active": true
+    }
+];
+
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (window.innerWidth < 1024 && scrollContainerRef.current) {
+      const activeEl = scrollContainerRef.current.querySelector('[data-active="true"]') as HTMLElement;
+      if (activeEl) {
+        const container = scrollContainerRef.current;
+        const scrollPos = activeEl.offsetLeft - (container.offsetWidth / 2) + (activeEl.offsetWidth / 2);
+        setTimeout(() => {
+          container.scrollTo({ left: Math.max(0, scrollPos), behavior: 'smooth' });
+        }, 100);
+      }
+    }
+  }, []);
 
   return (
     <div className="min-h-screen bg-[#f8fafc] font-sans selection:bg-teal-500/30">
@@ -50,7 +90,7 @@ export default async function ContactUsPage() {
           {/* Left Sidebar Navigation */}
           {options.length > 0 && (
             <div className="w-full lg:w-[280px] shrink-0 sticky top-14 lg:top-28 z-30 bg-[#f8fafc] py-2 lg:py-0">
-              <div className="bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 overflow-hidden flex flex-row lg:flex-col overflow-x-auto lg:overflow-x-visible scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden snap-x snap-mandatory">
+              <div ref={scrollContainerRef} className="bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 overflow-hidden flex flex-row lg:flex-col overflow-x-auto lg:overflow-x-visible scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden snap-x snap-mandatory">
                 {options.map((option, idx) => (
                   <Link
                     key={idx}
@@ -91,62 +131,14 @@ export default async function ContactUsPage() {
                 <div className="w-20 h-1.5 bg-[#007a87] rounded-full mb-8"></div>
               </div>
 
-              <div className="space-y-8">
-                {/* Main Department Contact */}
-                <div className="bg-white border border-slate-200 rounded-3xl p-8 md:p-10 hover:shadow-[0_8px_30px_rgba(217,35,45,0.15)] hover:border-[#D9232D] hover:-translate-y-1 transition-all duration-300 relative overflow-hidden group">
-                  <div className="absolute top-0 left-0 w-2 h-full bg-[#D9232D]"></div>
-                  <h3 className="text-2xl font-bold text-[#002b5c] mb-6 flex items-center gap-3">
-                    <Building className="w-6 h-6 text-[#007a87] group-hover:text-[#D9232D] transition-colors" />
-                    Department Of Research
-                  </h3>
-                  
-                  <div className="space-y-4 text-slate-600">
-                    <div className="flex items-start gap-4">
-                      <MapPin className="w-5 h-5 text-teal-500 group-hover:text-[#D9232D] shrink-0 mt-1 transition-colors" />
-                      <p className="leading-relaxed whitespace-pre-wrap">
-                        {pageData.address}
-                      </p>
-                    </div>
-                    <div className="flex items-center gap-4">
-                      <Mail className="w-5 h-5 text-teal-500 group-hover:text-[#D9232D] shrink-0 transition-colors" />
-                      <div className="flex flex-wrap gap-2">
-                        {pageData.emails?.map((email: string, idx: number) => (
-                          <React.Fragment key={idx}>
-                            <a href={"mailto:" + email} className="text-[#007a87] font-medium hover:underline">{email}</a>
-                            {idx < pageData.emails.length - 1 && <span className="text-slate-300">|</span>}
-                          </React.Fragment>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
+              <div className="py-16 text-center border-2 border-dashed border-slate-200 rounded-2xl bg-slate-50">
+                <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-teal-100 mb-4">
+                  <Microscope className="w-8 h-8 text-[#007a87]" />
                 </div>
-
-                {/* Key Personnel */}
-                {pageData.personnel?.map((person: any, idx: number) => (
-                  <div key={idx} className="bg-white border border-slate-200 rounded-3xl p-8 md:p-10 hover:shadow-[0_8px_30px_rgba(0,51,96,0.15)] hover:border-[#003360] hover:-translate-y-1 transition-all duration-300 relative overflow-hidden group">
-                    <div className="absolute top-0 left-0 w-2 h-full bg-[#002b5c]"></div>
-                    <div className="flex items-center gap-4 mb-2">
-                      <div className="w-12 h-12 rounded-full bg-slate-50 border border-slate-100 flex items-center justify-center shrink-0">
-                        <User className="w-6 h-6 text-[#002b5c] group-hover:text-[#003360] transition-colors" />
-                      </div>
-                      <div>
-                        <h3 className="text-xl font-bold text-[#002b5c]">{person.name}</h3>
-                        {person.designation && (
-                          <p className="text-[#007a87] font-medium text-sm uppercase tracking-wider">{person.designation}</p>
-                        )}
-                      </div>
-                    </div>
-                    
-                    {person.email && (
-                      <div className="mt-6 space-y-4 text-slate-600 ml-16">
-                        <div className="flex items-center gap-3">
-                          <Mail className="w-4 h-4 text-slate-400 group-hover:text-[#003360] shrink-0 transition-colors" />
-                          <a href={"mailto:" + person.email} className="text-slate-600 hover:text-[#007a87] transition-colors">{person.email}</a>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                ))}
+                <h3 className="text-xl font-bold text-slate-700 mb-2">Content Coming Soon</h3>
+                <p className="text-slate-500 max-w-md mx-auto">
+                  The information for this section is currently being updated. Please check back later.
+                </p>
               </div>
 
             </div>
