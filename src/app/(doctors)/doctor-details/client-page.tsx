@@ -110,8 +110,8 @@ export default function DoctorDetailsClientPage({ pageData, doctors }: { pageDat
                   </h3>
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-8">
                     {doctors.map((doctor, idx) => (
-                      <div key={idx} className="bg-white rounded-3xl border border-slate-100 overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.1)] transition-all group flex flex-col hover:-translate-y-1">
-                        <div className="relative h-[280px] w-full bg-slate-50 overflow-hidden">
+                      <div key={idx} className="rounded-[1.5rem] text-center border border-slate-200 bg-white shadow-sm overflow-hidden flex flex-col hover:-translate-y-1 transition-transform group">
+                        <div className="relative h-[280px] sm:h-[340px] w-full overflow-hidden bg-slate-50">
                           {doctor.image ? (
                             <img src={doctor.image} alt={doctor.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                           ) : (
@@ -119,19 +119,29 @@ export default function DoctorDetailsClientPage({ pageData, doctors }: { pageDat
                               <Stethoscope className="w-20 h-20" />
                             </div>
                           )}
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60" />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                           {doctor.specialty && (
-                            <div className="absolute top-4 left-4 bg-white/95 backdrop-blur-sm px-4 py-1.5 text-xs font-bold text-[#002b5c] rounded-full shadow-sm">
+                            <div className="absolute top-3 left-3 rounded-full bg-white/90 px-3 py-1 text-[10px] sm:text-xs font-semibold text-[#002b5c]">
                               {doctor.specialty}
                             </div>
                           )}
                         </div>
-                        <div className="p-6 md:p-8 flex-1 flex flex-col bg-white relative">
-                          <h4 className="text-xl font-extrabold text-slate-900 mb-2">{doctor.name}</h4>
-                          {doctor.qualifications && <p className="text-[13px] font-bold text-[#007a87] mb-3">{doctor.qualifications}</p>}
-                          {doctor.experience && <p className="text-[13px] text-slate-500 mb-6 font-medium leading-relaxed">{doctor.experience}</p>}
+                        <div className="p-4 sm:p-6 flex flex-col flex-1 bg-white">
+                          <h3 className="text-lg sm:text-xl font-bold text-slate-900">
+                            {doctor.name}
+                          </h3>
+                          {doctor.qualifications && (
+                            <p className="mt-2 text-xs sm:text-sm text-[#007a87] font-medium">
+                              {doctor.qualifications}
+                            </p>
+                          )}
+                          {doctor.experience && (
+                            <p className="mt-2 text-xs sm:text-sm text-slate-600 mb-5">
+                              {doctor.experience}
+                            </p>
+                          )}
                           <div className="mt-auto">
-                            <Link href="/book-appointment" className="block w-full text-center bg-slate-50 hover:bg-[#002b5c] text-[#002b5c] hover:text-white border border-slate-200 hover:border-[#002b5c] py-3 rounded-xl text-sm font-bold transition-all duration-300">
+                            <Link href="/book-appointment" className="block w-full rounded-xl bg-[#002b5c] px-4 py-2.5 text-sm font-semibold text-white hover:bg-[#007a87] transition">
                               Book Appointment
                             </Link>
                           </div>
