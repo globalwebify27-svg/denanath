@@ -205,8 +205,9 @@ export default function Navbar() {
               <span>+91 20 4015 1000 (24/7)</span>
             </a>
             <span className="opacity-30">|</span>
-            <div className="relative group flex items-center cursor-pointer hover:text-white transition-colors py-1 px-2">
+            <div className="relative group flex items-center gap-1.5 cursor-pointer hover:text-white transition-colors py-1 px-2">
               <Globe className="w-4 h-4" />
+              <span>Select Language</span>
               <div className="absolute top-full right-0 hidden group-hover:block w-32 bg-white rounded-lg shadow-xl border border-slate-100 overflow-hidden text-slate-700 z-50 notranslate">
                 <div className="flex flex-col text-[11px] 2xl:text-[12px] font-bold">
                   <div onClick={() => changeLanguage('en')} className="px-4 py-2.5 hover:bg-[#007a87] hover:text-white transition-colors cursor-pointer">English</div>
@@ -296,12 +297,24 @@ export default function Navbar() {
             </div>
 
             {/* Mobile / Tablet View Trigger (Triggers under 1280px Screen width) */}
-            <div className="xl:hidden flex items-center gap-2 md:gap-3 shrink-0">
+            <div className="xl:hidden flex items-center gap-1.5 md:gap-3 shrink-0">
               <button className="p-1.5 text-slate-500 hover:text-slate-900 transition-colors">
                 <svg className="w-4 md:w-5 h-4 md:h-5 stroke-current" fill="none" viewBox="0 0 24 24" strokeWidth="2.5">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
               </button>
+
+              <div className="relative group flex items-center cursor-pointer text-slate-500 hover:text-slate-900 transition-colors py-1.5 px-1.5">
+                <Globe className="w-4 md:w-5 h-4 md:h-5" />
+                <div className="absolute top-full right-0 hidden group-hover:block w-32 bg-white rounded-lg shadow-xl border border-slate-100 overflow-hidden text-slate-700 z-50 notranslate mt-3">
+                  <div className="flex flex-col text-[12px] font-bold">
+                    <div onClick={() => changeLanguage('en')} className="px-4 py-3 hover:bg-[#007a87] hover:text-white transition-colors cursor-pointer text-left">English</div>
+                    <div onClick={() => changeLanguage('hi')} className="px-4 py-3 hover:bg-[#007a87] hover:text-white transition-colors cursor-pointer border-t border-slate-50 text-left">Hindi</div>
+                    <div onClick={() => changeLanguage('mr')} className="px-4 py-3 hover:bg-[#007a87] hover:text-white transition-colors cursor-pointer border-t border-slate-50 text-left">Marathi</div>
+                    <div onClick={() => changeLanguage('ar')} className="px-4 py-3 hover:bg-[#007a87] hover:text-white transition-colors cursor-pointer border-t border-slate-50 text-left">Arabic</div>
+                  </div>
+                </div>
+              </div>
 
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}

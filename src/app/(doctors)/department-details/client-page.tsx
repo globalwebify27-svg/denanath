@@ -4,7 +4,7 @@ import React, { useEffect, useRef } from "react";
 import Link from "next/link";
 import { ChevronRight, Stethoscope } from "lucide-react";
 
-export default function DepartmentDetailsClientPage({ pageData }: { pageData: any }) {
+export default function DepartmentDetailsClientPage({ pageData, departments }: { pageData: any, departments?: any[] }) {
   const options = [
     {
         "name": "Doctor Details",
@@ -118,6 +118,40 @@ export default function DepartmentDetailsClientPage({ pageData }: { pageData: an
                   <p className="text-slate-500 max-w-md mx-auto">
                     The information for this section is currently being updated. Please check back later.
                   </p>
+                </div>
+              )}
+
+              {/* Dynamic Departments List */}
+              {departments && departments.length > 0 && (
+                <div className="mt-16 pt-12 border-t border-slate-100">
+                  <h3 className="text-3xl font-extrabold text-[#002b5c] mb-10 flex items-center gap-3">
+                    <Stethoscope className="w-8 h-8 text-[#007a87]" />
+                    Our Departments
+                  </h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 gap-8">
+                    {departments.map((dept, idx) => (
+                      <div key={idx} className="bg-white rounded-3xl border border-slate-100 p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.1)] transition-all group flex flex-col hover:-translate-y-1">
+                        <div className="w-16 h-16 rounded-2xl bg-teal-50 flex items-center justify-center text-[#007a87] mb-6 group-hover:bg-[#007a87] group-hover:text-white transition-colors">
+                          <Stethoscope className="w-8 h-8" />
+                        </div>
+                        <h4 className="text-2xl font-extrabold text-slate-900 mb-3 group-hover:text-[#007a87] transition-colors">{dept.name}</h4>
+                        {dept.headOfDepartment && (
+                          <p className="text-[13px] font-bold text-slate-500 mb-4 flex items-center gap-2">
+                            <span className="w-2 h-2 rounded-full bg-teal-400"></span>
+                            Head: {dept.headOfDepartment}
+                          </p>
+                        )}
+                        <p className="text-slate-600 leading-relaxed mb-6 flex-1">
+                          {dept.description || "Comprehensive medical services and expert care provided by our dedicated specialists."}
+                        </p>
+                        <div className="mt-auto">
+                           <Link href="/departments" className="inline-flex items-center text-sm font-bold text-[#007a87] group-hover:gap-2 transition-all">
+                             Learn More <ChevronRight className="w-4 h-4 ml-1 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
+                           </Link>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               )}
 

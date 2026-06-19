@@ -8,5 +8,10 @@ export default async function DepartmentDetailsPage() {
   let pageData: any = { title: "Department Details", content: "", image: "" };
   try { if (setting) pageData = JSON.parse(setting.value); } catch (e) {}
 
-  return <ClientPage pageData={pageData} />;
+  const departments = await prisma.department.findMany({
+    where: { status: true },
+    orderBy: { name: 'asc' }
+  });
+
+  return <ClientPage pageData={pageData} departments={departments} />;
 }

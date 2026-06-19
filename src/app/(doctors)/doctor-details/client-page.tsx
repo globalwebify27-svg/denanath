@@ -4,7 +4,7 @@ import React, { useEffect, useRef } from "react";
 import Link from "next/link";
 import { ChevronRight, Stethoscope } from "lucide-react";
 
-export default function DoctorDetailsClientPage({ pageData }: { pageData: any }) {
+export default function DoctorDetailsClientPage({ pageData, doctors }: { pageData: any, doctors?: any[] }) {
   const options = [
     {
         "name": "Doctor Details",
@@ -101,23 +101,44 @@ export default function DoctorDetailsClientPage({ pageData }: { pageData: any })
                 <div className="w-20 h-1.5 bg-[#007a87] rounded-full mb-8"></div>
               </div>
 
-              {pageData.image && (
-                <div className="mb-10 rounded-2xl overflow-hidden border border-slate-200">
-                  <img src={pageData.image} alt={pageData.title || "Doctor Details"} className="w-full h-auto object-contain max-h-[500px] bg-slate-50" />
-                </div>
-              )}
-              
-              {pageData.content ? (
-                <div className="prose prose-slate max-w-none break-words whitespace-normal overflow-hidden [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:my-4 [&_ol]:list-decimal [&_ol]:pl-6 [&_ol]:my-4 [&_li]:mb-2 prose-p:leading-relaxed prose-headings:text-[#002b5c] text-slate-700" dangerouslySetInnerHTML={{ __html: pageData.content }} />
-              ) : (
-                <div className="py-16 text-center border-2 border-dashed border-slate-200 rounded-2xl bg-slate-50">
-                  <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-teal-100 mb-4">
+              {/* Dynamic Doctors List */}
+              {doctors && doctors.length > 0 && (
+                <div className="mt-4">
+                  <h3 className="text-3xl font-extrabold text-[#002b5c] mb-10 flex items-center gap-3">
                     <Stethoscope className="w-8 h-8 text-[#007a87]" />
+                    Our Doctors
+                  </h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-8">
+                    {doctors.map((doctor, idx) => (
+                      <div key={idx} className="bg-white rounded-3xl border border-slate-100 overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.1)] transition-all group flex flex-col hover:-translate-y-1">
+                        <div className="relative h-[280px] w-full bg-slate-50 overflow-hidden">
+                          {doctor.image ? (
+                            <img src={doctor.image} alt={doctor.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                          ) : (
+                            <div className="w-full h-full flex items-center justify-center text-slate-300">
+                              <Stethoscope className="w-20 h-20" />
+                            </div>
+                          )}
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60" />
+                          {doctor.specialty && (
+                            <div className="absolute top-4 left-4 bg-white/95 backdrop-blur-sm px-4 py-1.5 text-xs font-bold text-[#002b5c] rounded-full shadow-sm">
+                              {doctor.specialty}
+                            </div>
+                          )}
+                        </div>
+                        <div className="p-6 md:p-8 flex-1 flex flex-col bg-white relative">
+                          <h4 className="text-xl font-extrabold text-slate-900 mb-2">{doctor.name}</h4>
+                          {doctor.qualifications && <p className="text-[13px] font-bold text-[#007a87] mb-3">{doctor.qualifications}</p>}
+                          {doctor.experience && <p className="text-[13px] text-slate-500 mb-6 font-medium leading-relaxed">{doctor.experience}</p>}
+                          <div className="mt-auto">
+                            <Link href="/book-appointment" className="block w-full text-center bg-slate-50 hover:bg-[#002b5c] text-[#002b5c] hover:text-white border border-slate-200 hover:border-[#002b5c] py-3 rounded-xl text-sm font-bold transition-all duration-300">
+                              Book Appointment
+                            </Link>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                  <h3 className="text-xl font-bold text-slate-700 mb-2">Content Coming Soon</h3>
-                  <p className="text-slate-500 max-w-md mx-auto">
-                    The information for this section is currently being updated. Please check back later.
-                  </p>
                 </div>
               )}
 
