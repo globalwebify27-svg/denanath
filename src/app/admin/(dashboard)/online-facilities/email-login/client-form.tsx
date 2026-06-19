@@ -1,133 +1,133 @@
 "use client";
 
-import React, { useState } from "react";
-import { Plus, Trash2, Save, GripVertical } from "lucide-react";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { Save, HeartPulse } from "lucide-react";
+import dynamic from 'next/dynamic';
+import 'react-quill-new/dist/quill.snow.css';
 
-export default function EmailLoginClientForm({ initialData }: { initialData: any }) {
+const ReactQuill = dynamic(() => import('react-quill-new'), { ssr: false });
+
+export default function EMailLoginClientForm({ initialData }: { initialData: any }) {
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
   const [data, setData] = useState(initialData);
 
-  const addCard = () => {
-    setData({
-      ...data,
-      cards: [
-        ...data.cards,
-        { title: "New Card", description: "", url: "#", buttonText: "Click Here" }
-      ]
-    });
+  const handleChange = (field: string, value: any) => {
+    setData((prev: any) => ({ ...prev, [field]: value }));
   };
 
-  const updateCard = (index: number, field: string, value: string) => {
-    const newCards = [...data.cards];
-    newCards[index][field] = value;
-    setData({ ...data, cards: newCards });
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        handleChange("image", reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
-  const removeCard = (index: number) => {
-    const newCards = data.cards.filter((_: any, i: number) => i !== index);
-    setData({ ...data, cards: newCards });
+  const handleSave = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch("/api/settings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          key: "page_online-facilities_email_login",
+          value: JSON.stringify(data),
+          pathsToRevalidate: [
+            "/admin/online-facilities/email-login",
+            "/email-login"
+          ]
+        })
+      });
+
+      if (!res.ok) throw new Error("Failed to save");
+      alert("Saved successfully!");
+      router.refresh();
+    } catch (err) {
+      console.error(err);
+      alert("Error saving data");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div className="space-y-8">
-      <input type="hidden" name="pageJson" value={JSON.stringify(data)} />
-
-      {/* Basic Settings */}
-      <div className="space-y-4">
-        <h2 className="text-xl text-[20px] font-black text-[#002b5c] border-b pb-2">Basic Settings</h2>
-        
-        <div>
-          <label className="block text-sm font-bold text-gray-700 mb-1">Page Title</label>
-          <input 
-            type="text" 
-            value={data.pageTitle}
-            onChange={(e) => setData({ ...data, pageTitle: e.target.value })}
-            className="w-full border border-gray-300 rounded-lg p-3 text-sm focus:ring-2 focus:ring-[#007a87] focus:outline-none"
-          />
+      <div className="mb-10 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 bg-white p-6 md:p-10 rounded-3xl shadow-sm border border-slate-100 relative overflow-hidden group">
+        <div className="absolute top-0 left-0 w-2 h-full bg-gradient-to-b from-[#002b5c] to-[#007a87]"></div>
+        <div className="z-10 relative">
+          <h1 className="text-[32px] md:text-[40px] font-black text-[#002b5c] tracking-tight leading-tight mb-2 flex items-center gap-3">
+            E-Mail Login
+          </h1>
+          <p className="text-[15px] font-medium text-slate-500 max-w-xl leading-relaxed">
+            Manage content for E-Mail Login
+          </p>
         </div>
-      </div>
-
-      {/* Cards */}
-      <div className="space-y-4 pt-4 border-t border-gray-100">
-        <div className="flex items-center justify-between">
-          <h2 className="text-xl text-[20px] font-black text-[#002b5c]">Login Portals</h2>
-          <button 
-            type="button" 
-            onClick={addCard}
-            className="flex items-center gap-2 bg-[#D9232D] text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-[#b81d26] transition-colors"
+        <div className="z-10 shrink-0 mt-4 lg:mt-0">
+          <button
+            onClick={handleSave}
+            disabled={loading}
+            className="flex items-center gap-2 px-6 py-3 bg-[#D9232D] text-white font-bold rounded-full hover:bg-red-700 transition-colors shadow-sm disabled:opacity-50"
           >
-            <Plus size={16} />
-            Add Portal
+            <Save size={20} />
+            {loading ? "Saving..." : "Save Changes"}
           </button>
         </div>
-
-        <div className="space-y-4">
-          {data.cards.map((card: any, index: number) => (
-            <div key={index} className="bg-gray-50 border border-gray-200 rounded-xl p-5 relative">
-              <button 
-                type="button" 
-                onClick={() => removeCard(index)}
-                className="absolute top-4 right-4 text-[#D9232D] hover:text-[#D9232D] p-2 hover:bg-red-50 rounded-lg transition-colors"
-              >
-                <Trash2 size={18} color="#D9232D" />
-              </button>
-              
-              <div className="flex items-start gap-4">
-                <div className="mt-2 text-gray-400 cursor-move">
-                  <GripVertical size={20} />
-                </div>
-                
-                <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-4 pr-12">
-                  <div className="md:col-span-2">
-                    <label className="block text-xs font-bold text-gray-600 mb-1 uppercase tracking-wider">Title</label>
-                    <input 
-                      type="text" 
-                      value={card.title}
-                      onChange={(e) => updateCard(index, 'title', e.target.value)}
-                      className="w-full border border-gray-300 rounded-lg p-2.5 text-sm"
-                    />
-                  </div>
-
-                  <div className="md:col-span-2">
-                    <label className="block text-xs font-bold text-gray-600 mb-1 uppercase tracking-wider">Description</label>
-                    <textarea 
-                      value={card.description}
-                      onChange={(e) => updateCard(index, 'description', e.target.value)}
-                      rows={2}
-                      className="w-full border border-gray-300 rounded-lg p-2.5 text-sm"
-                    />
-                  </div>
-                  
-                  <div>
-                    <label className="block text-xs font-bold text-gray-600 mb-1 uppercase tracking-wider">Button Text</label>
-                    <input 
-                      type="text" 
-                      value={card.buttonText}
-                      onChange={(e) => updateCard(index, 'buttonText', e.target.value)}
-                      className="w-full border border-gray-300 rounded-lg p-2.5 text-sm"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-bold text-gray-600 mb-1 uppercase tracking-wider">URL Destination</label>
-                    <input 
-                      type="text" 
-                      value={card.url}
-                      onChange={(e) => updateCard(index, 'url', e.target.value)}
-                      className="w-full border border-gray-300 rounded-lg p-2.5 text-sm font-mono text-blue-600"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
-          {data.cards.length === 0 && (
-            <div className="text-center py-8 bg-gray-50 rounded-xl border border-dashed border-gray-300 text-gray-500 text-sm">
-              No portals added. Click "Add Portal" to begin.
-            </div>
-          )}
+        <div className="absolute right-0 top-0 opacity-[0.03] pointer-events-none group-hover:scale-110 transition-transform duration-700">
+           <HeartPulse size={200} className="text-[#007a87] -mt-10 -mr-10" />
         </div>
       </div>
 
+      <div className="space-y-6">
+        <div>
+          <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Page Title</label>
+          <input 
+            value={data.title || ""} 
+            onChange={(e) => handleChange("title", e.target.value)}
+            className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium leading-relaxed"
+          />
+        </div>
+        
+        <div>
+          <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Header Image</label>
+          <div className="flex flex-col sm:flex-row sm:items-center gap-4 bg-slate-50 p-4 rounded-2xl border border-slate-200">
+            {data.image && (
+              <div className="shrink-0 relative group">
+                <img src={data.image} alt="E-Mail Login" className="w-32 h-20 object-cover rounded-xl border border-slate-200 shadow-sm" />
+                <button 
+                  type="button" 
+                  onClick={() => handleChange("image", "")} 
+                  className="absolute -top-2 -right-2 bg-red-500 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                </button>
+              </div>
+            )}
+            <input 
+              type="file" 
+              accept="image/*"
+              onChange={handleImageChange}
+              className="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-teal-50 file:text-[#007a87] hover:file:bg-teal-100 transition-all cursor-pointer"
+            />
+          </div>
+        </div>
+
+        <div>
+          <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Content</label>
+          <div className="bg-white rounded-2xl overflow-hidden border border-slate-200">
+            <ReactQuill 
+              theme="snow" 
+              value={data.content || ""} 
+              onChange={(val) => handleChange("content", val)} 
+              className="h-[300px] pb-10"
+            />
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

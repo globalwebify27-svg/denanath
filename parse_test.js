@@ -12,30 +12,40 @@ while (i < lines.length && !lines[i].match(/\([a-zA-Z]+ \d{4}\)/)) {
 }
 
 while (i < lines.length) {
-  // Authors & date line might not be perfectly regular, but let's assume chunks of 3 if they don't look like headers
   if (lines[i].match(/^A\]|^B\]|^Publications:/)) {
     i++;
     continue;
   }
 
-  // Try to grab 3 lines
-  const authors_date = lines[i];
-  const title = lines[i+1] || "";
-  const journal_doi = lines[i+2] || "";
+  // A new publication starts with the authors & date line.
+  // The date is usually like (March 2025) or (April-June 2025).
+  // We collect all lines until the NEXT line that looks like an authors line.
+  let pubLines = [];
+  pubLines.push(lines[i]);
+  i++;
 
-  // Split journal and doi
-  let journal = journal_doi;
-  let doi = "";
-  const doiMatch = journal_doi.match(/DOI:?\s*(.*)$/i) || journal_doi.match(/doi\.org\/(.*)$/i);
-  if (doiMatch) {
-    doi = doiMatch[1].trim();
-    journal = journal_doi.substring(0, journal_doi.length - doiMatch[0].length).trim();
-    // remove trailing dots/spaces
-    journal = journal.replace(/[\.\s]+$/, '');
+  while (i < lines.length && !lines[i].match(/\([a-zA-Z\-\s]*\d{4}\)/) && !lines[i].match(/^A\]|^B\]|^Publications:/)) {
+    pubLines.push(lines[i]);
+    i++;
   }
 
-  pubs.push({ title, authors_date, journal, doi });
-  i += 3;
+  if (pubLines.length >= 3) {
+    const authors_date = pubLines[0];
+    // Everything in between is the title
+    const title = pubLines.slice(1, pubLines.length - 1).join(" ");
+    const journal_doi = pubLines[pubLines.length - 1];
+
+    let journal = journal_doi;
+    let doi = "";
+    const doiMatch = journal_doi.match(/DOI:?\s*(.*)$/i) || journal_doi.match(/doi\.org\/(.*)$/i);
+    if (doiMatch) {
+      doi = doiMatch[1].trim();
+      journal = journal_doi.substring(0, journal_doi.length - doiMatch[0].length).trim();
+      journal = journal.replace(/[\.\s]+$/, '');
+    }
+
+    pubs.push({ title, authors_date, journal, doi });
+  }
 }
 
 console.log("Parsed", pubs.length, "publications.");

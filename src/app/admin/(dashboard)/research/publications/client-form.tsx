@@ -1,123 +1,133 @@
 "use client";
 
 import { useState } from "react";
-import {  Plus, Trash2 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { Save, HeartPulse } from "lucide-react";
+import dynamic from 'next/dynamic';
+import 'react-quill-new/dist/quill.snow.css';
 
-// Strips HTML tags to show plain text in edit fields
-function stripHtml(html: string): string {
-  return html.replace(/<[^>]*>/g, "").trim();
-}
+const ReactQuill = dynamic(() => import('react-quill-new'), { ssr: false });
 
 export default function PublicationsClientForm({ initialData }: { initialData: any }) {
-  const [recentPubs, setRecentPubs] = useState<any[]>(
-    initialData?.recentPubs?.length
-      ? initialData.recentPubs.map((p: any) => ({
-          ...p,
-          authors_date: stripHtml(p.authors_date ?? ""),
-        }))
-      : [
-          { title: "Closing the implementation gap: Process outcomes following a structured intraoperative bundle for emergency laparotomy.", authors_date: "Baliga J, Iau P, Kavishwar P, Joseph J, Sebastian A. (March 2026)", journal: "Indian Journal of Anaesthesia. 70(3):477-484.", doi: "10.4103/ija.ija_1716_25" },
-          { title: "Intraperitoneal Chemotherapy as a Maintenance Treatment for Advanced Ovarian Cancer: Early Experience from Tertiary Care Center in India.", authors_date: "Jagatap M, Tamhankar AS, Tamhankar T, Kulkarni P. (February 2026)", journal: "Indian Journal of Medical and Paediatric Oncology.", doi: "10.1055/s-0045-1815747" },
-          { title: "Tapia Syndrome: Clinical Presentation, Diagnosis and Management of 40 Patients During Covid-19 Pandemic.", authors_date: "Gandhi S, Saindani S. (February 2026)", journal: "Acta Scientific Otolaryngology. 8(2):19-22.", doi: "10.31080/ASOL.2026.08.0790" },
-        ]
-  );
-  const [archiveYears, setArchiveYears] = useState<any[]>(initialData?.archiveYears?.length ? initialData.archiveYears : [
-    { year: "2024 - 2025", link: "#" }, { year: "2023 - 2024", link: "#" }, { year: "2022 - 2023", link: "#" },
-    { year: "2021 - 2022", link: "#" }, { year: "2020 - 2021", link: "#" }, { year: "2019 - 2020", link: "#" },
-    { year: "2018 - 2019", link: "#" }, { year: "2017 - 2018", link: "#" }
-  ]);
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+  const [data, setData] = useState(initialData);
 
-  const addPub = () => setRecentPubs([...recentPubs, { title: "", authors_date: "", journal: "", doi: "" }]);
-  const removePub = (idx: number) => setRecentPubs(recentPubs.filter((_, i) => i !== idx));
-  const updatePub = (idx: number, field: string, value: string) => {
-    const newItems = [...recentPubs];
-    newItems[idx][field] = value;
-    setRecentPubs(newItems);
+  const handleChange = (field: string, value: any) => {
+    setData((prev: any) => ({ ...prev, [field]: value }));
   };
 
-  const addArchive = () => setArchiveYears([...archiveYears, { year: "", link: "#" }]);
-  const removeArchive = (idx: number) => setArchiveYears(archiveYears.filter((_, i) => i !== idx));
-  const updateArchive = (idx: number, field: string, value: string) => {
-    const newItems = [...archiveYears];
-    newItems[idx][field] = value;
-    setArchiveYears(newItems);
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        handleChange("image", reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleSave = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch("/api/settings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          key: "page_research_publications",
+          value: JSON.stringify(data),
+          pathsToRevalidate: [
+            "/admin/research/publications",
+            "/publications"
+          ]
+        })
+      });
+
+      if (!res.ok) throw new Error("Failed to save");
+      alert("Saved successfully!");
+      router.refresh();
+    } catch (err) {
+      console.error(err);
+      alert("Error saving data");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <>
-      <input type="hidden" name="pageJson" value={JSON.stringify({ recentPubs, archiveYears })} />
-      
-      <div className="space-y-10">
-        <div>
-          <div className="flex items-start justify-between gap-2 mb-4">
-            <h3 className="text-[18px] font-black text-[#002b5c] leading-snug max-w-[calc(100%-120px)]">Recent Publications</h3>
-            <button type="button" onClick={addPub} className="inline-flex items-center gap-1 bg-[#D9232D] text-white px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-[#b01c24] transition-colors shadow-sm shrink-0 whitespace-nowrap mt-0.5">
-              <Plus size={13} strokeWidth={2.5} /> Add Publication
-            </button>
-          </div>
-
-          <div className="space-y-4">
-            {recentPubs.map((pub, idx) => (
-              <div key={idx} className="bg-slate-50 p-6 rounded-2xl border border-slate-200 relative">
-                <button type="button" onClick={() => removePub(idx)} className="absolute top-4 right-4 text-[#D9232D] hover:text-[#D9232D]">
-                  <Trash2 size={20} color="#D9232D" />
-                </button>
-                <div className="space-y-4 pr-8">
-                  <div>
-                    <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Title</label>
-                    <input value={pub.title} onChange={(e) => updatePub(idx, 'title', e.target.value)} className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium leading-relaxed text-sm" />
-                  </div>
-                  <div>
-                    <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Authors & Date</label>
-                    <input value={pub.authors_date} onChange={(e) => updatePub(idx, 'authors_date', e.target.value)} className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium leading-relaxed text-sm" />
-                  </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Journal</label>
-                      <input value={pub.journal} onChange={(e) => updatePub(idx, 'journal', e.target.value)} className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium leading-relaxed text-sm" />
-                    </div>
-                    <div>
-                      <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">DOI (e.g., 10.4103/...)</label>
-                      <input value={pub.doi} onChange={(e) => updatePub(idx, 'doi', e.target.value)} className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium leading-relaxed text-sm" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+    <div className="space-y-8">
+      <div className="mb-10 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 bg-white p-6 md:p-10 rounded-3xl shadow-sm border border-slate-100 relative overflow-hidden group">
+        <div className="absolute top-0 left-0 w-2 h-full bg-gradient-to-b from-[#002b5c] to-[#007a87]"></div>
+        <div className="z-10 relative">
+          <h1 className="text-[32px] md:text-[40px] font-black text-[#002b5c] tracking-tight leading-tight mb-2 flex items-center gap-3">
+            Publications
+          </h1>
+          <p className="text-[15px] font-medium text-slate-500 max-w-xl leading-relaxed">
+            Manage content for Publications
+          </p>
         </div>
-
-        <div className="h-px bg-gray-200 w-full" />
-
-        <div>
-          <div className="flex items-start justify-between gap-2 mb-4">
-            <h3 className="text-[18px] font-black text-[#002b5c] leading-snug max-w-[calc(100%-110px)]">Archive Years</h3>
-            <button type="button" onClick={addArchive} className="inline-flex items-center gap-1 bg-[#003360] text-white px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-[#001f3d] transition-colors shadow-sm shrink-0 whitespace-nowrap mt-0.5">
-              <Plus size={13} strokeWidth={2.5} /> Add Archive
-            </button>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {archiveYears.map((item, idx) => (
-              <div key={idx} className="bg-slate-50 p-4 rounded-xl border border-slate-200 flex gap-4 items-end">
-                <div className="flex-1">
-                  <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Year</label>
-                  <input value={item.year} onChange={(e) => updateArchive(idx, 'year', e.target.value)} className="w-full p-2 border border-gray-200 rounded-lg text-sm" placeholder="2024 - 2025" />
-                </div>
-                <div className="flex-1">
-                  <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Link</label>
-                  <input value={item.link} onChange={(e) => updateArchive(idx, 'link', e.target.value)} className="w-full p-2 border border-gray-200 rounded-lg text-sm" placeholder="#" />
-                </div>
-                <button type="button" onClick={() => removeArchive(idx)} className="p-2 text-[#D9232D] hover:bg-red-50 rounded-lg mb-1">
-                  <Trash2 size={20} color="#D9232D" />
-                </button>
-              </div>
-            ))}
-          </div>
+        <div className="z-10 shrink-0 mt-4 lg:mt-0">
+          <button
+            onClick={handleSave}
+            disabled={loading}
+            className="flex items-center gap-2 px-6 py-3 bg-[#D9232D] text-white font-bold rounded-full hover:bg-red-700 transition-colors shadow-sm disabled:opacity-50"
+          >
+            <Save size={20} />
+            {loading ? "Saving..." : "Save Changes"}
+          </button>
+        </div>
+        <div className="absolute right-0 top-0 opacity-[0.03] pointer-events-none group-hover:scale-110 transition-transform duration-700">
+           <HeartPulse size={200} className="text-[#007a87] -mt-10 -mr-10" />
         </div>
       </div>
 
-      
-    </>
+      <div className="space-y-6">
+        <div>
+          <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Page Title</label>
+          <input 
+            value={data.title || ""} 
+            onChange={(e) => handleChange("title", e.target.value)}
+            className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium leading-relaxed"
+          />
+        </div>
+        
+        <div>
+          <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Header Image</label>
+          <div className="flex flex-col sm:flex-row sm:items-center gap-4 bg-slate-50 p-4 rounded-2xl border border-slate-200">
+            {data.image && (
+              <div className="shrink-0 relative group">
+                <img src={data.image} alt="Publications" className="w-32 h-20 object-cover rounded-xl border border-slate-200 shadow-sm" />
+                <button 
+                  type="button" 
+                  onClick={() => handleChange("image", "")} 
+                  className="absolute -top-2 -right-2 bg-red-500 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                </button>
+              </div>
+            )}
+            <input 
+              type="file" 
+              accept="image/*"
+              onChange={handleImageChange}
+              className="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-teal-50 file:text-[#007a87] hover:file:bg-teal-100 transition-all cursor-pointer"
+            />
+          </div>
+        </div>
+
+        <div>
+          <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Content</label>
+          <div className="bg-white rounded-2xl overflow-hidden border border-slate-200">
+            <ReactQuill 
+              theme="snow" 
+              value={data.content || ""} 
+              onChange={(val) => handleChange("content", val)} 
+              className="h-[300px] pb-10"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }

@@ -1,68 +1,133 @@
 "use client";
 
 import { useState } from "react";
-import {  Plus, Trash2 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { Save, HeartPulse } from "lucide-react";
+import dynamic from 'next/dynamic';
+import 'react-quill-new/dist/quill.snow.css';
+
+const ReactQuill = dynamic(() => import('react-quill-new'), { ssr: false });
 
 export default function AnnualReportsClientForm({ initialData }: { initialData: any }) {
-  const [reports, setReports] = useState<any[]>(initialData?.reports?.length ? initialData.reports : [
-    { title: "Annual Report 2024-2025", link: "#" },
-    { title: "Annual Report 2023-2024", link: "#" },
-    { title: "Annual Report 2022-2023", link: "#" },
-    { title: "Tribute issue (2021-2022)", description: "A tribute to Lata Mangeshkar (1929 - 2022)", link: "#" },
-    { title: "Annual Report 2020-2021", link: "#" },
-    { title: "Annual Report 2019-2020", link: "#" },
-    { title: "Annual Report 2018-2019", link: "#" },
-    { title: "Annual Report 2017-2018", link: "#" },
-    { title: "Annual Report 2016-2017", link: "#" },
-    { title: "Annual Report 2015-2016", link: "#" },
-    { title: "Annual Report 2014-2015", link: "#" },
-    { title: "Annual Report 2013-2014", link: "#" }
-  ]);
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+  const [data, setData] = useState(initialData);
 
-  const addReport = () => setReports([...reports, { title: "", description: "", link: "#" }]);
-  const removeReport = (idx: number) => setReports(reports.filter((_, i) => i !== idx));
-  const updateReport = (idx: number, field: string, value: string) => {
-    const newItems = [...reports];
-    newItems[idx][field] = value;
-    setReports(newItems);
+  const handleChange = (field: string, value: any) => {
+    setData((prev: any) => ({ ...prev, [field]: value }));
+  };
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        handleChange("image", reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleSave = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch("/api/settings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          key: "page_research_annual_reports",
+          value: JSON.stringify(data),
+          pathsToRevalidate: [
+            "/admin/research/annual-reports",
+            "/annual-reports"
+          ]
+        })
+      });
+
+      if (!res.ok) throw new Error("Failed to save");
+      alert("Saved successfully!");
+      router.refresh();
+    } catch (err) {
+      console.error(err);
+      alert("Error saving data");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <>
-      <input type="hidden" name="pageJson" value={JSON.stringify({ reports })} />
-      
-      <div className="space-y-6">
-        <div className="flex items-start justify-between gap-2 mb-4">
-          <h3 className="text-[18px] font-black text-[#002b5c] leading-snug max-w-[calc(100%-100px)]">Reports List</h3>
-          <button type="button" onClick={addReport} className="inline-flex items-center gap-1 bg-[#002b5c] text-white px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-[#001c3d] transition-colors shadow-sm shrink-0 whitespace-nowrap mt-0.5">
-            <Plus size={13} strokeWidth={2.5} /> Add Report
+    <div className="space-y-8">
+      <div className="mb-10 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 bg-white p-6 md:p-10 rounded-3xl shadow-sm border border-slate-100 relative overflow-hidden group">
+        <div className="absolute top-0 left-0 w-2 h-full bg-gradient-to-b from-[#002b5c] to-[#007a87]"></div>
+        <div className="z-10 relative">
+          <h1 className="text-[32px] md:text-[40px] font-black text-[#002b5c] tracking-tight leading-tight mb-2 flex items-center gap-3">
+            Annual Reports
+          </h1>
+          <p className="text-[15px] font-medium text-slate-500 max-w-xl leading-relaxed">
+            Manage content for Annual Reports
+          </p>
+        </div>
+        <div className="z-10 shrink-0 mt-4 lg:mt-0">
+          <button
+            onClick={handleSave}
+            disabled={loading}
+            className="flex items-center gap-2 px-6 py-3 bg-[#D9232D] text-white font-bold rounded-full hover:bg-red-700 transition-colors shadow-sm disabled:opacity-50"
+          >
+            <Save size={20} />
+            {loading ? "Saving..." : "Save Changes"}
           </button>
         </div>
-
-        <div className="space-y-4">
-          {reports.map((item, idx) => (
-            <div key={idx} className="bg-slate-50 p-6 rounded-2xl border border-slate-200 relative group flex flex-col md:flex-row gap-4 md:items-end">
-              <div className="flex-1">
-                <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Title</label>
-                <input value={item.title} onChange={(e) => updateReport(idx, 'title', e.target.value)} className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium leading-relaxed text-sm" placeholder="e.g. Annual Report 2024-2025" />
-              </div>
-              <div className="flex-1">
-                <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Description (Optional)</label>
-                <input value={item.description || ""} onChange={(e) => updateReport(idx, 'description', e.target.value)} className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium leading-relaxed text-sm" placeholder="e.g. A tribute to..." />
-              </div>
-              <div className="flex-1">
-                <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">PDF Link</label>
-                <input value={item.link} onChange={(e) => updateReport(idx, 'link', e.target.value)} className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium leading-relaxed text-sm" placeholder="https://..." />
-              </div>
-              <button type="button" onClick={() => removeReport(idx)} className="p-3 text-[#D9232D] hover:bg-red-50 hover:text-[#D9232D] rounded-xl transition-colors">
-                <Trash2 size={24} color="#D9232D" />
-              </button>
-            </div>
-          ))}
+        <div className="absolute right-0 top-0 opacity-[0.03] pointer-events-none group-hover:scale-110 transition-transform duration-700">
+           <HeartPulse size={200} className="text-[#007a87] -mt-10 -mr-10" />
         </div>
       </div>
 
-      
-    </>
+      <div className="space-y-6">
+        <div>
+          <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Page Title</label>
+          <input 
+            value={data.title || ""} 
+            onChange={(e) => handleChange("title", e.target.value)}
+            className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium leading-relaxed"
+          />
+        </div>
+        
+        <div>
+          <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Header Image</label>
+          <div className="flex flex-col sm:flex-row sm:items-center gap-4 bg-slate-50 p-4 rounded-2xl border border-slate-200">
+            {data.image && (
+              <div className="shrink-0 relative group">
+                <img src={data.image} alt="Annual Reports" className="w-32 h-20 object-cover rounded-xl border border-slate-200 shadow-sm" />
+                <button 
+                  type="button" 
+                  onClick={() => handleChange("image", "")} 
+                  className="absolute -top-2 -right-2 bg-red-500 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                </button>
+              </div>
+            )}
+            <input 
+              type="file" 
+              accept="image/*"
+              onChange={handleImageChange}
+              className="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-teal-50 file:text-[#007a87] hover:file:bg-teal-100 transition-all cursor-pointer"
+            />
+          </div>
+        </div>
+
+        <div>
+          <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Content</label>
+          <div className="bg-white rounded-2xl overflow-hidden border border-slate-200">
+            <ReactQuill 
+              theme="snow" 
+              value={data.content || ""} 
+              onChange={(val) => handleChange("content", val)} 
+              className="h-[300px] pb-10"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }

@@ -1,95 +1,133 @@
 "use client";
 
 import { useState } from "react";
-import {  Plus, Trash2 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { Save, HeartPulse } from "lucide-react";
+import dynamic from 'next/dynamic';
+import 'react-quill-new/dist/quill.snow.css';
 
-export default function SponsorsCrosClientForm({ initialData }: { initialData: any }) {
-  const [sponsors, setSponsors] = useState<string[]>(initialData?.sponsors?.length ? initialData.sponsors : [
-    "Abbott Vascular", "Adventrix Pharmaceutical Ltd.", "Amgen Inc", "Astellas Pharma", "Astra Zeneca",
-    "Aveo Pharma Limited", "Bayer Healthcare Ag.", "Bharat Serum &Vaccines Ltd", "Biocon International",
-    "Boehringer Ingelheim", "Boston Scientific", "Bristol & Myers Research & Development", "Bristol-Myers Squibb India Pvt. Ltd.",
-    "Cadila Pharmaceutical Inc.", "Celltrion Healthcare", "Cipla Ltd", "Curetech Ltd.", "Daichi Sankyo Company Ltd.",
-    "Dr Reddy’s Laboratories", "Eisai Inc.", "Eli Lilly & Company Ltd.", "Emcure Biotech Ltd.", "Forest Research Institute",
-    "Fortis Escorts Heart Institute", "Fresenius Kabi Oncology Limited.", "G.W.Pharma Ltd", "Gilead Galapagos, EV",
-    "Gennova Biopharmaceuticals Ltd..", "Glaxosmithkline (GSK)", "Hexal Ag Sandoz", "Hoffmann-La Roche.",
-    "Inspiration Biopharmaceuticals", "Insys Therapeutics Inc.", "International Clinical Research H. Lundbeck",
-    "J.W. Medical System", "Johnson & Johnson Pharmaceutical Research & Development.", "Leo Pharma", "Lundbeck A/S",
-    "Lupin Bioresearch Centre", "Meril Life Sciences", "Merk Sharp & Dohme Corp", "Novartis Ltd", "Novo Nordisk Ltd",
-    "Pfizer Inc", "Roche Inc", "Samsung Bioepis", "Sun Pharma", "Torrent Pharma", "V Life Sciences", "Wockhardt Bio Ag",
-    "Watson Pharma", "Zimmer Ltd"
-  ]);
-  const [cros, setCros] = useState<string[]>(initialData?.cros?.length ? initialData.cros : [
-    "Accutest Research Laboratories", "Boston Medtech", "Cinigene International Ltd.", "Clininvent Research Pvt. Ltd.",
-    "Covance", "i3 Research Limited", "Icon clinical research", "Igate Clinical Research International Inc.",
-    "Lambda Therapeutic Research limited.", "Manipal Acunova Ltd.", "Max Neeman International Ltd.", "Novartis",
-    "Oncology Services India Ltd.", "Parexel International Ltd.", "PharmaNet Clinical Services", "Pharm-Olam International",
-    "Pharmaceutical Product Development (PPD) International", "PRA International", "Quintiles Research Pvt. Ltd",
-    "Reliance Life Science", "SIRO Clinpharm Pvt.Ltd", "Veeda Clinical Research"
-  ]);
+const ReactQuill = dynamic(() => import('react-quill-new'), { ssr: false });
 
-  const addSponsor = () => setSponsors([...sponsors, ""]);
-  const removeSponsor = (idx: number) => setSponsors(sponsors.filter((_, i) => i !== idx));
-  const updateSponsor = (idx: number, value: string) => {
-    const newItems = [...sponsors];
-    newItems[idx] = value;
-    setSponsors(newItems);
+export default function SponsorsCROsClientForm({ initialData }: { initialData: any }) {
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+  const [data, setData] = useState(initialData);
+
+  const handleChange = (field: string, value: any) => {
+    setData((prev: any) => ({ ...prev, [field]: value }));
   };
 
-  const addCro = () => setCros([...cros, ""]);
-  const removeCro = (idx: number) => setCros(cros.filter((_, i) => i !== idx));
-  const updateCro = (idx: number, value: string) => {
-    const newItems = [...cros];
-    newItems[idx] = value;
-    setCros(newItems);
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        handleChange("image", reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleSave = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch("/api/settings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          key: "page_research_sponsors_cros",
+          value: JSON.stringify(data),
+          pathsToRevalidate: [
+            "/admin/research/sponsors-cros",
+            "/sponsors-cros"
+          ]
+        })
+      });
+
+      if (!res.ok) throw new Error("Failed to save");
+      alert("Saved successfully!");
+      router.refresh();
+    } catch (err) {
+      console.error(err);
+      alert("Error saving data");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <>
-      <input type="hidden" name="pageJson" value={JSON.stringify({ sponsors, cros })} />
-      
-      <div className="space-y-10">
-        <div>
-          <div className="flex items-start justify-between gap-2 mb-4">
-            <h3 className="text-[18px] font-black text-[#002b5c] leading-snug max-w-[calc(100%-110px)]">Sponsors</h3>
-            <button type="button" onClick={addSponsor} className="inline-flex items-center gap-1 bg-[#002b5c] text-white px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-[#001c3d] transition-colors shadow-sm shrink-0 whitespace-nowrap mt-0.5">
-              <Plus size={13} strokeWidth={2.5} /> Add Sponsor
-            </button>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-            {sponsors.map((item, idx) => (
-              <div key={idx} className="flex gap-2 items-center bg-slate-50 p-2 rounded-xl border border-slate-200">
-                <input value={item} onChange={(e) => updateSponsor(idx, e.target.value)} className="flex-1 p-2 bg-transparent focus:outline-none text-sm" placeholder="Sponsor Name" />
-                <button type="button" onClick={() => removeSponsor(idx)} className="text-[#D9232D] hover:text-[#D9232D] p-2">
-                  <Trash2 size={16} color="#D9232D" />
-                </button>
-              </div>
-            ))}
-          </div>
+    <div className="space-y-8">
+      <div className="mb-10 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 bg-white p-6 md:p-10 rounded-3xl shadow-sm border border-slate-100 relative overflow-hidden group">
+        <div className="absolute top-0 left-0 w-2 h-full bg-gradient-to-b from-[#002b5c] to-[#007a87]"></div>
+        <div className="z-10 relative">
+          <h1 className="text-[32px] md:text-[40px] font-black text-[#002b5c] tracking-tight leading-tight mb-2 flex items-center gap-3">
+            Sponsors & CROs
+          </h1>
+          <p className="text-[15px] font-medium text-slate-500 max-w-xl leading-relaxed">
+            Manage content for Sponsors & CROs
+          </p>
         </div>
-
-        <div className="h-px bg-gray-200 w-full" />
-
-        <div>
-          <div className="flex items-start justify-between gap-2 mb-4">
-            <h3 className="text-[18px] font-black text-[#002b5c] leading-snug max-w-[calc(100%-90px)]">CROs</h3>
-            <button type="button" onClick={addCro} className="inline-flex items-center gap-1 bg-[#007a87] text-white px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-[#005c66] transition-colors shadow-sm shrink-0 whitespace-nowrap mt-0.5">
-              <Plus size={13} strokeWidth={2.5} /> Add CRO
-            </button>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-            {cros.map((item, idx) => (
-              <div key={idx} className="flex gap-2 items-center bg-slate-50 p-2 rounded-xl border border-slate-200">
-                <input value={item} onChange={(e) => updateCro(idx, e.target.value)} className="flex-1 p-2 bg-transparent focus:outline-none text-sm" placeholder="CRO Name" />
-                <button type="button" onClick={() => removeCro(idx)} className="text-[#D9232D] hover:text-[#D9232D] p-2">
-                  <Trash2 size={16} color="#D9232D" />
-                </button>
-              </div>
-            ))}
-          </div>
+        <div className="z-10 shrink-0 mt-4 lg:mt-0">
+          <button
+            onClick={handleSave}
+            disabled={loading}
+            className="flex items-center gap-2 px-6 py-3 bg-[#D9232D] text-white font-bold rounded-full hover:bg-red-700 transition-colors shadow-sm disabled:opacity-50"
+          >
+            <Save size={20} />
+            {loading ? "Saving..." : "Save Changes"}
+          </button>
+        </div>
+        <div className="absolute right-0 top-0 opacity-[0.03] pointer-events-none group-hover:scale-110 transition-transform duration-700">
+           <HeartPulse size={200} className="text-[#007a87] -mt-10 -mr-10" />
         </div>
       </div>
 
-      
-    </>
+      <div className="space-y-6">
+        <div>
+          <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Page Title</label>
+          <input 
+            value={data.title || ""} 
+            onChange={(e) => handleChange("title", e.target.value)}
+            className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium leading-relaxed"
+          />
+        </div>
+        
+        <div>
+          <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Header Image</label>
+          <div className="flex flex-col sm:flex-row sm:items-center gap-4 bg-slate-50 p-4 rounded-2xl border border-slate-200">
+            {data.image && (
+              <div className="shrink-0 relative group">
+                <img src={data.image} alt="Sponsors & CROs" className="w-32 h-20 object-cover rounded-xl border border-slate-200 shadow-sm" />
+                <button 
+                  type="button" 
+                  onClick={() => handleChange("image", "")} 
+                  className="absolute -top-2 -right-2 bg-red-500 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                </button>
+              </div>
+            )}
+            <input 
+              type="file" 
+              accept="image/*"
+              onChange={handleImageChange}
+              className="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-teal-50 file:text-[#007a87] hover:file:bg-teal-100 transition-all cursor-pointer"
+            />
+          </div>
+        </div>
+
+        <div>
+          <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Content</label>
+          <div className="bg-white rounded-2xl overflow-hidden border border-slate-200">
+            <ReactQuill 
+              theme="snow" 
+              value={data.content || ""} 
+              onChange={(val) => handleChange("content", val)} 
+              className="h-[300px] pb-10"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }

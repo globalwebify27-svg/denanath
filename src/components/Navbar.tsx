@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
-import { Menu, X, Phone, ChevronDown } from "lucide-react";
+import { Menu, X, Phone, ChevronDown, Globe } from "lucide-react";
 import Link from "next/link";
 
 export default function Navbar() {
@@ -12,6 +12,31 @@ export default function Navbar() {
   const [expandedMobileMenu, setExpandedMobileMenu] = useState<string | null>(null);
 
   useEffect(() => {
+    // Patch DOM to prevent React crashes from Google Translate modifications
+    if (typeof Node === 'function' && Node.prototype) {
+      const originalRemoveChild = Node.prototype.removeChild;
+      Node.prototype.removeChild = function (child: any) {
+        if (child.parentNode !== this) {
+          if (console) {
+            console.warn('Cannot remove a child from a different parent', child, this);
+          }
+          return child;
+        }
+        return originalRemoveChild.apply(this, arguments as any);
+      };
+      
+      const originalInsertBefore = Node.prototype.insertBefore;
+      Node.prototype.insertBefore = function (newNode: any, referenceNode: any) {
+        if (referenceNode && referenceNode.parentNode !== this) {
+          if (console) {
+            console.warn('Cannot insert before a reference node from a different parent', referenceNode, this);
+          }
+          return newNode;
+        }
+        return originalInsertBefore.apply(this, arguments as any);
+      };
+    }
+
     const handleScroll = () => {
       if (window.scrollY > 10) {
         setScrolled(true);
@@ -20,8 +45,41 @@ export default function Navbar() {
       }
     };
     window.addEventListener("scroll", handleScroll);
+
+    // Google Translate Initialization
+    if (!(window as any).googleTranslateElementInit) {
+      const addScript = document.createElement("script");
+      addScript.setAttribute(
+        "src",
+        "//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
+      );
+      document.body.appendChild(addScript);
+
+      (window as any).googleTranslateElementInit = () => {
+        new (window as any).google.translate.TranslateElement(
+          {
+            pageLanguage: "en",
+            includedLanguages: "en,hi,mr,ar",
+            autoDisplay: false,
+          },
+          "google_translate_element"
+        );
+      };
+    }
+
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const changeLanguage = (langCode: string) => {
+    if (langCode === 'en') {
+      document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+      document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; domain=${window.location.hostname}; path=/;`;
+    } else {
+      document.cookie = `googtrans=/en/${langCode}; path=/;`;
+      document.cookie = `googtrans=/en/${langCode}; domain=${window.location.hostname}; path=/;`;
+    }
+    window.location.reload();
+  };
 
   const navLinks = [
     {
@@ -104,6 +162,14 @@ export default function Navbar() {
 
   return (
     <header className="w-full z-50 flex flex-col select-none" style={{ fontFamily: 'var(--font-plus-jakarta), sans-serif' }}>
+      <style dangerouslySetInnerHTML={{__html: `
+        body { top: 0 !important; }
+        iframe.skiptranslate { display: none !important; }
+        #goog-gt-tt { display: none !important; }
+        .goog-te-spinner-pos { display: none !important; }
+        html.translated-ltr body, html.translated-rtl body { opacity: 1 !important; visibility: visible !important; }
+      `}} />
+      <div id="google_translate_element" style={{ position: 'absolute', opacity: 0, zIndex: -1, width: 0, height: 0, overflow: 'hidden' }}></div>
       {/* Tier 1: Teal Utility Bar */}
       <div className="hidden xl:block w-full bg-[#007a87] text-white text-[10px] 2xl:text-[11px] py-2 px-4 font-medium border-b border-teal-600/30">
         <div className="max-w-[96%] mx-auto flex justify-between items-center">
@@ -138,6 +204,18 @@ export default function Navbar() {
               <Phone className="w-3 h-3" />
               <span>+91 20 4015 1000 (24/7)</span>
             </a>
+            <span className="opacity-30">|</span>
+            <div className="relative group flex items-center cursor-pointer hover:text-white transition-colors py-1 px-2">
+              <Globe className="w-4 h-4" />
+              <div className="absolute top-full right-0 hidden group-hover:block w-32 bg-white rounded-lg shadow-xl border border-slate-100 overflow-hidden text-slate-700 z-50 notranslate">
+                <div className="flex flex-col text-[11px] 2xl:text-[12px] font-bold">
+                  <div onClick={() => changeLanguage('en')} className="px-4 py-2.5 hover:bg-[#007a87] hover:text-white transition-colors cursor-pointer">English</div>
+                  <div onClick={() => changeLanguage('hi')} className="px-4 py-2.5 hover:bg-[#007a87] hover:text-white transition-colors cursor-pointer border-t border-slate-50">Hindi</div>
+                  <div onClick={() => changeLanguage('mr')} className="px-4 py-2.5 hover:bg-[#007a87] hover:text-white transition-colors cursor-pointer border-t border-slate-50">Marathi</div>
+                  <div onClick={() => changeLanguage('ar')} className="px-4 py-2.5 hover:bg-[#007a87] hover:text-white transition-colors cursor-pointer border-t border-slate-50">Arabic</div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

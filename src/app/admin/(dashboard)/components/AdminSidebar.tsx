@@ -112,13 +112,16 @@ const MENU_ITEMS = [
     icon: <Briefcase size={20} />,
     links: [
       { name: "Job Postings", href: "/admin/careers" },
+      { name: "Careers (Page Content)", href: "/admin/hospital/careers" },
     ]
   },
   {
-    name: "Contact",
+    name: "Contact & Appt",
     icon: <Phone size={20} />,
     links: [
       { name: "Contact Submissions", href: "/admin/contact" },
+      { name: "Contact Us (Page Content)", href: "/admin/hospital/contact-us" },
+      { name: "Book Appt (Page Content)", href: "/admin/hospital/book-appointment" },
     ]
   }
 ];

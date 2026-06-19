@@ -2,12 +2,12 @@
 
 import React, { useEffect, useRef } from "react";
 import Link from "next/link";
-import { ChevronRight, Globe, Mail, ExternalLink } from "lucide-react";
+import { ChevronRight, Globe } from "lucide-react";
 
-export default function EMailLoginDMHUsersClient({ initialData }: { initialData: any }) {
+export default function EMailLoginClientPage({ pageData }: { pageData: any }) {
   const options = [
     {
-        "name": "E-Mail Login (DMH Users)",
+        "name": "E-Mail Login",
         "href": "/email-login",
         "active": true
     },
@@ -22,12 +22,11 @@ export default function EMailLoginDMHUsersClient({ initialData }: { initialData:
         "active": false
     },
     {
-        "name": "Patient Registration Form",
+        "name": "Patient Registration",
         "href": "/patient-registration",
         "active": false
     }
-  ];
-
+];
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -43,21 +42,8 @@ export default function EMailLoginDMHUsersClient({ initialData }: { initialData:
     }
   }, []);
 
-  const data = initialData || {
-    pageTitle: "E-Mail Login (DMH Users)",
-    cards: [
-      {
-        title: "New Email Format",
-        description: "Access the updated DMH staff email portal securely.",
-        url: "https://login.microsoftonline.com/",
-        buttonText: "Access Portal"
-      }
-    ]
-  };
-
   return (
     <div className="min-h-screen bg-[#f8fafc] font-sans selection:bg-teal-500/30">
-      {/* Premium Page Header */}
       <div className="w-full bg-[#002b5c] relative overflow-hidden">
         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 mix-blend-overlay pointer-events-none" />
         <div className="absolute right-0 top-0 w-1/2 h-full bg-gradient-to-l from-teal-500/20 to-transparent pointer-events-none" />
@@ -68,10 +54,10 @@ export default function EMailLoginDMHUsersClient({ initialData }: { initialData:
             <ChevronRight className="w-3.5 h-3.5" />
             <span className="hover:text-white transition-colors cursor-pointer">Online Facilities</span>
             <ChevronRight className="w-3.5 h-3.5" />
-            <span className="text-white">{data.pageTitle}</span>
+            <span className="text-white">E-Mail Login</span>
           </div>
           <h1 className="text-4xl md:text-5xl font-extrabold text-white tracking-tight flex items-center gap-4">
-            {data.pageTitle}
+            {pageData.title || "E-Mail Login"}
           </h1>
         </div>
       </div>
@@ -79,11 +65,10 @@ export default function EMailLoginDMHUsersClient({ initialData }: { initialData:
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-16">
         <div className="flex flex-col lg:flex-row gap-8 xl:gap-12 items-start">
           
-          {/* Left Sidebar Navigation */}
           {options.length > 0 && (
             <div className="w-full lg:w-[280px] shrink-0 sticky top-14 lg:top-28 z-30 bg-[#f8fafc] py-2 lg:py-0">
               <div ref={scrollContainerRef} className="bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 overflow-hidden flex flex-row lg:flex-col overflow-x-auto lg:overflow-x-visible scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden snap-x snap-mandatory">
-                {options.map((option, idx) => (
+                {options.map((option: any, idx: number) => (
                   <Link
                     key={idx}
                     href={option.href}
@@ -108,50 +93,41 @@ export default function EMailLoginDMHUsersClient({ initialData }: { initialData:
             </div>
           )}
 
-          {/* Right Main Content */}
           <div className="w-full flex-1">
             <div className="bg-white rounded-3xl shadow-[0_8px_40px_rgb(0,0,0,0.03)] border border-slate-100/60 p-6 sm:p-10 md:p-14">
-              
               <div className="mb-10">
                 <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-teal-50 border border-teal-100 text-[#007a87] text-xs font-bold tracking-wider uppercase mb-4">
                   <Globe className="w-4 h-4" />
                   <span>Online Facilities</span>
                 </div>
                 <h2 className="text-3xl md:text-4xl font-extrabold text-[#002b5c] mb-6 tracking-tight">
-                  {data.pageTitle}
+                  {pageData.title || "E-Mail Login"}
                 </h2>
                 <div className="w-20 h-1.5 bg-[#007a87] rounded-full mb-8"></div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {data.cards?.map((card: any, idx: number) => (
-                  <a 
-                    key={idx}
-                    href={card.url} 
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group bg-white border border-slate-200 rounded-2xl p-8 hover:shadow-[0_8px_30px_rgba(0,51,96,0.15)] hover:border-[#003360] hover:-translate-y-1 transition-all duration-300 flex flex-col items-center text-center relative overflow-hidden"
-                  >
-                    <div className="absolute top-0 left-0 w-full h-1 bg-[#003360] transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500"></div>
-                    
-                    <div className="w-20 h-20 rounded-full bg-slate-50 border border-slate-100 flex items-center justify-center mb-6 transition-colors duration-300">
-                      <Mail className="w-10 h-10 text-slate-400 group-hover:text-[#003360] transition-colors duration-300" />
-                    </div>
-                    
-                    <h3 className="text-xl font-bold text-[#002b5c] mb-2">{card.title}</h3>
-                    <p className="text-sm text-slate-500 mb-8 px-4">{card.description}</p>
-                    
-                    <div className="flex items-center justify-center gap-2 w-full py-3 bg-slate-50 text-[#002b5c] font-bold text-sm group-hover:bg-[#003360] group-hover:text-white transition-colors rounded-xl">
-                      <span>{card.buttonText}</span>
-                      <ExternalLink className="w-4 h-4" />
-                    </div>
-                  </a>
-                ))}
-              </div>
+              {pageData.image && (
+                <div className="mb-10 rounded-2xl overflow-hidden border border-slate-200">
+                  <img src={pageData.image} alt={pageData.title || "E-Mail Login"} className="w-full h-auto object-contain max-h-[500px] bg-slate-50" />
+                </div>
+              )}
+              
+              {pageData.content ? (
+                <div className="prose prose-slate max-w-none break-words whitespace-normal overflow-hidden [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:my-4 [&_ol]:list-decimal [&_ol]:pl-6 [&_ol]:my-4 [&_li]:mb-2 prose-p:leading-relaxed prose-headings:text-[#002b5c] text-slate-700" dangerouslySetInnerHTML={{ __html: pageData.content }} />
+              ) : (
+                <div className="py-16 text-center border-2 border-dashed border-slate-200 rounded-2xl bg-slate-50">
+                  <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-teal-100 mb-4">
+                    <Globe className="w-8 h-8 text-[#007a87]" />
+                  </div>
+                  <h3 className="text-xl font-bold text-slate-700 mb-2">Content Coming Soon</h3>
+                  <p className="text-slate-500 max-w-md mx-auto">
+                    The information for this section is currently being updated. Please check back later.
+                  </p>
+                </div>
+              )}
 
             </div>
           </div>
-
         </div>
       </div>
     </div>
