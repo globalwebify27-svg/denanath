@@ -1,12 +1,16 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { ChevronRight, Building2, MapPin, Phone, Mail, HeartPulse, Stethoscope, Droplet, Pill, Activity, Baby, Send, ShieldAlert } from "lucide-react";
+import { submitFormAction } from "@/app/actions/submit-form";
 
 export default function ContactUsClientPage({ pageData }: { pageData: any }) {
   const options = [];
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const formRef = useRef<HTMLFormElement>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
 
   useEffect(() => {
     if (window.innerWidth < 1024 && scrollContainerRef.current) {
@@ -69,11 +73,44 @@ export default function ContactUsClientPage({ pageData }: { pageData: any }) {
                       <Mail className="w-5 h-5 text-[#007a87]" /> Send a Message
                     </h3>
                     
-                    <form className="space-y-6">
+                    {isSuccess ? (
+                      <div className="bg-[#eaf8f4] rounded-2xl p-8 border border-[#c4e9df] shadow-sm flex flex-col items-center text-center py-12">
+                        <div className="w-16 h-16 bg-[#d1f1e8] rounded-full flex items-center justify-center mb-6">
+                          <ShieldAlert className="w-8 h-8 text-[#008f68]" />
+                        </div>
+                        <h3 className="text-2xl font-extrabold text-[#006e51] mb-3">Message Sent Successfully!</h3>
+                        <p className="text-[#008f68] font-bold mb-8 max-w-sm">
+                          Thank you for reaching out. Our team will get back to you shortly.
+                        </p>
+                        <button 
+                          type="button"
+                          onClick={() => setIsSuccess(false)}
+                          className="bg-[#009b77] hover:bg-[#007b5e] text-white px-8 py-3.5 rounded-xl font-bold transition-all shadow-md"
+                        >
+                          Send Another Message
+                        </button>
+                      </div>
+                    ) : (
+                      <form 
+                        ref={formRef}
+                        className="space-y-6" 
+                        action={async (formData) => { 
+                          setIsSubmitting(true);
+                          const res = await submitFormAction("Contact Us", formData); 
+                          if (res.success) {
+                            setIsSuccess(true); 
+                            formRef.current?.reset();
+                          } else {
+                            alert("Failed to submit form.");
+                          }
+                          setIsSubmitting(false);
+                        }}
+                      >
                       <div>
                         <label className="block text-sm font-bold text-slate-700 mb-2">Name: <span className="text-red-500">*</span></label>
                         <input 
                           type="text" 
+                          name="name"
                           className="w-full bg-white border border-slate-300 rounded-xl py-3 px-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-[#007a87] focus:border-transparent transition-shadow"
                           required
                         />
@@ -84,6 +121,7 @@ export default function ContactUsClientPage({ pageData }: { pageData: any }) {
                           <label className="block text-sm font-bold text-slate-700 mb-2">E-mail: <span className="text-red-500">*</span></label>
                           <input 
                             type="email" 
+                            name="email"
                             className="w-full bg-white border border-slate-300 rounded-xl py-3 px-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-[#007a87] focus:border-transparent transition-shadow"
                             required
                           />
@@ -92,14 +130,16 @@ export default function ContactUsClientPage({ pageData }: { pageData: any }) {
                           <label className="block text-sm font-bold text-slate-700 mb-2">Phone:</label>
                           <input 
                             type="tel" 
+                            name="phone"
                             className="w-full bg-white border border-slate-300 rounded-xl py-3 px-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-[#007a87] focus:border-transparent transition-shadow"
-                          />
+                          pattern="[0-9]{10}" maxLength={10} minLength={10} title="Please enter a valid 10-digit mobile number" onInput={(e) => { e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/g, "").slice(0, 10); }} />
                         </div>
                       </div>
 
                       <div>
                         <label className="block text-sm font-bold text-slate-700 mb-2">Comments: <span className="text-red-500">*</span></label>
                         <textarea 
+                          name="comments"
                           rows={4}
                           className="w-full bg-white border border-slate-300 rounded-xl py-3 px-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-[#007a87] focus:border-transparent transition-shadow resize-none"
                           required
@@ -120,6 +160,7 @@ export default function ContactUsClientPage({ pageData }: { pageData: any }) {
                         </div>
                         <input 
                           type="text" 
+                          name="captcha"
                           placeholder="Enter code here"
                           className="mt-3 w-full sm:w-48 bg-white border border-slate-300 rounded-lg py-2 px-3 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-[#007a87] focus:border-transparent transition-shadow uppercase"
                           required
@@ -128,12 +169,20 @@ export default function ContactUsClientPage({ pageData }: { pageData: any }) {
 
                       <button 
                         type="submit"
-                        className="w-full bg-[#002b5c] hover:bg-[#001a38] text-white py-4 rounded-xl font-extrabold tracking-wider uppercase transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 group"
+                        disabled={isSubmitting}
+                        className={`w-full bg-[#002b5c] hover:bg-[#001a38] text-white py-4 rounded-xl font-extrabold tracking-wider uppercase transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 group ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
                       >
-                        Submit Request
-                        <Send className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                        {isSubmitting ? (
+                          <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                        ) : (
+                          <>
+                            Submit Request
+                            <Send className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                          </>
+                        )}
                       </button>
                     </form>
+                    )}
                   </div>
                 </div>
 

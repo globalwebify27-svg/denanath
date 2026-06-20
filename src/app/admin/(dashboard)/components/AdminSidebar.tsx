@@ -115,7 +115,7 @@ const MENU_ITEMS = [
     ]
   },
   {
-    name: "Contact & Appt",
+    name: "Contact",
     icon: <Phone size={20} />,
     links: [
       { name: "Contact Submissions", href: "/admin/contact" },

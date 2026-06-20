@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { ChevronRight, Building2, CalendarCheck, User, Phone, Mail, Stethoscope, Clock, FileText, Send } from "lucide-react";
+import { submitFormAction } from "@/app/actions/submit-form";
 
 export default function BookAppointmentClientPage({ pageData }: { pageData: any }) {
   const options = [
@@ -23,6 +24,9 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
     }
 ];
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const formRef = useRef<HTMLFormElement>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
 
   useEffect(() => {
     if (window.innerWidth < 1024 && scrollContainerRef.current) {
@@ -76,22 +80,54 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
               </div>
 
               <div className="max-w-3xl mx-auto">
-                <div className="bg-slate-50 rounded-3xl p-8 md:p-10 border border-slate-200 shadow-sm">
-                  <form className="space-y-8">
-                    
-                    {/* Patient Details */}
-                    <div>
+                {isSuccess ? (
+                  <div className="bg-slate-50 rounded-3xl p-8 md:p-12 border border-slate-200 shadow-sm flex flex-col items-center text-center py-16">
+                    <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mb-6">
+                      <CalendarCheck className="w-10 h-10 text-green-600" />
+                    </div>
+                    <h3 className="text-3xl font-extrabold text-[#002b5c] mb-4">Request Submitted!</h3>
+                    <p className="text-slate-600 font-medium mb-8 max-w-md">
+                      Your appointment request has been successfully received. Our team will contact you shortly to confirm the exact time slot.
+                    </p>
+                    <button 
+                      type="button"
+                      onClick={() => setIsSuccess(false)}
+                      className="bg-[#002b5c] hover:bg-[#001a38] text-white px-8 py-3.5 rounded-xl font-bold transition-all shadow-md"
+                    >
+                      Book Another Appointment
+                    </button>
+                  </div>
+                ) : (
+                  <div className="bg-slate-50 rounded-3xl p-8 md:p-10 border border-slate-200 shadow-sm">
+                    <form 
+                      ref={formRef}
+                      className="space-y-8" 
+                      action={async (formData) => { 
+                        setIsSubmitting(true);
+                        const res = await submitFormAction("Book Appointment", formData); 
+                        if (res.success) {
+                          setIsSuccess(true); 
+                          formRef.current?.reset();
+                        } else {
+                          alert("Failed to submit form.");
+                        }
+                        setIsSubmitting(false);
+                      }}
+                    >
+                      
+                      {/* Patient Details */}
+                      <div>
                       <h3 className="text-xl font-extrabold text-[#002b5c] mb-6 border-b border-slate-200 pb-3 flex items-center gap-2">
                         <User className="w-5 h-5 text-[#007a87]" /> Patient Details
                       </h3>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                           <label className="block text-sm font-bold text-slate-700 mb-2">First Name <span className="text-red-500">*</span></label>
-                          <input type="text" className="w-full bg-white border border-slate-300 rounded-xl py-3 px-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-[#007a87] transition-shadow" placeholder="e.g. John" required />
+                          <input type="text" name="firstName" className="w-full bg-white border border-slate-300 rounded-xl py-3 px-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-[#007a87] transition-shadow" placeholder="e.g. John" required />
                         </div>
                         <div>
                           <label className="block text-sm font-bold text-slate-700 mb-2">Last Name <span className="text-red-500">*</span></label>
-                          <input type="text" className="w-full bg-white border border-slate-300 rounded-xl py-3 px-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-[#007a87] transition-shadow" placeholder="e.g. Doe" required />
+                          <input type="text" name="lastName" className="w-full bg-white border border-slate-300 rounded-xl py-3 px-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-[#007a87] transition-shadow" placeholder="e.g. Doe" required />
                         </div>
                       </div>
 
@@ -102,7 +138,7 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
                             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                               <Phone className="h-5 w-5 text-slate-400" />
                             </div>
-                            <input type="tel" className="w-full bg-white border border-slate-300 rounded-xl py-3 pl-10 pr-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-[#007a87] transition-shadow" placeholder="10-digit number" required />
+                            <input type="tel" name="phone" className="w-full bg-white border border-slate-300 rounded-xl py-3 pl-10 pr-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-[#007a87] transition-shadow" placeholder="10-digit number" required pattern="[0-9]{10}" maxLength={10} minLength={10} title="Please enter a valid 10-digit mobile number" onInput={(e) => { e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/g, "").slice(0, 10); }} />
                           </div>
                         </div>
                         <div>
@@ -111,7 +147,7 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
                             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                               <Mail className="h-5 w-5 text-slate-400" />
                             </div>
-                            <input type="email" className="w-full bg-white border border-slate-300 rounded-xl py-3 pl-10 pr-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-[#007a87] transition-shadow" placeholder="john@example.com" required />
+                            <input type="email" name="email" className="w-full bg-white border border-slate-300 rounded-xl py-3 pl-10 pr-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-[#007a87] transition-shadow" placeholder="john@example.com" required />
                           </div>
                         </div>
                       </div>
@@ -129,7 +165,7 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
                             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                               <Building2 className="h-5 w-5 text-slate-400" />
                             </div>
-                            <select className="w-full bg-white border border-slate-300 rounded-xl py-3 pl-10 pr-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-[#007a87] transition-shadow appearance-none cursor-pointer" required>
+                            <select name="department" className="w-full bg-white border border-slate-300 rounded-xl py-3 pl-10 pr-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-[#007a87] transition-shadow appearance-none cursor-pointer" required>
                               <option value="">Select Department</option>
                               <option value="cardiology">Cardiology</option>
                               <option value="neurology">Neurology</option>
@@ -145,7 +181,7 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
                             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                               <Stethoscope className="h-5 w-5 text-slate-400" />
                             </div>
-                            <select className="w-full bg-white border border-slate-300 rounded-xl py-3 pl-10 pr-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-[#007a87] transition-shadow appearance-none cursor-pointer">
+                            <select name="doctor" className="w-full bg-white border border-slate-300 rounded-xl py-3 pl-10 pr-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-[#007a87] transition-shadow appearance-none cursor-pointer">
                               <option value="">Any Available Doctor</option>
                               <option value="dr1">Dr. Nikhil Agarkhedkar</option>
                               <option value="dr2">Dr. Renu Agarkhedkar</option>
@@ -159,7 +195,7 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
                         <div>
                           <label className="block text-sm font-bold text-slate-700 mb-2">Preferred Date <span className="text-red-500">*</span></label>
                           <div className="relative">
-                            <input type="date" className="w-full bg-white border border-slate-300 rounded-xl py-3 px-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-[#007a87] transition-shadow cursor-pointer" required />
+                            <input type="date" name="date" className="w-full bg-white border border-slate-300 rounded-xl py-3 px-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-[#007a87] transition-shadow cursor-pointer" required />
                           </div>
                         </div>
                         <div>
@@ -168,7 +204,7 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
                             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                               <Clock className="h-5 w-5 text-slate-400" />
                             </div>
-                            <select className="w-full bg-white border border-slate-300 rounded-xl py-3 pl-10 pr-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-[#007a87] transition-shadow appearance-none cursor-pointer" required>
+                            <select name="time" className="w-full bg-white border border-slate-300 rounded-xl py-3 pl-10 pr-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-[#007a87] transition-shadow appearance-none cursor-pointer" required>
                               <option value="">Select Time Slot</option>
                               <option value="morning">Morning (9:00 AM - 12:00 PM)</option>
                               <option value="afternoon">Afternoon (1:00 PM - 4:00 PM)</option>
@@ -185,6 +221,7 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
                             <FileText className="h-5 w-5 text-slate-400" />
                           </div>
                           <textarea 
+                            name="reason"
                             rows={4}
                             className="w-full bg-white border border-slate-300 rounded-xl py-3 pl-10 pr-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-[#007a87] transition-shadow resize-none" 
                             placeholder="Please briefly describe your symptoms or reason for visit..."
@@ -196,10 +233,17 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
                     <div className="pt-6 border-t border-slate-200 mt-8">
                       <button 
                         type="submit"
-                        className="w-full bg-[#002b5c] hover:bg-[#001a38] text-white py-4 rounded-xl font-extrabold tracking-wider uppercase transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 group"
+                        disabled={isSubmitting}
+                        className={`w-full bg-[#002b5c] hover:bg-[#001a38] text-white py-4 rounded-xl font-extrabold tracking-wider uppercase transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 group ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
                       >
-                        Confirm Appointment Request
-                        <Send className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                        {isSubmitting ? (
+                          <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                        ) : (
+                          <>
+                            Confirm Appointment Request
+                            <Send className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                          </>
+                        )}
                       </button>
                       <p className="text-xs text-center text-slate-500 mt-4 font-medium">
                         By submitting this form, you agree to our Terms and Conditions and Privacy Policy. Our team will call you to confirm the exact time slot.
@@ -208,8 +252,8 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
 
                   </form>
                 </div>
+                )}
               </div>
-
             </div>
           </div>
         </div>

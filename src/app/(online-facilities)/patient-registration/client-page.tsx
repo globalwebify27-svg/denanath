@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { ChevronRight, Globe, RefreshCw, Upload, Info, User, Calendar, MapPin, Phone, Mail, FileText, ArrowRight, ShieldCheck, HeartPulse } from "lucide-react";
+import { submitFormAction } from "@/app/actions/submit-form";
 
 export default function PatientRegistrationFormPage({ pageData }: { pageData: any }) {
   const options = [
@@ -29,6 +30,8 @@ export default function PatientRegistrationFormPage({ pageData }: { pageData: an
 ];
 
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const formRef = useRef<HTMLFormElement>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     if (window.innerWidth < 1024 && scrollContainerRef.current) {
@@ -117,7 +120,21 @@ export default function PatientRegistrationFormPage({ pageData }: { pageData: an
                   </div>
                 </div>
 
-                <form className="space-y-12">
+                <form 
+                  ref={formRef}
+                  className="space-y-12" 
+                  action={async (formData) => { 
+                    setIsSubmitting(true);
+                    const res = await submitFormAction("Patient Registration", formData); 
+                    if (res.success) {
+                      alert("Form submitted successfully!"); 
+                      formRef.current?.reset();
+                    } else {
+                      alert("Failed to submit form.");
+                    }
+                    setIsSubmitting(false);
+                  }}
+                >
                   
                   {/* Patient Particulars */}
                   <div className="bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-sm relative overflow-hidden group hover:shadow-md transition-shadow">
@@ -137,7 +154,7 @@ export default function PatientRegistrationFormPage({ pageData }: { pageData: an
                           <label className="flex items-center gap-2 px-5 py-3 bg-white border border-slate-200 shadow-sm rounded-xl cursor-pointer hover:bg-slate-50 hover:border-teal-500 transition-all">
                             <Upload className="w-5 h-5 text-[#007a87]" />
                             <span className="text-sm font-bold text-[#002b5c]">Choose File</span>
-                            <input type="file" className="hidden" />
+                            <input type="file" name="patientImage" className="hidden" />
                           </label>
                           <span className="text-sm font-medium text-slate-500">No file chosen</span>
                         </div>
@@ -146,7 +163,7 @@ export default function PatientRegistrationFormPage({ pageData }: { pageData: an
                       <div>
                         <label className="block text-sm font-semibold text-slate-700 mb-2">Title <span className="text-red-500">*</span></label>
                         <div className="relative">
-                          <select className="w-full appearance-none px-4 py-3.5 pl-4 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium cursor-pointer">
+                          <select name="title" className="w-full appearance-none px-4 py-3.5 pl-4 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium cursor-pointer">
                             <option>-- Select --</option>
                           <option>Mr.</option>
                           <option>Mrs.</option>
@@ -161,7 +178,7 @@ export default function PatientRegistrationFormPage({ pageData }: { pageData: an
                       <div>
                         <label className="block text-sm font-semibold text-slate-700 mb-2">Last Name <span className="text-red-500">*</span></label>
                         <div className="relative">
-                          <input type="text" placeholder="Last Name" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
+                          <input type="text" name="lastName" placeholder="Last Name" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
                           <User className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                         </div>
                       </div>
@@ -169,7 +186,7 @@ export default function PatientRegistrationFormPage({ pageData }: { pageData: an
                       <div>
                         <label className="block text-sm font-semibold text-slate-700 mb-2">First Name <span className="text-red-500">*</span></label>
                         <div className="relative">
-                          <input type="text" placeholder="First Name" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
+                          <input type="text" name="firstName" placeholder="First Name" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
                           <User className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                         </div>
                       </div>
@@ -177,7 +194,7 @@ export default function PatientRegistrationFormPage({ pageData }: { pageData: an
                       <div>
                         <label className="block text-sm font-semibold text-slate-700 mb-2">Middle Name</label>
                         <div className="relative">
-                          <input type="text" placeholder="Middle Name" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
+                          <input type="text" name="middleName" placeholder="Middle Name" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
                           <User className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                         </div>
                       </div>
@@ -185,7 +202,7 @@ export default function PatientRegistrationFormPage({ pageData }: { pageData: an
                       <div>
                         <label className="block text-sm font-semibold text-slate-700 mb-2">PAN Card No</label>
                         <div className="relative">
-                          <input type="text" placeholder="PAN Number" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
+                          <input type="text" name="panNumber" placeholder="PAN Number" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
                           <FileText className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                         </div>
                       </div>
@@ -193,7 +210,7 @@ export default function PatientRegistrationFormPage({ pageData }: { pageData: an
                       <div>
                         <label className="block text-sm font-semibold text-slate-700 mb-2">Aadhar Number</label>
                         <div className="relative">
-                          <input type="text" placeholder="Aadhar Number" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
+                          <input type="text" name="aadharNumber" placeholder="Aadhar Number" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
                           <FileText className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                         </div>
                       </div>
@@ -201,7 +218,7 @@ export default function PatientRegistrationFormPage({ pageData }: { pageData: an
                       <div>
                         <label className="block text-sm font-semibold text-slate-700 mb-2">Gender <span className="text-red-500">*</span></label>
                         <div className="relative">
-                          <select className="w-full appearance-none px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium cursor-pointer">
+                          <select name="gender" className="w-full appearance-none px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium cursor-pointer">
                             <option>-- Select --</option>
                           <option>Male</option>
                           <option>Female</option>
@@ -216,7 +233,7 @@ export default function PatientRegistrationFormPage({ pageData }: { pageData: an
                       <div>
                         <label className="block text-sm font-semibold text-slate-700 mb-2">Father/Husband Name</label>
                         <div className="relative">
-                          <input type="text" placeholder="Relative's Name" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
+                          <input type="text" name="relativeName" placeholder="Relative's Name" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
                           <User className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                         </div>
                       </div>
@@ -224,7 +241,7 @@ export default function PatientRegistrationFormPage({ pageData }: { pageData: an
                       <div>
                         <label className="block text-sm font-semibold text-slate-700 mb-2">Date of Birth <span className="text-red-500">*</span></label>
                         <div className="relative">
-                          <input type="date" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium" />
+                          <input type="date" name="dob" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium" />
                           <Calendar className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                         </div>
                       </div>
@@ -233,7 +250,7 @@ export default function PatientRegistrationFormPage({ pageData }: { pageData: an
                         <label className="block text-sm font-semibold text-slate-700 mb-2">Age <span className="text-red-500">*</span></label>
                         <div className="flex gap-3 items-center">
                           <div className="relative flex-1">
-                            <input type="number" placeholder="Age" className="w-full px-4 py-3.5 pl-4 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
+                            <input type="number" name="age" placeholder="Age" className="w-full px-4 py-3.5 pl-4 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
                           </div>
                           <span className="text-sm font-bold text-slate-500 bg-slate-50 px-4 py-3.5 rounded-xl border border-slate-100">Years</span>
                         </div>
@@ -242,7 +259,7 @@ export default function PatientRegistrationFormPage({ pageData }: { pageData: an
                       <div>
                         <label className="block text-sm font-semibold text-slate-700 mb-2">Monthly Income Rs. (Approx)</label>
                         <div className="relative">
-                          <input type="number" placeholder="Income Amount" className="w-full px-4 py-3.5 pl-4 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
+                          <input type="number" name="monthlyIncome" placeholder="Income Amount" className="w-full px-4 py-3.5 pl-4 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
                         </div>
                       </div>
 
@@ -264,7 +281,7 @@ export default function PatientRegistrationFormPage({ pageData }: { pageData: an
                       <div className="lg:col-span-2">
                         <label className="block text-sm font-semibold text-slate-700 mb-2">House Name/Appt.No <span className="text-red-500">*</span></label>
                         <div className="relative">
-                          <input type="text" placeholder="Street Address 1" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
+                          <input type="text" name="localHouseName" placeholder="Street Address 1" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
                           <MapPin className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                         </div>
                       </div>
@@ -272,20 +289,20 @@ export default function PatientRegistrationFormPage({ pageData }: { pageData: an
                       <div className="lg:col-span-2">
                         <label className="block text-sm font-semibold text-slate-700 mb-2">Address 2</label>
                         <div className="relative">
-                          <input type="text" placeholder="Street Address 2 (Optional)" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
+                          <input type="text" name="localAddress2" placeholder="Street Address 2 (Optional)" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
                           <MapPin className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                         </div>
                       </div>
 
                       <div>
                         <label className="block text-sm font-semibold text-slate-700 mb-2">PostOffice/Town</label>
-                        <input type="text" placeholder="Town Name" className="w-full px-4 py-3.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
+                        <input type="text" name="localTown" placeholder="Town Name" className="w-full px-4 py-3.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
                       </div>
 
                       <div>
                         <label className="block text-sm font-semibold text-slate-700 mb-2">Country <span className="text-red-500">*</span></label>
                         <div className="relative">
-                          <select className="w-full appearance-none px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium cursor-pointer">
+                          <select name="localCountry" className="w-full appearance-none px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium cursor-pointer">
                             <option>-- Select --</option>
                           <option>Afghanistan</option>
                           <option>Albania</option>
@@ -498,7 +515,7 @@ export default function PatientRegistrationFormPage({ pageData }: { pageData: an
                       <div>
                         <label className="block text-sm font-semibold text-slate-700 mb-2">State <span className="text-red-500">*</span></label>
                         <div className="relative">
-                          <select className="w-full appearance-none px-4 py-3.5 pl-4 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium cursor-pointer">
+                          <select name="localState" className="w-full appearance-none px-4 py-3.5 pl-4 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium cursor-pointer">
                             <option>-- Select --</option>
                           <option>Andaman & Nicobar</option>
                           <option>Andhra Pradesh</option>
@@ -591,13 +608,13 @@ export default function PatientRegistrationFormPage({ pageData }: { pageData: an
 
                       <div>
                         <label className="block text-sm font-semibold text-slate-700 mb-2">Pincode</label>
-                        <input type="text" placeholder="Postal Code" className="w-full px-4 py-3.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
+                        <input type="text" name="localPincode" placeholder="Postal Code" className="w-full px-4 py-3.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
                       </div>
 
                       <div>
                         <label className="block text-sm font-semibold text-slate-700 mb-2">Phone (Home)</label>
                         <div className="relative">
-                          <input type="text" placeholder="Landline" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
+                          <input type="text" name="localPhone" placeholder="Landline" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
                           <Phone className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                         </div>
                       </div>
@@ -605,7 +622,7 @@ export default function PatientRegistrationFormPage({ pageData }: { pageData: an
                       <div>
                         <label className="block text-sm font-semibold text-slate-700 mb-2">Office Phone</label>
                         <div className="relative">
-                          <input type="text" placeholder="Office Contact" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
+                          <input type="text" name="localOfficePhone" placeholder="Office Contact" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
                           <Phone className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                         </div>
                       </div>
@@ -613,7 +630,7 @@ export default function PatientRegistrationFormPage({ pageData }: { pageData: an
                       <div>
                         <label className="block text-sm font-semibold text-slate-700 mb-2">Cell Phone <span className="text-red-500">*</span></label>
                         <div className="relative">
-                          <input type="text" placeholder="Mobile Number" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
+                          <input type="text" name="localMobile" placeholder="Mobile Number" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" pattern="[0-9]{10}" maxLength={10} minLength={10} title="Please enter a valid 10-digit mobile number" onInput={(e) => { e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/g, "").slice(0, 10); }} />
                           <Phone className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                         </div>
                       </div>
@@ -621,7 +638,7 @@ export default function PatientRegistrationFormPage({ pageData }: { pageData: an
                       <div className="lg:col-span-2">
                         <label className="block text-sm font-semibold text-slate-700 mb-2">Email Address</label>
                         <div className="relative">
-                          <input type="email" placeholder="example@email.com" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
+                          <input type="email" name="email" placeholder="example@email.com" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
                           <Mail className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                         </div>
                         <p className="text-xs text-teal-600 mt-2 flex items-center gap-1.5 font-medium bg-teal-50 w-fit px-3 py-1.5 rounded-lg border border-teal-100">
@@ -655,7 +672,7 @@ export default function PatientRegistrationFormPage({ pageData }: { pageData: an
                       <div className="lg:col-span-2">
                         <label className="block text-sm font-semibold text-slate-700 mb-2">House Name/Appt.No <span className="text-red-500">*</span></label>
                         <div className="relative">
-                          <input type="text" placeholder="Street Address 1" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
+                          <input type="text" name="permHouseName" placeholder="Street Address 1" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
                           <MapPin className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                         </div>
                       </div>
@@ -663,14 +680,14 @@ export default function PatientRegistrationFormPage({ pageData }: { pageData: an
                       <div className="lg:col-span-2">
                         <label className="block text-sm font-semibold text-slate-700 mb-2">Address 2</label>
                         <div className="relative">
-                          <input type="text" placeholder="Street Address 2 (Optional)" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
+                          <input type="text" name="permAddress2" placeholder="Street Address 2 (Optional)" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
                           <MapPin className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                         </div>
                       </div>
 
                       <div>
                         <label className="block text-sm font-semibold text-slate-700 mb-2">PostOffice/Town</label>
-                        <input type="text" placeholder="Town Name" className="w-full px-4 py-3.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
+                        <input type="text" name="permTown" placeholder="Town Name" className="w-full px-4 py-3.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
                       </div>
 
                       <div>
@@ -889,7 +906,7 @@ export default function PatientRegistrationFormPage({ pageData }: { pageData: an
                       <div>
                         <label className="block text-sm font-semibold text-slate-700 mb-2">State <span className="text-red-500">*</span></label>
                         <div className="relative">
-                          <select className="w-full appearance-none px-4 py-3.5 pl-4 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium cursor-pointer">
+                          <select name="localCity" className="w-full appearance-none px-4 py-3.5 pl-4 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium cursor-pointer">
                             <option>-- Select --</option>
                           <option>Andaman & Nicobar</option>
                           <option>Andhra Pradesh</option>
@@ -982,13 +999,13 @@ export default function PatientRegistrationFormPage({ pageData }: { pageData: an
 
                       <div>
                         <label className="block text-sm font-semibold text-slate-700 mb-2">Pincode</label>
-                        <input type="text" placeholder="Postal Code" className="w-full px-4 py-3.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
+                        <input type="text" name="permPincode" placeholder="Postal Code" className="w-full px-4 py-3.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
                       </div>
 
                       <div>
                         <label className="block text-sm font-semibold text-slate-700 mb-2">Phone</label>
                         <div className="relative">
-                          <input type="text" placeholder="Landline" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
+                          <input type="text" name="permPhone" placeholder="Landline" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
                           <Phone className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                         </div>
                       </div>
@@ -1080,7 +1097,7 @@ export default function PatientRegistrationFormPage({ pageData }: { pageData: an
                       <div>
                         <label className="block text-sm font-semibold text-slate-700 mb-2">Emergency Contact No</label>
                         <div className="relative">
-                          <input type="text" placeholder="Contact Number" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-red-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
+                          <input type="text" placeholder="Contact Number" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-red-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" pattern="[0-9]{10}" maxLength={10} minLength={10} title="Please enter a valid 10-digit mobile number" onInput={(e) => { e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/g, "").slice(0, 10); }} />
                           <Phone className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                         </div>
                       </div>
@@ -1100,7 +1117,7 @@ export default function PatientRegistrationFormPage({ pageData }: { pageData: an
                       <div>
                         <label className="block text-sm font-semibold text-slate-700 mb-2">Representative Relation</label>
                         <div className="relative">
-                          <select className="w-full appearance-none px-4 py-3.5 pl-4 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium cursor-pointer">
+                          <select name="permState" className="w-full appearance-none px-4 py-3.5 pl-4 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium cursor-pointer">
                             <option>-- Select --</option>
                           <option>Self</option>
                           <option>Spouse</option>

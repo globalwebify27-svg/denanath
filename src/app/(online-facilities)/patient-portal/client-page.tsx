@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ChevronRight, Globe, RefreshCw, Check, Smartphone, User, Lock, Calendar, Hash, Mail, Phone, Shield, ArrowRight } from "lucide-react";
+import { submitFormAction } from "@/app/actions/submit-form";
 
 export default function PatientPortalPage({ pageData }: { pageData: any }) {
   const [activeTab, setActiveTab] = useState("register");
@@ -31,6 +32,10 @@ export default function PatientPortalPage({ pageData }: { pageData: any }) {
 ];
 
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const loginFormRef = useRef<HTMLFormElement>(null);
+  const registerFormRef = useRef<HTMLFormElement>(null);
+  const [isLoginSubmitting, setIsLoginSubmitting] = useState(false);
+  const [isRegisterSubmitting, setIsRegisterSubmitting] = useState(false);
 
   useEffect(() => {
     if (window.innerWidth < 1024 && scrollContainerRef.current) {
@@ -174,14 +179,28 @@ export default function PatientPortalPage({ pageData }: { pageData: any }) {
                 <div className="p-6 sm:p-10 md:p-12">
                   {activeTab === "login" ? (
                     <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-                      <form className="space-y-6">
+                      <form 
+                        ref={loginFormRef}
+                        className="space-y-6" 
+                        action={async (formData) => { 
+                          setIsLoginSubmitting(true);
+                          const res = await submitFormAction("Patient Portal Login", formData); 
+                          if (res.success) {
+                            alert("Login submitted successfully!"); 
+                            loginFormRef.current?.reset();
+                          } else {
+                            alert("Failed to submit form.");
+                          }
+                          setIsLoginSubmitting(false);
+                        }}
+                      >
                         
                         <div>
                           <label className="block text-sm font-semibold text-slate-700 mb-2">
                             MRD Number <span className="text-red-500">*</span>
                           </label>
                           <div className="relative">
-                            <input type="number" placeholder="Enter MRD Number" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
+                            <input type="number" name="mrdNumber" placeholder="Enter MRD Number" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
                             <Hash className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                           </div>
                         </div>
@@ -191,7 +210,7 @@ export default function PatientPortalPage({ pageData }: { pageData: any }) {
                             Password <span className="text-red-500">*</span>
                           </label>
                           <div className="relative">
-                            <input type="password" placeholder="Enter Password" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
+                            <input type="password" name="password" placeholder="Enter Password" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
                             <Lock className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                           </div>
                         </div>
@@ -209,15 +228,25 @@ export default function PatientPortalPage({ pageData }: { pageData: any }) {
                                 <RefreshCw className="w-5 h-5" />
                               </button>
                             </div>
-                            <input type="text" placeholder="Enter text" className="w-full sm:w-40 px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all font-medium placeholder-slate-400" />
+                            <input type="text" name="captcha" placeholder="Enter text" className="w-full sm:w-40 px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all font-medium placeholder-slate-400" />
                           </div>
                         </div>
 
                         <div className="flex flex-col sm:flex-row items-center justify-between gap-6 pt-4">
-                          <button type="button" className="group w-full sm:w-auto inline-flex items-center justify-center gap-3 px-8 py-3.5 bg-[#003360] hover:bg-[#002b5c] text-white font-bold text-base rounded-xl transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5">
-                            Secure Login
-                            <ArrowRight className="w-4 h-4 text-teal-300 group-hover:translate-x-1 transition-transform" />
-                          </button>
+                          <button 
+                              type="submit" 
+                              disabled={isLoginSubmitting}
+                              className={`group w-full sm:w-auto inline-flex items-center justify-center gap-3 px-8 py-3.5 bg-[#003360] hover:bg-[#002b5c] text-white font-bold text-base rounded-xl transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5 ${isLoginSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
+                            >
+                              {isLoginSubmitting ? (
+                                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                              ) : (
+                                <>
+                                  Secure Login
+                                  <ArrowRight className="w-4 h-4 text-teal-300 group-hover:translate-x-1 transition-transform" />
+                                </>
+                              )}
+                            </button>
                           
                           <div className="flex flex-col items-center sm:items-end gap-1 text-sm font-medium">
                             <a href="#" className="text-slate-500 hover:text-[#007a87] transition-colors">Forgot your password?</a>
@@ -250,7 +279,21 @@ export default function PatientPortalPage({ pageData }: { pageData: any }) {
                     </div>
                   ) : (
                     <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-                      <form className="space-y-6">
+                      <form 
+                        ref={registerFormRef}
+                        className="space-y-6" 
+                        action={async (formData) => { 
+                          setIsRegisterSubmitting(true);
+                          const res = await submitFormAction("Patient Portal Register", formData); 
+                          if (res.success) {
+                            alert("Registration submitted successfully!"); 
+                            registerFormRef.current?.reset();
+                          } else {
+                            alert("Failed to submit form.");
+                          }
+                          setIsRegisterSubmitting(false);
+                        }}
+                      >
                         
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                           <div>
@@ -258,7 +301,7 @@ export default function PatientPortalPage({ pageData }: { pageData: any }) {
                               MRD Number <span className="text-red-500">*</span>
                             </label>
                             <div className="relative">
-                              <input type="text" placeholder="MRD Number" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
+                              <input type="text" name="mrdNumber" placeholder="MRD Number" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
                               <Hash className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                             </div>
                           </div>
@@ -268,7 +311,7 @@ export default function PatientPortalPage({ pageData }: { pageData: any }) {
                               Patient Name
                             </label>
                             <div className="relative">
-                              <input type="text" placeholder="Patient Name" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
+                              <input type="text" name="patientName" placeholder="Patient Name" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
                               <User className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                             </div>
                           </div>
@@ -278,7 +321,7 @@ export default function PatientPortalPage({ pageData }: { pageData: any }) {
                               Date of Birth <span className="text-red-500">*</span>
                             </label>
                             <div className="relative">
-                              <input type="text" placeholder="DD/MM/YYYY" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
+                              <input type="text" name="dob" placeholder="DD/MM/YYYY" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
                               <Calendar className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                             </div>
                           </div>
@@ -288,7 +331,7 @@ export default function PatientPortalPage({ pageData }: { pageData: any }) {
                               Gender <span className="text-red-500">*</span>
                             </label>
                             <div className="relative">
-                              <select className="w-full appearance-none px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium cursor-pointer">
+                              <select name="gender" className="w-full appearance-none px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium cursor-pointer">
                                 <option>-- Select --</option>
                                 <option>Male</option>
                                 <option>Female</option>
@@ -304,7 +347,7 @@ export default function PatientPortalPage({ pageData }: { pageData: any }) {
                               Email ID <span className="text-red-500">*</span>
                             </label>
                             <div className="relative">
-                              <input type="email" placeholder="Email Address" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
+                              <input type="email" name="email" placeholder="Email Address" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
                               <Mail className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                             </div>
                           </div>
@@ -314,17 +357,27 @@ export default function PatientPortalPage({ pageData }: { pageData: any }) {
                               Mobile Number <span className="text-red-500">*</span>
                             </label>
                             <div className="relative">
-                              <input type="tel" placeholder="Mobile Number" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
+                              <input type="tel" name="mobile" placeholder="Mobile Number" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" pattern="[0-9]{10}" maxLength={10} minLength={10} title="Please enter a valid 10-digit mobile number" onInput={(e) => { e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/g, "").slice(0, 10); }} />
                               <Phone className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                             </div>
                           </div>
                         </div>
 
                         <div className="pt-6 border-t border-slate-100 flex flex-col items-center gap-6">
-                          <button type="button" className="group w-full md:w-auto inline-flex items-center justify-center gap-2 md:gap-3 px-6 md:px-10 py-3.5 bg-[#003360] hover:bg-[#002b5c] text-white font-bold text-base whitespace-nowrap rounded-xl transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5">
-                            Register Account
-                            <ArrowRight className="w-4 h-4 text-teal-300 group-hover:translate-x-1 transition-transform" />
-                          </button>
+                          <button 
+                              type="submit" 
+                              disabled={isRegisterSubmitting}
+                              className={`group w-full md:w-auto inline-flex items-center justify-center gap-2 md:gap-3 px-6 md:px-10 py-3.5 bg-[#003360] hover:bg-[#002b5c] text-white font-bold text-base whitespace-nowrap rounded-xl transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5 ${isRegisterSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
+                            >
+                              {isRegisterSubmitting ? (
+                                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                              ) : (
+                                <>
+                                  Register Account
+                                  <ArrowRight className="w-4 h-4 text-teal-300 group-hover:translate-x-1 transition-transform" />
+                                </>
+                              )}
+                            </button>
                           
                           <div className="text-[13px] text-slate-500 font-medium leading-relaxed text-center max-w-md">
                             By registering, your details will be verified with the hospital records. If they match, you will receive an activation email to login to the portal.
