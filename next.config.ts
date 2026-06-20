@@ -2,9 +2,6 @@ import type { NextConfig } from "next";
 
 // Trigger dev server reload to rebuild routing cache
 const nextConfig: NextConfig = {
-  serverActions: {
-    bodySizeLimit: '10mb',
-  },
   experimental: {
     serverActions: {
       bodySizeLimit: '10mb',
