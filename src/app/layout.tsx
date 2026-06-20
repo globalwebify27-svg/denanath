@@ -5,6 +5,7 @@ import { HospitalProvider } from "@/context/HospitalContext";
 
 import QuickAccessWidget from "@/components/home/QuickAccessWidget";
 import ClientLayoutWrapper from "@/components/ClientLayoutWrapper";
+import Script from "next/script";
 
 
 const plusJakartaSans = Plus_Jakarta_Sans({
@@ -27,30 +28,29 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="h-full scroll-smooth antialiased" suppressHydrationWarning>
-      <head>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function() {
-                try {
-                  var match = document.cookie.match(/googtrans=\\/en\\/([a-z]{2,3})/);
-                  if (match && match[1] !== 'en') {
-                    document.write('<style id="gt-fouc-guard">body { opacity: 0 !important; visibility: hidden !important; transition: opacity 0.3s ease; }</style>');
-                    setTimeout(function() {
-                      var guard = document.getElementById('gt-fouc-guard');
-                      if (guard) guard.remove();
-                    }, 3000);
-                  }
-                } catch(e) {}
-              })();
-            `,
-          }}
-        />
-      </head>
       <body 
         className={`${plusJakartaSans.className} min-h-full flex flex-col bg-slate-50 text-slate-800 antialiased`}
         suppressHydrationWarning
         >
+        <Script id="google-translate-fouc" strategy="afterInteractive">
+          {`
+            (function() {
+              try {
+                var match = document.cookie.match(/googtrans=\\/en\\/([a-z]{2,3})/);
+                if (match && match[1] !== 'en') {
+                  var style = document.createElement('style');
+                  style.id = 'gt-fouc-guard';
+                  style.textContent = 'body { opacity: 0 !important; visibility: hidden !important; transition: opacity 0.3s ease; }';
+                  document.head.appendChild(style);
+                  setTimeout(function() {
+                    var guard = document.getElementById('gt-fouc-guard');
+                    if (guard) guard.remove();
+                  }, 3000);
+                }
+              } catch(e) {}
+            })();
+          `}
+        </Script>
         <HospitalProvider>
           <ClientLayoutWrapper>
             {children}

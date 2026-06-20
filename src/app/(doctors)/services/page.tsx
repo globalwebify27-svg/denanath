@@ -8,5 +8,9 @@ export default async function ServicesPage() {
   let pageData: any = { title: "Services", content: "", image: "" };
   try { if (setting) pageData = JSON.parse(setting.value); } catch (e) {}
 
-  return <ClientPage pageData={pageData} />;
+  const services = await prisma.service.findMany({
+    orderBy: { title: 'asc' }
+  });
+
+  return <ClientPage pageData={pageData} services={services} />;
 }

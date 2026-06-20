@@ -117,17 +117,17 @@ export default async function DepartmentDetailsPage({
                     const IconComponent = index % 2 === 0 ? HeartPulse : Shield;
                     
                     return (
-                      <div key={dept.id} className="bg-white border border-gray-100 rounded-2xl p-6 flex flex-col sm:flex-row sm:items-center gap-6 hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:-translate-y-0.5 transition-all duration-300">
-                        <div className="w-14 h-14 rounded-xl bg-[#007a87]/5 flex items-center justify-center shrink-0 border border-[#007a87]/10">
-                          <IconComponent className="w-7 h-7 text-[#007a87]" />
+                      <div key={dept.id} className="group bg-white border border-gray-100 rounded-2xl p-6 flex flex-col sm:flex-row sm:items-center gap-6 hover:border-[#D9232D] hover:shadow-[0_8px_30px_rgb(217,35,45,0.08)] hover:-translate-y-0.5 transition-all duration-300">
+                        <div className="w-14 h-14 rounded-xl bg-[#007a87]/5 group-hover:bg-[#D9232D]/5 flex items-center justify-center shrink-0 border border-[#007a87]/10 group-hover:border-[#D9232D]/20 transition-colors">
+                          <IconComponent className="w-7 h-7 text-[#007a87] group-hover:text-[#D9232D] transition-colors" />
                         </div>
                         <div className="flex-1">
-                          <h3 className="text-[18px] font-[900] text-[#002b5c] uppercase tracking-wide mb-2 leading-tight">
+                          <h3 className="text-[18px] font-[900] text-[#002b5c] group-hover:text-[#D9232D] uppercase tracking-wide mb-2 leading-tight transition-colors">
                             {dept.name}
                           </h3>
                           <Link 
                             href={`/doctors?department=${encodeURIComponent(dept.name)}`} 
-                            className="inline-flex items-center gap-1.5 text-[12px] font-[800] text-[#007a87] uppercase tracking-widest hover:text-[#002b5c] transition-colors"
+                            className="inline-flex items-center gap-1.5 text-[12px] font-[800] text-[#007a87] group-hover:text-[#D9232D] uppercase tracking-widest transition-colors"
                           >
                             VIEW DOCTORS <ArrowRight size={14} />
                           </Link>

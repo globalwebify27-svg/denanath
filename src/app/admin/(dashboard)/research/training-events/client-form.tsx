@@ -1,42 +1,90 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Save, HeartPulse } from "lucide-react";
-import dynamic from 'next/dynamic';
-import 'react-quill-new/dist/quill.snow.css';
+import { Save, HeartPulse, Plus, Trash2 } from "lucide-react";
 
-const ReactQuill = dynamic(() => import('react-quill-new'), { ssr: false });
-
-export default function TrainingAndEventsClientForm({ initialData }: { initialData: any }) {
+export default function TrainingEventsClientForm({ initialData }: { initialData: any }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState(initialData);
 
-  const handleChange = (field: string, value: any) => {
-    setData((prev: any) => ({ ...prev, [field]: value }));
+  useEffect(() => {
+    if (!data.events) {
+      setData((prev: any) => ({
+        ...prev,
+        events: []
+      }));
+    }
+  }, []);
+
+  const handleAddEvent = () => {
+    setData((prev: any) => ({
+      ...prev,
+      events: [...(prev.events || []), { topic: "", date: "", details: "" }]
+    }));
   };
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        handleChange("image", reader.result);
-      };
-      reader.readAsDataURL(file);
-    }
+  const handleRemoveEvent = (index: number) => {
+    setData((prev: any) => {
+      const newEvents = [...prev.events];
+      newEvents.splice(index, 1);
+      return { ...prev, events: newEvents };
+    });
+  };
+
+  const handleEventChange = (index: number, field: string, value: string) => {
+    setData((prev: any) => {
+      const newEvents = [...prev.events];
+      newEvents[index] = { ...newEvents[index], [field]: value };
+      return { ...prev, events: newEvents };
+    });
+  };
+
+  const generateHTML = (eventsList: any[]) => {
+    const cardsHtml = (eventsList || []).map(event => `
+      <div class="group bg-white border border-slate-200 rounded-xl p-5 md:p-6 mb-4 shadow-sm hover:border-red-400 hover:shadow-[0_4px_20px_rgba(248,113,113,0.3)] hover:-translate-y-1 transition-all duration-300">
+        <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-3">
+          <h3 class="text-[16px] md:text-[18px] font-bold text-[#002b5c] group-hover:text-[#007a87] transition-colors duration-300 flex-1 leading-snug">${event.topic}</h3>
+          <div class="shrink-0">
+            <span class="inline-block px-3 py-1.5 rounded-lg bg-teal-50 text-[#007a87] text-xs font-bold whitespace-nowrap">
+              ${event.date}
+            </span>
+          </div>
+        </div>
+        <div class="text-[14px] text-slate-600 leading-relaxed font-medium">
+          ${event.details}
+        </div>
+      </div>
+    `).join('');
+
+    return `
+      <div class="space-y-6">
+        <p class="text-[15px] text-slate-600 leading-relaxed">
+          Join our upcoming medical training sessions, workshops, and international conferences.
+        </p>
+        
+        <div class="flex flex-col relative z-10">
+          ${cardsHtml}
+        </div>
+      </div>
+    `;
   };
 
   const handleSave = async () => {
     setLoading(true);
     try {
+      const payload = {
+        ...data,
+        content: generateHTML(data.events || [])
+      };
+
       const res = await fetch("/api/settings", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           key: "page_research_training_events",
-          value: JSON.stringify(data),
+          value: JSON.stringify(payload),
           pathsToRevalidate: [
             "/admin/research/training-events",
             "/training-events"
@@ -56,22 +104,22 @@ export default function TrainingAndEventsClientForm({ initialData }: { initialDa
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 pb-20">
       <div className="mb-10 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 bg-white p-6 md:p-10 rounded-3xl shadow-sm border border-slate-100 relative overflow-hidden group">
-        <div className="absolute top-0 left-0 w-2 h-full bg-gradient-to-b from-[#002b5c] to-[#007a87]"></div>
+        <div className="absolute top-0 left-0 w-2 h-full bg-[#007a87]"></div>
         <div className="z-10 relative">
           <h1 className="text-[32px] md:text-[40px] font-black text-[#002b5c] tracking-tight leading-tight mb-2 flex items-center gap-3">
-            Training And Events
+            Research - Training & Events
           </h1>
           <p className="text-[15px] font-medium text-slate-500 max-w-xl leading-relaxed">
-            Manage content for Training And Events
+            Manage the training and events list for the research module.
           </p>
         </div>
         <div className="z-10 shrink-0 mt-4 lg:mt-0">
           <button
             onClick={handleSave}
             disabled={loading}
-            className="flex items-center gap-2 px-6 py-3 bg-[#D9232D] text-white font-bold rounded-full hover:bg-red-700 transition-colors shadow-sm disabled:opacity-50"
+            className="flex items-center gap-2 px-6 py-3 bg-[#007a87] text-white font-bold rounded-xl hover:bg-[#005f69] transition-colors shadow-sm disabled:opacity-50"
           >
             <Save size={20} />
             {loading ? "Saving..." : "Save Changes"}
@@ -83,51 +131,65 @@ export default function TrainingAndEventsClientForm({ initialData }: { initialDa
       </div>
 
       <div className="space-y-6">
-        <div>
-          <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Page Title</label>
-          <input 
-            value={data.title || ""} 
-            onChange={(e) => handleChange("title", e.target.value)}
-            className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium leading-relaxed"
-          />
-        </div>
-        
-        <div>
-          <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Header Image</label>
-          <div className="flex flex-col sm:flex-row sm:items-center gap-4 bg-slate-50 p-4 rounded-2xl border border-slate-200">
-            {data.image && (
-              <div className="shrink-0 relative group">
-                <img src={data.image} alt="Training And Events" className="w-32 h-20 object-cover rounded-xl border border-slate-200 shadow-sm" />
-                <button 
-                  type="button" 
-                  onClick={() => handleChange("image", "")} 
-                  className="absolute -top-2 -right-2 bg-red-500 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-                </button>
-              </div>
-            )}
-            <input 
-              type="file" 
-              accept="image/*"
-              onChange={handleImageChange}
-              className="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-teal-50 file:text-[#007a87] hover:file:bg-teal-100 transition-all cursor-pointer"
-            />
-          </div>
+        <div className="flex justify-between items-end mb-6 mt-10">
+          <h2 className="text-[20px] font-black text-[#002b5c]">Events List</h2>
+          <button 
+            onClick={handleAddEvent}
+            className="flex items-center gap-2 px-4 py-2 bg-[#002b5c] text-white text-sm font-bold rounded-xl hover:bg-[#001a38] transition-colors shadow-sm"
+          >
+            <Plus size={16} /> Add Event
+          </button>
         </div>
 
-        <div>
-          <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Content</label>
-          <div className="bg-white rounded-2xl overflow-hidden border border-slate-200">
-            <ReactQuill 
-              theme="snow" 
-              value={data.content || ""} 
-              onChange={(val) => handleChange("content", val)} 
-              className="h-[300px] pb-10"
-            />
-          </div>
+        <div className="space-y-6">
+          {(data.events || []).map((item: any, idx: number) => (
+            <div key={idx} className="bg-white border border-slate-100 p-6 rounded-2xl shadow-sm relative group flex flex-col gap-4">
+              <div className="flex gap-4 w-full">
+                <div className="flex-1 w-full">
+                  <label className="block text-[11px] font-extrabold text-[#002b5c] uppercase tracking-widest mb-2">Topic</label>
+                  <input 
+                    value={item.topic || ""} 
+                    onChange={(e) => handleEventChange(idx, "topic", e.target.value)}
+                    placeholder="e.g. Training-cum-seminar program..."
+                    className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all text-sm font-medium text-slate-700"
+                  />
+                </div>
+                <div className="flex-1 w-full">
+                  <label className="block text-[11px] font-extrabold text-[#002b5c] uppercase tracking-widest mb-2">Date</label>
+                  <input 
+                    value={item.date || ""} 
+                    onChange={(e) => handleEventChange(idx, "date", e.target.value)}
+                    placeholder="e.g. 8 February 2026"
+                    className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all text-sm font-medium text-slate-700"
+                  />
+                </div>
+                <div className="shrink-0 mt-8 self-start">
+                  <button 
+                    onClick={() => handleRemoveEvent(idx)}
+                    className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                    title="Remove Event"
+                  >
+                    <Trash2 size={20} />
+                  </button>
+                </div>
+              </div>
+
+              <div className="w-full">
+                <label className="block text-[11px] font-extrabold text-[#002b5c] uppercase tracking-widest mb-2">Details (HTML or Plain Text)</label>
+                <textarea 
+                  value={(item.details || "").replace(/<br\s*\/?>/gi, '\n')} 
+                  onChange={(e) => handleEventChange(idx, "details", e.target.value.replace(/\n/g, '<br/>'))}
+                  placeholder="e.g. Training organizer: Dr Shweta..."
+                  rows={4}
+                  className="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all text-sm text-slate-700 resize-y"
+                />
+              </div>
+
+            </div>
+          ))}
         </div>
       </div>
+
     </div>
   );
 }

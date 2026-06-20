@@ -3,29 +3,14 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Save, HeartPulse } from "lucide-react";
-import dynamic from 'next/dynamic';
-import 'react-quill-new/dist/quill.snow.css';
-
-const ReactQuill = dynamic(() => import('react-quill-new'), { ssr: false });
 
 export default function OnlinePaymentClientForm({ initialData }: { initialData: any }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [data, setData] = useState(initialData);
+  const [data, setData] = useState(initialData || {});
 
   const handleChange = (field: string, value: any) => {
     setData((prev: any) => ({ ...prev, [field]: value }));
-  };
-
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        handleChange("image", reader.result);
-      };
-      reader.readAsDataURL(file);
-    }
   };
 
   const handleSave = async () => {
@@ -64,14 +49,14 @@ export default function OnlinePaymentClientForm({ initialData }: { initialData: 
             Online Payment
           </h1>
           <p className="text-[15px] font-medium text-slate-500 max-w-xl leading-relaxed">
-            Manage content for Online Payment
+            Manage Online Payment page content.
           </p>
         </div>
         <div className="z-10 shrink-0 mt-4 lg:mt-0">
           <button
             onClick={handleSave}
             disabled={loading}
-            className="flex items-center gap-2 px-6 py-3 bg-[#D9232D] text-white font-bold rounded-full hover:bg-red-700 transition-colors shadow-sm disabled:opacity-50"
+            className="flex items-center gap-2 px-6 py-3 bg-[#007a87] text-white font-bold rounded-xl hover:bg-teal-700 transition-colors shadow-sm disabled:opacity-50"
           >
             <Save size={20} />
             {loading ? "Saving..." : "Save Changes"}
@@ -84,47 +69,26 @@ export default function OnlinePaymentClientForm({ initialData }: { initialData: 
 
       <div className="space-y-6">
         <div>
-          <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Page Title</label>
-          <input 
-            value={data.title || ""} 
-            onChange={(e) => handleChange("title", e.target.value)}
-            className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium leading-relaxed"
-          />
-        </div>
-        
-        <div>
-          <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Header Image</label>
-          <div className="flex flex-col sm:flex-row sm:items-center gap-4 bg-slate-50 p-4 rounded-2xl border border-slate-200">
-            {data.image && (
-              <div className="shrink-0 relative group">
-                <img src={data.image} alt="Online Payment" className="w-32 h-20 object-cover rounded-xl border border-slate-200 shadow-sm" />
-                <button 
-                  type="button" 
-                  onClick={() => handleChange("image", "")} 
-                  className="absolute -top-2 -right-2 bg-red-500 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-                </button>
-              </div>
-            )}
-            <input 
-              type="file" 
-              accept="image/*"
-              onChange={handleImageChange}
-              className="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-teal-50 file:text-[#007a87] hover:file:bg-teal-100 transition-all cursor-pointer"
-            />
-          </div>
-        </div>
-
-        <div>
-          <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Content</label>
-          <div className="bg-white rounded-2xl overflow-hidden border border-slate-200">
-            <ReactQuill 
-              theme="snow" 
-              value={data.content || ""} 
-              onChange={(val) => handleChange("content", val)} 
-              className="h-[300px] pb-10"
-            />
+          <h3 className="text-xl font-bold text-[#002b5c] border-b border-slate-200 pb-2 mb-6">Page Content</h3>
+          
+          <div className="space-y-6">
+            <div>
+              <label className="block text-[13px] font-extrabold text-[#002b5c] mb-2">Page Title</label>
+              <input 
+                value={data.title || ""} 
+                onChange={(e) => handleChange("title", e.target.value)}
+                className="w-full p-3 bg-white border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium leading-relaxed shadow-sm"
+              />
+            </div>
+            
+            <div>
+              <label className="block text-[13px] font-extrabold text-[#002b5c] mb-2">Security Badge Text</label>
+              <input 
+                value={data.securityBadgeText || ""} 
+                onChange={(e) => handleChange("securityBadgeText", e.target.value)}
+                className="w-full p-3 bg-white border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium leading-relaxed shadow-sm"
+              />
+            </div>
           </div>
         </div>
       </div>

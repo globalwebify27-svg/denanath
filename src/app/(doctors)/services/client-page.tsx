@@ -2,9 +2,9 @@
 
 import React, { useEffect, useRef } from "react";
 import Link from "next/link";
-import { ChevronRight, Stethoscope } from "lucide-react";
+import { ChevronRight, Stethoscope, ArrowRight, Activity } from "lucide-react";
 
-export default function ServicesClientPage({ pageData }: { pageData: any }) {
+export default function ServicesClientPage({ pageData, services }: { pageData: any, services?: any[] }) {
   const options = [
     {
         "name": "Doctor Details",
@@ -96,7 +96,7 @@ export default function ServicesClientPage({ pageData }: { pageData: any }) {
                   <span>Doctors & Departments</span>
                 </div>
                 <h2 className="text-3xl md:text-4xl font-extrabold text-[#002b5c] mb-6 tracking-tight">
-                  {pageData.title || "Services"}
+                  {pageData.title || "Our Specialities & Services"}
                 </h2>
                 <div className="w-20 h-1.5 bg-[#007a87] rounded-full mb-8"></div>
               </div>
@@ -107,17 +107,39 @@ export default function ServicesClientPage({ pageData }: { pageData: any }) {
                 </div>
               )}
               
-              {pageData.content ? (
+              {pageData.content && (
                 <div className="prose prose-slate max-w-none break-words whitespace-normal overflow-hidden [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:my-4 [&_ol]:list-decimal [&_ol]:pl-6 [&_ol]:my-4 [&_li]:mb-2 prose-p:leading-relaxed prose-headings:text-[#002b5c] text-slate-700" dangerouslySetInnerHTML={{ __html: pageData.content }} />
-              ) : (
-                <div className="py-16 text-center border-2 border-dashed border-slate-200 rounded-2xl bg-slate-50">
-                  <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-teal-100 mb-4">
-                    <Stethoscope className="w-8 h-8 text-[#007a87]" />
-                  </div>
-                  <h3 className="text-xl font-bold text-slate-700 mb-2">Content Coming Soon</h3>
-                  <p className="text-slate-500 max-w-md mx-auto">
-                    The information for this section is currently being updated. Please check back later.
-                  </p>
+              )}
+
+              {/* Dynamic Services List */}
+              {services && services.length > 0 && (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-12">
+                  {services.map((service, idx) => {
+                    let parsedItems: string[] = [];
+                    try { parsedItems = JSON.parse(service.items || "[]"); } catch (e) {}
+
+                    return (
+                      <div key={idx} className="bg-white border border-slate-100 rounded-[1.25rem] p-6 sm:p-8 hover:border-[#d9232d] hover:shadow-[0_8px_30px_rgb(217,35,45,0.08)] transition-all duration-300 group flex flex-col h-full">
+                        <div className="flex items-center gap-5 mb-8">
+                          <div className="w-[52px] h-[52px] rounded-2xl flex items-center justify-center shrink-0 bg-slate-50 text-[#002b5c] border border-slate-100 group-hover:bg-[#d9232d] group-hover:text-white group-hover:border-[#d9232d] transition-all duration-300">
+                            <Activity className="w-7 h-7" />
+                          </div>
+                          <h3 className="text-[22px] font-[900] text-[#002b5c] group-hover:text-[#d9232d] tracking-tight leading-tight transition-colors duration-300">{service.title}</h3>
+                        </div>
+                        <div className="mt-auto border-t border-slate-100/80 pt-6 space-y-3">
+                          {parsedItems.map((item, i) => (
+                            <div key={i} className="flex items-start gap-3 text-[#007a87] text-[15px] font-[600] group/item">
+                              <ArrowRight className="w-[18px] h-[18px] shrink-0 mt-[2px] transition-transform group-hover/item:translate-x-1" />
+                              <span className="text-slate-600 group-hover/item:text-[#002b5c] transition-colors">{item}</span>
+                            </div>
+                          ))}
+                          {parsedItems.length === 0 && (
+                            <div className="text-slate-400 text-sm italic">No specific items listed</div>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
               )}
 

@@ -8,7 +8,7 @@ export default function SponsorsCROsClientPage({ pageData }: { pageData: any }) 
   const options = [
     {
         "name": "About Us",
-        "href": "/about",
+        "href": "/research-about",
         "active": false
     },
     {
@@ -133,7 +133,7 @@ export default function SponsorsCROsClientPage({ pageData }: { pageData: any }) 
               )}
               
               {pageData.content ? (
-                <div className="prose prose-slate max-w-none break-words whitespace-normal overflow-hidden [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:my-4 [&_ol]:list-decimal [&_ol]:pl-6 [&_ol]:my-4 [&_li]:mb-2 prose-p:leading-relaxed prose-headings:text-[#002b5c] text-slate-700" dangerouslySetInnerHTML={{ __html: pageData.content }} />
+                <div dangerouslySetInnerHTML={{ __html: pageData.content }} />
               ) : (
                 <div className="py-16 text-center border-2 border-dashed border-slate-200 rounded-2xl bg-slate-50">
                   <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-teal-100 mb-4">
