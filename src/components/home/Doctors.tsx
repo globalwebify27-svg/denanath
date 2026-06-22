@@ -103,7 +103,7 @@ export default function DoctorsSection() {
                 key={index}
                 whileHover={{ y: -6 }}
                 className="
-                  min-w-full sm:min-w-[260px] max-w-[260px]
+                  w-[280px] sm:w-[260px]
                   rounded-[1.5rem] text-center border border-slate-200 bg-white shadow-sm
                   snap-start overflow-hidden flex-shrink-0 flex flex-col
                 "

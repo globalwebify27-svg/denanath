@@ -150,6 +150,14 @@ export default function Navbar() {
         { name: "Patient Registration Form", href: "/patient-registration" },
       ],
     },
+    {
+      name: "Careers",
+      href: "/careers",
+    },
+    {
+      name: "Contact Us",
+      href: "/contact-us",
+    },
   ];
 
   const toggleMobileDropdown = (name: string) => {
@@ -161,7 +169,7 @@ export default function Navbar() {
   };
 
   return (
-    <header className="w-full z-50 flex flex-col select-none" style={{ fontFamily: 'var(--font-plus-jakarta), sans-serif' }}>
+    <header className="w-full z-50 flex flex-col select-none" style={{ fontFamily: '"Plus Jakarta Sans", "Plus Jakarta Sans Fallback", sans-serif' }}>
       <style dangerouslySetInnerHTML={{__html: `
         body { top: 0 !important; }
         iframe.skiptranslate { display: none !important; }
@@ -181,10 +189,6 @@ export default function Navbar() {
             <Link href="/patient-guide" className="hover:text-white transition-colors">My Reports</Link>
             <span className="opacity-30">|</span>
             <Link href="/research-about" className="hover:text-white transition-colors">Research</Link>
-            <span className="opacity-30">|</span>
-            <Link href="/careers" className="hover:text-white transition-colors">Careers</Link>
-            <span className="opacity-30">|</span>
-            <Link href="/contact-us" className="hover:text-white transition-colors">Contact Us</Link>
           </div>
 
           <div className="flex items-center gap-2 xl:gap-3 2xl:gap-4 font-bold tracking-wide">
@@ -217,6 +221,41 @@ export default function Navbar() {
                 </div>
               </div>
             </div>
+            <span className="opacity-30">|</span>
+            <div className="flex items-center gap-2">
+              <a 
+                href="https://play.google.com/store/apps/details?id=org.dmhospital.app&hl=en" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="flex items-center gap-1.5 bg-black hover:bg-slate-900 border border-slate-700/50 px-2 py-0.5 rounded transition-all hover:scale-105"
+              >
+                <svg viewBox="0 0 1024 1024" className="w-3.5 h-3.5">
+                  <path fill="#00E676" d="M104.5 125.1v773.8c0 14.3 8.3 26.6 20.4 32.5l398.8-419.4L104.5 125.1z" />
+                  <path fill="#FF3D00" d="M523.7 512l153.9-161.8L160.7 53.6c-17.7-10.2-38.9-8-56.2 3.8l419.2 454.6z" />
+                  <path fill="#FFC107" d="M677.6 350.2l198.5 114.6c24 13.9 24 48.7 0 62.6L677.6 642l-153.9-130 153.9-161.8z" />
+                  <path fill="#00B0FF" d="M523.7 512L104.5 898.9c17.3 11.8 38.5 14 56.2 3.8L677.6 642 523.7 512z" />
+                </svg>
+                <div className="flex flex-col items-start leading-[1] text-left mt-0.5">
+                  <span className="text-[5px] text-slate-300 font-medium uppercase tracking-wider">Get it on</span>
+                  <span className="text-[10px] text-white font-semibold">Google Play</span>
+                </div>
+              </a>
+
+              <a 
+                href="https://apps.apple.com/in/app/deenanath-mangeshkar-hospital/id1187525263" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="flex items-center gap-1.5 bg-black hover:bg-slate-900 border border-slate-700/50 px-2 py-0.5 rounded transition-all hover:scale-105"
+              >
+                <svg viewBox="0 0 384 512" className="w-3.5 h-3.5 fill-white">
+                  <path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"></path>
+                </svg>
+                <div className="flex flex-col items-start leading-[1] text-left mt-0.5">
+                  <span className="text-[5px] text-slate-300 font-medium">Download on the</span>
+                  <span className="text-[10px] text-white font-semibold">App Store</span>
+                </div>
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -233,26 +272,23 @@ export default function Navbar() {
             {/* DMH Logo Section */}
             <div className="flex items-center shrink-0">
               <Link href="/" className="flex items-center gap-1.5 sm:gap-2 group focus:outline-none">
-                <div className="relative flex items-center justify-center w-[160px] h-[55px] sm:w-[200px] sm:h-[65px] lg:w-[220px] lg:h-[70px] xl:w-[240px] xl:h-[75px] 2xl:w-[280px] 2xl:h-[90px] shrink-0 transition-all">
+                <div className="relative flex items-center justify-center w-[200px] h-[55px] sm:w-[240px] sm:h-[65px] lg:w-[280px] lg:h-[70px] xl:w-[240px] xl:h-[60px] 2xl:w-[320px] 2xl:h-[75px] shrink-0 transition-all">
                   <img
                     src="/images/Untitled design11.png"
                     alt="DMH Logo"
                     className="w-full h-full object-contain mix-blend-multiply"
                   />
                 </div>
-
               </Link>
-
-
             </div>
 
             {/* Desktop Navigation Links */}
-            <div className="hidden xl:flex items-center justify-center flex-1 mx-2 xl:mx-4 2xl:mx-8 gap-2 xl:gap-3 2xl:gap-6 transition-all">
+            <div className="hidden xl:flex items-center justify-center flex-1 mx-2 xl:mx-1 2xl:mx-6 gap-2 xl:gap-1.5 2xl:gap-4 transition-all">
               {navLinks.map((link, idx) => (
                 <div key={idx} className="relative group py-2">
                   <Link 
                     href={link.href} 
-                    className="text-[10px] xl:text-[11px] 2xl:text-[13px] leading-[18px] font-semibold text-slate-700 hover:text-[#007a87] uppercase tracking-wide transition-colors flex items-center gap-1 whitespace-nowrap"
+                    className="text-[10px] xl:text-[9.5px] 2xl:text-[12px] leading-[18px] font-semibold text-slate-700 hover:text-[#007a87] uppercase tracking-wide transition-colors flex items-center gap-0.5 2xl:gap-1 whitespace-nowrap"
                   >
                     <span>{link.name}</span>
                     {link.dropdown && <ChevronDown className="w-3 h-3 opacity-60 group-hover:rotate-180 transition-transform shrink-0" />}
@@ -290,7 +326,7 @@ export default function Navbar() {
 
               <Link
                 href="/book-appointment"
-                className="bg-[#d9232d] hover:bg-[#b81d24] leading-[18px] text-white px-3 xl:px-4 2xl:px-6 py-2 xl:py-2.5 2xl:py-3 rounded-md font-bold text-[10px] xl:text-[11px] 2xl:text-[13px] uppercase tracking-wider flex items-center gap-1 transition-all shadow-sm whitespace-nowrap shrink-0"
+                className="bg-[#d9232d] hover:bg-[#b81d24] leading-[18px] text-white px-3 xl:px-3 2xl:px-6 py-2 xl:py-2 2xl:py-3 rounded-md font-bold text-[10px] xl:text-[10px] 2xl:text-[13px] uppercase tracking-wider flex items-center gap-1 transition-all shadow-sm whitespace-nowrap shrink-0"
               >
                 <span>Book Appointment</span>
               </Link>

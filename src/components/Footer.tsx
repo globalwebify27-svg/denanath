@@ -26,7 +26,7 @@ export default function Footer() {
           {/* Logo & Brand Column */}
           <div className="space-y-6">
             <Link href="/" className="flex items-center gap-3.5 group">
-              <div className="flex items-center justify-center w-10/12 h-auto py-2 px-3 rounded-lg bg-white shadow-xl ring-4 ring-white/10 group-hover:scale-105 transition-transform">
+              <div className="flex items-center justify-center w-[240px] sm:w-[280px] md:w-[320px] lg:w-[340px] xl:w-[380px] h-auto py-3 px-4 rounded-xl bg-white shadow-xl ring-4 ring-white/10 group-hover:scale-[1.02] transition-transform">
                 <img 
                   src="/images/Untitled design11.png" 
                   alt="Deenanath Mangeshkar Hospital & Research Center" 
@@ -34,13 +34,32 @@ export default function Footer() {
                 />
               </div>
             </Link>
-            <div className="w-10/12 sm:w-full space-y-6">
+            <div className="w-full space-y-6">
               <p className="text-xs text-[#b2dfdb] leading-relaxed font-light">
                 Deenanath Mangeshkar Hospital and Research Center is Pune&apos;s leading clinical landmark, combining state-of-the-art diagnostics with legendary medical experts and warm, ethical care.
               </p>
               <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-white/10 text-[10px] font-semibold text-white">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#a7ffeb] animate-ping" />
                 <span>Managed by Lata Mangeshkar Foundation</span>
+              </div>
+              
+              {/* Social Links */}
+              <div className="flex items-center gap-4 pt-4">
+                <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-[#1877F2] hover:border-[#1877F2] hover:-translate-y-1 transition-all group shadow-sm" aria-label="Facebook">
+                  <svg className="w-5 h-5 text-[#b2dfdb] group-hover:text-white fill-current transition-colors" viewBox="0 0 24 24">
+                    <path d="M15.12 5.32H17V2.14A26.11 26.11 0 0 0 14.26 2c-2.72 0-4.58 1.66-4.58 4.7v2.62H6.61v3.56h3.07V22h3.68v-9.12h3.06l.46-3.56h-3.52V7.05c0-1.05.28-1.73 1.76-1.73z" />
+                  </svg>
+                </a>
+                <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-black hover:border-black hover:-translate-y-1 transition-all group shadow-sm" aria-label="X (Twitter)">
+                  <svg className="w-4 h-4 text-[#b2dfdb] group-hover:text-white fill-current transition-colors" viewBox="0 0 24 24">
+                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                  </svg>
+                </a>
+                <a href="https://www.youtube.com" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-[#FF0000] hover:border-[#FF0000] hover:-translate-y-1 transition-all group shadow-sm" aria-label="YouTube">
+                  <svg className="w-5 h-5 text-[#b2dfdb] group-hover:text-white fill-current transition-colors" viewBox="0 0 24 24">
+                    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+                  </svg>
+                </a>
               </div>
             </div>
           </div>
@@ -129,6 +148,26 @@ export default function Footer() {
                   <ExternalLink className="w-4 h-4 text-[#a7ffeb] group-hover/btn:scale-110 transition-transform" />
                   <span>Get Campus Directions</span>
                 </a>
+              </div>
+
+              {/* Events / News Section */}
+              <div className="pt-8">
+                <h4 className="text-white font-medium text-[15px] mb-4">
+                  Events / News
+                </h4>
+                <div className="flex items-center gap-4">
+                  <div className="w-[70px] h-[36px] shrink-0 rounded-md overflow-hidden border border-white/80 bg-black/20">
+                    <img 
+                      src="/images/unnamed (7).webp" 
+                      alt="Diabetes Nursing Conference 2026" 
+                      className="w-full h-full object-cover opacity-90 hover:opacity-100 transition-opacity"
+                    />
+                  </div>
+                  <Link href="/events" className="text-[#b2dfdb] hover:text-[#a7ffeb] transition-colors text-[13px] leading-snug">
+                    Diabetes Nursing<br />Conference 2026
+                  </Link>
+                </div>
+                <div className="mt-5 border-b border-dashed border-white/20 w-11/12"></div>
               </div>
             </div>
           </div>
