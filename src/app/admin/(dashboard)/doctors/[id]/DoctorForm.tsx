@@ -11,14 +11,63 @@ export default function DoctorForm({ doctor, id }: { doctor: any; id: string }) 
   const [loading, setLoading] = useState(false);
   
   // Parse JSON strings to objects/arrays safely
-  const safeParse = (data: any) => {
-    if (!data) return [];
-    if (typeof data !== 'string') return data;
+  const safeParse = (str: any) => {
+    if (!str) return [];
+    if (typeof str !== 'string') return str;
+    
     try {
-      return JSON.parse(data);
+      return JSON.parse(str);
     } catch (e) {
-      console.error("Error parsing JSON:", e);
-      return [];
+      const clean = str.trim();
+      if (!clean.startsWith('[')) {
+        return [];
+      }
+      
+      if (clean.includes('"branch"') || clean.includes('"day"') || clean.includes('"time"')) {
+        const matches = [...clean.matchAll(/\{[^}]*\}/g)];
+        const result: any[] = [];
+        for (const m of matches) {
+          try {
+            let objStr = m[0];
+            if (!objStr.endsWith('}')) objStr += '}';
+            result.push(JSON.parse(objStr));
+          } catch (err) {}
+        }
+        return result;
+      }
+
+      const result: string[] = [];
+      const stringRegex = /"([^"\\]|\\.)*"/g;
+      let match;
+      let lastIndex = 0;
+      
+      const content = clean.substring(1);
+      while ((match = stringRegex.exec(content)) !== null) {
+        try {
+          result.push(JSON.parse(match[0]));
+        } catch (err) {}
+        lastIndex = stringRegex.lastIndex;
+      }
+      
+      const remaining = content.substring(lastIndex).trim();
+      let rawStr = remaining;
+      if (rawStr.startsWith(',')) {
+        rawStr = rawStr.substring(1).trim();
+      }
+      if (rawStr.startsWith('"')) {
+        let unclosed = rawStr.substring(1);
+        if (unclosed.endsWith('\\')) {
+          unclosed = unclosed.substring(0, unclosed.length - 1);
+        }
+        unclosed = unclosed.replace(/\]\s*$/, '');
+        try {
+          result.push(JSON.parse('"' + unclosed + '"'));
+        } catch (err) {
+          if (unclosed) result.push(unclosed);
+        }
+      }
+      
+      return result;
     }
   };
 

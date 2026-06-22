@@ -13,7 +13,61 @@ export default function DoctorDetailsPage() {
   useEffect(() => {
     const safeParse = (str: any) => {
       if (!str) return [];
-      try { return JSON.parse(str); } catch (e) { return []; }
+      if (typeof str !== 'string') return str;
+      try {
+        return JSON.parse(str);
+      } catch (e) {
+        const clean = str.trim();
+        if (!clean.startsWith('[')) {
+          return [];
+        }
+        
+        if (clean.includes('"branch"') || clean.includes('"day"') || clean.includes('"time"')) {
+          const matches = [...clean.matchAll(/\{[^}]*\}/g)];
+          const result: any[] = [];
+          for (const m of matches) {
+            try {
+              let objStr = m[0];
+              if (!objStr.endsWith('}')) objStr += '}';
+              result.push(JSON.parse(objStr));
+            } catch (err) {}
+          }
+          return result;
+        }
+
+        const result: string[] = [];
+        const stringRegex = /"([^"\\]|\\.)*"/g;
+        let match;
+        let lastIndex = 0;
+        
+        const content = clean.substring(1);
+        while ((match = stringRegex.exec(content)) !== null) {
+          try {
+            result.push(JSON.parse(match[0]));
+          } catch (err) {}
+          lastIndex = stringRegex.lastIndex;
+        }
+        
+        const remaining = content.substring(lastIndex).trim();
+        let rawStr = remaining;
+        if (rawStr.startsWith(',')) {
+          rawStr = rawStr.substring(1).trim();
+        }
+        if (rawStr.startsWith('"')) {
+          let unclosed = rawStr.substring(1);
+          if (unclosed.endsWith('\\')) {
+            unclosed = unclosed.substring(0, unclosed.length - 1);
+          }
+          unclosed = unclosed.replace(/\]\s*$/, '');
+          try {
+            result.push(JSON.parse('"' + unclosed + '"'));
+          } catch (err) {
+            if (unclosed) result.push(unclosed);
+          }
+        }
+        
+        return result;
+      }
     };
 
     fetch('/api/doctors')
