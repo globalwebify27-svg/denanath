@@ -32,8 +32,19 @@ export default function PatientRegistrationFormPage({ pageData }: { pageData: an
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [captchaCode, setCaptchaCode] = useState("Bnvy");
+
+  const generateCaptcha = () => {
+    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    let result = "";
+    for (let i = 0; i < 4; i++) {
+      result += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    setCaptchaCode(result);
+  };
 
   useEffect(() => {
+    generateCaptcha();
     if (window.innerWidth < 1024 && scrollContainerRef.current) {
       const activeEl = scrollContainerRef.current.querySelector('[data-active="true"]') as HTMLElement;
       if (activeEl) {
@@ -1209,9 +1220,9 @@ export default function PatientRegistrationFormPage({ pageData }: { pageData: an
                       </label>
                       <div className="flex flex-row items-center justify-center gap-2 sm:gap-4 mb-5 bg-white p-3 sm:p-5 rounded-2xl border border-slate-200 shadow-sm">
                         <div className="bg-slate-800 px-4 sm:px-8 py-3 sm:py-3.5 tracking-widest sm:tracking-[0.5em] font-serif text-xl sm:text-2xl text-white select-none font-bold rounded-xl shadow-inner border border-slate-700">
-                          Bnvy
+                          {captchaCode}
                         </div>
-                        <button type="button" className="text-blue-500 hover:text-blue-700 transition-colors bg-blue-50 hover:bg-blue-100 p-3 sm:p-3.5 rounded-xl border border-blue-100 shadow-sm shrink-0">
+                        <button type="button" onClick={generateCaptcha} className="text-blue-500 hover:text-blue-700 transition-colors bg-blue-50 hover:bg-blue-100 p-3 sm:p-3.5 rounded-xl border border-blue-100 shadow-sm shrink-0">
                           <RefreshCw className="w-5 h-5 sm:w-6 sm:h-6" />
                         </button>
                       </div>
