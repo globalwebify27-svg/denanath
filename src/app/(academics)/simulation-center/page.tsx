@@ -17,5 +17,25 @@ export default async function SimulationCenterPage() {
     } 
   } catch (e) {}
 
-  return <SimulationCenterClient initialData={pageData} />;
+  const parseJSON = (s: any, defaultTitle: string) => { 
+    try { 
+      return s ? JSON.parse(s.value) : { title: defaultTitle, content: "", image: "" }; 
+    } catch(e) { 
+      return { title: defaultTitle, content: "", image: "" }; 
+    } 
+  };
+
+  const lab1 = await prisma.siteSetting.findUnique({ where: { key: 'page_simulation_lab1' } });
+  const lab2 = await prisma.siteSetting.findUnique({ where: { key: 'page_simulation_lab2' } });
+  const lab3 = await prisma.siteSetting.findUnique({ where: { key: 'page_simulation_lab3' } });
+  const other = await prisma.siteSetting.findUnique({ where: { key: 'page_simulation_other_facilities' } });
+
+  const labsData = {
+    lab1: parseJSON(lab1, "Simulation Lab 1"),
+    lab2: parseJSON(lab2, "Simulation Lab 2"),
+    lab3: parseJSON(lab3, "Simulation Lab 3"),
+    other: parseJSON(other, "Other facilities on 14th floor")
+  };
+
+  return <SimulationCenterClient initialData={pageData} labsData={labsData} />;
 }

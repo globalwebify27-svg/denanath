@@ -24,7 +24,6 @@ export default function GalleryPhotosClientPage({ pageData }: { pageData: any })
   const displayCategories = categories.includes("ALL") ? categories : ["ALL", ...categories];
 
   const [activeCategory, setActiveCategory] = useState("ALL");
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   const filteredPhotos = activeCategory === "ALL" 
     ? photos 
@@ -135,8 +134,8 @@ export default function GalleryPhotosClientPage({ pageData }: { pageData: any })
                 {filteredPhotos.map((photo: any, idx: number) => (
                   <div 
                     key={idx} 
-                    className="group cursor-zoom-in bg-white rounded-2xl border border-slate-200 overflow-hidden hover:shadow-xl hover:border-teal-300 transition-all duration-300 flex flex-col h-full"
-                    onClick={() => photo.url && setSelectedImage(photo.url)}
+                    className="group cursor-pointer bg-white rounded-2xl border border-slate-200 overflow-hidden hover:shadow-xl hover:border-teal-300 transition-all duration-300 flex flex-col h-full"
+                    onClick={() => photo.url && window.open(photo.url, '_blank')}
                   >
                     {/* Photo Thumbnail */}
                     <div className="aspect-[4/3] bg-slate-100 flex items-center justify-center relative overflow-hidden group-hover:bg-slate-200 transition-colors">
@@ -186,28 +185,6 @@ export default function GalleryPhotosClientPage({ pageData }: { pageData: any })
         </div>
       </div>
 
-      {/* Lightbox Modal */}
-      {selectedImage && (
-        <div 
-          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 p-4 backdrop-blur-sm cursor-zoom-out animate-fadeIn"
-          onClick={() => setSelectedImage(null)}
-        >
-          <div className="relative max-w-7xl max-h-[90vh] w-full h-full flex items-center justify-center">
-            <button 
-              className="absolute top-4 right-4 z-10 p-2 bg-white/10 hover:bg-white/20 text-white rounded-full backdrop-blur-md transition-colors cursor-pointer"
-              onClick={(e) => { e.stopPropagation(); setSelectedImage(null); }}
-            >
-              <X className="w-6 h-6" />
-            </button>
-            <img 
-              src={selectedImage} 
-              alt="Zoomed Photo" 
-              className="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl cursor-default"
-              onClick={(e) => e.stopPropagation()} 
-            />
-          </div>
-        </div>
-      )}
     </div>
   );
 }
