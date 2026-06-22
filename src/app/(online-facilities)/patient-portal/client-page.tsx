@@ -36,8 +36,19 @@ export default function PatientPortalPage({ pageData }: { pageData: any }) {
   const registerFormRef = useRef<HTMLFormElement>(null);
   const [isLoginSubmitting, setIsLoginSubmitting] = useState(false);
   const [isRegisterSubmitting, setIsRegisterSubmitting] = useState(false);
+  const [captchaCode, setCaptchaCode] = useState("l z X Y");
+
+  const generateCaptcha = () => {
+    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    let result = "";
+    for (let i = 0; i < 4; i++) {
+      result += chars.charAt(Math.floor(Math.random() * chars.length)) + " ";
+    }
+    setCaptchaCode(result.trim());
+  };
 
   useEffect(() => {
+    generateCaptcha();
     if (window.innerWidth < 1024 && scrollContainerRef.current) {
       const activeEl = scrollContainerRef.current.querySelector('[data-active="true"]') as HTMLElement;
       if (activeEl) {
@@ -221,10 +232,10 @@ export default function PatientPortalPage({ pageData }: { pageData: any }) {
                           </label>
                           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
                             <div className="flex items-center gap-3">
-                              <div className="bg-slate-800 text-white px-5 py-2.5 rounded-lg tracking-widest font-mono font-bold text-lg select-none shadow-inner border border-slate-700">
-                                l z X Y
+                              <div className="bg-slate-800 text-white px-5 py-2.5 rounded-lg tracking-widest font-mono font-bold text-lg select-none shadow-inner border border-slate-700 w-32 text-center">
+                                {captchaCode}
                               </div>
-                              <button type="button" className="text-blue-500 hover:text-blue-600 transition-colors bg-blue-50 p-2.5 rounded-lg hover:bg-blue-100">
+                              <button type="button" onClick={generateCaptcha} className="text-blue-500 hover:text-blue-600 transition-colors bg-blue-50 p-2.5 rounded-lg hover:bg-blue-100">
                                 <RefreshCw className="w-5 h-5" />
                               </button>
                             </div>

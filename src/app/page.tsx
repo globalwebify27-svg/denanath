@@ -17,6 +17,7 @@ import Trust_Credibility from "@/components/home/Trust_Credibility";
 import DoctorsSection from "@/components/home/Doctors";
 import PatientJourney from "@/components/home/Patient";
 import EmergencyCTA from "@/components/home/EmergencyCTA";
+import CoursesAndPricing from "@/components/home/CoursesAndPricing";
 
 export default function Home() {
   const { doctors, departments } = useHospital();
@@ -56,6 +57,8 @@ export default function Home() {
       <EmergencyCTA/>
 
       {/* 7. CLINICAL HUB SECTION */}
+
+      <CoursesAndPricing />
 
       {/* 8. PATIENT REVIEWS & STORIES */}
       <PatientReviews />
