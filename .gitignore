@@ -48,3 +48,7 @@ next-env.d.ts
 
 # Scratch directory
 /scratch/
+
+# Database migration scripts
+migrate.js
+print-schema.js
