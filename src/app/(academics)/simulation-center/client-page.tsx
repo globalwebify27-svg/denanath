@@ -214,7 +214,19 @@ export default function SimulationCenterClient({ initialData, labsData }: { init
                                   <p className="mb-8 text-slate-500 italic">Content for this section will be updated soon.</p>
                                 )}
 
-                                {labInfo?.image && (
+                                {labInfo?.gallery && labInfo.gallery.length > 0 ? (
+                                  <div className="mt-8 space-y-6">
+                                    {labInfo.gallery.map((img: string, idx: number) => (
+                                      <div key={idx} className="rounded-2xl overflow-hidden border border-slate-100 shadow-sm">
+                                        <img 
+                                          src={img} 
+                                          alt={`${labInfo.title} ${idx + 1}`} 
+                                          className="w-full h-auto max-h-[500px] object-cover"
+                                        />
+                                      </div>
+                                    ))}
+                                  </div>
+                                ) : labInfo?.image ? (
                                   <div className="mt-8 rounded-2xl overflow-hidden border border-slate-100 shadow-sm">
                                     <img 
                                       src={labInfo.image} 
@@ -222,7 +234,7 @@ export default function SimulationCenterClient({ initialData, labsData }: { init
                                       className="w-full h-auto max-h-[500px] object-cover"
                                     />
                                   </div>
-                                )}
+                                ) : null}
                               </div>
                             )}
                           </div>

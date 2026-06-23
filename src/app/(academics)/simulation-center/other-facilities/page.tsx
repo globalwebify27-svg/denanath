@@ -41,9 +41,15 @@ export default async function OtherFacilitieson14thFloorPage() {
             <p className="mb-10 text-slate-500 italic">Content for this section will be updated soon.</p>
           )}
 
-          {pageData.image && (
-            <div className="rounded-2xl overflow-hidden border border-slate-200">
-              <img src={pageData.image} alt={pageData.title} className="w-full h-auto object-contain max-h-[500px] bg-slate-50" />
+          {pageData.gallery && pageData.gallery.length > 0 && (
+            <div className="mb-10">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {pageData.gallery.map((img: string, idx: number) => (
+                  <div key={idx} className="rounded-2xl overflow-hidden border border-slate-200">
+                    <img src={img} alt={`${pageData.title} Image ${idx + 1}`} className="w-full h-auto object-cover max-h-[400px] bg-slate-50" />
+                  </div>
+                ))}
+              </div>
             </div>
           )}
         </div>

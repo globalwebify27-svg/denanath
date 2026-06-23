@@ -49,11 +49,19 @@ export default async function SimulationLab1Page() {
             <p className="mb-10 text-slate-500 italic">Content for this section will be updated soon.</p>
           )}
 
-          {pageData.image && (
-            <div className="rounded-2xl overflow-hidden border border-slate-200">
+          {pageData.gallery && pageData.gallery.length > 0 ? (
+            <div className="mt-8 space-y-6">
+              {pageData.gallery.map((img: string, idx: number) => (
+                <div key={idx} className="rounded-2xl overflow-hidden border border-slate-200 shadow-sm">
+                  <img src={img} alt={`${pageData.title} Image ${idx + 1}`} className="w-full h-auto max-h-[500px] object-contain bg-slate-50" />
+                </div>
+              ))}
+            </div>
+          ) : pageData.image ? (
+            <div className="mt-8 rounded-2xl overflow-hidden border border-slate-200">
               <img src={pageData.image} alt={pageData.title} className="w-full h-auto object-contain max-h-[500px] bg-slate-50" />
             </div>
-          )}
+          ) : null}
         </div>
       </div>
     </div>

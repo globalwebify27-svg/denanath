@@ -32,7 +32,7 @@ export default function TrainingProgramsClientForm({ initialData }: { initialDat
         <div>
           <div className="flex justify-between items-center mb-4 gap-2">
             <label className="block text-sm font-bold text-slate-700">Programs List</label>
-            <button type="button" onClick={() => addToArray("programs", "")} className="flex items-center gap-1 bg-[#D9232D] text-white hover:bg-[#b81d26] px-2 py-1 sm:px-3 sm:py-1.5 rounded-lg text-xs sm:text-sm font-bold transition-colors shrink-0">
+            <button type="button" onClick={() => addToArray("programs", { name: "", pdfLink: "" })} className="flex items-center gap-1 bg-[#D9232D] text-white hover:bg-[#b81d26] px-2 py-1 sm:px-3 sm:py-1.5 rounded-lg text-xs sm:text-sm font-bold transition-colors shrink-0">
               <Plus className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> Add Program
             </button>
           </div>
@@ -40,15 +40,45 @@ export default function TrainingProgramsClientForm({ initialData }: { initialDat
             {(!data.programs || data.programs.length === 0) && (
               <p className="text-sm text-gray-500 italic">No programs currently available.</p>
             )}
-            {data.programs?.map((item: string, idx: number) => (
-              <div key={idx} className="flex gap-2 items-center bg-slate-50 p-2 rounded-xl border border-slate-200">
-                <input 
-                  value={item} 
-                  onChange={(e) => handleArrayChange("programs", idx, e.target.value)} 
-                  className="flex-1 p-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium"
-                  placeholder="Program Name"
-                />
-                <button type="button" onClick={() => removeFromArray("programs", idx)} className="text-[#D9232D] hover:text-[#D9232D] p-2"><Trash2 size={20} color="#D9232D" /></button>
+            {data.programs?.map((item: any, idx: number) => (
+              <div key={idx} className="flex flex-col gap-2 bg-slate-50 p-3 rounded-xl border border-slate-200">
+                <div className="flex gap-2 items-center">
+                  <input 
+                    value={typeof item === 'string' ? item : item?.name || ""} 
+                    onChange={(e) => {
+                      const newArray = [...(data.programs || [])];
+                      const current = newArray[idx];
+                      if (typeof current === 'string') {
+                        newArray[idx] = { name: e.target.value, pdfLink: "" };
+                      } else {
+                        newArray[idx] = { ...current, name: e.target.value };
+                      }
+                      handleChange("programs", newArray);
+                    }} 
+                    className="flex-1 p-3 bg-white border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium"
+                    placeholder="Program Name"
+                  />
+                  <button type="button" onClick={() => removeFromArray("programs", idx)} className="text-[#D9232D] hover:bg-red-50 p-2 rounded-lg transition-colors shrink-0">
+                    <Trash2 size={20} />
+                  </button>
+                </div>
+                <div className="flex gap-2 items-center pr-10">
+                  <input 
+                    value={typeof item === 'string' ? "" : item?.pdfLink || ""} 
+                    onChange={(e) => {
+                      const newArray = [...(data.programs || [])];
+                      const current = newArray[idx];
+                      if (typeof current === 'string') {
+                        newArray[idx] = { name: current, pdfLink: e.target.value };
+                      } else {
+                        newArray[idx] = { ...current, pdfLink: e.target.value };
+                      }
+                      handleChange("programs", newArray);
+                    }} 
+                    className="flex-1 p-2 text-sm bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-500"
+                    placeholder="PDF Link URL (e.g. https://.../file.pdf)"
+                  />
+                </div>
               </div>
             ))}
           </div>
