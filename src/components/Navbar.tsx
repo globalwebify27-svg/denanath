@@ -189,6 +189,8 @@ export default function Navbar() {
             <Link href="/patient-guide" className="hover:text-white transition-colors">My Reports</Link>
             <span className="opacity-30">|</span>
             <Link href="/research-about" className="hover:text-white transition-colors">Research</Link>
+            <span className="opacity-30">|</span>
+            <span className="font-bold text-[#FFD700]">25 Years of Trust and Care</span>
           </div>
 
           <div className="flex items-center gap-2 xl:gap-3 2xl:gap-4 font-bold tracking-wide">
@@ -272,7 +274,7 @@ export default function Navbar() {
             {/* DMH Logo Section */}
             <div className="flex items-center shrink-0">
               <Link href="/" className="flex items-center gap-1.5 sm:gap-2 group focus:outline-none">
-                <div className="relative flex items-center justify-center w-[200px] h-[55px] sm:w-[240px] sm:h-[65px] lg:w-[280px] lg:h-[70px] xl:w-[240px] xl:h-[60px] 2xl:w-[320px] 2xl:h-[75px] shrink-0 transition-all">
+                <div className="relative flex items-center justify-center w-[200px] h-[55px] sm:w-[240px] sm:h-[65px] lg:w-[280px] lg:h-[70px] xl:w-[210px] xl:h-[55px] 2xl:w-[260px] 2xl:h-[65px] shrink-0 transition-all">
                   <img
                     src="/images/Untitled design11.png"
                     alt="DMH Logo"
@@ -283,12 +285,12 @@ export default function Navbar() {
             </div>
 
             {/* Desktop Navigation Links */}
-            <div className="hidden xl:flex items-center justify-center flex-1 mx-2 xl:mx-1 2xl:mx-6 gap-2 xl:gap-1.5 2xl:gap-4 transition-all">
+            <div className="hidden xl:flex items-center justify-center flex-1 mx-2 xl:mx-1 2xl:mx-3 gap-2 xl:gap-1 2xl:gap-2.5 transition-all">
               {navLinks.map((link, idx) => (
                 <div key={idx} className="relative group py-2">
                   <Link 
                     href={link.href} 
-                    className="text-[10px] xl:text-[9.5px] 2xl:text-[12px] leading-[18px] font-semibold text-slate-700 hover:text-[#007a87] uppercase tracking-wide transition-colors flex items-center gap-0.5 2xl:gap-1 whitespace-nowrap"
+                    className="text-[10px] xl:text-[9.5px] 2xl:text-[11.5px] leading-[18px] font-semibold text-slate-700 hover:text-[#007a87] uppercase tracking-wide transition-colors flex items-center gap-0.5 whitespace-nowrap"
                   >
                     <span>{link.name}</span>
                     {link.dropdown && <ChevronDown className="w-3 h-3 opacity-60 group-hover:rotate-180 transition-transform shrink-0" />}
@@ -317,16 +319,16 @@ export default function Navbar() {
             </div>
 
             {/* Right Action Stack */}
-            <div className="hidden xl:flex items-center gap-1.5 2xl:gap-3 shrink-0 justify-end">
-              <button className="p-1 text-slate-500 hover:text-slate-900 transition-colors shrink-0 hidden 2xl:block">
-                <svg className="w-[18px] h-[18px] stroke-current" fill="none" viewBox="0 0 24 24" strokeWidth="2.5">
+            <div className="hidden xl:flex items-center gap-1.5 2xl:gap-2.5 shrink-0 justify-end">
+              <button className="p-1 text-slate-500 hover:text-slate-900 transition-colors shrink-0 hidden xl:block">
+                <svg className="w-[16px] h-[16px] 2xl:w-[18px] 2xl:h-[18px] stroke-current" fill="none" viewBox="0 0 24 24" strokeWidth="2.5">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
               </button>
 
               <Link
                 href="/book-appointment"
-                className="bg-[#d9232d] hover:bg-[#b81d24] leading-[18px] text-white px-3 xl:px-3 2xl:px-6 py-2 xl:py-2 2xl:py-3 rounded-md font-bold text-[10px] xl:text-[10px] 2xl:text-[13px] uppercase tracking-wider flex items-center gap-1 transition-all shadow-sm whitespace-nowrap shrink-0"
+                className="bg-[#d9232d] hover:bg-[#b81d24] leading-[18px] text-white px-3 xl:px-2.5 2xl:px-5 py-2 xl:py-1.5 2xl:py-2.5 rounded-md font-bold text-[10px] xl:text-[9.5px] 2xl:text-[12px] uppercase tracking-wider flex items-center gap-1 transition-all shadow-sm whitespace-nowrap shrink-0"
               >
                 <span>Book Appointment</span>
               </Link>

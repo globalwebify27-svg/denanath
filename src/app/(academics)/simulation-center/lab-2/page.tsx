@@ -35,16 +35,22 @@ export default async function SimulationLab2Page() {
         </Link>
         
         <div className="bg-white rounded-3xl shadow-sm border border-slate-200 p-8 md:p-12">
-          {pageData.image && (
-            <div className="mb-10 rounded-2xl overflow-hidden border border-slate-200">
-              <img src={pageData.image} alt={pageData.title} className="w-full h-auto object-contain max-h-[500px] bg-slate-50" />
-            </div>
-          )}
-          
           {pageData.content ? (
-            <div className="prose prose-slate max-w-none break-words whitespace-normal overflow-hidden [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:my-4 [&_ol]:list-decimal [&_ol]:pl-6 [&_ol]:my-4 [&_li]:mb-2 prose-p:leading-relaxed prose-headings:text-[#002b5c] text-slate-700" dangerouslySetInnerHTML={{ __html: pageData.content }} />
+            <div className="mb-10 prose prose-slate max-w-none break-words whitespace-normal overflow-hidden [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:my-4 [&_ol]:list-decimal [&_ol]:pl-6 [&_ol]:my-4 [&_li]:mb-2 prose-p:leading-relaxed prose-headings:text-[#002b5c] text-slate-700" dangerouslySetInnerHTML={{ __html: pageData.content }} />
           ) : (
-            <p className="text-slate-500 italic">Content for this section will be updated soon.</p>
+            <p className="mb-10 text-slate-500 italic">Content for this section will be updated soon.</p>
+          )}
+
+          {pageData.gallery && pageData.gallery.length > 0 && (
+            <div className="mb-10">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {pageData.gallery.map((img: string, idx: number) => (
+                  <div key={idx} className="rounded-2xl overflow-hidden border border-slate-200">
+                    <img src={img} alt={`${pageData.title} Image ${idx + 1}`} className="w-full h-auto object-cover max-h-[400px] bg-slate-50" />
+                  </div>
+                ))}
+              </div>
+            </div>
           )}
         </div>
       </div>

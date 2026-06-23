@@ -96,7 +96,7 @@ export default function AboutHospitalClient({ data }: { data: any }) {
               {/* Introduction */}
               <div className="prose prose-slate max-w-none">
                 <div className="text-lg md:text-xl text-slate-700 leading-relaxed font-light mb-6" dangerouslySetInnerHTML={{ __html: data?.introduction || '' }} />
-                <p className="text-base text-slate-600 leading-loose mb-12">
+                <p className="text-lg md:text-xl text-slate-700 leading-relaxed font-light mb-12">
                   {data?.description}
                 </p>
               </div>

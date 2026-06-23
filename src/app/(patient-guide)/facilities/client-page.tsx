@@ -126,6 +126,61 @@ export default function FacilitiesClientPage({ pageData }: { pageData: any }) {
 
               <div className="space-y-12 text-slate-700">
 
+                {/* Reception Facilities */}
+                <section>
+                  <h3 className="text-2xl font-bold text-[#002b5c] mb-6 flex items-center gap-3">
+                    <Building className="w-6 h-6 text-[#007a87]" />
+                    Reception Facilities
+                  </h3>
+                  
+                  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {facilities.slice(0, 2).map((facility: any, idx: number) => (
+                      <div key={idx} className="bg-white rounded-2xl border border-slate-200 p-6 hover:shadow-[0_8px_30px_rgba(217,35,45,0.12)] hover:border-[#D9232D]/30 transition-all duration-300 group flex flex-col">
+                        <div className="flex items-center gap-4 mb-4">
+                          <div className="w-12 h-12 rounded-xl bg-teal-50 text-[#007a87] flex items-center justify-center shrink-0 group-hover:bg-[#D9232D] group-hover:text-white transition-all duration-300 group-hover:shadow-[0_4px_12px_rgba(217,35,45,0.3)]">
+                            {renderIcon(facility.iconName, facility.title)}
+                          </div>
+                          <h4 className="font-bold text-[#002b5c] leading-tight group-hover:text-[#D9232D] transition-colors">{facility.title}</h4>
+                        </div>
+                        
+                        <div className="space-y-3 mb-4 text-sm flex-1">
+                          {facility.time && facility.time !== "-" && (
+                            <div className="flex items-start gap-2">
+                              <Clock className="w-4 h-4 text-slate-400 shrink-0 mt-0.5" />
+                              <span className="font-medium text-teal-600">{facility.time}</span>
+                            </div>
+                          )}
+                          {facility.location && facility.location !== "-" && (
+                            <div className="flex items-start gap-2">
+                              <MapPin className="w-4 h-4 text-slate-400 shrink-0 mt-0.5" />
+                              <span className="text-slate-600">{facility.location}</span>
+                            </div>
+                          )}
+                          {facility.phone && facility.phone !== "-" && (
+                            <div className="flex items-start gap-2">
+                              <Phone className="w-4 h-4 text-slate-400 shrink-0 mt-0.5" />
+                              <span className="text-slate-600">{facility.phone}</span>
+                            </div>
+                          )}
+                        </div>
+
+                        {facility.details && facility.details.length > 0 && (
+                          <div className="pt-4 border-t border-slate-100">
+                            <ul className="space-y-2">
+                              {facility.details.map((detail: string, dIdx: number) => (
+                                <li key={dIdx} className="flex items-start gap-2 text-xs text-slate-500">
+                                  <ChevronRight className="w-3 h-3 text-teal-400 shrink-0 mt-0.5" />
+                                  <span className="leading-tight">{detail}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </section>
+
                 {/* Billing Section (Prominent) */}
                 <section>
                   <h3 className="text-2xl font-bold text-[#002b5c] mb-6 flex items-center gap-3">
@@ -186,7 +241,7 @@ export default function FacilitiesClientPage({ pageData }: { pageData: any }) {
                   </h3>
                   
                   <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {facilities.map((facility: any, idx: number) => (
+                    {facilities.slice(2).map((facility: any, idx: number) => (
                       <div key={idx} className="bg-white rounded-2xl border border-slate-200 p-6 hover:shadow-[0_8px_30px_rgba(217,35,45,0.12)] hover:border-[#D9232D]/30 transition-all duration-300 group flex flex-col">
                         <div className="flex items-center gap-4 mb-4">
                           <div className="w-12 h-12 rounded-xl bg-teal-50 text-[#007a87] flex items-center justify-center shrink-0 group-hover:bg-[#D9232D] group-hover:text-white transition-all duration-300 group-hover:shadow-[0_4px_12px_rgba(217,35,45,0.3)]">

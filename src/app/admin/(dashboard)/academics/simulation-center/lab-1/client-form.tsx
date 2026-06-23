@@ -17,15 +17,38 @@ export default function SimulationLab1ClientForm({ initialData }: { initialData:
     setData((prev: any) => ({ ...prev, [field]: value }));
   };
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleAddHeaderImage = () => {
+    setData((prev: any) => ({
+      ...prev,
+      gallery: [...(prev.gallery || []), ""]
+    }));
+  };
+
+  const handleHeaderImageChange = (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        handleChange("image", reader.result);
+        setData((prev: any) => {
+          const newGallery = [...(prev.gallery || [])];
+          newGallery[index] = reader.result;
+          // Sync the first image to `data.image` for backwards compatibility with frontend
+          return { ...prev, gallery: newGallery, image: newGallery.length > 0 ? newGallery[0] : "" };
+        });
       };
       reader.readAsDataURL(file);
     }
+  };
+
+  const removeHeaderImage = (index: number) => {
+    setData((prev: any) => {
+      const newGallery = (prev.gallery || []).filter((_: any, i: number) => i !== index);
+      return {
+        ...prev,
+        gallery: newGallery,
+        image: newGallery.length > 0 ? newGallery[0] : ""
+      };
+    });
   };
 
   const handleSave = async () => {
@@ -53,6 +76,17 @@ export default function SimulationLab1ClientForm({ initialData }: { initialData:
     } finally {
       setLoading(false);
     }
+  };
+
+  
+  const modules = {
+    toolbar: [
+      [{ 'header': [1, 2, 3, false] }],
+      ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+      [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
+      ['link', 'image', 'video'],
+      ['clean']
+    ],
   };
 
   return (
@@ -93,27 +127,62 @@ export default function SimulationLab1ClientForm({ initialData }: { initialData:
           />
         </div>
         
+        
         <div>
-          <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Header Image</label>
-          <div className="flex flex-col sm:flex-row sm:items-center gap-4 bg-slate-50 p-4 rounded-2xl border border-slate-200">
-            {data.image && (
-              <div className="shrink-0 relative group">
-                <img src={data.image} alt="Simulation Center" className="w-32 h-20 object-cover rounded-xl border border-slate-200 shadow-sm" />
-                <button 
-                  type="button" 
-                  onClick={() => handleChange("image", "")} 
-                  className="absolute -top-2 -right-2 bg-red-500 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-                </button>
+          <div className="flex items-center justify-between mb-4">
+            <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest">Header Images</label>
+            <button 
+              type="button" 
+              onClick={handleAddHeaderImage}
+              className="flex items-center gap-2 px-4 py-2 bg-[#002b5c] text-white text-sm font-bold rounded-lg hover:bg-[#001f44] transition-colors shadow-sm"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+              Add Image
+            </button>
+          </div>
+          
+          <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200">
+            {(!data.gallery || data.gallery.length === 0) ? (
+              <div className="text-center py-10 text-slate-500 italic">No images added yet. Click "Add Image" to start.</div>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                {data.gallery.map((img: string, idx: number) => (
+                  <div key={idx} className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden flex flex-col relative group">
+                    <button 
+                      type="button" 
+                      onClick={() => removeHeaderImage(idx)} 
+                      className="absolute top-2 right-2 bg-red-50 text-red-500 p-1.5 rounded-md hover:bg-red-500 hover:text-white transition-colors z-10 border border-red-100 opacity-0 group-hover:opacity-100 shadow-sm"
+                      title="Remove"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg>
+                    </button>
+                    
+                    <div className="h-40 bg-slate-100 flex items-center justify-center relative border-b border-slate-100">
+                      {img ? (
+                        <img src={img} alt={`Header Image ${idx + 1}`} className="w-full h-full object-cover" />
+                      ) : (
+                        <div className="text-slate-400 flex flex-col items-center">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mb-2 opacity-50"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+                          <span className="text-sm font-medium">Image Preview</span>
+                        </div>
+                      )}
+                    </div>
+                    
+                    <div className="p-4 flex flex-col gap-3">
+                      <div>
+                        <label className="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2">Upload Photo</label>
+                        <input 
+                          type="file" 
+                          accept="image/*"
+                          onChange={(e) => handleHeaderImageChange(idx, e)}
+                          className="w-full text-sm text-slate-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-bold file:bg-[#002b5c] file:text-white hover:file:bg-[#001f44] transition-all cursor-pointer bg-slate-50 rounded-md border border-slate-200"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
             )}
-            <input 
-              type="file" 
-              accept="image/*"
-              onChange={handleImageChange}
-              className="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-teal-50 file:text-[#007a87] hover:file:bg-teal-100 transition-all cursor-pointer"
-            />
           </div>
         </div>
 
@@ -123,7 +192,8 @@ export default function SimulationLab1ClientForm({ initialData }: { initialData:
             <ReactQuill 
               theme="snow" 
               value={data.content || ""} 
-              onChange={(val) => handleChange("content", val)} 
+              onChange={(val) => handleChange("content", val)}
+              modules={modules} 
               className="h-[300px] pb-10"
             />
           </div>

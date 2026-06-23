@@ -103,21 +103,28 @@ export default function TrainingProgramsClient({ initialData }: { initialData: a
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {initialData.programs?.map((program: string, idx: number) => (
-                  <a 
-                    key={idx} 
-                    href="#"
-                    className="flex items-center gap-4 bg-slate-50 border border-slate-200 hover:border-[#D9232D] hover:shadow-[0_8px_30px_rgba(217,35,45,0.15)] hover:bg-white hover:-translate-y-1 p-4 rounded-xl transition-all duration-300 group/btn"
-                  >
-                    <div className="w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center shrink-0 text-[#002b5c] font-bold group-hover/btn:border-[#D9232D] group-hover/btn:text-[#D9232D]">
-                      {idx + 1}
-                    </div>
-                    <span className="font-semibold text-slate-700 group-hover/btn:text-[#002b5c] flex-1">
-                      {program}
-                    </span>
-                    <ChevronRight className="w-5 h-5 text-slate-300 group-hover/btn:text-[#D9232D] group-hover/btn:translate-x-1 transition-all" />
-                  </a>
-                ))}
+                {initialData.programs?.map((program: any, idx: number) => {
+                  const programName = typeof program === 'string' ? program : program?.name || "";
+                  const programLink = typeof program === 'string' || !program?.pdfLink ? "#" : program.pdfLink;
+                  
+                  return (
+                    <a 
+                      key={idx} 
+                      href={programLink}
+                      target={programLink !== "#" ? "_blank" : undefined}
+                      rel={programLink !== "#" ? "noopener noreferrer" : undefined}
+                      className="flex items-center gap-4 bg-slate-50 border border-slate-200 hover:border-[#D9232D] hover:shadow-[0_8px_30px_rgba(217,35,45,0.15)] hover:bg-white hover:-translate-y-1 p-4 rounded-xl transition-all duration-300 group/btn"
+                    >
+                      <div className="w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center shrink-0 text-[#002b5c] font-bold group-hover/btn:border-[#D9232D] group-hover/btn:text-[#D9232D]">
+                        {idx + 1}
+                      </div>
+                      <span className="font-semibold text-slate-700 group-hover/btn:text-[#002b5c] flex-1">
+                        {programName}
+                      </span>
+                      <ChevronRight className="w-5 h-5 text-slate-300 group-hover/btn:text-[#D9232D] group-hover/btn:translate-x-1 transition-all" />
+                    </a>
+                  );
+                })}
               </div>
 
             </div>

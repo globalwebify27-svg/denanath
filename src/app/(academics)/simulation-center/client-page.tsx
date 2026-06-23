@@ -5,8 +5,9 @@ import Link from "next/link";
 import { ChevronRight, Activity, Info, CreditCard, BookOpen, RefreshCw, Building2 } from "lucide-react";
 
 // Client component wrapper for tabs
-export default function SimulationCenterClient({ initialData }: { initialData: any }) {
+export default function SimulationCenterClient({ initialData, labsData }: { initialData: any, labsData?: any }) {
   const [activeTab, setActiveTab] = useState("Simulation Center");
+  const [expandedLab, setExpandedLab] = useState<string | null>(null);
 
   const options = [
     { name: "Academics", href: "/academics", active: false },
@@ -57,7 +58,7 @@ export default function SimulationCenterClient({ initialData }: { initialData: a
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#f8fafc] font-sans selection:bg-teal-500/30">
+    <div className="min-h-screen bg-[#f8fafc] font-sans selection:bg-teal-500/30 overflow-x-hidden">
       {/* Premium Page Header */}
       <div className="w-full bg-[#002b5c] relative overflow-hidden">
         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 mix-blend-overlay pointer-events-none" />
@@ -110,7 +111,7 @@ export default function SimulationCenterClient({ initialData }: { initialData: a
           )}
 
           {/* Right Main Content */}
-          <div className="w-full flex-1">
+          <div className="w-full flex-1 min-w-0">
             <div className="bg-white rounded-3xl shadow-[0_8px_40px_rgb(0,0,0,0.03)] border border-slate-100/60 p-6 sm:p-10 md:p-14">
               
               <div className="mb-10">
@@ -176,25 +177,69 @@ export default function SimulationCenterClient({ initialData }: { initialData: a
                       Explore our state-of-the-art simulation facilities and labs.
                     </p>
                     
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-4">
                       {[
-                        { title: "Simulation Lab 1", href: "/simulation-center/lab-1", icon: <Info className="w-6 h-6" /> },
-                        { title: "Simulation Lab 2", href: "/simulation-center/lab-2", icon: <Info className="w-6 h-6" /> },
-                        { title: "Simulation Lab 3", href: "/simulation-center/lab-3", icon: <Info className="w-6 h-6" /> },
-                        { title: "Other facilities on 14th floor", href: "/simulation-center/other-facilities", icon: <Building2 className="w-6 h-6" /> }
-                      ].map((card, idx) => (
-                        <Link key={idx} href={card.href} className="group/card block p-6 border border-slate-200 rounded-2xl hover:border-[#D9232D] hover:shadow-[0_8px_30px_rgba(217,35,45,0.15)] hover:-translate-y-1 transition-all duration-300 bg-slate-50 hover:bg-white relative overflow-hidden">
-                          <div className="w-12 h-12 rounded-full bg-teal-100 flex items-center justify-center mb-4 group-hover/card:scale-110 transition-transform text-[#007a87] group-hover/card:text-[#D9232D]">
-                            {card.icon}
+                        { id: "lab1", title: labsData?.lab1?.title || "Simulation Lab 1", icon: <Info className="w-6 h-6" /> },
+                        { id: "lab2", title: labsData?.lab2?.title || "Simulation Lab 2", icon: <Info className="w-6 h-6" /> },
+                        { id: "lab3", title: labsData?.lab3?.title || "Simulation Lab 3", icon: <Info className="w-6 h-6" /> },
+                        { id: "other", title: labsData?.other?.title || "Other facilities on 14th floor", icon: <Building2 className="w-6 h-6" /> }
+                      ].map((card) => {
+                        const isExpanded = expandedLab === card.id;
+                        const labInfo = labsData?.[card.id];
+
+                        return (
+                          <div key={card.id} className={`border border-slate-200 rounded-2xl overflow-hidden transition-all duration-300 ${isExpanded ? 'shadow-md bg-white border-[#007a87]/30' : 'bg-slate-50 hover:bg-white hover:border-[#D9232D]/50 hover:shadow-sm'}`}>
+                            <button 
+                              onClick={() => setExpandedLab(isExpanded ? null : card.id)} 
+                              className="w-full text-left p-6 flex items-center justify-between"
+                            >
+                              <div className="flex items-center gap-4">
+                                <div className={`w-12 h-12 rounded-full flex items-center justify-center transition-colors ${isExpanded ? 'bg-[#007a87] text-white' : 'bg-teal-100 text-[#007a87]'}`}>
+                                  {card.icon}
+                                </div>
+                                <h4 className={`text-lg font-bold transition-colors ${isExpanded ? 'text-[#002b5c]' : 'text-slate-800'}`}>
+                                  {card.title}
+                                </h4>
+                              </div>
+                              <div className={`transform transition-transform duration-300 ${isExpanded ? "rotate-90 text-[#007a87]" : "text-slate-400"}`}>
+                                <ChevronRight className="w-5 h-5" />
+                              </div>
+                            </button>
+                            
+                            {isExpanded && (
+                              <div className="p-6 md:p-8 border-t border-slate-100 animate-in slide-in-from-top-2 fade-in duration-300 bg-white">
+                                {labInfo?.content ? (
+                                  <div className="mb-8 prose prose-slate max-w-none break-words whitespace-normal overflow-hidden [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:my-4 [&_ol]:list-decimal [&_ol]:pl-6 [&_ol]:my-4 [&_li]:mb-2 prose-p:leading-relaxed prose-headings:text-[#002b5c] text-slate-700" dangerouslySetInnerHTML={{ __html: labInfo.content }} />
+                                ) : (
+                                  <p className="mb-8 text-slate-500 italic">Content for this section will be updated soon.</p>
+                                )}
+
+                                {labInfo?.gallery && labInfo.gallery.length > 0 ? (
+                                  <div className="mt-8 space-y-6">
+                                    {labInfo.gallery.map((img: string, idx: number) => (
+                                      <div key={idx} className="rounded-2xl overflow-hidden border border-slate-100 shadow-sm">
+                                        <img 
+                                          src={img} 
+                                          alt={`${labInfo.title} ${idx + 1}`} 
+                                          className="w-full h-auto max-h-[500px] object-cover"
+                                        />
+                                      </div>
+                                    ))}
+                                  </div>
+                                ) : labInfo?.image ? (
+                                  <div className="mt-8 rounded-2xl overflow-hidden border border-slate-100 shadow-sm">
+                                    <img 
+                                      src={labInfo.image} 
+                                      alt={labInfo.title} 
+                                      className="w-full h-auto max-h-[500px] object-cover"
+                                    />
+                                  </div>
+                                ) : null}
+                              </div>
+                            )}
                           </div>
-                          <h4 className="text-lg font-bold text-slate-800 mb-2 group-hover/card:text-[#002b5c] transition-colors pr-6">
-                            {card.title}
-                          </h4>
-                          <div className="absolute bottom-6 right-6 opacity-0 group-hover/card:opacity-100 transform translate-x-4 group-hover/card:translate-x-0 transition-all duration-300">
-                            <ChevronRight className="w-5 h-5 text-[#007a87]" />
-                          </div>
-                        </Link>
-                      ))}
+                        );
+                      })}
                     </div>
                   </div>
                 )}

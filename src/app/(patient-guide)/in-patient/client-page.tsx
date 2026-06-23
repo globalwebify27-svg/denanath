@@ -428,12 +428,12 @@ export default function InPatientClientPage({ pageData }: { pageData: any }) {
                     {cashlessDescription.map((p: string, i: number) => {
                       if (p.startsWith("NOTE:")) {
                         return (
-                          <p key={i} className="bg-amber-50 text-amber-800 p-4 rounded-lg border border-amber-200">
+                          <div key={i} className="bg-amber-50 text-amber-800 p-5 rounded-xl border border-amber-200 my-8 shadow-sm">
                             <strong>Note:</strong> {p.replace("NOTE:", "").trim()}
-                          </p>
+                          </div>
                         );
                       }
-                      return <p key={i}>{p}</p>;
+                      return <p key={i} className="mb-6">{p}</p>;
                     })}
                   </div>
 
