@@ -84,7 +84,8 @@ export default function SubmissionsClientPage({
   // Helper to parse submission data safely
   const parseData = (submission: Submission) => {
     try {
-      return JSON.parse(submission.data);
+      const parsed = JSON.parse(submission.data);
+      return typeof parsed === "object" && parsed !== null ? parsed : {};
     } catch (e) {
       return {};
     }
@@ -110,7 +111,8 @@ export default function SubmissionsClientPage({
   // Helper to parse submission files safely
   const parseFiles = (submission: Submission) => {
     try {
-      return submission.files ? JSON.parse(submission.files) : [];
+      const parsed = submission.files ? JSON.parse(submission.files) : [];
+      return Array.isArray(parsed) ? parsed : [];
     } catch (e) {
       return [];
     }
@@ -347,7 +349,7 @@ export default function SubmissionsClientPage({
                     </td>
                     
                     {/* Date */}
-                    <td className="p-5 text-sm text-slate-500 font-medium">
+                    <td className="p-5 text-sm text-slate-500 font-medium" suppressHydrationWarning>
                       {new Date(submission.createdAt).toLocaleString()}
                     </td>
                     
@@ -440,7 +442,7 @@ export default function SubmissionsClientPage({
                   </div>
                   <div className="min-w-0">
                     <h2 className="text-base sm:text-xl font-black leading-snug break-words">{selectedSubmission.formType}</h2>
-                    <p className="text-[10px] sm:text-xs font-semibold text-white/80 mt-0.5 break-words">
+                    <p className="text-[10px] sm:text-xs font-semibold text-white/80 mt-0.5 break-words" suppressHydrationWarning>
                       Submitted on {new Date(selectedSubmission.createdAt).toLocaleString()}
                     </p>
                   </div>
