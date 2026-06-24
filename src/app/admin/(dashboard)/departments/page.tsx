@@ -110,7 +110,11 @@ export default async function AdminDepartmentsPage({
                     </td>
                     <td className="p-5 break-words">
                       <p className="text-[13px] font-[600] text-gray-600 leading-relaxed whitespace-normal line-clamp-2">
-                        {department.description || <span className="text-gray-300 italic">No description provided</span>}
+                        {department.description ? (
+                          department.description.replace(/<[^>]*>?/gm, '')
+                        ) : (
+                          <span className="text-gray-300 italic">No description provided</span>
+                        )}
                       </p>
                     </td>
                     <td className="p-5 text-right">

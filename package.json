@@ -11,8 +11,13 @@
   },
   "dependencies": {
     "@prisma/client": "5.21.1",
+    "@tailwindcss/typography": "^0.5.20",
     "cheerio": "^1.2.0",
+<<<<<<< HEAD
     "dotenv": "^17.4.2",
+=======
+    "jodit-react": "^5.3.21",
+>>>>>>> re-update
     "lucide-react": "^1.16.0",
     "mongodb": "^7.3.0",
     "motion": "^12.39.0",

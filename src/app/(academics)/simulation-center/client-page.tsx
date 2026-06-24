@@ -216,15 +216,20 @@ export default function SimulationCenterClient({ initialData, labsData }: { init
 
                                 {labInfo?.gallery && labInfo.gallery.length > 0 ? (
                                   <div className="mt-8 space-y-6">
-                                    {labInfo.gallery.map((img: string, idx: number) => (
+                                    {labInfo.gallery.map((item: any, idx: number) => {
+                                      const url = typeof item === 'string' ? item : item.url;
+                                      const name = typeof item === 'string' ? "" : item.name;
+                                      return (
                                       <div key={idx} className="rounded-2xl overflow-hidden border border-slate-100 shadow-sm">
                                         <img 
-                                          src={img} 
-                                          alt={`${labInfo.title} ${idx + 1}`} 
+                                          src={url} 
+                                          alt={name || `${labInfo.title} ${idx + 1}`} 
                                           className="w-full h-auto max-h-[500px] object-cover"
                                         />
+                                        {name && <div className="p-4 bg-slate-50 border-t border-slate-100 text-center font-semibold text-slate-700">{name}</div>}
                                       </div>
-                                    ))}
+                                      );
+                                    })}
                                   </div>
                                 ) : labInfo?.image ? (
                                   <div className="mt-8 rounded-2xl overflow-hidden border border-slate-100 shadow-sm">

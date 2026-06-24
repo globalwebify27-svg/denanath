@@ -41,43 +41,49 @@ export default function TrainingProgramsClientForm({ initialData }: { initialDat
               <p className="text-sm text-gray-500 italic">No programs currently available.</p>
             )}
             {data.programs?.map((item: any, idx: number) => (
-              <div key={idx} className="flex flex-col gap-2 bg-slate-50 p-3 rounded-xl border border-slate-200">
-                <div className="flex gap-2 items-center">
-                  <input 
-                    value={typeof item === 'string' ? item : item?.name || ""} 
-                    onChange={(e) => {
-                      const newArray = [...(data.programs || [])];
-                      const current = newArray[idx];
-                      if (typeof current === 'string') {
-                        newArray[idx] = { name: e.target.value, pdfLink: "" };
-                      } else {
-                        newArray[idx] = { ...current, name: e.target.value };
-                      }
-                      handleChange("programs", newArray);
-                    }} 
-                    className="flex-1 p-3 bg-white border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium"
-                    placeholder="Program Name"
-                  />
-                  <button type="button" onClick={() => removeFromArray("programs", idx)} className="text-[#D9232D] hover:bg-red-50 p-2 rounded-lg transition-colors shrink-0">
+              <div key={idx} className="flex gap-4 bg-slate-50 p-4 md:p-5 rounded-2xl border border-slate-200 items-start">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 flex-1">
+                  <div>
+                    <label className="block text-[11px] font-extrabold text-[#002b5c] uppercase tracking-wider mb-2">TITLE</label>
+                    <input 
+                      value={typeof item === 'string' ? item : item?.name || ""} 
+                      onChange={(e) => {
+                        const newArray = [...(data.programs || [])];
+                        const current = newArray[idx];
+                        if (typeof current === 'string') {
+                          newArray[idx] = { name: e.target.value, pdfLink: "" };
+                        } else {
+                          newArray[idx] = { ...current, name: e.target.value };
+                        }
+                        handleChange("programs", newArray);
+                      }} 
+                      className="w-full p-3 bg-white border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium text-sm md:text-base"
+                      placeholder="Program Name"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[11px] font-extrabold text-[#002b5c] uppercase tracking-wider mb-2">PDF LINK</label>
+                    <input 
+                      value={typeof item === 'string' ? "" : item?.pdfLink || ""} 
+                      onChange={(e) => {
+                        const newArray = [...(data.programs || [])];
+                        const current = newArray[idx];
+                        if (typeof current === 'string') {
+                          newArray[idx] = { name: current, pdfLink: e.target.value };
+                        } else {
+                          newArray[idx] = { ...current, pdfLink: e.target.value };
+                        }
+                        handleChange("programs", newArray);
+                      }} 
+                      className="w-full p-3 bg-white border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-500 text-sm md:text-base"
+                      placeholder="https://www.dmhospital.org/cms/Media/file/..."
+                    />
+                  </div>
+                </div>
+                <div className="pt-6 shrink-0 flex items-center h-full">
+                  <button type="button" onClick={() => removeFromArray("programs", idx)} className="text-red-400 hover:text-red-600 hover:bg-red-50 p-2.5 rounded-xl transition-colors border border-transparent hover:border-red-100 flex items-center justify-center mt-1">
                     <Trash2 size={20} />
                   </button>
-                </div>
-                <div className="flex gap-2 items-center pr-10">
-                  <input 
-                    value={typeof item === 'string' ? "" : item?.pdfLink || ""} 
-                    onChange={(e) => {
-                      const newArray = [...(data.programs || [])];
-                      const current = newArray[idx];
-                      if (typeof current === 'string') {
-                        newArray[idx] = { name: current, pdfLink: e.target.value };
-                      } else {
-                        newArray[idx] = { ...current, pdfLink: e.target.value };
-                      }
-                      handleChange("programs", newArray);
-                    }} 
-                    className="flex-1 p-2 text-sm bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-500"
-                    placeholder="PDF Link URL (e.g. https://.../file.pdf)"
-                  />
                 </div>
               </div>
             ))}

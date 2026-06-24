@@ -44,11 +44,16 @@ export default async function OtherFacilitieson14thFloorPage() {
           {pageData.gallery && pageData.gallery.length > 0 && (
             <div className="mb-10">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {pageData.gallery.map((img: string, idx: number) => (
-                  <div key={idx} className="rounded-2xl overflow-hidden border border-slate-200">
-                    <img src={img} alt={`${pageData.title} Image ${idx + 1}`} className="w-full h-auto object-cover max-h-[400px] bg-slate-50" />
+                {pageData.gallery.map((item: any, idx: number) => {
+                const url = typeof item === 'string' ? item : item.url;
+                const name = typeof item === 'string' ? "" : item.name;
+                return (
+                  <div key={idx} className="rounded-2xl overflow-hidden border border-slate-200 shadow-sm">
+                    <img src={url} alt={name || `${pageData.title} Image ${idx + 1}`} className="w-full h-auto max-h-[500px] object-contain bg-slate-50" />
+                    {name && <div className="p-4 bg-slate-50 border-t border-slate-200 text-center font-semibold text-slate-700">{name}</div>}
                   </div>
-                ))}
+                );
+              })}
               </div>
             </div>
           )}
