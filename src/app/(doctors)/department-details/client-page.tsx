@@ -158,10 +158,10 @@ export default function DepartmentDetailsClientPage({ pageData, departments }: {
                                 {dept.name}
                               </h3>
                               <Link 
-                                href={`/doctors?department=${encodeURIComponent(dept.name)}`} 
+                                href={`/departments/${dept.id}`} 
                                 className="inline-flex items-center gap-1.5 text-[12px] font-[800] text-[#007a87] group-hover:text-[#D9232D] uppercase tracking-widest transition-colors"
                               >
-                                VIEW DOCTORS <ArrowRight size={14} />
+                                VIEW DETAILS <ArrowRight size={14} />
                               </Link>
                             </div>
                           </div>

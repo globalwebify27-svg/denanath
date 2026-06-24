@@ -14,3 +14,4 @@ export default async function ServicesPage() {
 
   return <ClientPage pageData={pageData} services={services} />;
 }
+ 

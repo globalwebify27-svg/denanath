@@ -4,26 +4,134 @@ import Link from "next/link";
 import { ArrowLeft, Save, HeartPulse } from "lucide-react";
 
 import IconPicker from "@/components/IconPicker";
+import QuillEditor from "@/components/QuillEditor";
+import PhotoGalleryEditor from "@/components/PhotoGalleryEditor";
 
 export default function NewDepartmentPage() {
   async function createDepartment(formData: FormData) {
     "use server";
     
     const name = formData.get("name") as string;
-    const description = formData.get("description") as string;
+    const spectrum = formData.get("spectrum") as string;
+    const paediatric = formData.get("paediatric") as string;
+    const facilities = formData.get("facilities") as string;
+    const location = formData.get("location") as string;
+    const timetable = formData.get("timetable") as string;
+    const workload = formData.get("workload") as string;
+    const courses = formData.get("courses") as string;
+    const events = formData.get("events") as string;
+    const galleryJson = formData.get("gallery") as string;
+    const consultant = formData.get("consultant") as string;
+    
     const headOfDepartment = formData.get("headOfDepartment") as string;
     const icon = formData.get("icon") as string;
-    const status = formData.get("status") === "on"; // Checkbox
+    const status = formData.get("status") === "on";
 
-    await prisma.department.create({
+    let galleryHtml = "";
+    if (galleryJson) {
+      try {
+        const items = JSON.parse(galleryJson);
+        if (items.length > 0) {
+          galleryHtml = `
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+      ${items.map((img: any) => `
+      <div class="bg-slate-50 p-4 rounded-xl text-center border border-slate-200">
+        ${img.url && !img.url.startsWith('Image:') ? 
+          `<img src="${img.url}" alt="${img.name}" class="w-full h-32 object-cover rounded-lg mb-2 shadow-sm" />` : 
+          `<div class="w-full h-32 bg-slate-200 rounded-lg mb-2 flex items-center justify-center text-slate-400 font-medium">${img.url || 'Image Preview'}</div>`
+        }
+        <p class="font-bold text-[#002b5c]">${img.name}</p>
+      </div>`).join('')}
+    </div>`;
+        }
+      } catch (e) {
+        galleryHtml = galleryJson;
+      }
+    }
+
+    // Helper to inject list styling
+    const styleList = (html: string) => {
+      if (!html) return '';
+      return html.replace(/<ul/g, '<ul class="list-disc pl-5 space-y-2"');
+    };
+
+    // Helper to format facilities as a grid of teal boxes
+    const styleFacilities = (html: string) => {
+      if (!html) return '';
+      let styled = html.replace(/<ul/g, '<ul class="grid grid-cols-2 md:grid-cols-4 gap-4 list-none pl-0 m-0"');
+      styled = styled.replace(/<li[^>]*>/g, '<li class="bg-teal-50 p-4 rounded-xl text-center font-semibold text-[#007a87] shadow-sm">');
+      styled = styled.replace(/<p[^>]*>/g, '<p class="font-medium text-slate-800 p-4 border border-slate-200 rounded-xl bg-slate-50 mt-4">');
+      return styled;
+    };
+
+    // Helper to style table
+    const styleTable = (html: string) => {
+      if (!html) return '';
+      let styled = html.replace(/<table/g, '<div class="overflow-x-auto"><table class="w-full text-sm text-left border-collapse border border-slate-200"');
+      styled = styled.replace(/<\/table>/g, '</table></div>');
+      styled = styled.replace(/<thead/g, '<thead class="text-xs text-white uppercase bg-[#002b5c]"');
+      styled = styled.replace(/<th/g, '<th class="px-6 py-3 border border-slate-300"');
+      styled = styled.replace(/<td/g, '<td class="px-6 py-4 border border-slate-200"');
+      styled = styled.replace(/<tr/g, '<tr class="bg-white hover:bg-slate-50"');
+      return styled;
+    };
+
+    // Helper to style consultant
+    const styleConsultant = (html: string) => {
+      if (!html) return '';
+      let text = html.replace(/<[^>]+>/g, '').trim();
+      if (/^[A-Z]{2}Dr\./.test(text)) {
+        text = text.substring(2);
+      }
+      text = text.replace(/&nbsp;/g, ' ').trim();
+      if (!text) return '';
+      const words = text.split(' ').filter(Boolean);
+      let initials = 'DM';
+      if (words.length >= 2) {
+        initials = (words[1][0] + (words[2]?.[0] || words[1][1] || '')).toUpperCase();
+      } else if (words.length === 1) {
+        initials = words[0].substring(0, 2).toUpperCase();
+      }
+      return `
+      <div class="p-4 bg-white border border-slate-200 rounded-xl flex items-center gap-4 shadow-sm">
+        <div class="w-12 h-12 rounded-full bg-teal-100 flex items-center justify-center text-teal-600 font-bold shrink-0">${initials}</div>
+        <div>
+          <h4 class="text-lg font-bold text-[#002b5c] m-0">${text}</h4>
+        </div>
+      </div>`;
+    };
+
+    const description = `
+<div class="space-y-8 text-slate-700">
+  ${spectrum ? `<section><h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Spectrum and Services</h3>${styleList(spectrum)}</section>` : ''}
+  ${paediatric ? `<section><h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Paediatric Liver Clinic</h3>${styleList(paediatric)}</section>` : ''}
+  ${facilities ? `<section><h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Facilities</h3>${styleFacilities(facilities)}</section>` : ''}
+  ${location ? `<section><h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Location of Department</h3><div class="font-medium text-slate-800">${location}</div></section>` : ''}
+  ${timetable ? `<section><h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Departmental Timetable</h3>${styleTable(timetable)}</section>` : ''}
+  ${workload ? `<section><h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Departmental Workload</h3>${styleList(workload)}</section>` : ''}
+  ${courses ? `<section><h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Courses and Training</h3>${styleList(courses)}</section>` : ''}
+  ${events ? `<section><h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Events</h3>${styleList(events)}</section>` : ''}
+  ${galleryHtml ? `<section><h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Photo Gallery</h3>${galleryHtml}</section>` : ''}
+  ${consultant ? `<section><h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Consultant</h3>${styleConsultant(consultant)}</section>` : ''}
+</div>
+    `;
+
+    // Create department without description first
+    const newDepartment = await prisma.department.create({
       data: {
         name,
-        description,
         headOfDepartment,
         icon,
         status,
       },
     });
+
+    // Bypass Prisma Client stale schema limit by updating description directly via SQL
+    await prisma.$executeRawUnsafe(
+      'UPDATE Department SET description = ? WHERE id = ?',
+      description,
+      newDepartment.id
+    );
 
     redirect("/admin/departments");
   }
@@ -83,15 +191,60 @@ export default function NewDepartmentPage() {
             </div>
           </div>
 
-          <div className="space-y-2">
-            <label htmlFor="description" className="text-[12px] font-[800] text-gray-700 uppercase tracking-widest">Description</label>
-            <textarea
-              id="description"
-              name="description"
-              rows={4}
-              placeholder="Provide an overview of the department's services..."
-              className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#007a87]/20 focus:border-[#007a87] font-[500] text-[14px] transition-all resize-none"
-            ></textarea>
+          <div className="space-y-8">
+            <div className="border-t border-gray-100 pt-6">
+              <h4 className="text-[14px] font-[800] text-[#002b5c] uppercase tracking-widest mb-4">Department Content Sections</h4>
+              <p className="text-[12px] font-[600] text-gray-500 mb-6">Fill in the dedicated sections below. These will be formatted automatically on the frontend.</p>
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-[12px] font-[800] text-gray-700 uppercase tracking-widest">Spectrum and Services</label>
+              <QuillEditor name="spectrum" />
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-[12px] font-[800] text-gray-700 uppercase tracking-widest">Paediatric Liver Clinic</label>
+              <QuillEditor name="paediatric" />
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-[12px] font-[800] text-gray-700 uppercase tracking-widest">Facilities</label>
+              <QuillEditor name="facilities" />
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-[12px] font-[800] text-gray-700 uppercase tracking-widest">Location of Department</label>
+              <QuillEditor name="location" />
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-[12px] font-[800] text-gray-700 uppercase tracking-widest">Departmental Timetable</label>
+              <QuillEditor name="timetable" />
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-[12px] font-[800] text-gray-700 uppercase tracking-widest">Departmental Workload</label>
+              <QuillEditor name="workload" />
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-[12px] font-[800] text-gray-700 uppercase tracking-widest">Courses and Training</label>
+              <QuillEditor name="courses" />
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-[12px] font-[800] text-gray-700 uppercase tracking-widest">Events</label>
+              <QuillEditor name="events" />
+            </div>
+
+            <div className="space-y-2">
+              <PhotoGalleryEditor name="gallery" />
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-[12px] font-[800] text-gray-700 uppercase tracking-widest">Consultant</label>
+              <QuillEditor name="consultant" />
+            </div>
           </div>
 
           <div className="flex items-center gap-3 bg-gray-50 p-4 rounded-xl border border-gray-200">

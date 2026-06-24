@@ -20,7 +20,7 @@ export default function SimulationLab2ClientForm({ initialData }: { initialData:
   const handleAddHeaderImage = () => {
     setData((prev: any) => ({
       ...prev,
-      gallery: [...(prev.gallery || []), ""]
+      gallery: [...(prev.gallery || []), { url: "", name: "" }]
     }));
   };
 
@@ -31,13 +31,28 @@ export default function SimulationLab2ClientForm({ initialData }: { initialData:
       reader.onloadend = () => {
         setData((prev: any) => {
           const newGallery = [...(prev.gallery || [])];
-          newGallery[index] = reader.result;
-          // Sync the first image to `data.image` for backwards compatibility with frontend
-          return { ...prev, gallery: newGallery, image: newGallery.length > 0 ? newGallery[0] : "" };
+          if (typeof newGallery[index] === 'string') {
+            newGallery[index] = { url: reader.result, name: "" };
+          } else {
+            newGallery[index] = { ...newGallery[index], url: reader.result };
+          }
+          return { ...prev, gallery: newGallery, image: newGallery.length > 0 ? (typeof newGallery[0] === 'string' ? newGallery[0] : newGallery[0].url) : "" };
         });
       };
       reader.readAsDataURL(file);
     }
+  };
+
+  const handleImageNameChange = (index: number, name: string) => {
+    setData((prev: any) => {
+      const newGallery = [...(prev.gallery || [])];
+      if (typeof newGallery[index] === 'string') {
+        newGallery[index] = { url: newGallery[index], name };
+      } else {
+        newGallery[index] = { ...newGallery[index], name };
+      }
+      return { ...prev, gallery: newGallery };
+    });
   };
 
   const removeHeaderImage = (index: number) => {
@@ -46,7 +61,7 @@ export default function SimulationLab2ClientForm({ initialData }: { initialData:
       return {
         ...prev,
         gallery: newGallery,
-        image: newGallery.length > 0 ? newGallery[0] : ""
+        image: newGallery.length > 0 ? (typeof newGallery[0] === 'string' ? newGallery[0] : newGallery[0].url) : ""
       };
     });
   };
@@ -146,7 +161,10 @@ export default function SimulationLab2ClientForm({ initialData }: { initialData:
               <div className="text-center py-10 text-slate-500 italic">No images added yet. Click "Add Image" to start.</div>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                {data.gallery.map((img: string, idx: number) => (
+                {data.gallery.map((img: any, idx: number) => {
+                  const url = typeof img === 'string' ? img : img.url;
+                  const name = typeof img === 'string' ? "" : (img.name || "");
+                  return (
                   <div key={idx} className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden flex flex-col relative group">
                     <button 
                       type="button" 
@@ -158,8 +176,8 @@ export default function SimulationLab2ClientForm({ initialData }: { initialData:
                     </button>
                     
                     <div className="h-40 bg-slate-100 flex items-center justify-center relative border-b border-slate-100">
-                      {img ? (
-                        <img src={img} alt={`Header Image ${idx + 1}`} className="w-full h-full object-cover" />
+                      {url ? (
+                        <img src={url} alt={`Header Image ${idx + 1}`} className="w-full h-full object-cover" />
                       ) : (
                         <div className="text-slate-400 flex flex-col items-center">
                           <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mb-2 opacity-50"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
@@ -178,9 +196,20 @@ export default function SimulationLab2ClientForm({ initialData }: { initialData:
                           className="w-full text-sm text-slate-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-bold file:bg-[#002b5c] file:text-white hover:file:bg-[#001f44] transition-all cursor-pointer bg-slate-50 rounded-md border border-slate-200"
                         />
                       </div>
+                      <div>
+                        <label className="block text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2">Image Caption / Name</label>
+                        <input
+                          type="text"
+                          value={name}
+                          onChange={(e) => handleImageNameChange(idx, e.target.value)}
+                          placeholder="e.g. ICU Simulator"
+                          className="w-full p-2 text-sm bg-slate-50 border border-slate-200 rounded-md focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all"
+                        />
+                      </div>
                     </div>
                   </div>
-                ))}
+                  );
+                })}
               </div>
             )}
           </div>

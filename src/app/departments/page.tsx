@@ -38,12 +38,12 @@ export default async function DepartmentDetailsPage({
           <div className="flex items-center gap-2 text-blue-200 text-xs md:text-sm font-medium tracking-wide mb-4">
             <Link href="/" className="hover:text-white transition-colors">Home</Link>
             <ChevronRight className="w-3.5 h-3.5" />
-            <span className="hover:text-white transition-colors cursor-pointer">Doctors & Departments</span>
+            <span className="hover:text-white transition-colors cursor-pointer">Specialties</span>
             <ChevronRight className="w-3.5 h-3.5" />
-            <span className="text-white">Department Details</span>
+            <span className="text-white">Specialty Details</span>
           </div>
           <h1 className="text-4xl md:text-5xl font-extrabold text-white tracking-tight flex items-center gap-4">
-            Department Details
+            Specialty Details
           </h1>
         </div>
       </div>
@@ -84,10 +84,10 @@ export default async function DepartmentDetailsPage({
               <div className="mb-10">
                 <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-teal-50 border border-teal-100 text-[#007a87] text-xs font-bold tracking-wider uppercase mb-4">
                   <Stethoscope className="w-4 h-4" />
-                  <span>Doctors & Departments</span>
+                  <span>Specialties</span>
                 </div>
                 <h2 className="text-3xl md:text-4xl font-extrabold text-[#002b5c] mb-6 tracking-tight">
-                  Department Details
+                  Specialty Details
                 </h2>
                 <div className="w-20 h-1.5 bg-[#007a87] rounded-full mb-8"></div>
               </div>
@@ -126,10 +126,10 @@ export default async function DepartmentDetailsPage({
                             {dept.name}
                           </h3>
                           <Link 
-                            href={`/doctors?department=${encodeURIComponent(dept.name)}`} 
+                            href={`/departments/${dept.id}`} 
                             className="inline-flex items-center gap-1.5 text-[12px] font-[800] text-[#007a87] group-hover:text-[#D9232D] uppercase tracking-widest transition-colors"
                           >
-                            VIEW DOCTORS <ArrowRight size={14} />
+                            VIEW DETAILS <ArrowRight size={14} />
                           </Link>
                         </div>
                       </div>

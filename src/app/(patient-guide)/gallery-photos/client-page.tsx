@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { ChevronRight, Image as ImageIcon, Maximize2, X } from "lucide-react";
+import { ChevronRight, Image as ImageIcon, Maximize2, X, ChevronLeft, Pause, Play } from "lucide-react";
 
 export default function GalleryPhotosClientPage({ pageData }: { pageData: any }) {
   const patientGuideOptions = [
@@ -24,6 +24,8 @@ export default function GalleryPhotosClientPage({ pageData }: { pageData: any })
   const displayCategories = categories.includes("ALL") ? categories : ["ALL", ...categories];
 
   const [activeCategory, setActiveCategory] = useState("ALL");
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
 
   const filteredPhotos = activeCategory === "ALL" 
     ? photos 
@@ -44,6 +46,20 @@ export default function GalleryPhotosClientPage({ pageData }: { pageData: any })
       }
     }
   }, []);
+
+  // Slideshow logic
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    if (isPlaying && lightboxIndex !== null) {
+      interval = setInterval(() => {
+        setLightboxIndex(prev => {
+          if (prev === null) return null;
+          return prev === filteredPhotos.length - 1 ? 0 : prev + 1;
+        });
+      }, 3000);
+    }
+    return () => clearInterval(interval);
+  }, [isPlaying, lightboxIndex, filteredPhotos.length]);
 
   return (
     <div className="min-h-screen bg-[#f8fafc] font-sans selection:bg-teal-500/30">
@@ -135,7 +151,7 @@ export default function GalleryPhotosClientPage({ pageData }: { pageData: any })
                   <div 
                     key={idx} 
                     className="group cursor-pointer bg-white rounded-2xl border border-slate-200 overflow-hidden hover:shadow-xl hover:border-teal-300 transition-all duration-300 flex flex-col h-full"
-                    onClick={() => photo.url && window.open(photo.url, '_blank')}
+                    onClick={() => photo.url && setLightboxIndex(idx)}
                   >
                     {/* Photo Thumbnail */}
                     <div className="aspect-[4/3] bg-slate-100 flex items-center justify-center relative overflow-hidden group-hover:bg-slate-200 transition-colors">
@@ -181,10 +197,74 @@ export default function GalleryPhotosClientPage({ pageData }: { pageData: any })
 
             </div>
           </div>
-
         </div>
       </div>
 
+      {lightboxIndex !== null && (
+        <div 
+          className="fixed inset-0 z-[100] bg-black/90 flex flex-col items-center justify-center p-4"
+          onClick={() => { setLightboxIndex(null); setIsPlaying(false); }}
+        >
+          {/* Main Image Container */}
+          <div 
+            className="relative flex items-center justify-center max-w-5xl w-full h-[75vh]"
+            onClick={e => e.stopPropagation()}
+          >
+            <img 
+              src={filteredPhotos[lightboxIndex].url} 
+              alt={filteredPhotos[lightboxIndex].title}
+              className="max-w-full max-h-full object-contain shadow-[0_0_40px_rgba(0,0,0,0.5)] border-4 border-white rounded-sm bg-white"
+            />
+          </div>
+
+          {/* Controls Bar */}
+          <div 
+            className="mt-4 bg-white/95 px-4 py-2 rounded flex items-center justify-between w-full max-w-4xl shadow-lg"
+            onClick={e => e.stopPropagation()}
+          >
+            <div className="text-sm font-bold text-slate-700 min-w-[50px]">
+              {lightboxIndex + 1} / {filteredPhotos.length}
+            </div>
+
+            <div className="flex items-center gap-3">
+              <button 
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setLightboxIndex(prev => prev === null ? null : (prev === 0 ? filteredPhotos.length - 1 : prev - 1));
+                }} 
+                className="p-1.5 hover:bg-slate-200 rounded-full transition-colors bg-slate-100 text-slate-700"
+              >
+                <ChevronLeft className="w-5 h-5" />
+              </button>
+              <button 
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsPlaying(!isPlaying);
+                }} 
+                className="p-1.5 hover:bg-slate-200 rounded-full transition-colors bg-slate-100 text-slate-700"
+              >
+                {isPlaying ? <Pause className="w-5 h-5" /> : <Play className="w-5 h-5" />}
+              </button>
+              <button 
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setLightboxIndex(prev => prev === null ? null : (prev === filteredPhotos.length - 1 ? 0 : prev + 1));
+                }} 
+                className="p-1.5 hover:bg-slate-200 rounded-full transition-colors bg-slate-100 text-slate-700"
+              >
+                <ChevronRight className="w-5 h-5" />
+              </button>
+            </div>
+
+            <button 
+              onClick={() => { setLightboxIndex(null); setIsPlaying(false); }} 
+              className="p-1 hover:bg-red-50 text-slate-700 hover:text-red-500 rounded-full transition-colors"
+            >
+              <X className="w-6 h-6" />
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
