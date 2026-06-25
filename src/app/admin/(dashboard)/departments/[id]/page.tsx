@@ -29,17 +29,25 @@ export default async function EditDepartmentPage({
   async function updateDepartment(formData: FormData) {
     "use server";
     
+    const cleanHtml = (html: string | null) => {
+      if (!html) return '';
+      return html.replace(/<p>(\s|&nbsp;|<br\s*\/?>)*<\/p>/gi, '').trim();
+    };
+
     const name = formData.get("name") as string;
-    const spectrum = formData.get("spectrum") as string;
-    const paediatric = formData.get("paediatric") as string;
-    const facilities = formData.get("facilities") as string;
-    const location = formData.get("location") as string;
-    const timetable = formData.get("timetable") as string;
-    const workload = formData.get("workload") as string;
-    const courses = formData.get("courses") as string;
-    const events = formData.get("events") as string;
+    const overview = cleanHtml(formData.get("overview") as string);
+    const spectrum = cleanHtml(formData.get("spectrum") as string);
+    const paediatric = cleanHtml(formData.get("paediatric") as string);
+    let facilities = cleanHtml(formData.get("facilities") as string);
+    const location = cleanHtml(formData.get("location") as string);
+    const timetable = cleanHtml(formData.get("timetable") as string);
+    const workload = cleanHtml(formData.get("workload") as string);
+    const courses = cleanHtml(formData.get("courses") as string);
+    const events = cleanHtml(formData.get("events") as string);
+    const contactUs = cleanHtml(formData.get("contactUs") as string);
     const galleryJson = formData.get("gallery") as string;
-    const consultant = formData.get("consultant") as string;
+    const facilitiesImagesJson = formData.get("facilitiesImages") as string;
+    const consultant = cleanHtml(formData.get("consultant") as string);
     
     const headOfDepartment = formData.get("headOfDepartment") as string;
     const icon = formData.get("icon") as string;
@@ -70,39 +78,64 @@ export default async function EditDepartmentPage({
     // Helper to inject list styling (Removed - Now handled dynamically on frontend)
     // Helper to format facilities as a grid of teal boxes (Removed - Now handled dynamically on frontend)
 
+    if (facilitiesImagesJson) {
+      try {
+        const items = JSON.parse(facilitiesImagesJson);
+        if (items.length > 0) {
+          const cheerio = await import('cheerio');
+          const $ = cheerio.load(facilities, null, false);
+          const unassignedItems: any[] = [];
+          
+          items.forEach((img: any) => {
+            let assigned = false;
+            if (img.name) {
+              const searchName = img.name.trim().toLowerCase();
+              $('p, li').each((_, el) => {
+                 const text = $(el).text().trim().toLowerCase();
+                 if (text && (text === searchName || text.includes(searchName))) {
+                    const imgHtml = img.url && !img.url.startsWith('Image:') 
+                       ? `<div class="mt-4 facility-img-wrapper"><img src="${img.url}" alt="${img.name}" class="facility-assigned-image w-full max-w-sm mx-auto h-40 object-cover rounded-xl shadow-sm border border-teal-100" /></div>` 
+                       : `<div class="mt-4 facility-img-wrapper"><div class="facility-assigned-image w-full max-w-sm mx-auto h-40 bg-slate-200 rounded-xl flex items-center justify-center text-slate-400 font-medium">${img.url || 'Image Preview'}</div></div>`;
+                    
+                    if (!$(el).parent().hasClass('facility-item-wrapper')) {
+                       $(el).wrap('<div class="facility-item-wrapper h-full flex flex-col"></div>');
+                    }
+                    $(el).parent().append(imgHtml);
+                    assigned = true;
+                    return false;
+                 }
+              });
+            }
+            if (!assigned) {
+              unassignedItems.push(img);
+            }
+          });
+          
+          facilities = $.html();
 
-
-    // Helper to style consultant
-    const styleConsultant = (html: string) => {
-      if (!html) return '';
-      // Extract text content from Quill's <p> tags
-      let text = html.replace(/<[^>]+>/g, '').trim();
-      // If it accidentally captured the old initials, clean it
-      if (/^[A-Z]{2}Dr\./.test(text)) {
-        text = text.substring(2);
+          if (unassignedItems.length > 0) {
+            const facilitiesGridHtml = `
+    <div class="facilities-images-grid col-span-full grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
+      ${unassignedItems.map((img: any) => `
+      <div class="bg-slate-50 p-4 rounded-xl text-center border border-teal-100 shadow-sm">
+        ${img.url && !img.url.startsWith('Image:') ? 
+          `<img src="${img.url}" alt="${img.name}" class="w-full h-32 object-cover rounded-lg mb-2 shadow-sm" />` : 
+          `<div class="w-full h-32 bg-slate-200 rounded-lg mb-2 flex items-center justify-center text-slate-400 font-medium">${img.url || 'Image Preview'}</div>`
+        }
+        <span class="block font-bold text-[#007a87] m-0 text-sm mt-3">${img.name}</span>
+      </div>`).join('')}
+    </div>`;
+            facilities = (facilities || '') + facilitiesGridHtml;
+          }
+        }
+      } catch (e) {
+         // ignore
       }
-      // Replace non-breaking spaces with regular spaces
-      text = text.replace(/&nbsp;/g, ' ').trim();
-      if (!text) return '';
-      // Generate initials (first two words)
-      const words = text.split(' ').filter(Boolean);
-      let initials = 'DM';
-      if (words.length >= 2) {
-        initials = (words[1][0] + (words[2]?.[0] || words[1][1] || '')).toUpperCase();
-      } else if (words.length === 1) {
-        initials = words[0].substring(0, 2).toUpperCase();
-      }
-      return `
-      <div class="p-4 bg-white border border-slate-200 rounded-xl flex items-center gap-4 shadow-sm">
-        <div class="w-12 h-12 rounded-full bg-teal-100 flex items-center justify-center text-teal-600 font-bold shrink-0">${initials}</div>
-        <div>
-          <h4 class="text-lg font-bold text-[#002b5c] m-0">${text}</h4>
-        </div>
-      </div>`;
-    };
-
+    }    // The styleConsultant feature was causing nested strings on every save.
+    // Consultant styling should be done dynamically on the frontend.
     const description = `
 <div class="space-y-8 text-slate-700">
+  ${overview ? `<section><h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Overview</h3>${overview}</section>` : ''}
   ${spectrum ? `<section><h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Spectrum and Services</h3>${spectrum}</section>` : ''}
   ${paediatric ? `<section><h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Paediatric Liver Clinic</h3>${paediatric}</section>` : ''}
   ${facilities ? `<section><h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Facilities</h3>${facilities}</section>` : ''}
@@ -111,8 +144,9 @@ export default async function EditDepartmentPage({
   ${workload ? `<section><h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Departmental Workload</h3>${workload}</section>` : ''}
   ${courses ? `<section><h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Courses and Training</h3>${courses}</section>` : ''}
   ${events ? `<section><h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Events</h3>${events}</section>` : ''}
+  ${contactUs ? `<section><h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Contact Us</h3>${contactUs}</section>` : ''}
   ${galleryHtml ? `<section><h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Photo Gallery</h3>${galleryHtml}</section>` : ''}
-  ${consultant ? `<section><h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Consultant</h3>${styleConsultant(consultant)}</section>` : ''}
+  ${consultant ? `<section><h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Consultant</h3>${consultant}</section>` : ''}
 </div>
     `;
 
@@ -151,23 +185,62 @@ export default async function EditDepartmentPage({
   const desc = department.description || "";
   
   const extractSection = (title: string) => {
-    // Escape string for regex
-    const escapedTitle = title.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    const regex = new RegExp(`<h3[^>]*>${escapedTitle}<\\/h3>([\\s\\S]*?)<\\/section>`, 'i');
-    const match = desc.match(regex);
-    return match ? match[1].trim() : "";
+    const cheerio = require('cheerio');
+    const $ = cheerio.load(desc, null, false);
+    let content = "";
+    $('section').each((_, el: any) => {
+      const h3 = $(el).find('h3').first();
+      if (h3.text().trim().toLowerCase() === title.toLowerCase()) {
+        // Clone the element to avoid modifying the original DOM just in case, though Cheerio load creates a new one
+        const elClone = $(el).clone();
+        elClone.find('h3').first().remove();
+        content = elClone.html() || "";
+      }
+    });
+    return content.trim();
   };
 
+  const overview = extractSection("Overview");
   const spectrum = extractSection("Spectrum and Services");
   const paediatric = extractSection("Paediatric Liver Clinic");
-  const facilities = extractSection("Facilities");
+  let facilities = extractSection("Facilities");
   const location = extractSection("Location of Department");
   const timetable = extractSection("Departmental Timetable");
   const workload = extractSection("Departmental Workload");
   const courses = extractSection("Courses and Training");
   const events = extractSection("Events");
+  const contactUs = extractSection("Contact Us");
   const gallery = extractSection("Photo Gallery");
-  const consultant = extractSection("Consultant");
+  let consultant = extractSection("Consultant");
+  if (consultant) {
+    const cheerio = require('cheerio');
+    const $ = cheerio.load(consultant, null, false);
+    const consultantNames: string[] = [];
+    
+    // Extract names from styled circles or just raw tags
+    $('p, li, h4').each((_, el) => {
+       let text = $(el).text().trim();
+       text = text.replace(/^(?:[A-Z]\s*)+Dr\./, 'Dr.');
+       text = text.replace(/&nbsp;/g, ' ').trim();
+       if (text && text.length > 2) {
+          consultantNames.push(text);
+       }
+    });
+    
+    if (consultantNames.length === 0) {
+       let allText = '';
+       $.root().contents().each((_, el) => {
+          allText += $(el).text() + ' ';
+       });
+       let text = allText.replace(/<[^>]+>/g, '').trim();
+       text = text.replace(/^(?:[A-Z]\s*)+Dr\./, 'Dr.');
+       text = text.replace(/&nbsp;/g, ' ').trim();
+       if (text && text.length > 2) consultantNames.push(text);
+    }
+    
+    // Convert them back into clean paragraphs for the WYSIWYG editor
+    consultant = consultantNames.map(name => `<p>${name}</p>`).join('');
+  }
 
   // Parse existing gallery HTML into JSON array for the editor
   const galleryItems: { url: string; name: string }[] = [];
@@ -184,6 +257,37 @@ export default async function EditDepartmentPage({
       
       galleryItems.push({ url, name });
     });
+  }
+
+  const facilitiesImageItems: { url: string; name: string }[] = [];
+  if (facilities) {
+    const cheerio = await import('cheerio');
+    const $ = cheerio.load(facilities, null, false);
+    
+    $('div.facilities-images-grid > div.bg-slate-50').each((_, el) => {
+      const imgEl = $(el).find('img').first();
+      const divPlaceholderEl = $(el).find('div.bg-slate-200').first();
+      const textEl = $(el).find('span').length ? $(el).find('span').first() : $(el).find('p').first();
+      
+      const url = imgEl.attr('src') || divPlaceholderEl.text() || "";
+      const name = textEl.text() || "";
+      
+      facilitiesImageItems.push({ url, name });
+    });
+    $('div.facilities-images-grid').remove();
+
+    $('img.facility-assigned-image, div.facility-assigned-image').each((_, el) => {
+       const url = $(el).attr('src') || $(el).text() || "";
+       const name = $(el).attr('alt') || "";
+       facilitiesImageItems.push({ url, name });
+       $(el).closest('.facility-img-wrapper').remove();
+    });
+
+    $('div.facility-item-wrapper').each((_, el) => {
+       $(el).replaceWith($(el).html());
+    });
+
+    facilities = $.html();
   }
 
   return (
@@ -269,6 +373,11 @@ export default async function EditDepartmentPage({
               </div>
 
               <div className="space-y-2">
+                <label className="text-[12px] font-[800] text-gray-700 uppercase tracking-widest">Overview</label>
+                <QuillEditor name="overview" defaultValue={overview} />
+              </div>
+
+              <div className="space-y-2">
                 <label className="text-[12px] font-[800] text-gray-700 uppercase tracking-widest">Spectrum and Services</label>
                 <QuillEditor name="spectrum" defaultValue={spectrum} />
               </div>
@@ -281,6 +390,10 @@ export default async function EditDepartmentPage({
               <div className="space-y-2">
                 <label className="text-[12px] font-[800] text-gray-700 uppercase tracking-widest">Facilities</label>
                 <QuillEditor name="facilities" defaultValue={facilities} />
+              </div>
+              
+              <div className="space-y-2">
+                <PhotoGalleryEditor name="facilitiesImages" defaultItems={facilitiesImageItems} title="Facilities Images" />
               </div>
 
               <div className="space-y-2">
@@ -306,6 +419,11 @@ export default async function EditDepartmentPage({
               <div className="space-y-2">
                 <label className="text-[12px] font-[800] text-gray-700 uppercase tracking-widest">Events</label>
                 <QuillEditor name="events" defaultValue={events} />
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-[12px] font-[800] text-gray-700 uppercase tracking-widest">Contact Us</label>
+                <QuillEditor name="contactUs" defaultValue={contactUs} />
               </div>
 
               <div className="space-y-2">

@@ -11,15 +11,19 @@ export default function NewDepartmentPage() {
   async function createDepartment(formData: FormData) {
     "use server";
     
+    const cleanHtml = (html: string) => html;
+
     const name = formData.get("name") as string;
-    const spectrum = formData.get("spectrum") as string;
-    const paediatric = formData.get("paediatric") as string;
-    const facilities = formData.get("facilities") as string;
-    const location = formData.get("location") as string;
-    const timetable = formData.get("timetable") as string;
-    const workload = formData.get("workload") as string;
-    const courses = formData.get("courses") as string;
-    const events = formData.get("events") as string;
+    const overview = cleanHtml(formData.get("overview") as string);
+    const spectrum = cleanHtml(formData.get("spectrum") as string);
+    const paediatric = cleanHtml(formData.get("paediatric") as string);
+    let facilities = cleanHtml(formData.get("facilities") as string);
+    const location = cleanHtml(formData.get("location") as string);
+    const timetable = cleanHtml(formData.get("timetable") as string);
+    const workload = cleanHtml(formData.get("workload") as string);
+    const courses = cleanHtml(formData.get("courses") as string);
+    const events = cleanHtml(formData.get("events") as string);
+    const contactUs = cleanHtml(formData.get("contactUs") as string);
     const galleryJson = formData.get("gallery") as string;
     const consultant = formData.get("consultant") as string;
     
@@ -76,33 +80,9 @@ export default function NewDepartmentPage() {
       return styled;
     };
 
-    // Helper to style consultant
-    const styleConsultant = (html: string) => {
-      if (!html) return '';
-      let text = html.replace(/<[^>]+>/g, '').trim();
-      if (/^[A-Z]{2}Dr\./.test(text)) {
-        text = text.substring(2);
-      }
-      text = text.replace(/&nbsp;/g, ' ').trim();
-      if (!text) return '';
-      const words = text.split(' ').filter(Boolean);
-      let initials = 'DM';
-      if (words.length >= 2) {
-        initials = (words[1][0] + (words[2]?.[0] || words[1][1] || '')).toUpperCase();
-      } else if (words.length === 1) {
-        initials = words[0].substring(0, 2).toUpperCase();
-      }
-      return `
-      <div class="p-4 bg-white border border-slate-200 rounded-xl flex items-center gap-4 shadow-sm">
-        <div class="w-12 h-12 rounded-full bg-teal-100 flex items-center justify-center text-teal-600 font-bold shrink-0">${initials}</div>
-        <div>
-          <h4 class="text-lg font-bold text-[#002b5c] m-0">${text}</h4>
-        </div>
-      </div>`;
-    };
-
     const description = `
 <div class="space-y-8 text-slate-700">
+  ${overview ? `<section><h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Overview</h3>${styleList(overview)}</section>` : ''}
   ${spectrum ? `<section><h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Spectrum and Services</h3>${styleList(spectrum)}</section>` : ''}
   ${paediatric ? `<section><h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Paediatric Liver Clinic</h3>${styleList(paediatric)}</section>` : ''}
   ${facilities ? `<section><h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Facilities</h3>${styleFacilities(facilities)}</section>` : ''}
@@ -111,8 +91,9 @@ export default function NewDepartmentPage() {
   ${workload ? `<section><h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Departmental Workload</h3>${styleList(workload)}</section>` : ''}
   ${courses ? `<section><h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Courses and Training</h3>${styleList(courses)}</section>` : ''}
   ${events ? `<section><h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Events</h3>${styleList(events)}</section>` : ''}
+  ${contactUs ? `<section><h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Contact Us</h3>${styleList(contactUs)}</section>` : ''}
   ${galleryHtml ? `<section><h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Photo Gallery</h3>${galleryHtml}</section>` : ''}
-  ${consultant ? `<section><h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Consultant</h3>${styleConsultant(consultant)}</section>` : ''}
+  ${consultant ? `<section><h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Consultant</h3>${consultant}</section>` : ''}
 </div>
     `;
 
@@ -198,6 +179,11 @@ export default function NewDepartmentPage() {
             </div>
 
             <div className="space-y-2">
+              <label className="text-[12px] font-[800] text-gray-700 uppercase tracking-widest">Overview</label>
+              <QuillEditor name="overview" />
+            </div>
+
+            <div className="space-y-2">
               <label className="text-[12px] font-[800] text-gray-700 uppercase tracking-widest">Spectrum and Services</label>
               <QuillEditor name="spectrum" />
             </div>
@@ -235,6 +221,11 @@ export default function NewDepartmentPage() {
             <div className="space-y-2">
               <label className="text-[12px] font-[800] text-gray-700 uppercase tracking-widest">Events</label>
               <QuillEditor name="events" />
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-[12px] font-[800] text-gray-700 uppercase tracking-widest">Contact Us</label>
+              <QuillEditor name="contactUs" />
             </div>
 
             <div className="space-y-2">

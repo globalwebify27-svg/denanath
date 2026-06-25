@@ -63,38 +63,80 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
 
   // --- Initial Load ---
   useEffect(() => {
-    // Fetch specialities and all doctors on mount
+    // Fetch specialities on mount
     fetchApi("speciality").then(data => {
+      if (!data) return;
       if (Array.isArray(data)) setSpecialities(data);
-    });
-    fetchApi("doctor").then(data => {
-      if (Array.isArray(data)) setDoctors(data);
+      else if (data.specialityJSON) setSpecialities(data.specialityJSON);
+      else {
+        // Fallback: find the first array in the object
+        const arr = Object.values(data).find(v => Array.isArray(v));
+        if (arr) setSpecialities(arr as any[]);
+      }
     });
   }, []);
+
+  // Fetch doctors dynamically when a speciality is selected
+  useEffect(() => {
+    if (!selectedSpeciality) {
+      setDoctors([]);
+      return;
+    }
+    
+    // API action 'speciality_doctor' requires 'speciality_id'
+    fetchApi("speciality_doctor", { speciality_id: selectedSpeciality }).then(data => {
+      if (!data) return;
+      if (Array.isArray(data)) setDoctors(data);
+      else if (data.doctorJSON) setDoctors(data.doctorJSON);
+      else {
+        // Fallback: find the first array in the object
+        const arr = Object.values(data).find(v => Array.isArray(v));
+        if (arr) setDoctors(arr as any[]);
+      }
+    });
+  }, [selectedSpeciality]);
 
   // --- Handlers ---
   const handleSearch = async () => {
     if (!selectedSpeciality && !selectedDoctor) return alert("Please select a Speciality or Doctor");
+    
+    // Find the correct doctor object to extract required IDs
+    let docObj = doctors.find(d => String(d.doctor_id) === String(selectedDoctor));
+    if (!docObj && selectedSpeciality) {
+       docObj = doctors.find(d => String(d.speciality_id) === String(selectedSpeciality));
+    }
+    
+    if (!docObj) {
+      alert("No doctors available for this selection.");
+      return;
+    }
+
     setIsSearching(true);
     setStep("calendar");
     setIsLoadingCalendar(true);
     
-    // Fetch available dates based on selection
-    // The exact param names depend on the API. Using generic ones based on prompt.
-    const payload = selectedDoctor 
-      ? { doctor_id: selectedDoctor } 
-      : { speciality_id: selectedSpeciality };
+    // API requires service_point_id and speciality_id
+    const payload = {
+       service_point_id: docObj.service_point_id,
+       speciality_id: docObj.speciality_id
+    };
       
     const datesRes = await fetchApi("check_date", payload);
-    // Assuming datesRes returns an array of date strings or objects
-    if (Array.isArray(datesRes)) {
-      // Mocking parsing, adjust based on actual API response
-      setAvailableDates(datesRes.map((d: any) => d.date || d));
+    
+    // Extract array from possible wrappers (e.g. { availableDate: [...] })
+    let dateArr: any[] = [];
+    if (datesRes && !datesRes.error) {
+       if (Array.isArray(datesRes)) dateArr = datesRes;
+       else dateArr = Object.values(datesRes).find(v => Array.isArray(v)) as any[] || [];
+    }
+
+    if (dateArr.length > 0) {
+      setAvailableDates(dateArr.map((d: any) => {
+        if (typeof d === 'string') return d;
+        return d.date || d.appointment_date || d.appointmentDate || d.availableDate || d.slotDate || Object.values(d)[0];
+      }));
     } else {
-      // Fallback mock data for visual testing if API fails or format is unknown
-      setAvailableDates([
-        "2026-07-01", "2026-07-04", "2026-07-09", "2026-07-11", "2026-07-15", "2026-07-18", "2026-07-22"
-      ]);
+      setAvailableDates([]);
     }
     
     setIsLoadingCalendar(false);
@@ -106,16 +148,34 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
     setSelectedDate(dateStr);
     setIsLoadingSlots(true);
     
-    const payload = selectedDoctor 
-      ? { doctor_id: selectedDoctor, selDate: dateStr }
-      : { speciality_id: selectedSpeciality, selDate: dateStr };
+    let docObj = doctors.find(d => String(d.doctor_id) === String(selectedDoctor));
+    if (!docObj && selectedSpeciality) {
+       docObj = doctors.find(d => String(d.speciality_id) === String(selectedSpeciality));
+    }
+    if (!docObj) return;
+
+    // Use check_slot API with required params
+    const payload = { 
+       service_point_id: docObj.service_point_id,
+       selDate: dateStr
+    };
       
-    // Try doctor_slot or check_slot
-    const action = selectedDoctor ? "doctor_slot" : "check_slot";
-    const slotsRes = await fetchApi(action, payload);
+    const slotsRes = await fetchApi("check_slot", payload);
     
-    if (Array.isArray(slotsRes) && slotsRes.length > 0) {
-      setSlots(slotsRes);
+    let slotsArr: any[] = [];
+    if (slotsRes && !slotsRes.error) {
+       if (Array.isArray(slotsRes)) slotsArr = slotsRes;
+       else slotsArr = Object.values(slotsRes).find(v => Array.isArray(v)) as any[] || [];
+    }
+
+    if (slotsArr.length > 0) {
+      // Normalize slot times robustly
+      const normalizedSlots = slotsArr.map(s => {
+         if (typeof s === 'string') return { time: s, available: true };
+         const timeStr = s.slot || s.time || s.slot_time || s.slotTime || s.appointmentTime || s.appointment_time || s.fromTime || Object.values(s)[0];
+         return { ...s, time: timeStr, available: true };
+      });
+      setSlots(normalizedSlots);
     } else {
       // Fallback mock slots
       setSlots([
@@ -137,7 +197,7 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
     setIsSubmitting(true);
     
     // Determine patient details if registered
-    let patientDetails = {};
+    let patientDetails: any = {};
     if (patientTab === "registered" && formData.mrdNo) {
       const ptnRes = await fetchApi("ptn_details", { mrd_no: formData.mrdNo, dob: formData.dob });
       if (ptnRes && !ptnRes.error) {
@@ -145,29 +205,55 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
       }
     }
 
+    let docObj = doctors.find(d => String(d.doctor_id) === String(selectedDoctor));
+    if (!docObj && selectedSpeciality) {
+       docObj = doctors.find(d => String(d.speciality_id) === String(selectedSpeciality));
+    }
+
+    let titleStr = "Mr";
+    if (formData.gender === "Female") titleStr = "Mrs";
+    
     const payload = {
       appointment_type: patientTab === "new" ? "New" : "Followup",
-      mrd_no: formData.mrdNo,
-      first_name: formData.firstName,
-      middle_name: formData.middleName,
-      last_name: formData.lastName,
-      dob: formData.dob,
-      gender: formData.gender,
-      mobile_no: formData.mobileNo,
-      email_id: formData.email,
-      speciality_id: selectedSpeciality,
-      doctor_id: selectedDoctor,
-      slot_date: selectedDate,
-      slot_time: selectedSlot,
+      service_id: "0",
+      mrd_no: formData.mrdNo || "",
+      patient_id: patientDetails.patient_id || "",
+      title: titleStr,
+      first_name: formData.firstName || "",
+      middle_name: formData.middleName || "",
+      last_name: formData.lastName || "",
+      dob: formData.dob || "",
+      gender: formData.gender || "Male",
+      mobile_no: formData.mobileNo || "",
+      email_id: formData.email || "",
+      service_center_id: docObj?.service_center_id || "",
+      service_point_id: docObj?.service_point_id || "",
+      speciality_id: selectedSpeciality || docObj?.speciality_id || "",
+      doctor_id: selectedDoctor || "",
+      slot_date: selectedDate || "",
+      slot_time: selectedSlot || "",
+      token: ""
     };
 
     const res = await fetchApi("save_appointment", payload);
     setIsSubmitting(false);
     
-    // Show success even if API fails in this demo env, adapt as needed
-    setBookingSuccess(true);
-    setSelectedDate(null);
-    setSelectedSlot(null);
+    // Check API response for success or failure
+    let apiResponseMsg = "";
+    if (res && res.Response && Array.isArray(res.Response) && res.Response.length > 0) {
+      apiResponseMsg = res.Response[0].response;
+    } else if (res && res.response) {
+      apiResponseMsg = res.response;
+    }
+
+    if (apiResponseMsg === "APPOINTMENT SAVED SUCCESSFULLY") {
+      setBookingSuccess(true);
+      setSelectedDate(null);
+      setSelectedSlot(null);
+    } else {
+      // API returned an error string like INVALID_ARGUMENT or ALREADY BOOKED
+      alert("Booking failed: " + (apiResponseMsg || "Unknown error from server."));
+    }
   };
 
   // --- Calendar Rendering Helpers ---
@@ -257,31 +343,27 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
                   value={selectedSpeciality}
                   onChange={(e) => { setSelectedSpeciality(e.target.value); setSelectedDoctor(""); }}
                 >
-                  <option value="">Select Speciality</option>
+                  <option value="">1. Select Speciality (Required)</option>
                   {specialities.map((s, i) => (
                     <option key={i} value={s.speciality_id || s.id || s.name || `spec_${i}`}>{s.speciality_name || s.name || `Speciality ${i+1}`}</option>
                   ))}
-                  {/* Fallback mock options */}
-                  {specialities.length === 0 && (
-                    <>
-                      <option value="cardio">Cardiology</option>
-                      <option value="neuro">Neurology</option>
-                      <option value="ortho">Orthopaedics</option>
-                    </>
-                  )}
                 </select>
               </div>
               
-              <div className="text-slate-400 font-bold uppercase tracking-widest text-sm py-2">OR</div>
+              <div className="text-slate-400 font-bold uppercase tracking-widest text-sm py-2">THEN</div>
               
-              <div className="bg-slate-100 rounded-full p-1">
+              <div className={`bg-slate-100 rounded-full p-1 ${!selectedSpeciality ? 'opacity-50 cursor-not-allowed' : ''}`}>
                 <select 
-                  className="w-full bg-transparent text-slate-600 text-lg rounded-full py-3 px-6 focus:outline-none appearance-none text-center cursor-pointer font-medium"
+                  className="w-full bg-transparent text-slate-600 text-lg rounded-full py-3 px-6 focus:outline-none appearance-none text-center font-medium"
                   value={selectedDoctor}
-                  onChange={(e) => { setSelectedDoctor(e.target.value); setSelectedSpeciality(""); }}
+                  onChange={(e) => setSelectedDoctor(e.target.value)}
+                  disabled={!selectedSpeciality}
+                  style={{ cursor: !selectedSpeciality ? 'not-allowed' : 'pointer' }}
                 >
-                  <option value="">Select Doctor</option>
-                  {doctors.map((d, i) => (
+                  <option value="">2. Select Doctor</option>
+                  {doctors
+                    .filter(d => selectedSpeciality ? String(d.speciality_id) === String(selectedSpeciality) : true)
+                    .map((d, i) => (
                     <option key={i} value={d.doctor_id || d.id || d.name || `doc_${i}`}>{d.doctor_name || d.name || `Doctor ${i+1}`}</option>
                   ))}
                   {/* Fallback mock options */}

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import { X, ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
 
 export default function LightboxWrapper({ htmlContent }: { htmlContent: string }) {
@@ -11,6 +12,61 @@ export default function LightboxWrapper({ htmlContent }: { htmlContent: string }
 
   useEffect(() => {
     if (containerRef.current) {
+      // --- Auto-Slider for Multiple Images in a Single Paragraph ---
+      // If the admin places multiple images inside a single paragraph, turn them into a slider
+      // without breaking the grid layout or merging other paragraphs.
+      const pTags = containerRef.current.querySelectorAll('.department-facilities-section p');
+      pTags.forEach(p => {
+        if (p.hasAttribute('data-slider-init')) return;
+        p.setAttribute('data-slider-init', 'true');
+
+        const images = Array.from(p.querySelectorAll('img'));
+        if (images.length > 1) {
+          // Hide original images in the P tag so we can wrap them
+          images.forEach(img => { (img as HTMLElement).style.display = 'none'; });
+
+          const sliderContainer = document.createElement('div');
+          sliderContainer.className = "relative group w-full mt-2";
+          
+          const scrollArea = document.createElement('div');
+          scrollArea.className = "flex overflow-x-auto snap-x snap-mandatory gap-4 pb-2 scrollbar-hide";
+          scrollArea.style.scrollbarWidth = 'none'; // Firefox
+          scrollArea.style.msOverflowStyle = 'none'; // IE/Edge
+          
+          images.forEach(img => {
+              const imgWrapper = document.createElement('div');
+              imgWrapper.className = "snap-center shrink-0 w-full rounded-xl overflow-hidden shadow-sm relative bg-white";
+              
+              const newImg = document.createElement('img');
+              newImg.src = img.src;
+              newImg.alt = img.alt || "Facility Image";
+              newImg.className = "w-full h-48 sm:h-56 object-cover lightbox-enabled-img transition-transform hover:scale-105 duration-500";
+              newImg.style.cursor = 'pointer';
+              
+              imgWrapper.appendChild(newImg);
+              scrollArea.appendChild(imgWrapper);
+          });
+          
+          sliderContainer.appendChild(scrollArea);
+          
+          const prevBtn = document.createElement('button');
+          prevBtn.innerHTML = '&#10094;'; // <
+          prevBtn.className = "absolute left-2 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-teal-700 w-8 h-8 rounded-full shadow-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-10 font-bold border border-teal-100";
+          prevBtn.onclick = (e) => { e.stopPropagation(); scrollArea.scrollBy({ left: -scrollArea.clientWidth, behavior: 'smooth' }); };
+          
+          const nextBtn = document.createElement('button');
+          nextBtn.innerHTML = '&#10095;'; // >
+          nextBtn.className = "absolute right-2 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white text-teal-700 w-8 h-8 rounded-full shadow-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-10 font-bold border border-teal-100";
+          nextBtn.onclick = (e) => { e.stopPropagation(); scrollArea.scrollBy({ left: scrollArea.clientWidth, behavior: 'smooth' }); };
+          
+          sliderContainer.appendChild(prevBtn);
+          sliderContainer.appendChild(nextBtn);
+          
+          p.appendChild(sliderContainer);
+        }
+      });
+
+      // --- Lightbox Initialization ---
       const imgElements = Array.from(containerRef.current.querySelectorAll('img'));
       const imgData = imgElements.map(img => ({
         src: img.getAttribute('src') || img.src,
@@ -20,9 +76,12 @@ export default function LightboxWrapper({ htmlContent }: { htmlContent: string }
       
       // Make them look clickable via CSS injected to the container
       imgElements.forEach(img => {
-        img.style.cursor = 'pointer';
-        // Add a class so we can style hover if needed
-        img.classList.add('lightbox-enabled-img');
+        if (img.style.display !== 'none') {
+          img.style.cursor = 'pointer';
+          if (!img.classList.contains('lightbox-enabled-img')) {
+            img.classList.add('lightbox-enabled-img');
+          }
+        }
       });
     }
   }, [htmlContent]);
@@ -102,7 +161,7 @@ export default function LightboxWrapper({ htmlContent }: { htmlContent: string }
         dangerouslySetInnerHTML={{ __html: htmlContent }} 
       />
 
-      {currentIndex !== null && (
+      {currentIndex !== null && createPortal(
         <div 
           className="fixed inset-0 z-[100] bg-black/90 flex flex-col items-center justify-center p-4"
           onClick={handleClose}
@@ -144,7 +203,8 @@ export default function LightboxWrapper({ htmlContent }: { htmlContent: string }
               <X className="w-6 h-6" />
             </button>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </>
   );
