@@ -15,12 +15,14 @@ export default async function DepartmentDetailsPage({
 }) {
   const resolvedParams = await params;
   
-  const department = await prisma.department.findUnique({
-    where: {
-      id: resolvedParams.id,
-      status: true
-    },
+  const allDepartments = await prisma.department.findMany({
+    where: { status: true }
   });
+
+  const department = allDepartments.find(d => 
+    d.id === resolvedParams.id || 
+    d.name.toLowerCase().replace(/[^a-z0-9]+/g, '-') === resolvedParams.id.toLowerCase()
+  );
 
   if (!department) {
     notFound();
