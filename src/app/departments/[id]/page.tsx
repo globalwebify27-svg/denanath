@@ -4,6 +4,7 @@ import { ChevronRight, ArrowLeft, Stethoscope, HeartPulse } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import LightboxWrapper from "@/components/LightboxWrapper";
+import VideoPlayer from "@/components/VideoPlayer";
 import * as cheerio from "cheerio";
 
 export const dynamic = "force-dynamic";
@@ -259,9 +260,18 @@ export default async function DepartmentDetailsPage({
                 [&_.department-facilities-section_ul]:col-span-full [&_.department-facilities-section_ul]:grid [&_.department-facilities-section_ul]:grid-cols-1 [&_.department-facilities-section_ul]:md:grid-cols-2 [&_.department-facilities-section_ul]:lg:grid-cols-3 [&_.department-facilities-section_ul]:gap-4 [&_.department-facilities-section_ul]:list-none [&_.department-facilities-section_ul]:pl-0
                 [&_.department-facilities-section_li]:bg-teal-50 [&_.department-facilities-section_li]:p-4 [&_.department-facilities-section_li]:rounded-xl [&_.department-facilities-section_li]:text-center [&_.department-facilities-section_li]:font-semibold [&_.department-facilities-section_li]:text-[#007a87] [&_.department-facilities-section_li]:shadow-sm
                 
+                [&_iframe]:float-none [&_iframe]:md:float-left [&_iframe]:w-full [&_iframe]:md:w-[400px] [&_iframe]:h-[225px] [&_iframe]:mr-6 [&_iframe]:mb-4 [&_iframe]:rounded-xl [&_iframe]:shadow-md [&_iframe]:border [&_iframe]:border-slate-200
+                
                 [&_.department-gallery-section_img]:!h-32 [&_.department-gallery-section_img]:!w-full [&_.department-gallery-section_img]:!my-0 [&_.department-gallery-section_img]:!rounded-lg [&_.department-gallery-section_img]:!object-cover [&_.department-gallery-section_img]:!shadow-sm">
                 {department.description ? (
-                  <LightboxWrapper htmlContent={processedHtml} />
+                  <div className="clearfix">
+                    {department.videoUrl && (
+                      <div className="float-none md:float-left w-full md:w-[400px] lg:w-[500px] mb-6 md:mr-8 md:mb-8">
+                        <VideoPlayer url={department.videoUrl} />
+                      </div>
+                    )}
+                    <LightboxWrapper htmlContent={processedHtml} />
+                  </div>
                 ) : (
                   <div className="py-12 text-center bg-slate-50 border-2 border-dashed border-slate-200 rounded-2xl">
                     <HeartPulse className="w-12 h-12 text-slate-300 mx-auto mb-4" />
