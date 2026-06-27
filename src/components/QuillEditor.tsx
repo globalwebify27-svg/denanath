@@ -29,6 +29,28 @@ export default function QuillEditor({ name, defaultValue }: { name: string, defa
     cleanHTML: {
       fillEmptyParagraph: false,
       removeEmptyElements: false,
+    },
+    uploader: {
+      url: '/api/upload',
+      format: 'json',
+      method: 'POST',
+      isSuccess: function (resp) {
+        return !resp.error;
+      },
+      process: function (resp) {
+        return {
+          files: [resp.url],
+          path: resp.url,
+          baseurl: '',
+          error: resp.error ? 1 : 0,
+          msg: resp.error || ''
+        };
+      },
+      defaultHandlerSuccess: function (data) {
+        if (data.files && data.files.length) {
+          this.s.insertImage(data.files[0]);
+        }
+      }
     }
   }), []);
 

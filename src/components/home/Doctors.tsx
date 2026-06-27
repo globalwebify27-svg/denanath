@@ -87,7 +87,7 @@ export default function DoctorsSection() {
             </h2>
           </div>
 
-          <p className="max-w-xl text-sm md:text-base text-slate-600 leading-relaxed">
+          <p className="max-w-xl text-[18px] text-slate-600 leading-relaxed">
             Our highly experienced specialists provide compassionate care.
           </p>
         </div>
@@ -108,12 +108,12 @@ export default function DoctorsSection() {
                   snap-start overflow-hidden flex-shrink-0 flex flex-col
                 "
               >
-                <div className="relative h-[280px] sm:h-[340px] w-full overflow-hidden">
+                <div className="relative h-[340px] w-full overflow-hidden">
                   <Image
                     src={doctor.image}
                     alt={doctor.name}
                     fill
-                    className="object-cover"
+                    className="object-cover object-top sm:object-center"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
 

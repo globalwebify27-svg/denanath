@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-export default function PhotoGalleryEditor({ name, defaultItems = [] }: { name: string, defaultItems?: any[] }) {
+export default function PhotoGalleryEditor({ name, defaultItems = [], title = "Header Images / Gallery" }: { name: string, defaultItems?: any[], title?: string }) {
   const [gallery, setGallery] = useState<{url: string, name: string}[]>(defaultItems);
 
   const [uploading, setUploading] = useState<number | null>(null);
@@ -59,7 +59,7 @@ export default function PhotoGalleryEditor({ name, defaultItems = [] }: { name: 
       <input type="hidden" name={name} value={JSON.stringify(gallery)} />
       
       <div className="flex items-center justify-between p-4 border-b border-slate-200 bg-slate-50">
-        <label className="text-[12px] font-[800] text-gray-700 uppercase tracking-widest">Header Images / Gallery</label>
+        <label className="text-[12px] font-[800] text-gray-700 uppercase tracking-widest">{title}</label>
         <button 
           type="button" 
           onClick={handleAddImage}

@@ -4,9 +4,16 @@ const prisma = new PrismaClient();
 async function main() {
   const newHtml = `
 <div class="space-y-8 text-slate-700">
+
+  <section>
+    <h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Overview</h3>
+    <p class="mb-4">The Department of Preventive Medicine is a new initiative by Deenanath Mangeshkar Hospital and Research Centre to promote health and wellness through preventive measures. We believe a healthy lifestyle and certain preventive measures are the key to a long and productive life. Our team of experts is committed to providing the community with the resources and education needed to make such informed health decisions.</p>
+  </section>
   
   <section>
     <h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Spectrum and Services</h3>
+    <p class="mb-4">We live in times that are seeing an alarming rise in chronic diseases such as diabetes, obesity, hypertension, heart disease and cancers. These illnesses are not only causing great financial hardship on our citizens, but also choking the capacity of our hospitals and clinics frequently. Many illnesses can be prevented by timely awareness, education, and screening.</p>
+    <p class="mb-4">Keeping the above situation in mind, we at the Preventive Medicine Department, envision to promote and maintain optimal health and well being for individuals, families, and communities through evidence-based prevention strategies. We strive to empower people to make informed choices about their health by providing them with the knowledge, resources, and support they need to lead healthy lifestyles. Our goal is to reduce the burden of chronic diseases, injuries, and other health risks through education, and advocacy efforts and targeted interventions where applicable.</p>
     <ol class="list-decimal pl-5 space-y-3">
       <li><strong>Addressing Lifestyle:</strong> preventing disorders related to it such as obesity, diabetes, hypertension, heart disease, chronic kidney disease, and COPD through counseling and regular follow-ups.</li>
       <li><strong>Diet and Nutrition:</strong> Planning a need-based customized dietary plan.</li>
@@ -23,26 +30,22 @@ async function main() {
     <ul class="list-disc pl-5 space-y-2">
       <li><strong>OPD Consultation:</strong> Consulting patients for prevention of lifestyle related diseases such as diabetes, obesity, hypertension, heart disease and cancers through lifestyle modification.</li>
       <li><strong>De-addiction clinic:</strong> Counseling individuals to quit various substances such, tobacco related substances, non tobacco / behavioural addictions such as Internet /phone addiction, gambling, alcohol and drugs. Additionally focusing on stress and anxiety management through various psychotherapies and behavioural interventions for patient’s benefit. This also includes Individual counseling, family counseling by maintaining confidentiality. Consultations done till date- over 200 individuals.</li>
-    </ul>
-  </section>
-
-  <section>
-    <h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">In house activities</h3>
-    <ul class="list-disc pl-5 space-y-2">
-      <li>Focusing on creating awareness, education and health promotion for staff and other employees to be more assertive, aware and take timely measures when symptoms arise and consult healthcare professionals.</li>
-      <li>Focused group discussion for MPW’s</li>
-      <li>Conducting CNE’s for nursing staff.</li>
-      <li>Till now we have conducted over 70 inhouse activities which received great response by over 3000 participants.</li>
-    </ul>
-  </section>
-
-  <section>
-    <h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Outreach activities</h3>
-    <ul class="list-disc pl-5 space-y-2">
-      <li>Camps</li>
-      <li>Awareness sessions</li>
-      <li>Screening programs</li>
-      <li>Number of participants attended camps - over 150 participants. Awareness session, lectures have been attended by over 10000 individuals from September 2023 till December 2024.</li>
+      <li><strong>In house activities:</strong>
+        <ul class="list-[circle] pl-5 mt-2 space-y-1">
+          <li>Focusing on creating awareness, education and health promotion for staff and other employees to be more assertive, aware and take timely measures when symptoms arise and consult healthcare professionals.</li>
+          <li>Focused group discussion for MPW’s</li>
+          <li>Conducting CNE’s for nursing staff.</li>
+          <li>Till now we have conducted over 70 inhouse activities which received great response by over 3000 participants.</li>
+        </ul>
+      </li>
+      <li><strong>Outreach activities:</strong>
+        <ul class="list-[circle] pl-5 mt-2 space-y-1">
+          <li>Camps</li>
+          <li>Awareness sessions</li>
+          <li>Screening programs</li>
+          <li>Number of participants attended camps - over 150 participants. Awareness session, lectures have been attended by over 10000 individuals from September 2023 till December 2024.</li>
+        </ul>
+      </li>
     </ul>
   </section>
 
@@ -99,7 +102,7 @@ async function main() {
       <li>Breast Cancer Awareness Month: Conducted sessions in collaboration with Surgical Oncology and Radiology departments for nursing and other staff.</li>
       <li>Interactive session on Prediabetes and Prevention - Lifestyle Modification in association with the Department of Medicine.</li>
       <li>Lecture on Health Economics - Putting a Price Tag on Health, attended by APCs across Pune.</li>
-      <li>Departmental activities of 2024.</li>
+      <li><a href="https://heyzine.com/flip-book/128d68a9ec.html#page/1" target="_blank" rel="noopener noreferrer" class="text-[#007a87] hover:underline font-semibold">Departmental activities of 2024.</a></li>
     </ul>
   </section>
 
@@ -165,36 +168,12 @@ async function main() {
 
   <section>
     <h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Consultant</h3>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <div class="p-4 bg-white border border-slate-200 rounded-xl flex items-center gap-4 shadow-sm hover:border-[#007a87] hover:shadow-md transition-all">
-        <div class="w-12 h-12 rounded-full bg-teal-100 flex items-center justify-center text-teal-600 font-bold shrink-0">SK</div>
-        <div>
-          <h4 class="text-lg font-bold text-[#002b5c] m-0">Mrs. KALE SONALI KEDAR</h4>
-          <p class="text-xs font-bold text-[#007a87] mt-1">Psychologist</p>
-        </div>
-      </div>
-      <div class="p-4 bg-white border border-slate-200 rounded-xl flex items-center gap-4 shadow-sm hover:border-[#007a87] hover:shadow-md transition-all">
-        <div class="w-12 h-12 rounded-full bg-teal-100 flex items-center justify-center text-teal-600 font-bold shrink-0">MR</div>
-        <div>
-          <h4 class="text-lg font-bold text-[#002b5c] m-0">Dr. RISBUD MADHAVI ABHAY</h4>
-          <p class="text-xs font-bold text-[#007a87] mt-1">Visiting Consultant</p>
-        </div>
-      </div>
-      <div class="p-4 bg-white border border-slate-200 rounded-xl flex items-center gap-4 shadow-sm hover:border-[#007a87] hover:shadow-md transition-all">
-        <div class="w-12 h-12 rounded-full bg-teal-100 flex items-center justify-center text-teal-600 font-bold shrink-0">MG</div>
-        <div>
-          <h4 class="text-lg font-bold text-[#002b5c] m-0">Dr. MANJUSHA GHUMARE</h4>
-          <p class="text-xs font-bold text-[#007a87] mt-1">Hon. Consultant</p>
-        </div>
-      </div>
-      <div class="p-4 bg-white border border-slate-200 rounded-xl flex items-center gap-4 shadow-sm hover:border-[#007a87] hover:shadow-md transition-all">
-        <div class="w-12 h-12 rounded-full bg-teal-100 flex items-center justify-center text-teal-600 font-bold shrink-0">SR</div>
-        <div>
-          <h4 class="text-lg font-bold text-[#002b5c] m-0">Ms. SAILEE RAO</h4>
-          <p class="text-xs font-bold text-[#007a87] mt-1">Psycho-Oncologist</p>
-        </div>
-      </div>
-    </div>
+    <ul class="list-disc pl-5 space-y-2">
+      <li>Mrs. KALE SONALI KEDAR (Psychologist)</li>
+      <li>Dr. RISBUD MADHAVI ABHAY (Visiting Consultant)</li>
+      <li>Dr. MANJUSHA GHUMARE (Hon. Consultant)</li>
+      <li>Ms. SAILEE RAO (Psycho-Oncologist)</li>
+    </ul>
   </section>
 
 </div>

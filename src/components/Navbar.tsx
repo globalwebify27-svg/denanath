@@ -274,7 +274,7 @@ export default function Navbar() {
             {/* DMH Logo Section */}
             <div className="flex items-center shrink-0">
               <Link href="/" className="flex items-center gap-1.5 sm:gap-2 group focus:outline-none">
-                <div className="relative flex items-center justify-center w-[200px] h-[55px] sm:w-[240px] sm:h-[65px] lg:w-[280px] lg:h-[70px] xl:w-[210px] xl:h-[55px] 2xl:w-[260px] 2xl:h-[65px] shrink-0 transition-all">
+                <div className="relative flex items-center justify-center w-[220px] sm:w-[260px] lg:w-[280px] xl:w-[300px] h-[55px] sm:h-[65px] shrink-0 transition-all">
                   <img
                     src="/images/Untitled design11.png"
                     alt="DMH Logo"

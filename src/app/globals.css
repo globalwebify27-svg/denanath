@@ -78,10 +78,14 @@ body {
 }
 
 /* Increase font size for sub-content pages */
+.w-full.flex-1 > .bg-white.rounded-3xl p,
+.w-full.flex-1 > .bg-white.rounded-3xl li,
+.w-full.flex-1 > .bg-white.rounded-3xl td,
+.prose p, .prose li, .prose td,
 .w-full.flex-1.min-w-0 > .bg-white.rounded-3xl p,
 .w-full.flex-1.min-w-0 > .bg-white.rounded-3xl li,
 .w-full.flex-1.min-w-0 > .bg-white.rounded-3xl td {
-  font-size: 20px !important;
+  font-size: 18px !important;
   line-height: 1.7 !important;
 }
 

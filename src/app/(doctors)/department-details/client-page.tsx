@@ -158,7 +158,7 @@ export default function DepartmentDetailsClientPage({ pageData, departments }: {
                                 {dept.name}
                               </h3>
                               <Link 
-                                href={`/departments/${dept.id}`} 
+                                href={`/departments/${dept.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`} 
                                 className="inline-flex items-center gap-1.5 text-[12px] font-[800] text-[#007a87] group-hover:text-[#D9232D] uppercase tracking-widest transition-colors"
                               >
                                 VIEW DETAILS <ArrowRight size={14} />

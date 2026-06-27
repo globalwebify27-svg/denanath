@@ -1,10 +1,9 @@
 import { NextResponse } from 'next/server';
 
-const BASE_URL = 'https://mappapi.dmhospital.org/amrita_login/dmhApiRef/appointment_dummy/';
+const BASE_URL = 'https://mapp.dmhospital.org/dmhApiRef/appointment_dummy/';
 const HEADERS = {
   'X-User-Name': 'dmhPhr-api',
   'X-Pass-Phrase': 'Phr25@DMH',
-  'Content-Type': 'application/x-www-form-urlencoded',
 };
 
 const ACTION_TO_ENDPOINT: Record<string, string> = {
@@ -36,23 +35,16 @@ export async function POST(request: Request) {
     const endpoint = ACTION_TO_ENDPOINT[action];
     const url = `${BASE_URL}${endpoint}`;
 
-    // Format the req_data payload as a JSON string
+    // Format the req_data payload as a JSON object
     const reqDataPayload = {
       action,
       ...restParams
     };
 
-    // Prepare the form body (application/x-www-form-urlencoded)
-    const formData = new URLSearchParams();
-    
-    // Based on the user prompt, some APIs might expect just a JSON payload or form-data with req_data
-    // Let's assume it expects a form field `req_data` with the JSON string
-    formData.append('req_data', JSON.stringify(reqDataPayload));
-
     const response = await fetch(url, {
       method: 'POST',
-      headers: HEADERS,
-      body: formData.toString(),
+      headers: { ...HEADERS, 'Content-Type': 'application/json' },
+      body: JSON.stringify(reqDataPayload),
     });
 
     // The API might return non-JSON on errors
