@@ -149,7 +149,6 @@ export default function DoctorForm({ doctor, id }: { doctor: any; id: string }) 
       });
       if (!response.ok) throw new Error("Failed to delete");
       router.push("/admin/doctors");
-      router.refresh();
     } catch (error) {
       console.error(error);
       alert("Failed to delete doctor");
@@ -182,7 +181,6 @@ export default function DoctorForm({ doctor, id }: { doctor: any; id: string }) 
       if (!response.ok) throw new Error("Failed to save");
       
       router.push("/admin/doctors");
-      router.refresh();
     } catch (error) {
       console.error(error);
       alert("Failed to save doctor");

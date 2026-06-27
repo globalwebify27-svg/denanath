@@ -1,0 +1,373 @@
+File: src\app\admin\(dashboard)\academics\simulation-center\client-form.tsx:45
+Context:
+
+      if (!res.ok) throw new Error("Failed to save");
+      alert("Saved successfully!");
+      router.refresh();
+    } catch (err) {
+      console.error(err);
+      alert("Error saving data");
+---
+
+File: src\app\admin\(dashboard)\academics\simulation-center\home\client-form.tsx:49
+Context:
+
+      if (!res.ok) throw new Error("Failed to save");
+      alert("Saved successfully!");
+      router.refresh();
+    } catch (err) {
+      console.error(err);
+      alert("Error saving data");
+---
+
+File: src\app\admin\(dashboard)\academics\simulation-center\lab-1\client-form.tsx:87
+Context:
+
+      if (!res.ok) throw new Error("Failed to save");
+      alert("Saved successfully!");
+      router.refresh();
+    } catch (err) {
+      console.error(err);
+      alert("Error saving data");
+---
+
+File: src\app\admin\(dashboard)\academics\simulation-center\lab-2\client-form.tsx:87
+Context:
+
+      if (!res.ok) throw new Error("Failed to save");
+      alert("Saved successfully!");
+      router.refresh();
+    } catch (err) {
+      console.error(err);
+      alert("Error saving data");
+---
+
+File: src\app\admin\(dashboard)\academics\simulation-center\lab-3\client-form.tsx:87
+Context:
+
+      if (!res.ok) throw new Error("Failed to save");
+      alert("Saved successfully!");
+      router.refresh();
+    } catch (err) {
+      console.error(err);
+      alert("Error saving data");
+---
+
+File: src\app\admin\(dashboard)\academics\simulation-center\other-facilities\client-form.tsx:87
+Context:
+
+      if (!res.ok) throw new Error("Failed to save");
+      alert("Saved successfully!");
+      router.refresh();
+    } catch (err) {
+      console.error(err);
+      alert("Error saving data");
+---
+
+File: src\app\admin\(dashboard)\departments\DepartmentSearch.tsx:65
+Context:
+  const handleSelect = (name: string) => {
+    setQuery(name);
+    setShowDropdown(false);
+    router.push(`/admin/departments?q=${encodeURIComponent(name)}&page=1`);
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+---
+
+File: src\app\admin\(dashboard)\departments\DepartmentSearch.tsx:71
+Context:
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setShowDropdown(false);
+    router.push(`/admin/departments?q=${encodeURIComponent(query)}&page=1`);
+  };
+
+  const handleClear = () => {
+---
+
+File: src\app\admin\(dashboard)\departments\DepartmentSearch.tsx:78
+Context:
+    setQuery("");
+    setSuggestions([]);
+    setShowDropdown(false);
+    router.push(`/admin/departments?q=&page=1`);
+  };
+
+  return (
+---
+
+File: src\app\admin\(dashboard)\doctors\department-details\client-form.tsx:49
+Context:
+
+      if (!res.ok) throw new Error("Failed to save");
+      alert("Saved successfully!");
+      router.refresh();
+    } catch (err) {
+      console.error(err);
+      alert("Error saving data");
+---
+
+File: src\app\admin\(dashboard)\doctors\doctor-details\client-form.tsx:49
+Context:
+
+      if (!res.ok) throw new Error("Failed to save");
+      alert("Saved successfully!");
+      router.refresh();
+    } catch (err) {
+      console.error(err);
+      alert("Error saving data");
+---
+
+File: src\app\admin\(dashboard)\doctors\services\client-form.tsx:49
+Context:
+
+      if (!res.ok) throw new Error("Failed to save");
+      alert("Saved successfully!");
+      router.refresh();
+    } catch (err) {
+      console.error(err);
+      alert("Error saving data");
+---
+
+File: src\app\admin\(dashboard)\doctors\[id]\DoctorForm.tsx:151
+Context:
+        method: "DELETE",
+      });
+      if (!response.ok) throw new Error("Failed to delete");
+      router.push("/admin/doctors");
+      router.refresh();
+    } catch (error) {
+      console.error(error);
+---
+
+File: src\app\admin\(dashboard)\doctors\[id]\DoctorForm.tsx:152
+Context:
+      });
+      if (!response.ok) throw new Error("Failed to delete");
+      router.push("/admin/doctors");
+      router.refresh();
+    } catch (error) {
+      console.error(error);
+      alert("Failed to delete doctor");
+---
+
+File: src\app\admin\(dashboard)\doctors\[id]\DoctorForm.tsx:184
+Context:
+
+      if (!response.ok) throw new Error("Failed to save");
+      
+      router.push("/admin/doctors");
+      router.refresh();
+    } catch (error) {
+      console.error(error);
+---
+
+File: src\app\admin\(dashboard)\doctors\[id]\DoctorForm.tsx:185
+Context:
+      if (!response.ok) throw new Error("Failed to save");
+      
+      router.push("/admin/doctors");
+      router.refresh();
+    } catch (error) {
+      console.error(error);
+      alert("Failed to save doctor");
+---
+
+File: src\app\admin\(dashboard)\hospital\book-appointment\client-form.tsx:49
+Context:
+
+      if (!res.ok) throw new Error("Failed to save");
+      alert("Saved successfully!");
+      router.refresh();
+    } catch (err) {
+      console.error(err);
+      alert("Error saving data");
+---
+
+File: src\app\admin\(dashboard)\hospital\careers\client-form.tsx:49
+Context:
+
+      if (!res.ok) throw new Error("Failed to save");
+      alert("Saved successfully!");
+      router.refresh();
+    } catch (err) {
+      console.error(err);
+      alert("Error saving data");
+---
+
+File: src\app\admin\(dashboard)\hospital\contact-us\client-form.tsx:49
+Context:
+
+      if (!res.ok) throw new Error("Failed to save");
+      alert("Saved successfully!");
+      router.refresh();
+    } catch (err) {
+      console.error(err);
+      alert("Error saving data");
+---
+
+File: src\app\admin\(dashboard)\online-facilities\email-login\client-form.tsx:96
+Context:
+
+      if (!res.ok) throw new Error("Failed to save");
+      alert("Saved successfully!");
+      router.refresh();
+    } catch (err) {
+      console.error(err);
+      alert("Error saving data");
+---
+
+File: src\app\admin\(dashboard)\online-facilities\online-payment\client-form.tsx:34
+Context:
+
+      if (!res.ok) throw new Error("Failed to save");
+      alert("Saved successfully!");
+      router.refresh();
+    } catch (err) {
+      console.error(err);
+      alert("Error saving data");
+---
+
+File: src\app\admin\(dashboard)\online-facilities\patient-portal\client-form.tsx:51
+Context:
+
+      if (!res.ok) throw new Error("Failed to save");
+      alert("Saved successfully!");
+      router.refresh();
+    } catch (err) {
+      console.error(err);
+      alert("Error saving data");
+---
+
+File: src\app\admin\(dashboard)\online-facilities\patient-registration\client-form.tsx:32
+Context:
+      
+      if (!res.ok) throw new Error("Failed to save");
+      
+      router.refresh();
+      alert("Saved successfully!");
+    } catch (error) {
+      console.error(error);
+---
+
+File: src\app\admin\(dashboard)\patient-visitors\in-patient\client-form.tsx:213
+Context:
+      });
+      if (!res.ok) throw new Error("Failed to save");
+      alert("Saved successfully!");
+      router.refresh();
+    } catch (e) {
+      console.error(e);
+      alert("Failed to save. Payload might be too large.");
+---
+
+File: src\app\admin\(dashboard)\research\about\client-form.tsx:185
+Context:
+
+      if (!res.ok) throw new Error("Failed to save");
+      alert("Saved successfully!");
+      router.refresh();
+    } catch (err) {
+      console.error(err);
+      alert("Error saving data");
+---
+
+File: src\app\admin\(dashboard)\research\annual-reports\client-form.tsx:106
+Context:
+
+      if (!res.ok) throw new Error("Failed to save");
+      alert("Saved successfully!");
+      router.refresh();
+    } catch (err) {
+      console.error(err);
+      alert("Error saving data");
+---
+
+File: src\app\admin\(dashboard)\research\awards\client-form.tsx:220
+Context:
+
+      if (!res.ok) throw new Error("Failed to save");
+      alert("Saved successfully!");
+      router.refresh();
+    } catch (err) {
+      console.error(err);
+      alert("Error saving data");
+---
+
+File: src\app\admin\(dashboard)\research\newsletter-articles\client-form.tsx:113
+Context:
+
+      if (!res.ok) throw new Error("Failed to save");
+      alert("Saved successfully!");
+      router.refresh();
+    } catch (err) {
+      console.error(err);
+      alert("Error saving data");
+---
+
+File: src\app\admin\(dashboard)\research\publications\client-form.tsx:165
+Context:
+
+      if (!res.ok) throw new Error("Failed to save");
+      alert("Saved successfully!");
+      router.refresh();
+    } catch (err) {
+      console.error(err);
+      alert("Error saving data");
+---
+
+File: src\app\admin\(dashboard)\research\research-about\client-form.tsx:185
+Context:
+
+      if (!res.ok) throw new Error("Failed to save");
+      alert("Saved successfully!");
+      router.refresh();
+    } catch (err) {
+      console.error(err);
+      alert("Error saving data");
+---
+
+File: src\app\admin\(dashboard)\research\research-contact\client-form.tsx:161
+Context:
+
+      if (!res.ok) throw new Error("Failed to save");
+      alert("Saved successfully!");
+      router.refresh();
+    } catch (err) {
+      console.error(err);
+      alert("Error saving data");
+---
+
+File: src\app\admin\(dashboard)\research\sponsors-cros\client-form.tsx:148
+Context:
+
+      if (!res.ok) throw new Error("Failed to save");
+      alert("Saved successfully!");
+      router.refresh();
+    } catch (err) {
+      console.error(err);
+      alert("Error saving data");
+---
+
+File: src\app\admin\(dashboard)\research\training-events\client-form.tsx:97
+Context:
+
+      if (!res.ok) throw new Error("Failed to save");
+      alert("Saved successfully!");
+      router.refresh();
+    } catch (err) {
+      console.error(err);
+      alert("Error saving data");
+---
+
+File: src\app\admin\login\page.tsx:21
+Context:
+    // Simulate authentication
+    setTimeout(() => {
+      document.cookie = "adminAuth=true; path=/; max-age=86400";
+      router.push("/admin");
+    }, 800);
+  };
+
+---
