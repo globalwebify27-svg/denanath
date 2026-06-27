@@ -194,6 +194,37 @@ export default async function DepartmentDetailsPage({
       }
     });
 
+    // Replace video embeds with actual video tags and move them to float correctly
+    $('.video-embed').each((_, el) => {
+      const url = $(el).attr('data-video-url');
+      const type = $(el).attr('data-video-type');
+      if (url) {
+        let newEl;
+        if (type === 'mp4') {
+          newEl = $(`<video controls class="float-none md:float-left w-full md:w-[400px] h-[225px] mr-6 mb-4 rounded-xl shadow-md border border-slate-200 bg-black"><source src="${url}" type="video/mp4"></video>`);
+        } else {
+          newEl = $(`<iframe src="${url}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen class="float-none md:float-left w-full md:w-[400px] h-[225px] mr-6 mb-4 rounded-xl shadow-md border border-slate-200"></iframe>`);
+        }
+        
+        let targetHeading = $(el).prevAll('h1, h2, h3, h4, h5, h6').first();
+        if (targetHeading.length === 0) {
+           const closestSection = $(el).closest('section');
+           if (closestSection.length > 0) {
+              targetHeading = closestSection.find('h1, h2, h3, h4, h5, h6').first();
+           }
+        }
+        
+        if (targetHeading.length > 0) {
+          targetHeading.after(newEl);
+          $(el).remove();
+        } else {
+          $(el).replaceWith(newEl);
+        }
+      } else {
+        $(el).remove();
+      }
+    });
+
     processedHtml = $.html().replace(/&nbsp;/g, ' ');
   }
 
@@ -262,7 +293,7 @@ export default async function DepartmentDetailsPage({
                 
                 [&_iframe]:float-none [&_iframe]:md:float-left [&_iframe]:w-full [&_iframe]:md:w-[400px] [&_iframe]:h-[225px] [&_iframe]:mr-6 [&_iframe]:mb-4 [&_iframe]:rounded-xl [&_iframe]:shadow-md [&_iframe]:border [&_iframe]:border-slate-200
                 
-                [&_.department-gallery-section_img]:!h-32 [&_.department-gallery-section_img]:!w-full [&_.department-gallery-section_img]:!my-0 [&_.department-gallery-section_img]:!rounded-lg [&_.department-gallery-section_img]:!object-cover [&_.department-gallery-section_img]:!shadow-sm">
+                [&_.department-gallery-section_img]:!h-48 [&_.department-gallery-section_img]:!w-full [&_.department-gallery-section_img]:!my-0 [&_.department-gallery-section_img]:!rounded-none [&_.department-gallery-section_img]:!object-cover [&_.department-gallery-section_img]:!shadow-none">
                 {department.description ? (
                   <div className="clearfix">
                     {department.videoUrl && (

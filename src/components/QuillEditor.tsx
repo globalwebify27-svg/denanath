@@ -73,7 +73,7 @@ export default function QuillEditor({ name, defaultValue }: { name: string, defa
           const url = data.files[0];
           if (url.match(/\.(mp4|webm|ogg)$/i)) {
              this.s.insertHTML(`<div class="video-embed" data-video-url="${url}" data-video-type="mp4" contenteditable="false" style="background:#e0f2f1;border:2px solid #007a87;border-radius:12px;padding:20px;margin:10px 0;text-align:center;cursor:default;position:relative;">
-              <button onclick="this.parentElement.remove()" style="position:absolute;top:10px;right:10px;background:#ef4444;color:white;border:none;border-radius:50%;width:30px;height:30px;cursor:pointer;font-weight:bold;z-index:10;display:flex;align-items:center;justify-center:center;" title="Delete Video">X</button>
+              <button type="button" class="delete-video-btn" style="position:absolute;top:10px;right:10px;background:#ef4444;color:white;border:none;border-radius:50%;width:30px;height:30px;cursor:pointer;font-weight:bold;z-index:10;display:flex;align-items:center;justify-content:center;" title="Delete Video">X</button>
               <strong style="color:#007a87;">🎬 Video: ${url}</strong>
              </div><p><br></p>`);
           } else {
@@ -113,7 +113,7 @@ export default function QuillEditor({ name, defaultValue }: { name: string, defa
           // Insert a DIV placeholder that Jodit will NOT strip
           editorInstance.s.insertHTML(
             `<div class="video-embed" data-video-url="${displayUrl}" data-video-type="${videoType}" contenteditable="false" style="background:#e0f2f1;border:2px solid #007a87;border-radius:12px;padding:20px;margin:10px 0;text-align:center;cursor:default;position:relative;${thumbStyle}">
-              <button onclick="this.parentElement.remove()" style="position:absolute;top:10px;right:10px;background:#ef4444;color:white;border:none;border-radius:50%;width:30px;height:30px;cursor:pointer;font-weight:bold;z-index:10;display:flex;align-items:center;justify-center:center;" title="Delete Video">X</button>
+              <button type="button" class="delete-video-btn" style="position:absolute;top:10px;right:10px;background:#ef4444;color:white;border:none;border-radius:50%;width:30px;height:30px;cursor:pointer;font-weight:bold;z-index:10;display:flex;align-items:center;justify-content:center;" title="Delete Video">X</button>
               <strong style="${labelColor}font-size:16px;">🎬 Video: ${trimmed}</strong>
             </div><p><br></p>`
           );
@@ -146,7 +146,7 @@ export default function QuillEditor({ name, defaultValue }: { name: string, defa
               const data = await res.json();
               if (data.url) {
                 const html = `<div class="video-embed" data-video-url="${data.url}" data-video-type="mp4" contenteditable="false" style="background:#e0f2f1;border:2px solid #007a87;border-radius:12px;padding:20px;margin:10px 0;text-align:center;cursor:default;position:relative;">
-                  <button onclick="this.parentElement.remove()" style="position:absolute;top:10px;right:10px;background:#ef4444;color:white;border:none;border-radius:50%;width:30px;height:30px;cursor:pointer;font-weight:bold;z-index:10;display:flex;align-items:center;justify-center:center;" title="Delete Video">X</button>
+                  <button type="button" class="delete-video-btn" style="position:absolute;top:10px;right:10px;background:#ef4444;color:white;border:none;border-radius:50%;width:30px;height:30px;cursor:pointer;font-weight:bold;z-index:10;display:flex;align-items:center;justify-content:center;" title="Delete Video">X</button>
                   <strong style="color:#007a87;font-size:16px;">🎬 Video: ${data.url}</strong>
                 </div><p><br></p>`;
                 const doc = editorInstance.editorDocument || document;
@@ -184,8 +184,30 @@ export default function QuillEditor({ name, defaultValue }: { name: string, defa
        }
     };
     
+    const handleGlobalClick = (e: MouseEvent) => {
+       const target = e.target as HTMLElement;
+       const btn = target.closest('button');
+       if (btn && btn.closest('.video-embed')) {
+          e.preventDefault();
+          e.stopPropagation();
+          const embed = btn.closest('.video-embed');
+          if (embed) {
+             embed.remove();
+             if (editorRef.current && hiddenInputRef.current) {
+                hiddenInputRef.current.value = editorRef.current.value;
+                setContent(editorRef.current.value);
+             }
+          }
+       }
+    };
+    
     form.addEventListener('submit', handleSubmit);
-    return () => form.removeEventListener('submit', handleSubmit);
+    document.addEventListener('click', handleGlobalClick, { capture: true });
+    
+    return () => {
+      form.removeEventListener('submit', handleSubmit);
+      document.removeEventListener('click', handleGlobalClick, { capture: true });
+    };
   }, []);
 
   return (
