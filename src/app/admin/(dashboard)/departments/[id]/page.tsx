@@ -9,6 +9,8 @@ import SubmitButton from "@/app/admin/(dashboard)/components/SubmitButton";
 import QuillEditor from "@/components/QuillEditor";
 import PhotoGalleryEditor from "@/components/PhotoGalleryEditor";
 
+export const dynamic = "force-dynamic";
+
 export default async function EditDepartmentPage({
   params,
 }: {
@@ -234,7 +236,7 @@ export default async function EditDepartmentPage({
   const events = extractAndRemoveSection(["Events"]);
   const contactUs = extractAndRemoveSection(["Contact Us", "Contact Details"]);
   const gallery = extractAndRemoveSection(["Photo Gallery"]);
-  let consultant = extractAndRemoveSection(["Consultant"]);
+  let consultant = extractAndRemoveSection(["Consultant", "Consultants"]);
   
   const customSections: { title: string; content: string }[] = [];
   $('section').each((_, el: any) => {

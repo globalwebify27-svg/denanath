@@ -144,6 +144,39 @@ export default function LightboxWrapper({ htmlContent }: { htmlContent: string }
           }
         }
       });
+
+      // --- FAQ Details Hover/Click Logic ---
+      const detailsElements = containerRef.current.querySelectorAll('details.faq-item');
+      detailsElements.forEach(details => {
+        if (details.hasAttribute('data-hover-init')) return;
+        details.setAttribute('data-hover-init', 'true');
+        
+        let timeout: NodeJS.Timeout;
+        
+        details.addEventListener('mouseenter', () => {
+          clearTimeout(timeout);
+          details.setAttribute('open', '');
+        });
+        
+        details.addEventListener('mouseleave', () => {
+          timeout = setTimeout(() => {
+            details.removeAttribute('open');
+          }, 150); // slight delay to make hover less jittery
+        });
+        
+        // Prevent click from immediately closing if we are hovering
+        const summary = details.querySelector('summary');
+        if (summary) {
+           summary.addEventListener('click', (e) => {
+             e.preventDefault(); // we handle toggle manually
+             if (details.hasAttribute('open')) {
+               details.removeAttribute('open');
+             } else {
+               details.setAttribute('open', '');
+             }
+           });
+        }
+      });
     }
   }, [htmlContent]);
 

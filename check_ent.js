@@ -1,0 +1,1 @@
+const { PrismaClient } = require('@prisma/client'); const prisma = new PrismaClient(); async function main() { const depts = await prisma.department.findMany({ where: { name: { contains: 'ENT' } } }); console.log(depts.map(d => ({id: d.id, name: d.name, descLength: d.description ? d.description.length : 0}))); } main().finally(() => prisma.$disconnect());

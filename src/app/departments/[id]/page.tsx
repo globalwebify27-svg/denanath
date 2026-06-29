@@ -50,9 +50,9 @@ export default async function DepartmentDetailsPage({
           wrappers.each((_, wrap) => {
              const $wrap = $(wrap);
              
-             // Extract texts from all p tags in this wrapper
+             // Extract texts from all p and li tags in this wrapper
              let pContent = "";
-             $wrap.find('p').each((_, p) => {
+             $wrap.find('p, li').each((_, p) => {
                 pContent += $(p).html() + "<br>";
              });
              
@@ -135,7 +135,7 @@ export default async function DepartmentDetailsPage({
 
       } else if (h3Text === 'photo gallery') {
         $(section).addClass('department-gallery-section');
-      } else if (h3Text === 'consultant') {
+      } else if (h3Text === 'consultant' || h3Text === 'consultants') {
         const consultants: string[] = [];
         
         // Find all potential consultant names
@@ -184,7 +184,7 @@ export default async function DepartmentDetailsPage({
            }).join('');
            
            const newHtml = `
-             <h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Consultant</h3>
+             <h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Consultants</h3>
              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                ${circlesHtml}
              </div>
@@ -291,9 +291,16 @@ export default async function DepartmentDetailsPage({
                 [&_.department-facilities-section_ul]:col-span-full [&_.department-facilities-section_ul]:grid [&_.department-facilities-section_ul]:grid-cols-1 [&_.department-facilities-section_ul]:md:grid-cols-2 [&_.department-facilities-section_ul]:lg:grid-cols-3 [&_.department-facilities-section_ul]:gap-4 [&_.department-facilities-section_ul]:list-none [&_.department-facilities-section_ul]:pl-0
                 [&_.department-facilities-section_li]:bg-teal-50 [&_.department-facilities-section_li]:p-4 [&_.department-facilities-section_li]:rounded-xl [&_.department-facilities-section_li]:text-center [&_.department-facilities-section_li]:font-semibold [&_.department-facilities-section_li]:text-[#007a87] [&_.department-facilities-section_li]:shadow-sm
                 
+                [&_.facilities-images-grid>div]:!p-0 [&_.facilities-images-grid>div]:overflow-hidden [&_.facilities-images-grid>div]:flex [&_.facilities-images-grid>div]:flex-col
+                [&_.facilities-images-grid_img]:!m-0 [&_.facilities-images-grid_img]:!w-full [&_.facilities-images-grid_img]:!h-auto [&_.facilities-images-grid_img]:!object-contain [&_.facilities-images-grid_img]:!rounded-t-xl [&_.facilities-images-grid_img]:!rounded-b-none [&_.facilities-images-grid_img]:!shadow-none
+                [&_.facilities-images-grid_span]:block [&_.facilities-images-grid_span]:p-3 [&_.facilities-images-grid_span]:bg-white [&_.facilities-images-grid_span]:w-full [&_.facilities-images-grid_span]:empty:hidden
+                
                 [&_iframe]:float-none [&_iframe]:md:float-left [&_iframe]:w-full [&_iframe]:md:w-[400px] [&_iframe]:h-[225px] [&_iframe]:mr-6 [&_iframe]:mb-4 [&_iframe]:rounded-xl [&_iframe]:shadow-md [&_iframe]:border [&_iframe]:border-slate-200
                 
-                [&_.department-gallery-section_img]:!h-48 [&_.department-gallery-section_img]:!w-full [&_.department-gallery-section_img]:!my-0 [&_.department-gallery-section_img]:!rounded-none [&_.department-gallery-section_img]:!object-cover [&_.department-gallery-section_img]:!shadow-none">
+                [&_.department-gallery-section_.bg-slate-50]:!self-start
+                [&_.department-gallery-section_.bg-slate-50>div.p-4:has(p:empty)]:!hidden
+                [&_.department-gallery-section_.bg-slate-50:has(p:empty)_img]:!rounded-xl
+                [&_.department-gallery-section_img]:!aspect-[4/3] [&_.department-gallery-section_img]:!w-full [&_.department-gallery-section_img]:!my-0 [&_.department-gallery-section_img]:!rounded-xl [&_.department-gallery-section_img]:!object-cover [&_.department-gallery-section_img]:!object-center [&_.department-gallery-section_img]:!bg-slate-100/50 [&_.department-gallery-section_img]:!shadow-none">
                 {department.description ? (
                   <div className="clearfix">
                     {department.videoUrl && (
