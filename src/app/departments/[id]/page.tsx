@@ -339,6 +339,68 @@ export default async function DepartmentDetailsPage({
         
         $(section).replaceWith(newHtml);
         
+      } else if (h3Text === 'specialities' || h3Text === 'speciality') {
+         const title = $(section).find('h3').first().text();
+         
+         // Check if there are <h4> tags used for questions
+         const h4Tags = $(section).children('h4, div').find('h4').addBack('h4');
+         
+         // Auto-format any raw Q&A into accordion if it uses UL/LI
+         const mainUl = $(section).children('ul').first();
+         if (mainUl.length > 0 && h4Tags.length === 0) {
+            mainUl.addClass("list-disc pl-5 space-y-4 marker:text-black");
+            mainUl.children('li').each((_, li) => {
+               const $li = $(li);
+               if ($li.children('details.faq-item').length > 0) return;
+               
+               let question = "Question";
+               const strong = $li.find('strong, b, h4').first();
+               
+               if (strong.length > 0) {
+                  question = strong.text().trim();
+                  strong.remove();
+               } else {
+                  const childNodes = $li.contents();
+                  let firstTextNode: any = null;
+                  for (let i = 0; i < childNodes.length; i++) {
+                     if (childNodes[i].type === 'text' && (childNodes[i] as any).data.trim().length > 0) {
+                        firstTextNode = childNodes[i];
+                        break;
+                     }
+                  }
+                  if (firstTextNode) {
+                     question = (firstTextNode as any).data.trim();
+                     $(firstTextNode).remove();
+                  }
+               }
+               
+               const answerHtml = $li.html() ? $li.html().trim() : "";
+               const newHtml = `
+                 <details class="faq-item group cursor-pointer p-3 rounded-xl hover:bg-white hover:shadow-md transition-all duration-300 border border-transparent hover:border-slate-100 [&_summary::-webkit-details-marker]:hidden">
+                   <summary class="flex items-start gap-3 list-none outline-none">
+                     <h4 class="text-lg font-bold text-slate-800 m-0 group-hover:text-black transition-colors">${question}</h4>
+                   </summary>
+                   <div class="text-slate-600 mt-3 border-t border-slate-100 pt-3">
+                     ${answerHtml.startsWith('<p') ? answerHtml : `<p class="!mb-0 mt-3 first:mt-0">${answerHtml}</p>`}
+                   </div>
+                 </details>
+               `;
+               $li.html(newHtml);
+            });
+            
+            // Rebuild the section keeping any non-accordion intro text
+            const introText = $(section).html() || '';
+            const newSectionHtml = `
+              <div class="mb-12">
+                <h3 class="text-xl font-bold text-[#002b5c] mb-6 border-b pb-2">${title}</h3>
+                <div class="prose prose-slate max-w-none mb-4">${introText.replace(/<h3[^>]*>.*?<\/h3>/i, '')}</div>
+              </div>
+            `;
+            $(section).replaceWith(newSectionHtml);
+         }
+         
+         // Auto-format any raw Q&A into accordion if it uses <h4> tags
+         
       } else if (h3Text === 'photo gallery') {
         const title = $(section).find('h3').first().text();
         $(section).find('h3').first().remove();
@@ -360,45 +422,49 @@ export default async function DepartmentDetailsPage({
            const fallbackImg = $(section).find('img').first();
            if (fallbackImg.length > 0) {
                imgSrc = fallbackImg.attr('src');
-               fallbackImg.remove();
+               // Do NOT remove the fallback image as it belongs to the gallery itself!
            }
         }
 
-        $(section).addClass('department-gallery-section');
-        $(section).find('img').removeAttr('style').removeAttr('width').removeAttr('height');
+        // Apply beautiful grid UI to the section itself
+        $(section).addClass('mb-12');
+        const gridContainer = $(section).find('div.grid');
+        if (gridContainer.length > 0) {
+           gridContainer.addClass('grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8');
+        } else {
+           // Wrap children in a grid if they aren't already
+           const children = $(section).children('div');
+           if (children.length > 0) {
+               children.wrapAll('<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-6"></div>');
+           }
+        }
         
-        $(section).find('div.bg-slate-50.p-4').each((_, card) => {
+        // Re-add the title
+        $(section).prepend(`<h3 class="text-xl font-bold text-[#002b5c] mb-6 border-b pb-2">${title}</h3>`);
+        
+        // The original formatting for the cards themselves
+        $(section).find('div.bg-slate-50, div.bg-white').each((_, card) => {
            $(card).removeClass('bg-slate-50 p-4 border-slate-200')
-                  .addClass('bg-white overflow-hidden shadow-sm border-slate-100 p-0 flex flex-col h-full');
+                  .addClass('bg-white overflow-hidden shadow-sm border border-slate-100 p-0 flex flex-col h-full rounded-2xl');
            
            const img = $(card).find('img');
            const textP = $(card).find('p');
            
-           if (img.length && textP.length) {
-              img.addClass('!rounded-t-xl !rounded-b-none !w-full !object-cover !h-[200px] md:!h-[240px]');
-              textP.addClass('!mb-0 !mt-0 text-[#002b5c]');
-              textP.wrap('<div class="p-4 mt-auto w-full bg-white flex items-center justify-center"></div>');
+           if (img.length === 0) {
+              $(card).remove();
+           } else if (img.length && textP.length) {
+              img.addClass('!m-0 !shadow-none !rounded-t-2xl !rounded-b-none !w-full !object-cover !h-[200px] md:!h-[240px]');
+              textP.addClass('!mb-0 !mt-0 text-[#002b5c] font-bold');
+              
+              // Only wrap if it's not already inside a p-4 div
+              if (!textP.parent().hasClass('p-4')) {
+                  textP.wrap('<div class="p-4 mt-auto w-full bg-white flex items-center justify-center border-t border-slate-50"></div>');
+              } else {
+                  textP.parent().addClass('mt-auto bg-white border-t border-slate-50 text-center');
+              }
            }
         });
-        
-        photoGalleryHtml = $(section).html() || '';
-        
-        let imgHtml = '';
-        if (imgSrc) {
-           imgHtml = `<img src="${imgSrc}" class="max-w-[180px] h-auto rounded-xl shadow-sm mb-4" alt="${title}" />`;
-        }
-        
-        const newHtml = `
-          <div class="mb-12">
-            <h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">${title}</h3>
-            <a href="?view=photo-gallery" class="block no-underline group hover:opacity-95 transition-opacity">
-               ${imgHtml}
-               <p class="text-slate-600 text-[15px] leading-relaxed group-hover:text-[#007a87] transition-colors m-0">${shortText}</p>
-            </a>
-          </div>
-        `;
-        
-        $(section).replaceWith(newHtml);
+
         
       } else if (h3Text === 'consultant' || h3Text === 'consultants') {
         const consultants: string[] = [];
@@ -601,7 +667,7 @@ export default async function DepartmentDetailsPage({
                 <span className="text-white truncate">FAQ&apos;s</span>
               </div>
               <h1 className="text-4xl md:text-5xl font-extrabold text-white tracking-tight flex items-center gap-4">
-                {department.name} FAQ&apos;s
+                {department.name} {" "}FAQ&apos;s
               </h1>
             </div>
           </div>

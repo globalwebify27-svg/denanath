@@ -181,7 +181,7 @@ export default async function EditDepartmentPage({
   ${events ? `<section><h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Events</h3>${events}</section>` : ''}
   ${customHtml}
   ${contactUs ? `<section><h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Contact Us</h3>${contactUs}</section>` : ''}
-  ${faqHtml ? `<section><h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">FAQs</h3>${faqHtml}</section>` : ''}
+  ${faqHtml ? `<section><h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">${department.name.toUpperCase() === 'OPHTHALMOLOGY' ? 'Specialities' : 'FAQs'}</h3>${faqHtml}</section>` : ''}
   ${galleryHtml ? `<section><h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Photo Gallery</h3>${galleryHtml}</section>` : ''}
   ${consultant ? `<section><h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Consultant</h3>${consultant}</section>` : ''}
 </div>
@@ -255,7 +255,7 @@ export default async function EditDepartmentPage({
   const contactUs = extractAndRemoveSection(["Contact Us", "Contact Details"]);
   const gallery = extractAndRemoveSection(["Photo Gallery"]);
   let consultant = extractAndRemoveSection(["Consultant", "Consultants"]);
-  const faqSectionHTML = extractAndRemoveSection(["FAQ", "FAQs", "Frequently Asked Questions", "FAQS"]);
+  const faqSectionHTML = extractAndRemoveSection(["FAQ", "FAQs", "Frequently Asked Questions", "FAQS", "Specialities", "Speciality"]);
   
   const faqItems: { question: string, answer: string }[] = [];
   if (faqSectionHTML) {
@@ -534,8 +534,14 @@ export default async function EditDepartmentPage({
               </div>
 
               <div className="space-y-2 border-t border-gray-100 pt-6 mt-6">
-                <h4 className="text-[14px] font-[800] text-[#002b5c] uppercase tracking-widest mb-4">FAQs</h4>
-                <p className="text-[12px] font-[600] text-gray-500 mb-6">Manage Frequently Asked Questions for this department.</p>
+                <h4 className="text-[14px] font-[800] text-[#002b5c] uppercase tracking-widest mb-4">
+                  {department.name.toUpperCase() === 'OPHTHALMOLOGY' ? 'Specialities' : 'FAQs'}
+                </h4>
+                <p className="text-[12px] font-[600] text-gray-500 mb-6">
+                  {department.name.toUpperCase() === 'OPHTHALMOLOGY' 
+                    ? 'Manage Specialities (Q&A format) for this department.' 
+                    : 'Manage Frequently Asked Questions for this department.'}
+                </p>
                 <FAQEditor defaultItems={faqItems} />
               </div>
 

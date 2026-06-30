@@ -136,39 +136,17 @@ Context:
       });
       if (!response.ok) throw new Error("Failed to delete");
       router.push("/admin/doctors");
-      router.refresh();
-    } catch (error) {
-      console.error(error);
----
-
-File: src\app\admin\(dashboard)\doctors\[id]\DoctorForm.tsx:152
-Context:
-      });
-      if (!response.ok) throw new Error("Failed to delete");
-      router.push("/admin/doctors");
-      router.refresh();
     } catch (error) {
       console.error(error);
       alert("Failed to delete doctor");
 ---
 
-File: src\app\admin\(dashboard)\doctors\[id]\DoctorForm.tsx:184
+File: src\app\admin\(dashboard)\doctors\[id]\DoctorForm.tsx:183
 Context:
 
       if (!response.ok) throw new Error("Failed to save");
       
       router.push("/admin/doctors");
-      router.refresh();
-    } catch (error) {
-      console.error(error);
----
-
-File: src\app\admin\(dashboard)\doctors\[id]\DoctorForm.tsx:185
-Context:
-      if (!response.ok) throw new Error("Failed to save");
-      
-      router.push("/admin/doctors");
-      router.refresh();
     } catch (error) {
       console.error(error);
       alert("Failed to save doctor");
