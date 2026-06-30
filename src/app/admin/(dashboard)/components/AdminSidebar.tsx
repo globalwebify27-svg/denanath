@@ -50,7 +50,7 @@ const MENU_ITEMS = [
     icon: <HeartHandshake size={20} />,
     links: [
       { name: "Out Patient Guide", href: "/admin/patient-visitors/out-patient" },
-      { name: "In Patient Guide", href: "/admin/patient-visitors/in-patient" },
+      { name: "Hospital Admission", href: "/admin/patient-visitors/in-patient" },
       { name: "Health Packages", href: "/admin/patient-visitors/health-packages" },
       { name: "Facilities", href: "/admin/patient-visitors/facilities" },
       { name: "Patient Stories", href: "/admin/patient-visitors/feedbacks" },

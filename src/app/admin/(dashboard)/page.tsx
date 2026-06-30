@@ -1,4 +1,4 @@
-import { prisma } from "@/lib/prisma";
+import { prisma } from "@/lib/prisma"; // Trigger recompile
 import Link from "next/link";
 import { Users, Building2, Stethoscope, Briefcase, Activity, ShieldCheck, ChevronRight, TrendingUp } from "lucide-react";
 

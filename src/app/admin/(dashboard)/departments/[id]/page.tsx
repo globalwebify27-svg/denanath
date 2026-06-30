@@ -8,6 +8,7 @@ import IconPicker from "@/components/IconPicker";
 import SubmitButton from "@/app/admin/(dashboard)/components/SubmitButton";
 import QuillEditor from "@/components/QuillEditor";
 import PhotoGalleryEditor from "@/components/PhotoGalleryEditor";
+import FAQEditor from "@/components/FAQEditor";
 
 export const dynamic = "force-dynamic";
 
@@ -136,7 +137,23 @@ export default async function EditDepartmentPage({
       } catch (e) {
          // ignore
       }
-    }    // The styleConsultant feature was causing nested strings on every save.
+    }
+    
+    const faqCount = parseInt(formData.get("faq_count") as string || "0");
+    let faqHtml = "";
+    if (faqCount > 0) {
+      faqHtml += '<ul>\n';
+      for (let i = 0; i < faqCount; i++) {
+         const q = formData.get(`faq_q_${i}`) as string;
+         const a = cleanHtml(formData.get(`faq_a_${i}`) as string);
+         if (q && a) {
+            faqHtml += `  <li><strong>${q}</strong>\n${a}</li>\n`;
+         }
+      }
+      faqHtml += "</ul>\n";
+    }
+    
+    // The styleConsultant feature was causing nested strings on every save.
     // Consultant styling should be done dynamically on the frontend.
     const customCount = parseInt(formData.get("custom_count") as string || "0");
     let customHtml = "";
@@ -164,6 +181,7 @@ export default async function EditDepartmentPage({
   ${events ? `<section><h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Events</h3>${events}</section>` : ''}
   ${customHtml}
   ${contactUs ? `<section><h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Contact Us</h3>${contactUs}</section>` : ''}
+  ${faqHtml ? `<section><h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">FAQs</h3>${faqHtml}</section>` : ''}
   ${galleryHtml ? `<section><h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Photo Gallery</h3>${galleryHtml}</section>` : ''}
   ${consultant ? `<section><h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Consultant</h3>${consultant}</section>` : ''}
 </div>
@@ -237,6 +255,37 @@ export default async function EditDepartmentPage({
   const contactUs = extractAndRemoveSection(["Contact Us", "Contact Details"]);
   const gallery = extractAndRemoveSection(["Photo Gallery"]);
   let consultant = extractAndRemoveSection(["Consultant", "Consultants"]);
+  const faqSectionHTML = extractAndRemoveSection(["FAQ", "FAQs", "Frequently Asked Questions", "FAQS"]);
+  
+  const faqItems: { question: string, answer: string }[] = [];
+  if (faqSectionHTML) {
+     const cheerio = await import('cheerio');
+     const $ = cheerio.load(faqSectionHTML, null, false);
+     $('ul').first().children('li').each((_, li) => {
+        const $li = $(li);
+        let question = "Question";
+        const strong = $li.find('strong, b, h4').first();
+        if (strong.length > 0) {
+           question = strong.text().trim();
+           strong.remove();
+        } else {
+           const childNodes = $li.contents();
+           let firstTextNode = null;
+           for (let i = 0; i < childNodes.length; i++) {
+              if (childNodes[i].type === 'text' && childNodes[i].data.trim().length > 0) {
+                 firstTextNode = childNodes[i];
+                 break;
+              }
+           }
+           if (firstTextNode) {
+              question = firstTextNode.data.trim();
+              $(firstTextNode).remove();
+           }
+        }
+        const answer = $li.html() ? $li.html()!.trim() : "";
+        faqItems.push({ question, answer });
+     });
+  }
   
   const customSections: { title: string; content: string }[] = [];
   $('section').each((_, el: any) => {
@@ -482,6 +531,12 @@ export default async function EditDepartmentPage({
               <div className="space-y-2">
                 <label className="text-[12px] font-[800] text-gray-700 uppercase tracking-widest">Consultant</label>
                 <QuillEditor name="consultant" defaultValue={consultant} />
+              </div>
+
+              <div className="space-y-2 border-t border-gray-100 pt-6 mt-6">
+                <h4 className="text-[14px] font-[800] text-[#002b5c] uppercase tracking-widest mb-4">FAQs</h4>
+                <p className="text-[12px] font-[600] text-gray-500 mb-6">Manage Frequently Asked Questions for this department.</p>
+                <FAQEditor defaultItems={faqItems} />
               </div>
 
               {customSections.length > 0 && (

@@ -1,4 +1,4 @@
-"use client";
+"use client"; // Trigger recompile
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";

@@ -7,7 +7,7 @@ import { ChevronRight, Users } from "lucide-react";
 export default function PatientVisitorsPage() {
   const options = [
     { name: "Out Patient Guide", href: "/out-patient", active: false },
-    { name: "In Patient Guide", href: "/in-patient", active: false },
+    { name: "Hospital Admission", href: "/in-patient", active: false },
     { name: "Health Packages", href: "/health-packages", active: false },
     { name: "Facilities", href: "/facilities", active: false },
     { name: "Patients Stories / Feedbacks", href: "/feedbacks", active: false },
