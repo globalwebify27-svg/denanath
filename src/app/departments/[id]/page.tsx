@@ -11,10 +11,16 @@ export const dynamic = "force-dynamic";
 
 export default async function DepartmentDetailsPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ id: string }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
   const resolvedParams = await params;
+  const resolvedSearchParams = await searchParams;
+  const isProcedureView = resolvedSearchParams.view === 'procedures';
+  const isPhotoGalleryView = resolvedSearchParams.view === 'photo-gallery';
+  const isFaqView = resolvedSearchParams.view === 'faqs';
   
   const allDepartments = await prisma.department.findMany({
     where: { status: true }
@@ -31,6 +37,10 @@ export default async function DepartmentDetailsPage({
 
   // Pre-process the HTML using Cheerio to fix the layout issues (like merged <br> tags)
   let processedHtml = "";
+  let proceduresHtml = "";
+  let photoGalleryHtml = "";
+  let faqHtml = "";
+  
   if (department.description) {
     const $ = cheerio.load(department.description, null, false);
     
@@ -133,20 +143,68 @@ export default async function DepartmentDetailsPage({
           });
         }
 
-      } else if (h3Text === 'faq' || h3Text === 'faqs' || h3Text === 'frequently asked questions') {
-        $(section).addClass('department-faq-section');
+      } else if (h3Text === 'services & clinics' || h3Text === 'clinics' || h3Text === 'services') {
+        const title = $(section).find('h3').first().text();
         
-        // Auto-format any raw Q&A into accordion if it's not already
         const mainUl = $(section).children('ul').first();
         if (mainUl.length > 0) {
+           const gridContainer = $('<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 mt-6"></div>');
+           
+           mainUl.children('li').each((_, li) => {
+               const $li = $(li);
+               const text = $li.text().trim();
+               const img = $li.find('img').first();
+               
+               let imgSrc = img.length > 0 ? img.attr('src') : null;
+               
+               const itemHtml = `
+                 <div class="flex flex-col items-center text-center group">
+                    <div class="w-32 h-32 md:w-40 md:h-40 rounded-full bg-white flex items-center justify-center overflow-hidden mb-4 shadow-[0_4px_20px_rgb(0,0,0,0.06)] border border-slate-50 transition-all duration-300">
+                       ${imgSrc ? `<img src="${imgSrc}" alt="${text}" class="w-[85%] h-[85%] object-contain group-hover:scale-105 transition-transform duration-500" />` : `<div class="text-4xl text-[#007a87] font-bold">${text.charAt(0)}</div>`}
+                    </div>
+                    <h4 class="text-[15px] md:text-[17px] font-medium text-[#007a87] transition-colors leading-snug px-2">${text}</h4>
+                 </div>
+               `;
+               gridContainer.append(itemHtml);
+           });
+           
+           mainUl.replaceWith(gridContainer);
+        }
+
+      } else if (h3Text === 'faq' || h3Text === 'faqs' || h3Text === "faq's" || h3Text === 'frequently asked questions') {
+        const title = $(section).find('h3').first().text();
+        $(section).find('h3').first().remove();
+        
+        let shortText = "Click to view frequently asked questions.";
+        const firstP = $(section).find('p').first().text().trim();
+        if (firstP) {
+           shortText = firstP.length > 120 ? firstP.substring(0, 120) + "..." : firstP;
+        }
+        
+        let imgSrc = null;
+        const imgEl = $(section).children('img, p > img').first();
+        if (imgEl.length > 0) {
+           imgSrc = imgEl.attr('src');
+           imgEl.closest('p').length ? imgEl.closest('p').remove() : imgEl.remove();
+        } else {
+           const fallbackImg = $(section).find('img').first();
+           if (fallbackImg.length > 0) {
+               imgSrc = fallbackImg.attr('src');
+               fallbackImg.remove();
+           }
+        }
+
+        // Check if there are <h4> tags used for questions
+        const h4Tags = $(section).children('h4');
+
+        // Auto-format any raw Q&A into accordion if it uses UL/LI (only if no h4 tags are used)
+        const mainUl = $(section).children('ul').first();
+        if (mainUl.length > 0 && h4Tags.length === 0) {
            mainUl.addClass("list-disc pl-5 space-y-4 marker:text-black");
            mainUl.children('li').each((_, li) => {
               const $li = $(li);
-              
-              // If it already has details, it's fine
               if ($li.children('details.faq-item').length > 0) return;
               
-              // Raw user-added FAQ!
               let question = "Question";
               const strong = $li.find('strong, b, h4').first();
               
@@ -155,21 +213,20 @@ export default async function DepartmentDetailsPage({
                  strong.remove();
               } else {
                  const childNodes = $li.contents();
-                 let firstTextNode = null;
+                 let firstTextNode: any = null;
                  for (let i = 0; i < childNodes.length; i++) {
-                    if (childNodes[i].type === 'text' && childNodes[i].data.trim().length > 0) {
+                    if (childNodes[i].type === 'text' && (childNodes[i] as any).data.trim().length > 0) {
                        firstTextNode = childNodes[i];
                        break;
                     }
                  }
                  if (firstTextNode) {
-                    question = firstTextNode.data.trim();
+                    question = (firstTextNode as any).data.trim();
                     $(firstTextNode).remove();
                  }
               }
               
               const answerHtml = $li.html() ? $li.html().trim() : "";
-              
               const newHtml = `
                 <details class="faq-item group cursor-pointer p-3 rounded-xl hover:bg-white hover:shadow-md transition-all duration-300 border border-transparent hover:border-slate-100 [&_summary::-webkit-details-marker]:hidden">
                   <summary class="flex items-start gap-3 list-none outline-none">
@@ -180,12 +237,169 @@ export default async function DepartmentDetailsPage({
                   </div>
                 </details>
               `;
-              
               $li.html(newHtml);
            });
         }
+        
+        // Auto-format any raw Q&A into accordion if it uses <h4> tags
+        if (h4Tags.length > 0) {
+           const accordionContainer = $('<div class="space-y-4 w-full"></div>');
+           
+           h4Tags.each((_, h4) => {
+              const question = $(h4).text().trim();
+              let answerHtml = '';
+              
+              let nextEl = $(h4).next();
+              const elementsToRemove = [];
+              
+              while (nextEl.length > 0 && nextEl.prop('tagName') !== 'H4' && nextEl.prop('tagName') !== 'H3') {
+                 answerHtml += $.html(nextEl);
+                 elementsToRemove.push(nextEl);
+                 nextEl = nextEl.next();
+              }
+              
+              const newHtml = `
+                <details class="faq-item group cursor-pointer p-5 bg-white rounded-xl shadow-sm border border-slate-100 hover:shadow-md transition-all duration-300 [&_summary::-webkit-details-marker]:hidden">
+                  <summary class="flex items-start justify-between gap-3 list-none outline-none">
+                    <h4 class="text-lg font-bold text-[#002b5c] m-0 group-hover:text-[#007a87] transition-colors">${question}</h4>
+                    <span class="text-[#007a87] group-open:rotate-180 transition-transform duration-300">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    </span>
+                  </summary>
+                  <div class="text-slate-600 mt-4 border-t border-slate-100 pt-4 prose prose-slate max-w-none">
+                    ${answerHtml}
+                  </div>
+                </details>
+              `;
+              
+              accordionContainer.append(newHtml);
+              
+              $(h4).remove();
+              elementsToRemove.forEach(el => el.remove());
+           });
+           
+           $(section).append(accordionContainer);
+        }
+        
+        faqHtml = $(section).html() || '';
+        
+        let imgHtml = '';
+        if (imgSrc) {
+           imgHtml = `<img src="${imgSrc}" class="max-w-[180px] h-auto rounded-xl shadow-sm mb-4" alt="${title}" />`;
+        }
+        
+        const newHtml = `
+          <div class="mb-12">
+            <h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">${title}</h3>
+            <a href="?view=faqs" class="block no-underline group hover:opacity-95 transition-opacity">
+               ${imgHtml}
+               <p class="text-slate-600 text-[15px] leading-relaxed group-hover:text-[#007a87] transition-colors m-0">${shortText}</p>
+            </a>
+          </div>
+        `;
+        
+        $(section).replaceWith(newHtml);
+      } else if (h3Text === 'procedures' || h3Text === 'procedure') {
+        const title = $(section).find('h3').first().text();
+        $(section).find('h3').first().remove();
+        
+        // Extract the first paragraph to use as the short description
+        let shortText = "Click to view detailed procedure information.";
+        const firstP = $(section).find('p').first().text().trim();
+        if (firstP) {
+           // Truncate to reasonable length
+           shortText = firstP.length > 120 ? firstP.substring(0, 120) + "..." : firstP;
+        }
+        
+        // Check for an uploaded image to use
+        let imgSrc = null;
+        const imgEl = $(section).find('img').first();
+        if (imgEl.length > 0) {
+           imgSrc = imgEl.attr('src');
+           imgEl.remove(); // Remove it from the detailed view
+        }
+        
+        proceduresHtml = $(section).html() || '';
+        
+        let imgHtml = '';
+        if (imgSrc) {
+           imgHtml = `<img src="${imgSrc}" class="max-w-[180px] h-auto rounded-xl shadow-sm mb-4" alt="${title}" />`;
+        }
+        
+        // Render a layout identical to the FAQ section (standard header + image + text)
+        const newHtml = `
+          <div class="mb-12">
+            <h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">${title}</h3>
+            <a href="?view=procedures" class="block no-underline group hover:opacity-95 transition-opacity">
+               ${imgHtml}
+               <p class="text-slate-600 text-[15px] leading-relaxed group-hover:text-[#007a87] transition-colors m-0">${shortText}</p>
+            </a>
+          </div>
+        `;
+        
+        $(section).replaceWith(newHtml);
+        
       } else if (h3Text === 'photo gallery') {
+        const title = $(section).find('h3').first().text();
+        $(section).find('h3').first().remove();
+        
+        let shortText = "Click to view our photo gallery.";
+        const firstP = $(section).find('p').first().text().trim();
+        if (firstP) {
+           shortText = firstP.length > 120 ? firstP.substring(0, 120) + "..." : firstP;
+        }
+        
+        let imgSrc = null;
+        // Find the first image which is not inside a grid card (to ensure we get the header image, not a gallery photo)
+        const imgEl = $(section).children('img, p > img').first();
+        if (imgEl.length > 0) {
+           imgSrc = imgEl.attr('src');
+           imgEl.closest('p').length ? imgEl.closest('p').remove() : imgEl.remove();
+        } else {
+           // Fallback to first image in general if no direct child image
+           const fallbackImg = $(section).find('img').first();
+           if (fallbackImg.length > 0) {
+               imgSrc = fallbackImg.attr('src');
+               fallbackImg.remove();
+           }
+        }
+
         $(section).addClass('department-gallery-section');
+        $(section).find('img').removeAttr('style').removeAttr('width').removeAttr('height');
+        
+        $(section).find('div.bg-slate-50.p-4').each((_, card) => {
+           $(card).removeClass('bg-slate-50 p-4 border-slate-200')
+                  .addClass('bg-white overflow-hidden shadow-sm border-slate-100 p-0 flex flex-col h-full');
+           
+           const img = $(card).find('img');
+           const textP = $(card).find('p');
+           
+           if (img.length && textP.length) {
+              img.addClass('!rounded-t-xl !rounded-b-none !w-full !object-cover !h-[200px] md:!h-[240px]');
+              textP.addClass('!mb-0 !mt-0 text-[#002b5c]');
+              textP.wrap('<div class="p-4 mt-auto w-full bg-white flex items-center justify-center"></div>');
+           }
+        });
+        
+        photoGalleryHtml = $(section).html() || '';
+        
+        let imgHtml = '';
+        if (imgSrc) {
+           imgHtml = `<img src="${imgSrc}" class="max-w-[180px] h-auto rounded-xl shadow-sm mb-4" alt="${title}" />`;
+        }
+        
+        const newHtml = `
+          <div class="mb-12">
+            <h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">${title}</h3>
+            <a href="?view=photo-gallery" class="block no-underline group hover:opacity-95 transition-opacity">
+               ${imgHtml}
+               <p class="text-slate-600 text-[15px] leading-relaxed group-hover:text-[#007a87] transition-colors m-0">${shortText}</p>
+            </a>
+          </div>
+        `;
+        
+        $(section).replaceWith(newHtml);
+        
       } else if (h3Text === 'consultant' || h3Text === 'consultants') {
         const consultants: string[] = [];
         
@@ -204,10 +418,10 @@ export default async function DepartmentDetailsPage({
         // Fallback if no tags were used
         if (consultants.length === 0) {
            let allText = '';
-           $(section).contents().each((_, el) => {
-              if (el.tagName && el.tagName.toLowerCase() === 'h3') return;
-              allText += $(el).text() + ' ';
-           });
+            $(section).contents().each((_, el) => {
+               if ((el as any).tagName && (el as any).tagName.toLowerCase() === 'h3') return;
+               allText += $(el).text() + ' ';
+            });
            let text = allText.replace(/<[^>]+>/g, '').trim();
            text = text.replace(/^(?:[A-Z]\s*)+Dr\./, 'Dr.');
            text = text.replace(/&nbsp;/g, ' ').trim();
@@ -245,6 +459,11 @@ export default async function DepartmentDetailsPage({
       }
     });
 
+    // Wrap tables in responsive container
+    $('table').each((_, table) => {
+      $(table).wrap('<div class="w-full overflow-x-auto pb-4 mb-4"></div>');
+    });
+
     // Replace video embeds with actual video tags and move them to float correctly
     $('.video-embed').each((_, el) => {
       const url = $(el).attr('data-video-url');
@@ -277,6 +496,128 @@ export default async function DepartmentDetailsPage({
     });
 
     processedHtml = $.html().replace(/&nbsp;/g, ' ');
+  }
+
+  if (isProcedureView && proceduresHtml) {
+    return (
+       <div className="bg-[#f8fafc] min-h-screen pb-20 font-sans">
+          {/* Premium Page Header */}
+          <div className="w-full bg-[#002b5c] relative overflow-hidden">
+            <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 mix-blend-overlay pointer-events-none" />
+            <div className="absolute right-0 top-0 w-1/2 h-full bg-gradient-to-l from-teal-500/20 to-transparent pointer-events-none" />
+            
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16 relative z-10">
+              <div className="flex items-center gap-2 text-blue-200 text-xs md:text-sm font-medium tracking-wide mb-4 flex-wrap">
+                <Link href="/" className="hover:text-white transition-colors whitespace-nowrap">Home</Link>
+                <ChevronRight className="w-3.5 h-3.5 shrink-0" />
+                <Link href="/departments" className="hover:text-white transition-colors whitespace-nowrap">Specialties</Link>
+                <ChevronRight className="w-3.5 h-3.5 shrink-0" />
+                <Link href={`/departments/${department.id}`} className="hover:text-white transition-colors whitespace-nowrap">{department.name}</Link>
+                <ChevronRight className="w-3.5 h-3.5 shrink-0" />
+                <span className="text-white truncate">Procedures</span>
+              </div>
+              <h1 className="text-4xl md:text-5xl font-extrabold text-white tracking-tight flex items-center gap-4">
+                {department.name} Procedures
+              </h1>
+            </div>
+          </div>
+          
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+             <Link href={`/departments/${department.id}`} className="inline-flex items-center gap-2 text-[#007a87] hover:text-[#002b5c] font-bold mb-8 transition-colors">
+               <ArrowLeft className="w-4 h-4" /> Back to {department.name}
+             </Link>
+          
+             <div className="bg-white p-8 md:p-14 rounded-3xl border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
+                <div className="text-slate-700 space-y-6 break-words leading-relaxed [&_img]:max-w-full [&_img]:h-auto [&_img]:rounded-2xl [&_img]:shadow-md [&_img]:my-6 [&_p:not(:last-child)]:mb-4
+                [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:space-y-3 [&_ul]:mb-6
+                [&_h3]:text-3xl [&_h3]:font-extrabold [&_h3]:text-[#002b5c] [&_h3]:mb-6 [&_h3]:border-b [&_h3]:pb-3
+                [&_h4]:text-2xl [&_h4]:font-bold [&_h4]:text-[#007a87] [&_h4]:mt-10 [&_h4]:mb-4
+                [&_strong]:text-[#002b5c]" 
+                dangerouslySetInnerHTML={{ __html: proceduresHtml }} />
+             </div>
+          </div>
+       </div>
+    );
+  }
+
+  if (isPhotoGalleryView && photoGalleryHtml) {
+    return (
+       <div className="bg-[#f8fafc] min-h-screen pb-20 font-sans">
+          {/* Premium Page Header */}
+          <div className="w-full bg-[#002b5c] relative overflow-hidden">
+            <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 mix-blend-overlay pointer-events-none" />
+            <div className="absolute right-0 top-0 w-1/2 h-full bg-gradient-to-l from-teal-500/20 to-transparent pointer-events-none" />
+            
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16 relative z-10">
+              <div className="flex items-center gap-2 text-blue-200 text-xs md:text-sm font-medium tracking-wide mb-4 flex-wrap">
+                <Link href="/" className="hover:text-white transition-colors whitespace-nowrap">Home</Link>
+                <ChevronRight className="w-3.5 h-3.5 shrink-0" />
+                <Link href="/departments" className="hover:text-white transition-colors whitespace-nowrap">Specialties</Link>
+                <ChevronRight className="w-3.5 h-3.5 shrink-0" />
+                <Link href={`/departments/${department.id}`} className="hover:text-white transition-colors whitespace-nowrap">{department.name}</Link>
+                <ChevronRight className="w-3.5 h-3.5 shrink-0" />
+                <span className="text-white truncate">Photo Gallery</span>
+              </div>
+              <h1 className="text-4xl md:text-5xl font-extrabold text-white tracking-tight flex items-center gap-4">
+                {department.name} Photo Gallery
+              </h1>
+            </div>
+          </div>
+          
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+             <Link href={`/departments/${department.id}`} className="inline-flex items-center gap-2 text-[#007a87] hover:text-[#002b5c] font-bold mb-8 transition-colors">
+               <ArrowLeft className="w-4 h-4" /> Back to {department.name}
+             </Link>
+          
+             <div className="bg-white p-8 md:p-14 rounded-3xl border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
+                <div className="text-slate-700 space-y-6 break-words leading-relaxed
+                [&_.department-gallery-section]:grid [&_.department-gallery-section]:grid-cols-1 [&_.department-gallery-section]:md:grid-cols-2 [&_.department-gallery-section]:lg:grid-cols-3 [&_.department-gallery-section]:gap-8
+                [&_.facilities-images-grid>div]:!p-0 [&_.facilities-images-grid>div]:!bg-white [&_.facilities-images-grid>div]:!border-slate-100 [&_.facilities-images-grid>div]:overflow-hidden [&_.facilities-images-grid>div]:flex [&_.facilities-images-grid>div]:flex-col [&_.facilities-images-grid>div]:rounded-2xl [&_.facilities-images-grid>div]:shadow-md
+                [&_.facilities-images-grid_img]:!m-0 [&_.facilities-images-grid_img]:!w-full [&_.facilities-images-grid_img]:!h-[200px] md:[&_.facilities-images-grid_img]:!h-[240px] [&_.facilities-images-grid_img]:!object-cover [&_.facilities-images-grid_img]:!rounded-t-xl [&_.facilities-images-grid_img]:!rounded-b-none [&_.facilities-images-grid_img]:!shadow-none
+                [&_.facilities-images-grid_span]:block [&_.facilities-images-grid_span]:p-4 [&_.facilities-images-grid_span]:!bg-white [&_.facilities-images-grid_span]:w-full [&_.facilities-images-grid_span]:empty:hidden [&_.facilities-images-grid_span]:text-[#002b5c] [&_.facilities-images-grid_span]:!mt-auto" 
+                dangerouslySetInnerHTML={{ __html: photoGalleryHtml }} />
+             </div>
+          </div>
+       </div>
+    );
+  }
+
+  if (isFaqView && faqHtml) {
+    return (
+       <div className="bg-[#f8fafc] min-h-screen pb-20 font-sans">
+          {/* Premium Page Header */}
+          <div className="w-full bg-[#002b5c] relative overflow-hidden">
+            <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 mix-blend-overlay pointer-events-none" />
+            <div className="absolute right-0 top-0 w-1/2 h-full bg-gradient-to-l from-teal-500/20 to-transparent pointer-events-none" />
+            
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16 relative z-10">
+              <div className="flex items-center gap-2 text-blue-200 text-xs md:text-sm font-medium tracking-wide mb-4 flex-wrap">
+                <Link href="/" className="hover:text-white transition-colors whitespace-nowrap">Home</Link>
+                <ChevronRight className="w-3.5 h-3.5 shrink-0" />
+                <Link href="/departments" className="hover:text-white transition-colors whitespace-nowrap">Specialties</Link>
+                <ChevronRight className="w-3.5 h-3.5 shrink-0" />
+                <Link href={`/departments/${department.id}`} className="hover:text-white transition-colors whitespace-nowrap">{department.name}</Link>
+                <ChevronRight className="w-3.5 h-3.5 shrink-0" />
+                <span className="text-white truncate">FAQ&apos;s</span>
+              </div>
+              <h1 className="text-4xl md:text-5xl font-extrabold text-white tracking-tight flex items-center gap-4">
+                {department.name} FAQ&apos;s
+              </h1>
+            </div>
+          </div>
+          
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+             <Link href={`/departments/${department.id}`} className="inline-flex items-center gap-2 text-[#007a87] hover:text-[#002b5c] font-bold mb-8 transition-colors">
+               <ArrowLeft className="w-4 h-4" /> Back to {department.name}
+             </Link>
+          
+             <div className="bg-white p-8 md:p-14 rounded-3xl border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
+                <div className="text-slate-700 space-y-6 break-words leading-relaxed prose prose-lg prose-slate max-w-none prose-headings:text-[#002b5c] prose-a:text-[#007a87]" 
+                dangerouslySetInnerHTML={{ __html: faqHtml }} />
+             </div>
+          </div>
+       </div>
+    );
   }
 
   return (
@@ -329,12 +670,12 @@ export default async function DepartmentDetailsPage({
                 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:space-y-2 [&_ul]:mb-6
                 [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:space-y-2 [&_ol]:mb-6
                 [&_table]:table [&_table]:w-full [&_table]:text-sm [&_table]:text-left [&_table]:border-collapse [&_table]:border [&_table]:border-slate-200
-                [&_td]:px-6 [&_td]:py-4 [&_td]:border [&_td]:border-slate-200
+                [&_td]:px-6 [&_td]:py-4 [&_td]:border [&_td]:border-slate-200 [&_td]:whitespace-nowrap
                 [&_tr:hover]:bg-slate-50
-                [&_thead>tr]:!bg-[#002b5c] [&_thead>tr>th]:!text-white [&_thead>tr>th]:font-bold [&_thead>tr>th]:uppercase [&_thead>tr>th]:text-xs [&_thead>tr:first-child>th]:!border-b [&_thead>tr:first-child>th]:!border-white
-                [&_thead>tr>td]:!text-white [&_thead>tr>td]:font-bold [&_thead>tr>td]:uppercase [&_thead>tr>td]:text-xs
-                [&_table>tr:first-child]:!bg-[#002b5c] [&_table>tr:first-child>td]:!text-white [&_table>tr:first-child>td]:font-bold [&_table>tr:first-child>td]:uppercase [&_table>tr:first-child>td]:text-xs
-                [&_tbody:first-child>tr:first-child]:!bg-[#002b5c] [&_tbody:first-child>tr:first-child>td]:!text-white [&_tbody:first-child>tr:first-child>td]:font-bold [&_tbody:first-child>tr:first-child>td]:uppercase [&_tbody:first-child>tr:first-child>td]:text-xs
+                [&_thead>tr]:!bg-[#002b5c] [&_thead>tr>th]:!text-white [&_thead>tr>th]:font-bold [&_thead>tr>th]:uppercase [&_thead>tr>th]:text-sm [&_thead>tr:first-child>th]:!border-b [&_thead>tr:first-child>th]:!border-white [&_thead>tr>th]:whitespace-nowrap [&_thead>tr>th]:text-center
+                [&_thead>tr>td]:!text-white [&_thead>tr>td]:font-bold [&_thead>tr>td]:uppercase [&_thead>tr>td]:text-sm [&_thead>tr>td]:text-center
+                [&_table>tr:first-child]:!bg-[#002b5c] [&_table>tr:first-child>td]:!text-white [&_table>tr:first-child>td]:font-bold [&_table>tr:first-child>td]:uppercase [&_table>tr:first-child>td]:text-sm [&_table>tr:first-child>td]:text-center
+                [&_tbody:first-child>tr:first-child]:!bg-[#002b5c] [&_tbody:first-child>tr:first-child>td]:!text-white [&_tbody:first-child>tr:first-child>td]:font-bold [&_tbody:first-child>tr:first-child>td]:uppercase [&_tbody:first-child>tr:first-child>td]:text-sm [&_tbody:first-child>tr:first-child>td]:text-center
                 [&_.department-facilities-section]:grid [&_.department-facilities-section]:grid-cols-1 [&_.department-facilities-section]:md:grid-cols-2 [&_.department-facilities-section]:lg:grid-cols-3 [&_.department-facilities-section]:gap-4
                 [&_.department-facilities-section_h3]:col-span-full
                 [&_.department-facilities-section_p]:bg-teal-50 [&_.department-facilities-section_p]:p-4 [&_.department-facilities-section_p]:rounded-xl [&_.department-facilities-section_p]:text-center [&_.department-facilities-section_p]:font-semibold [&_.department-facilities-section_p]:text-[#007a87] [&_.department-facilities-section_p]:shadow-sm [&_.department-facilities-section_p]:mb-0
@@ -342,16 +683,11 @@ export default async function DepartmentDetailsPage({
                 [&_.department-facilities-section_ul]:col-span-full [&_.department-facilities-section_ul]:grid [&_.department-facilities-section_ul]:grid-cols-1 [&_.department-facilities-section_ul]:md:grid-cols-2 [&_.department-facilities-section_ul]:lg:grid-cols-3 [&_.department-facilities-section_ul]:gap-4 [&_.department-facilities-section_ul]:list-none [&_.department-facilities-section_ul]:pl-0
                 [&_.department-facilities-section_li]:bg-teal-50 [&_.department-facilities-section_li]:p-4 [&_.department-facilities-section_li]:rounded-xl [&_.department-facilities-section_li]:text-center [&_.department-facilities-section_li]:font-semibold [&_.department-facilities-section_li]:text-[#007a87] [&_.department-facilities-section_li]:shadow-sm
                 
-                [&_.facilities-images-grid>div]:!p-0 [&_.facilities-images-grid>div]:overflow-hidden [&_.facilities-images-grid>div]:flex [&_.facilities-images-grid>div]:flex-col
-                [&_.facilities-images-grid_img]:!m-0 [&_.facilities-images-grid_img]:!w-full [&_.facilities-images-grid_img]:!h-auto [&_.facilities-images-grid_img]:!object-contain [&_.facilities-images-grid_img]:!rounded-t-xl [&_.facilities-images-grid_img]:!rounded-b-none [&_.facilities-images-grid_img]:!shadow-none
-                [&_.facilities-images-grid_span]:block [&_.facilities-images-grid_span]:p-3 [&_.facilities-images-grid_span]:bg-white [&_.facilities-images-grid_span]:w-full [&_.facilities-images-grid_span]:empty:hidden
+                [&_.facilities-images-grid>div]:!p-0 [&_.facilities-images-grid>div]:!bg-white [&_.facilities-images-grid>div]:!border-slate-100 [&_.facilities-images-grid>div]:overflow-hidden [&_.facilities-images-grid>div]:flex [&_.facilities-images-grid>div]:flex-col
+                [&_.facilities-images-grid_img]:!m-0 [&_.facilities-images-grid_img]:!w-full [&_.facilities-images-grid_img]:!h-[200px] md:[&_.facilities-images-grid_img]:!h-[240px] [&_.facilities-images-grid_img]:!object-cover [&_.facilities-images-grid_img]:!rounded-t-xl [&_.facilities-images-grid_img]:!rounded-b-none [&_.facilities-images-grid_img]:!shadow-none
+                [&_.facilities-images-grid_span]:block [&_.facilities-images-grid_span]:p-4 [&_.facilities-images-grid_span]:!bg-white [&_.facilities-images-grid_span]:w-full [&_.facilities-images-grid_span]:empty:hidden [&_.facilities-images-grid_span]:text-[#002b5c] [&_.facilities-images-grid_span]:!mt-auto
                 
-                [&_iframe]:float-none [&_iframe]:md:float-left [&_iframe]:w-full [&_iframe]:md:w-[400px] [&_iframe]:h-[225px] [&_iframe]:mr-6 [&_iframe]:mb-4 [&_iframe]:rounded-xl [&_iframe]:shadow-md [&_iframe]:border [&_iframe]:border-slate-200
-                
-                [&_.department-gallery-section_.bg-slate-50]:!self-start
-                [&_.department-gallery-section_.bg-slate-50>div.p-4:has(p:empty)]:!hidden
-                [&_.department-gallery-section_.bg-slate-50:has(p:empty)_img]:!rounded-xl
-                [&_.department-gallery-section_img]:!aspect-[4/3] [&_.department-gallery-section_img]:!w-full [&_.department-gallery-section_img]:!my-0 [&_.department-gallery-section_img]:!rounded-xl [&_.department-gallery-section_img]:!object-cover [&_.department-gallery-section_img]:!object-center [&_.department-gallery-section_img]:!bg-slate-100/50 [&_.department-gallery-section_img]:!shadow-none">
+                [&_iframe]:float-none [&_iframe]:md:float-left [&_iframe]:w-full [&_iframe]:md:w-[400px] [&_iframe]:h-[225px] [&_iframe]:mr-6 [&_iframe]:mb-4 [&_iframe]:rounded-xl [&_iframe]:shadow-md [&_iframe]:border [&_iframe]:border-slate-200">
                 {department.description ? (
                   <div className="clearfix">
                     {department.videoUrl && (
