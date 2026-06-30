@@ -59,7 +59,7 @@ export default function Navbar() {
         new (window as any).google.translate.TranslateElement(
           {
             pageLanguage: "en",
-            includedLanguages: "en,hi,mr,ar",
+            includedLanguages: "en,hi,mr,ar,gu,kn,ta,de",
             autoDisplay: false,
           },
           "google_translate_element"
@@ -100,7 +100,7 @@ export default function Navbar() {
       href: "/out-patient",
       dropdown: [
         { name: "Out Patient guide", href: "/out-patient" },
-        { name: "In patient guide", href: "/in-patient" },
+        { name: "Hospital Admission Guide", href: "/in-patient" },
         { name: "Health Packages", href: "/health-packages" },
         { name: "Facilities", href: "/facilities" },
         { name: "Patients Stories / Feedbacks", href: "/feedbacks" },
@@ -182,13 +182,13 @@ export default function Navbar() {
       <div className="hidden xl:block w-full bg-[#007a87] text-white text-[10px] 2xl:text-[11px] py-2 px-4 font-medium border-b border-teal-600/30">
         <div className="max-w-[96%] mx-auto flex justify-between items-center">
           <div className="flex items-center gap-2 xl:gap-3 2xl:gap-4 text-white/90">
-            <Link href="/doctor-details" className="hover:text-white transition-colors">Find a Doctor</Link>
+            <Link href="/emergency" className="hover:text-white transition-colors font-bold text-red-200">Emergency</Link>
             <span className="opacity-30">|</span>
-            <Link href="/blogs" className="hover:text-white transition-colors">Blogs</Link>
+            <Link href="/blood-bank" className="hover:text-white transition-colors">Bld. Bank</Link>
             <span className="opacity-30">|</span>
-            <Link href="/patient-guide" className="hover:text-white transition-colors">My Reports</Link>
+            <Link href="/pharmacy" className="hover:text-white transition-colors">Pharmacy</Link>
             <span className="opacity-30">|</span>
-            <Link href="/research-about" className="hover:text-white transition-colors">Research</Link>
+            <Link href="/ambulance" className="hover:text-white transition-colors">Ambulance</Link>
             <span className="opacity-30">|</span>
             <span className="font-bold text-[#FFD700]">25 Years of Trust and Care</span>
           </div>
@@ -219,7 +219,11 @@ export default function Navbar() {
                   <div onClick={() => changeLanguage('en')} className="px-4 py-2.5 hover:bg-[#007a87] hover:text-white transition-colors cursor-pointer">English</div>
                   <div onClick={() => changeLanguage('hi')} className="px-4 py-2.5 hover:bg-[#007a87] hover:text-white transition-colors cursor-pointer border-t border-slate-50">Hindi</div>
                   <div onClick={() => changeLanguage('mr')} className="px-4 py-2.5 hover:bg-[#007a87] hover:text-white transition-colors cursor-pointer border-t border-slate-50">Marathi</div>
+                  <div onClick={() => changeLanguage('gu')} className="px-4 py-2.5 hover:bg-[#007a87] hover:text-white transition-colors cursor-pointer border-t border-slate-50">Gujarati</div>
+                  <div onClick={() => changeLanguage('kn')} className="px-4 py-2.5 hover:bg-[#007a87] hover:text-white transition-colors cursor-pointer border-t border-slate-50">Kannada</div>
+                  <div onClick={() => changeLanguage('ta')} className="px-4 py-2.5 hover:bg-[#007a87] hover:text-white transition-colors cursor-pointer border-t border-slate-50">Tamil</div>
                   <div onClick={() => changeLanguage('ar')} className="px-4 py-2.5 hover:bg-[#007a87] hover:text-white transition-colors cursor-pointer border-t border-slate-50">Arabic</div>
+                  <div onClick={() => changeLanguage('de')} className="px-4 py-2.5 hover:bg-[#007a87] hover:text-white transition-colors cursor-pointer border-t border-slate-50">German</div>
                 </div>
               </div>
             </div>

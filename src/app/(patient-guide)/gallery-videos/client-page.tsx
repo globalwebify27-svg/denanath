@@ -25,7 +25,7 @@ function getYouTubeEmbedUrl(url: string) {
 export default function GalleryVideosClientPage({ pageData }: { pageData: any }) {
   const patientGuideOptions = [
     { name: "Out Patient Guide", href: "/out-patient", active: false },
-    { name: "In Patient Guide", href: "/in-patient", active: false },
+    { name: "Hospital Admission Guide", href: "/in-patient", active: false },
     { name: "Health Packages", href: "/health-packages", active: false },
     { name: "Facilities", href: "/facilities", active: false },
     { name: "Patients Stories / Feedbacks", href: "/feedbacks", active: false },

@@ -4,6 +4,7 @@ import { ChevronRight, ArrowLeft, Stethoscope, HeartPulse } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import LightboxWrapper from "@/components/LightboxWrapper";
+import VideoPlayer from "@/components/VideoPlayer";
 import * as cheerio from "cheerio";
 
 export const dynamic = "force-dynamic";
@@ -49,9 +50,9 @@ export default async function DepartmentDetailsPage({
           wrappers.each((_, wrap) => {
              const $wrap = $(wrap);
              
-             // Extract texts from all p tags in this wrapper
+             // Extract texts from all p and li tags in this wrapper
              let pContent = "";
-             $wrap.find('p').each((_, p) => {
+             $wrap.find('p, li').each((_, p) => {
                 pContent += $(p).html() + "<br>";
              });
              
@@ -132,9 +133,60 @@ export default async function DepartmentDetailsPage({
           });
         }
 
+      } else if (h3Text === 'faq' || h3Text === 'faqs' || h3Text === 'frequently asked questions') {
+        $(section).addClass('department-faq-section');
+        
+        // Auto-format any raw Q&A into accordion if it's not already
+        const mainUl = $(section).children('ul').first();
+        if (mainUl.length > 0) {
+           mainUl.addClass("list-disc pl-5 space-y-4 marker:text-black");
+           mainUl.children('li').each((_, li) => {
+              const $li = $(li);
+              
+              // If it already has details, it's fine
+              if ($li.children('details.faq-item').length > 0) return;
+              
+              // Raw user-added FAQ!
+              let question = "Question";
+              const strong = $li.find('strong, b, h4').first();
+              
+              if (strong.length > 0) {
+                 question = strong.text().trim();
+                 strong.remove();
+              } else {
+                 const childNodes = $li.contents();
+                 let firstTextNode = null;
+                 for (let i = 0; i < childNodes.length; i++) {
+                    if (childNodes[i].type === 'text' && childNodes[i].data.trim().length > 0) {
+                       firstTextNode = childNodes[i];
+                       break;
+                    }
+                 }
+                 if (firstTextNode) {
+                    question = firstTextNode.data.trim();
+                    $(firstTextNode).remove();
+                 }
+              }
+              
+              const answerHtml = $li.html() ? $li.html().trim() : "";
+              
+              const newHtml = `
+                <details class="faq-item group cursor-pointer p-3 rounded-xl hover:bg-white hover:shadow-md transition-all duration-300 border border-transparent hover:border-slate-100 [&_summary::-webkit-details-marker]:hidden">
+                  <summary class="flex items-start gap-3 list-none outline-none">
+                    <h4 class="text-lg font-bold text-slate-800 m-0 group-hover:text-black transition-colors">${question}</h4>
+                  </summary>
+                  <div class="text-slate-600 mt-3 border-t border-slate-100 pt-3">
+                    ${answerHtml.startsWith('<p') ? answerHtml : `<p class="!mb-0 mt-3 first:mt-0">${answerHtml}</p>`}
+                  </div>
+                </details>
+              `;
+              
+              $li.html(newHtml);
+           });
+        }
       } else if (h3Text === 'photo gallery') {
         $(section).addClass('department-gallery-section');
-      } else if (h3Text === 'consultant') {
+      } else if (h3Text === 'consultant' || h3Text === 'consultants') {
         const consultants: string[] = [];
         
         // Find all potential consultant names
@@ -183,13 +235,44 @@ export default async function DepartmentDetailsPage({
            }).join('');
            
            const newHtml = `
-             <h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Consultant</h3>
+             <h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Consultants</h3>
              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                ${circlesHtml}
              </div>
            `;
            $(section).html(newHtml);
         }
+      }
+    });
+
+    // Replace video embeds with actual video tags and move them to float correctly
+    $('.video-embed').each((_, el) => {
+      const url = $(el).attr('data-video-url');
+      const type = $(el).attr('data-video-type');
+      if (url) {
+        let newEl;
+        if (type === 'mp4') {
+          newEl = $(`<video controls class="float-none md:float-left w-full md:w-[400px] h-[225px] mr-6 mb-4 rounded-xl shadow-md border border-slate-200 bg-black"><source src="${url}" type="video/mp4"></video>`);
+        } else {
+          newEl = $(`<iframe src="${url}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen class="float-none md:float-left w-full md:w-[400px] h-[225px] mr-6 mb-4 rounded-xl shadow-md border border-slate-200"></iframe>`);
+        }
+        
+        let targetHeading = $(el).prevAll('h1, h2, h3, h4, h5, h6').first();
+        if (targetHeading.length === 0) {
+           const closestSection = $(el).closest('section');
+           if (closestSection.length > 0) {
+              targetHeading = closestSection.find('h1, h2, h3, h4, h5, h6').first();
+           }
+        }
+        
+        if (targetHeading.length > 0) {
+          targetHeading.after(newEl);
+          $(el).remove();
+        } else {
+          $(el).replaceWith(newEl);
+        }
+      } else {
+        $(el).remove();
       }
     });
 
@@ -259,9 +342,25 @@ export default async function DepartmentDetailsPage({
                 [&_.department-facilities-section_ul]:col-span-full [&_.department-facilities-section_ul]:grid [&_.department-facilities-section_ul]:grid-cols-1 [&_.department-facilities-section_ul]:md:grid-cols-2 [&_.department-facilities-section_ul]:lg:grid-cols-3 [&_.department-facilities-section_ul]:gap-4 [&_.department-facilities-section_ul]:list-none [&_.department-facilities-section_ul]:pl-0
                 [&_.department-facilities-section_li]:bg-teal-50 [&_.department-facilities-section_li]:p-4 [&_.department-facilities-section_li]:rounded-xl [&_.department-facilities-section_li]:text-center [&_.department-facilities-section_li]:font-semibold [&_.department-facilities-section_li]:text-[#007a87] [&_.department-facilities-section_li]:shadow-sm
                 
-                [&_.department-gallery-section_img]:!h-32 [&_.department-gallery-section_img]:!w-full [&_.department-gallery-section_img]:!my-0 [&_.department-gallery-section_img]:!rounded-lg [&_.department-gallery-section_img]:!object-cover [&_.department-gallery-section_img]:!shadow-sm">
+                [&_.facilities-images-grid>div]:!p-0 [&_.facilities-images-grid>div]:overflow-hidden [&_.facilities-images-grid>div]:flex [&_.facilities-images-grid>div]:flex-col
+                [&_.facilities-images-grid_img]:!m-0 [&_.facilities-images-grid_img]:!w-full [&_.facilities-images-grid_img]:!h-auto [&_.facilities-images-grid_img]:!object-contain [&_.facilities-images-grid_img]:!rounded-t-xl [&_.facilities-images-grid_img]:!rounded-b-none [&_.facilities-images-grid_img]:!shadow-none
+                [&_.facilities-images-grid_span]:block [&_.facilities-images-grid_span]:p-3 [&_.facilities-images-grid_span]:bg-white [&_.facilities-images-grid_span]:w-full [&_.facilities-images-grid_span]:empty:hidden
+                
+                [&_iframe]:float-none [&_iframe]:md:float-left [&_iframe]:w-full [&_iframe]:md:w-[400px] [&_iframe]:h-[225px] [&_iframe]:mr-6 [&_iframe]:mb-4 [&_iframe]:rounded-xl [&_iframe]:shadow-md [&_iframe]:border [&_iframe]:border-slate-200
+                
+                [&_.department-gallery-section_.bg-slate-50]:!self-start
+                [&_.department-gallery-section_.bg-slate-50>div.p-4:has(p:empty)]:!hidden
+                [&_.department-gallery-section_.bg-slate-50:has(p:empty)_img]:!rounded-xl
+                [&_.department-gallery-section_img]:!aspect-[4/3] [&_.department-gallery-section_img]:!w-full [&_.department-gallery-section_img]:!my-0 [&_.department-gallery-section_img]:!rounded-xl [&_.department-gallery-section_img]:!object-cover [&_.department-gallery-section_img]:!object-center [&_.department-gallery-section_img]:!bg-slate-100/50 [&_.department-gallery-section_img]:!shadow-none">
                 {department.description ? (
-                  <LightboxWrapper htmlContent={processedHtml} />
+                  <div className="clearfix">
+                    {department.videoUrl && (
+                      <div className="float-none md:float-left w-full md:w-[400px] lg:w-[500px] mb-6 md:mr-8 md:mb-8">
+                        <VideoPlayer url={department.videoUrl} />
+                      </div>
+                    )}
+                    <LightboxWrapper htmlContent={processedHtml} />
+                  </div>
                 ) : (
                   <div className="py-12 text-center bg-slate-50 border-2 border-dashed border-slate-200 rounded-2xl">
                     <HeartPulse className="w-12 h-12 text-slate-300 mx-auto mb-4" />

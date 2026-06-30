@@ -227,10 +227,10 @@ export default function InPatientClientForm({ initialData }: { initialData: any 
         <div className="absolute top-0 left-0 w-2 h-full bg-gradient-to-b from-[#002b5c] to-[#007a87]"></div>
         <div className="z-10 relative">
           <h1 className="text-[32px] md:text-[40px] font-black text-[#002b5c] tracking-tight leading-tight mb-2 flex items-center gap-3">
-            In Patient Guide
+            Hospital Admission
           </h1>
           <p className="text-[15px] font-medium text-slate-500 max-w-xl leading-relaxed">
-            Manage the information displayed on the In Patient Guide page.
+            Manage the information displayed on the Hospital Admission page.
           </p>
         </div>
         <div className="z-10 shrink-0 mt-4 lg:mt-0 flex gap-3">

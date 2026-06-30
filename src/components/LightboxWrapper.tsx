@@ -31,7 +31,7 @@ export default function LightboxWrapper({ htmlContent }: { htmlContent: string }
           const scrollArea = document.createElement('div');
           scrollArea.className = "flex overflow-x-auto snap-x snap-mandatory gap-4 pb-2 scrollbar-hide";
           scrollArea.style.scrollbarWidth = 'none'; // Firefox
-          scrollArea.style.msOverflowStyle = 'none'; // IE/Edge
+          scrollArea.style.setProperty('-ms-overflow-style', 'none'); // IE/Edge
           
           images.forEach(img => {
               const imgWrapper = document.createElement('div');
@@ -66,6 +66,67 @@ export default function LightboxWrapper({ htmlContent }: { htmlContent: string }
         }
       });
 
+      // --- Convert Video Embed Placeholders to Real Players ---
+      setTimeout(() => {
+        try {
+          const videoEmbeds = containerRef.current?.querySelectorAll('.video-embed');
+          if (!videoEmbeds) return;
+          
+          videoEmbeds.forEach(div => {
+            if (div.hasAttribute('data-video-init')) return;
+            div.setAttribute('data-video-init', 'true');
+
+            const videoUrl = div.getAttribute('data-video-url') || '';
+            const videoType = div.getAttribute('data-video-type') || '';
+
+            if (!videoUrl) return;
+
+            // Create a 16:9 wrapper floated left
+            const wrapper = document.createElement('div');
+            wrapper.style.cssText = 'float:left;width:400px;max-width:100%;margin:0 24px 16px 0;position:relative;padding-bottom:min(225px, 56.25%);height:0;overflow:hidden;border-radius:12px;box-shadow:0 4px 6px -1px rgba(0,0,0,0.1);border:1px solid #e2e8f0;';
+
+            if (videoType === 'embed' || videoUrl.includes('youtube.com/embed') || videoUrl.includes('player.vimeo.com')) {
+              const iframe = document.createElement('iframe');
+              iframe.src = videoUrl;
+              iframe.frameBorder = '0';
+              iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+              iframe.allowFullscreen = true;
+              iframe.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;';
+              wrapper.appendChild(iframe);
+            } else {
+              const video = document.createElement('video');
+              video.controls = true;
+              video.src = videoUrl;
+              video.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;object-fit:contain;background:#000;';
+              wrapper.appendChild(video);
+            }
+
+            const parentSection = div.closest('section');
+            if (parentSection) {
+              // Establish a new block formatting context to contain the float (prevents bleeding into next sections)
+              parentSection.style.display = 'flow-root';
+              
+              // Move the video to the very top of the section so all content wraps around it
+              // Skip the <h3> heading if it exists so the title stays at the top
+              const heading = parentSection.querySelector('h3');
+              if (heading && heading.parentElement === parentSection) {
+                 parentSection.insertBefore(wrapper, heading.nextSibling);
+              } else {
+                 parentSection.insertBefore(wrapper, parentSection.firstChild);
+              }
+              div.remove();
+            } else {
+              div.replaceWith(wrapper);
+              if (wrapper.parentElement) {
+                 wrapper.parentElement.style.display = 'flow-root';
+              }
+            }
+          });
+        } catch (e) {
+          console.error("Error converting videos:", e);
+        }
+      }, 100);
+
       // --- Lightbox Initialization ---
       const imgElements = Array.from(containerRef.current.querySelectorAll('img'));
       const imgData = imgElements.map(img => ({
@@ -81,6 +142,39 @@ export default function LightboxWrapper({ htmlContent }: { htmlContent: string }
           if (!img.classList.contains('lightbox-enabled-img')) {
             img.classList.add('lightbox-enabled-img');
           }
+        }
+      });
+
+      // --- FAQ Details Hover/Click Logic ---
+      const detailsElements = containerRef.current.querySelectorAll('details.faq-item');
+      detailsElements.forEach(details => {
+        if (details.hasAttribute('data-hover-init')) return;
+        details.setAttribute('data-hover-init', 'true');
+        
+        let timeout: NodeJS.Timeout;
+        
+        details.addEventListener('mouseenter', () => {
+          clearTimeout(timeout);
+          details.setAttribute('open', '');
+        });
+        
+        details.addEventListener('mouseleave', () => {
+          timeout = setTimeout(() => {
+            details.removeAttribute('open');
+          }, 150); // slight delay to make hover less jittery
+        });
+        
+        // Prevent click from immediately closing if we are hovering
+        const summary = details.querySelector('summary');
+        if (summary) {
+           summary.addEventListener('click', (e) => {
+             e.preventDefault(); // we handle toggle manually
+             if (details.hasAttribute('open')) {
+               details.removeAttribute('open');
+             } else {
+               details.setAttribute('open', '');
+             }
+           });
         }
       });
     }

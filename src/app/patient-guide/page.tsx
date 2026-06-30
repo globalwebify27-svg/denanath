@@ -7,7 +7,7 @@ import { ChevronRight, Book, Users, Bed, Stethoscope, Building2, MessageSquare, 
 export default function PatientGuidePage() {
   const options = [
     { name: "Out Patient Guide", href: "/out-patient", active: false, icon: Users, desc: "Information for OPD visits and consultations." },
-    { name: "In Patient Guide", href: "/in-patient", active: false, icon: Bed, desc: "Admission, stay, and discharge procedures." },
+    { name: "Hospital Admission", href: "/in-patient", active: false, icon: Bed, desc: "Admission, stay, and discharge procedures." },
     { name: "Health Packages", href: "/health-packages", active: false, icon: Stethoscope, desc: "Comprehensive health check-up packages." },
     { name: "Facilities", href: "/facilities", active: false, icon: Building2, desc: "Hospital amenities and services available." },
     { name: "Patients Stories / Feedbacks", href: "/feedbacks", active: false, icon: MessageSquare, desc: "Read experiences from our patients." },

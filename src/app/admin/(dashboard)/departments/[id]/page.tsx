@@ -8,6 +8,9 @@ import IconPicker from "@/components/IconPicker";
 import SubmitButton from "@/app/admin/(dashboard)/components/SubmitButton";
 import QuillEditor from "@/components/QuillEditor";
 import PhotoGalleryEditor from "@/components/PhotoGalleryEditor";
+import FAQEditor from "@/components/FAQEditor";
+
+export const dynamic = "force-dynamic";
 
 export default async function EditDepartmentPage({
   params,
@@ -50,6 +53,7 @@ export default async function EditDepartmentPage({
     const consultant = cleanHtml(formData.get("consultant") as string);
     
     const headOfDepartment = formData.get("headOfDepartment") as string;
+    const videoUrl = formData.get("videoUrl") as string;
     const icon = formData.get("icon") as string;
     const status = formData.get("status") === "on";
 
@@ -61,12 +65,14 @@ export default async function EditDepartmentPage({
           galleryHtml = `
     <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
       ${items.map((img: any) => `
-      <div class="bg-slate-50 p-4 rounded-xl text-center border border-slate-200">
+      <div class="bg-slate-50 rounded-xl text-center border border-slate-200 overflow-hidden flex flex-col">
         ${img.url && !img.url.startsWith('Image:') ? 
-          `<img src="${img.url}" alt="${img.name}" class="w-full h-32 object-cover rounded-lg mb-2 shadow-sm" />` : 
-          `<div class="w-full h-32 bg-slate-200 rounded-lg mb-2 flex items-center justify-center text-slate-400 font-medium">${img.url || 'Image Preview'}</div>`
+          `<img src="${img.url}" alt="${img.name}" class="w-full h-48 object-cover m-0" />` : 
+          `<div class="w-full h-48 bg-slate-200 flex items-center justify-center text-slate-400 font-medium">${img.url || 'Image Preview'}</div>`
         }
-        <p class="font-bold text-[#002b5c]">${img.name}</p>
+        <div class="p-4 flex-grow flex items-center justify-center">
+          <p class="font-bold text-[#002b5c] m-0">${img.name}</p>
+        </div>
       </div>`).join('')}
     </div>`;
         }
@@ -131,20 +137,51 @@ export default async function EditDepartmentPage({
       } catch (e) {
          // ignore
       }
-    }    // The styleConsultant feature was causing nested strings on every save.
+    }
+    
+    const faqCount = parseInt(formData.get("faq_count") as string || "0");
+    let faqHtml = "";
+    if (faqCount > 0) {
+      faqHtml += '<ul>\n';
+      for (let i = 0; i < faqCount; i++) {
+         const q = formData.get(`faq_q_${i}`) as string;
+         const a = cleanHtml(formData.get(`faq_a_${i}`) as string);
+         if (q && a) {
+            faqHtml += `  <li><strong>${q}</strong>\n${a}</li>\n`;
+         }
+      }
+      faqHtml += "</ul>\n";
+    }
+    
+    // The styleConsultant feature was causing nested strings on every save.
     // Consultant styling should be done dynamically on the frontend.
+    const customCount = parseInt(formData.get("custom_count") as string || "0");
+    let customHtml = "";
+    for (let i = 0; i < customCount; i++) {
+      const title = formData.get(`custom_title_${i}`) as string;
+      const rawContent = formData.get(`custom_content_${i}`) as string;
+      console.log(`CUSTOM SECTION ${i}: title="${title}", raw content length=${rawContent?.length}, has iframe=${rawContent?.includes('<iframe')}, has video=${rawContent?.includes('<video')}`);
+      console.log(`CUSTOM SECTION ${i} CONTENT:`, rawContent?.substring(0, 500));
+      const content = cleanHtml(rawContent);
+      if (title && content) {
+        customHtml += `  <section><h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">${title}</h3>\n${content}\n</section>\n`;
+      }
+    }
+
     const description = `
 <div class="space-y-8 text-slate-700">
   ${overview ? `<section><h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Overview</h3>${overview}</section>` : ''}
   ${spectrum ? `<section><h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Spectrum and Services</h3>${spectrum}</section>` : ''}
   ${paediatric ? `<section><h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Paediatric Liver Clinic</h3>${paediatric}</section>` : ''}
   ${facilities ? `<section><h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Facilities</h3>${facilities}</section>` : ''}
-  ${location ? `<section><h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Location of Department</h3><div class="font-medium text-slate-800">${location}</div></section>` : ''}
+  ${location ? `<section><h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Location of Department</h3>${location}</section>` : ''}
   ${timetable ? `<section><h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Departmental Timetable</h3>${timetable}</section>` : ''}
   ${workload ? `<section><h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Departmental Workload</h3>${workload}</section>` : ''}
   ${courses ? `<section><h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Courses and Training</h3>${courses}</section>` : ''}
   ${events ? `<section><h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Events</h3>${events}</section>` : ''}
+  ${customHtml}
   ${contactUs ? `<section><h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Contact Us</h3>${contactUs}</section>` : ''}
+  ${faqHtml ? `<section><h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">FAQs</h3>${faqHtml}</section>` : ''}
   ${galleryHtml ? `<section><h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Photo Gallery</h3>${galleryHtml}</section>` : ''}
   ${consultant ? `<section><h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Consultant</h3>${consultant}</section>` : ''}
 </div>
@@ -159,6 +196,7 @@ export default async function EditDepartmentPage({
       data: {
         name,
         headOfDepartment,
+        videoUrl,
         icon,
         status,
       },
@@ -170,6 +208,9 @@ export default async function EditDepartmentPage({
       description,
       departmentId
     );
+
+    const { revalidatePath } = require("next/cache");
+    revalidatePath("/", "layout"); // Clears the entire Next.js data cache for all frontend pages
 
     redirect("/admin/departments");
   }
@@ -184,34 +225,78 @@ export default async function EditDepartmentPage({
 
   const desc = department.description || "";
   
-  const extractSection = (title: string) => {
-    const cheerio = require('cheerio');
-    const $ = cheerio.load(desc, null, false);
+  const cheerio = require('cheerio');
+  const $ = cheerio.load(desc, null, false);
+  
+  const extractAndRemoveSection = (titles: string[]) => {
     let content = "";
     $('section').each((_, el: any) => {
       const h3 = $(el).find('h3').first();
-      if (h3.text().trim().toLowerCase() === title.toLowerCase()) {
-        // Clone the element to avoid modifying the original DOM just in case, though Cheerio load creates a new one
+      const text = h3.text().trim().toLowerCase();
+      if (titles.map(t => t.toLowerCase()).includes(text)) {
         const elClone = $(el).clone();
         elClone.find('h3').first().remove();
         content = elClone.html() || "";
+        $(el).remove();
       }
     });
     return content.trim();
   };
 
-  const overview = extractSection("Overview");
-  const spectrum = extractSection("Spectrum and Services");
-  const paediatric = extractSection("Paediatric Liver Clinic");
-  let facilities = extractSection("Facilities");
-  const location = extractSection("Location of Department");
-  const timetable = extractSection("Departmental Timetable");
-  const workload = extractSection("Departmental Workload");
-  const courses = extractSection("Courses and Training");
-  const events = extractSection("Events");
-  const contactUs = extractSection("Contact Us");
-  const gallery = extractSection("Photo Gallery");
-  let consultant = extractSection("Consultant");
+  const overview = extractAndRemoveSection(["Overview", "About Us"]);
+  const spectrum = extractAndRemoveSection(["Spectrum and Services"]);
+  const paediatric = extractAndRemoveSection(["Paediatric Liver Clinic"]);
+  let facilities = extractAndRemoveSection(["Facilities"]);
+  const location = extractAndRemoveSection(["Location of Department"]);
+  const timetable = extractAndRemoveSection(["Departmental Timetable"]);
+  const workload = extractAndRemoveSection(["Departmental Workload"]);
+  const courses = extractAndRemoveSection(["Courses and Training", "Research Projects"]);
+  const events = extractAndRemoveSection(["Events"]);
+  const contactUs = extractAndRemoveSection(["Contact Us", "Contact Details"]);
+  const gallery = extractAndRemoveSection(["Photo Gallery"]);
+  let consultant = extractAndRemoveSection(["Consultant", "Consultants"]);
+  const faqSectionHTML = extractAndRemoveSection(["FAQ", "FAQs", "Frequently Asked Questions", "FAQS"]);
+  
+  const faqItems: { question: string, answer: string }[] = [];
+  if (faqSectionHTML) {
+     const cheerio = await import('cheerio');
+     const $ = cheerio.load(faqSectionHTML, null, false);
+     $('ul').first().children('li').each((_, li) => {
+        const $li = $(li);
+        let question = "Question";
+        const strong = $li.find('strong, b, h4').first();
+        if (strong.length > 0) {
+           question = strong.text().trim();
+           strong.remove();
+        } else {
+           const childNodes = $li.contents();
+           let firstTextNode = null;
+           for (let i = 0; i < childNodes.length; i++) {
+              if (childNodes[i].type === 'text' && childNodes[i].data.trim().length > 0) {
+                 firstTextNode = childNodes[i];
+                 break;
+              }
+           }
+           if (firstTextNode) {
+              question = firstTextNode.data.trim();
+              $(firstTextNode).remove();
+           }
+        }
+        const answer = $li.html() ? $li.html()!.trim() : "";
+        faqItems.push({ question, answer });
+     });
+  }
+  
+  const customSections: { title: string; content: string }[] = [];
+  $('section').each((_, el: any) => {
+     const h3 = $(el).find('h3').first();
+     const rawTitle = h3.text().trim();
+     if (rawTitle) {
+       const elClone = $(el).clone();
+       elClone.find('h3').first().remove();
+       customSections.push({ title: rawTitle, content: elClone.html() || "" });
+     }
+  });
   if (consultant) {
     const cheerio = require('cheerio');
     const $ = cheerio.load(consultant, null, false);
@@ -364,6 +449,19 @@ export default async function EditDepartmentPage({
                 <IconPicker name="icon" defaultValue={department.icon || ""} placeholder="Select department icon" />
                 <p className="text-[11px] font-[600] text-gray-400 mt-1">Select a Lucide React icon visual representation.</p>
               </div>
+
+              <div className="space-y-2 md:col-span-2">
+                <label htmlFor="videoUrl" className="text-[12px] font-[800] text-gray-700 uppercase tracking-widest">Featured Video URL</label>
+                <input
+                  type="url"
+                  id="videoUrl"
+                  name="videoUrl"
+                  defaultValue={department.videoUrl || ""}
+                  placeholder="https://youtube.com/... or https://vimeo.com/... or .mp4 URL"
+                  className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#007a87]/20 focus:border-[#007a87] font-[500] text-[14px] transition-all"
+                />
+                <p className="text-[11px] font-[600] text-gray-400 mt-1">Provide a YouTube, Vimeo, or MP4 link to show alongside the description.</p>
+              </div>
             </div>
 
             <div className="space-y-8">
@@ -434,6 +532,29 @@ export default async function EditDepartmentPage({
                 <label className="text-[12px] font-[800] text-gray-700 uppercase tracking-widest">Consultant</label>
                 <QuillEditor name="consultant" defaultValue={consultant} />
               </div>
+
+              <div className="space-y-2 border-t border-gray-100 pt-6 mt-6">
+                <h4 className="text-[14px] font-[800] text-[#002b5c] uppercase tracking-widest mb-4">FAQs</h4>
+                <p className="text-[12px] font-[600] text-gray-500 mb-6">Manage Frequently Asked Questions for this department.</p>
+                <FAQEditor defaultItems={faqItems} />
+              </div>
+
+              {customSections.length > 0 && (
+                <div className="border-t border-gray-100 pt-6 mt-6">
+                  <h4 className="text-[14px] font-[800] text-[#002b5c] uppercase tracking-widest mb-4">Additional Custom Sections</h4>
+                  <p className="text-[12px] font-[600] text-gray-500 mb-6">These are custom sections specifically detected for this department.</p>
+                  <div className="space-y-8">
+                    {customSections.map((sec, i) => (
+                      <div className="space-y-2" key={i}>
+                        <label className="text-[12px] font-[800] text-gray-700 uppercase tracking-widest">Section: {sec.title}</label>
+                        <input type="hidden" name={`custom_title_${i}`} value={sec.title} />
+                        <QuillEditor name={`custom_content_${i}`} defaultValue={sec.content} />
+                      </div>
+                    ))}
+                  </div>
+                  <input type="hidden" name="custom_count" value={customSections.length} />
+                </div>
+              )}
             </div>
 
             <div className="flex items-center gap-3 bg-gray-50 p-4 rounded-xl border border-gray-200">

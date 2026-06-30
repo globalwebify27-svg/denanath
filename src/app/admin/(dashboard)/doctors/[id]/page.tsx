@@ -2,6 +2,8 @@ import { prisma } from "@/lib/prisma";
 import DoctorForm from "./DoctorForm";
 import { notFound } from "next/navigation";
 
+export const dynamic = "force-dynamic";
+
 export default async function EditDoctorPage({
   params,
 }: {

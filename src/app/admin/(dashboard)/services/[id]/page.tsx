@@ -6,6 +6,8 @@ import { ArrowLeft, Save, Trash2, HeartPulse } from "lucide-react";
 import IconPicker from "@/components/IconPicker";
 import SubmitButton from "@/app/admin/(dashboard)/components/SubmitButton";
 
+export const dynamic = "force-dynamic";
+
 export default async function EditServicePage({
   params,
 }: {
