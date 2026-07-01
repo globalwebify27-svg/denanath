@@ -124,22 +124,22 @@ export default function ForeignContributionClientPage({ fcraData }: { fcraData: 
                           <table className="w-full text-left border-collapse min-w-[800px]">
                             <thead>
                               <tr className="border-b-2 border-slate-200 bg-slate-50">
-                                <th className="py-4 px-4 font-bold text-slate-700 w-16 text-center">Sr. No.</th>
-                                <th className="py-4 px-4 font-bold text-slate-700">Name and address of donors</th>
-                                <th className="py-4 px-4 font-bold text-slate-700 w-40">Amount received (in INR)</th>
-                                <th className="py-4 px-4 font-bold text-slate-700 w-32">Date of receipt</th>
-                                <th className="py-4 px-4 font-bold text-slate-700 w-32">Purpose (Social / Medical)</th>
+                                <th className="py-4 px-4 font-bold text-slate-700 w-16 text-center text-[18px]">Sr. No.</th>
+                                <th className="py-4 px-4 font-bold text-slate-700 text-[18px]">Name and address of donors</th>
+                                <th className="py-4 px-4 font-bold text-slate-700 w-40 text-[18px]">Amount received (in INR)</th>
+                                <th className="py-4 px-4 font-bold text-slate-700 w-32 text-[18px]">Date of receipt</th>
+                                <th className="py-4 px-4 font-bold text-slate-700 w-32 text-[18px]">Purpose (Social / Medical)</th>
                               </tr>
                             </thead>
                             <tbody>
                               {quarterData.donations.map((donation: any, dIdx: number) => (
                                 <tr key={dIdx} className="border-b border-slate-100 hover:bg-slate-50 transition-colors">
-                                  <td className="py-4 px-4 text-slate-500 font-medium text-center">{dIdx + 1}</td>
-                                  <td className="py-4 px-4 text-slate-700 font-medium">{donation.name}</td>
-                                  <td className="py-4 px-4 text-slate-600 font-semibold">{donation.inr}</td>
-                                  <td className="py-4 px-4 text-slate-500">{formatDate(donation.date)}</td>
+                                  <td className="py-4 px-4 text-slate-500 font-medium text-center text-base">{dIdx + 1}</td>
+                                  <td className="py-4 px-4 text-slate-700 font-medium text-base">{donation.name}</td>
+                                  <td className="py-4 px-4 text-slate-600 font-semibold text-base">{donation.inr}</td>
+                                  <td className="py-4 px-4 text-slate-500 text-base">{formatDate(donation.date)}</td>
                                   <td className="py-4 px-4">
-                                    <span className={`inline-flex items-center justify-center px-3 py-1 rounded-full text-xs font-bold ${
+                                    <span className={`inline-flex items-center justify-center px-3 py-1 rounded-full text-base font-bold ${
                                       donation.purpose.toLowerCase() === 'medical' 
                                         ? 'bg-blue-50 text-blue-600 border border-blue-100' 
                                         : 'bg-emerald-50 text-emerald-600 border border-emerald-100'

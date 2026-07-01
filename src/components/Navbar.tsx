@@ -86,13 +86,8 @@ export default function Navbar() {
       name: "About Us",
       href: "/about-hospital",
       dropdown: [
-        { name: "About Hospital", href: "/about-hospital" },
         { name: "Associates", href: "/associates" },
         { name: "Accreditations", href: "/accreditations" },
-        { name: "Support Hospital / Donations", href: "/supportHospitalDonations" },
-        { name: "Unique features of DMH", href: "/unique-features" },
-        { name: "Foreign Contribution", href: "/foreign-contribution" },
-        { name: "Charity Details", href: "/charity-details" },
         { name: "News & Events", href: "/news-events" },
         { name: "Values", href: "/values" },
       ],
@@ -107,8 +102,7 @@ export default function Navbar() {
         { name: "Facilities", href: "/facilities" },
         { name: "Patients Stories / Feedbacks", href: "/feedbacks" },
         { name: "Patient Rights & Responsibilities", href: "/patient-rights" },
-        { name: "Photos", href: "/gallery-photos" },
-        { name: "Videos", href: "/gallery-videos" },
+        { name: "Room Photo", href: "/gallery-photos" },
         { name: "Maps & Locations", href: "/maps-locations" },
         { name: "OPD Appointments", href: "/opd-appointments" },
         { name: "Diagnostics", href: "/diagnostics" },
@@ -118,8 +112,8 @@ export default function Navbar() {
       name: "Doctors & Departments",
       href: "/doctor-details",
       dropdown: [
-        { name: "Doctor Details", href: "/doctor-details" },
-        { name: "Department Details", href: "/departments" },
+        { name: "Medical / Surgical Doctor Details", href: "/doctor-details" },
+        { name: "Department Details - Medical / Surgical / Allied", href: "/departments" },
         { name: "Services", href: "/services" },
         { name: "Unique Clinics", href: "/unique-clinics" },
       ],
@@ -128,14 +122,9 @@ export default function Navbar() {
       name: "Research",
       href: "/research-about",
       dropdown: [
-        { name: "About Us", href: "/research-about" },
-        { name: "Training And Events", href: "/training-events" },
-        { name: "Awards", href: "/awards" },
-        { name: "Newsletter Articles", href: "/newsletter-articles" },
         { name: "Publications", href: "/publications" },
-        { name: "Annual Reports", href: "/annual-reports" },
-        { name: "Sponsors & CROs", href: "/sponsors-cros" },
-        { name: "Contact Us", href: "/research-contact" },
+        { name: "Basic Infrastructure", href: "/basic-infrastructure" },
+        { name: "Pillar of Support", href: "/pillar-of-support" },
       ],
     },
     {
@@ -143,7 +132,6 @@ export default function Navbar() {
       href: "/academics",
       dropdown: [
         { name: "Academics", href: "/academics" },
-        { name: "Simulation Center", href: "/simulation-center" },
       ],
     },
     {
@@ -157,10 +145,6 @@ export default function Navbar() {
       ],
     },
 
-    {
-      name: "Jobs & Vacancy",
-      href: "/careers",
-    },
     {
       name: "Contact Us",
       href: "/contact-us",

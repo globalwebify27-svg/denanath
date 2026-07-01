@@ -327,7 +327,10 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
               <CalendarIcon className="w-8 h-8 text-green-600" />
             </div>
             <h3 className="text-2xl font-bold mb-2">Appointment Request Submitted!</h3>
-            <p className="text-green-700 max-w-md">Your request has been saved. You will receive a confirmation shortly.</p>
+            <p className="text-green-700 max-w-md mt-2">
+              Your request has been saved. You will receive a confirmation shortly.<br />
+              <span className="font-semibold block mt-2 text-[#002b5c]">For emergency booking, call on +91 20 4015 1000</span>
+            </p>
             <button onClick={() => { setBookingSuccess(false); setStep("search"); }} className="mt-6 px-6 py-2 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700">
               Book Another
             </button>
