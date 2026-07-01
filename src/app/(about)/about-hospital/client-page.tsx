@@ -95,8 +95,8 @@ export default function AboutHospitalClient({ data }: { data: any }) {
 
               {/* Introduction */}
               <div className="prose prose-slate max-w-none">
-                <div className="text-lg md:text-xl text-slate-700 leading-relaxed font-light mb-6" dangerouslySetInnerHTML={{ __html: data?.introduction || '' }} />
-                <p className="text-lg md:text-xl text-slate-700 leading-relaxed font-light mb-12">
+                <div className="text-[18px] text-slate-700 leading-relaxed font-light mb-6" dangerouslySetInnerHTML={{ __html: data?.introduction || '' }} />
+                <p className="text-[18px] text-slate-700 leading-relaxed font-light mb-12">
                   {data?.description}
                 </p>
               </div>
@@ -146,7 +146,7 @@ export default function AboutHospitalClient({ data }: { data: any }) {
                       <div className="bg-teal-100/50 rounded-full p-1 text-teal-600 group-hover:text-[#D9232D] shrink-0 transition-colors">
                         <CheckCircle2 className="w-5 h-5" />
                       </div>
-                      <span className="font-semibold text-slate-700">{value}</span>
+                      <span className="font-semibold text-slate-700 text-[18px]">{value}</span>
                     </div>
                   ))}
                 </div>

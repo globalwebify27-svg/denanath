@@ -6,7 +6,7 @@ export default function FloatingEmergencyTab() {
     <div className="fixed left-0 top-[35%] z-50 hidden md:block">
       <a 
         href="tel:+912040151515" 
-        className="bg-[#c70909] text-white flex flex-col items-center py-5 px-3.5 shadow-2xl transition-all duration-300 border border-l-0 border-white/20 select-none group hover:bg-red-700 rounded-r-2xl"
+        className="bg-[#c70909] text-white flex flex-col items-center py-8 px-6 shadow-2xl transition-all duration-300 border border-l-0 border-white/20 select-none group hover:bg-red-700 rounded-r-2xl hover:pr-8"
       >
         {/* Ambulance Badge at Top */}
         <div className="w-8 h-8 rounded-full border border-white flex items-center justify-center mb-4 bg-white/20 group-hover:scale-110 transition-transform duration-300">

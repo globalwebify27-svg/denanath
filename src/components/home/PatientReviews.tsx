@@ -129,7 +129,7 @@ export default function PatientReviews() {
             <h2 className="text-3xl sm:text-4xl font-light text-[#002b5c] tracking-tight mt-5">
               Real Stories of <span className="font-semibold">Healing & Hope</span>
             </h2>
-            <p className="text-slate-600 text-sm font-light leading-relaxed mt-4">
+            <p className="text-slate-600 text-[16px] font-light leading-relaxed mt-4">
               Read true experiences shared by our patients, detailing their journeys to wellness supported by our doctors and clinical staff.
             </p>
           </div>

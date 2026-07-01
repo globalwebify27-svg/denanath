@@ -49,10 +49,10 @@ export default function HeroSection() {
           className="
           absolute top-1/2 left-1/2
           -translate-x-1/2 -translate-y-1/2
-          w-[350vw] h-[200vw]
-          sm:w-[180vw] sm:h-[100vw]
-          md:w-[120vw] md:h-[70vw]
-          lg:w-[100vw] lg:h-[56.25vw]
+          w-[350%] h-[200vw]
+          sm:w-[180%] sm:h-[100vw]
+          md:w-[120%] md:h-[70vw]
+          lg:w-full lg:h-[56.25vw]
           min-w-full min-h-full
           object-cover
           "

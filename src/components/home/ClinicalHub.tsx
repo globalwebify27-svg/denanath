@@ -243,9 +243,9 @@ export default function ClinicalHub() {
                     <h4 className="text-[10px] font-bold text-[#002b5c] uppercase tracking-wider">Key Benefits & Protocols</h4>
                     <ul className="space-y-2">
                       {currentHub.features.map((feature, fIdx) => (
-                        <li key={fIdx} className="flex items-start gap-2.5 text-slate-700 text-base sm:text-lg">
+                        <li key={fIdx} className="flex items-start gap-2.5 text-slate-600 text-base sm:text-lg leading-relaxed font-light">
                           <span className={`w-1.5 h-1.5 rounded-full mt-2.5 flex-shrink-0 ${theme.bullet}`} />
-                          <span className="font-medium">{feature}</span>
+                          <span>{feature}</span>
                         </li>
                       ))}
                     </ul>

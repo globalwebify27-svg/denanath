@@ -45,8 +45,8 @@ export default function AboutSection() {
               <span className="font-semibold text-[#002b5c]">Right here in Pune.</span>
             </h2>
             
-            <p className="text-slate-600 text-base sm:text-lg font-light leading-relaxed mb-8">
-              Deenanath Mangeshkar Hospital and Research Center is a premier multi-specialty establishment dedicated to providing exceptional medical care. We combine state-of-the-art facilities with renowned medical experts to ensure comprehensive, compassionate treatment for every patient.
+            <p className="text-slate-600 text-[18px] font-light leading-relaxed mb-8">
+              Deenanath Mangeshkar Hospital & Research Center is a charitable, multi-specialty hospital located in the heart of Pune, India. Founded in 2001, today it is one of the largest hospital in Pune, with 800 beds. Deenanath Mangeshkar Hospital offers state-of-the-art diagnostic, therapeutic and intensive care facilities in a one-stop medical center.
             </p>
             
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">

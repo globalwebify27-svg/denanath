@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { ChevronRight, Calendar as CalendarIcon, User, X, Search, Clock } from "lucide-react";
+import { ChevronRight, Calendar as CalendarIcon, User, X, Search, Clock, ChevronDown } from "lucide-react";
 
 export default function BookAppointmentClientPage({ pageData }: { pageData: any }) {
   // --- State ---
@@ -14,6 +14,8 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
   const [selectedSpeciality, setSelectedSpeciality] = useState("");
   const [selectedDoctor, setSelectedDoctor] = useState("");
   const [isSearching, setIsSearching] = useState(false);
+  const [isSpecOpen, setIsSpecOpen] = useState(false);
+  const [isDocOpen, setIsDocOpen] = useState(false);
 
   // Calendar State
   const [currentMonth, setCurrentMonth] = useState(new Date());
@@ -337,43 +339,97 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
           <div className="bg-white rounded-3xl shadow-[0_8px_40px_rgb(0,0,0,0.04)] border border-slate-100 p-8 md:p-12 text-center">
             <div className="max-w-2xl mx-auto space-y-6">
               
-              <div>
-                <select 
-                  className="w-full bg-white border-2 border-teal-500/20 text-slate-700 text-lg rounded-full py-4 px-6 focus:outline-none focus:border-teal-500 transition-colors appearance-none text-center cursor-pointer font-medium"
-                  value={selectedSpeciality}
-                  onChange={(e) => { setSelectedSpeciality(e.target.value); setSelectedDoctor(""); }}
+              <div className="relative">
+                <div 
+                  className="w-full bg-white border-2 border-teal-500/20 text-slate-700 text-lg rounded-full py-4 px-6 cursor-pointer flex items-center justify-between font-medium transition-colors hover:border-teal-500/40 relative z-50"
+                  onClick={() => setIsSpecOpen(!isSpecOpen)}
                 >
-                  <option value="">1. Select Speciality (Required)</option>
-                  {specialities.map((s, i) => (
-                    <option key={i} value={s.speciality_id || s.id || s.name || `spec_${i}`}>{s.speciality_name || s.name || `Speciality ${i+1}`}</option>
-                  ))}
-                </select>
+                  <span className="flex-1 text-center truncate">
+                    {selectedSpeciality ? (specialities.find(s => String(s.speciality_id || s.id || s.name) === String(selectedSpeciality))?.speciality_name || specialities.find(s => String(s.speciality_id || s.id || s.name) === String(selectedSpeciality))?.name || 'Selected') : '1. Select Speciality (Required)'}
+                  </span>
+                  <ChevronDown className={`w-5 h-5 text-teal-500 transition-transform ${isSpecOpen ? 'rotate-180' : ''}`} />
+                </div>
+                
+                {isSpecOpen && (
+                  <>
+                    <div className="fixed inset-0 z-40" onClick={() => setIsSpecOpen(false)} />
+                    <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-xl border border-slate-100 max-h-60 overflow-y-auto z-50 py-2 custom-scrollbar">
+                      <div 
+                        className="px-6 py-3 hover:bg-teal-50 cursor-pointer text-slate-600 text-center font-medium transition-colors"
+                        onClick={() => { setSelectedSpeciality(""); setSelectedDoctor(""); setIsSpecOpen(false); }}
+                      >
+                        1. Select Speciality (Required)
+                      </div>
+                      {specialities.map((s, i) => {
+                        const val = s.speciality_id || s.id || s.name || `spec_${i}`;
+                        const label = s.speciality_name || s.name || `Speciality ${i+1}`;
+                        return (
+                          <div 
+                            key={i}
+                            className={`px-6 py-3 hover:bg-teal-50 cursor-pointer text-center font-medium transition-colors uppercase ${String(selectedSpeciality) === String(val) ? 'bg-teal-50 text-teal-700' : 'text-slate-600'}`}
+                            onClick={() => { setSelectedSpeciality(val); setSelectedDoctor(""); setIsSpecOpen(false); }}
+                          >
+                            {label}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </>
+                )}
               </div>
               
               <div className="text-slate-400 font-bold uppercase tracking-widest text-sm py-2">THEN</div>
               
-              <div className={`bg-slate-100 rounded-full p-1 ${!selectedSpeciality ? 'opacity-50 cursor-not-allowed' : ''}`}>
-                <select 
-                  className="w-full bg-transparent text-slate-600 text-lg rounded-full py-3 px-6 focus:outline-none appearance-none text-center font-medium"
-                  value={selectedDoctor}
-                  onChange={(e) => setSelectedDoctor(e.target.value)}
-                  disabled={!selectedSpeciality}
+              <div className={`relative bg-slate-100 rounded-full p-1 ${!selectedSpeciality ? 'opacity-50 cursor-not-allowed' : ''}`}>
+                <div 
+                  className="w-full bg-transparent text-slate-600 text-lg rounded-full py-3 px-6 flex items-center justify-between font-medium relative z-50"
+                  onClick={() => selectedSpeciality && setIsDocOpen(!isDocOpen)}
                   style={{ cursor: !selectedSpeciality ? 'not-allowed' : 'pointer' }}
                 >
-                  <option value="">2. Select Doctor</option>
-                  {doctors
-                    .filter(d => selectedSpeciality ? String(d.speciality_id) === String(selectedSpeciality) : true)
-                    .map((d, i) => (
-                    <option key={i} value={d.doctor_id || d.id || d.name || `doc_${i}`}>{d.doctor_name || d.name || `Doctor ${i+1}`}</option>
-                  ))}
-                  {/* Fallback mock options */}
-                  {doctors.length === 0 && (
-                    <>
-                      <option value="dr1">Dr. Nikhil Agarkhedkar</option>
-                      <option value="dr2">Dr. Renu Agarkhedkar</option>
-                    </>
-                  )}
-                </select>
+                  <span className="flex-1 text-center truncate">
+                    {selectedDoctor ? (
+                      doctors.find(d => String(d.doctor_id || d.id || d.name) === String(selectedDoctor))?.doctor_name || 
+                      doctors.find(d => String(d.doctor_id || d.id || d.name) === String(selectedDoctor))?.name || 
+                      'Selected'
+                    ) : '2. Select Doctor'}
+                  </span>
+                  <ChevronDown className={`w-5 h-5 text-slate-400 transition-transform ${isDocOpen ? 'rotate-180' : ''}`} />
+                </div>
+
+                {isDocOpen && (
+                  <>
+                    <div className="fixed inset-0 z-40" onClick={() => setIsDocOpen(false)} />
+                    <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-xl border border-slate-100 max-h-60 overflow-y-auto z-50 py-2 custom-scrollbar">
+                      <div 
+                        className="px-6 py-3 hover:bg-teal-50 cursor-pointer text-slate-600 text-center font-medium transition-colors"
+                        onClick={() => { setSelectedDoctor(""); setIsDocOpen(false); }}
+                      >
+                        2. Select Doctor
+                      </div>
+                      {doctors
+                        .filter(d => selectedSpeciality ? String(d.speciality_id) === String(selectedSpeciality) : true)
+                        .map((d, i) => {
+                          const val = d.doctor_id || d.id || d.name || `doc_${i}`;
+                          const label = d.doctor_name || d.name || `Doctor ${i+1}`;
+                          return (
+                            <div 
+                              key={i}
+                              className={`px-6 py-3 hover:bg-teal-50 cursor-pointer text-center font-medium transition-colors uppercase ${String(selectedDoctor) === String(val) ? 'bg-teal-50 text-teal-700' : 'text-slate-600'}`}
+                              onClick={() => { setSelectedDoctor(val); setIsDocOpen(false); }}
+                            >
+                              {label}
+                            </div>
+                          );
+                      })}
+                      {doctors.length === 0 && (
+                        <>
+                          <div className="px-6 py-3 hover:bg-teal-50 cursor-pointer text-center font-medium transition-colors text-slate-600 uppercase" onClick={() => { setSelectedDoctor("dr1"); setIsDocOpen(false); }}>Dr. Nikhil Agarkhedkar</div>
+                          <div className="px-6 py-3 hover:bg-teal-50 cursor-pointer text-center font-medium transition-colors text-slate-600 uppercase" onClick={() => { setSelectedDoctor("dr2"); setIsDocOpen(false); }}>Dr. Renu Agarkhedkar</div>
+                        </>
+                      )}
+                    </div>
+                  </>
+                )}
               </div>
 
               <div className="pt-6 flex justify-center gap-4">
@@ -524,7 +580,7 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
                     </div>
                     <div>
                       <label className="block text-xs font-bold text-slate-700 mb-1"><span className="text-red-500">*</span> DOB (DD/MM/YYYY)</label>
-                      <input required type="text" value={formData.dob} onChange={e => setFormData({...formData, dob: e.target.value})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:border-[#4bc2b0] focus:ring-1 focus:ring-[#4bc2b0] outline-none" placeholder="DD/MM/YYYY" />
+                      <input required type="date" value={formData.dob} onChange={e => setFormData({...formData, dob: e.target.value})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:border-[#4bc2b0] focus:ring-1 focus:ring-[#4bc2b0] outline-none" />
                     </div>
                     <div>
                       <label className="block text-xs font-bold text-slate-700 mb-1"><span className="text-red-500">*</span> Gender</label>
@@ -544,7 +600,7 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
                     </div>
                     <div>
                       <label className="block text-xs font-bold text-slate-700 mb-1"><span className="text-red-500">*</span> DOB (DD/MM/YYYY)</label>
-                      <input required type="text" value={formData.dob} onChange={e => setFormData({...formData, dob: e.target.value})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:border-[#4bc2b0] focus:ring-1 focus:ring-[#4bc2b0] outline-none" placeholder="DD/MM/YYYY" />
+                      <input required type="date" value={formData.dob} onChange={e => setFormData({...formData, dob: e.target.value})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:border-[#4bc2b0] focus:ring-1 focus:ring-[#4bc2b0] outline-none" />
                     </div>
                     
                     <div className="flex gap-4 items-center mt-2 mb-4">

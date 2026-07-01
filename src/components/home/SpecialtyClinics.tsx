@@ -26,10 +26,8 @@ export default function SpecialtyClinics() {
     { id: "06", name: "BILD Exercise Clinic", icon: Dumbbell, color: "text-blue-600 bg-blue-50" },
     { id: "07", name: "Swallowing Clinic", icon: Activity, color: "text-amber-600 bg-amber-50" },
     { id: "08", name: "Posture Pain Clinic", icon: Activity, color: "text-purple-600 bg-purple-50" },
-    { id: "09", name: "VBS Mani Hypoxia", icon: Mountain, color: "text-teal-600 bg-teal-50" },
-    { id: "10", name: "Knee Speciality", icon: Activity, color: "text-blue-600 bg-blue-50" },
-    { id: "11", name: "Cardio Respiratory", icon: Heart, color: "text-red-600 bg-red-50" },
-    { id: "12", name: "Epilepsy Monitoring", icon: Brain, color: "text-purple-600 bg-purple-50" }
+    { id: "09", name: "VBS Mani Hypoxic Training", icon: Mountain, color: "text-teal-600 bg-teal-50" },
+    { id: "10", name: "Knee Speciality Exercise", icon: Activity, color: "text-blue-600 bg-blue-50" }
   ];
 
   // Pure list for Desktop grid rendering
@@ -179,7 +177,7 @@ export default function SpecialtyClinics() {
         </div>
 
         {/* 2. DESKTOP & TABLET VIEW */}
-        <div className="hidden md:grid md:grid-cols-4 lg:grid-cols-6 gap-6">
+        <div className="hidden md:grid md:grid-cols-4 lg:grid-cols-5 gap-6">
           {allClinics.map((clinic) => (
             <ClinicCard key={clinic.id} clinic={clinic} isDesktopOnly={true} />
           ))}

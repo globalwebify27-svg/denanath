@@ -29,7 +29,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="h-full scroll-smooth antialiased" suppressHydrationWarning>
       <body 
-        className={`${plusJakartaSans.className} min-h-full flex flex-col bg-slate-50 text-slate-800 antialiased`}
+        className={`${plusJakartaSans.className} min-h-full bg-slate-50 text-slate-800 antialiased`}
         suppressHydrationWarning
         >
         <Script id="google-translate-fouc" strategy="afterInteractive">
@@ -52,9 +52,11 @@ export default function RootLayout({
           `}
         </Script>
         <HospitalProvider>
-          <ClientLayoutWrapper>
-            {children}
-          </ClientLayoutWrapper>
+          <div className="flex flex-col min-h-screen w-full overflow-x-hidden relative">
+            <ClientLayoutWrapper>
+              {children}
+            </ClientLayoutWrapper>
+          </div>
         </HospitalProvider>
       </body>
     </html>

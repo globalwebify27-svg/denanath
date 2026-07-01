@@ -93,6 +93,8 @@ export default function Navbar() {
         { name: "Unique features of DMH", href: "/unique-features" },
         { name: "Foreign Contribution", href: "/foreign-contribution" },
         { name: "Charity Details", href: "/charity-details" },
+        { name: "News & Events", href: "/news-events" },
+        { name: "Values", href: "/values" },
       ],
     },
     {
@@ -107,6 +109,9 @@ export default function Navbar() {
         { name: "Patient Rights & Responsibilities", href: "/patient-rights" },
         { name: "Photos", href: "/gallery-photos" },
         { name: "Videos", href: "/gallery-videos" },
+        { name: "Maps & Locations", href: "/maps-locations" },
+        { name: "OPD Appointments", href: "/opd-appointments" },
+        { name: "Diagnostics", href: "/diagnostics" },
       ],
     },
     {
@@ -114,8 +119,9 @@ export default function Navbar() {
       href: "/doctor-details",
       dropdown: [
         { name: "Doctor Details", href: "/doctor-details" },
-        { name: "Department Details", href: "/department-details" },
+        { name: "Department Details", href: "/departments" },
         { name: "Services", href: "/services" },
+        { name: "Unique Clinics", href: "/unique-clinics" },
       ],
     },
     {
@@ -150,8 +156,9 @@ export default function Navbar() {
         { name: "Patient Registration Form", href: "/patient-registration" },
       ],
     },
+
     {
-      name: "Careers",
+      name: "Jobs & Vacancy",
       href: "/careers",
     },
     {
@@ -179,21 +186,21 @@ export default function Navbar() {
       `}} />
       <div id="google_translate_element" style={{ position: 'absolute', opacity: 0, zIndex: -1, width: 0, height: 0, overflow: 'hidden' }}></div>
       {/* Tier 1: Teal Utility Bar */}
-      <div className="hidden xl:block w-full bg-[#007a87] text-white text-[10px] 2xl:text-[11px] py-2 px-4 font-medium border-b border-teal-600/30">
-        <div className="max-w-[96%] mx-auto flex justify-between items-center">
-          <div className="flex items-center gap-2 xl:gap-3 2xl:gap-4 text-white/90">
-            <Link href="/emergency" className="hover:text-white transition-colors font-bold text-red-200">Emergency</Link>
+      <div className="hidden xl:block w-full bg-[#007a87] text-white text-[8px] 2xl:text-[11px] py-1.5 px-1 2xl:px-4 font-medium border-b border-teal-600/30">
+        <div className="max-w-full 2xl:max-w-[96%] mx-auto px-1 flex justify-between items-center">
+          <div className="flex items-center gap-0.5 2xl:gap-4 text-white/90">
+            <Link href="/emergency" className="hover:text-red-300 transition-colors font-bold text-red-400">Emergency</Link>
             <span className="opacity-30">|</span>
-            <Link href="/blood-bank" className="hover:text-white transition-colors">Bld. Bank</Link>
+            <Link href="/blood-bank" className="hover:text-white transition-colors">Blood&nbsp;&nbsp;Bank</Link>
             <span className="opacity-30">|</span>
             <Link href="/pharmacy" className="hover:text-white transition-colors">Pharmacy</Link>
             <span className="opacity-30">|</span>
-            <Link href="/ambulance" className="hover:text-white transition-colors">Ambulance</Link>
+            <Link href="/ambulance" className="hover:text-red-300 transition-colors font-bold text-red-400">Ambulance</Link>
             <span className="opacity-30">|</span>
             <span className="font-bold text-[#FFD700]">25 Years of Trust and Care</span>
           </div>
 
-          <div className="flex items-center gap-2 xl:gap-3 2xl:gap-4 font-bold tracking-wide">
+          <div className="flex items-center gap-0.5 2xl:gap-4 font-bold tracking-wide">
             <a 
               href="https://wa.me/912040151515" 
               target="_blank" 
@@ -228,12 +235,12 @@ export default function Navbar() {
               </div>
             </div>
             <span className="opacity-30">|</span>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1 2xl:gap-2">
               <a 
                 href="https://play.google.com/store/apps/details?id=org.dmhospital.app&hl=en" 
                 target="_blank" 
                 rel="noopener noreferrer" 
-                className="flex items-center gap-1.5 bg-black hover:bg-slate-900 border border-slate-700/50 px-2 py-0.5 rounded transition-all hover:scale-105"
+                className="flex items-center gap-1 bg-black hover:bg-slate-900 border border-slate-700/50 px-1 py-0.5 rounded transition-all hover:scale-105"
               >
                 <svg viewBox="0 0 1024 1024" className="w-3.5 h-3.5">
                   <path fill="#00E676" d="M104.5 125.1v773.8c0 14.3 8.3 26.6 20.4 32.5l398.8-419.4L104.5 125.1z" />
@@ -251,7 +258,7 @@ export default function Navbar() {
                 href="https://apps.apple.com/in/app/deenanath-mangeshkar-hospital/id1187525263" 
                 target="_blank" 
                 rel="noopener noreferrer" 
-                className="flex items-center gap-1.5 bg-black hover:bg-slate-900 border border-slate-700/50 px-2 py-0.5 rounded transition-all hover:scale-105"
+                className="flex items-center gap-1 bg-black hover:bg-slate-900 border border-slate-700/50 px-1 py-0.5 rounded transition-all hover:scale-105"
               >
                 <svg viewBox="0 0 384 512" className="w-3.5 h-3.5 fill-white">
                   <path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"></path>
@@ -272,13 +279,13 @@ export default function Navbar() {
           scrolled ? "fixed top-0 left-0 shadow-lg backdrop-blur-md bg-white/95" : "relative"
         }`}
       >
-        <div className="max-w-[96%] mx-auto">
+        <div className="max-w-[98%] 2xl:max-w-[96%] mx-auto">
           <div className="flex justify-between items-center">
 
             {/* DMH Logo Section */}
             <div className="flex items-center shrink-0">
-              <Link href="/" className="flex items-center gap-1.5 sm:gap-2 group focus:outline-none">
-                <div className="relative flex items-center justify-center w-[220px] sm:w-[260px] lg:w-[280px] xl:w-[300px] h-[55px] sm:h-[65px] shrink-0 transition-all">
+              <Link href="/" className="flex items-center gap-1 sm:gap-2 group focus:outline-none">
+                <div className="relative flex items-center justify-start w-[220px] xl:w-[280px] 2xl:w-[380px] h-[45px] sm:h-[65px] shrink-0 transition-all">
                   <img
                     src="/images/Untitled design11.png"
                     alt="DMH Logo"
@@ -289,15 +296,15 @@ export default function Navbar() {
             </div>
 
             {/* Desktop Navigation Links */}
-            <div className="hidden xl:flex items-center justify-center flex-1 mx-2 xl:mx-1 2xl:mx-3 gap-2 xl:gap-1 2xl:gap-2.5 transition-all">
+            <div className="hidden xl:flex items-center justify-end flex-1 mx-0 2xl:mx-3 gap-1 2xl:gap-2 transition-all">
               {navLinks.map((link, idx) => (
                 <div key={idx} className="relative group py-2">
                   <Link 
                     href={link.href} 
-                    className="text-[10px] xl:text-[9.5px] 2xl:text-[11.5px] leading-[18px] font-semibold text-slate-700 hover:text-[#007a87] uppercase tracking-wide transition-colors flex items-center gap-0.5 whitespace-nowrap"
+                    className="text-[8.5px] xl:text-[9.5px] 2xl:text-[11.5px] leading-[18px] font-bold text-slate-700 hover:text-[#007a87] uppercase tracking-wider transition-colors flex items-center gap-0.5 whitespace-nowrap px-0.5 2xl:px-1"
                   >
                     <span>{link.name}</span>
-                    {link.dropdown && <ChevronDown className="w-3 h-3 opacity-60 group-hover:rotate-180 transition-transform shrink-0" />}
+                    {link.dropdown && <ChevronDown className="w-2.5 h-2.5 2xl:w-3 2xl:h-3 opacity-60 group-hover:rotate-180 transition-transform shrink-0" />}
                   </Link>
 
                   {/* Dropdown Box */}
@@ -323,19 +330,14 @@ export default function Navbar() {
             </div>
 
             {/* Right Action Stack */}
-            <div className="hidden xl:flex items-center gap-1.5 2xl:gap-2.5 shrink-0 justify-end">
-              <button className="p-1 text-slate-500 hover:text-slate-900 transition-colors shrink-0 hidden xl:block">
-                <svg className="w-[16px] h-[16px] 2xl:w-[18px] 2xl:h-[18px] stroke-current" fill="none" viewBox="0 0 24 24" strokeWidth="2.5">
+            <div className="hidden xl:flex items-center gap-0.5 2xl:gap-2 shrink-0 justify-end">
+              <button className="p-0.5 2xl:p-1 text-slate-500 hover:text-slate-900 transition-colors shrink-0 hidden xl:block">
+                <svg className="w-[12px] h-[12px] 2xl:w-[18px] 2xl:h-[18px] stroke-current" fill="none" viewBox="0 0 24 24" strokeWidth="2.5">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
               </button>
 
-              <Link
-                href="/book-appointment"
-                className="bg-[#d9232d] hover:bg-[#b81d24] leading-[18px] text-white px-3 xl:px-2.5 2xl:px-5 py-2 xl:py-1.5 2xl:py-2.5 rounded-md font-bold text-[10px] xl:text-[9.5px] 2xl:text-[12px] uppercase tracking-wider flex items-center gap-1 transition-all shadow-sm whitespace-nowrap shrink-0"
-              >
-                <span>Book Appointment</span>
-              </Link>
+
             </div>
 
             {/* Mobile / Tablet View Trigger (Triggers under 1280px Screen width) */}
@@ -432,13 +434,7 @@ export default function Navbar() {
                 <span>WhatsApp Us (24/7)</span>
               </a>
               
-              <Link
-                href="/book-appointment"
-                onClick={() => setMobileMenuOpen(false)}
-                className="block w-full py-2.5 rounded-lg bg-[#d9232d] hover:bg-[#b81d24] text-white font-bold text-center text-xs uppercase tracking-wider shadow-sm transition-all"
-              >
-                Book an Appointment
-              </Link>
+
             </div>
           </div>
         </div>

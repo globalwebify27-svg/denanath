@@ -175,24 +175,7 @@ export default async function DepartmentDetailsPage({
         const title = $(section).find('h3').first().text();
         $(section).find('h3').first().remove();
         
-        let shortText = "Click to view frequently asked questions.";
-        const firstP = $(section).find('p').first().text().trim();
-        if (firstP) {
-           shortText = firstP.length > 120 ? firstP.substring(0, 120) + "..." : firstP;
-        }
-        
-        let imgSrc = null;
-        const imgEl = $(section).children('img, p > img').first();
-        if (imgEl.length > 0) {
-           imgSrc = imgEl.attr('src');
-           imgEl.closest('p').length ? imgEl.closest('p').remove() : imgEl.remove();
-        } else {
-           const fallbackImg = $(section).find('img').first();
-           if (fallbackImg.length > 0) {
-               imgSrc = fallbackImg.attr('src');
-               fallbackImg.remove();
-           }
-        }
+
 
         // Check if there are <h4> tags used for questions
         const h4Tags = $(section).children('h4');
@@ -283,22 +266,8 @@ export default async function DepartmentDetailsPage({
         
         faqHtml = $(section).html() || '';
         
-        let imgHtml = '';
-        if (imgSrc) {
-           imgHtml = `<img src="${imgSrc}" class="max-w-[180px] h-auto rounded-xl shadow-sm mb-4" alt="${title}" />`;
-        }
-        
-        const newHtml = `
-          <div class="mb-12">
-            <h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">${title}</h3>
-            <a href="?view=faqs" class="block no-underline group hover:opacity-95 transition-opacity">
-               ${imgHtml}
-               <p class="text-slate-600 text-[15px] leading-relaxed group-hover:text-[#007a87] transition-colors m-0">${shortText}</p>
-            </a>
-          </div>
-        `;
-        
-        $(section).replaceWith(newHtml);
+        $(section).addClass('mb-12 faq-section');
+        $(section).prepend(`<h3 class="text-xl font-bold text-[#002b5c] mb-6 border-b pb-2">${title}</h3>`);
       } else if (h3Text === 'procedures' || h3Text === 'procedure') {
         const title = $(section).find('h3').first().text();
         $(section).find('h3').first().remove();
@@ -508,7 +477,7 @@ export default async function DepartmentDetailsPage({
                 <div class="p-4 bg-white border border-slate-200 rounded-xl flex items-center gap-4 shadow-sm">
                   <div class="w-12 h-12 rounded-full bg-teal-100 flex items-center justify-center text-teal-600 font-bold shrink-0">${initials}</div>
                   <div>
-                    <h4 class="text-lg font-bold text-[#002b5c] m-0">${cleanText}</h4>
+                    <div class="text-lg font-bold text-[#002b5c] m-0">${cleanText}</div>
                   </div>
                 </div>
               `;
@@ -733,6 +702,8 @@ export default async function DepartmentDetailsPage({
 
               {/* Department Description / Content */}
               <div className="text-slate-700 space-y-6 break-words [&_img]:max-w-full [&_img]:h-auto [&_img]:rounded-2xl [&_img]:shadow-md [&_img]:my-6 [&_p:not(:last-child)]:mb-4
+                [&_h3]:text-xl [&_h3]:font-bold [&_h3]:text-[#002b5c] [&_h3]:mb-4 [&_h3]:border-b [&_h3]:pb-2
+                [&_h4]:text-lg [&_h4]:font-semibold [&_h4]:text-[#007a87] [&_h4]:mt-6 [&_h4]:mb-3
                 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:space-y-2 [&_ul]:mb-6
                 [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:space-y-2 [&_ol]:mb-6
                 [&_table]:table [&_table]:w-full [&_table]:text-sm [&_table]:text-left [&_table]:border-collapse [&_table]:border [&_table]:border-slate-200

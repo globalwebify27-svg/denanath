@@ -96,7 +96,9 @@ export default async function AdminDepartmentsPage({
                           <span className="text-[12px] font-[800] text-[#002b5c] tracking-wider">{initials}</span>
                         </div>
                         <div className="min-w-0">
-                          <p className="font-[800] text-[14px] text-gray-900 tracking-tight truncate">{department.name}</p>
+                          <Link href={`/admin/departments/${department.id}`} className="hover:text-[#007a87] transition-colors group/name">
+                            <p className="font-[800] text-[14px] text-gray-900 group-hover/name:text-[#007a87] tracking-tight truncate transition-colors">{department.name}</p>
+                          </Link>
                           <p className="text-[12px] font-[600] text-gray-400 mt-0.5">{department.headOfDepartment ? `Head: ${department.headOfDepartment}` : 'No Head Assigned'}</p>
                         </div>
                       </div>

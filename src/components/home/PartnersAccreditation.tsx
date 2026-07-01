@@ -54,16 +54,6 @@ export default function PartnersAccreditation() {
                 </Link>
 
                 <Link 
-                  href="/about-hospital" 
-                  className="inline-flex items-center gap-3 text-slate-700 hover:text-[#002b5c] text-xs font-bold transition-colors group/link"
-                >
-                  <span className="w-7 h-7 rounded-full bg-[#002b5c] text-white flex items-center justify-center group-hover/link:bg-[#007a87] transition-colors shadow-sm">
-                    <ArrowRight className="w-3.5 h-3.5 group-hover/link:translate-x-0.5 transition-transform" />
-                  </span>
-                  <span>Virtual Tour</span>
-                </Link>
-
-                <Link 
                   href="/charity" 
                   className="inline-flex items-center gap-3 text-slate-700 hover:text-[#002b5c] text-xs font-bold transition-colors group/link"
                 >
@@ -74,13 +64,23 @@ export default function PartnersAccreditation() {
                 </Link>
 
                 <Link 
-                  href="/indoor-map" 
+                  href="/medical-support" 
                   className="inline-flex items-center gap-3 text-slate-700 hover:text-[#002b5c] text-xs font-bold transition-colors group/link"
                 >
                   <span className="w-7 h-7 rounded-full bg-[#002b5c] text-white flex items-center justify-center group-hover/link:bg-[#007a87] transition-colors shadow-sm">
                     <ArrowRight className="w-3.5 h-3.5 group-hover/link:translate-x-0.5 transition-transform" />
                   </span>
-                  <span>Indoor Map</span>
+                  <span>Medical Support</span>
+                </Link>
+
+                <Link 
+                  href="/quality-care" 
+                  className="inline-flex items-center gap-3 text-slate-700 hover:text-[#002b5c] text-xs font-bold transition-colors group/link"
+                >
+                  <span className="w-7 h-7 rounded-full bg-[#002b5c] text-white flex items-center justify-center group-hover/link:bg-[#007a87] transition-colors shadow-sm">
+                    <ArrowRight className="w-3.5 h-3.5 group-hover/link:translate-x-0.5 transition-transform" />
+                  </span>
+                  <span>Quality Care</span>
                 </Link>
               </div>
             </div>
@@ -138,6 +138,26 @@ export default function PartnersAccreditation() {
                     <ArrowRight className="w-3.5 h-3.5 group-hover/link:translate-x-0.5 transition-transform" />
                   </span>
                   <span>Patient & Visitor Experience</span>
+                </Link>
+
+                <Link 
+                  href="/about-hospital" 
+                  className="inline-flex items-center gap-3 text-slate-700 hover:text-red-600 text-xs font-bold transition-colors group/link"
+                >
+                  <span className="w-7 h-7 rounded-full bg-[#c70909] text-white flex items-center justify-center group-hover/link:bg-red-700 transition-colors shadow-sm">
+                    <ArrowRight className="w-3.5 h-3.5 group-hover/link:translate-x-0.5 transition-transform" />
+                  </span>
+                  <span>Virtual Tour</span>
+                </Link>
+
+                <Link 
+                  href="/indoor-map" 
+                  className="inline-flex items-center gap-3 text-slate-700 hover:text-red-600 text-xs font-bold transition-colors group/link"
+                >
+                  <span className="w-7 h-7 rounded-full bg-[#c70909] text-white flex items-center justify-center group-hover/link:bg-red-700 transition-colors shadow-sm">
+                    <ArrowRight className="w-3.5 h-3.5 group-hover/link:translate-x-0.5 transition-transform" />
+                  </span>
+                  <span>Indoor Map</span>
                 </Link>
               </div>
             </div>

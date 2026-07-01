@@ -1,17 +1,5 @@
-import { prisma } from "@/lib/prisma";
-import ClientPage from "./client-page";
+import { redirect } from "next/navigation";
 
-export const dynamic = "force-dynamic";
-
-export default async function DepartmentDetailsPage() {
-  const setting = await prisma.siteSetting.findUnique({ where: { key: 'page_doctors_department_details' } });
-  let pageData: any = { title: "Department Details", content: "", image: "" };
-  try { if (setting) pageData = JSON.parse(setting.value); } catch (e) {}
-
-  const departments = await prisma.department.findMany({
-    where: { status: true },
-    orderBy: { name: 'asc' }
-  });
-
-  return <ClientPage pageData={pageData} departments={departments} />;
+export default function DepartmentDetailsPage() {
+  redirect("/departments");
 }

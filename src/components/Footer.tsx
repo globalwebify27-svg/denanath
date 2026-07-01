@@ -97,10 +97,11 @@ export default function Footer() {
             <ul className="space-y-3.5 text-xs pt-2">
               {[
                 { label: "Book Appointment", href: "/book-appointment" },
-                { label: "Find a Doctor", href: "/doctor-details" },
-                { label: "Blogs", href: "/blogs" },
-                { label: "My Reports", href: "/patient-guide" },
-                { label: "Careers", href: "/careers" },
+                { label: "Emergency", href: "/emergency" },
+                { label: "Pharmacy", href: "/pharmacy" },
+                { label: "Ambulance", href: "/ambulance" },
+                { label: "Blood Bank", href: "/blood-bank" },
+                { label: "Job & Vacancy", href: "/careers" },
                 { label: "Contact Us", href: "/contact-us" }
               ].map((item, idx) => (
                 <li key={idx} className="group flex items-center gap-2">
