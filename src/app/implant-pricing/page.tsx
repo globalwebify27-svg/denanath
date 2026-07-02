@@ -67,7 +67,7 @@ export default function ImplantPricingPage() {
       {/* 2. Main Content */}
       <div className="max-w-[95%] xl:max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 pt-8 relative z-20">
         
-        <div className="bg-white rounded-3xl shadow-xl border border-slate-100 overflow-hidden">
+        <div className="bg-white rounded-3xl shadow-xl border border-slate-100 overflow-hidden [&_td]:!text-[16px] [&_th]:!text-[16px] [&_.text-sm]:!text-[16px] [&_.text-xs]:!text-[16px]">
           
           {/* Note Banner */}
           <div className="bg-amber-50 border-b border-amber-100 px-8 py-4 flex items-center gap-3">
