@@ -281,9 +281,9 @@ export default function Navbar() {
           <div className="flex justify-between items-center">
 
             {/* DMH Logo Section */}
-            <div className="flex items-center shrink-0">
+            <div className="flex items-center shrink-0 gap-2 sm:gap-4 lg:gap-6">
               <Link href="/" className="flex items-center gap-1 sm:gap-2 group focus:outline-none">
-                <div className="relative flex items-center justify-start w-[220px] xl:w-[280px] 2xl:w-[380px] h-[45px] sm:h-[65px] shrink-0 transition-all">
+                <div className="relative flex items-center justify-start w-[180px] sm:w-[220px] xl:w-[280px] 2xl:w-[380px] h-[40px] sm:h-[55px] xl:h-[65px] shrink-0 transition-all">
                   <img
                     src="/images/Untitled design11.png"
                     alt="DMH Logo"
@@ -291,6 +291,13 @@ export default function Navbar() {
                   />
                 </div>
               </Link>
+              <div className="relative flex items-center justify-start w-[70px] sm:w-[100px] xl:w-[140px] 2xl:w-[180px] h-[30px] sm:h-[45px] xl:h-[55px] shrink transition-all">
+                <img
+                  src="/images/Screenshot 2026-07-02 221435_transparent.png"
+                  alt="Accreditation"
+                  className="w-full h-full object-contain"
+                />
+              </div>
             </div>
 
             {/* Desktop Navigation Links */}
@@ -329,54 +336,28 @@ export default function Navbar() {
 
             {/* Right Action Stack */}
             <div className="hidden xl:flex items-center gap-0.5 2xl:gap-2 shrink-0 justify-end relative">
-              <form 
-                onSubmit={handleSearch}
-                className={`flex items-center transition-all duration-300 overflow-hidden ${isSearchOpen ? 'w-32 2xl:w-48 border border-slate-300 rounded-full bg-slate-50 px-1' : 'w-6 2xl:w-8'}`}
+              <button 
+                onClick={() => setIsSearchOpen(!isSearchOpen)}
+                className="p-1.5 text-slate-500 hover:text-slate-900 transition-colors shrink-0"
+                aria-label="Toggle Search"
               >
-                <button 
-                  type={isSearchOpen ? "submit" : "button"}
-                  onClick={() => !isSearchOpen && setIsSearchOpen(true)}
-                  className="p-0.5 2xl:p-1 text-slate-500 hover:text-slate-900 transition-colors shrink-0"
-                >
-                  <svg className="w-[12px] h-[12px] 2xl:w-[18px] 2xl:h-[18px] stroke-current" fill="none" viewBox="0 0 24 24" strokeWidth="2.5">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                  </svg>
-                </button>
-                <input 
-                  type="text" 
-                  placeholder="Search..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className={`bg-transparent outline-none text-xs text-slate-700 w-full transition-all ${isSearchOpen ? 'opacity-100 ml-1' : 'opacity-0 w-0'}`}
-                  onBlur={() => { if(!searchQuery) setIsSearchOpen(false); }}
-                />
-              </form>
+                <svg className="w-[18px] h-[18px] 2xl:w-[20px] 2xl:h-[20px] stroke-current" fill="none" viewBox="0 0 24 24" strokeWidth="2.5">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+              </button>
             </div>
 
             {/* Mobile / Tablet View Trigger (Triggers under 1280px Screen width) */}
             <div className="xl:hidden flex items-center gap-1.5 md:gap-3 shrink-0">
-              <form 
-                onSubmit={handleSearch}
-                className={`flex items-center transition-all duration-300 overflow-hidden ${isMobileSearchOpen ? 'w-24 sm:w-32 border border-slate-300 rounded-full bg-slate-50 px-1' : 'w-7 sm:w-8'}`}
+              <button 
+                onClick={() => setIsSearchOpen(!isSearchOpen)}
+                className="p-1.5 text-slate-500 hover:text-slate-900 transition-colors shrink-0"
+                aria-label="Toggle Search"
               >
-                <button 
-                  type={isMobileSearchOpen ? "submit" : "button"}
-                  onClick={() => !isMobileSearchOpen && setIsMobileSearchOpen(true)}
-                  className="p-1.5 text-slate-500 hover:text-slate-900 transition-colors shrink-0"
-                >
-                  <svg className="w-4 md:w-5 h-4 md:h-5 stroke-current" fill="none" viewBox="0 0 24 24" strokeWidth="2.5">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                  </svg>
-                </button>
-                <input 
-                  type="text" 
-                  placeholder="Search..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className={`bg-transparent outline-none text-[10px] sm:text-xs text-slate-700 w-full transition-all ${isMobileSearchOpen ? 'opacity-100 ml-1' : 'opacity-0 w-0'}`}
-                  onBlur={() => { if(!searchQuery) setIsMobileSearchOpen(false); }}
-                />
-              </form>
+                <svg className="w-4 md:w-5 h-4 md:h-5 stroke-current" fill="none" viewBox="0 0 24 24" strokeWidth="2.5">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+              </button>
 
               <div className="relative group flex items-center cursor-pointer text-slate-500 hover:text-slate-900 transition-colors py-1.5 px-1.5">
                 <Globe className="w-4 md:w-5 h-4 md:h-5" />
@@ -400,6 +381,36 @@ export default function Navbar() {
             </div>
           </div>
         </div>
+
+        {/* Search Popup Overlay */}
+        {isSearchOpen && (
+          <div className="absolute top-full right-2 sm:right-6 mt-1 z-[60] animate-fadeIn">
+            <div className="bg-white rounded-xl shadow-2xl border border-slate-100 p-2 w-[280px] sm:w-[350px] relative">
+              <form onSubmit={handleSearch} className="flex items-center">
+                <input 
+                  type="text" 
+                  placeholder="What are you looking for?"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  autoFocus
+                  className="w-full bg-slate-50 outline-none text-sm text-slate-700 px-4 py-2.5 rounded-l-lg border border-transparent focus:border-slate-200 transition-all"
+                />
+                <button type="submit" className="px-4 py-2.5 bg-[#007a87] text-white rounded-r-lg hover:bg-teal-700 transition-colors border border-[#007a87]">
+                  <svg className="w-4 h-4 stroke-current" fill="none" viewBox="0 0 24 24" strokeWidth="2.5">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  </svg>
+                </button>
+              </form>
+              <button 
+                type="button"
+                onClick={() => setIsSearchOpen(false)}
+                className="absolute -top-2 -right-2 bg-white border border-slate-200 text-slate-400 hover:text-slate-700 rounded-full p-1 shadow-md transition-colors"
+              >
+                <X className="w-3 h-3" />
+              </button>
+            </div>
+          </div>
+        )}
 
         {/* Mobile / Tablet Drawer */}
         <div
