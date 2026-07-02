@@ -1,0 +1,180 @@
+const { PrismaClient } = require('@prisma/client');
+const prisma = new PrismaClient();
+
+const htmlContent = `
+<div>
+  <section class="mb-8">
+    <h3 class="text-2xl font-bold text-[#002b5c] mb-4 border-b pb-2">Spectrum and Services / Facilities</h3>
+    <ul class="list-disc pl-6 space-y-2 text-slate-700">
+      <li>Consultation and treatment for Rheumatological diseases</li>
+      <li>Intraarticular injections</li>
+      <li>Biological drug Infusion.</li>
+    </ul>
+  </section>
+
+  <section class="mb-8">
+    <h3 class="text-2xl font-bold text-[#002b5c] mb-4 border-b pb-2">Location of Department</h3>
+    <p class="text-slate-700">SS-Ground Floor Opd Number 11, 12 And 13</p>
+  </section>
+
+  <section class="mb-8">
+    <h3 class="text-2xl font-bold text-[#002b5c] mb-4 border-b pb-2">Departmental Workload</h3>
+    <p class="text-slate-700">FY 2023- 2024 Total 11896 patients visited to rheumatology department.</p>
+  </section>
+
+  <section class="mb-8 overflow-x-auto">
+    <h3 class="text-2xl font-bold text-[#002b5c] mb-4 border-b pb-2">Departmental Timetable</h3>
+    <table class="w-full text-left border-collapse min-w-[800px] bg-white rounded-xl shadow-sm overflow-hidden border border-slate-200">
+      <thead class="bg-slate-50 border-b border-slate-200">
+        <tr>
+          <th class="py-3 px-4 text-[#007a87] font-semibold border-r">Time</th>
+          <th class="py-3 px-4 text-[#007a87] font-semibold border-r">Monday</th>
+          <th class="py-3 px-4 text-[#007a87] font-semibold border-r">Tuesday</th>
+          <th class="py-3 px-4 text-[#007a87] font-semibold border-r">Wednesday</th>
+          <th class="py-3 px-4 text-[#007a87] font-semibold border-r">Thursday</th>
+          <th class="py-3 px-4 text-[#007a87] font-semibold border-r">Friday</th>
+          <th class="py-3 px-4 text-[#007a87] font-semibold">Saturday</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-slate-100">
+        <tr class="hover:bg-slate-50">
+          <td class="py-3 px-4 border-r text-slate-700 font-medium whitespace-nowrap">10 To 12</td>
+          <td class="py-3 px-4 border-r text-slate-700">Dr.Vaijayanti Lagu-Joshi</td>
+          <td class="py-3 px-4 border-r text-slate-700">Dr.Vaijayanti Lagu-Joshi<br/>(Pvt opd) (By App.)</td>
+          <td class="py-3 px-4 border-r text-slate-700">Dr.Vaijayanti Lagu-Joshi</td>
+          <td class="py-3 px-4 border-r text-slate-700">-</td>
+          <td class="py-3 px-4 border-r text-slate-700">Dr.Vaijayanti Lagu-Joshi</td>
+          <td class="py-3 px-4 text-slate-700">Dr.Gayatri Ekbote<br/>(10 To 2)</td>
+        </tr>
+        <tr class="hover:bg-slate-50">
+          <td class="py-3 px-4 border-r text-slate-700 font-medium whitespace-nowrap">3 To 5</td>
+          <td class="py-3 px-4 border-r text-slate-700">Dr.Gayatri Ekbote</td>
+          <td class="py-3 px-4 border-r text-slate-700">Dr. Pravin Patil<br/>(2 To 4)</td>
+          <td class="py-3 px-4 border-r text-slate-700">Dr.Gayatri Ekbote</td>
+          <td class="py-3 px-4 border-r text-slate-700">Dr.Aniruddha Tembe<br/>(3 To 6)</td>
+          <td class="py-3 px-4 border-r text-slate-700">-</td>
+          <td class="py-3 px-4 text-slate-700">-</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="mb-8 overflow-x-auto">
+    <h3 class="text-2xl font-bold text-[#002b5c] mb-4 border-b pb-2">Paediatric Rheumatology OPD Schedule</h3>
+    <table class="w-full text-left border-collapse min-w-[800px] bg-white rounded-xl shadow-sm overflow-hidden border border-slate-200">
+      <thead class="bg-slate-50 border-b border-slate-200">
+        <tr>
+          <th class="py-3 px-4 text-[#007a87] font-semibold border-r">Time</th>
+          <th class="py-3 px-4 text-[#007a87] font-semibold border-r">Monday</th>
+          <th class="py-3 px-4 text-[#007a87] font-semibold border-r">Tuesday</th>
+          <th class="py-3 px-4 text-[#007a87] font-semibold border-r">Wednesday</th>
+          <th class="py-3 px-4 text-[#007a87] font-semibold border-r">Thursday</th>
+          <th class="py-3 px-4 text-[#007a87] font-semibold border-r">Friday</th>
+          <th class="py-3 px-4 text-[#007a87] font-semibold">Saturday</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-slate-100">
+        <tr class="hover:bg-slate-50">
+          <td class="py-3 px-4 border-r text-slate-700 font-medium whitespace-nowrap">10 To 11</td>
+          <td class="py-3 px-4 border-r text-slate-700">-</td>
+          <td class="py-3 px-4 border-r text-slate-700">-</td>
+          <td class="py-3 px-4 border-r text-slate-700">-</td>
+          <td class="py-3 px-4 border-r text-slate-700">Dr.Himanshi Chaudhary</td>
+          <td class="py-3 px-4 border-r text-slate-700">-</td>
+          <td class="py-3 px-4 text-slate-700">-</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="mb-8">
+    <h3 class="text-2xl font-bold text-[#002b5c] mb-4 border-b pb-2">Course and Training</h3>
+    <ul class="list-disc pl-6 space-y-2 text-slate-700">
+      <li>Observerships for post DNB students.</li>
+      <li>Educational guidance to DNB student for Rheumatology cases.</li>
+    </ul>
+  </section>
+
+  <section class="mb-8">
+    <h3 class="text-2xl font-bold text-[#002b5c] mb-4 border-b pb-2">Events</h3>
+    <div class="space-y-6">
+      <div class="bg-slate-50 p-6 rounded-xl border border-slate-200">
+        <h4 class="font-bold text-lg text-[#007a87] mb-2">1) Annual Lupus Day Awareness Programm</h4>
+        <p class="text-slate-700">For patient of SLE from year 2023 to till date.</p>
+      </div>
+
+      <div class="bg-slate-50 p-6 rounded-xl border border-slate-200">
+        <h4 class="font-bold text-lg text-[#007a87] mb-2">2) Lupus Day Programme: Patient Education and Awareness</h4>
+        <p class="text-slate-700 mb-2">Rheumatology department Deenanath hospital and WHIRA celebrated world lupus day on 1 May 2024 at Deenanath hospital. It was organized and conducted by Dr. Vaijayanti Lagujoshi.</p>
+        <p class="text-slate-700 mb-2">The programme involved Dr. Manjiri Dixit (Consultant Psychiatrist), Dr. Varsha Jagtap (Endocrinologist) and Dr. Kavita Krishna (Rheumatologist) as guest speakers who delivered lectures on lupus related topics.</p>
+        <p class="text-slate-700">The programme also involved patient felicitation and experience sharing. It was very well attended and appreciated by 70 people.</p>
+      </div>
+
+      <div class="bg-slate-50 p-6 rounded-xl border border-slate-200">
+        <h4 class="font-bold text-lg text-[#007a87] mb-2">3) Rheumat Meet (Conducted once in a month)</h4>
+        <p class="text-slate-500 font-semibold mb-2">Date: 29/5/2024</p>
+        <p class="text-slate-700">Discussion about various cases: Our monthly rheumatology meet was graced by our guest speakers Dr Nikhil Beke (Sr Consultant Ophthalmologist) & Dr Radhika Lotlikar (Consultant Interventional Neurologist) Pune. Special thanks to internal medicine colleagues & resident doctors from Deenanath Mangeshkar Hospital (special mention for their interesting case presentation), Sassoon Hospital, Armed Force Medical College & DYPMCH, Pune for their presence.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="mb-8 overflow-x-auto">
+    <h3 class="text-2xl font-bold text-[#002b5c] mb-4 border-b pb-2">Event Details: Dr. Lagu Joshi Vaijayanti</h3>
+    <table class="w-full text-left border-collapse min-w-[800px] bg-white rounded-xl shadow-sm overflow-hidden border border-slate-200">
+      <thead class="bg-slate-50 border-b border-slate-200">
+        <tr>
+          <th class="py-3 px-4 text-[#007a87] font-semibold border-r">Date</th>
+          <th class="py-3 px-4 text-[#007a87] font-semibold border-r">Event Name</th>
+          <th class="py-3 px-4 text-[#007a87] font-semibold border-r">Participant Type</th>
+          <th class="py-3 px-4 text-[#007a87] font-semibold border-r">No Of Participant</th>
+          <th class="py-3 px-4 text-[#007a87] font-semibold">Content (Subject For Discussion)</th>
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-slate-100">
+        <tr class="hover:bg-slate-50">
+          <td class="py-3 px-4 border-r text-slate-700 whitespace-nowrap">22/10/23</td>
+          <td class="py-3 px-4 border-r text-slate-700">Patient Education Prog.</td>
+          <td class="py-3 px-4 border-r text-slate-700">Consultant / Patient / Relative</td>
+          <td class="py-3 px-4 border-r text-slate-700 font-semibold">30</td>
+          <td class="py-3 px-4 text-slate-700">Mind Body Medicine Workshop, Physiotherapy</td>
+        </tr>
+        <tr class="hover:bg-slate-50">
+          <td class="py-3 px-4 border-r text-slate-700 whitespace-nowrap">01/05/24</td>
+          <td class="py-3 px-4 border-r text-slate-700">Patient Education Prog.</td>
+          <td class="py-3 px-4 border-r text-slate-700">Consultant / Patient / Relative</td>
+          <td class="py-3 px-4 border-r text-slate-700 font-semibold">100</td>
+          <td class="py-3 px-4 text-slate-700">SLE Programm , For Lupus Disease Lecture</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="mb-8">
+    <h3 class="text-2xl font-bold text-[#002b5c] mb-4 border-b pb-2">Media & Galleries</h3>
+    <ul class="list-disc pl-6 space-y-2 text-slate-700 font-semibold">
+      <li>Expert Talk</li>
+      <li>Patient Sharing Experiences</li>
+      <li>Covid online Meeting</li>
+    </ul>
+  </section>
+
+  <section class="mb-8">
+    <h3 class="text-2xl font-bold text-[#002b5c] mb-4 border-b pb-2">Consultants</h3>
+    <ul class="list-disc pl-6 space-y-2 text-slate-700 font-semibold">
+      <li>Dr. EKBOTE GAYATRI</li>
+      <li>Dr. LAGU-JOSHI VAIJAYANTI V.</li>
+      <li>Dr. PATIL PRAVIN</li>
+      <li>Dr. TEMBE ANIRUDDHA</li>
+    </ul>
+  </section>
+</div>
+`;
+
+async function main() {
+  const result = await prisma.department.updateMany({
+    where: { name: 'RHEUMATOLOGY' },
+    data: { description: htmlContent }
+  });
+  console.log('Updated rows:', result.count);
+}
+main().catch(console.error).finally(() => prisma.$disconnect());

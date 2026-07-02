@@ -1,15 +1,31 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Menu, X, Phone, ChevronDown, Globe } from "lucide-react";
 import Link from "next/link";
 
 export default function Navbar() {
   const pathname = usePathname();
+  const router = useRouter();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [expandedMobileMenu, setExpandedMobileMenu] = useState<string | null>(null);
+  
+  const [searchQuery, setSearchQuery] = useState('');
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+      setIsSearchOpen(false);
+      setIsMobileSearchOpen(false);
+      setSearchQuery("");
+      setMobileMenuOpen(false);
+    }
+  };
 
   useEffect(() => {
     // Patch DOM to prevent React crashes from Google Translate modifications
@@ -180,8 +196,6 @@ export default function Navbar() {
             <Link href="/pharmacy" className="hover:text-white transition-colors">Pharmacy</Link>
             <span className="opacity-30">|</span>
             <Link href="/ambulance" className="hover:text-red-300 transition-colors font-bold text-red-400">Ambulance</Link>
-            <span className="opacity-30">|</span>
-            <span className="font-bold text-[#FFD700]">25 Years of Trust and Care</span>
           </div>
 
           <div className="flex items-center gap-0.5 2xl:gap-4 font-bold tracking-wide">
@@ -314,23 +328,55 @@ export default function Navbar() {
             </div>
 
             {/* Right Action Stack */}
-            <div className="hidden xl:flex items-center gap-0.5 2xl:gap-2 shrink-0 justify-end">
-              <button className="p-0.5 2xl:p-1 text-slate-500 hover:text-slate-900 transition-colors shrink-0 hidden xl:block">
-                <svg className="w-[12px] h-[12px] 2xl:w-[18px] 2xl:h-[18px] stroke-current" fill="none" viewBox="0 0 24 24" strokeWidth="2.5">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-              </button>
-
-
+            <div className="hidden xl:flex items-center gap-0.5 2xl:gap-2 shrink-0 justify-end relative">
+              <form 
+                onSubmit={handleSearch}
+                className={`flex items-center transition-all duration-300 overflow-hidden ${isSearchOpen ? 'w-32 2xl:w-48 border border-slate-300 rounded-full bg-slate-50 px-1' : 'w-6 2xl:w-8'}`}
+              >
+                <button 
+                  type={isSearchOpen ? "submit" : "button"}
+                  onClick={() => !isSearchOpen && setIsSearchOpen(true)}
+                  className="p-0.5 2xl:p-1 text-slate-500 hover:text-slate-900 transition-colors shrink-0"
+                >
+                  <svg className="w-[12px] h-[12px] 2xl:w-[18px] 2xl:h-[18px] stroke-current" fill="none" viewBox="0 0 24 24" strokeWidth="2.5">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  </svg>
+                </button>
+                <input 
+                  type="text" 
+                  placeholder="Search..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className={`bg-transparent outline-none text-xs text-slate-700 w-full transition-all ${isSearchOpen ? 'opacity-100 ml-1' : 'opacity-0 w-0'}`}
+                  onBlur={() => { if(!searchQuery) setIsSearchOpen(false); }}
+                />
+              </form>
             </div>
 
             {/* Mobile / Tablet View Trigger (Triggers under 1280px Screen width) */}
             <div className="xl:hidden flex items-center gap-1.5 md:gap-3 shrink-0">
-              <button className="p-1.5 text-slate-500 hover:text-slate-900 transition-colors">
-                <svg className="w-4 md:w-5 h-4 md:h-5 stroke-current" fill="none" viewBox="0 0 24 24" strokeWidth="2.5">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-              </button>
+              <form 
+                onSubmit={handleSearch}
+                className={`flex items-center transition-all duration-300 overflow-hidden ${isMobileSearchOpen ? 'w-24 sm:w-32 border border-slate-300 rounded-full bg-slate-50 px-1' : 'w-7 sm:w-8'}`}
+              >
+                <button 
+                  type={isMobileSearchOpen ? "submit" : "button"}
+                  onClick={() => !isMobileSearchOpen && setIsMobileSearchOpen(true)}
+                  className="p-1.5 text-slate-500 hover:text-slate-900 transition-colors shrink-0"
+                >
+                  <svg className="w-4 md:w-5 h-4 md:h-5 stroke-current" fill="none" viewBox="0 0 24 24" strokeWidth="2.5">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  </svg>
+                </button>
+                <input 
+                  type="text" 
+                  placeholder="Search..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className={`bg-transparent outline-none text-[10px] sm:text-xs text-slate-700 w-full transition-all ${isMobileSearchOpen ? 'opacity-100 ml-1' : 'opacity-0 w-0'}`}
+                  onBlur={() => { if(!searchQuery) setIsMobileSearchOpen(false); }}
+                />
+              </form>
 
               <div className="relative group flex items-center cursor-pointer text-slate-500 hover:text-slate-900 transition-colors py-1.5 px-1.5">
                 <Globe className="w-4 md:w-5 h-4 md:h-5" />

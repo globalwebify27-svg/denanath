@@ -46,16 +46,51 @@ export default function VirtualTourClientPage() {
     { name: "FF Lobby", category: "Facilities", img: "https://images.unsplash.com/photo-1586773860418-d37222d8fce3?q=80&w=800&auto=format&fit=crop" },
     { name: "ICU Lobby", category: "Facilities", img: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=800&auto=format&fit=crop" },
     { name: "Imaging Lobby", category: "Facilities", img: "https://images.unsplash.com/photo-1586773860418-d37222d8fce3?q=80&w=800&auto=format&fit=crop" },
-    { name: "Laboratory", category: "Technology", img: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=800&auto=format&fit=crop" },
+    { name: "LB Lobby", category: "Facilities", img: "https://images.unsplash.com/photo-1586773860418-d37222d8fce3?q=80&w=800&auto=format&fit=crop" },
+    { name: "Lift", category: "Facilities", img: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=800&auto=format&fit=crop" },
+    { name: "Lobby", category: "Facilities", img: "https://images.unsplash.com/photo-1586773860418-d37222d8fce3?q=80&w=800&auto=format&fit=crop" },
+    { name: "Ambulance", category: "Facilities", img: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=800&auto=format&fit=crop" },
+    { name: "Admission Desk", category: "Facilities", img: "https://images.unsplash.com/photo-1586773860418-d37222d8fce3?q=80&w=800&auto=format&fit=crop" },
+    { name: "Auditorium", category: "Facilities", img: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=800&auto=format&fit=crop" },
+    { name: "Cafeteria", category: "Facilities", img: "https://images.unsplash.com/photo-1586773860418-d37222d8fce3?q=80&w=800&auto=format&fit=crop" },
+    { name: "Emergency Lobby", category: "Facilities", img: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=800&auto=format&fit=crop" },
+    { name: "FF Lobby", category: "Facilities", img: "https://images.unsplash.com/photo-1586773860418-d37222d8fce3?q=80&w=800&auto=format&fit=crop" },
+    { name: "ICU Lobby", category: "Facilities", img: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=800&auto=format&fit=crop" },
+    { name: "Imaging Lobby", category: "Facilities", img: "https://images.unsplash.com/photo-1586773860418-d37222d8fce3?q=80&w=800&auto=format&fit=crop" },
     { name: "LB Lobby", category: "Facilities", img: "https://images.unsplash.com/photo-1586773860418-d37222d8fce3?q=80&w=800&auto=format&fit=crop" },
     { name: "Lift", category: "Facilities", img: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=800&auto=format&fit=crop" },
     { name: "Lobby", category: "Facilities", img: "https://images.unsplash.com/photo-1586773860418-d37222d8fce3?q=80&w=800&auto=format&fit=crop" },
     { name: "Main Entrance", category: "Facilities", img: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=1200&auto=format&fit=crop" },
     { name: "Main Lobby", category: "Facilities", img: "https://images.unsplash.com/photo-1586773860418-d37222d8fce3?q=80&w=800&auto=format&fit=crop" },
-    { name: "OPD Lobby", category: "Outpatient Services", img: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=800&auto=format&fit=crop" },
-    { name: "OT", category: "Technology", img: "https://images.unsplash.com/photo-1586773860418-d37222d8fce3?q=80&w=800&auto=format&fit=crop" },
-    { name: "OT Lobby", category: "Technology", img: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=800&auto=format&fit=crop" },
-    { name: "Reception Desk", category: "Facilities", img: "https://images.unsplash.com/photo-1586773860418-d37222d8fce3?q=80&w=800&auto=format&fit=crop" }
+    { name: "Reception Desk", category: "Facilities", img: "https://images.unsplash.com/photo-1586773860418-d37222d8fce3?q=80&w=800&auto=format&fit=crop" },
+    { name: "Laboratory", category: "Facilities", img: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=800&auto=format&fit=crop" },
+    { name: "OT", category: "Facilities", img: "https://images.unsplash.com/photo-1586773860418-d37222d8fce3?q=80&w=800&auto=format&fit=crop" },
+    { name: "OT Lobby", category: "Facilities", img: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=800&auto=format&fit=crop" },
+    { name: "Accident and Emergency", category: "Outpatient Services", img: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=800&auto=format&fit=crop" },
+    { name: "Blood Bank", category: "Outpatient Services", img: "https://images.unsplash.com/photo-1586773860418-d37222d8fce3?q=80&w=800&auto=format&fit=crop" },
+    { name: "Cathlab", category: "Outpatient Services", img: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=800&auto=format&fit=crop" },
+    { name: "Chemo", category: "Outpatient Services", img: "https://images.unsplash.com/photo-1586773860418-d37222d8fce3?q=80&w=800&auto=format&fit=crop" },
+    { name: "Dialysis", category: "Outpatient Services", img: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=800&auto=format&fit=crop" },
+    { name: "Emergency Entrance", category: "Outpatient Services", img: "https://images.unsplash.com/photo-1586773860418-d37222d8fce3?q=80&w=800&auto=format&fit=crop" },
+    { name: "Emergency Entry Gate", category: "Outpatient Services", img: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=800&auto=format&fit=crop" },
+    { name: "Health Check-Up", category: "Outpatient Services", img: "https://images.unsplash.com/photo-1586773860418-d37222d8fce3?q=80&w=800&auto=format&fit=crop" },
+    { name: "Hospital Outdoor", category: "Outpatient Services", img: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=800&auto=format&fit=crop" },
+    { name: "CSSD", category: "Technology", img: "https://images.unsplash.com/photo-1586773860418-d37222d8fce3?q=80&w=800&auto=format&fit=crop" },
+    { name: "CT Simulation", category: "Technology", img: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=800&auto=format&fit=crop" },
+    { name: "Imaging CT", category: "Technology", img: "https://images.unsplash.com/photo-1586773860418-d37222d8fce3?q=80&w=800&auto=format&fit=crop" },
+    { name: "LINAC-Radiation Oncology", category: "Technology", img: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=800&auto=format&fit=crop" },
+    { name: "MRI", category: "Technology", img: "https://images.unsplash.com/photo-1586773860418-d37222d8fce3?q=80&w=800&auto=format&fit=crop" },
+    { name: "Economy", category: "Rooms", img: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=800&auto=format&fit=crop" },
+    { name: "General Ward 6 Beds", category: "Rooms", img: "https://images.unsplash.com/photo-1586773860418-d37222d8fce3?q=80&w=800&auto=format&fit=crop" },
+    { name: "ICU", category: "Rooms", img: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=800&auto=format&fit=crop" },
+    { name: "ICU Isolation", category: "Rooms", img: "https://images.unsplash.com/photo-1586773860418-d37222d8fce3?q=80&w=800&auto=format&fit=crop" },
+    { name: "OPD Consulting Room", category: "Rooms", img: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=800&auto=format&fit=crop" },
+    { name: "Single Bed", category: "Rooms", img: "https://images.unsplash.com/photo-1586773860418-d37222d8fce3?q=80&w=800&auto=format&fit=crop" },
+    { name: "Single Bed Isolation", category: "Rooms", img: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=800&auto=format&fit=crop" },
+    { name: "Suite", category: "Rooms", img: "https://images.unsplash.com/photo-1586773860418-d37222d8fce3?q=80&w=800&auto=format&fit=crop" },
+    { name: "Suite 2", category: "Rooms", img: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=800&auto=format&fit=crop" },
+    { name: "Triple Sharing", category: "Rooms", img: "https://images.unsplash.com/photo-1586773860418-d37222d8fce3?q=80&w=800&auto=format&fit=crop" },
+    { name: "Twin Sharing", category: "Rooms", img: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=800&auto=format&fit=crop" }
   ];
 
   // Currently we show all regardless of category to match the layout in the image
@@ -168,15 +203,15 @@ export default function VirtualTourClientPage() {
               </div>
 
               {/* Tabs */}
-              <div className="flex flex-wrap border border-slate-200 rounded-xl overflow-hidden mb-8 shadow-sm">
+              <div className="flex flex-wrap overflow-hidden mb-12 shadow-md rounded">
                 {tabs.map((tab) => (
                   <button
                     key={tab}
                     onClick={() => setActiveTab(tab)}
-                    className={`flex-1 py-4 px-2 text-sm font-bold transition-all text-center border-r border-slate-200 last:border-r-0 ${
+                    className={`flex-1 py-4 px-2 text-sm md:text-base font-normal tracking-wide transition-all text-center border-r-2 border-white last:border-r-0 ${
                       activeTab === tab 
-                        ? 'bg-[#002b5c] text-white' 
-                        : 'bg-white text-slate-600 hover:bg-slate-50'
+                        ? 'bg-[#c81b51] text-white' 
+                        : 'bg-[#2942a4] text-white hover:bg-[#203487]'
                     }`}
                   >
                     {tab}
@@ -186,7 +221,7 @@ export default function VirtualTourClientPage() {
 
               {/* Grid of Thumbnails */}
               <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
-                {locations.map((loc, idx) => (
+                {locations.filter(loc => loc.category === activeTab).map((loc, idx) => (
                   <div 
                     key={idx} 
                     onClick={() => setActiveView(loc.name)}
@@ -208,7 +243,7 @@ export default function VirtualTourClientPage() {
                          <span className="text-[10px] font-black text-[#007a87]">360°</span>
                       </div>
                     </div>
-                    <div className="text-center font-bold text-sm text-slate-700 group-hover:text-[#007a87] transition-colors">
+                    <div className="text-center font-bold text-sm text-slate-700 group-hover:text-[#c81b51] transition-colors">
                       {loc.name}
                     </div>
                   </div>

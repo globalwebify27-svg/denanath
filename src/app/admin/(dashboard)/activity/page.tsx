@@ -10,21 +10,21 @@ export default async function ActivityLogPage() {
   const recentDepartments = await prisma.department.findMany({ orderBy: { updatedAt: 'desc' }, take: 50 });
 
   const activities = [
-    ...recentDoctors.map(d => ({
+    ...recentDoctors.map((d: any) => ({
       action: "New Doctor Profile Created",
       desc: `Added ${d.name} to ${d.specialty || 'General'}`,
       date: d.createdAt,
       user: "Admin User",
       color: "bg-[#007a87]"
     })),
-    ...recentSubmissions.map(s => ({
+    ...recentSubmissions.map((s: any) => ({
       action: "New Form Submission",
       desc: `Received ${s.formType.replace(/_/g, ' ')} submission`,
       date: s.createdAt,
       user: "System",
       color: "bg-amber-500"
     })),
-    ...recentDepartments.map(d => ({
+    ...recentDepartments.map((d: any) => ({
       action: "Department Updated",
       desc: `Modified details for ${d.name}`,
       date: d.updatedAt,

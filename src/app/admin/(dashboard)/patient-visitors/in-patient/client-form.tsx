@@ -141,28 +141,29 @@ export default function InPatientClientForm({ initialData }: { initialData: any 
   };
 
   const getJsonPayload = () => {
+    const d: any = data;
     return JSON.stringify({
-      guidelines: data.guidelines.split('\n').map((s: string) => s.trim()).filter((s: string) => s),
-      mainBuildingRooms: data.mainBuildingRooms,
-      superSpecialityRooms: data.superSpecialityRooms,
-      tpaCompanies: data.tpaCompanies.split('\n').map((s: string) => s.trim()).filter((s: string) => s),
-      insuranceCompanies: data.insuranceCompanies.split('\n').map((s: string) => s.trim()).filter((s: string) => s),
-      corporateCompanies: data.corporateCompanies.split('\n').map((s: string) => s.trim()).filter((s: string) => s),
-      admissionDetails: data.admissionDetails,
-      mainBuildingPhones: data.mainBuildingPhones,
-      superSpecialityPhones: data.superSpecialityPhones,
-      icuList: data.icuList.split('\n').map((s: string) => s.trim()).filter((s: string) => s),
-      nicuList: data.nicuList.split('\n').map((s: string) => s.trim()).filter((s: string) => s),
-      picuList: data.picuList.split('\n').map((s: string) => s.trim()).filter((s: string) => s),
-      mealTimings: data.mealTimings,
-      mealNotes: data.mealNotes.split('\n').map((s: string) => s.trim()).filter((s: string) => s),
-      admissionProcedure: data.admissionProcedure.split('\n').map((s: string) => s.trim()).filter((s: string) => s),
-      cashlessProcedure: data.cashlessProcedure,
-      cashlessDescription: data.cashlessDescription.split('\n').map((s: string) => s.trim()).filter((s: string) => s),
-      cashlessContacts: data.cashlessContacts,
+      guidelines: d.guidelines.split('\n').map((s: string) => s.trim()).filter((s: string) => s),
+      mainBuildingRooms: d.mainBuildingRooms,
+      superSpecialityRooms: d.superSpecialityRooms,
+      tpaCompanies: d.tpaCompanies.split('\n').map((s: string) => s.trim()).filter((s: string) => s),
+      insuranceCompanies: d.insuranceCompanies.split('\n').map((s: string) => s.trim()).filter((s: string) => s),
+      corporateCompanies: d.corporateCompanies.split('\n').map((s: string) => s.trim()).filter((s: string) => s),
+      admissionDetails: d.admissionDetails,
+      mainBuildingPhones: d.mainBuildingPhones,
+      superSpecialityPhones: d.superSpecialityPhones,
+      icuList: d.icuList.split('\n').map((s: string) => s.trim()).filter((s: string) => s),
+      nicuList: d.nicuList.split('\n').map((s: string) => s.trim()).filter((s: string) => s),
+      picuList: d.picuList.split('\n').map((s: string) => s.trim()).filter((s: string) => s),
+      mealTimings: d.mealTimings,
+      mealNotes: d.mealNotes.split('\n').map((s: string) => s.trim()).filter((s: string) => s),
+      admissionProcedure: d.admissionProcedure.split('\n').map((s: string) => s.trim()).filter((s: string) => s),
+      cashlessProcedure: d.cashlessProcedure,
+      cashlessDescription: d.cashlessDescription.split('\n').map((s: string) => s.trim()).filter((s: string) => s),
+      cashlessContacts: d.cashlessContacts,
       preAuthDetails: {
-        timing: data.preAuthDetails.timing,
-        requirements: data.preAuthDetails.requirements.split('\n').map((s: string) => s.trim()).filter((s: string) => s)
+        timing: d.preAuthDetails.timing,
+        requirements: d.preAuthDetails.requirements.split('\n').map((s: string) => s.trim()).filter((s: string) => s)
       }
     });
   };
