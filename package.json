@@ -16,7 +16,6 @@
     "dotenv": "^17.4.2",
     "jodit-react": "^5.3.21",
     "lucide-react": "^1.16.0",
-    "mongodb": "^7.3.0",
     "motion": "^12.39.0",
     "next": "16.2.6",
     "react": "19.2.4",
@@ -24,8 +23,7 @@
     "react-dom": "19.2.4",
     "react-player": "^3.4.0",
     "react-quill-new": "^3.8.3",
-    "react-router-dom": "^7.15.1",
-    "sqlite3": "^6.0.1"
+    "react-router-dom": "^7.15.1"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
