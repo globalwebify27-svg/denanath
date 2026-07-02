@@ -30,6 +30,7 @@ export default function FacilitiesClientPage({ pageData }: { pageData: any }) {
     { name: "Hospital Admission Guide", href: "/in-patient", active: false },
     { name: "Health Packages", href: "/health-packages", active: false },
     { name: "Facilities", href: "/facilities", active: true },
+    { name: "Virtual Tour", href: "/virtual-tour", active: false },
     { name: "Patients Stories / Feedbacks", href: "/feedbacks", active: false },
     { name: "Patient Rights & Responsibilities", href: "/patient-rights", active: false },
     { name: "Photos", href: "/gallery-photos", active: false },
@@ -114,7 +115,7 @@ export default function FacilitiesClientPage({ pageData }: { pageData: any }) {
             <div className="bg-white rounded-3xl shadow-[0_8px_40px_rgb(0,0,0,0.03)] border border-slate-100/60 p-6 sm:p-10 md:p-14">
               
               <div className="mb-10">
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-teal-50 border border-teal-100 text-[#007a87] text-xs font-bold tracking-wider uppercase mb-4">
+                <div style={{ fontSize: '14px' }} className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-teal-50 border border-teal-100 text-[#007a87] font-bold tracking-wider uppercase mb-4">
                   <Building2 className="w-4 h-4" />
                   <span>Patient Guide</span>
                 </div>
@@ -140,26 +141,26 @@ export default function FacilitiesClientPage({ pageData }: { pageData: any }) {
                           <div className="w-12 h-12 rounded-xl bg-teal-50 text-[#007a87] flex items-center justify-center shrink-0 group-hover:bg-[#D9232D] group-hover:text-white transition-all duration-300 group-hover:shadow-[0_4px_12px_rgba(217,35,45,0.3)]">
                             {renderIcon(facility.iconName, facility.title)}
                           </div>
-                          <h4 className="font-bold text-[#002b5c] leading-tight group-hover:text-[#D9232D] transition-colors">{facility.title}</h4>
+                          <h4 style={{ fontSize: '18px' }} className="font-bold text-[#002b5c] leading-tight group-hover:text-[#D9232D] transition-colors">{facility.title}</h4>
                         </div>
                         
-                        <div className="space-y-3 mb-4 text-sm flex-1">
+                        <div className="space-y-3 mb-4 flex-1">
                           {facility.time && facility.time !== "-" && (
                             <div className="flex items-start gap-2">
                               <Clock className="w-4 h-4 text-slate-400 shrink-0 mt-0.5" />
-                              <span className="font-medium text-teal-600">{facility.time}</span>
+                              <span style={{ fontSize: '16px' }} className="font-medium text-teal-600">{facility.time}</span>
                             </div>
                           )}
                           {facility.location && facility.location !== "-" && (
                             <div className="flex items-start gap-2">
                               <MapPin className="w-4 h-4 text-slate-400 shrink-0 mt-0.5" />
-                              <span className="text-slate-600">{facility.location}</span>
+                              <span style={{ fontSize: '16px' }} className="text-slate-600">{facility.location}</span>
                             </div>
                           )}
                           {facility.phone && facility.phone !== "-" && (
                             <div className="flex items-start gap-2">
                               <Phone className="w-4 h-4 text-slate-400 shrink-0 mt-0.5" />
-                              <span className="text-slate-600">{facility.phone}</span>
+                              <span style={{ fontSize: '16px' }} className="text-slate-600">{facility.phone}</span>
                             </div>
                           )}
                         </div>
@@ -168,9 +169,9 @@ export default function FacilitiesClientPage({ pageData }: { pageData: any }) {
                           <div className="pt-4 border-t border-slate-100">
                             <ul className="space-y-2">
                               {facility.details.map((detail: string, dIdx: number) => (
-                                <li key={dIdx} className="flex items-start gap-2 text-xs text-slate-500">
+                                <li key={dIdx} className="flex items-start gap-2 text-slate-500">
                                   <ChevronRight className="w-3 h-3 text-teal-400 shrink-0 mt-0.5" />
-                                  <span className="leading-tight">{detail}</span>
+                                  <span style={{ fontSize: '16px' }} className="leading-tight">{detail}</span>
                                 </li>
                               ))}
                             </ul>
@@ -247,26 +248,26 @@ export default function FacilitiesClientPage({ pageData }: { pageData: any }) {
                           <div className="w-12 h-12 rounded-xl bg-teal-50 text-[#007a87] flex items-center justify-center shrink-0 group-hover:bg-[#D9232D] group-hover:text-white transition-all duration-300 group-hover:shadow-[0_4px_12px_rgba(217,35,45,0.3)]">
                             {renderIcon(facility.iconName, facility.title)}
                           </div>
-                          <h4 className="font-bold text-[#002b5c] leading-tight group-hover:text-[#D9232D] transition-colors">{facility.title}</h4>
+                          <h4 style={{ fontSize: '18px' }} className="font-bold text-[#002b5c] leading-tight group-hover:text-[#D9232D] transition-colors">{facility.title}</h4>
                         </div>
                         
-                        <div className="space-y-3 mb-4 text-sm flex-1">
+                        <div className="space-y-3 mb-4 flex-1">
                           {facility.time && facility.time !== "-" && (
                             <div className="flex items-start gap-2">
                               <Clock className="w-4 h-4 text-slate-400 shrink-0 mt-0.5" />
-                              <span className="font-medium text-teal-600">{facility.time}</span>
+                              <span style={{ fontSize: '16px' }} className="font-medium text-teal-600">{facility.time}</span>
                             </div>
                           )}
                           {facility.location && facility.location !== "-" && (
                             <div className="flex items-start gap-2">
                               <MapPin className="w-4 h-4 text-slate-400 shrink-0 mt-0.5" />
-                              <span className="text-slate-600">{facility.location}</span>
+                              <span style={{ fontSize: '16px' }} className="text-slate-600">{facility.location}</span>
                             </div>
                           )}
                           {facility.phone && facility.phone !== "-" && (
                             <div className="flex items-start gap-2">
                               <Phone className="w-4 h-4 text-slate-400 shrink-0 mt-0.5" />
-                              <span className="text-slate-600">{facility.phone}</span>
+                              <span style={{ fontSize: '16px' }} className="text-slate-600">{facility.phone}</span>
                             </div>
                           )}
                         </div>
@@ -275,9 +276,9 @@ export default function FacilitiesClientPage({ pageData }: { pageData: any }) {
                           <div className="pt-4 border-t border-slate-100">
                             <ul className="space-y-2">
                               {facility.details.map((detail: string, dIdx: number) => (
-                                <li key={dIdx} className="flex items-start gap-2 text-xs text-slate-500">
+                                <li key={dIdx} className="flex items-start gap-2 text-slate-500">
                                   <ChevronRight className="w-3 h-3 text-teal-400 shrink-0 mt-0.5" />
-                                  <span className="leading-tight">{detail}</span>
+                                  <span style={{ fontSize: '16px' }} className="leading-tight">{detail}</span>
                                 </li>
                               ))}
                             </ul>

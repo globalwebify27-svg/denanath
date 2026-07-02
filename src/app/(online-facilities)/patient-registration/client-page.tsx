@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { ChevronRight, Globe, RefreshCw, Upload, Info, User, Calendar, MapPin, Phone, Mail, FileText, ArrowRight, ShieldCheck, HeartPulse } from "lucide-react";
+import CustomDropdown from "@/components/CustomDropdown";
 import { submitFormAction } from "@/app/actions/submit-form";
 
 export default function PatientRegistrationFormPage({ pageData }: { pageData: any }) {
@@ -115,7 +116,7 @@ export default function PatientRegistrationFormPage({ pageData }: { pageData: an
               <div className="bg-white rounded-3xl shadow-[0_8px_40px_rgb(0,0,0,0.03)] border border-slate-100/60 p-6 sm:p-10 md:p-14">
                 
                 <div className="mb-10">
-                  <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-teal-50 border border-teal-100 text-[#007a87] text-xs font-bold tracking-wider uppercase mb-4">
+                  <div style={{ fontSize: '14px' }} className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-teal-50 border border-teal-100 text-[#007a87] font-bold tracking-wider uppercase mb-4">
                     <Globe className="w-4 h-4" />
                     <span>Online Facilities</span>
                   </div>
@@ -133,7 +134,7 @@ export default function PatientRegistrationFormPage({ pageData }: { pageData: an
 
                 <form 
                   ref={formRef}
-                  className="space-y-12" 
+                  className="space-y-12 [&_label]:!text-[18px] [&_input]:!text-[18px] [&_select]:!text-[18px] [&_textarea]:!text-[18px] [&_button]:!text-[18px] [&_.text-sm]:!text-[18px] [&_.text-xs]:!text-[18px]" 
                   action={async (formData) => { 
                     setIsSubmitting(true);
                     const res = await submitFormAction("Patient Registration", formData); 
@@ -313,260 +314,266 @@ export default function PatientRegistrationFormPage({ pageData }: { pageData: an
                       <div>
                         <label className="block text-sm font-semibold text-slate-700 mb-2">Country <span className="text-red-500">*</span></label>
                         <div className="relative">
-                          <select name="localCountry" className="w-full appearance-none px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium cursor-pointer">
-                            <option>-- Select --</option>
-                          <option>Afghanistan</option>
-                          <option>Albania</option>
-                          <option>Algeria</option>
-                          <option>Andorra</option>
-                          <option>Angola</option>
-                          <option>Antigua and Barbuda</option>
-                          <option>Argentina</option>
-                          <option>Armenia</option>
-                          <option>Australia</option>
-                          <option>Austria</option>
-                          <option>Azerbaijan</option>
-                          <option>Bahamas</option>
-                          <option>Bahrain</option>
-                          <option>Bangladesh</option>
-                          <option>Barbados</option>
-                          <option>Belarus</option>
-                          <option>Belgium</option>
-                          <option>Belize</option>
-                          <option>Benin</option>
-                          <option>Bhutan</option>
-                          <option>Bolivia</option>
-                          <option>Bosnia & Herzegovina</option>
-                          <option>Botswana</option>
-                          <option>Brazil</option>
-                          <option>Brunei</option>
-                          <option>Bulgaria</option>
-                          <option>Burkina Faso</option>
-                          <option>Burundi</option>
-                          <option>Cabo Verde</option>
-                          <option>Cambodia</option>
-                          <option>Cameroon</option>
-                          <option>Canada</option>
-                          <option>Central African Republic</option>
-                          <option>Chad</option>
-                          <option>Chile</option>
-                          <option>China</option>
-                          <option>Colombia</option>
-                          <option>Comoros</option>
-                          <option>Congo</option>
-                          <option>Congo (East Africa)</option>
-                          <option>Costa Rica</option>
-                          <option>Croatia</option>
-                          <option>Cuba</option>
-                          <option>Cyprus</option>
-                          <option>Czech Republic</option>
-                          <option>Denmark</option>
-                          <option>Djibouti</option>
-                          <option>Dominica</option>
-                          <option>Dominican Republic</option>
-                          <option>Ecuador</option>
-                          <option>Egypt</option>
-                          <option>El Salvador</option>
-                          <option>Equatorial Guinea</option>
-                          <option>Eritrea</option>
-                          <option>Estonia</option>
-                          <option>Eswatini</option>
-                          <option>Ethiopia</option>
-                          <option>Fiji</option>
-                          <option>Finland</option>
-                          <option>France</option>
-                          <option>Gabon</option>
-                          <option>Gambia</option>
-                          <option>Georgia</option>
-                          <option>Germany</option>
-                          <option>Ghana</option>
-                          <option>Gibraltar</option>
-                          <option>Greece</option>
-                          <option>Grenada</option>
-                          <option>Guatemala</option>
-                          <option>Guinea</option>
-                          <option>Guinea-Bissau</option>
-                          <option>Guyana</option>
-                          <option>Haiti</option>
-                          <option>Honduras</option>
-                          <option>HongKong</option>
-                          <option>Hungary</option>
-                          <option>Iceland</option>
-                          <option>India</option>
-                          <option>Indonesia</option>
-                          <option>Iran</option>
-                          <option>IRAQ</option>
-                          <option>Ireland</option>
-                          <option>Israel</option>
-                          <option>Italy</option>
-                          <option>Jamaica</option>
-                          <option>Japan</option>
-                          <option>Jordan</option>
-                          <option>Kazakhstan</option>
-                          <option>Kenya</option>
-                          <option>Kiribati</option>
-                          <option>Kuwait</option>
-                          <option>Kyrgyzstan</option>
-                          <option>Laos</option>
-                          <option>Latvia</option>
-                          <option>Lebanon</option>
-                          <option>Lesotho</option>
-                          <option>Liberia</option>
-                          <option>Libya</option>
-                          <option>Liechtenstein</option>
-                          <option>Lithuania</option>
-                          <option>Luxembourg</option>
-                          <option>Madagascar</option>
-                          <option>Malawi</option>
-                          <option>Malaysia</option>
-                          <option>Maldievs</option>
-                          <option>Mali</option>
-                          <option>Malta</option>
-                          <option>Marshall Islands</option>
-                          <option>Mauritania</option>
-                          <option>Mauritius</option>
-                          <option>Mexico</option>
-                          <option>Micronesia</option>
-                          <option>Moldova</option>
-                          <option>Monaco</option>
-                          <option>Mongolia</option>
-                          <option>Montenegro</option>
-                          <option>Morocco</option>
-                          <option>Mozambique</option>
-                          <option>Myanmar</option>
-                          <option>Namibia</option>
-                          <option>Nauru</option>
-                          <option>Nepal</option>
-                          <option>Netherlands</option>
-                          <option>New Zealand</option>
-                          <option>Nicaragua</option>
-                          <option>Niger</option>
-                          <option>Nigeria</option>
-                          <option>North Korea</option>
-                          <option>North Macedonia</option>
-                          <option>Norway</option>
-                          <option>Oman</option>
-                          <option>OTHER</option>
-                          <option>Pakistan</option>
-                          <option>Palau</option>
-                          <option>Palestine</option>
-                          <option>Panama</option>
-                          <option>Papua New Guinea</option>
-                          <option>Paraguay</option>
-                          <option>Peru</option>
-                          <option>PHILIPINES</option>
-                          <option>Poland</option>
-                          <option>Portugal</option>
-                          <option>Qatar</option>
-                          <option>Republic of Georgia</option>
-                          <option>Republic of Macedonia</option>
-                          <option>Romania</option>
-                          <option>Russia</option>
-                          <option>Rwanda</option>
-                          <option>Saint Kitts and Nevis</option>
-                          <option>Saint Lucia</option>
-                          <option>Saint Vincent and the Grenadines</option>
-                          <option>Samoa</option>
-                          <option>San Marino</option>
-                          <option>Sao Tome and Principe</option>
-                          <option>Saudi Arabia</option>
-                          <option>Senegal</option>
-                          <option>Serbia</option>
-                          <option>Serbia & Montenegro</option>
-                          <option>Seychelles</option>
-                          <option>SIERRA LEONEAN</option>
-                          <option>Singapore</option>
-                          <option>Slovakia</option>
-                          <option>Slovenia</option>
-                          <option>Solomon Islands</option>
-                          <option>Somalia</option>
-                          <option>South Africa</option>
-                          <option>South Korea</option>
-                          <option>South Sudan</option>
-                          <option>Spain</option>
-                          <option>Sri Lanka</option>
-                          <option>Sudan</option>
-                          <option>Suriname</option>
-                          <option>Sweden</option>
-                          <option>Switzerland</option>
-                          <option>Syria</option>
-                          <option>Taiwan</option>
-                          <option>Tajikistan</option>
-                          <option>Tanzania</option>
-                          <option>Thailand</option>
-                          <option>Timor-Leste</option>
-                          <option>Togo</option>
-                          <option>Tonga</option>
-                          <option>Trinidad and Tobago</option>
-                          <option>Tunisia</option>
-                          <option>Turkey</option>
-                          <option>Turkmenistan</option>
-                          <option>Tuvalu</option>
-                          <option>Uganda</option>
-                          <option>Ukraine</option>
-                          <option>United Arab Emirates</option>
-                          <option>United Kingdom</option>
-                          <option>United States</option>
-                          <option>Uruguay</option>
-                          <option>Uzbekistan</option>
-                          <option>Vanuatu</option>
-                          <option>Vatican City</option>
-                          <option>Venezuela</option>
-                          <option>Vietnam</option>
-                          <option>Yemen</option>
-                          <option>Zambia</option>
-                          <option>Zimbabwe</option>
-                        
-                          </select>
-                          <Globe className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
-                          <ChevronRight className="w-5 h-5 text-slate-400 absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none rotate-90" />
+                          <CustomDropdown 
+  name="localCountry"
+  placeholder="-- Select --"
+  icon={Globe}
+  options={[
+    "Afghanistan",
+    "Albania",
+    "Algeria",
+    "Andorra",
+    "Angola",
+    "Antigua and Barbuda",
+    "Argentina",
+    "Armenia",
+    "Australia",
+    "Austria",
+    "Azerbaijan",
+    "Bahamas",
+    "Bahrain",
+    "Bangladesh",
+    "Barbados",
+    "Belarus",
+    "Belgium",
+    "Belize",
+    "Benin",
+    "Bhutan",
+    "Bolivia",
+    "Bosnia & Herzegovina",
+    "Botswana",
+    "Brazil",
+    "Brunei",
+    "Bulgaria",
+    "Burkina Faso",
+    "Burundi",
+    "Cabo Verde",
+    "Cambodia",
+    "Cameroon",
+    "Canada",
+    "Central African Republic",
+    "Chad",
+    "Chile",
+    "China",
+    "Colombia",
+    "Comoros",
+    "Congo",
+    "Congo (East Africa)",
+    "Costa Rica",
+    "Croatia",
+    "Cuba",
+    "Cyprus",
+    "Czech Republic",
+    "Denmark",
+    "Djibouti",
+    "Dominica",
+    "Dominican Republic",
+    "Ecuador",
+    "Egypt",
+    "El Salvador",
+    "Equatorial Guinea",
+    "Eritrea",
+    "Estonia",
+    "Eswatini",
+    "Ethiopia",
+    "Fiji",
+    "Finland",
+    "France",
+    "Gabon",
+    "Gambia",
+    "Georgia",
+    "Germany",
+    "Ghana",
+    "Gibraltar",
+    "Greece",
+    "Grenada",
+    "Guatemala",
+    "Guinea",
+    "Guinea-Bissau",
+    "Guyana",
+    "Haiti",
+    "Honduras",
+    "HongKong",
+    "Hungary",
+    "Iceland",
+    "India",
+    "Indonesia",
+    "Iran",
+    "IRAQ",
+    "Ireland",
+    "Israel",
+    "Italy",
+    "Jamaica",
+    "Japan",
+    "Jordan",
+    "Kazakhstan",
+    "Kenya",
+    "Kiribati",
+    "Kuwait",
+    "Kyrgyzstan",
+    "Laos",
+    "Latvia",
+    "Lebanon",
+    "Lesotho",
+    "Liberia",
+    "Libya",
+    "Liechtenstein",
+    "Lithuania",
+    "Luxembourg",
+    "Madagascar",
+    "Malawi",
+    "Malaysia",
+    "Maldievs",
+    "Mali",
+    "Malta",
+    "Marshall Islands",
+    "Mauritania",
+    "Mauritius",
+    "Mexico",
+    "Micronesia",
+    "Moldova",
+    "Monaco",
+    "Mongolia",
+    "Montenegro",
+    "Morocco",
+    "Mozambique",
+    "Myanmar",
+    "Namibia",
+    "Nauru",
+    "Nepal",
+    "Netherlands",
+    "New Zealand",
+    "Nicaragua",
+    "Niger",
+    "Nigeria",
+    "North Korea",
+    "North Macedonia",
+    "Norway",
+    "Oman",
+    "OTHER",
+    "Pakistan",
+    "Palau",
+    "Palestine",
+    "Panama",
+    "Papua New Guinea",
+    "Paraguay",
+    "Peru",
+    "PHILIPINES",
+    "Poland",
+    "Portugal",
+    "Qatar",
+    "Republic of Georgia",
+    "Republic of Macedonia",
+    "Romania",
+    "Russia",
+    "Rwanda",
+    "Saint Kitts and Nevis",
+    "Saint Lucia",
+    "Saint Vincent and the Grenadines",
+    "Samoa",
+    "San Marino",
+    "Sao Tome and Principe",
+    "Saudi Arabia",
+    "Senegal",
+    "Serbia",
+    "Serbia & Montenegro",
+    "Seychelles",
+    "SIERRA LEONEAN",
+    "Singapore",
+    "Slovakia",
+    "Slovenia",
+    "Solomon Islands",
+    "Somalia",
+    "South Africa",
+    "South Korea",
+    "South Sudan",
+    "Spain",
+    "Sri Lanka",
+    "Sudan",
+    "Suriname",
+    "Sweden",
+    "Switzerland",
+    "Syria",
+    "Taiwan",
+    "Tajikistan",
+    "Tanzania",
+    "Thailand",
+    "Timor-Leste",
+    "Togo",
+    "Tonga",
+    "Trinidad and Tobago",
+    "Tunisia",
+    "Turkey",
+    "Turkmenistan",
+    "Tuvalu",
+    "Uganda",
+    "Ukraine",
+    "United Arab Emirates",
+    "United Kingdom",
+    "United States",
+    "Uruguay",
+    "Uzbekistan",
+    "Vanuatu",
+    "Vatican City",
+    "Venezuela",
+    "Vietnam",
+    "Yemen",
+    "Zambia",
+    "Zimbabwe"
+  ]}
+/>
+                          
+                          
                         </div>
                       </div>
 
                       <div>
                         <label className="block text-sm font-semibold text-slate-700 mb-2">State <span className="text-red-500">*</span></label>
                         <div className="relative">
-                          <select name="localState" className="w-full appearance-none px-4 py-3.5 pl-4 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium cursor-pointer">
-                            <option>-- Select --</option>
-                          <option>Andaman & Nicobar</option>
-                          <option>Andhra Pradesh</option>
-                          <option>Arunachal Pradesh</option>
-                          <option>Assam</option>
-                          <option>Bihar</option>
-                          <option>Chandigarh</option>
-                          <option>Chattisgarh</option>
-                          <option>Dadra & Nagar</option>
-                          <option>Daman & Diu</option>
-                          <option>Delhi</option>
-                          <option>Goa</option>
-                          <option>Gujrat</option>
-                          <option>Haryana</option>
-                          <option>Himachal Pradesh</option>
-                          <option>Jammu & Kashmir</option>
-                          <option>Jharkhand</option>
-                          <option>Karnataka</option>
-                          <option>Kerala</option>
-                          <option>Lakshdweep</option>
-                          <option>Madhya Pradesh</option>
-                          <option>Maharashtra</option>
-                          <option>Manipur</option>
-                          <option>Meghalaya</option>
-                          <option>Mizoram</option>
-                          <option>Nagaland</option>
-                          <option>Orissa</option>
-                          <option>Pondichery</option>
-                          <option>Punjab</option>
-                          <option>Rajasthan</option>
-                          <option>Sikkim</option>
-                          <option>Tamil Nadu</option>
-                          <option>Telangana</option>
-                          <option>Tripura</option>
-                          <option>Uttar Pradesh</option>
-                          <option>Uttaranchal</option>
-                          <option>West Bengal</option>
-                        
-                          </select>
-                          <ChevronRight className="w-5 h-5 text-slate-400 absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none rotate-90" />
+                          <CustomDropdown 
+  name="localState"
+  placeholder="-- Select --"
+  
+  options={[
+    "Andaman & Nicobar",
+    "Andhra Pradesh",
+    "Arunachal Pradesh",
+    "Assam",
+    "Bihar",
+    "Chandigarh",
+    "Chattisgarh",
+    "Dadra & Nagar",
+    "Daman & Diu",
+    "Delhi",
+    "Goa",
+    "Gujrat",
+    "Haryana",
+    "Himachal Pradesh",
+    "Jammu & Kashmir",
+    "Jharkhand",
+    "Karnataka",
+    "Kerala",
+    "Lakshdweep",
+    "Madhya Pradesh",
+    "Maharashtra",
+    "Manipur",
+    "Meghalaya",
+    "Mizoram",
+    "Nagaland",
+    "Orissa",
+    "Pondichery",
+    "Punjab",
+    "Rajasthan",
+    "Sikkim",
+    "Tamil Nadu",
+    "Telangana",
+    "Tripura",
+    "Uttar Pradesh",
+    "Uttaranchal",
+    "West Bengal"
+  ]}
+/>
+                          
                         </div>
                       </div>
 

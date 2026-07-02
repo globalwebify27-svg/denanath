@@ -10,6 +10,7 @@ export default function HealthPackagesClientPage({ pageData }: { pageData: any }
     { name: "Hospital Admission Guide", href: "/in-patient", active: false },
     { name: "Health Packages", href: "/health-packages", active: true },
     { name: "Facilities", href: "/facilities", active: false },
+    { name: "Virtual Tour", href: "/virtual-tour", active: false },
     { name: "Patients Stories / Feedbacks", href: "/feedbacks", active: false },
     { name: "Patient Rights & Responsibilities", href: "/patient-rights", active: false },
     { name: "Photos", href: "/gallery-photos", active: false },
@@ -98,7 +99,7 @@ export default function HealthPackagesClientPage({ pageData }: { pageData: any }
               
               <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-10 gap-4">
                 <div>
-                  <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-teal-50 border border-teal-100 text-[#007a87] text-xs font-bold tracking-wider uppercase mb-4">
+                  <div style={{ fontSize: '14px' }} className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-teal-50 border border-teal-100 text-[#007a87] font-bold tracking-wider uppercase mb-4">
                     <ActivitySquare className="w-4 h-4" />
                     <span>Patient Guide</span>
                   </div>
@@ -154,18 +155,18 @@ export default function HealthPackagesClientPage({ pageData }: { pageData: any }
                         {instructions.map((instruction: string, idx: number) => (
                           <li key={idx} className="flex items-start gap-3">
                             <ChevronRight className="w-5 h-5 text-blue-600 shrink-0 mt-0.5" />
-                            <span className="text-sm text-slate-700 leading-relaxed">{instruction}</span>
+                            <span style={{ fontSize: '18px' }} className="text-slate-700 leading-relaxed">{instruction}</span>
                           </li>
                         ))}
                       </ul>
                       
                       {womenNote && (
                         <div className="mt-6 pt-6 border-t border-blue-100">
-                          <h4 className="font-bold text-slate-800 mb-3 flex items-center gap-2">
+                          <h4 style={{ fontSize: '18px' }} className="font-bold text-slate-800 mb-3 flex items-center gap-2">
                             <AlertCircle className="w-5 h-5 text-amber-500" />
                             For Women
                           </h4>
-                          <p className="text-sm text-slate-600 leading-relaxed whitespace-pre-line">
+                          <p style={{ fontSize: '18px' }} className="text-slate-600 leading-relaxed whitespace-pre-line">
                             {womenNote}
                           </p>
                         </div>
@@ -215,7 +216,7 @@ export default function HealthPackagesClientPage({ pageData }: { pageData: any }
                           {companyList.map((company: string, idx: number) => (
                             <li key={idx} className="flex items-start gap-2 border-b border-slate-50 pb-2 last:border-0 last:pb-0">
                               <CheckCircle2 className="w-4 h-4 text-teal-500 shrink-0 mt-0.5" />
-                              <span className="text-sm text-slate-600">{company}</span>
+                              <span style={{ fontSize: '18px' }} className="text-slate-600">{company}</span>
                             </li>
                           ))}
                         </ul>

@@ -10,6 +10,7 @@ export default function PatientRightsClientPage({ pageData }: { pageData: any })
     { name: "Hospital Admission Guide", href: "/in-patient", active: false },
     { name: "Health Packages", href: "/health-packages", active: false },
     { name: "Facilities", href: "/facilities", active: false },
+    { name: "Virtual Tour", href: "/virtual-tour", active: false },
     { name: "Patients Stories / Feedbacks", href: "/feedbacks", active: false },
     { name: "Patient Rights & Responsibilities", href: "/patient-rights", active: true },
     { name: "Photos", href: "/gallery-photos", active: false },
@@ -89,7 +90,7 @@ export default function PatientRightsClientPage({ pageData }: { pageData: any })
             <div className="bg-white rounded-3xl shadow-[0_8px_40px_rgb(0,0,0,0.03)] border border-slate-100/60 p-6 sm:p-10 md:p-14">
               
               <div className="mb-10">
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-teal-50 border border-teal-100 text-[#007a87] text-xs font-bold tracking-wider uppercase mb-4">
+                <div style={{ fontSize: '14px' }} className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-teal-50 border border-teal-100 text-[#007a87] font-bold tracking-wider uppercase mb-4">
                   <ShieldAlert className="w-4 h-4" />
                   <span>Patient Guide</span>
                 </div>

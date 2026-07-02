@@ -10,6 +10,7 @@ export default function InPatientClientPage({ pageData }: { pageData: any }) {
     { name: "Hospital Admission Guide", href: "/in-patient", active: true },
     { name: "Health Packages", href: "/health-packages", active: false },
     { name: "Facilities", href: "/facilities", active: false },
+    { name: "Virtual Tour", href: "/virtual-tour", active: false },
     { name: "Patients Stories / Feedbacks", href: "/feedbacks", active: false },
     { name: "Patient Rights & Responsibilities", href: "/patient-rights", active: false },
     { name: "Photos", href: "/gallery-photos", active: false },
@@ -167,7 +168,7 @@ export default function InPatientClientPage({ pageData }: { pageData: any }) {
             <div className="bg-white rounded-3xl shadow-[0_8px_40px_rgb(0,0,0,0.03)] border border-slate-100/60 p-6 sm:p-10 md:p-14">
               
               <div className="mb-10">
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-teal-50 border border-teal-100 text-[#007a87] text-xs font-bold tracking-wider uppercase mb-4">
+                <div style={{ fontSize: '14px' }} className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-teal-50 border border-teal-100 text-[#007a87] font-bold tracking-wider uppercase mb-4">
                   <Bed className="w-4 h-4" />
                   <span>Patient Guide</span>
                 </div>
@@ -428,7 +429,7 @@ export default function InPatientClientPage({ pageData }: { pageData: any }) {
                     {cashlessDescription.map((p: string, i: number) => {
                       if (p.startsWith("NOTE:")) {
                         return (
-                          <div key={i} className="bg-amber-50 text-amber-800 p-5 rounded-xl border border-amber-200 my-8 shadow-sm">
+                          <div key={i} style={{ fontSize: '18px' }} className="bg-amber-50 text-amber-800 p-5 rounded-xl border border-amber-200 my-8 shadow-sm">
                             <strong>Note:</strong> {p.replace("NOTE:", "").trim()}
                           </div>
                         );
@@ -533,7 +534,7 @@ export default function InPatientClientPage({ pageData }: { pageData: any }) {
                         {insuranceCompanies.map((company: string, i: number) => (
                           <div key={i} className="flex items-start gap-2 border-b border-slate-100 pb-2">
                             <ChevronRight className="w-4 h-4 mt-1 text-teal-500 shrink-0" />
-                            <span className="text-sm text-slate-600 leading-tight">{company}</span>
+                            <span style={{ fontSize: '16px' }} className="text-slate-600 leading-tight">{company}</span>
                           </div>
                         ))}
                       </div>
@@ -544,7 +545,7 @@ export default function InPatientClientPage({ pageData }: { pageData: any }) {
                         {tpaCompanies.map((company: string, i: number) => (
                           <div key={i} className="flex items-start gap-2 border-b border-slate-100 pb-2">
                             <ChevronRight className="w-4 h-4 mt-1 text-teal-500 shrink-0" />
-                            <span className="text-sm text-slate-600 leading-tight">{company}</span>
+                            <span style={{ fontSize: '16px' }} className="text-slate-600 leading-tight">{company}</span>
                           </div>
                         ))}
                       </div>
@@ -556,7 +557,7 @@ export default function InPatientClientPage({ pageData }: { pageData: any }) {
                         {corporateCompanies.map((company: string, i: number) => (
                           <div key={i} className="flex items-start gap-2 border-b border-slate-100 pb-2">
                             <CheckCircle2 className="w-4 h-4 mt-1 text-blue-500 shrink-0" />
-                            <span className="text-sm text-slate-600 leading-tight">{company}</span>
+                            <span style={{ fontSize: '16px' }} className="text-slate-600 leading-tight">{company}</span>
                           </div>
                         ))}
                       </div>

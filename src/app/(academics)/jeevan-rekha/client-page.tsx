@@ -90,7 +90,7 @@ export default function JeevanRekhaClient({ initialData }: { initialData: any })
               <div className="absolute top-0 left-0 w-2 h-full bg-[#002b5c]"></div>
               
               <div className="mb-10">
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-teal-50 border border-teal-100 text-[#007a87] text-xs font-bold tracking-wider uppercase mb-4">
+                <div style={{ fontSize: '14px' }} className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-teal-50 border border-teal-100 text-[#007a87] font-bold tracking-wider uppercase mb-4">
                   <HeartPulse className="w-4 h-4" />
                   <span>Jeevan Rekha</span>
                 </div>

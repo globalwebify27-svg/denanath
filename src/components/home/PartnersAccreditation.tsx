@@ -141,7 +141,7 @@ export default function PartnersAccreditation() {
                 </Link>
 
                 <Link 
-                  href="/about-hospital" 
+                  href="/virtual-tour" 
                   className="inline-flex items-center gap-3 text-slate-700 hover:text-red-600 text-xs font-bold transition-colors group/link"
                 >
                   <span className="w-7 h-7 rounded-full bg-[#c70909] text-white flex items-center justify-center group-hover/link:bg-red-700 transition-colors shadow-sm">

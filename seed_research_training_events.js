@@ -314,7 +314,7 @@ const cardsHtml = newEvents.map(event => `
         </span>
       </div>
     </div>
-    <div class="text-[14px] text-slate-600 leading-relaxed font-medium">
+    <div style="font-size: 18px;" class="text-slate-600 leading-relaxed font-medium">
       ${event.details}
     </div>
   </div>

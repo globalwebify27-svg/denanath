@@ -30,14 +30,14 @@ async function run() {
     const sponsorsHtml = (sponsors || []).map(sponsor => `
       <div class="bg-white border border-slate-200 rounded-xl p-4 flex items-center gap-3 hover:shadow-[0_8px_30px_rgba(217,35,45,0.15)] hover:border-[#D9232D] transition-all group cursor-default">
         <div class="w-2 h-2 rounded-full bg-teal-400 group-hover:bg-[#D9232D] group-hover:scale-150 transition-all duration-300 shrink-0"></div>
-        <span class="text-slate-700 font-medium group-hover:text-[#007a87] transition-colors">${sponsor}</span>
+        <span style="font-size: 18px;" class="text-slate-700 font-medium group-hover:text-[#007a87] transition-colors">${sponsor}</span>
       </div>
     `).join('');
 
     const crosHtml = (cros || []).map(cro => `
       <div class="bg-white border border-slate-200 rounded-xl p-4 flex items-center gap-3 hover:shadow-[0_8px_30px_rgba(217,35,45,0.15)] hover:border-[#D9232D] transition-all group cursor-default">
         <div class="w-2 h-2 rounded-full bg-teal-400 group-hover:bg-[#D9232D] group-hover:scale-150 transition-all duration-300 shrink-0"></div>
-        <span class="text-slate-700 font-medium group-hover:text-[#007a87] transition-colors">${cro}</span>
+        <span style="font-size: 18px;" class="text-slate-700 font-medium group-hover:text-[#007a87] transition-colors">${cro}</span>
       </div>
     `).join('');
 

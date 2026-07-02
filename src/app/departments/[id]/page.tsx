@@ -689,7 +689,7 @@ export default async function DepartmentDetailsPage({
               
               <div className="mb-10 flex items-start justify-between flex-wrap gap-4">
                 <div>
-                  <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-teal-50 border border-teal-100 text-[#007a87] text-xs font-bold tracking-wider uppercase mb-4">
+                  <div style={{ fontSize: '14px' }} className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-teal-50 border border-teal-100 text-[#007a87] font-bold tracking-wider uppercase mb-4">
                     <Stethoscope className="w-4 h-4" />
                     <span>Specialty Details</span>
                   </div>

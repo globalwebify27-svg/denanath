@@ -86,7 +86,7 @@ export default function CareersClientPage({ pageData }: { pageData: any }) {
         <div className="bg-white rounded-3xl shadow-[0_8px_40px_rgb(0,0,0,0.03)] border border-slate-100/60 p-6 sm:p-10 md:p-14">
 
           <div className="mb-10">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-teal-50 border border-teal-100 text-[#007a87] text-xs font-bold tracking-wider uppercase mb-4">
+            <div style={{ fontSize: '14px' }} className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-teal-50 border border-teal-100 text-[#007a87] font-bold tracking-wider uppercase mb-4">
               <Users className="w-4 h-4" />
               <span>JOIN OUR TEAM</span>
             </div>
@@ -121,7 +121,7 @@ export default function CareersClientPage({ pageData }: { pageData: any }) {
                   </h3>
                 </div>
 
-                <div className="px-6 md:px-8 pb-6 md:pb-8 flex-1 flex flex-col pt-2">
+                <div className="px-6 md:px-8 pb-6 md:pb-8 flex-1 flex flex-col pt-2 [&_.text-sm]:!text-[18px]">
                   <div className="space-y-6 flex-1 mb-8">
                   {job.qualification && (
                     <div className="flex items-start gap-3.5">
@@ -230,7 +230,7 @@ export default function CareersClientPage({ pageData }: { pageData: any }) {
                   </button>
                 </div>
               ) : (
-              <form className="p-6 sm:p-8 space-y-6" onSubmit={handleJobSubmit}>
+              <form className="p-6 sm:p-8 space-y-6 [&_label]:!text-[18px] [&_input]:!text-[18px] [&_select]:!text-[18px] [&_textarea]:!text-[18px] [&_button]:!text-[18px] [&_.text-sm]:!text-[18px] [&_.text-xs]:!text-[18px]" onSubmit={handleJobSubmit}>
                 
                 {/* Personal Information */}
                 <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm relative overflow-hidden group hover:shadow-md transition-shadow">

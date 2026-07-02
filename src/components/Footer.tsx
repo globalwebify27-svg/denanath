@@ -21,12 +21,12 @@ export default function Footer() {
 
       {/* 1. Primary Footer Grid */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 relative z-10">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1.8fr_1fr_1fr_1.4fr] gap-12 lg:gap-16">
           
           {/* Logo & Brand Column */}
           <div className="space-y-6">
             <Link href="/" className="flex items-center gap-3.5 group">
-              <div className="flex items-center justify-center w-[240px] sm:w-[280px] md:w-[320px] lg:w-[340px] xl:w-[380px] h-auto py-3 px-4 rounded-xl bg-white shadow-xl ring-4 ring-white/10 group-hover:scale-[1.02] transition-transform">
+              <div className="flex items-center justify-center w-full max-w-[280px] sm:max-w-[320px] lg:max-w-[360px] xl:max-w-[380px] h-auto py-3 px-4 rounded-xl bg-white shadow-xl ring-4 ring-white/10 group-hover:scale-[1.02] transition-transform">
                 <img 
                   src="/images/Untitled design11.png" 
                   alt="Deenanath Mangeshkar Hospital & Research Center" 
@@ -77,7 +77,8 @@ export default function Footer() {
                 { label: "Doctors & Departments", href: "/doctor-details" },
                 { label: "Research", href: "/research-about" },
                 { label: "Academics", href: "/academics" },
-                { label: "Online Facilities", href: "/email-login" }
+                { label: "Online Facilities", href: "/email-login" },
+                { label: "Book Appointment", href: "/book-appointment" }
               ].map((item, idx) => (
                 <li key={idx} className="group flex items-center gap-2">
                   <ArrowRight className="w-3.5 h-3.5 text-[#a7ffeb] opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all duration-300 shrink-0" />
@@ -96,7 +97,6 @@ export default function Footer() {
             </h4>
             <ul className="space-y-3.5 text-xs pt-2">
               {[
-                { label: "Book Appointment", href: "/book-appointment" },
                 { label: "Emergency", href: "/emergency" },
                 { label: "Pharmacy", href: "/pharmacy" },
                 { label: "Ambulance", href: "/ambulance" },

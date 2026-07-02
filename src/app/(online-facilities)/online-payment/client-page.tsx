@@ -133,7 +133,7 @@ export default function OnlinePaymentClientPage({ pageData }: { pageData: any })
 
               <form 
                     ref={formRef}
-                    className="max-w-4xl space-y-8" 
+                    className="max-w-4xl space-y-8 [&_label]:!text-[18px] [&_input]:!text-[18px] [&_select]:!text-[18px] [&_textarea]:!text-[18px] [&_button]:!text-[18px] [&_.text-sm]:!text-[18px] [&_.text-xs]:!text-[18px]" 
                     action={async (formData) => { 
                       setIsSubmitting(true);
                       const res = await submitFormAction("Online Payment", formData); 
@@ -159,7 +159,7 @@ export default function OnlinePaymentClientPage({ pageData }: { pageData: any })
                     <div className="md:col-span-2">
                       <label className="block text-sm font-semibold text-slate-700 mb-2">Purpose of Payment <span className="text-red-500">*</span></label>
                       <div className="relative">
-                        <select name="purpose" className="w-full appearance-none px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium cursor-pointer">
+                        <select suppressHydrationWarning name="purpose" className="w-full appearance-none px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium cursor-pointer">
                     <option>-- Select --</option>
                     <option>Patient Help</option>
                     <option>Indoor Patient Payment (IPD)</option>
@@ -176,7 +176,7 @@ export default function OnlinePaymentClientPage({ pageData }: { pageData: any })
                     <div className="md:col-span-2">
                       <label className="block text-sm font-semibold text-slate-700 mb-2">Amount <span className="text-red-500">*</span></label>
                       <div className="relative">
-                        <input type="text" name="amount" placeholder="Enter Amount" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
+                        <input suppressHydrationWarning type="text" name="amount" placeholder="Enter Amount" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
                         <IndianRupee className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                       </div>
                     </div>
@@ -195,7 +195,7 @@ export default function OnlinePaymentClientPage({ pageData }: { pageData: any })
                     <div>
                       <label className="block text-sm font-semibold text-slate-700 mb-2">Name Of Payer <span className="text-red-500">*</span></label>
                       <div className="relative">
-                        <input type="text" name="payerName" placeholder="Full Name" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
+                        <input suppressHydrationWarning type="text" name="payerName" placeholder="Full Name" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
                         <User className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                       </div>
                     </div>
@@ -203,7 +203,7 @@ export default function OnlinePaymentClientPage({ pageData }: { pageData: any })
                     <div>
                       <label className="block text-sm font-semibold text-slate-700 mb-2">Contact Number <span className="text-red-500">*</span></label>
                       <div className="relative">
-                        <input type="tel" name="contactNumber" placeholder="Mobile Number" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" pattern="[0-9]{10}" maxLength={10} minLength={10} title="Please enter a valid 10-digit mobile number" onInput={(e) => { e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/g, "").slice(0, 10); }} />
+                        <input suppressHydrationWarning type="tel" name="contactNumber" placeholder="Mobile Number" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" pattern="[0-9]{10}" maxLength={10} minLength={10} title="Please enter a valid 10-digit mobile number" onInput={(e) => { e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/g, "").slice(0, 10); }} />
                         <Phone className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                       </div>
                     </div>
@@ -211,7 +211,7 @@ export default function OnlinePaymentClientPage({ pageData }: { pageData: any })
                     <div className="md:col-span-2">
                       <label className="block text-sm font-semibold text-slate-700 mb-2">Email ID <span className="text-red-500">*</span></label>
                       <div className="relative">
-                        <input type="email" name="email" placeholder="Email Address" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
+                        <input suppressHydrationWarning type="email" name="email" placeholder="Email Address" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
                         <Mail className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                       </div>
                     </div>
@@ -230,7 +230,7 @@ export default function OnlinePaymentClientPage({ pageData }: { pageData: any })
                     <div className="md:col-span-2">
                       <label className="block text-sm font-semibold text-slate-700 mb-2">Address <span className="text-red-500">*</span></label>
                       <div className="relative">
-                        <textarea rows={3} name="address" placeholder="Complete Address" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400 resize-none"></textarea>
+                        <textarea suppressHydrationWarning rows={3} name="address" placeholder="Complete Address" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400 resize-none"></textarea>
                         <Building className="w-5 h-5 text-slate-400 absolute left-4 top-4 pointer-events-none" />
                       </div>
                     </div>
@@ -238,7 +238,7 @@ export default function OnlinePaymentClientPage({ pageData }: { pageData: any })
                     <div>
                       <label className="block text-sm font-semibold text-slate-700 mb-2">Country <span className="text-red-500">*</span></label>
                       <div className="relative">
-                        <select name="country" className="w-full appearance-none px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium cursor-pointer">
+                        <select suppressHydrationWarning name="country" className="w-full appearance-none px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium cursor-pointer">
                         <option>-- Select --</option>
                         <option>Afghanistan</option>
                         <option>Albania</option>
@@ -450,7 +450,7 @@ export default function OnlinePaymentClientPage({ pageData }: { pageData: any })
                     <div>
                       <label className="block text-sm font-semibold text-slate-700 mb-2">State <span className="text-red-500">*</span></label>
                       <div className="relative">
-                        <select name="state" className="w-full appearance-none px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium cursor-pointer">
+                        <select suppressHydrationWarning name="state" className="w-full appearance-none px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium cursor-pointer">
                         <option>-- Select --</option>
                         <option>Andaman & Nicobar</option>
                         <option>Andhra Pradesh</option>
@@ -497,7 +497,7 @@ export default function OnlinePaymentClientPage({ pageData }: { pageData: any })
                     <div className="md:col-span-2">
                       <label className="block text-sm font-semibold text-slate-700 mb-2">City <span className="text-red-500">*</span></label>
                       <div className="relative">
-                        <select name="city" className="w-full md:w-1/2 appearance-none px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium cursor-pointer">
+                        <select suppressHydrationWarning name="city" className="w-full md:w-1/2 appearance-none px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium cursor-pointer">
                     <option>-- Select --</option>
                     <option>Ahilya Nagar</option>
                     <option>Akola</option>
@@ -553,7 +553,7 @@ export default function OnlinePaymentClientPage({ pageData }: { pageData: any })
                   
                   <div>
                     <div className="relative">
-                      <textarea rows={2} name="comments" placeholder="Any specific instructions..." className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400 resize-none"></textarea>
+                      <textarea suppressHydrationWarning rows={2} name="comments" placeholder="Any specific instructions..." className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400 resize-none"></textarea>
                       <MessageSquare className="w-5 h-5 text-slate-400 absolute left-4 top-4 pointer-events-none" />
                     </div>
                   </div>
@@ -569,16 +569,16 @@ export default function OnlinePaymentClientPage({ pageData }: { pageData: any })
                           <div className="bg-slate-800 text-white px-5 py-2.5 rounded-lg tracking-widest font-mono font-bold text-lg select-none shadow-inner border border-slate-700 w-32 text-center">
                             {captchaCode}
                           </div>
-                          <button type="button" onClick={generateCaptcha} className="text-blue-500 hover:text-blue-600 transition-colors bg-blue-50 p-2.5 rounded-lg hover:bg-blue-100">
+                          <button suppressHydrationWarning type="button" onClick={generateCaptcha} className="text-blue-500 hover:text-blue-600 transition-colors bg-blue-50 p-2.5 rounded-lg hover:bg-blue-100">
                             <RefreshCw className="w-5 h-5" />
                           </button>
                         </div>
-                        <input type="text" name="captcha" placeholder="Enter text" className="w-full sm:w-40 px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-slate-50 transition-all font-medium" />
+                        <input suppressHydrationWarning type="text" name="captcha" placeholder="Enter text" className="w-full sm:w-40 px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-slate-50 transition-all font-medium" />
                       </div>
                     </div>
                     
                     <div className="flex justify-end pt-4 md:pt-0 border-t border-slate-100 md:border-none">
-                      <button 
+                      <button suppressHydrationWarning 
                         type="submit" 
                         disabled={isSubmitting}
                         className={`group w-full md:w-auto inline-flex items-center justify-center gap-2 md:gap-3 px-6 md:px-10 py-4 bg-[#003360] hover:bg-[#002b5c] text-white font-bold text-base md:text-lg whitespace-nowrap rounded-xl transition-all shadow-md hover:shadow-xl hover:-translate-y-1 ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}

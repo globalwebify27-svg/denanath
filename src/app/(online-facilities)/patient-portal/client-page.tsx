@@ -119,7 +119,7 @@ export default function PatientPortalPage({ pageData }: { pageData: any }) {
             <div className="bg-white rounded-3xl shadow-[0_8px_40px_rgb(0,0,0,0.03)] border border-slate-100/60 p-6 sm:p-10 md:p-14">
               
               <div className="mb-10">
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-teal-50 border border-teal-100 text-[#007a87] text-xs font-bold tracking-wider uppercase mb-4">
+                <div style={{ fontSize: '14px' }} className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-teal-50 border border-teal-100 text-[#007a87] font-bold tracking-wider uppercase mb-4">
                   <Globe className="w-4 h-4" />
                   <span>Online Facilities</span>
                 </div>
@@ -192,7 +192,7 @@ export default function PatientPortalPage({ pageData }: { pageData: any }) {
                     <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
                       <form 
                         ref={loginFormRef}
-                        className="space-y-6" 
+                        className="space-y-6 [&_label]:!text-[18px] [&_input]:!text-[18px] [&_select]:!text-[18px] [&_textarea]:!text-[18px] [&_button]:!text-[18px] [&_.text-sm]:!text-[18px] [&_.text-xs]:!text-[18px]" 
                         action={async (formData) => { 
                           setIsLoginSubmitting(true);
                           const res = await submitFormAction("Patient Portal Login", formData); 
@@ -271,7 +271,7 @@ export default function PatientPortalPage({ pageData }: { pageData: any }) {
                           <Shield className="w-5 h-5 text-teal-500" />
                           Portal Features
                         </p>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-3 gap-x-6 text-sm text-slate-600 font-medium">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-3 gap-x-6 text-[16px] text-slate-600 font-medium">
                           {(pageData.features || [
                             "View Pathology & Radiology Reports",
                             "View Discharge Summary",
@@ -292,7 +292,7 @@ export default function PatientPortalPage({ pageData }: { pageData: any }) {
                     <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
                       <form 
                         ref={registerFormRef}
-                        className="space-y-6" 
+                        className="space-y-6 [&_label]:!text-[18px] [&_input]:!text-[18px] [&_select]:!text-[18px] [&_textarea]:!text-[18px] [&_button]:!text-[18px] [&_.text-sm]:!text-[18px] [&_.text-xs]:!text-[18px]" 
                         action={async (formData) => { 
                           setIsRegisterSubmitting(true);
                           const res = await submitFormAction("Patient Portal Register", formData); 
@@ -390,7 +390,7 @@ export default function PatientPortalPage({ pageData }: { pageData: any }) {
                               )}
                             </button>
                           
-                          <div className="text-[13px] text-slate-500 font-medium leading-relaxed text-center max-w-md">
+                          <div className="text-[16px] text-slate-500 font-medium leading-relaxed text-center max-w-md">
                             By registering, your details will be verified with the hospital records. If they match, you will receive an activation email to login to the portal.
                           </div>
                         </div>

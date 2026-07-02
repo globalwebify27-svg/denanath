@@ -51,7 +51,7 @@ export default function ContactUsClientPage({ pageData }: { pageData: any }) {
           <div className="w-full flex-1">
             <div className="bg-white rounded-3xl shadow-[0_8px_40px_rgb(0,0,0,0.03)] border border-slate-100/60 p-6 sm:p-10 md:p-14">
               <div className="mb-12 text-center max-w-2xl mx-auto">
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-teal-50 border border-teal-100 text-[#007a87] text-xs font-bold tracking-wider uppercase mb-4">
+                <div style={{ fontSize: '14px' }} className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-teal-50 border border-teal-100 text-[#007a87] font-bold tracking-wider uppercase mb-4">
                   <Building2 className="w-4 h-4" />
                   <span>Get In Touch</span>
                 </div>
@@ -93,7 +93,7 @@ export default function ContactUsClientPage({ pageData }: { pageData: any }) {
                     ) : (
                       <form 
                         ref={formRef}
-                        className="space-y-6" 
+                        className="space-y-6 [&_label]:!text-[18px] [&_input]:!text-[18px] [&_textarea]:!text-[18px] [&_button]:!text-[18px] [&_.text-sm]:!text-[18px] [&_.text-xs]:!text-[18px]" 
                         action={async (formData) => { 
                           setIsSubmitting(true);
                           const res = await submitFormAction("Contact Us", formData); 
@@ -233,7 +233,7 @@ export default function ContactUsClientPage({ pageData }: { pageData: any }) {
                       <h4 className="text-lg font-bold text-[#002b5c]">Important Members</h4>
                     </div>
                     
-                    <div className="divide-y divide-slate-100">
+                    <div className="divide-y divide-slate-100 [&_span]:!text-[18px] [&_p]:!text-[18px] [&_a]:!text-[18px] [&_.text-sm]:!text-[18px] [&_.text-xs]:!text-[18px]">
                       
                       <div className="p-4 flex flex-col sm:flex-row justify-between gap-4 hover:bg-slate-50 transition-colors">
                         <div className="flex items-center gap-3 shrink-0">

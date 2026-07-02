@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { ChevronRight, Activity, Info, CreditCard, BookOpen, RefreshCw, Building2 } from "lucide-react";
+import { ChevronRight, Activity, Info, CreditCard, BookOpen, RefreshCw, Building2, Globe, Map, MapPin } from "lucide-react";
 
 // Client component wrapper for tabs
 export default function SimulationCenterClient({ initialData, labsData }: { initialData: any, labsData?: any }) {
@@ -115,7 +115,7 @@ export default function SimulationCenterClient({ initialData, labsData }: { init
             <div className="bg-white rounded-3xl shadow-[0_8px_40px_rgb(0,0,0,0.03)] border border-slate-100/60 p-6 sm:p-10 md:p-14">
               
               <div className="mb-10">
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-teal-50 border border-teal-100 text-[#007a87] text-xs font-bold tracking-wider uppercase mb-4">
+                <div style={{ fontSize: '14px' }} className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-teal-50 border border-teal-100 text-[#007a87] font-bold tracking-wider uppercase mb-4">
                   <Activity className="w-4 h-4" />
                   <span>Academics</span>
                 </div>
@@ -136,7 +136,8 @@ export default function SimulationCenterClient({ initialData, labsData }: { init
                   <button
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id)}
-                    className={`flex items-center gap-2 px-6 py-3 rounded-full font-bold text-sm transition-all duration-300 ${
+                    style={{ fontSize: '20px' }}
+                    className={`flex items-center gap-2 px-6 py-3 rounded-full font-bold transition-all duration-300 ${
                       activeTab === tab.id 
                         ? "bg-[#002b5c] text-white shadow-md" 
                         : "bg-slate-50 text-slate-600 hover:bg-slate-100 border border-slate-200"
@@ -209,7 +210,7 @@ export default function SimulationCenterClient({ initialData, labsData }: { init
                             {isExpanded && (
                               <div className="p-6 md:p-8 border-t border-slate-100 animate-in slide-in-from-top-2 fade-in duration-300 bg-white">
                                 {labInfo?.content ? (
-                                  <div className="mb-8 prose prose-slate max-w-none break-words whitespace-normal overflow-hidden [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:my-4 [&_ol]:list-decimal [&_ol]:pl-6 [&_ol]:my-4 [&_li]:mb-2 prose-p:leading-relaxed prose-headings:text-[#002b5c] text-slate-700" dangerouslySetInnerHTML={{ __html: labInfo.content }} />
+                                  <div style={{ fontSize: '18px' }} className="mb-8 prose prose-slate max-w-none break-words whitespace-normal overflow-hidden [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:my-4 [&_ol]:list-decimal [&_ol]:pl-6 [&_ol]:my-4 [&_li]:mb-2 [&_li]:text-[18px] [&_p]:text-[18px] prose-p:leading-relaxed prose-headings:text-[#002b5c] text-slate-700" dangerouslySetInnerHTML={{ __html: labInfo.content }} />
                                 ) : (
                                   <p className="mb-8 text-slate-500 italic">Content for this section will be updated soon.</p>
                                 )}
@@ -256,11 +257,15 @@ export default function SimulationCenterClient({ initialData, labsData }: { init
                       {/* Row 1 */}
                       <div>
                         <label className="block text-sm font-semibold text-slate-700 mb-1">Purpose of Payment <span className="text-red-500">*</span></label>
-                        <select className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500/50 bg-slate-50">
-                          <option>-- Select --</option>
-                          <option>Simulation Course Fee</option>
-                          <option>Workshop Registration</option>
-                        </select>
+                        <div className="relative">
+                          <select className="w-full appearance-none px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium cursor-pointer">
+                            <option>-- Select --</option>
+                            <option>Simulation Course Fee</option>
+                            <option>Workshop Registration</option>
+                          </select>
+                          <CreditCard className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
+                          <ChevronRight className="w-5 h-5 text-slate-400 absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none rotate-90" />
+                        </div>
                       </div>
 
                       {/* Row 2 */}
@@ -296,7 +301,8 @@ export default function SimulationCenterClient({ initialData, labsData }: { init
                         <div className="space-y-6">
                           <div>
                             <label className="block text-sm font-semibold text-slate-700 mb-1">Country <span className="text-red-500">*</span></label>
-                            <select name="country" className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500/50 bg-slate-50">
+                            <div className="relative">
+                              <select name="country" className="w-full appearance-none px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium cursor-pointer">
                         <option>-- Select --</option>
                         <option>Afghanistan</option>
                         <option>Albania</option>
@@ -500,10 +506,14 @@ export default function SimulationCenterClient({ initialData, labsData }: { init
                         <option>Zambia</option>
                         <option>Zimbabwe</option>
                       </select>
+                              <Globe className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
+                              <ChevronRight className="w-5 h-5 text-slate-400 absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none rotate-90" />
+                            </div>
                           </div>
                           <div>
                             <label className="block text-sm font-semibold text-slate-700 mb-1">State <span className="text-red-500">*</span></label>
-                            <select name="state" className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500/50 bg-slate-50">
+                            <div className="relative">
+                              <select name="state" className="w-full appearance-none px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium cursor-pointer">
                         <option>-- Select --</option>
                         <option>Andaman & Nicobar</option>
                         <option>Andhra Pradesh</option>
@@ -542,6 +552,9 @@ export default function SimulationCenterClient({ initialData, labsData }: { init
                         <option>Uttaranchal</option>
                         <option>West Bengal</option>
                       </select>
+                              <Map className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
+                              <ChevronRight className="w-5 h-5 text-slate-400 absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none rotate-90" />
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -549,7 +562,8 @@ export default function SimulationCenterClient({ initialData, labsData }: { init
                       {/* Row 5 */}
                       <div>
                         <label className="block text-sm font-semibold text-slate-700 mb-1">City <span className="text-red-500">*</span></label>
-                        <select name="city" className="w-full md:w-1/2 px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500/50 bg-slate-50">
+                        <div className="relative w-full md:w-1/2">
+                          <select name="city" className="w-full appearance-none px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium cursor-pointer">
                     <option>-- Select --</option>
                     <option>Ahilya Nagar</option>
                     <option>Akola</option>
@@ -588,6 +602,9 @@ export default function SimulationCenterClient({ initialData, labsData }: { init
                     <option>Washim</option>
                     <option>Yavatmal</option>
                   </select>
+                          <MapPin className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
+                          <ChevronRight className="w-5 h-5 text-slate-400 absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none rotate-90" />
+                        </div>
                       </div>
 
                       {/* Row 6 */}

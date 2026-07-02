@@ -91,7 +91,7 @@ export default function AcademicsClientPage({ pageData }: { pageData: any }) {
             <div className="bg-white rounded-3xl shadow-[0_8px_40px_rgb(0,0,0,0.03)] border border-slate-100/60 p-6 sm:p-10 md:p-14">
               
               <div className="mb-10">
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-teal-50 border border-teal-100 text-[#007a87] text-xs font-bold tracking-wider uppercase mb-4">
+                <div style={{ fontSize: '14px' }} className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-teal-50 border border-teal-100 text-[#007a87] font-bold tracking-wider uppercase mb-4">
                   <GraduationCap className="w-4 h-4" />
                   <span>Academics</span>
                 </div>
@@ -150,7 +150,7 @@ export default function AcademicsClientPage({ pageData }: { pageData: any }) {
                     {pageData?.shortTermFellowships?.map((program: string, idx: number) => (
                       <div key={idx} className="group flex items-start gap-3 bg-white p-4 rounded-xl border border-slate-200 shadow-sm hover:shadow-[0_8px_30px_rgba(217,35,45,0.15)] hover:border-[#D9232D] hover:-translate-y-1 transition-all duration-300">
                         <CheckCircle2 className="w-5 h-5 text-teal-500 group-hover:text-[#D9232D] shrink-0 mt-0.5 transition-colors" />
-                        <span className="text-slate-700 font-medium">{program}</span>
+                        <span style={{ fontSize: '18px' }} className="text-slate-700 font-medium">{program}</span>
                       </div>
                     ))}
                   </div>

@@ -91,7 +91,7 @@ export default function ServicesClientPage({ pageData, services }: { pageData: a
           <div className="w-full flex-1">
             <div className="bg-white rounded-3xl shadow-[0_8px_40px_rgb(0,0,0,0.03)] border border-slate-100/60 p-6 sm:p-10 md:p-14">
               <div className="mb-10">
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-teal-50 border border-teal-100 text-[#007a87] text-xs font-bold tracking-wider uppercase mb-4">
+                <div style={{ fontSize: '14px' }} className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-teal-50 border border-teal-100 text-[#007a87] font-bold tracking-wider uppercase mb-4">
                   <Stethoscope className="w-4 h-4" />
                   <span>Doctors & Departments</span>
                 </div>
@@ -130,7 +130,7 @@ export default function ServicesClientPage({ pageData, services }: { pageData: a
                           {parsedItems.map((item, i) => (
                             <div key={i} className="flex items-start gap-3 text-[#007a87] text-[15px] font-[600] group/item">
                               <ArrowRight className="w-[18px] h-[18px] shrink-0 mt-[2px] transition-transform group-hover/item:translate-x-1" />
-                              <span className="text-slate-600 group-hover/item:text-[#002b5c] transition-colors">{item}</span>
+                              <span style={{ fontSize: '18px' }} className="text-slate-600 group-hover/item:text-[#002b5c] transition-colors">{item}</span>
                             </div>
                           ))}
                           {parsedItems.length === 0 && (
