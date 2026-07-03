@@ -50,7 +50,7 @@ export default function PartnersAccreditation() {
                   <span className="w-7 h-7 rounded-full bg-[#002b5c] text-white flex items-center justify-center group-hover/link:bg-[#007a87] transition-colors shadow-sm">
                     <ArrowRight className="w-3.5 h-3.5 group-hover/link:translate-x-0.5 transition-transform" />
                   </span>
-                  <span>Associates</span>
+                  <span>Associates Hospital</span>
                 </Link>
 
                 <Link 
@@ -64,23 +64,43 @@ export default function PartnersAccreditation() {
                 </Link>
 
                 <Link 
-                  href="/medical-support" 
+                  href="/basic-infrastructure" 
                   className="inline-flex items-center gap-3 text-slate-700 hover:text-[#002b5c] text-xs font-bold transition-colors group/link"
                 >
                   <span className="w-7 h-7 rounded-full bg-[#002b5c] text-white flex items-center justify-center group-hover/link:bg-[#007a87] transition-colors shadow-sm">
                     <ArrowRight className="w-3.5 h-3.5 group-hover/link:translate-x-0.5 transition-transform" />
                   </span>
-                  <span>Medical Support</span>
+                  <span>Basic Infrastructure</span>
                 </Link>
 
                 <Link 
-                  href="/quality-care" 
+                  href="/room-photo" 
                   className="inline-flex items-center gap-3 text-slate-700 hover:text-[#002b5c] text-xs font-bold transition-colors group/link"
                 >
                   <span className="w-7 h-7 rounded-full bg-[#002b5c] text-white flex items-center justify-center group-hover/link:bg-[#007a87] transition-colors shadow-sm">
                     <ArrowRight className="w-3.5 h-3.5 group-hover/link:translate-x-0.5 transition-transform" />
                   </span>
-                  <span>Quality Care</span>
+                  <span>Room Photo</span>
+                </Link>
+
+                <Link 
+                  href="/pillar-of-support" 
+                  className="inline-flex items-center gap-3 text-slate-700 hover:text-[#002b5c] text-xs font-bold transition-colors group/link"
+                >
+                  <span className="w-7 h-7 rounded-full bg-[#002b5c] text-white flex items-center justify-center group-hover/link:bg-[#007a87] transition-colors shadow-sm">
+                    <ArrowRight className="w-3.5 h-3.5 group-hover/link:translate-x-0.5 transition-transform" />
+                  </span>
+                  <span>Pillar of Support</span>
+                </Link>
+
+                <Link 
+                  href="/academics" 
+                  className="inline-flex items-center gap-3 text-slate-700 hover:text-[#002b5c] text-xs font-bold transition-colors group/link"
+                >
+                  <span className="w-7 h-7 rounded-full bg-[#002b5c] text-white flex items-center justify-center group-hover/link:bg-[#007a87] transition-colors shadow-sm">
+                    <ArrowRight className="w-3.5 h-3.5 group-hover/link:translate-x-0.5 transition-transform" />
+                  </span>
+                  <span>Academics</span>
                 </Link>
               </div>
             </div>
@@ -111,13 +131,13 @@ export default function PartnersAccreditation() {
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 border-t border-slate-50">
                 <Link 
-                  href="/patient-guide" 
+                  href="/patient-rights" 
                   className="inline-flex items-center gap-3 text-slate-700 hover:text-red-600 text-xs font-bold transition-colors group/link"
                 >
                   <span className="w-7 h-7 rounded-full bg-[#c70909] text-white flex items-center justify-center group-hover/link:bg-red-700 transition-colors shadow-sm">
                     <ArrowRight className="w-3.5 h-3.5 group-hover/link:translate-x-0.5 transition-transform" />
                   </span>
-                  <span>Patient Rights</span>
+                  <span>Patient Rights & Responsibilities</span>
                 </Link>
 
                 <Link 
@@ -138,6 +158,16 @@ export default function PartnersAccreditation() {
                     <ArrowRight className="w-3.5 h-3.5 group-hover/link:translate-x-0.5 transition-transform" />
                   </span>
                   <span>Patient & Visitor Experience</span>
+                </Link>
+
+                <Link 
+                  href="/patient-guide" 
+                  className="inline-flex items-center gap-3 text-slate-700 hover:text-red-600 text-xs font-bold transition-colors group/link"
+                >
+                  <span className="w-7 h-7 rounded-full bg-[#c70909] text-white flex items-center justify-center group-hover/link:bg-red-700 transition-colors shadow-sm">
+                    <ArrowRight className="w-3.5 h-3.5 group-hover/link:translate-x-0.5 transition-transform" />
+                  </span>
+                  <span>Patient Guide</span>
                 </Link>
 
                 <Link 
@@ -219,27 +249,13 @@ export default function PartnersAccreditation() {
               <div className="flex items-center gap-4 flex-shrink-0">
                 
                 {/* NABH Badge Logo */}
-                <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-white flex items-center justify-center shadow-sm cursor-help" title="NABH Accredited">
-                  <svg className="w-full h-full" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="50" cy="50" r="48" stroke="#E65100" strokeWidth="2" />
-                    <circle cx="50" cy="50" r="42" stroke="#0D47A1" strokeWidth="1" strokeDasharray="2 2" />
-                    <path d="M40,51 A10,10 0 0,0 60,51" stroke="#2E7D32" strokeWidth="2" strokeLinecap="round" fill="none" />
-                    <path d="M60,49 A10,10 0 0,0 40,49" stroke="#EF6C00" strokeWidth="2" strokeLinecap="round" fill="none" />
-                    <text x="50%" y="32%" dominantBaseline="middle" textAnchor="middle" fill="#0D47A1" fontSize="16" fontWeight="900" fontFamily="sans-serif">NABH</text>
-                    <text x="50%" y="72%" dominantBaseline="middle" textAnchor="middle" fill="#E65100" fontSize="8" fontWeight="700" fontFamily="sans-serif" letterSpacing="0.5">ACCREDITED</text>
-                  </svg>
+                <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-white flex items-center justify-center shadow-sm cursor-help p-2 overflow-hidden" title="NABH Accredited">
+                  <img src="/images/nabh-logo-23.png" alt="NABH Accredited" className="w-full h-full object-contain scale-[0.85]" />
                 </div>
 
                 {/* NABL Badge Logo */}
-                <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-white flex items-center justify-center shadow-sm cursor-help" title="NABL Accredited">
-                  <svg className="w-full h-full" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="50" cy="50" r="48" stroke="#0D47A1" strokeWidth="2" />
-                    <circle cx="50" cy="50" r="42" stroke="#EF6C00" strokeWidth="1" strokeDasharray="2 2" />
-                    <circle cx="50" cy="50" r="10" stroke="#0D47A1" strokeWidth="1.5" fill="none" />
-                    <path d="M50,40 L50,60 M40,50 L60,50" stroke="#0D47A1" strokeWidth="1" />
-                    <text x="50%" y="32%" dominantBaseline="middle" textAnchor="middle" fill="#0D47A1" fontSize="16" fontWeight="900" fontFamily="sans-serif">NABL</text>
-                    <text x="50%" y="72%" dominantBaseline="middle" textAnchor="middle" fill="#EF6C00" fontSize="8" fontWeight="700" fontFamily="sans-serif" letterSpacing="0.5">ACCREDITED</text>
-                  </svg>
+                <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-white flex items-center justify-center shadow-sm cursor-help p-2 overflow-hidden" title="NABL Accredited">
+                  <img src="/images/NABL-LOGO.png" alt="NABL Accredited" className="w-full h-full object-contain scale-[0.85]" />
                 </div>
 
               </div>

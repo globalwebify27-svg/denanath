@@ -34,7 +34,7 @@ export default function SpecialtyClinics() {
   const allClinics = [...staticClinics, ...scrollingClinics];
 
   // Infinite loop creation for mobile slider
-  const extendedScrollingClinics = [...scrollingClinics, ...scrollingClinics, ...scrollingClinics];
+  const extendedScrollingClinics = [...allClinics, ...allClinics, ...allClinics];
 
   useEffect(() => {
     const container = sliderRef.current;
@@ -147,15 +147,6 @@ export default function SpecialtyClinics() {
 
         {/* 1. MOBILE-ONLY VIEW */}
         <div className="block md:hidden space-y-5">
-          
-          {/* Static First Two Boxes Row */}
-          <div className="flex gap-4">
-            {staticClinics.map((clinic) => (
-              <ClinicCard key={clinic.id} clinic={clinic} />
-            ))}
-          </div>
-
-          {/* Horizontally Infinite Scrolling Slider Container */}
           <div className="relative w-full">
             <div className="absolute top-0 bottom-0 left-0 w-6 bg-gradient-to-r from-[#f0fdf4] to-transparent z-20 pointer-events-none"></div>
             <div className="absolute top-0 bottom-0 right-0 w-6 bg-gradient-to-l from-[#f0fdf4] to-transparent z-20 pointer-events-none"></div>

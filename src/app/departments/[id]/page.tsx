@@ -421,15 +421,25 @@ export default async function DepartmentDetailsPage({
            
            if (img.length === 0) {
               $(card).remove();
-           } else if (img.length && textP.length) {
-              img.addClass('!m-0 !shadow-none !rounded-t-2xl !rounded-b-none !w-full !object-cover !h-[200px] md:!h-[240px]');
-              textP.addClass('!mb-0 !mt-0 text-[#002b5c] font-bold');
+           } else if (img.length) {
+              const hasName = textP.length > 0 && textP.text().trim().length > 0;
               
-              // Only wrap if it's not already inside a p-4 div
-              if (!textP.parent().hasClass('p-4')) {
-                  textP.wrap('<div class="p-4 mt-auto w-full bg-white flex items-center justify-center border-t border-slate-50"></div>');
+              // Apply standard gallery image size and crop regardless of whether it has a name
+              img.addClass('!m-0 !shadow-none !w-full !object-cover !h-[200px] md:!h-[240px]');
+
+              if (hasName) {
+                 img.addClass('!rounded-t-2xl !rounded-b-none');
+                 textP.addClass('!mb-0 !mt-0 text-[#002b5c] font-bold');
+                 
+                 // Only wrap if it's not already inside a p-4 div
+                 if (!textP.parent().hasClass('p-4')) {
+                     textP.wrap('<div class="p-4 mt-auto w-full bg-white flex items-center justify-center border-t border-slate-50"></div>');
+                 } else {
+                     textP.parent().addClass('mt-auto bg-white border-t border-slate-50 text-center');
+                 }
               } else {
-                  textP.parent().addClass('mt-auto bg-white border-t border-slate-50 text-center');
+                 img.addClass('!rounded-2xl');
+                 if (textP.length > 0) textP.remove();
               }
            }
         });
@@ -608,7 +618,7 @@ export default async function DepartmentDetailsPage({
                 <div className="text-slate-700 space-y-6 break-words leading-relaxed
                 [&_.department-gallery-section]:grid [&_.department-gallery-section]:grid-cols-1 [&_.department-gallery-section]:md:grid-cols-2 [&_.department-gallery-section]:lg:grid-cols-3 [&_.department-gallery-section]:gap-8
                 [&_.facilities-images-grid>div]:!p-0 [&_.facilities-images-grid>div]:!bg-white [&_.facilities-images-grid>div]:!border-slate-100 [&_.facilities-images-grid>div]:overflow-hidden [&_.facilities-images-grid>div]:flex [&_.facilities-images-grid>div]:flex-col [&_.facilities-images-grid>div]:rounded-2xl [&_.facilities-images-grid>div]:shadow-md
-                [&_.facilities-images-grid_img]:!m-0 [&_.facilities-images-grid_img]:!w-full [&_.facilities-images-grid_img]:!h-[200px] md:[&_.facilities-images-grid_img]:!h-[240px] [&_.facilities-images-grid_img]:!object-cover [&_.facilities-images-grid_img]:!rounded-t-xl [&_.facilities-images-grid_img]:!rounded-b-none [&_.facilities-images-grid_img]:!shadow-none
+                [&_.facilities-images-grid_img]:!m-0 [&_.facilities-images-grid_img]:!w-full [&_.facilities-images-grid>div:has(span:not(:empty))_img]:!h-[200px] md:[&_.facilities-images-grid>div:has(span:not(:empty))_img]:!h-[240px] [&_.facilities-images-grid>div:has(span:not(:empty))_img]:!object-cover [&_.facilities-images-grid>div:has(span:empty)_img]:!h-auto [&_.facilities-images-grid>div:has(span:empty)_img]:!object-contain [&_.facilities-images-grid>div:has(span:not(:empty))_img]:!rounded-t-xl [&_.facilities-images-grid>div:has(span:not(:empty))_img]:!rounded-b-none [&_.facilities-images-grid>div:has(span:empty)_img]:!rounded-xl [&_.facilities-images-grid_img]:!shadow-none
                 [&_.facilities-images-grid_span]:block [&_.facilities-images-grid_span]:p-4 [&_.facilities-images-grid_span]:!bg-white [&_.facilities-images-grid_span]:w-full [&_.facilities-images-grid_span]:empty:hidden [&_.facilities-images-grid_span]:text-[#002b5c] [&_.facilities-images-grid_span]:!mt-auto" 
                 dangerouslySetInnerHTML={{ __html: photoGalleryHtml }} />
              </div>

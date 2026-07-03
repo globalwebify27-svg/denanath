@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import { ChevronRight, ArrowRight, Activity, FileText } from "lucide-react";
+import { ChevronRight, ArrowRight, Activity, FileText, Award, Users } from "lucide-react";
 
 export default function CoursesAndPricing() {
   const leftCourses = [
@@ -74,6 +74,46 @@ export default function CoursesAndPricing() {
               </div>
             </div>
             <div className="relative z-10 flex items-center gap-2 bg-blue-500/20 group-hover:bg-blue-500/30 text-blue-300 px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-colors shrink-0 w-full sm:w-auto justify-center sm:justify-start">
+              <span>Click Here</span>
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </div>
+          </Link>
+
+          <Link 
+            href="/in-patient" 
+            className="group relative overflow-hidden bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl p-6 sm:p-8 flex flex-col sm:flex-row items-center sm:justify-between gap-4 sm:gap-6 transition-all duration-300 hover:shadow-2xl hover:shadow-purple-900/20 hover:-translate-y-1 border border-slate-700/50"
+          >
+            <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/10 rounded-bl-full -mr-4 -mt-4 transition-transform duration-500 group-hover:scale-110"></div>
+            <div className="flex items-center gap-4 sm:gap-5 relative z-10 w-full sm:w-auto">
+              <div className="w-12 h-12 rounded-full bg-slate-800/80 border border-slate-700 flex items-center justify-center shrink-0 shadow-inner">
+                <Users className="w-5 h-5 text-purple-400" />
+              </div>
+              <div>
+                <p className="text-slate-400 text-[10px] font-bold tracking-widest uppercase mb-1">View our</p>
+                <h3 className="text-white text-[15px] sm:text-lg font-semibold tracking-wide leading-snug">In Patient <br className="hidden sm:block" />Guide</h3>
+              </div>
+            </div>
+            <div className="relative z-10 flex items-center gap-2 bg-purple-500/20 group-hover:bg-purple-500/30 text-purple-300 px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-colors shrink-0 w-full sm:w-auto justify-center sm:justify-start">
+              <span>Click Here</span>
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </div>
+          </Link>
+
+          <Link 
+            href="/out-patient" 
+            className="group relative overflow-hidden bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl p-6 sm:p-8 flex flex-col sm:flex-row items-center sm:justify-between gap-4 sm:gap-6 transition-all duration-300 hover:shadow-2xl hover:shadow-amber-900/20 hover:-translate-y-1 border border-slate-700/50"
+          >
+            <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/10 rounded-bl-full -mr-4 -mt-4 transition-transform duration-500 group-hover:scale-110"></div>
+            <div className="flex items-center gap-4 sm:gap-5 relative z-10 w-full sm:w-auto">
+              <div className="w-12 h-12 rounded-full bg-slate-800/80 border border-slate-700 flex items-center justify-center shrink-0 shadow-inner">
+                <Award className="w-5 h-5 text-amber-400" />
+              </div>
+              <div>
+                <p className="text-slate-400 text-[10px] font-bold tracking-widest uppercase mb-1">View our</p>
+                <h3 className="text-white text-[15px] sm:text-lg font-semibold tracking-wide leading-snug">Out Patient <br className="hidden sm:block" />Guide</h3>
+              </div>
+            </div>
+            <div className="relative z-10 flex items-center gap-2 bg-amber-500/20 group-hover:bg-amber-500/30 text-amber-300 px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-colors shrink-0 w-full sm:w-auto justify-center sm:justify-start">
               <span>Click Here</span>
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </div>

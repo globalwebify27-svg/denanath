@@ -2,7 +2,8 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { ChevronRight, Camera, Video, MonitorPlay } from "lucide-react";
+import { ChevronRight, Camera, Video, MonitorPlay, Send, ChevronDown } from "lucide-react";
+
 import Image from "next/image";
 
 export default function VirtualTourClientPage() {
@@ -36,6 +37,7 @@ export default function VirtualTourClientPage() {
   const tabs = ["Facilities", "Technology", "Outpatient Services", "Rooms"];
   const [activeTab, setActiveTab] = useState(tabs[0]);
   const [activeView, setActiveView] = useState("Main Entrance");
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const locations = [
     { name: "Ambulance", category: "Facilities", img: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=800&auto=format&fit=crop" },
@@ -95,6 +97,21 @@ export default function VirtualTourClientPage() {
 
   // Currently we show all regardless of category to match the layout in the image
   // but if needed we can filter by activeTab
+
+  const activeLocation = locations.find(loc => loc.name === activeView) || locations[0];
+  const [pan, setPan] = useState({ x: 50, y: 50 });
+
+  const handlePan = (dx: number, dy: number) => {
+    setPan(prev => ({
+      x: Math.max(0, Math.min(100, prev.x + dx)),
+      y: Math.max(0, Math.min(100, prev.y + dy))
+    }));
+  };
+
+  // Reset pan when location changes
+  useEffect(() => {
+    setPan({ x: 50, y: 50 });
+  }, [activeView]);
 
   return (
     <div className="min-h-screen bg-[#f8fafc] font-sans selection:bg-teal-500/30">
@@ -162,56 +179,92 @@ export default function VirtualTourClientPage() {
                 <div className="w-20 h-1.5 bg-[#007a87] rounded-full mt-6 mb-2"></div>
               </div>
 
-              {/* Main 360 Viewer Placeholder */}
-              <div className="w-full relative rounded-2xl overflow-hidden bg-slate-800 shadow-xl border-4 border-white mb-8 aspect-video">
-                {/* We use an image as a placeholder for the iframe / 360 viewer */}
+              {/* Main 360 Viewer */}
+              <div 
+                className="w-full relative rounded-2xl overflow-hidden bg-slate-800 shadow-xl border-4 border-white mb-8 aspect-video group cursor-grab active:cursor-grabbing"
+                onMouseMove={(e) => {
+                  // Optional: slight parallax on mouse move if desired, but we'll stick to button controls for explicit "360 degree" feel
+                  if (e.buttons === 1) { // Drag to pan
+                    handlePan(-e.movementX * 0.1, -e.movementY * 0.1);
+                  }
+                }}
+              >
                 <div 
-                  className="absolute inset-0 bg-cover bg-center transition-transform duration-1000 scale-105 hover:scale-100" 
-                  style={{ backgroundImage: `url('https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=1200&auto=format&fit=crop')`}} 
+                  className="absolute inset-0 bg-no-repeat transition-all duration-300 ease-out" 
+                  style={{ 
+                    backgroundImage: `url('${activeLocation.img}')`,
+                    backgroundPosition: `${pan.x}% ${pan.y}%`,
+                    backgroundSize: '150% auto' // Zoomed in to allow panning
+                  }} 
                 />
                 
                 {/* 360 Tour Overlay UI Controls */}
-                <div className="absolute top-4 right-4 z-10">
-                  <select 
-                    className="bg-white/90 backdrop-blur text-sm font-bold text-[#002b5c] rounded-md px-3 py-2 border border-slate-200 shadow-sm focus:outline-none focus:ring-2 focus:ring-[#007a87]"
-                    value={activeView}
-                    onChange={(e) => setActiveView(e.target.value)}
-                  >
-                    {locations.map(loc => (
-                      <option key={loc.name} value={loc.name}>{loc.name}</option>
-                    ))}
-                  </select>
+                <div className="absolute top-4 right-4 z-20">
+                  <div className="relative">
+                    <button 
+                      onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                      onBlur={() => setTimeout(() => setIsDropdownOpen(false), 200)}
+                      className="flex items-center justify-between w-[220px] bg-white/95 backdrop-blur text-sm font-bold text-[#002b5c] rounded-md px-4 py-2.5 border border-slate-200 shadow-sm hover:border-[#007a87]/50 focus:outline-none focus:ring-2 focus:ring-[#007a87]/30 transition-all"
+                    >
+                      <span className="truncate">{activeView}</span>
+                      <ChevronDown className={`w-4 h-4 text-slate-500 transition-transform duration-200 ${isDropdownOpen ? 'rotate-180' : ''}`} />
+                    </button>
+
+                    {isDropdownOpen && (
+                      <div className="absolute top-full right-0 mt-2 w-[220px] bg-white rounded-lg shadow-[0_10px_40px_-10px_rgba(0,0,0,0.3)] border border-slate-100 overflow-hidden z-50 flex flex-col max-h-[300px]">
+                        <div className="overflow-y-auto [scrollbar-width:thin] [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:bg-slate-300 [&::-webkit-scrollbar-thumb]:rounded-full">
+                          {locations.map((loc, i) => (
+                            <div
+                              key={`${loc.name}-${i}`}
+                              onClick={() => {
+                                setActiveView(loc.name);
+                                setIsDropdownOpen(false);
+                              }}
+                              className={`px-4 py-2.5 text-sm cursor-pointer transition-colors ${
+                                activeView === loc.name
+                                  ? 'bg-[#002b5c] text-white font-bold'
+                                  : 'text-slate-700 hover:bg-slate-50 hover:text-[#002b5c]'
+                              }`}
+                            >
+                              {loc.name}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </div>
 
                 {/* Decorative UI elements representing 360 view controls */}
-                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 bg-white/20 backdrop-blur-md rounded-full px-4 py-2 border border-white/30 shadow-lg">
-                   <div className="w-8 h-8 rounded-full bg-white/40 flex items-center justify-center hover:bg-white cursor-pointer transition-colors"><ChevronRight className="w-5 h-5 text-slate-800 rotate-180" /></div>
-                   <div className="w-8 h-8 rounded-full bg-white/40 flex items-center justify-center hover:bg-white cursor-pointer transition-colors"><ChevronRight className="w-5 h-5 text-slate-800 -rotate-90" /></div>
-                   <div className="w-8 h-8 rounded-full bg-white/40 flex items-center justify-center hover:bg-white cursor-pointer transition-colors"><ChevronRight className="w-5 h-5 text-slate-800 rotate-90" /></div>
-                   <div className="w-8 h-8 rounded-full bg-white/40 flex items-center justify-center hover:bg-white cursor-pointer transition-colors"><ChevronRight className="w-5 h-5 text-slate-800" /></div>
+                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2 bg-white/20 backdrop-blur-md rounded-full px-4 py-2 border border-white/30 shadow-lg transition-opacity duration-300 opacity-70 group-hover:opacity-100">
+                   <div onClick={() => handlePan(-10, 0)} className="w-8 h-8 rounded-full bg-white/40 flex items-center justify-center hover:bg-white cursor-pointer transition-colors"><ChevronRight className="w-5 h-5 text-slate-800 rotate-180" /></div>
+                   <div onClick={() => handlePan(0, -10)} className="w-8 h-8 rounded-full bg-white/40 flex items-center justify-center hover:bg-white cursor-pointer transition-colors"><ChevronRight className="w-5 h-5 text-slate-800 -rotate-90" /></div>
+                   <div onClick={() => handlePan(0, 10)} className="w-8 h-8 rounded-full bg-white/40 flex items-center justify-center hover:bg-white cursor-pointer transition-colors"><ChevronRight className="w-5 h-5 text-slate-800 rotate-90" /></div>
+                   <div onClick={() => handlePan(10, 0)} className="w-8 h-8 rounded-full bg-white/40 flex items-center justify-center hover:bg-white cursor-pointer transition-colors"><ChevronRight className="w-5 h-5 text-slate-800" /></div>
                    <div className="w-px h-6 bg-white/40 mx-2" />
                    <div className="font-bold text-white text-xs px-2 tracking-wider flex items-center gap-1"><MonitorPlay className="w-4 h-4"/> 360° VIEW</div>
                 </div>
 
                 <div className="absolute bottom-4 left-4">
                   <div className="bg-white/90 rounded-md p-2 shadow-lg border border-slate-200">
-                    <div className="w-20 h-12 bg-slate-200 rounded overflow-hidden">
-                       <Image src="https://images.unsplash.com/photo-1586773860418-d37222d8fce3?q=80&w=200&auto=format&fit=crop" alt="mini map" width={80} height={48} className="object-cover w-full h-full" />
+                    <div className="w-20 h-12 bg-slate-200 rounded overflow-hidden relative">
+                       <Image src={activeLocation.img} alt="mini map" width={80} height={48} className="object-cover w-full h-full" />
+                       <div className="absolute inset-0 border-2 border-[#007a87]/50 rounded pointer-events-none" />
                     </div>
                   </div>
                 </div>
               </div>
 
               {/* Tabs */}
-              <div className="flex flex-wrap overflow-hidden mb-12 shadow-md rounded">
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-12">
                 {tabs.map((tab) => (
                   <button
                     key={tab}
                     onClick={() => setActiveTab(tab)}
-                    className={`flex-1 py-4 px-2 text-sm md:text-base font-normal tracking-wide transition-all text-center border-r-2 border-white last:border-r-0 ${
+                    className={`flex items-center justify-center px-4 py-4 text-sm md:text-base font-bold tracking-wide transition-colors duration-300 rounded-xl shadow-sm outline-none focus:outline-none border-none text-white ${
                       activeTab === tab 
-                        ? 'bg-[#c81b51] text-white' 
-                        : 'bg-[#2942a4] text-white hover:bg-[#203487]'
+                        ? 'bg-[#002b5c] hover:bg-[#9f0712]' 
+                        : 'bg-[#002b5c] hover:bg-[#9f0712]'
                     }`}
                   >
                     {tab}

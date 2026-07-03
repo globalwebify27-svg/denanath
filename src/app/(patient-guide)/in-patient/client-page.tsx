@@ -7,7 +7,7 @@ import { ChevronRight, Bed, Phone, MapPin, Clock, FileText, CheckCircle2 } from 
 export default function InPatientClientPage({ pageData }: { pageData: any }) {
   const patientGuideOptions = [
     { name: "Out Patient Guide", href: "/out-patient", active: false },
-    { name: "Hospital Admission Guide", href: "/in-patient", active: true },
+    { name: "In Patient Guide", href: "/in-patient", active: true },
     { name: "Health Packages", href: "/health-packages", active: false },
     { name: "Facilities", href: "/facilities", active: false },
     { name: "Virtual Tour", href: "/virtual-tour", active: false },
@@ -125,10 +125,10 @@ export default function InPatientClientPage({ pageData }: { pageData: any }) {
             <ChevronRight className="w-3.5 h-3.5" />
             <span className="hover:text-white transition-colors cursor-pointer">Patient & Visitors</span>
             <ChevronRight className="w-3.5 h-3.5" />
-            <span className="text-white">Hospital Admission Guide</span>
+            <span className="text-white">In Patient Guide</span>
           </div>
           <h1 className="text-4xl md:text-5xl font-extrabold text-white tracking-tight flex items-center gap-4">
-            Hospital Admission Guide
+            In Patient Guide
           </h1>
         </div>
       </div>
@@ -173,7 +173,7 @@ export default function InPatientClientPage({ pageData }: { pageData: any }) {
                   <span>Patient Guide</span>
                 </div>
                 <h2 className="text-3xl md:text-4xl font-extrabold text-[#002b5c] mb-6 tracking-tight">
-                  Hospital Admission Guide
+                  In Patient Guide
                 </h2>
                 <div className="w-20 h-1.5 bg-[#007a87] rounded-full mb-8"></div>
               </div>

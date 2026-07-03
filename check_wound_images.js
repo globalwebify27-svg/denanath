@@ -1,0 +1,1 @@
+const { PrismaClient } = require('@prisma/client'); const prisma = new PrismaClient(); prisma.department.findFirst({ where: { name: { contains: 'WOUND' } } }).then(d => console.log(d.description)).finally(() => prisma.$disconnect());

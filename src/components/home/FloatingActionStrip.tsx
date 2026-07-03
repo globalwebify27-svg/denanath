@@ -1,6 +1,6 @@
 import React from "react";
 import { 
-  Stethoscope, Search, ArrowRight, Activity, FileText, Ambulance, Building2, HeartPulse
+  Stethoscope, Search, ArrowRight, Activity, FileText, Ambulance, Building2, HeartPulse, MapPin, Newspaper
 } from "lucide-react";
 import Link from "next/link";
 
@@ -21,17 +21,23 @@ export default function FloatingActionStrip({ setIsSearchOpen }: FloatingActionS
             </div>
             <span className="text-[8px] sm:text-[9px] font-semibold uppercase tracking-[0.05em] text-slate-400 group-hover:text-[#007a87] transition-colors leading-tight">Doctors &<br/>Departments</span>
           </Link>
+          <Link href="/indoor-map" className="flex flex-col items-center gap-1.5 group cursor-pointer w-16 sm:w-20 text-center">
+            <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl flex items-center justify-center group-hover:bg-slate-50 transition-all">
+              <MapPin className="w-6 h-6 text-slate-400 group-hover:text-[#007a87] group-hover:scale-110 transition-all duration-300" />
+            </div>
+            <span className="text-[8px] sm:text-[9px] font-semibold uppercase tracking-[0.05em] text-slate-400 group-hover:text-[#007a87] transition-colors leading-tight">Map &<br/>Location</span>
+          </Link>
+          <Link href="/news-events" className="flex flex-col items-center gap-1.5 group cursor-pointer w-16 sm:w-20 text-center">
+            <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl flex items-center justify-center group-hover:bg-slate-50 transition-all">
+              <Newspaper className="w-6 h-6 text-slate-400 group-hover:text-[#007a87] group-hover:scale-110 transition-all duration-300" />
+            </div>
+            <span className="text-[8px] sm:text-[9px] font-semibold uppercase tracking-[0.05em] text-slate-400 group-hover:text-[#007a87] transition-colors leading-tight">News &<br/>Events</span>
+          </Link>
           <Link href="/services" className="flex flex-col items-center gap-1.5 group cursor-pointer w-16 sm:w-20 text-center">
             <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl flex items-center justify-center group-hover:bg-slate-50 transition-all">
               <Ambulance className="w-6 h-6 text-slate-400 group-hover:text-[#007a87] group-hover:scale-110 transition-all duration-300" />
             </div>
             <span className="text-[8px] sm:text-[9px] font-semibold uppercase tracking-[0.05em] text-slate-400 group-hover:text-[#007a87] transition-colors leading-tight">OPD<br/>Schedules</span>
-          </Link>
-          <Link href="/health-packages" className="flex flex-col items-center gap-1.5 group cursor-pointer w-16 sm:w-20 text-center">
-            <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl flex items-center justify-center group-hover:bg-slate-50 transition-all">
-              <Activity className="w-6 h-6 text-slate-400 group-hover:text-[#007a87] group-hover:scale-110 transition-all duration-300" />
-            </div>
-            <span className="text-[8px] sm:text-[9px] font-semibold uppercase tracking-[0.05em] text-slate-400 group-hover:text-[#007a87] transition-colors leading-tight">Health<br/>Packages</span>
           </Link>
         </div>
 
@@ -60,6 +66,12 @@ export default function FloatingActionStrip({ setIsSearchOpen }: FloatingActionS
 
         {/* Right Icons */}
         <div className="flex flex-wrap justify-center items-center gap-2 sm:gap-4 xl:gap-6 flex-shrink-0">
+          <Link href="/health-packages" className="flex flex-col items-center gap-1.5 group cursor-pointer w-16 sm:w-20 text-center">
+            <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl flex items-center justify-center group-hover:bg-slate-50 transition-all">
+              <Activity className="w-6 h-6 text-slate-400 group-hover:text-[#007a87] group-hover:scale-110 transition-all duration-300" />
+            </div>
+            <span className="text-[8px] sm:text-[9px] font-semibold uppercase tracking-[0.05em] text-slate-400 group-hover:text-[#007a87] transition-colors leading-tight">Health<br/>Packages</span>
+          </Link>
           <Link href="/out-patient" className="flex flex-col items-center gap-1.5 group cursor-pointer w-16 sm:w-20 text-center">
             <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl flex items-center justify-center group-hover:bg-slate-50 transition-all">
               <Building2 className="w-6 h-6 text-slate-400 group-hover:text-[#007a87] group-hover:scale-110 transition-all duration-300" />

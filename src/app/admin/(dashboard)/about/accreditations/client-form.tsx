@@ -12,7 +12,8 @@ export default function AccreditationsClientForm({ initialData }: { initialData:
     theme: "blue",
     policy: "",
     linkText: "",
-    link: "#"
+    link: "#",
+    image: ""
   }]);
 
   const addItem = () => {
@@ -24,7 +25,8 @@ export default function AccreditationsClientForm({ initialData }: { initialData:
       theme: "blue",
       policy: "",
       linkText: "",
-      link: "#"
+      link: "#",
+      image: ""
     }]);
   };
 
@@ -34,6 +36,17 @@ export default function AccreditationsClientForm({ initialData }: { initialData:
 
   const updateItem = (id: number, field: string, value: string) => {
     setItems(items.map(item => item.id === id ? { ...item, [field]: value } : item));
+  };
+
+  const handleImageUpload = (id: number, e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        updateItem(id, 'image', reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   return (
@@ -119,7 +132,30 @@ export default function AccreditationsClientForm({ initialData }: { initialData:
                 </select>
               </div>
 
-
+              <div className="md:col-span-2">
+                <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Badge Image (Optional)</label>
+                <div className="flex items-center gap-4">
+                  {item.image && (
+                    <img src={item.image} alt="Preview" className="w-16 h-16 rounded-full object-contain border border-slate-200 p-1 bg-white" />
+                  )}
+                  <input 
+                    type="file" 
+                    accept="image/*"
+                    onChange={(e) => handleImageUpload(item.id, e)}
+                    className="flex-1 p-3 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium text-sm"
+                  />
+                  {item.image && (
+                    <button 
+                      type="button" 
+                      onClick={() => updateItem(item.id, 'image', '')}
+                      className="px-4 py-2 text-sm text-red-600 bg-red-50 rounded-xl hover:bg-red-100 font-semibold"
+                    >
+                      Remove
+                    </button>
+                  )}
+                </div>
+                <p className="text-xs text-slate-400 mt-2">Upload a real image to show instead of the default SVG badge icon.</p>
+              </div>
 
               <div>
                 <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Link Text</label>

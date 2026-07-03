@@ -1,0 +1,1 @@
+const { PrismaClient } = require('@prisma/client'); const prisma = new PrismaClient(); prisma.department.findFirst({ where: { name: { contains: 'RHEUMATOLOGY' } } }).then(d => require('fs').writeFileSync('rheumatology_current.html', d ? d.description : 'Not found')).finally(() => prisma.$disconnect());

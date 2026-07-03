@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { 
-  Globe, FlaskConical, Heart, Home as HomeIcon, ShieldAlert, ChevronRight, ArrowRight 
+  Globe, FlaskConical, Heart, Home as HomeIcon, ShieldAlert, ChevronRight, ArrowRight, Microscope, Building2 
 } from "lucide-react";
 
 export default function ClinicalHub() {
@@ -42,6 +42,20 @@ export default function ClinicalHub() {
       Icon: ShieldAlert,
       activeClass: "border-l-4 border-l-red-600 text-red-600 bg-white shadow-[0_15px_30px_-10px_rgba(220,38,38,0.12)] border-slate-200",
       inactiveClass: "border-l-transparent text-slate-700 bg-white/70 hover:bg-white hover:text-red-600 hover:shadow-md border-slate-100"
+    },
+    {
+      id: "06",
+      title: "Unique Clinics",
+      Icon: Microscope,
+      activeClass: "border-l-4 border-l-teal-600 text-teal-600 bg-white shadow-[0_15px_30px_-10px_rgba(13,148,136,0.12)] border-slate-200",
+      inactiveClass: "border-l-transparent text-slate-700 bg-white/70 hover:bg-white hover:text-teal-600 hover:shadow-md border-slate-100"
+    },
+    {
+      id: "07",
+      title: "Facilities",
+      Icon: Building2,
+      activeClass: "border-l-4 border-l-indigo-600 text-indigo-600 bg-white shadow-[0_15px_30px_-10px_rgba(79,70,229,0.12)] border-slate-200",
+      inactiveClass: "border-l-transparent text-slate-700 bg-white/70 hover:bg-white hover:text-indigo-600 hover:shadow-md border-slate-100"
     }
   ];
 
@@ -149,6 +163,48 @@ export default function ClinicalHub() {
         textAccent: "text-red-600",
         bullet: "bg-red-500",
         btn: "bg-red-600 hover:bg-red-700 focus:ring-red-500"
+      }
+    },
+    {
+      title: "Unique Clinics",
+      image: "/images/unnamed (16).webp",
+      description: "Dedicated specialty clinics providing focused and comprehensive care for complex and rare conditions, staffed by our most experienced multi-disciplinary teams.",
+      Icon: Microscope,
+      features: [
+        "Specialized voice and swallow clinics",
+        "Comprehensive pediatric and adult obesity management",
+        "Dedicated advanced wound care and hyperbaric center"
+      ],
+      ctaText: "Explore Unique Clinics",
+      ctaLink: "/unique-clinics",
+      colorTheme: {
+        border: "border-teal-100",
+        bg: "bg-teal-50/30",
+        iconPod: "bg-teal-50 text-teal-600",
+        textAccent: "text-teal-600",
+        bullet: "bg-teal-500",
+        btn: "bg-teal-600 hover:bg-teal-700 focus:ring-teal-500"
+      }
+    },
+    {
+      title: "Facilities",
+      image: "/images/unnamed (17).webp",
+      description: "Our world-class infrastructure is designed with a patient-first approach, combining cutting-edge medical technology with comforting, state-of-the-art healing environments.",
+      Icon: Building2,
+      features: [
+        "Advanced modular operation theaters with latest tech",
+        "Spacious, luxury private rooms and deluxe suites",
+        "Centralized ICUs with high-dependency care units"
+      ],
+      ctaText: "View Facilities",
+      ctaLink: "/facilities",
+      colorTheme: {
+        border: "border-indigo-100",
+        bg: "bg-indigo-50/30",
+        iconPod: "bg-indigo-50 text-indigo-600",
+        textAccent: "text-indigo-600",
+        bullet: "bg-indigo-500",
+        btn: "bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500"
       }
     }
   ];

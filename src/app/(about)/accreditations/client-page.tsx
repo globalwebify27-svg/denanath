@@ -126,24 +126,32 @@ export default function AccreditationsClient({ data }: { data: any[] }) {
                       
                       {/* Styled Seal / Badge Graphic */}
                       <div className="shrink-0 w-[220px] flex flex-col items-center gap-3">
-                        <div className={`relative w-40 h-40 rounded-full flex items-center justify-center border-[8px] shadow-lg transition-transform duration-500 group-hover:scale-105 ${
-                          item.theme === 'red' 
-                            ? "border-[#d32f2f] bg-white text-[#d32f2f]" 
-                            : "border-[#1565c0] bg-white text-[#1565c0]"
-                        }`}>
-                          <div className={`absolute inset-2 rounded-full border-[3px] flex items-center justify-center flex-col ${
-                            item.theme === 'red' ? "border-[#d32f2f]/20" : "border-[#1565c0]/20"
-                          }`}>
-                            <Award className={`w-12 h-12 mb-1 ${item.theme === 'red' ? "text-[#d32f2f]" : "text-[#1565c0]"}`} />
-                            <span className="font-black text-xl tracking-wider">{item.certType}</span>
-                            <span className="text-[9px] font-bold tracking-widest uppercase mt-0.5">Accredited</span>
+                        {item.image ? (
+                          <div className="relative w-56 h-56 flex items-center justify-center transition-transform duration-500 group-hover:scale-105">
+                            <img src={item.image} alt={item.title} className="w-full h-full object-contain" />
                           </div>
-                        </div>
-                        <span className={`text-sm font-bold tracking-wider text-center ${
-                          item.theme === 'red' ? "text-[#d32f2f]" : "text-[#1565c0]"
-                        }`}>
-                          {item.certNumber?.replace(/-/g, '\u2011')}
-                        </span>
+                        ) : (
+                          <>
+                            <div className={`relative w-40 h-40 rounded-full flex items-center justify-center border-[8px] shadow-lg transition-transform duration-500 group-hover:scale-105 ${
+                              item.theme === 'red' 
+                                ? "border-[#d32f2f] bg-white text-[#d32f2f]" 
+                                : "border-[#1565c0] bg-white text-[#1565c0]"
+                            }`}>
+                              <div className={`absolute inset-2 rounded-full border-[3px] flex items-center justify-center flex-col ${
+                                item.theme === 'red' ? "border-[#d32f2f]/20" : "border-[#1565c0]/20"
+                              }`}>
+                                <Award className={`w-12 h-12 mb-1 ${item.theme === 'red' ? "text-[#d32f2f]" : "text-[#1565c0]"}`} />
+                                <span className="font-black text-xl tracking-wider">{item.certType}</span>
+                                <span className="text-[9px] font-bold tracking-widest uppercase mt-0.5">Accredited</span>
+                              </div>
+                            </div>
+                            <span className={`text-sm font-bold tracking-wider text-center ${
+                              item.theme === 'red' ? "text-[#d32f2f]" : "text-[#1565c0]"
+                            }`}>
+                              {item.certNumber?.replace(/-/g, '\u2011')}
+                            </span>
+                          </>
+                        )}
                       </div>
 
                       {/* Details */}
