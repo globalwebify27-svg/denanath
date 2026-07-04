@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
-"use client";
-
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import Link from "next/link";
 import { ChevronRight, Phone } from "lucide-react";
 
@@ -22,21 +20,6 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default function ContactUsPage() {
   const options: any[] = [];
-
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (window.innerWidth < 1024 && scrollContainerRef.current) {
-      const activeEl = scrollContainerRef.current.querySelector('[data-active="true"]') as HTMLElement;
-      if (activeEl) {
-        const container = scrollContainerRef.current;
-        const scrollPos = activeEl.offsetLeft - (container.offsetWidth / 2) + (activeEl.offsetWidth / 2);
-        setTimeout(() => {
-          container.scrollTo({ left: Math.max(0, scrollPos), behavior: 'smooth' });
-        }, 100);
-      }
-    }
-  }, []);
 
   return (
     <div className="min-h-screen bg-[#f8fafc] font-sans selection:bg-teal-500/30">
@@ -65,7 +48,7 @@ export default function ContactUsPage() {
           {/* Left Sidebar Navigation */}
           {options.length > 0 && (
             <div className="w-full lg:w-[280px] shrink-0 sticky top-14 lg:top-28 z-30 bg-[#f8fafc] py-2 lg:py-0">
-              <div ref={scrollContainerRef} className="bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 overflow-hidden flex flex-row lg:flex-col overflow-x-auto lg:overflow-x-visible scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden snap-x snap-mandatory">
+              <div className="bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 overflow-hidden flex flex-row lg:flex-col overflow-x-auto lg:overflow-x-visible scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden snap-x snap-mandatory">
                 {options.map((option, idx) => (
                   <Link
                     key={idx}
