@@ -133,14 +133,7 @@ export default function PatientReviews() {
             <p className="text-slate-600 text-[16px] font-light leading-relaxed mt-4">
               Read true experiences shared by our patients, detailing their journeys to wellness supported by our doctors and clinical staff.
             </p>
-            <div className="mt-6 flex flex-wrap gap-3 justify-start">
-              <Link href="/patient-stories" className="px-5 py-2.5 rounded-full bg-slate-50 text-slate-700 text-xs sm:text-sm font-semibold hover:bg-[#002b5c] hover:text-white transition-colors border border-slate-200 hover:border-[#002b5c] shadow-sm flex items-center justify-center">
-                Patient Stories
-              </Link>
-              <Link href="/values" className="px-5 py-2.5 rounded-full bg-slate-50 text-slate-700 text-xs sm:text-sm font-semibold hover:bg-[#002b5c] hover:text-white transition-colors border border-slate-200 hover:border-[#002b5c] shadow-sm flex items-center justify-center">
-                Values
-              </Link>
-            </div>
+
           </div>
         </div>
 

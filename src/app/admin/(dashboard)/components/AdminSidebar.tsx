@@ -18,7 +18,9 @@ import {
   ChevronRight,
   Menu,
   X,
-  Inbox
+  Inbox,
+  Calendar,
+  Activity
 } from "lucide-react";
 
 const MENU_ITEMS = [
@@ -26,6 +28,24 @@ const MENU_ITEMS = [
     name: "Overview",
     icon: <LayoutDashboard size={20} />,
     href: "/admin"
+  },
+  {
+    name: "Home Settings",
+    icon: <Globe size={20} />,
+    href: "/admin/home-settings"
+  },
+  {
+    name: "News & Events",
+    icon: <Calendar size={20} />,
+    href: "/admin/events"
+  },
+  {
+    name: "Pricing",
+    icon: <Activity size={20} />,
+    links: [
+      { name: "Implant Pricing", href: "/admin/pricing/implant" },
+      { name: "Cathlab Stent Pricing", href: "/admin/pricing/cathlab" }
+    ]
   },
   {
     name: "Form Submissions",
@@ -50,7 +70,7 @@ const MENU_ITEMS = [
     icon: <HeartHandshake size={20} />,
     links: [
       { name: "Out Patient Guide", href: "/admin/patient-visitors/out-patient" },
-      { name: "Hospital Admission", href: "/admin/patient-visitors/in-patient" },
+      { name: "In Patient Guide", href: "/admin/patient-visitors/in-patient" },
       { name: "Health Packages", href: "/admin/patient-visitors/health-packages" },
       { name: "Facilities", href: "/admin/patient-visitors/facilities" },
       { name: "Patient Stories", href: "/admin/patient-visitors/feedbacks" },

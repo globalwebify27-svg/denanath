@@ -2,12 +2,17 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Save, HeartPulse, Plus, Trash2 } from "lucide-react";
+import { Save, HeartPulse, Plus, Trash2 , Search} from "lucide-react";
 
 export default function PublicationsClientForm({ initialData }: { initialData: any }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState(initialData);
+
+  const handleSeoChange = (field: string, value: string) => {
+    setData((prev: any) => ({ ...prev, [field]: value }));
+  };
+
 
   // Initialize data if not present
   useEffect(() => {
@@ -319,6 +324,34 @@ export default function PublicationsClientForm({ initialData }: { initialData: a
           )}
         </div>
       </div>
+
+      {/* Card: SEO Settings */}
+      <div className="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden group hover:shadow-md transition-shadow duration-300 mt-8">
+        <div className="bg-slate-50/50 border-b border-slate-100 p-5 md:p-6 flex items-center gap-4">
+          <div className="bg-indigo-500/10 p-3 rounded-2xl text-indigo-600">
+            <Search size={24} strokeWidth={2.5} />
+          </div>
+          <div>
+            <h2 className="text-[20px] font-black text-[#002b5c]">SEO Settings</h2>
+            <p className="text-[13px] text-slate-500 font-medium">Manage search engine optimization meta tags.</p>
+          </div>
+        </div>
+        <div className="p-6 md:p-8 space-y-6">
+          <div>
+            <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Meta Title</label>
+            <input type="text" name="seoMetaTitle" value={data.seoMetaTitle || ""} onChange={(e) => handleSeoChange('seoMetaTitle', e.target.value)} className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 transition-all duration-200 text-slate-700 font-medium leading-relaxed" placeholder="Enter SEO Meta Title..." />
+          </div>
+          <div>
+            <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Meta Description</label>
+            <textarea name="seoMetaDescription" value={data.seoMetaDescription || ""} onChange={(e) => handleSeoChange('seoMetaDescription', e.target.value)} rows={3} className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 transition-all duration-200 text-slate-700 font-medium leading-relaxed resize-none" placeholder="Enter SEO Meta Description..." />
+          </div>
+          <div>
+            <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Keywords</label>
+            <textarea name="seoKeywords" value={data.seoKeywords || ""} onChange={(e) => handleSeoChange('seoKeywords', e.target.value)} rows={2} className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 transition-all duration-200 text-slate-700 font-medium leading-relaxed resize-none text-sm" placeholder="hospital, care, pune, best hospital..." />
+          </div>
+        </div>
+      </div>
+
     </div>
   );
 }

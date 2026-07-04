@@ -1,6 +1,22 @@
+import type { Metadata } from "next";
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
 import { ChevronRight, ArrowLeft } from "lucide-react";
+
+
+export async function generateMetadata(): Promise<Metadata> {
+  let seoData: any = {};
+  try {
+    const setting = await prisma.siteSetting.findUnique({ where: { key: 'page_simulation_other_facilities' } });
+    if (setting && setting.value) seoData = JSON.parse(setting.value);
+  } catch (error) {}
+
+  return {
+    ...(seoData.seoMetaTitle && { title: seoData.seoMetaTitle }),
+    ...(seoData.seoMetaDescription && { description: seoData.seoMetaDescription }),
+    ...(seoData.seoKeywords && { keywords: seoData.seoKeywords }),
+  };
+}
 
 export default async function OtherFacilitieson14thFloorPage() {
   const setting = await prisma.siteSetting.findUnique({ where: { key: 'page_simulation_other_facilities' } });

@@ -28,6 +28,9 @@ export async function POST(request: Request) {
         training: data.training,
         experience: data.experience,
         publications: data.publications,
+        seoMetaTitle: data.seoMetaTitle,
+        seoMetaDescription: data.seoMetaDescription,
+        seoKeywords: data.seoKeywords,
       },
     });
     return NextResponse.json(doctor);

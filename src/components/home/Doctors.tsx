@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useEffect, useRef } from "react";
@@ -135,9 +136,9 @@ export default function DoctorsSection() {
                     {doctor.experience}
                   </p>
 
-                  <button className="mt-auto w-full rounded-xl bg-[#002b5c] px-4 py-2.5 text-sm font-semibold text-white hover:bg-[#007a87] transition">
+                  <Link href="/book-appointment" className="mt-auto w-full rounded-xl bg-[#002b5c] px-4 py-2.5 text-sm font-semibold text-white hover:bg-[#007a87] transition flex items-center justify-center">
                     Book Appointment
-                  </button>
+                  </Link>
                 </div>
               </motion.div>
             ))}

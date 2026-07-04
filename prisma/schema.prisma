@@ -16,9 +16,12 @@ model Doctor {
   timings        String?  @db.LongText
   education      String?  @db.LongText
   training       String?  @db.LongText
-  experience     String?  @db.LongText
-  publications   String?  @db.LongText
-  createdAt      DateTime @default(now())
+  experience         String?  @db.LongText
+  publications       String?  @db.LongText
+  seoMetaTitle       String?
+  seoMetaDescription String?  @db.LongText
+  seoKeywords        String?  @db.LongText
+  createdAt          DateTime @default(now())
   updatedAt      DateTime @updatedAt
 }
 
@@ -28,9 +31,12 @@ model Department {
   description      String?  @db.LongText
   videoUrl         String?  @db.LongText
   headOfDepartment String?
-  icon             String?
-  status           Boolean  @default(true)
-  createdAt        DateTime @default(now())
+  icon               String?
+  status             Boolean  @default(true)
+  seoMetaTitle       String?
+  seoMetaDescription String?  @db.LongText
+  seoKeywords        String?  @db.LongText
+  createdAt          DateTime @default(now())
   updatedAt        DateTime @updatedAt
 }
 
@@ -38,9 +44,12 @@ model Service {
   id        String   @id @default(cuid())
   title     String
   icon      String?
-  items     String   @default("[]")
-  status    Boolean  @default(true)
-  createdAt DateTime @default(now())
+  items              String   @default("[]")
+  status             Boolean  @default(true)
+  seoMetaTitle       String?
+  seoMetaDescription String?  @db.LongText
+  seoKeywords        String?  @db.LongText
+  createdAt          DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 

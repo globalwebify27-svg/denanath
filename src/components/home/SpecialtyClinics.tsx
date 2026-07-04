@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import { 
   Mic, Baby, Activity, Footprints, Dumbbell, Mountain, Heart, Brain, ArrowRight, Stethoscope 
 } from "lucide-react";
@@ -176,7 +177,7 @@ export default function SpecialtyClinics() {
 
         {/* Universal View All Button */}
         <div className="mt-10 flex justify-center border-t border-emerald-200/60 pt-8">
-          <button className="
+          <Link href="/doctor-details" className="
             group flex items-center gap-3 rounded-full bg-emerald-700 
             px-7 py-3.5 sm:px-8 sm:py-4 text-sm sm:text-base font-semibold text-white 
             shadow-[0_10px_30px_rgba(4,120,87,0.3)] hover:bg-emerald-800 
@@ -185,7 +186,7 @@ export default function SpecialtyClinics() {
             <Stethoscope className="w-5 h-5 group-hover:animate-pulse" />
             View All Specialty Clinics
             <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-          </button>
+          </Link>
         </div>
 
       </div>

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { HospitalProvider } from "@/context/HospitalContext";
+import { prisma } from "@/lib/prisma";
 
 import QuickAccessWidget from "@/components/home/QuickAccessWidget";
 import ClientLayoutWrapper from "@/components/ClientLayoutWrapper";
@@ -15,11 +16,23 @@ const plusJakartaSans = Plus_Jakarta_Sans({
   display: "swap",
 });
 
-export const metadata: Metadata = {
-  title: "Deenanath Mangeshkar Hospital and Research Center | Pune",
-  description: "Official web portal of Deenanath Mangeshkar Hospital and Research Center, Pune. Experience state-of-the-art clinical super-specialties, Pune's finest doctor roster, 24/7 trauma emergency response, and preventative health care. Delivering medical excellence with human warmth.",
-  keywords: ["Deenanath Mangeshkar Hospital and Research Center", "DMH Pune", "Erandwane Hospital", "Best Hospital in Pune", "Book Doctor Appointment Pune", "Emergency Trauma Care Pune", "Mangeshkar Hospital Pune"],
-};
+export async function generateMetadata(): Promise<Metadata> {
+  let seoData: any = {};
+  try {
+    const setting = await prisma.siteSetting.findUnique({ where: { key: 'page_home' } });
+    if (setting && setting.value) {
+      seoData = JSON.parse(setting.value);
+    }
+  } catch (error) {
+    console.error("Error fetching home SEO:", error);
+  }
+
+  return {
+    title: seoData.seoMetaTitle || "Deenanath Mangeshkar Hospital and Research Center | Pune",
+    description: seoData.seoMetaDescription || "Official web portal of Deenanath Mangeshkar Hospital and Research Center, Pune. Experience state-of-the-art clinical super-specialties, Pune's finest doctor roster, 24/7 trauma emergency response, and preventative health care. Delivering medical excellence with human warmth.",
+    keywords: seoData.seoKeywords ? seoData.seoKeywords.split(',').map((k: string) => k.trim()) : ["Deenanath Mangeshkar Hospital and Research Center", "DMH Pune", "Erandwane Hospital", "Best Hospital in Pune", "Book Doctor Appointment Pune", "Emergency Trauma Care Pune", "Mangeshkar Hospital Pune"],
+  };
+}
 
 export default function RootLayout({
   children,

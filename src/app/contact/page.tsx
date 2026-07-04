@@ -1,8 +1,24 @@
+import type { Metadata } from "next";
 "use client";
 
 import React, { useEffect, useRef } from "react";
 import Link from "next/link";
 import { ChevronRight, Phone } from "lucide-react";
+
+
+export async function generateMetadata(): Promise<Metadata> {
+  let seoData: any = {};
+  try {
+    const setting = await prisma.siteSetting.findUnique({ where: { key: 'page_contact' } });
+    if (setting && setting.value) seoData = JSON.parse(setting.value);
+  } catch (error) {}
+
+  return {
+    ...(seoData.seoMetaTitle && { title: seoData.seoMetaTitle }),
+    ...(seoData.seoMetaDescription && { description: seoData.seoMetaDescription }),
+    ...(seoData.seoKeywords && { keywords: seoData.seoKeywords }),
+  };
+}
 
 export default function ContactUsPage() {
   const options: any[] = [];

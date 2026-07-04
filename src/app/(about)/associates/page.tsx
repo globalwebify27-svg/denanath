@@ -1,7 +1,23 @@
+import type { Metadata } from "next";
 import { prisma } from "@/lib/prisma";
 import AssociatesClientPage from "./client-page";
 
 export const dynamic = "force-dynamic";
+
+
+export async function generateMetadata(): Promise<Metadata> {
+  let seoData: any = {};
+  try {
+    const setting = await prisma.siteSetting.findUnique({ where: { key: 'page_associates' } });
+    if (setting && setting.value) seoData = JSON.parse(setting.value);
+  } catch (error) {}
+
+  return {
+    ...(seoData.seoMetaTitle && { title: seoData.seoMetaTitle }),
+    ...(seoData.seoMetaDescription && { description: seoData.seoMetaDescription }),
+    ...(seoData.seoKeywords && { keywords: seoData.seoKeywords }),
+  };
+}
 
 export default async function AssociatesPage() {
   const setting = await prisma.siteSetting.findUnique({ where: { key: 'page_associates' } });
@@ -9,7 +25,8 @@ export default async function AssociatesPage() {
   let associatesData: any[] = [];
   try { 
     if (setting) {
-      associatesData = JSON.parse(setting.value);
+      const parsed = JSON.parse(setting.value);
+      associatesData = Array.isArray(parsed) ? parsed : (parsed.items || []);
     } else {
       // Fallback data if not seeded yet
       associatesData = [

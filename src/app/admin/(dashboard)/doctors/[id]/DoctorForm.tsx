@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Save, Plus, Trash2, ArrowLeft, HeartPulse } from "lucide-react";
+import { Save, Plus, Trash2, ArrowLeft, HeartPulse, Search } from "lucide-react";
 
 
 export default function DoctorForm({ doctor, id }: { doctor: any; id: string }) {
@@ -81,6 +81,9 @@ export default function DoctorForm({ doctor, id }: { doctor: any; id: string }) 
     training: safeParse(doctor?.training),
     experience: safeParse(doctor?.experience),
     publications: safeParse(doctor?.publications).map((p: any) => typeof p === 'string' ? { title: p, link: "" } : p),
+    seoMetaTitle: doctor?.seoMetaTitle || "",
+    seoMetaDescription: doctor?.seoMetaDescription || "",
+    seoKeywords: doctor?.seoKeywords || "",
   });
 
   const handleArrayChange = (field: string, index: number, value: string) => {
@@ -436,6 +439,33 @@ export default function DoctorForm({ doctor, id }: { doctor: any; id: string }) 
         {formData.publications.length === 0 && (
           <p className="text-gray-500 text-sm italic">No publications added yet.</p>
         )}
+      </div>
+
+      {/* Card: SEO Settings */}
+      <div className="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden group hover:shadow-md transition-shadow duration-300 mt-6 mb-6">
+        <div className="bg-slate-50/50 border-b border-slate-100 p-5 md:p-6 flex items-center gap-4">
+          <div className="bg-indigo-500/10 p-3 rounded-2xl text-indigo-600">
+            <Search size={24} strokeWidth={2.5} />
+          </div>
+          <div>
+            <h2 className="text-[20px] font-black text-[#002b5c]">SEO Settings</h2>
+            <p className="text-[13px] text-slate-500 font-medium">Manage search engine optimization meta tags.</p>
+          </div>
+        </div>
+        <div className="p-6 md:p-8 space-y-6">
+          <div>
+            <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Meta Title</label>
+            <input type="text" value={formData.seoMetaTitle} onChange={(e) => setFormData({ ...formData, seoMetaTitle: e.target.value })} className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 transition-all duration-200 text-slate-700 font-medium leading-relaxed" placeholder="Enter SEO Meta Title..." />
+          </div>
+          <div>
+            <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Meta Description</label>
+            <textarea value={formData.seoMetaDescription} onChange={(e) => setFormData({ ...formData, seoMetaDescription: e.target.value })} rows={3} className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 transition-all duration-200 text-slate-700 font-medium leading-relaxed resize-none" placeholder="Enter SEO Meta Description..." />
+          </div>
+          <div>
+            <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Keywords</label>
+            <textarea value={formData.seoKeywords} onChange={(e) => setFormData({ ...formData, seoKeywords: e.target.value })} rows={2} className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 transition-all duration-200 text-slate-700 font-medium leading-relaxed resize-none text-sm" placeholder="hospital, care, pune, best hospital..." />
+          </div>
+        </div>
       </div>
 
     </form>

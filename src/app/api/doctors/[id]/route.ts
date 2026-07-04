@@ -30,6 +30,9 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
         training: data.training,
         experience: data.experience,
         publications: data.publications,
+        seoMetaTitle: data.seoMetaTitle,
+        seoMetaDescription: data.seoMetaDescription,
+        seoKeywords: data.seoKeywords,
       },
     });
     return NextResponse.json(doctor);

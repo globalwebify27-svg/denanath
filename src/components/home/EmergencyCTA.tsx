@@ -244,7 +244,7 @@ export default function EmergencyCTA() {
 
                   <div>
                     <h3 className="font-bold text-lg text-white tracking-wide">
-                      Urgent Appointment
+                      OPD Appointment
                     </h3>
                     <p className="text-xs sm:text-sm text-red-100/80 mt-0.5 font-medium">
                       Skip queues for priority live consultation

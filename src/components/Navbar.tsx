@@ -146,7 +146,7 @@ export default function Navbar() {
         { name: "Publications", href: "/publications" },
         { name: "Annual Reports", href: "/annual-reports" },
         { name: "Sponsors & CROs", href: "/sponsors-cros" },
-        { name: "Contact Us", href: "/contact-us" },
+        { name: "Contact Us", href: "/research-contact" },
       ],
     },
     {

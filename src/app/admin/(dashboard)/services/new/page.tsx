@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, Save, HeartPulse } from "lucide-react";
+import { ArrowLeft, Save, HeartPulse, Search } from "lucide-react";
 
 import IconPicker from "@/components/IconPicker";
 
@@ -14,6 +14,10 @@ export default function NewServicePage() {
     const itemsRaw = formData.get("items") as string;
     const status = formData.get("status") === "on";
 
+    const seoMetaTitle = formData.get("seoMetaTitle") as string;
+    const seoMetaDescription = formData.get("seoMetaDescription") as string;
+    const seoKeywords = formData.get("seoKeywords") as string;
+
     // Process comma separated items into JSON array
     const itemsArray = itemsRaw.split(",").map(item => item.trim()).filter(item => item !== "");
     const itemsStr = JSON.stringify(itemsArray);
@@ -24,6 +28,9 @@ export default function NewServicePage() {
         icon,
         items: itemsStr,
         status,
+        seoMetaTitle,
+        seoMetaDescription,
+        seoKeywords,
       },
     });
 
@@ -98,6 +105,33 @@ export default function NewServicePage() {
             </label>
           </div>
 
+        </div>
+
+        {/* Card: SEO Settings */}
+        <div className="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden group hover:shadow-md transition-shadow duration-300 mt-8">
+          <div className="bg-slate-50/50 border-b border-slate-100 p-5 md:p-6 flex items-center gap-4">
+            <div className="bg-indigo-500/10 p-3 rounded-2xl text-indigo-600">
+              <Search size={24} strokeWidth={2.5} />
+            </div>
+            <div>
+              <h2 className="text-[20px] font-black text-[#002b5c]">SEO Settings</h2>
+              <p className="text-[13px] text-slate-500 font-medium">Manage search engine optimization meta tags.</p>
+            </div>
+          </div>
+          <div className="p-6 md:p-8 space-y-6">
+            <div>
+              <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Meta Title</label>
+              <input type="text" name="seoMetaTitle" className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 transition-all duration-200 text-slate-700 font-medium leading-relaxed" placeholder="Enter SEO Meta Title..." />
+            </div>
+            <div>
+              <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Meta Description</label>
+              <textarea name="seoMetaDescription" rows={3} className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 transition-all duration-200 text-slate-700 font-medium leading-relaxed resize-none" placeholder="Enter SEO Meta Description..." />
+            </div>
+            <div>
+              <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Keywords</label>
+              <textarea name="seoKeywords" rows={2} className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 transition-all duration-200 text-slate-700 font-medium leading-relaxed resize-none text-sm" placeholder="hospital, care, pune, best hospital..." />
+            </div>
+          </div>
         </div>
 
         <div className="mt-10 pt-6 border-t border-gray-100 flex justify-end">

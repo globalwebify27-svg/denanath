@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, Save, Trash2, HeartPulse } from "lucide-react";
+import { ArrowLeft, Save, Trash2, HeartPulse, Search } from "lucide-react";
 import { notFound } from "next/navigation";
 
 import IconPicker from "@/components/IconPicker";
@@ -56,6 +56,10 @@ export default async function EditDepartmentPage({
     const videoUrl = formData.get("videoUrl") as string;
     const icon = formData.get("icon") as string;
     const status = formData.get("status") === "on";
+
+    const seoMetaTitle = formData.get("seoMetaTitle") as string;
+    const seoMetaDescription = formData.get("seoMetaDescription") as string;
+    const seoKeywords = formData.get("seoKeywords") as string;
 
     let galleryHtml = "";
     if (galleryJson) {
@@ -199,6 +203,9 @@ export default async function EditDepartmentPage({
         videoUrl,
         icon,
         status,
+        seoMetaTitle,
+        seoMetaDescription,
+        seoKeywords,
       },
     });
 
@@ -575,7 +582,36 @@ export default async function EditDepartmentPage({
                 Active Department (Visible on website)
               </label>
             </div>
+
           </div>
+
+          {/* Card: SEO Settings */}
+          <div className="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden group hover:shadow-md transition-shadow duration-300 mt-6">
+            <div className="bg-slate-50/50 border-b border-slate-100 p-5 md:p-6 flex items-center gap-4">
+              <div className="bg-indigo-500/10 p-3 rounded-2xl text-indigo-600">
+                <Search size={24} strokeWidth={2.5} />
+              </div>
+              <div>
+                <h2 className="text-[20px] font-black text-[#002b5c]">SEO Settings</h2>
+                <p className="text-[13px] text-slate-500 font-medium">Manage search engine optimization meta tags.</p>
+              </div>
+            </div>
+            <div className="p-6 md:p-8 space-y-6">
+              <div>
+                <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Meta Title</label>
+                <input type="text" name="seoMetaTitle" defaultValue={department.seoMetaTitle || ""} className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 transition-all duration-200 text-slate-700 font-medium leading-relaxed" placeholder="Enter SEO Meta Title..." />
+              </div>
+              <div>
+                <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Meta Description</label>
+                <textarea name="seoMetaDescription" defaultValue={department.seoMetaDescription || ""} rows={3} className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 transition-all duration-200 text-slate-700 font-medium leading-relaxed resize-none" placeholder="Enter SEO Meta Description..." />
+              </div>
+              <div>
+                <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Keywords</label>
+                <textarea name="seoKeywords" defaultValue={department.seoKeywords || ""} rows={2} className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 transition-all duration-200 text-slate-700 font-medium leading-relaxed resize-none text-sm" placeholder="hospital, care, pune, best hospital..." />
+              </div>
+            </div>
+          </div>
+
         </div>
       </form>
     </div>

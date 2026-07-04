@@ -1,7 +1,23 @@
+import type { Metadata } from "next";
 import { prisma } from "@/lib/prisma";
 import AcademicsClientPage from "./client-page";
 
 export const dynamic = "force-dynamic";
+
+
+export async function generateMetadata(): Promise<Metadata> {
+  let seoData: any = {};
+  try {
+    const setting = await prisma.siteSetting.findUnique({ where: { key: 'page_academics_info' } });
+    if (setting && setting.value) seoData = JSON.parse(setting.value);
+  } catch (error) {}
+
+  return {
+    ...(seoData.seoMetaTitle && { title: seoData.seoMetaTitle }),
+    ...(seoData.seoMetaDescription && { description: seoData.seoMetaDescription }),
+    ...(seoData.seoKeywords && { keywords: seoData.seoKeywords }),
+  };
+}
 
 export default async function AcademicsPage() {
   const setting = await prisma.siteSetting.findUnique({ where: { key: 'page_academics_info' } });

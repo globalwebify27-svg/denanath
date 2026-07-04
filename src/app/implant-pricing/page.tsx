@@ -1,28 +1,40 @@
-"use client";
-
 import React from 'react';
 import Link from 'next/link';
 import { ArrowLeft, ChevronRight, Info, Building2, Package, Tag, Layers, Stethoscope } from 'lucide-react';
+import { prisma } from "@/lib/prisma";
+import type { Metadata } from 'next';
 
-const tableData = [
-  { srNo: "1", system: "Primary Knee Replacement system", component: "femoral Component", feature: "Titanium alloy (all varients coated)", zimmer: "Zim-Fem Comp(Tit)", maxx: "Maxx-Fem Comp(Tit)", depuy: "Depuy-Fem comp(Tit)", sn: "SN-femoral comp-(Tit)", rate: "38,740" },
-  { srNo: "2", system: "Primary Knee Replacement system", component: "femoral Component", feature: "Oxidized Zirconium", zimmer: "Zim-Fem Comp(OZ)", maxx: "Maxx-Fem Comp(OZ)", depuy: "Depuy-Fem comp(OZ)", sn: "SN-femoral comp-(OZ)", rate: "38,740" },
-  { srNo: "3", system: "Primary Knee Replacement system", component: "femoral Component", feature: "Hi-Flex", zimmer: "Zim-Hiflex fem Comp", maxx: "Maxx-Hiflex Fem Comp", depuy: "Depuy-Hiflex Fem Comp", sn: "SN-Hiflex Fem Comp", rate: "25,860" },
-  { srNo: "4", system: "Primary Knee Replacement system", component: "femoral Component", feature: "CoCr(cobalt Chronium)", zimmer: "Zim-Fem Comp(CoCr)", maxx: "Maxx-Fem Comp(CoCr)", depuy: "Depuy-Fem Comp(CoCr)", sn: "SN-Fem Comp(CoCr)", rate: "24,090" },
-  { srNo: "5", system: "Primary Knee Replacement system", component: "Tibial Component", feature: "Titanium alloy (all varients coated)", zimmer: "Zim-Tib Comp(Tit)", maxx: "Maxx-Tib Comp(Tit)", depuy: "Depuy-Tib comp(Tit)", sn: "SN-Tiboral comp-(Tit)", rate: "24,280" },
-  { srNo: "6", system: "Primary Knee Replacement system", component: "Tibial Component", feature: "Oxidized Zirconium", zimmer: "Zim-Tib Comp(OZ)", maxx: "Maxx-Tib Comp(OZ)", depuy: "Depuy-Tib comp(OZ)", sn: "SN-Tiboral comp-(OZ)", rate: "24,280" },
-  { srNo: "7", system: "Primary Knee Replacement system", component: "Tibial Component", feature: "CoCr(cobalt Chronium)", zimmer: "Zim-Tib Comp(CoCr)", maxx: "Maxx-Tib Comp(CoCr)", depuy: "Depuy-Tib Comp(CoCr)", sn: "SN-Tib Comp(CoCr)", rate: "16,990" },
-  { srNo: "8", system: "Primary Knee Replacement system", component: "Articulating Surface or Insert", feature: "Any material", zimmer: "Zim-Insert", maxx: "Maxx-Tibial liner", depuy: "Depuy-insert", sn: "SN-P/S insert", rate: "9,550" },
-  { srNo: "9", system: "Primary Knee Replacement system", component: "Patella", feature: "Any material", zimmer: "Zim-NGK All poly Patella", maxx: "Maxx-Patella Universal", depuy: "Depuy-Patella Universal", sn: "SN-Gen II Patella", rate: "4,090" },
-  { srNo: "10", system: "Primary Knee Replacement system", component: "Tibial tray and insert", feature: "polyethylene or cross linked polyethylene or highly cross linked polyethylene or any other material", zimmer: "NA", maxx: "NA", depuy: "NA", sn: "NA", rate: "12,960" },
-  { srNo: "11", system: "Primary Knee Replacement system", component: "Tibial tray and insert", feature: "Tibial-metallic,Insert-polyethylene or cross linked polyethylene or highly cross linked polyethylene or any other material", zimmer: "NA", maxx: "NA", depuy: "NA", sn: "NA", rate: "26,546" },
-  { srNo: "12", system: "Revision knee Replacement System", component: "femoral Component", feature: "Any material", zimmer: "Zim-LCCK Fem Comp", maxx: "NA", depuy: "NA", sn: "NA", rate: "62,770" },
-  { srNo: "13", system: "Revision knee Replacement System", component: "Tibial Component or Tibial tray", feature: "Any material", zimmer: "Zim-LCCK Tib comp", maxx: "NA", depuy: "NA", sn: "NA", rate: "31,220" },
-  { srNo: "14", system: "Revision knee Replacement System", component: "Articulating Surface or Insert", feature: "Any material", zimmer: "Zim-LCCK Insert", maxx: "NA", depuy: "NA", sn: "NA", rate: "15,870" },
-  { srNo: "15", system: "Revision knee Replacement System", component: "Patella", feature: "Any material", zimmer: "Zim-LCCK All poly Patella", maxx: "NA", depuy: "NA", sn: "NA", rate: "4,090" }
-];
+export const dynamic = "force-dynamic";
 
-export default function ImplantPricingPage() {
+export async function generateMetadata(): Promise<Metadata> {
+  const setting = await prisma.siteSetting.findUnique({ where: { key: 'page_implant_pricing' } });
+  if (setting) {
+    try {
+      const parsed = JSON.parse(setting.value);
+      return {
+        title: parsed.seoMetaTitle || "Our Implant Pricing",
+        description: parsed.seoMetaDescription || "",
+        keywords: parsed.seoKeywords || "",
+      }
+    } catch(e){}
+  }
+  return { title: "Our Implant Pricing" }
+}
+
+export default async function ImplantPricingPage() {
+  const setting = await prisma.siteSetting.findUnique({ where: { key: 'page_implant_pricing' } });
+  let data: any = {
+    title: "Our Implant Pricing",
+    subtitle: "We have implemented the new pricing for Total Knee Replacement implants w.e.f August 2017 at our hospital.",
+    tableData: []
+  };
+
+  try {
+    if (setting) data = JSON.parse(setting.value);
+  } catch (e) {}
+
+  const tableData = data.tableData || [];
+
   return (
     <div className="min-h-screen bg-[#f8fafc]">
       
@@ -36,7 +48,7 @@ export default function ImplantPricingPage() {
           <nav className="flex items-center gap-2 text-sm text-[#b2dfdb] mb-8">
             <Link href="/" className="hover:text-white transition-colors">Home</Link>
             <ChevronRight className="w-4 h-4" />
-            <span className="text-white font-medium">Our Implant Pricing</span>
+            <span className="text-white font-medium">{data.title}</span>
           </nav>
           
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
@@ -46,10 +58,10 @@ export default function ImplantPricingPage() {
                 <span>Orthopedics Department</span>
               </div>
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight tracking-tight mb-4">
-                Our Implant Pricing
+                {data.title}
               </h1>
               <p className="text-lg text-[#b2dfdb] font-light max-w-2xl">
-                We have implemented the new pricing for Total Knee Replacement implants w.e.f August 2017 at our hospital.
+                {data.subtitle}
               </p>
             </div>
             
@@ -106,7 +118,7 @@ export default function ImplantPricingPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
-                {tableData.map((row, idx) => (
+                {tableData.map((row: any, idx: number) => (
                   <tr key={idx} className="hover:bg-slate-50 transition-colors group">
                     <td className="py-4 px-4 text-slate-500 font-medium text-center border-r border-slate-100">{row.srNo}</td>
                     <td className="py-4 px-6 text-slate-800 font-semibold border-r border-slate-100">{row.system}</td>

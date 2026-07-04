@@ -18,6 +18,7 @@ import DoctorsSection from "@/components/home/Doctors";
 import PatientJourney from "@/components/home/Patient";
 import EmergencyCTA from "@/components/home/EmergencyCTA";
 import CoursesAndPricing from "@/components/home/CoursesAndPricing";
+import QuickLinksCTA from "@/components/home/QuickLinksCTA";
 
 export default function Home() {
   const { doctors, departments } = useHospital();
@@ -59,6 +60,7 @@ export default function Home() {
       {/* 7. CLINICAL HUB SECTION */}
 
       <CoursesAndPricing />
+      <QuickLinksCTA />
 
       {/* 8. PATIENT REVIEWS & STORIES */}
       <PatientReviews />

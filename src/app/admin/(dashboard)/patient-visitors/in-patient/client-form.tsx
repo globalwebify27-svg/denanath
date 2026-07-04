@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Save, HeartPulse, List, Bed, ShieldCheck, Phone, CheckCircle2 } from "lucide-react";
+import { Save, HeartPulse, List, Bed, ShieldCheck, Phone, CheckCircle2, Search } from "lucide-react";
 
 export default function InPatientClientForm({ initialData }: { initialData: any }) {
   const router = useRouter();
@@ -75,7 +75,10 @@ export default function InPatientClientForm({ initialData }: { initialData: any 
     preAuthDetails: {
       timing: initialData?.preAuthDetails?.timing || "For pre-authorization\n10.00 a.m. to 1.30 p.m. & 3 p.m. to 6 p.m. Mon. to Sat. & Sun. 10 a.m. to 2 p.m.",
       requirements: initialData?.preAuthDetails?.requirements ? initialData.preAuthDetails.requirements.join("\n") : "Health Insurance Policy copy, must for individual policy holders. Photo ID card if issued by TPA, Employee ID card (corporate policy holder)\nPatient and Policy holder Aadhar Card, PAN card.\nPassport size photo only for (Max Bhupa, Applo Munich, SBI General Ins., Manipal and Cigna TTK)\nAdmission note given by your treating doctor.\nAll necessary investigations reports.\nAddress proof (electricity bill) telephone bill / Rental agreement copy / bank statement.\nOur liaison officer will guide you for filling pre-authorization."
-    }
+    },
+    seoMetaTitle: initialData?.seoMetaTitle || "",
+    seoMetaDescription: initialData?.seoMetaDescription || "",
+    seoKeywords: initialData?.seoKeywords || ""
   });
 
   const handleChange = (field: string, value: string) => {
@@ -164,7 +167,10 @@ export default function InPatientClientForm({ initialData }: { initialData: any 
       preAuthDetails: {
         timing: d.preAuthDetails.timing,
         requirements: d.preAuthDetails.requirements.split('\n').map((s: string) => s.trim()).filter((s: string) => s)
-      }
+      },
+      seoMetaTitle: d.seoMetaTitle,
+      seoMetaDescription: d.seoMetaDescription,
+      seoKeywords: d.seoKeywords
     });
   };
 
@@ -228,10 +234,10 @@ export default function InPatientClientForm({ initialData }: { initialData: any 
         <div className="absolute top-0 left-0 w-2 h-full bg-gradient-to-b from-[#002b5c] to-[#007a87]"></div>
         <div className="z-10 relative">
           <h1 className="text-[32px] md:text-[40px] font-black text-[#002b5c] tracking-tight leading-tight mb-2 flex items-center gap-3">
-            Hospital Admission
+            In Patient Guide
           </h1>
           <p className="text-[15px] font-medium text-slate-500 max-w-xl leading-relaxed">
-            Manage the information displayed on the Hospital Admission page.
+            Manage the information displayed on the In Patient Guide page.
           </p>
         </div>
         <div className="z-10 shrink-0 mt-4 lg:mt-0 flex gap-3">
@@ -654,6 +660,33 @@ export default function InPatientClientForm({ initialData }: { initialData: any 
           </div>
         </div>
 
+      </div>
+
+      {/* Card: SEO Settings */}
+      <div className="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden group hover:shadow-md transition-shadow duration-300">
+        <div className="bg-slate-50/50 border-b border-slate-100 p-5 md:p-6 flex items-center gap-4">
+          <div className="bg-indigo-500/10 p-3 rounded-2xl text-indigo-600">
+            <Search size={24} strokeWidth={2.5} />
+          </div>
+          <div>
+            <h2 className="text-[20px] font-black text-[#002b5c]">SEO Settings</h2>
+            <p className="text-[13px] text-slate-500 font-medium">Manage search engine optimization meta tags.</p>
+          </div>
+        </div>
+        <div className="p-6 md:p-8 space-y-6">
+          <div>
+            <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Meta Title</label>
+            <input type="text" name="seoMetaTitle" value={data.seoMetaTitle} onChange={(e) => handleChange('seoMetaTitle', e.target.value)} className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 transition-all duration-200 text-slate-700 font-medium leading-relaxed" placeholder="Enter SEO Meta Title..." />
+          </div>
+          <div>
+            <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Meta Description</label>
+            <textarea name="seoMetaDescription" value={data.seoMetaDescription} onChange={(e) => handleChange('seoMetaDescription', e.target.value)} rows={3} className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 transition-all duration-200 text-slate-700 font-medium leading-relaxed resize-none" placeholder="Enter SEO Meta Description..." />
+          </div>
+          <div>
+            <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Keywords</label>
+            <textarea name="seoKeywords" value={data.seoKeywords} onChange={(e) => handleChange('seoKeywords', e.target.value)} rows={2} className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 transition-all duration-200 text-slate-700 font-medium leading-relaxed resize-none text-sm" placeholder="hospital, care, pune, best hospital..." />
+          </div>
+        </div>
       </div>
 
     </form>

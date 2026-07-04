@@ -2,6 +2,7 @@ import { prisma } from "@/lib/prisma";
 import Link from "next/link";
 import { Search, Plus, Edit, HeartPulse } from "lucide-react";
 import DepartmentSearch from "./DepartmentSearch";
+import InlineSeoForm from "@/app/admin/(dashboard)/components/InlineSeoForm";
 
 export const dynamic = "force-dynamic";
 
@@ -14,6 +15,10 @@ export default async function AdminDepartmentsPage({
   const query = resolvedParams.q || "";
   const page = Math.max(1, parseInt(resolvedParams.page || "1", 10));
   const itemsPerPage = 10;
+
+  const setting = await prisma.siteSetting.findUnique({ where: { key: 'page_departments' } });
+  let seoData: any = {};
+  try { if (setting) seoData = JSON.parse(setting.value); } catch (e) {}
 
   const totalCount = await prisma.department.count({
     where: {
@@ -64,6 +69,8 @@ export default async function AdminDepartmentsPage({
            <HeartPulse size={200} className="text-[#007a87] -mt-10 -mr-10" />
         </div>
       </div>
+
+      <InlineSeoForm settingKey="page_departments" initialData={seoData} />
 
       {/* Modern Search & Filter Bar */}
       <div className="bg-white p-2 rounded-2xl shadow-[0_4px_20px_rgb(0,0,0,0.03)] border border-gray-100 mb-6 flex flex-col md:flex-row gap-4 items-center justify-between">

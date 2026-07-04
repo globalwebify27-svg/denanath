@@ -115,21 +115,7 @@ export default function PatientJourney() {
               We ensure a smooth, transparent, and compassionate experience at every phase of your recovery.
             </p>
 
-            {/* Added Links */}
-            <div className="mt-8 flex flex-wrap gap-3 justify-center lg:justify-start">
-              <Link href="/departments" className="px-5 py-2.5 rounded-full bg-slate-50 text-slate-700 text-xs sm:text-sm font-semibold hover:bg-[#002b5c] hover:text-white transition-colors border border-slate-200 hover:border-[#002b5c] shadow-sm flex items-center justify-center text-center">
-                Specialities and Departments-Medical/Surgical/Allied
-              </Link>
-              <Link href="/doctors" className="px-5 py-2.5 rounded-full bg-slate-50 text-slate-700 text-xs sm:text-sm font-semibold hover:bg-[#002b5c] hover:text-white transition-colors border border-slate-200 hover:border-[#002b5c] shadow-sm flex items-center justify-center text-center">
-                Doctors-Medical/Surgical
-              </Link>
-              <Link href="/diagnosis" className="px-5 py-2.5 rounded-full bg-slate-50 text-slate-700 text-xs sm:text-sm font-semibold hover:bg-[#002b5c] hover:text-white transition-colors border border-slate-200 hover:border-[#002b5c] shadow-sm flex items-center justify-center">
-                Diagnosis
-              </Link>
-              <Link href="/opd-appointment" className="px-5 py-2.5 rounded-full bg-slate-50 text-slate-700 text-xs sm:text-sm font-semibold hover:bg-[#002b5c] hover:text-white transition-colors border border-slate-200 hover:border-[#002b5c] shadow-sm flex items-center justify-center">
-                OPD Appointment
-              </Link>
-            </div>
+
           </div>
 
           {/* Right Side: The 2-Box Fixed Window Slider */}

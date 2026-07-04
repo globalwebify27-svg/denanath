@@ -1,25 +1,40 @@
-"use client";
-
 import React from 'react';
 import Link from 'next/link';
 import { ArrowLeft, ChevronRight, Info, HeartPulse, Tag, Building2, Package, Layers } from 'lucide-react';
+import { prisma } from "@/lib/prisma";
+import type { Metadata } from 'next';
 
-const stentData = [
-  { srNo: "1", item: "STENT - ULTIMASTER NAGOMI TERUMO", category: "DRUG ELUTING", manufacturer: "TERUMO INDIA PVT. LTD.", mrp: "41,145.33" },
-  { srNo: "2", item: "STENT - ULTIMASTER TANSEI TERUMO", category: "DRUG ELUTING", manufacturer: "TERUMO INDIA PVT. LTD.", mrp: "23,625.00" },
-  { srNo: "3", item: "STENT - ONYX FRONTIER", category: "DRUG ELUTING", manufacturer: "MEDITRONIC", mrp: "41,142.52" },
-  { srNo: "4", item: "STENT - INTEGRITY RESOLUTE", category: "DRUG ELUTING", manufacturer: "MEDITRONIC", mrp: "23,625.00" },
-  { srNo: "5", item: "STENT - SYNERGY XD", category: "DRUG ELUTING", manufacturer: "BOSTON SCIENTIFIC INDIA PVT. LTD.", mrp: "41,145.33" },
-  { srNo: "6", item: "STENT - SYNERGY MEGATRON", category: "DRUG ELUTING", manufacturer: "BOSTON SCIENTIFIC INDIA PVT. LTD.", mrp: "41,145.33" },
-  { srNo: "7", item: "STENT - XIENCE XPEDITION", category: "DRUG ELUTING", manufacturer: "ABBOTT VASCULAR", mrp: "24,999.00" },
-  { srNo: "8", item: "STENT - XIENCE SIERRA", category: "DRUG ELUTING", manufacturer: "ABBOTT VASCULAR", mrp: "41,145.33" },
-  { srNo: "9", item: "STENT - XIENCE SKYPOINT", category: "DRUG ELUTING", manufacturer: "ABBOTT VASCULAR", mrp: "41,145.33" },
-  { srNo: "10", item: "STENT - ORSIRO", category: "DRUG ELUTING", manufacturer: "BIOTRONIK MEDICAL DEVICES INDIA PVT. LTD.", mrp: "41,143.05" },
-  { srNo: "11", item: "STENT - MISSION", category: "DRUG ELUTING", manufacturer: "BIOTRONIK MEDICAL DEVICES INDIA PVT. LTD.", mrp: "41,143.05" },
-  { srNo: "12", item: "STENT - GRAFT MASTER", category: "COVERED", manufacturer: "ABBOTT VASCULAR", mrp: "11,300.26" }
-];
+export const dynamic = "force-dynamic";
 
-export default function CathlabPricingPage() {
+export async function generateMetadata(): Promise<Metadata> {
+  const setting = await prisma.siteSetting.findUnique({ where: { key: 'page_cathlab_pricing' } });
+  if (setting) {
+    try {
+      const parsed = JSON.parse(setting.value);
+      return {
+        title: parsed.seoMetaTitle || "Cathlab Pharmacy Stent Price List",
+        description: parsed.seoMetaDescription || "",
+        keywords: parsed.seoKeywords || "",
+      }
+    } catch(e){}
+  }
+  return { title: "Cathlab Pharmacy Stent Price List" }
+}
+
+export default async function CathlabPricingPage() {
+  const setting = await prisma.siteSetting.findUnique({ where: { key: 'page_cathlab_pricing' } });
+  let data: any = {
+    title: "Cathlab Pharmacy Stent Price List",
+    subtitle: "We have implemented the new pricing for Cathlab implants at our hospital w.e.f. 1st April, 2026.",
+    tableData: []
+  };
+
+  try {
+    if (setting) data = JSON.parse(setting.value);
+  } catch (e) {}
+
+  const stentData = data.tableData || [];
+
   return (
     <div className="min-h-screen bg-[#f8fafc]">
       
@@ -33,7 +48,7 @@ export default function CathlabPricingPage() {
           <nav className="flex items-center gap-2 text-sm text-blue-200 mb-8">
             <Link href="/" className="hover:text-white transition-colors">Home</Link>
             <ChevronRight className="w-4 h-4" />
-            <span className="text-white font-medium">Cathlab Pharmacy Stent Price List</span>
+            <span className="text-white font-medium">{data.title}</span>
           </nav>
           
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
@@ -42,11 +57,10 @@ export default function CathlabPricingPage() {
                 <HeartPulse className="w-4 h-4 text-cyan-400" />
                 <span>Cardiology Department</span>
               </div>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight tracking-tight mb-4">
-                Cathlab Pharmacy <br className="hidden md:block"/>Stent Price List
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight tracking-tight mb-4" dangerouslySetInnerHTML={{ __html: data.title.replace('Pharmacy', 'Pharmacy <br className="hidden md:block"/>') }}>
               </h1>
               <p className="text-lg text-blue-100 font-light max-w-2xl">
-                We have implemented the new pricing for Cathlab implants at our hospital w.e.f. 1st April, 2026.
+                {data.subtitle}
               </p>
             </div>
             
@@ -92,7 +106,7 @@ export default function CathlabPricingPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
-                {stentData.map((row, idx) => (
+                {stentData.map((row: any, idx: number) => (
                   <tr key={idx} className="hover:bg-slate-50 transition-colors group">
                     <td className="py-5 px-6 text-slate-500 font-medium text-center border-r border-slate-100">{row.srNo}</td>
                     <td className="py-5 px-8 text-slate-800 font-bold border-r border-slate-100 text-[15px]">{row.item}</td>
