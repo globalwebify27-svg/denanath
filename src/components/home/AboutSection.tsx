@@ -49,16 +49,24 @@ export default function AboutSection() {
               Deenanath Mangeshkar Hospital & Research Center is a charitable, multi-specialty hospital located in the heart of Pune, India. Founded in 2001, today it is one of the largest hospital in Pune, with 800 beds. Deenanath Mangeshkar Hospital offers state-of-the-art diagnostic, therapeutic and intensive care facilities in a one-stop medical center.
             </p>
             
-            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
+            <div className="flex flex-col xl:flex-row items-start xl:items-center gap-6 flex-wrap">
               <Link 
                 href="/about-hospital" 
-                className="px-8 py-4 bg-slate-900 hover:bg-[#d9232d] text-white rounded-xl text-sm font-semibold transition-all shadow-lg hover:shadow-[0_8px_30px_rgba(217,35,45,0.3)] flex items-center gap-2 group"
+                className="px-8 py-4 bg-slate-900 hover:bg-[#d9232d] text-white rounded-xl text-sm font-semibold transition-all shadow-lg hover:shadow-[0_8px_30px_rgba(217,35,45,0.3)] flex items-center gap-2 group shrink-0"
               >
                 <span>Discover Our Legacy</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </Link>
+
+              <Link 
+                href="/research-and-publication" 
+                className="px-8 py-4 bg-white border border-slate-200 hover:border-slate-300 hover:bg-slate-50 text-slate-900 rounded-xl text-sm font-semibold transition-all shadow-sm flex items-center gap-2 group shrink-0"
+              >
+                <span>Research & Publication</span>
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </Link>
               
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-4 shrink-0 mt-2 xl:mt-0">
                  <div className="flex -space-x-3">
                     <img className="w-10 h-10 rounded-full border-2 border-white shadow-sm" src="https://i.pravatar.cc/100?img=1" alt="Doctor" />
                     <img className="w-10 h-10 rounded-full border-2 border-white shadow-sm" src="https://i.pravatar.cc/100?img=2" alt="Doctor" />

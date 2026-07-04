@@ -6,6 +6,7 @@ export const dynamic = "force-dynamic";
 
 export default async function AdminDashboardOverview() {
   const doctorsCount = await prisma.doctor.count();
+  const departmentsCount = await prisma.department.count();
 
   const recentDoctors = await prisma.doctor.findMany({ orderBy: { createdAt: 'desc' }, take: 2 });
   const recentSubmissions = await prisma.formSubmission.findMany({ orderBy: { createdAt: 'desc' }, take: 2 });
@@ -62,7 +63,7 @@ export default async function AdminDashboardOverview() {
     },
     {
       title: "Departments",
-      value: "14",
+      value: departmentsCount.toString(),
       label: "Specialties",
       icon: <Building2 className="w-6 h-6 text-white" />,
       gradient: "from-[#d9232d] to-[#ff4b55]",
