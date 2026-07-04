@@ -6,17 +6,7 @@ const nextConfig: NextConfig = {
     serverActions: {
       bodySizeLimit: '10mb',
     },
-    outputFileTracingExcludes: {
-      '*': [
-        'node_modules/@swc/core-linux-x64-gnu',
-        'node_modules/@swc/core-linux-x64-musl',
-        'node_modules/@esbuild/linux-x64',
-        'node_modules/eslint',
-        'node_modules/typescript',
-        'node_modules/prettier',
-        'public/**/*',
-      ],
-    },
+
   },
   // @ts-ignore: typescript config is valid but missing in strict NextConfig type
   typescript: {

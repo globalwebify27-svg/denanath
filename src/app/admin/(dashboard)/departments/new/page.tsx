@@ -105,6 +105,7 @@ export default function NewDepartmentPage() {
 
     // Create department without description first
     const newDepartment = await prisma.department.create({
+      data: {
         name,
         headOfDepartment,
         icon,
