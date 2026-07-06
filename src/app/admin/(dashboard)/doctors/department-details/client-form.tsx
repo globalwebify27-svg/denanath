@@ -20,11 +20,22 @@ export default function DepartmentDetailsClientForm({ initialData }: { initialDa
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        handleChange("image", reader.result);
-      };
-      reader.readAsDataURL(file);
+      const formData = new FormData();
+      formData.append('file', file);
+      fetch('/api/upload', {
+        method: 'POST',
+        body: formData
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.url) {
+        handleChange("image", data.url);
+      } else { alert('Upload failed'); }
+      })
+      .catch(err => {
+        console.error('Upload error:', err);
+        alert('Upload error');
+      });
     }
   };
 

@@ -73,6 +73,7 @@ const MENU_ITEMS = [
       { name: "In Patient Guide", href: "/admin/patient-visitors/in-patient" },
       { name: "Health Packages", href: "/admin/patient-visitors/health-packages" },
       { name: "Facilities", href: "/admin/patient-visitors/facilities" },
+      { name: "Virtual Tour", href: "/admin/patient-visitors/virtual-tour" },
       { name: "Patient Stories", href: "/admin/patient-visitors/feedbacks" },
       { name: "Patient Rights", href: "/admin/patient-visitors/patient-rights" },
       { name: "Photos", href: "/admin/patient-visitors/gallery-photos" },

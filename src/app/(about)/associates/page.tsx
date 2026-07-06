@@ -12,10 +12,12 @@ export async function generateMetadata(): Promise<Metadata> {
     if (setting && setting.value) seoData = JSON.parse(setting.value);
   } catch (error) {}
 
+  const sanitize = (str: string | undefined | null) => str ? str.replace(/[\r\n]+/g, ' ').trim() : undefined;
+
   return {
-    ...(seoData.seoMetaTitle && { title: seoData.seoMetaTitle }),
-    ...(seoData.seoMetaDescription && { description: seoData.seoMetaDescription }),
-    ...(seoData.seoKeywords && { keywords: seoData.seoKeywords }),
+    ...(seoData.seoMetaTitle && { title: sanitize(seoData.seoMetaTitle) }),
+    ...(seoData.seoMetaDescription && { description: sanitize(seoData.seoMetaDescription) }),
+    ...(seoData.seoKeywords && { keywords: sanitize(seoData.seoKeywords) }),
   };
 }
 

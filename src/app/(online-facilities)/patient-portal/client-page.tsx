@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ChevronRight, Globe, RefreshCw, Check, Smartphone, User, Lock, Calendar, Hash, Mail, Phone, Shield, ArrowRight } from "lucide-react";
+import CustomDropdown from "@/components/CustomDropdown";
 import { submitFormAction } from "@/app/actions/submit-form";
 
 export default function PatientPortalPage({ pageData }: { pageData: any }) {
@@ -129,7 +130,7 @@ export default function PatientPortalPage({ pageData }: { pageData: any }) {
                 <div className="w-20 h-1.5 bg-[#007a87] rounded-full mb-8"></div>
               </div>
 
-              <div className="max-w-xl mx-auto bg-white border border-slate-200 rounded-3xl shadow-sm overflow-hidden">
+              <div className="max-w-xl mx-auto bg-white border border-slate-200 rounded-3xl shadow-sm overflow-visible">
                 
                 {/* Header Section */}
                 <div className="p-8 pb-6 border-b border-slate-100 flex flex-col items-center text-center bg-gradient-to-b from-slate-50 to-white">
@@ -342,15 +343,16 @@ export default function PatientPortalPage({ pageData }: { pageData: any }) {
                               Gender <span className="text-red-500">*</span>
                             </label>
                             <div className="relative">
-                              <select name="gender" className="w-full appearance-none px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium cursor-pointer">
-                                <option>-- Select --</option>
-                                <option>Male</option>
-                                <option>Female</option>
-                                <option>Other</option>
-                              </select>
-                              <User className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
-                              <ChevronRight className="w-5 h-5 text-slate-400 absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none rotate-90" />
-                            </div>
+                              <CustomDropdown
+  name="gender"
+  placeholder="-- Select --"
+  icon={User}
+  options={[
+    "Male",
+    "Female",
+    "Other"
+  ]}
+/></div>
                           </div>
 
                           <div className="md:col-span-2">

@@ -325,11 +325,22 @@ export default function DoctorForm({ doctor, id }: { doctor: any; id: string }) 
                 onChange={(e) => {
                   const file = e.target.files?.[0];
                   if (file) {
-                    const reader = new FileReader();
-                    reader.onloadend = () => {
-                      setFormData({ ...formData, image: reader.result as string });
-                    };
-                    reader.readAsDataURL(file);
+                    const formData = new FormData();
+      formData.append('file', file);
+      fetch('/api/upload', {
+        method: 'POST',
+        body: formData
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.url) {
+                      setFormData({ ...formData, image: data.url });
+                    } else { alert('Upload failed'); }
+      })
+      .catch(err => {
+        console.error('Upload error:', err);
+        alert('Upload error');
+      });
                   }
                 }}
                 className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#007a87] text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[#007a87]/10 file:text-[#007a87] hover:file:bg-[#007a87]/20 cursor-pointer"

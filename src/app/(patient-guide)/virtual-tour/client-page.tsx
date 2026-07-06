@@ -6,7 +6,7 @@ import { ChevronRight, Camera, Video, MonitorPlay, Send, ChevronDown } from "luc
 
 import Image from "next/image";
 
-export default function VirtualTourClientPage() {
+export default function VirtualTourClientPage({ pageData }: { pageData?: any }) {
   const patientGuideOptions = [
     { name: "Out Patient Guide", href: "/out-patient", active: false },
     { name: "Hospital Admission Guide", href: "/in-patient", active: false },
@@ -34,12 +34,7 @@ export default function VirtualTourClientPage() {
     }
   }, []);
 
-  const tabs = ["Facilities", "Technology", "Outpatient Services", "Rooms"];
-  const [activeTab, setActiveTab] = useState(tabs[0]);
-  const [activeView, setActiveView] = useState("Main Entrance");
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
-  const locations = [
+  const defaultLocations = [
     { name: "Ambulance", category: "Facilities", img: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=800&auto=format&fit=crop" },
     { name: "Admission Desk", category: "Facilities", img: "https://images.unsplash.com/photo-1586773860418-d37222d8fce3?q=80&w=800&auto=format&fit=crop" },
     { name: "Auditorium", category: "Facilities", img: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=800&auto=format&fit=crop" },
@@ -94,6 +89,13 @@ export default function VirtualTourClientPage() {
     { name: "Triple Sharing", category: "Rooms", img: "https://images.unsplash.com/photo-1586773860418-d37222d8fce3?q=80&w=800&auto=format&fit=crop" },
     { name: "Twin Sharing", category: "Rooms", img: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=800&auto=format&fit=crop" }
   ];
+
+  const locations = pageData?.locations && pageData.locations.length > 0 ? pageData.locations : defaultLocations;
+  const tabs = Array.from(new Set(locations.map((loc: any) => loc.category))) as string[];
+
+  const [activeTab, setActiveTab] = useState(tabs[0] || "");
+  const [activeView, setActiveView] = useState(locations[0]?.name || "Main Entrance");
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   // Currently we show all regardless of category to match the layout in the image
   // but if needed we can filter by activeTab

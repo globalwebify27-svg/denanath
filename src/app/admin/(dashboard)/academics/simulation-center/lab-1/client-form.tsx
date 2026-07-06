@@ -27,19 +27,32 @@ export default function SimulationLab1ClientForm({ initialData }: { initialData:
   const handleHeaderImageChange = (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setData((prev: any) => {
-          const newGallery = [...(prev.gallery || [])];
-          if (typeof newGallery[index] === 'string') {
-            newGallery[index] = { url: reader.result, name: "" };
-          } else {
-            newGallery[index] = { ...newGallery[index], url: reader.result };
-          }
-          return { ...prev, gallery: newGallery, image: newGallery.length > 0 ? (typeof newGallery[0] === 'string' ? newGallery[0] : newGallery[0].url) : "" };
-        });
-      };
-      reader.readAsDataURL(file);
+      const formData = new FormData();
+      formData.append('file', file);
+      fetch('/api/upload', {
+        method: 'POST',
+        body: formData
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.url) {
+          setData((prev: any) => {
+            const newGallery = [...(prev.gallery || [])];
+            if (typeof newGallery[index] === 'string') {
+              newGallery[index] = { url: data.url, name: "" };
+            } else {
+              newGallery[index] = { ...newGallery[index], url: data.url };
+            }
+            return { ...prev, gallery: newGallery, image: newGallery.length > 0 ? (typeof newGallery[0] === 'string' ? newGallery[0] : newGallery[0].url) : "" };
+          });
+        } else {
+          alert('Upload failed');
+        }
+      })
+      .catch(err => {
+        console.error('Upload error:', err);
+        alert('Upload error');
+      });
     }
   };
 

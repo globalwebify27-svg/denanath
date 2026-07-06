@@ -159,9 +159,15 @@ export default async function DepartmentDetailsPage({
                
                const itemHtml = `
                  <div class="flex flex-col items-center text-center group">
-                    <div class="w-32 h-32 md:w-40 md:h-40 rounded-full bg-white flex items-center justify-center overflow-hidden mb-4 shadow-[0_4px_20px_rgb(0,0,0,0.06)] border border-slate-50 transition-all duration-300">
-                       ${imgSrc ? `<img src="${imgSrc}" alt="${text}" class="w-[85%] h-[85%] object-contain group-hover:scale-105 transition-transform duration-500" />` : `<div class="text-4xl text-[#007a87] font-bold">${text.charAt(0)}</div>`}
-                    </div>
+                    ${imgSrc ? `
+                      <div class="w-32 h-32 md:w-40 md:h-40 flex items-center justify-center overflow-hidden mb-4 transition-all duration-300">
+                         <img src="${imgSrc}" alt="${text}" class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500 rounded-2xl" />
+                      </div>
+                    ` : `
+                      <div class="w-32 h-32 md:w-40 md:h-40 rounded-full bg-white flex items-center justify-center overflow-hidden mb-4 shadow-[0_4px_20px_rgb(0,0,0,0.06)] border border-slate-50 transition-all duration-300">
+                         <div class="text-4xl text-[#007a87] font-bold">${text.charAt(0)}</div>
+                      </div>
+                    `}
                     <h4 class="text-[15px] md:text-[17px] font-medium text-[#007a87] transition-colors leading-snug px-2">${text}</h4>
                  </div>
                `;

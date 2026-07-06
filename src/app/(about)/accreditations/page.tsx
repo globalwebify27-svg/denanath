@@ -28,7 +28,8 @@ export default async function AccreditationsPage() {
   let data = [];
   if (setting && setting.value) {
     try {
-      data = JSON.parse(setting.value);
+      const parsed = JSON.parse(setting.value);
+      data = Array.isArray(parsed) ? parsed : (parsed.items || []);
     } catch (e) {
       console.error("Failed to parse accreditations data");
     }

@@ -27,10 +27,12 @@ export async function generateMetadata(): Promise<Metadata> {
     console.error("Error fetching home SEO:", error);
   }
 
+  const sanitize = (str: string | undefined | null) => str ? str.replace(/[\r\n]+/g, ' ').trim() : undefined;
+
   return {
-    title: seoData.seoMetaTitle || "Deenanath Mangeshkar Hospital and Research Center | Pune",
-    description: seoData.seoMetaDescription || "Official web portal of Deenanath Mangeshkar Hospital and Research Center, Pune. Experience state-of-the-art clinical super-specialties, Pune's finest doctor roster, 24/7 trauma emergency response, and preventative health care. Delivering medical excellence with human warmth.",
-    keywords: seoData.seoKeywords ? seoData.seoKeywords.split(',').map((k: string) => k.trim()) : ["Deenanath Mangeshkar Hospital and Research Center", "DMH Pune", "Erandwane Hospital", "Best Hospital in Pune", "Book Doctor Appointment Pune", "Emergency Trauma Care Pune", "Mangeshkar Hospital Pune"],
+    title: sanitize(seoData.seoMetaTitle) || "Deenanath Mangeshkar Hospital and Research Center | Pune",
+    description: sanitize(seoData.seoMetaDescription) || "Official web portal of Deenanath Mangeshkar Hospital and Research Center, Pune. Experience state-of-the-art clinical super-specialties, Pune's finest doctor roster, 24/7 trauma emergency response, and preventative health care. Delivering medical excellence with human warmth.",
+    keywords: seoData.seoKeywords ? sanitize(seoData.seoKeywords)?.split(',').map((k: string) => k.trim()) : ["Deenanath Mangeshkar Hospital and Research Center", "DMH Pune", "Erandwane Hospital", "Best Hospital in Pune", "Book Doctor Appointment Pune", "Emergency Trauma Care Pune", "Mangeshkar Hospital Pune"],
   };
 }
 

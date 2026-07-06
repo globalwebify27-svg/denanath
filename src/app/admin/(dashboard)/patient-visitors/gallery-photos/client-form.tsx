@@ -167,11 +167,22 @@ export default function GalleryPhotosClientForm({ initialData }: { initialData: 
                       onChange={(e) => {
                         const file = e.target.files?.[0];
                         if (file) {
-                          const reader = new FileReader();
-                          reader.onloadend = () => {
-                            updatePhoto(photo.id, 'url', reader.result as string);
-                          };
-                          reader.readAsDataURL(file);
+                          const formData = new FormData();
+      formData.append('file', file);
+      fetch('/api/upload', {
+        method: 'POST',
+        body: formData
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.url) {
+                            updatePhoto(photo.id, 'url', data.url);
+                          } else { alert('Upload failed'); }
+      })
+      .catch(err => {
+        console.error('Upload error:', err);
+        alert('Upload error');
+      });
                         }
                       }}
                       className="w-full p-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-[#007a87] text-[10px] font-medium file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-[10px] file:font-bold file:bg-[#003360] file:text-white hover:file:bg-[#002b5c] cursor-pointer" 
