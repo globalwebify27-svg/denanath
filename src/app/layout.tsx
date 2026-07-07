@@ -7,7 +7,7 @@ import { prisma } from "@/lib/prisma";
 import QuickAccessWidget from "@/components/home/QuickAccessWidget";
 import ClientLayoutWrapper from "@/components/ClientLayoutWrapper";
 import Script from "next/script";
-
+import CanonicalLink from "@/components/CanonicalLink";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   variable: "--font-plus-jakarta",
@@ -27,10 +27,29 @@ export async function generateMetadata(): Promise<Metadata> {
     console.error("Error fetching home SEO:", error);
   }
 
+  const sanitize = (str: string | undefined | null) => str ? str.replace(/[\r\n]+/g, ' ').trim() : undefined;
+
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+
   return {
-    title: seoData.seoMetaTitle || "Deenanath Mangeshkar Hospital and Research Center | Pune",
-    description: seoData.seoMetaDescription || "Official web portal of Deenanath Mangeshkar Hospital and Research Center, Pune. Experience state-of-the-art clinical super-specialties, Pune's finest doctor roster, 24/7 trauma emergency response, and preventative health care. Delivering medical excellence with human warmth.",
-    keywords: seoData.seoKeywords ? seoData.seoKeywords.split(',').map((k: string) => k.trim()) : ["Deenanath Mangeshkar Hospital and Research Center", "DMH Pune", "Erandwane Hospital", "Best Hospital in Pune", "Book Doctor Appointment Pune", "Emergency Trauma Care Pune", "Mangeshkar Hospital Pune"],
+    metadataBase: new URL(siteUrl),
+    title: sanitize(seoData.seoMetaTitle) || "Deenanath Mangeshkar Hospital and Research Center | Pune",
+    description: sanitize(seoData.seoMetaDescription) || "Official web portal of Deenanath Mangeshkar Hospital and Research Center, Pune. Experience state-of-the-art clinical super-specialties, Pune's finest doctor roster, 24/7 trauma emergency response, and preventative health care. Delivering medical excellence with human warmth.",
+    keywords: seoData.seoKeywords ? sanitize(seoData.seoKeywords)?.split(',').map((k: string) => k.trim()) : ["Deenanath Mangeshkar Hospital and Research Center", "DMH Pune", "Erandwane Hospital", "Best Hospital in Pune", "Book Doctor Appointment Pune", "Emergency Trauma Care Pune", "Mangeshkar Hospital Pune"],
+    authors: [{ name: "Deenanath Mangeshkar Hospital and Research Center" }],
+    publisher: "Deenanath Mangeshkar Hospital and Research Center",
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        noimageindex: false,
+        'max-video-preview': -1,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+      },
+    },
   };
 }
 
@@ -45,6 +64,7 @@ export default function RootLayout({
         className={`${plusJakartaSans.className} min-h-full bg-slate-50 text-slate-800 antialiased`}
         suppressHydrationWarning
         >
+        <CanonicalLink />
         <Script id="google-translate-fouc" strategy="afterInteractive">
           {`
             (function() {

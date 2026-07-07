@@ -5,7 +5,7 @@ export const dynamic = "force-dynamic";
 
 export default async function AdminCareersPage() {
   const setting = await prisma.siteSetting.findUnique({ where: { key: 'page_hospital_careers' } });
-  let pageData: any = { title: "Careers", content: "", image: "" };
+  let pageData: any = { title: "Job & Vacancy", content: "", image: "" };
   try { if (setting) pageData = JSON.parse(setting.value); } catch (e) {}
 
   return (

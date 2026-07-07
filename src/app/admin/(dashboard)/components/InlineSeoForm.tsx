@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Search, Save } from "lucide-react";
 import { useRouter } from "next/navigation";
 
@@ -19,6 +19,15 @@ export default function InlineSeoForm({
     seoKeywords: initialData?.seoKeywords || "",
   });
 
+  // Sync state if initialData changes after a save or refresh
+  useEffect(() => {
+    setData({
+      seoMetaTitle: initialData?.seoMetaTitle || "",
+      seoMetaDescription: initialData?.seoMetaDescription || "",
+      seoKeywords: initialData?.seoKeywords || "",
+    });
+  }, [initialData]);
+
   const handleChange = (field: string, value: string) => {
     setData((prev) => ({ ...prev, [field]: value }));
   };
@@ -27,7 +36,8 @@ export default function InlineSeoForm({
     e.preventDefault();
     setLoading(true);
     try {
-      const payload = JSON.stringify(data);
+      // Merge with initialData so we don't overwrite/lose other existing page data
+      const payload = JSON.stringify({ ...initialData, ...data });
       const res = await fetch("/api/settings", {
         method: "POST",
         headers: { "Content-Type": "application/json" },

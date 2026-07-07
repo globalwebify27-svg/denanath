@@ -388,11 +388,22 @@ export default function InPatientClientForm({ initialData }: { initialData: any 
                           onChange={(e) => {
                             const file = e.target.files?.[0];
                             if (file) {
-                              const reader = new FileReader();
-                              reader.onloadend = () => {
-                                updateMainRoom(r.id, 'image', reader.result as string);
-                              };
-                              reader.readAsDataURL(file);
+                              const formData = new FormData();
+      formData.append('file', file);
+      fetch('/api/upload', {
+        method: 'POST',
+        body: formData
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.url) {
+                                updateMainRoom(r.id, 'image', data.url);
+                              } else { alert('Upload failed'); }
+      })
+      .catch(err => {
+        console.error('Upload error:', err);
+        alert('Upload error');
+      });
                             }
                           }}
                           className="w-full text-sm file:mr-4 file:py-1.5 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-[#007a87]/10 file:text-[#007a87] hover:file:bg-[#007a87]/20 cursor-pointer"
@@ -450,11 +461,22 @@ export default function InPatientClientForm({ initialData }: { initialData: any 
                           onChange={(e) => {
                             const file = e.target.files?.[0];
                             if (file) {
-                              const reader = new FileReader();
-                              reader.onloadend = () => {
-                                updateSuperRoom(r.id, 'image', reader.result as string);
-                              };
-                              reader.readAsDataURL(file);
+                              const formData = new FormData();
+      formData.append('file', file);
+      fetch('/api/upload', {
+        method: 'POST',
+        body: formData
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.url) {
+                                updateSuperRoom(r.id, 'image', data.url);
+                              } else { alert('Upload failed'); }
+      })
+      .catch(err => {
+        console.error('Upload error:', err);
+        alert('Upload error');
+      });
                             }
                           }}
                           className="w-full text-sm file:mr-4 file:py-1.5 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-[#007a87]/10 file:text-[#007a87] hover:file:bg-[#007a87]/20 cursor-pointer"

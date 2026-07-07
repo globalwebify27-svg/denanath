@@ -90,14 +90,26 @@ export default function AssociatesClientForm({ initialData }: { initialData: any
                     <input 
                       type="file" 
                       accept="image/*"
-                      onChange={(e) => {
+                      onChange={async (e) => {
                         const file = e.target.files?.[0];
                         if (file) {
-                          const reader = new FileReader();
-                          reader.onloadend = () => {
-                            updateItem(item.id, 'image', reader.result as string);
-                          };
-                          reader.readAsDataURL(file);
+                          const formData = new FormData();
+                          formData.append('file', file);
+                          try {
+                            const res = await fetch('/api/upload', {
+                              method: 'POST',
+                              body: formData
+                            });
+                            if (res.ok) {
+                              const data = await res.json();
+                              updateItem(item.id, 'image', data.url);
+                            } else {
+                              alert("Failed to upload image");
+                            }
+                          } catch (err) {
+                            console.error(err);
+                            alert("Error uploading image");
+                          }
                         }
                       }}
                       className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#007a87] text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[#007a87]/10 file:text-[#007a87] hover:file:bg-[#007a87]/20 cursor-pointer"

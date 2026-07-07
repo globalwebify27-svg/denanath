@@ -3,6 +3,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { ChevronRight, Activity, Info, CreditCard, BookOpen, RefreshCw, Building2, Globe, Map, MapPin } from "lucide-react";
+import CustomDropdown from "@/components/CustomDropdown";
+import { submitFormAction } from "@/app/actions/submit-form";
 
 // Client component wrapper for tabs
 export default function SimulationCenterClient({ initialData, labsData }: { initialData: any, labsData?: any }) {
@@ -33,15 +35,30 @@ export default function SimulationCenterClient({ initialData, labsData }: { init
     }
   }, [activeTab]);
 
-  const handleSub = (e: React.FormEvent) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSub = async (e: React.FormEvent) => {
     e.preventDefault();
-    const formData = new FormData(e.currentTarget as HTMLFormElement);
+    const form = e.currentTarget as HTMLFormElement;
+    const formData = new FormData(form);
     const userCaptcha = formData.get("captcha") as string;
+    
     if (userCaptcha?.trim().toLowerCase() !== captchaCode.toLowerCase()) {
       alert("Verification code is incorrect. Please try again.");
       return;
     }
-    alert("Form submitted successfully!");
+
+    setIsSubmitting(true);
+    const res = await submitFormAction("Online Payment", formData);
+    setIsSubmitting(false);
+
+    if (res.success) {
+      alert("Form submitted successfully!");
+      form.reset();
+      setCaptchaCode(generateCaptcha());
+    } else {
+      alert("Failed to submit form. Please try again.");
+    }
   };
 
   useEffect(() => {
@@ -258,13 +275,15 @@ export default function SimulationCenterClient({ initialData, labsData }: { init
                       <div>
                         <label className="block text-sm font-semibold text-slate-700 mb-1">Purpose of Payment <span className="text-red-500">*</span></label>
                         <div className="relative">
-                          <select className="w-full appearance-none px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium cursor-pointer">
-                            <option>-- Select --</option>
-                            <option>Simulation Course Fee</option>
-                            <option>Workshop Registration</option>
-                          </select>
-                          <CreditCard className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
-                          <ChevronRight className="w-5 h-5 text-slate-400 absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none rotate-90" />
+                          <CustomDropdown
+                            name="purposeOfPayment"
+                            placeholder="-- Select --"
+                            icon={CreditCard}
+                            options={[
+                              "Simulation Course Fee",
+                              "Workshop Registration"
+                            ]}
+                          />
                         </div>
                       </div>
 
@@ -272,11 +291,11 @@ export default function SimulationCenterClient({ initialData, labsData }: { init
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                           <label className="block text-sm font-semibold text-slate-700 mb-1">Name Of Payer <span className="text-red-500">*</span></label>
-                          <input type="text" placeholder="Name Of Payer" className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500/50 bg-slate-50" />
+                          <input type="text" name="nameOfPayer" placeholder="Name Of Payer" className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500/50 bg-slate-50" required />
                         </div>
                         <div>
                           <label className="block text-sm font-semibold text-slate-700 mb-1">Contact Number <span className="text-red-500">*</span></label>
-                          <input type="text" placeholder="Contact Number" className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500/50 bg-slate-50" pattern="[0-9]{10}" maxLength={10} minLength={10} title="Please enter a valid 10-digit mobile number" onInput={(e) => { e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/g, "").slice(0, 10); }} />
+                          <input type="text" name="contactNumber" placeholder="Contact Number" className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500/50 bg-slate-50" pattern="[0-9]{10}" maxLength={10} minLength={10} title="Please enter a valid 10-digit mobile number" onInput={(e) => { e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/g, "").slice(0, 10); }} required />
                         </div>
                       </div>
 
@@ -284,11 +303,11 @@ export default function SimulationCenterClient({ initialData, labsData }: { init
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                           <label className="block text-sm font-semibold text-slate-700 mb-1">Email Id <span className="text-red-500">*</span></label>
-                          <input type="email" placeholder="Email ID" className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500/50 bg-slate-50" />
+                          <input type="email" name="email" placeholder="Email ID" className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500/50 bg-slate-50" required />
                         </div>
                         <div>
                           <label className="block text-sm font-semibold text-slate-700 mb-1">Amount <span className="text-red-500">*</span></label>
-                          <input type="text" placeholder="Amount" className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500/50 bg-slate-50" />
+                          <input type="text" name="amount" placeholder="Amount" className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500/50 bg-slate-50" required />
                         </div>
                       </div>
 
@@ -296,264 +315,33 @@ export default function SimulationCenterClient({ initialData, labsData }: { init
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
                           <label className="block text-sm font-semibold text-slate-700 mb-1">Address <span className="text-red-500">*</span></label>
-                          <textarea rows={4} placeholder="Enter ..." className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500/50 bg-slate-50 resize-none"></textarea>
+                          <textarea name="address" rows={4} placeholder="Enter ..." className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500/50 bg-slate-50 resize-none" required></textarea>
                         </div>
                         <div className="space-y-6">
                           <div>
                             <label className="block text-sm font-semibold text-slate-700 mb-1">Country <span className="text-red-500">*</span></label>
                             <div className="relative">
-                              <select name="country" className="w-full appearance-none px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium cursor-pointer">
-                        <option>-- Select --</option>
-                        <option>Afghanistan</option>
-                        <option>Albania</option>
-                        <option>Algeria</option>
-                        <option>Andorra</option>
-                        <option>Angola</option>
-                        <option>Antigua and Barbuda</option>
-                        <option>Argentina</option>
-                        <option>Armenia</option>
-                        <option>Australia</option>
-                        <option>Austria</option>
-                        <option>Azerbaijan</option>
-                        <option>Bahamas</option>
-                        <option>Bahrain</option>
-                        <option>Bangladesh</option>
-                        <option>Barbados</option>
-                        <option>Belarus</option>
-                        <option>Belgium</option>
-                        <option>Belize</option>
-                        <option>Benin</option>
-                        <option>Bhutan</option>
-                        <option>Bolivia</option>
-                        <option>Bosnia & Herzegovina</option>
-                        <option>Botswana</option>
-                        <option>Brazil</option>
-                        <option>Brunei</option>
-                        <option>Bulgaria</option>
-                        <option>Burkina Faso</option>
-                        <option>Burundi</option>
-                        <option>Cabo Verde</option>
-                        <option>Cambodia</option>
-                        <option>Cameroon</option>
-                        <option>Canada</option>
-                        <option>Central African Republic</option>
-                        <option>Chad</option>
-                        <option>Chile</option>
-                        <option>China</option>
-                        <option>Colombia</option>
-                        <option>Comoros</option>
-                        <option>Congo</option>
-                        <option>Congo (East Africa)</option>
-                        <option>Costa Rica</option>
-                        <option>Croatia</option>
-                        <option>Cuba</option>
-                        <option>Cyprus</option>
-                        <option>Czech Republic</option>
-                        <option>Denmark</option>
-                        <option>Djibouti</option>
-                        <option>Dominica</option>
-                        <option>Dominican Republic</option>
-                        <option>Ecuador</option>
-                        <option>Egypt</option>
-                        <option>El Salvador</option>
-                        <option>Equatorial Guinea</option>
-                        <option>Eritrea</option>
-                        <option>Estonia</option>
-                        <option>Eswatini</option>
-                        <option>Ethiopia</option>
-                        <option>Fiji</option>
-                        <option>Finland</option>
-                        <option>France</option>
-                        <option>Gabon</option>
-                        <option>Gambia</option>
-                        <option>Georgia</option>
-                        <option>Germany</option>
-                        <option>Ghana</option>
-                        <option>Gibraltar</option>
-                        <option>Greece</option>
-                        <option>Grenada</option>
-                        <option>Guatemala</option>
-                        <option>Guinea</option>
-                        <option>Guinea-Bissau</option>
-                        <option>Guyana</option>
-                        <option>Haiti</option>
-                        <option>Honduras</option>
-                        <option>HongKong</option>
-                        <option>Hungary</option>
-                        <option>Iceland</option>
-                        <option>India</option>
-                        <option>Indonesia</option>
-                        <option>Iran</option>
-                        <option>IRAQ</option>
-                        <option>Ireland</option>
-                        <option>Israel</option>
-                        <option>Italy</option>
-                        <option>Jamaica</option>
-                        <option>Japan</option>
-                        <option>Jordan</option>
-                        <option>Kazakhstan</option>
-                        <option>Kenya</option>
-                        <option>Kiribati</option>
-                        <option>Kuwait</option>
-                        <option>Kyrgyzstan</option>
-                        <option>Laos</option>
-                        <option>Latvia</option>
-                        <option>Lebanon</option>
-                        <option>Lesotho</option>
-                        <option>Liberia</option>
-                        <option>Libya</option>
-                        <option>Liechtenstein</option>
-                        <option>Lithuania</option>
-                        <option>Luxembourg</option>
-                        <option>Madagascar</option>
-                        <option>Malawi</option>
-                        <option>Malaysia</option>
-                        <option>Maldievs</option>
-                        <option>Mali</option>
-                        <option>Malta</option>
-                        <option>Marshall Islands</option>
-                        <option>Mauritania</option>
-                        <option>Mauritius</option>
-                        <option>Mexico</option>
-                        <option>Micronesia</option>
-                        <option>Moldova</option>
-                        <option>Monaco</option>
-                        <option>Mongolia</option>
-                        <option>Montenegro</option>
-                        <option>Morocco</option>
-                        <option>Mozambique</option>
-                        <option>Myanmar</option>
-                        <option>Namibia</option>
-                        <option>Nauru</option>
-                        <option>Nepal</option>
-                        <option>Netherlands</option>
-                        <option>New Zealand</option>
-                        <option>Nicaragua</option>
-                        <option>Niger</option>
-                        <option>Nigeria</option>
-                        <option>North Korea</option>
-                        <option>North Macedonia</option>
-                        <option>Norway</option>
-                        <option>Oman</option>
-                        <option>OTHER</option>
-                        <option>Pakistan</option>
-                        <option>Palau</option>
-                        <option>Palestine</option>
-                        <option>Panama</option>
-                        <option>Papua New Guinea</option>
-                        <option>Paraguay</option>
-                        <option>Peru</option>
-                        <option>PHILIPINES</option>
-                        <option>Poland</option>
-                        <option>Portugal</option>
-                        <option>Qatar</option>
-                        <option>Republic of Georgia</option>
-                        <option>Republic of Macedonia</option>
-                        <option>Romania</option>
-                        <option>Russia</option>
-                        <option>Rwanda</option>
-                        <option>Saint Kitts and Nevis</option>
-                        <option>Saint Lucia</option>
-                        <option>Saint Vincent and the Grenadines</option>
-                        <option>Samoa</option>
-                        <option>San Marino</option>
-                        <option>Sao Tome and Principe</option>
-                        <option>Saudi Arabia</option>
-                        <option>Senegal</option>
-                        <option>Serbia</option>
-                        <option>Serbia & Montenegro</option>
-                        <option>Seychelles</option>
-                        <option>SIERRA LEONEAN</option>
-                        <option>Singapore</option>
-                        <option>Slovakia</option>
-                        <option>Slovenia</option>
-                        <option>Solomon Islands</option>
-                        <option>Somalia</option>
-                        <option>South Africa</option>
-                        <option>South Korea</option>
-                        <option>South Sudan</option>
-                        <option>Spain</option>
-                        <option>Sri Lanka</option>
-                        <option>Sudan</option>
-                        <option>Suriname</option>
-                        <option>Sweden</option>
-                        <option>Switzerland</option>
-                        <option>Syria</option>
-                        <option>Taiwan</option>
-                        <option>Tajikistan</option>
-                        <option>Tanzania</option>
-                        <option>Thailand</option>
-                        <option>Timor-Leste</option>
-                        <option>Togo</option>
-                        <option>Tonga</option>
-                        <option>Trinidad and Tobago</option>
-                        <option>Tunisia</option>
-                        <option>Turkey</option>
-                        <option>Turkmenistan</option>
-                        <option>Tuvalu</option>
-                        <option>Uganda</option>
-                        <option>Ukraine</option>
-                        <option>United Arab Emirates</option>
-                        <option>United Kingdom</option>
-                        <option>United States</option>
-                        <option>Uruguay</option>
-                        <option>Uzbekistan</option>
-                        <option>Vanuatu</option>
-                        <option>Vatican City</option>
-                        <option>Venezuela</option>
-                        <option>Vietnam</option>
-                        <option>Yemen</option>
-                        <option>Zambia</option>
-                        <option>Zimbabwe</option>
-                      </select>
-                              <Globe className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
-                              <ChevronRight className="w-5 h-5 text-slate-400 absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none rotate-90" />
+                              <CustomDropdown
+                                name="country"
+                                placeholder="-- Select --"
+                                icon={Globe}
+                                options={[
+                                  "Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Antigua and Barbuda", "Argentina", "Armenia", "Australia", "Austria", "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bhutan", "Bolivia", "Bosnia & Herzegovina", "Botswana", "Brazil", "Brunei", "Bulgaria", "Burkina Faso", "Burundi", "Cabo Verde", "Cambodia", "Cameroon", "Canada", "Central African Republic", "Chad", "Chile", "China", "Colombia", "Comoros", "Congo", "Congo (East Africa)", "Costa Rica", "Croatia", "Cuba", "Cyprus", "Czech Republic", "Denmark", "Djibouti", "Dominica", "Dominican Republic", "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia", "Eswatini", "Ethiopia", "Fiji", "Finland", "France", "Gabon", "Gambia", "Georgia", "Germany", "Ghana", "Gibraltar", "Greece", "Grenada", "Guatemala", "Guinea", "Guinea-Bissau", "Guyana", "Haiti", "Honduras", "HongKong", "Hungary", "Iceland", "India", "Indonesia", "Iran", "IRAQ", "Ireland", "Israel", "Italy", "Jamaica", "Japan", "Jordan", "Kazakhstan", "Kenya", "Kiribati", "Kuwait", "Kyrgyzstan", "Laos", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libya", "Liechtenstein", "Lithuania", "Luxembourg", "Madagascar", "Malawi", "Malaysia", "Maldievs", "Mali", "Malta", "Marshall Islands", "Mauritania", "Mauritius", "Mexico", "Micronesia", "Moldova", "Monaco", "Mongolia", "Montenegro", "Morocco", "Mozambique", "Myanmar", "Namibia", "Nauru", "Nepal", "Netherlands", "New Zealand", "Nicaragua", "Niger", "Nigeria", "North Korea", "North Macedonia", "Norway", "Oman", "OTHER", "Pakistan", "Palau", "Palestine", "Panama", "Papua New Guinea", "Paraguay", "Peru", "PHILIPINES", "Poland", "Portugal", "Qatar", "Republic of Georgia", "Republic of Macedonia", "Romania", "Russia", "Rwanda", "Saint Kitts and Nevis", "Saint Lucia", "Saint Vincent and the Grenadines", "Samoa", "San Marino", "Sao Tome and Principe", "Saudi Arabia", "Senegal", "Serbia", "Serbia & Montenegro", "Seychelles", "SIERRA LEONEAN", "Singapore", "Slovakia", "Slovenia", "Solomon Islands", "Somalia", "South Africa", "South Korea", "South Sudan", "Spain", "Sri Lanka", "Sudan", "Suriname", "Sweden", "Switzerland", "Syria", "Taiwan", "Tajikistan", "Tanzania", "Thailand", "Timor-Leste", "Togo", "Tonga", "Trinidad and Tobago", "Tunisia", "Turkey", "Turkmenistan", "Tuvalu", "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", "United States", "Uruguay", "Uzbekistan", "Vanuatu", "Vatican City", "Venezuela", "Vietnam", "Yemen", "Zambia", "Zimbabwe"
+                                ]}
+                              />
                             </div>
                           </div>
                           <div>
                             <label className="block text-sm font-semibold text-slate-700 mb-1">State <span className="text-red-500">*</span></label>
                             <div className="relative">
-                              <select name="state" className="w-full appearance-none px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium cursor-pointer">
-                        <option>-- Select --</option>
-                        <option>Andaman & Nicobar</option>
-                        <option>Andhra Pradesh</option>
-                        <option>Arunachal Pradesh</option>
-                        <option>Assam</option>
-                        <option>Bihar</option>
-                        <option>Chandigarh</option>
-                        <option>Chattisgarh</option>
-                        <option>Dadra & Nagar</option>
-                        <option>Daman & Diu</option>
-                        <option>Delhi</option>
-                        <option>Goa</option>
-                        <option>Gujrat</option>
-                        <option>Haryana</option>
-                        <option>Himachal Pradesh</option>
-                        <option>Jammu & Kashmir</option>
-                        <option>Jharkhand</option>
-                        <option>Karnataka</option>
-                        <option>Kerala</option>
-                        <option>Lakshdweep</option>
-                        <option>Madhya Pradesh</option>
-                        <option>Maharashtra</option>
-                        <option>Manipur</option>
-                        <option>Meghalaya</option>
-                        <option>Mizoram</option>
-                        <option>Nagaland</option>
-                        <option>Orissa</option>
-                        <option>Pondichery</option>
-                        <option>Punjab</option>
-                        <option>Rajasthan</option>
-                        <option>Sikkim</option>
-                        <option>Tamil Nadu</option>
-                        <option>Telangana</option>
-                        <option>Tripura</option>
-                        <option>Uttar Pradesh</option>
-                        <option>Uttaranchal</option>
-                        <option>West Bengal</option>
-                      </select>
-                              <Map className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
-                              <ChevronRight className="w-5 h-5 text-slate-400 absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none rotate-90" />
+                              <CustomDropdown
+                                name="state"
+                                placeholder="-- Select --"
+                                icon={Map}
+                                options={[
+                                  "Andaman & Nicobar", "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chandigarh", "Chattisgarh", "Dadra & Nagar", "Daman & Diu", "Delhi", "Goa", "Gujrat", "Haryana", "Himachal Pradesh", "Jammu & Kashmir", "Jharkhand", "Karnataka", "Kerala", "Lakshdweep", "Madhya Pradesh", "Maharashtra", "Manipur", "Meghalaya", "Mizoram", "Nagaland", "Orissa", "Pondichery", "Punjab", "Rajasthan", "Sikkim", "Tamil Nadu", "Telangana", "Tripura", "Uttar Pradesh", "Uttaranchal", "West Bengal"
+                                ]}
+                              />
                             </div>
                           </div>
                         </div>
@@ -563,54 +351,21 @@ export default function SimulationCenterClient({ initialData, labsData }: { init
                       <div>
                         <label className="block text-sm font-semibold text-slate-700 mb-1">City <span className="text-red-500">*</span></label>
                         <div className="relative w-full md:w-1/2">
-                          <select name="city" className="w-full appearance-none px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium cursor-pointer">
-                    <option>-- Select --</option>
-                    <option>Ahilya Nagar</option>
-                    <option>Akola</option>
-                    <option>Amravati</option>
-                    <option>Bandra(Mumbai Suburban district)</option>
-                    <option>Beed</option>
-                    <option>Bhandara</option>
-                    <option>Buldhana</option>
-                    <option>Chandrapur</option>
-                    <option>Dharashiv</option>
-                    <option>Dhule</option>
-                    <option>Gadchiroli</option>
-                    <option>Gondia</option>
-                    <option>Hingoli</option>
-                    <option>Jalgaon</option>
-                    <option>Jalna</option>
-                    <option>Kolhapur</option>
-                    <option>Latur</option>
-                    <option>Mumbai-City</option>
-                    <option>Nagpur</option>
-                    <option>Nanded</option>
-                    <option>Nandurbar</option>
-                    <option>Nashik</option>
-                    <option>Palghar</option>
-                    <option>Parbhani</option>
-                    <option>Pune</option>
-                    <option>Raigad</option>
-                    <option>Ratnagiri</option>
-                    <option>Sambhaji Nagar</option>
-                    <option>Sangli</option>
-                    <option>Satara</option>
-                    <option>Sindudurg</option>
-                    <option>Solapur</option>
-                    <option>Thane</option>
-                    <option>Wardha</option>
-                    <option>Washim</option>
-                    <option>Yavatmal</option>
-                  </select>
-                          <MapPin className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
-                          <ChevronRight className="w-5 h-5 text-slate-400 absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none rotate-90" />
+                          <CustomDropdown
+                            name="city"
+                            placeholder="-- Select --"
+                            icon={MapPin}
+                            options={[
+                              "Ahilya Nagar", "Akola", "Amravati", "Bandra(Mumbai Suburban district)", "Beed", "Bhandara", "Buldhana", "Chandrapur", "Dharashiv", "Dhule", "Gadchiroli", "Gondia", "Hingoli", "Jalgaon", "Jalna", "Kolhapur", "Latur", "Mumbai-City", "Nagpur", "Nanded", "Nandurbar", "Nashik", "Palghar", "Parbhani", "Pune", "Raigad", "Ratnagiri", "Sambhaji Nagar", "Sangli", "Satara", "Sindudurg", "Solapur", "Thane", "Wardha", "Washim", "Yavatmal"
+                            ]}
+                          />
                         </div>
                       </div>
 
                       {/* Row 6 */}
                       <div>
                         <label className="block text-sm font-semibold text-slate-700 mb-1">Comments</label>
-                        <textarea rows={2} placeholder="Enter ..." className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500/50 bg-slate-50 resize-none"></textarea>
+                        <textarea name="comments" rows={2} placeholder="Enter ..." className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500/50 bg-slate-50 resize-none"></textarea>
                       </div>
 
                       <div>
@@ -631,8 +386,8 @@ export default function SimulationCenterClient({ initialData, labsData }: { init
                       </div>
 
                       <div className="pt-4 flex justify-center md:justify-start">
-                        <button type="submit" className="w-full md:w-[200px] py-3 bg-[#003360] text-white font-bold rounded-md hover:bg-[#002b5c] transition-colors shadow-sm">
-                          Submit
+                        <button type="submit" disabled={isSubmitting} className="w-full md:w-[200px] py-3 bg-[#003360] text-white font-bold rounded-md hover:bg-[#002b5c] transition-colors shadow-sm disabled:opacity-70 disabled:cursor-not-allowed">
+                          {isSubmitting ? "Submitting..." : "Submit"}
                         </button>
                       </div>
                     </form>

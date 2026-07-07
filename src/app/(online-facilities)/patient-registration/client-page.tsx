@@ -5,6 +5,13 @@ import Link from "next/link";
 import { ChevronRight, Globe, RefreshCw, Upload, Info, User, Calendar, MapPin, Phone, Mail, FileText, ArrowRight, ShieldCheck, HeartPulse } from "lucide-react";
 import CustomDropdown from "@/components/CustomDropdown";
 import { submitFormAction } from "@/app/actions/submit-form";
+import statesData from "@/data/statesAndDistricts.json";
+
+const stateOptions = statesData.states.map((s: any) => s.state);
+const getDistrictsForState = (stateName: string | undefined) => {
+  const stateObj = statesData.states.find((s: any) => s.state === stateName);
+  return stateObj ? stateObj.districts : [];
+};
 
 export default function PatientRegistrationFormPage({ pageData }: { pageData: any }) {
   const options = [
@@ -17,6 +24,7 @@ export default function PatientRegistrationFormPage({ pageData }: { pageData: an
         "name": "Online Payment",
         "href": "/online-payment",
         "active": false
+
     },
     {
         "name": "Patient Portal",
@@ -34,6 +42,34 @@ export default function PatientRegistrationFormPage({ pageData }: { pageData: an
   const formRef = useRef<HTMLFormElement>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [captchaCode, setCaptchaCode] = useState("Bnvy");
+  const [patientImageName, setPatientImageName] = useState<string>("No file chosen");
+  const [documentImageName, setDocumentImageName] = useState<string>("No file chosen");
+  const [patientImagePreview, setPatientImagePreview] = useState<string | null>(null);
+  const [documentImagePreview, setDocumentImagePreview] = useState<string | null>(null);
+  const patientImageInputRef = useRef<HTMLInputElement>(null);
+  const documentImageInputRef = useRef<HTMLInputElement>(null);
+  const [isCopying, setIsCopying] = useState(false);
+  const [localStateVal, setLocalStateVal] = useState<string | undefined>(undefined);
+  const [permCountryVal, setPermCountryVal] = useState<string | undefined>(undefined);
+  const [permStateVal, setPermStateVal] = useState<string | undefined>(undefined);
+  const [permDistrictVal, setPermDistrictVal] = useState<string | undefined>(undefined);
+
+  const handleCopyAddress = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const checked = e.target.checked;
+    setIsCopying(checked);
+    if (checked && formRef.current) {
+      const form = formRef.current;
+      if(form.permHouseName) form.permHouseName.value = form.localHouseName?.value || "";
+      if(form.permAddress2) form.permAddress2.value = form.localAddress2?.value || "";
+      if(form.permTown) form.permTown.value = form.localTown?.value || "";
+      if(form.permPincode) form.permPincode.value = form.localPincode?.value || "";
+      if(form.permPhone) form.permPhone.value = form.localPhone?.value || "";
+      
+      setPermCountryVal(form.localCountry?.value || "");
+      setPermStateVal(form.localState?.value || "");
+      setPermDistrictVal(form.localDistrict?.value || "");
+    }
+  };
 
   const generateCaptcha = () => {
     const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -141,6 +177,17 @@ export default function PatientRegistrationFormPage({ pageData }: { pageData: an
                     if (res.success) {
                       alert("Form submitted successfully!"); 
                       formRef.current?.reset();
+                      setPatientImageName("No file chosen");
+                      setDocumentImageName("No file chosen");
+                      setPatientImagePreview(null);
+                      setDocumentImagePreview(null);
+                      setLocalStateVal(undefined);
+                      setPermCountryVal(undefined);
+                      setPermStateVal(undefined);
+                      setPermDistrictVal(undefined);
+                      setIsCopying(false);
+                      if (patientImageInputRef.current) patientImageInputRef.current.value = "";
+                      if (documentImageInputRef.current) documentImageInputRef.current.value = "";
                     } else {
                       alert("Failed to submit form.");
                     }
@@ -149,8 +196,8 @@ export default function PatientRegistrationFormPage({ pageData }: { pageData: an
                 >
                   
                   {/* Patient Particulars */}
-                  <div className="bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-sm relative overflow-hidden group hover:shadow-md transition-shadow">
-                    <div className="absolute top-0 left-0 w-1.5 h-full bg-[#007a87]"></div>
+                  <div className="bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-sm relative overflow-visible group hover:shadow-md transition-shadow z-40">
+                    <div className="absolute top-0 left-0 w-1.5 h-full bg-[#007a87] rounded-l-3xl"></div>
                     <div className="flex items-center gap-3 border-b border-slate-100 pb-4 mb-8">
                       <div className="bg-teal-50 p-2 rounded-xl text-teal-600">
                         <User className="w-6 h-6" />
@@ -166,33 +213,59 @@ export default function PatientRegistrationFormPage({ pageData }: { pageData: an
                           <label className="flex items-center gap-2 px-5 py-3 bg-white border border-slate-200 shadow-sm rounded-xl cursor-pointer hover:bg-slate-50 hover:border-teal-500 transition-all">
                             <Upload className="w-5 h-5 text-[#007a87]" />
                             <span className="text-sm font-bold text-[#002b5c]">Choose File</span>
-                            <input type="file" name="patientImage" className="hidden" />
+                            <input 
+                              type="file" 
+                              name="patientImage" 
+                              ref={patientImageInputRef}
+                              className="hidden" 
+                              accept="image/*"
+                              onChange={(e) => {
+                                const file = e.target.files?.[0];
+                                setPatientImageName(file?.name || "No file chosen");
+                                if (file) {
+                                  const reader = new FileReader();
+                                  reader.onload = (ev) => setPatientImagePreview(ev.target?.result as string);
+                                  reader.readAsDataURL(file);
+                                } else {
+                                  setPatientImagePreview(null);
+                                }
+                              }}
+                            />
                           </label>
-                          <span className="text-sm font-medium text-slate-500">No file chosen</span>
+                          
+                          {patientImagePreview && (
+                            <div className="relative group/imagebtn w-max h-max">
+                              <img src={patientImagePreview} alt="Preview" className="w-12 h-12 rounded-lg object-cover border border-slate-200" />
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setPatientImagePreview(null);
+                                  setPatientImageName("No file chosen");
+                                  if (patientImageInputRef.current) patientImageInputRef.current.value = "";
+                                }}
+                                className="absolute -top-1.5 -right-1.5 bg-red-100 hover:bg-red-500 text-red-600 hover:text-white rounded-full w-4 h-4 flex items-center justify-center text-[8px] font-bold transition-all shadow-sm opacity-0 pointer-events-none group-hover/imagebtn:opacity-100 group-hover/imagebtn:pointer-events-auto"
+                                title="Remove Image"
+                              >
+                                ✕
+                              </button>
+                            </div>
+                          )}
                         </div>
                       </div>
 
                       <div>
                         <label className="block text-sm font-semibold text-slate-700 mb-2">Title <span className="text-red-500">*</span></label>
                         <div className="relative">
-                          <select name="title" className="w-full appearance-none px-4 py-3.5 pl-4 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium cursor-pointer">
-                            <option>-- Select --</option>
-                          <option>Mr.</option>
-                          <option>Mrs.</option>
-                          <option>Ms.</option>
-                          <option>Mast.</option>
-                        
-                          </select>
-                          <ChevronRight className="w-5 h-5 text-slate-400 absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none rotate-90" />
-                        </div>
-                      </div>
-
-                      <div>
-                        <label className="block text-sm font-semibold text-slate-700 mb-2">Last Name <span className="text-red-500">*</span></label>
-                        <div className="relative">
-                          <input type="text" name="lastName" placeholder="Last Name" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
-                          <User className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
-                        </div>
+                          <CustomDropdown
+  name="title"
+  placeholder="-- Select --"
+  options={[
+    "Mr.",
+    "Mrs.",
+    "Ms.",
+    "Mast."
+  ]}
+/></div>
                       </div>
 
                       <div>
@@ -207,6 +280,14 @@ export default function PatientRegistrationFormPage({ pageData }: { pageData: an
                         <label className="block text-sm font-semibold text-slate-700 mb-2">Middle Name</label>
                         <div className="relative">
                           <input type="text" name="middleName" placeholder="Middle Name" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
+                          <User className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
+                        </div>
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-semibold text-slate-700 mb-2">Last Name <span className="text-red-500">*</span></label>
+                        <div className="relative">
+                          <input type="text" name="lastName" placeholder="Last Name" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
                           <User className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                         </div>
                       </div>
@@ -230,16 +311,16 @@ export default function PatientRegistrationFormPage({ pageData }: { pageData: an
                       <div>
                         <label className="block text-sm font-semibold text-slate-700 mb-2">Gender <span className="text-red-500">*</span></label>
                         <div className="relative">
-                          <select name="gender" className="w-full appearance-none px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium cursor-pointer">
-                            <option>-- Select --</option>
-                          <option>Male</option>
-                          <option>Female</option>
-                          <option>Other</option>
-                        
-                          </select>
-                          <User className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
-                          <ChevronRight className="w-5 h-5 text-slate-400 absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none rotate-90" />
-                        </div>
+                          <CustomDropdown
+  name="gender"
+  placeholder="-- Select --"
+  icon={User}
+  options={[
+    "Male",
+    "Female",
+    "Other"
+  ]}
+/></div>
                       </div>
 
                       <div>
@@ -269,7 +350,7 @@ export default function PatientRegistrationFormPage({ pageData }: { pageData: an
                       </div>
 
                       <div>
-                        <label className="block text-sm font-semibold text-slate-700 mb-2">Monthly Income Rs. (Approx)</label>
+                        <label className="block text-sm font-semibold text-slate-700 mb-2 whitespace-nowrap">Monthly Income Rs. (Approx)</label>
                         <div className="relative">
                           <input type="number" name="monthlyIncome" placeholder="Income Amount" className="w-full px-4 py-3.5 pl-4 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
                         </div>
@@ -279,8 +360,8 @@ export default function PatientRegistrationFormPage({ pageData }: { pageData: an
                   </div>
 
                   {/* Local Address */}
-                  <div className="bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-sm relative overflow-hidden group hover:shadow-md transition-shadow">
-                    <div className="absolute top-0 left-0 w-1.5 h-full bg-[#007a87]"></div>
+                  <div className="bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-sm relative overflow-visible group hover:shadow-md transition-shadow z-30">
+                    <div className="absolute top-0 left-0 w-1.5 h-full bg-[#007a87] rounded-l-3xl"></div>
                     <div className="flex items-center gap-3 border-b border-slate-100 pb-4 mb-8">
                       <div className="bg-teal-50 p-2 rounded-xl text-teal-600">
                         <MapPin className="w-6 h-6" />
@@ -533,45 +614,9 @@ export default function PatientRegistrationFormPage({ pageData }: { pageData: an
                           <CustomDropdown 
   name="localState"
   placeholder="-- Select --"
-  
-  options={[
-    "Andaman & Nicobar",
-    "Andhra Pradesh",
-    "Arunachal Pradesh",
-    "Assam",
-    "Bihar",
-    "Chandigarh",
-    "Chattisgarh",
-    "Dadra & Nagar",
-    "Daman & Diu",
-    "Delhi",
-    "Goa",
-    "Gujrat",
-    "Haryana",
-    "Himachal Pradesh",
-    "Jammu & Kashmir",
-    "Jharkhand",
-    "Karnataka",
-    "Kerala",
-    "Lakshdweep",
-    "Madhya Pradesh",
-    "Maharashtra",
-    "Manipur",
-    "Meghalaya",
-    "Mizoram",
-    "Nagaland",
-    "Orissa",
-    "Pondichery",
-    "Punjab",
-    "Rajasthan",
-    "Sikkim",
-    "Tamil Nadu",
-    "Telangana",
-    "Tripura",
-    "Uttar Pradesh",
-    "Uttaranchal",
-    "West Bengal"
-  ]}
+  options={stateOptions}
+  value={localStateVal}
+  onChange={setLocalStateVal}
 />
                           
                         </div>
@@ -580,48 +625,11 @@ export default function PatientRegistrationFormPage({ pageData }: { pageData: an
                       <div>
                         <label className="block text-sm font-semibold text-slate-700 mb-2">District/City <span className="text-red-500">*</span></label>
                         <div className="relative">
-                          <select className="w-full appearance-none px-4 py-3.5 pl-4 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium cursor-pointer">
-                            <option>-- Select --</option>
-                          <option>Ahilya Nagar</option>
-                          <option>Akola</option>
-                          <option>Amravati</option>
-                          <option>Bandra(Mumbai Suburban district)</option>
-                          <option>Beed</option>
-                          <option>Bhandara</option>
-                          <option>Buldhana</option>
-                          <option>Chandrapur</option>
-                          <option>Dharashiv</option>
-                          <option>Dhule</option>
-                          <option>Gadchiroli</option>
-                          <option>Gondia</option>
-                          <option>Hingoli</option>
-                          <option>Jalgaon</option>
-                          <option>Jalna</option>
-                          <option>Kolhapur</option>
-                          <option>Latur</option>
-                          <option>Mumbai-City</option>
-                          <option>Nagpur</option>
-                          <option>Nanded</option>
-                          <option>Nandurbar</option>
-                          <option>Nashik</option>
-                          <option>Palghar</option>
-                          <option>Parbhani</option>
-                          <option>Pune</option>
-                          <option>Raigad</option>
-                          <option>Ratnagiri</option>
-                          <option>Sambhaji Nagar</option>
-                          <option>Sangli</option>
-                          <option>Satara</option>
-                          <option>Sindudurg</option>
-                          <option>Solapur</option>
-                          <option>Thane</option>
-                          <option>Wardha</option>
-                          <option>Washim</option>
-                          <option>Yavatmal</option>
-                        
-                          </select>
-                          <ChevronRight className="w-5 h-5 text-slate-400 absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none rotate-90" />
-                        </div>
+                          <CustomDropdown
+  name="localDistrict"
+  placeholder="-- Select --"
+  options={getDistrictsForState(localStateVal)}
+/></div>
                       </div>
 
                       <div>
@@ -669,15 +677,15 @@ export default function PatientRegistrationFormPage({ pageData }: { pageData: an
 
                   {/* Copy to Permanent */}
                   <label className="flex items-center gap-3 bg-white p-5 rounded-2xl border-2 border-dashed border-[#007a87]/30 hover:border-[#007a87]/60 hover:bg-teal-50/30 transition-all cursor-pointer group shadow-sm">
-                    <input type="checkbox" id="copy-address" className="w-5 h-5 text-[#007a87] rounded-md border-slate-300 focus:ring-[#007a87] cursor-pointer" />
+                    <input type="checkbox" id="copy-address" checked={isCopying} onChange={handleCopyAddress} className="w-5 h-5 text-[#007a87] rounded-md border-slate-300 focus:ring-[#007a87] cursor-pointer" />
                     <span className="text-base font-bold text-[#002b5c] group-hover:text-[#007a87] transition-colors">
                       Copy Local Address to Permanent Address
                     </span>
                   </label>
 
                   {/* Permanent Address */}
-                  <div className="bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-sm relative overflow-hidden group hover:shadow-md transition-shadow">
-                    <div className="absolute top-0 left-0 w-1.5 h-full bg-[#007a87]"></div>
+                  <div className="bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-sm relative overflow-visible group hover:shadow-md transition-shadow z-20">
+                    <div className="absolute top-0 left-0 w-1.5 h-full bg-[#007a87] rounded-l-3xl"></div>
                     <div className="flex items-center gap-3 border-b border-slate-100 pb-4 mb-8">
                       <div className="bg-teal-50 p-2 rounded-xl text-teal-600">
                         <MapPin className="w-6 h-6" />
@@ -711,308 +719,236 @@ export default function PatientRegistrationFormPage({ pageData }: { pageData: an
                       <div>
                         <label className="block text-sm font-semibold text-slate-700 mb-2">Country <span className="text-red-500">*</span></label>
                         <div className="relative">
-                          <select className="w-full appearance-none px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium cursor-pointer">
-                            <option>-- Select --</option>
-                          <option>Afghanistan</option>
-                          <option>Albania</option>
-                          <option>Algeria</option>
-                          <option>Andorra</option>
-                          <option>Angola</option>
-                          <option>Antigua and Barbuda</option>
-                          <option>Argentina</option>
-                          <option>Armenia</option>
-                          <option>Australia</option>
-                          <option>Austria</option>
-                          <option>Azerbaijan</option>
-                          <option>Bahamas</option>
-                          <option>Bahrain</option>
-                          <option>Bangladesh</option>
-                          <option>Barbados</option>
-                          <option>Belarus</option>
-                          <option>Belgium</option>
-                          <option>Belize</option>
-                          <option>Benin</option>
-                          <option>Bhutan</option>
-                          <option>Bolivia</option>
-                          <option>Bosnia & Herzegovina</option>
-                          <option>Botswana</option>
-                          <option>Brazil</option>
-                          <option>Brunei</option>
-                          <option>Bulgaria</option>
-                          <option>Burkina Faso</option>
-                          <option>Burundi</option>
-                          <option>Cabo Verde</option>
-                          <option>Cambodia</option>
-                          <option>Cameroon</option>
-                          <option>Canada</option>
-                          <option>Central African Republic</option>
-                          <option>Chad</option>
-                          <option>Chile</option>
-                          <option>China</option>
-                          <option>Colombia</option>
-                          <option>Comoros</option>
-                          <option>Congo</option>
-                          <option>Congo (East Africa)</option>
-                          <option>Costa Rica</option>
-                          <option>Croatia</option>
-                          <option>Cuba</option>
-                          <option>Cyprus</option>
-                          <option>Czech Republic</option>
-                          <option>Denmark</option>
-                          <option>Djibouti</option>
-                          <option>Dominica</option>
-                          <option>Dominican Republic</option>
-                          <option>Ecuador</option>
-                          <option>Egypt</option>
-                          <option>El Salvador</option>
-                          <option>Equatorial Guinea</option>
-                          <option>Eritrea</option>
-                          <option>Estonia</option>
-                          <option>Eswatini</option>
-                          <option>Ethiopia</option>
-                          <option>Fiji</option>
-                          <option>Finland</option>
-                          <option>France</option>
-                          <option>Gabon</option>
-                          <option>Gambia</option>
-                          <option>Georgia</option>
-                          <option>Germany</option>
-                          <option>Ghana</option>
-                          <option>Gibraltar</option>
-                          <option>Greece</option>
-                          <option>Grenada</option>
-                          <option>Guatemala</option>
-                          <option>Guinea</option>
-                          <option>Guinea-Bissau</option>
-                          <option>Guyana</option>
-                          <option>Haiti</option>
-                          <option>Honduras</option>
-                          <option>HongKong</option>
-                          <option>Hungary</option>
-                          <option>Iceland</option>
-                          <option>India</option>
-                          <option>Indonesia</option>
-                          <option>Iran</option>
-                          <option>IRAQ</option>
-                          <option>Ireland</option>
-                          <option>Israel</option>
-                          <option>Italy</option>
-                          <option>Jamaica</option>
-                          <option>Japan</option>
-                          <option>Jordan</option>
-                          <option>Kazakhstan</option>
-                          <option>Kenya</option>
-                          <option>Kiribati</option>
-                          <option>Kuwait</option>
-                          <option>Kyrgyzstan</option>
-                          <option>Laos</option>
-                          <option>Latvia</option>
-                          <option>Lebanon</option>
-                          <option>Lesotho</option>
-                          <option>Liberia</option>
-                          <option>Libya</option>
-                          <option>Liechtenstein</option>
-                          <option>Lithuania</option>
-                          <option>Luxembourg</option>
-                          <option>Madagascar</option>
-                          <option>Malawi</option>
-                          <option>Malaysia</option>
-                          <option>Maldievs</option>
-                          <option>Mali</option>
-                          <option>Malta</option>
-                          <option>Marshall Islands</option>
-                          <option>Mauritania</option>
-                          <option>Mauritius</option>
-                          <option>Mexico</option>
-                          <option>Micronesia</option>
-                          <option>Moldova</option>
-                          <option>Monaco</option>
-                          <option>Mongolia</option>
-                          <option>Montenegro</option>
-                          <option>Morocco</option>
-                          <option>Mozambique</option>
-                          <option>Myanmar</option>
-                          <option>Namibia</option>
-                          <option>Nauru</option>
-                          <option>Nepal</option>
-                          <option>Netherlands</option>
-                          <option>New Zealand</option>
-                          <option>Nicaragua</option>
-                          <option>Niger</option>
-                          <option>Nigeria</option>
-                          <option>North Korea</option>
-                          <option>North Macedonia</option>
-                          <option>Norway</option>
-                          <option>Oman</option>
-                          <option>OTHER</option>
-                          <option>Pakistan</option>
-                          <option>Palau</option>
-                          <option>Palestine</option>
-                          <option>Panama</option>
-                          <option>Papua New Guinea</option>
-                          <option>Paraguay</option>
-                          <option>Peru</option>
-                          <option>PHILIPINES</option>
-                          <option>Poland</option>
-                          <option>Portugal</option>
-                          <option>Qatar</option>
-                          <option>Republic of Georgia</option>
-                          <option>Republic of Macedonia</option>
-                          <option>Romania</option>
-                          <option>Russia</option>
-                          <option>Rwanda</option>
-                          <option>Saint Kitts and Nevis</option>
-                          <option>Saint Lucia</option>
-                          <option>Saint Vincent and the Grenadines</option>
-                          <option>Samoa</option>
-                          <option>San Marino</option>
-                          <option>Sao Tome and Principe</option>
-                          <option>Saudi Arabia</option>
-                          <option>Senegal</option>
-                          <option>Serbia</option>
-                          <option>Serbia & Montenegro</option>
-                          <option>Seychelles</option>
-                          <option>SIERRA LEONEAN</option>
-                          <option>Singapore</option>
-                          <option>Slovakia</option>
-                          <option>Slovenia</option>
-                          <option>Solomon Islands</option>
-                          <option>Somalia</option>
-                          <option>South Africa</option>
-                          <option>South Korea</option>
-                          <option>South Sudan</option>
-                          <option>Spain</option>
-                          <option>Sri Lanka</option>
-                          <option>Sudan</option>
-                          <option>Suriname</option>
-                          <option>Sweden</option>
-                          <option>Switzerland</option>
-                          <option>Syria</option>
-                          <option>Taiwan</option>
-                          <option>Tajikistan</option>
-                          <option>Tanzania</option>
-                          <option>Thailand</option>
-                          <option>Timor-Leste</option>
-                          <option>Togo</option>
-                          <option>Tonga</option>
-                          <option>Trinidad and Tobago</option>
-                          <option>Tunisia</option>
-                          <option>Turkey</option>
-                          <option>Turkmenistan</option>
-                          <option>Tuvalu</option>
-                          <option>Uganda</option>
-                          <option>Ukraine</option>
-                          <option>United Arab Emirates</option>
-                          <option>United Kingdom</option>
-                          <option>United States</option>
-                          <option>Uruguay</option>
-                          <option>Uzbekistan</option>
-                          <option>Vanuatu</option>
-                          <option>Vatican City</option>
-                          <option>Venezuela</option>
-                          <option>Vietnam</option>
-                          <option>Yemen</option>
-                          <option>Zambia</option>
-                          <option>Zimbabwe</option>
-                        
-                          </select>
-                          <Globe className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
-                          <ChevronRight className="w-5 h-5 text-slate-400 absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none rotate-90" />
-                        </div>
+                          <CustomDropdown
+  placeholder="-- Select --"
+  icon={Globe}
+  options={[
+    "Afghanistan",
+    "Albania",
+    "Algeria",
+    "Andorra",
+    "Angola",
+    "Antigua and Barbuda",
+    "Argentina",
+    "Armenia",
+    "Australia",
+    "Austria",
+    "Azerbaijan",
+    "Bahamas",
+    "Bahrain",
+    "Bangladesh",
+    "Barbados",
+    "Belarus",
+    "Belgium",
+    "Belize",
+    "Benin",
+    "Bhutan",
+    "Bolivia",
+    "Bosnia & Herzegovina",
+    "Botswana",
+    "Brazil",
+    "Brunei",
+    "Bulgaria",
+    "Burkina Faso",
+    "Burundi",
+    "Cabo Verde",
+    "Cambodia",
+    "Cameroon",
+    "Canada",
+    "Central African Republic",
+    "Chad",
+    "Chile",
+    "China",
+    "Colombia",
+    "Comoros",
+    "Congo",
+    "Congo (East Africa)",
+    "Costa Rica",
+    "Croatia",
+    "Cuba",
+    "Cyprus",
+    "Czech Republic",
+    "Denmark",
+    "Djibouti",
+    "Dominica",
+    "Dominican Republic",
+    "Ecuador",
+    "Egypt",
+    "El Salvador",
+    "Equatorial Guinea",
+    "Eritrea",
+    "Estonia",
+    "Eswatini",
+    "Ethiopia",
+    "Fiji",
+    "Finland",
+    "France",
+    "Gabon",
+    "Gambia",
+    "Georgia",
+    "Germany",
+    "Ghana",
+    "Gibraltar",
+    "Greece",
+    "Grenada",
+    "Guatemala",
+    "Guinea",
+    "Guinea-Bissau",
+    "Guyana",
+    "Haiti",
+    "Honduras",
+    "HongKong",
+    "Hungary",
+    "Iceland",
+    "India",
+    "Indonesia",
+    "Iran",
+    "IRAQ",
+    "Ireland",
+    "Israel",
+    "Italy",
+    "Jamaica",
+    "Japan",
+    "Jordan",
+    "Kazakhstan",
+    "Kenya",
+    "Kiribati",
+    "Kuwait",
+    "Kyrgyzstan",
+    "Laos",
+    "Latvia",
+    "Lebanon",
+    "Lesotho",
+    "Liberia",
+    "Libya",
+    "Liechtenstein",
+    "Lithuania",
+    "Luxembourg",
+    "Madagascar",
+    "Malawi",
+    "Malaysia",
+    "Maldievs",
+    "Mali",
+    "Malta",
+    "Marshall Islands",
+    "Mauritania",
+    "Mauritius",
+    "Mexico",
+    "Micronesia",
+    "Moldova",
+    "Monaco",
+    "Mongolia",
+    "Montenegro",
+    "Morocco",
+    "Mozambique",
+    "Myanmar",
+    "Namibia",
+    "Nauru",
+    "Nepal",
+    "Netherlands",
+    "New Zealand",
+    "Nicaragua",
+    "Niger",
+    "Nigeria",
+    "North Korea",
+    "North Macedonia",
+    "Norway",
+    "Oman",
+    "OTHER",
+    "Pakistan",
+    "Palau",
+    "Palestine",
+    "Panama",
+    "Papua New Guinea",
+    "Paraguay",
+    "Peru",
+    "PHILIPINES",
+    "Poland",
+    "Portugal",
+    "Qatar",
+    "Republic of Georgia",
+    "Republic of Macedonia",
+    "Romania",
+    "Russia",
+    "Rwanda",
+    "Saint Kitts and Nevis",
+    "Saint Lucia",
+    "Saint Vincent and the Grenadines",
+    "Samoa",
+    "San Marino",
+    "Sao Tome and Principe",
+    "Saudi Arabia",
+    "Senegal",
+    "Serbia",
+    "Serbia & Montenegro",
+    "Seychelles",
+    "SIERRA LEONEAN",
+    "Singapore",
+    "Slovakia",
+    "Slovenia",
+    "Solomon Islands",
+    "Somalia",
+    "South Africa",
+    "South Korea",
+    "South Sudan",
+    "Spain",
+    "Sri Lanka",
+    "Sudan",
+    "Suriname",
+    "Sweden",
+    "Switzerland",
+    "Syria",
+    "Taiwan",
+    "Tajikistan",
+    "Tanzania",
+    "Thailand",
+    "Timor-Leste",
+    "Togo",
+    "Tonga",
+    "Trinidad and Tobago",
+    "Tunisia",
+    "Turkey",
+    "Turkmenistan",
+    "Tuvalu",
+    "Uganda",
+    "Ukraine",
+    "United Arab Emirates",
+    "United Kingdom",
+    "United States",
+    "Uruguay",
+    "Uzbekistan",
+    "Vanuatu",
+    "Vatican City",
+    "Venezuela",
+    "Vietnam",
+    "Yemen",
+    "Zambia",
+    "Zimbabwe"
+  ]}
+/></div>
                       </div>
 
                       <div>
                         <label className="block text-sm font-semibold text-slate-700 mb-2">State <span className="text-red-500">*</span></label>
                         <div className="relative">
-                          <select name="localCity" className="w-full appearance-none px-4 py-3.5 pl-4 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium cursor-pointer">
-                            <option>-- Select --</option>
-                          <option>Andaman & Nicobar</option>
-                          <option>Andhra Pradesh</option>
-                          <option>Arunachal Pradesh</option>
-                          <option>Assam</option>
-                          <option>Bihar</option>
-                          <option>Chandigarh</option>
-                          <option>Chattisgarh</option>
-                          <option>Dadra & Nagar</option>
-                          <option>Daman & Diu</option>
-                          <option>Delhi</option>
-                          <option>Goa</option>
-                          <option>Gujrat</option>
-                          <option>Haryana</option>
-                          <option>Himachal Pradesh</option>
-                          <option>Jammu & Kashmir</option>
-                          <option>Jharkhand</option>
-                          <option>Karnataka</option>
-                          <option>Kerala</option>
-                          <option>Lakshdweep</option>
-                          <option>Madhya Pradesh</option>
-                          <option>Maharashtra</option>
-                          <option>Manipur</option>
-                          <option>Meghalaya</option>
-                          <option>Mizoram</option>
-                          <option>Nagaland</option>
-                          <option>Orissa</option>
-                          <option>Pondichery</option>
-                          <option>Punjab</option>
-                          <option>Rajasthan</option>
-                          <option>Sikkim</option>
-                          <option>Tamil Nadu</option>
-                          <option>Telangana</option>
-                          <option>Tripura</option>
-                          <option>Uttar Pradesh</option>
-                          <option>Uttaranchal</option>
-                          <option>West Bengal</option>
-                        
-                          </select>
-                          <ChevronRight className="w-5 h-5 text-slate-400 absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none rotate-90" />
-                        </div>
+                          <CustomDropdown
+  name="permState"
+  value={permStateVal}
+  onChange={setPermStateVal}
+  placeholder="-- Select --"
+  options={stateOptions}
+/></div>
                       </div>
 
                       <div>
                         <label className="block text-sm font-semibold text-slate-700 mb-2">District/City <span className="text-red-500">*</span></label>
                         <div className="relative">
-                          <select className="w-full appearance-none px-4 py-3.5 pl-4 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium cursor-pointer">
-                            <option>-- Select --</option>
-                          <option>Ahilya Nagar</option>
-                          <option>Akola</option>
-                          <option>Amravati</option>
-                          <option>Bandra(Mumbai Suburban district)</option>
-                          <option>Beed</option>
-                          <option>Bhandara</option>
-                          <option>Buldhana</option>
-                          <option>Chandrapur</option>
-                          <option>Dharashiv</option>
-                          <option>Dhule</option>
-                          <option>Gadchiroli</option>
-                          <option>Gondia</option>
-                          <option>Hingoli</option>
-                          <option>Jalgaon</option>
-                          <option>Jalna</option>
-                          <option>Kolhapur</option>
-                          <option>Latur</option>
-                          <option>Mumbai-City</option>
-                          <option>Nagpur</option>
-                          <option>Nanded</option>
-                          <option>Nandurbar</option>
-                          <option>Nashik</option>
-                          <option>Palghar</option>
-                          <option>Parbhani</option>
-                          <option>Pune</option>
-                          <option>Raigad</option>
-                          <option>Ratnagiri</option>
-                          <option>Sambhaji Nagar</option>
-                          <option>Sangli</option>
-                          <option>Satara</option>
-                          <option>Sindudurg</option>
-                          <option>Solapur</option>
-                          <option>Thane</option>
-                          <option>Wardha</option>
-                          <option>Washim</option>
-                          <option>Yavatmal</option>
-                        
-                          </select>
-                          <ChevronRight className="w-5 h-5 text-slate-400 absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none rotate-90" />
-                        </div>
+                          <CustomDropdown
+  name="permDistrict"
+  value={isCopying ? permDistrictVal : undefined}
+  placeholder="-- Select --"
+  options={getDistrictsForState(permStateVal)}
+/></div>
                       </div>
 
                       <div>
@@ -1032,8 +968,8 @@ export default function PatientRegistrationFormPage({ pageData }: { pageData: an
                   </div>
 
                   {/* Emergency Contact */}
-                  <div className="bg-red-50/50 border border-red-100 rounded-3xl p-6 sm:p-8 shadow-sm relative overflow-hidden group hover:shadow-md transition-shadow">
-                    <div className="absolute top-0 left-0 w-1.5 h-full bg-red-500"></div>
+                  <div className="bg-red-50/50 border border-red-100 rounded-3xl p-6 sm:p-8 shadow-sm relative overflow-visible group hover:shadow-md transition-shadow z-10">
+                    <div className="absolute top-0 left-0 w-1.5 h-full bg-red-500 rounded-l-3xl"></div>
                     <div className="flex items-center gap-3 border-b border-red-200/60 pb-4 mb-8">
                       <div className="bg-red-100 p-2 rounded-xl text-red-600">
                         <HeartPulse className="w-6 h-6" />
@@ -1048,17 +984,9 @@ export default function PatientRegistrationFormPage({ pageData }: { pageData: an
                       </div>
 
                       <div>
-                        <label className="block text-sm font-semibold text-slate-700 mb-2">Last Name</label>
-                        <div className="relative">
-                          <input type="text" placeholder="Last Name" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-red-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
-                          <User className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
-                        </div>
-                      </div>
-
-                      <div>
                         <label className="block text-sm font-semibold text-slate-700 mb-2">First Name</label>
                         <div className="relative">
-                          <input type="text" placeholder="First Name" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-red-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
+                          <input type="text" name="emergencyFirstName" placeholder="First Name" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-red-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
                           <User className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                         </div>
                       </div>
@@ -1066,7 +994,15 @@ export default function PatientRegistrationFormPage({ pageData }: { pageData: an
                       <div>
                         <label className="block text-sm font-semibold text-slate-700 mb-2">Middle Name</label>
                         <div className="relative">
-                          <input type="text" placeholder="Middle Name" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-red-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
+                          <input type="text" name="emergencyMiddleName" placeholder="Middle Name" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-red-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
+                          <User className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
+                        </div>
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-semibold text-slate-700 mb-2">Last Name</label>
+                        <div className="relative">
+                          <input type="text" name="emergencyLastName" placeholder="Last Name" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-red-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
                           <User className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                         </div>
                       </div>
@@ -1074,48 +1010,48 @@ export default function PatientRegistrationFormPage({ pageData }: { pageData: an
                       <div>
                         <label className="block text-sm font-semibold text-slate-700 mb-2">Relation</label>
                         <div className="relative">
-                          <select className="w-full appearance-none px-4 py-3.5 pl-4 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-red-500 bg-white shadow-sm transition-all text-slate-700 font-medium cursor-pointer">
-                            <option>-- Select --</option>
-                          <option>Self</option>
-                          <option>Spouse</option>
-                          <option>Brother</option>
-                          <option>Sister</option>
-                          <option>Friend</option>
-                          <option>Father</option>
-                          <option>Mother</option>
-                          <option>Relative</option>
-                          <option>Son</option>
-                          <option>Daughter</option>
-                          <option>Father in law</option>
-                          <option>Grand father</option>
-                          <option>Grand mother</option>
-                          <option>Husband</option>
-                          <option>Mother in law</option>
-                          <option>Wife</option>
-                          <option>Uncle</option>
-                          <option>Aunty</option>
-                          <option>Brother In Law</option>
-                          <option>Sister In Law</option>
-                          <option>Nephew</option>
-                          <option>Niece</option>
-                          <option>Son In Law</option>
-                          <option>Daughter In Law</option>
-                          <option>Grand Daughter</option>
-                          <option>Grand Son</option>
-                          <option>Major Brother</option>
-                          <option>Major Sister</option>
-                          <option>Major Son</option>
-                          <option>Major Daughter</option>
-                        
-                          </select>
-                          <ChevronRight className="w-5 h-5 text-slate-400 absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none rotate-90" />
-                        </div>
+                          <CustomDropdown
+  name="emergencyRelation"
+  placeholder="-- Select --"
+  options={[
+    "Self",
+    "Spouse",
+    "Brother",
+    "Sister",
+    "Friend",
+    "Father",
+    "Mother",
+    "Relative",
+    "Son",
+    "Daughter",
+    "Father in law",
+    "Grand father",
+    "Grand mother",
+    "Husband",
+    "Mother in law",
+    "Wife",
+    "Uncle",
+    "Aunty",
+    "Brother In Law",
+    "Sister In Law",
+    "Nephew",
+    "Niece",
+    "Son In Law",
+    "Daughter In Law",
+    "Grand Daughter",
+    "Grand Son",
+    "Major Brother",
+    "Major Sister",
+    "Major Son",
+    "Major Daughter"
+  ]}
+/></div>
                       </div>
 
                       <div>
                         <label className="block text-sm font-semibold text-slate-700 mb-2">Emergency Contact No</label>
                         <div className="relative">
-                          <input type="text" placeholder="Contact Number" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-red-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" pattern="[0-9]{10}" maxLength={10} minLength={10} title="Please enter a valid 10-digit mobile number" onInput={(e) => { e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/g, "").slice(0, 10); }} />
+                          <input type="text" name="emergencyContactNo" placeholder="Contact Number" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-red-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" pattern="[0-9]{10}" maxLength={10} minLength={10} title="Please enter a valid 10-digit mobile number" onInput={(e) => { e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/g, "").slice(0, 10); }} />
                           <Phone className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                         </div>
                       </div>
@@ -1135,42 +1071,42 @@ export default function PatientRegistrationFormPage({ pageData }: { pageData: an
                       <div>
                         <label className="block text-sm font-semibold text-slate-700 mb-2">Representative Relation</label>
                         <div className="relative">
-                          <select name="permState" className="w-full appearance-none px-4 py-3.5 pl-4 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium cursor-pointer">
-                            <option>-- Select --</option>
-                          <option>Self</option>
-                          <option>Spouse</option>
-                          <option>Brother</option>
-                          <option>Sister</option>
-                          <option>Friend</option>
-                          <option>Father</option>
-                          <option>Mother</option>
-                          <option>Relative</option>
-                          <option>Son</option>
-                          <option>Daughter</option>
-                          <option>Father in law</option>
-                          <option>Grand father</option>
-                          <option>Grand mother</option>
-                          <option>Husband</option>
-                          <option>Mother in law</option>
-                          <option>Wife</option>
-                          <option>Uncle</option>
-                          <option>Aunty</option>
-                          <option>Brother In Law</option>
-                          <option>Sister In Law</option>
-                          <option>Nephew</option>
-                          <option>Niece</option>
-                          <option>Son In Law</option>
-                          <option>Daughter In Law</option>
-                          <option>Grand Daughter</option>
-                          <option>Grand Son</option>
-                          <option>Major Brother</option>
-                          <option>Major Sister</option>
-                          <option>Major Son</option>
-                          <option>Major Daughter</option>
-                        
-                          </select>
-                          <ChevronRight className="w-5 h-5 text-slate-400 absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none rotate-90" />
-                        </div>
+                          <CustomDropdown
+  name="permState"
+  placeholder="-- Select --"
+  options={[
+    "Self",
+    "Spouse",
+    "Brother",
+    "Sister",
+    "Friend",
+    "Father",
+    "Mother",
+    "Relative",
+    "Son",
+    "Daughter",
+    "Father in law",
+    "Grand father",
+    "Grand mother",
+    "Husband",
+    "Mother in law",
+    "Wife",
+    "Uncle",
+    "Aunty",
+    "Brother In Law",
+    "Sister In Law",
+    "Nephew",
+    "Niece",
+    "Son In Law",
+    "Daughter In Law",
+    "Grand Daughter",
+    "Grand Son",
+    "Major Brother",
+    "Major Sister",
+    "Major Son",
+    "Major Daughter"
+  ]}
+/></div>
                       </div>
                       
                       <div className="hidden lg:block"></div>
@@ -1178,22 +1114,21 @@ export default function PatientRegistrationFormPage({ pageData }: { pageData: an
                       <div>
                         <label className="block text-sm font-semibold text-slate-700 mb-2">Patient Document Type</label>
                         <div className="relative">
-                          <select className="w-full appearance-none px-4 py-3.5 pl-4 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium cursor-pointer">
-                            <option>-- Select --</option>
-                          <option>Driver's License Frontside</option>
-                          <option>Driver's License Backside</option>
-                          <option>Passport Book</option>
-                          <option>Aadhar card</option>
-                          <option>Election card</option>
-                          <option>Pan card</option>
-                          <option>Birth certificate</option>
-                          <option>Affidavit</option>
-                          <option>Marriage certificate</option>
-                          <option>Visa Details</option>
-                        
-                          </select>
-                          <ChevronRight className="w-5 h-5 text-slate-400 absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none rotate-90" />
-                        </div>
+                          <CustomDropdown
+  placeholder="-- Select --"
+  options={[
+    "Driver's License Frontside",
+    "Driver's License Backside",
+    "Passport Book",
+    "Aadhar card",
+    "Election card",
+    "Pan card",
+    "Birth certificate",
+    "Affidavit",
+    "Marriage certificate",
+    "Visa Details"
+  ]}
+/></div>
                       </div>
 
                       <div className="lg:col-span-2">
@@ -1202,9 +1137,43 @@ export default function PatientRegistrationFormPage({ pageData }: { pageData: an
                           <label className="flex items-center gap-2 px-5 py-3 bg-white border border-slate-200 shadow-sm rounded-xl cursor-pointer hover:bg-slate-50 hover:border-teal-500 transition-all">
                             <Upload className="w-5 h-5 text-[#007a87]" />
                             <span className="text-sm font-bold text-[#002b5c]">Choose File</span>
-                            <input type="file" className="hidden" />
+                            <input 
+                              type="file" 
+                              name="patientDocument"
+                              ref={documentImageInputRef}
+                              className="hidden" 
+                              accept="image/*"
+                              onChange={(e) => {
+                                const file = e.target.files?.[0];
+                                setDocumentImageName(file?.name || "No file chosen");
+                                if (file) {
+                                  const reader = new FileReader();
+                                  reader.onload = (ev) => setDocumentImagePreview(ev.target?.result as string);
+                                  reader.readAsDataURL(file);
+                                } else {
+                                  setDocumentImagePreview(null);
+                                }
+                              }}
+                            />
                           </label>
-                          <span className="text-sm font-medium text-slate-500">No file chosen</span>
+                          
+                          {documentImagePreview && (
+                            <div className="relative group/imagebtn w-max h-max">
+                              <img src={documentImagePreview} alt="Preview" className="w-12 h-12 rounded-lg object-cover border border-slate-200" />
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setDocumentImagePreview(null);
+                                  setDocumentImageName("No file chosen");
+                                  if (documentImageInputRef.current) documentImageInputRef.current.value = "";
+                                }}
+                                className="absolute -top-1.5 -right-1.5 bg-red-100 hover:bg-red-500 text-red-600 hover:text-white rounded-full w-4 h-4 flex items-center justify-center text-[8px] font-bold transition-all shadow-sm opacity-0 pointer-events-none group-hover/imagebtn:opacity-100 group-hover/imagebtn:pointer-events-auto"
+                                title="Remove Document"
+                              >
+                                ✕
+                              </button>
+                            </div>
+                          )}
                         </div>
                       </div>
 
@@ -1235,9 +1204,18 @@ export default function PatientRegistrationFormPage({ pageData }: { pageData: an
                       </div>
                       <input type="text" placeholder="Enter Captcha Text" className="w-full px-5 py-4 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-[#007a87] text-center font-medium shadow-sm transition-all mb-8" />
                       
-                      <button type="button" className="group w-full py-4 bg-[#003360] text-white font-bold text-lg rounded-xl hover:bg-[#002b5c] transition-all shadow-[0_8px_20px_rgba(0,51,96,0.3)] hover:-translate-y-1 hover:shadow-[0_12px_25px_rgba(0,51,96,0.4)] flex justify-center items-center gap-3">
-                        Submit Registration
-                        <ArrowRight className="w-5 h-5 text-teal-300 group-hover:translate-x-1 transition-transform" />
+                      <button type="submit" disabled={isSubmitting} className="group w-full py-4 bg-[#003360] text-white font-bold text-lg rounded-xl hover:bg-[#002b5c] transition-all shadow-[0_8px_20px_rgba(0,51,96,0.3)] hover:-translate-y-1 hover:shadow-[0_12px_25px_rgba(0,51,96,0.4)] flex justify-center items-center gap-3 disabled:opacity-70 disabled:pointer-events-none">
+                        {isSubmitting ? (
+                          <>
+                            <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                            Submitting...
+                          </>
+                        ) : (
+                          <>
+                            Submit Registration
+                            <ArrowRight className="w-5 h-5 text-teal-300 group-hover:translate-x-1 transition-transform" />
+                          </>
+                        )}
                       </button>
                     </div>
                   </div>

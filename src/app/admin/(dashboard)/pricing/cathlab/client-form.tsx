@@ -64,7 +64,7 @@ export default function CathlabClientForm({ initialData }: { initialData: any })
       <div className="bg-white rounded-3xl shadow-sm border border-slate-100 p-6 md:p-8 space-y-6">
         <div className="flex justify-between items-center border-b pb-4">
           <h2 className="text-[20px] font-black text-[#002b5c]">Pricing Table</h2>
-          <button type="button" onClick={addRow} className="px-3 py-1.5 text-sm bg-emerald-50 text-emerald-600 rounded-lg hover:bg-emerald-100 flex items-center gap-2 font-semibold">
+          <button type="button" onClick={addRow} className="px-4 py-2 text-sm bg-[#002b5c] text-white rounded-lg hover:bg-[#001a38] hover:shadow-sm flex items-center gap-2 font-bold transition-all duration-300">
             <Plus size={16} /> Add Row
           </button>
         </div>

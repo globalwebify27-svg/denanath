@@ -11,6 +11,9 @@ export default function PatientRegistrationClientForm({ initialData }: { initial
     title: initialData?.title || "Patient Registration Form",
     introText: initialData?.introText || "Registration is a process by which patient is enrolled into the records of the hospital. This is required to provide seamless hospital services to the patient and to keep track of various services that are availed by the patient. This is also the first step to generate a medical record of the patient in which all medical details of the patient are documented.",
     highlightText: initialData?.highlightText || "This facility is to be used only by patient coming first time to this hospital.",
+    seoMetaTitle: initialData?.seoMetaTitle || "",
+    seoMetaDescription: initialData?.seoMetaDescription || "",
+    seoKeywords: initialData?.seoKeywords || "",
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -23,7 +26,11 @@ export default function PatientRegistrationClientForm({ initialData }: { initial
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           key: "page_online-facilities_patient_registration",
-          value: formData,
+          value: JSON.stringify(formData),
+          pathsToRevalidate: [
+            "/admin/online-facilities/patient-registration",
+            "/online-facilities/patient-registration"
+          ]
         }),
       });
       

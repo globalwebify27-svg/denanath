@@ -44,7 +44,7 @@ export default async function CareersAdminPage() {
           <div className="absolute top-0 left-0 w-2 h-full bg-gradient-to-b from-[#002b5c] to-[#007a87]"></div>
           <div className="z-10 relative">
             <h1 className="text-[32px] md:text-[40px] font-black text-[#002b5c] tracking-tight leading-tight mb-2 flex items-center gap-3">
-              Careers Management
+              Job & Vacancy Management
             </h1>
             <p className="text-[15px] font-medium text-slate-500 max-w-xl leading-relaxed">
               Manage open job requirements, update the department contact directory, and modify page content.

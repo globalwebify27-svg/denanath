@@ -25,7 +25,8 @@ export default async function UniqueFeaturesPage() {
   let featuresData: any[] = [];
   try { 
     if (setting) {
-      featuresData = JSON.parse(setting.value);
+      const parsed = JSON.parse(setting.value);
+      featuresData = Array.isArray(parsed) ? parsed : (parsed.items || []);
     } else {
       // Fallback data
       featuresData = [

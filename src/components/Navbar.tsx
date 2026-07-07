@@ -154,7 +154,7 @@ export default function Navbar() {
       href: "/academics",
       dropdown: [
         { name: "Academics", href: "/academics" },
-        { name: "Simulation Center", href: "/simulation-center/home" },
+        { name: "Simulation Center", href: "/simulation-center" },
       ],
     },
     {

@@ -10,8 +10,14 @@ export default async function AdminUniqueFeaturesPage() {
   const setting = await prisma.siteSetting.findUnique({ where: { key: 'page_unique_features' } });
 
   let featuresData: any[] = [];
-  try { if (setting) featuresData = JSON.parse(setting.value); } catch (e) {}
-  if (!featuresData || (Array.isArray(featuresData) ? featuresData.length === 0 : Object.keys(featuresData).length === 0)) {
+  let fullData: any = null;
+  try { 
+    if (setting) {
+      fullData = JSON.parse(setting.value);
+      featuresData = Array.isArray(fullData) ? fullData : (fullData.items || []);
+    }
+  } catch (e) {}
+  if (!featuresData || featuresData.length === 0) {
     featuresData = [
     {
       title: "EMS",
@@ -123,11 +129,19 @@ export default async function AdminUniqueFeaturesPage() {
     const rawJson = formData.get("featuresJson") as string;
     
     try {
-      const parsed = JSON.parse(rawJson);
-      parsed.seoMetaTitle = formData.get("seoMetaTitle") || "";
-      parsed.seoMetaDescription = formData.get("seoMetaDescription") || "";
-      parsed.seoKeywords = formData.get("seoKeywords") || "";
-      const finalJson = JSON.stringify(parsed);
+      const parsedArray = JSON.parse(rawJson);
+      const existingSetting = await prisma.siteSetting.findUnique({ where: { key: 'page_unique_features' } });
+      let existingData: any = {};
+      try { if (existingSetting && existingSetting.value) existingData = JSON.parse(existingSetting.value); } catch (e) {}
+      
+      const finalData = {
+        ...(Array.isArray(existingData) ? {} : existingData),
+        items: parsedArray,
+        seoMetaTitle: formData.get("seoMetaTitle") || "",
+        seoMetaDescription: formData.get("seoMetaDescription") || "",
+        seoKeywords: formData.get("seoKeywords") || ""
+      };
+      const finalJson = JSON.stringify(finalData);
       await prisma.siteSetting.upsert({
         where: { key: 'page_unique_features' },
         update: { value: finalJson },
@@ -179,15 +193,15 @@ export default async function AdminUniqueFeaturesPage() {
           <div className="p-6 md:p-8 space-y-6">
             <div>
               <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Meta Title</label>
-              <input type="text" name="seoMetaTitle" defaultValue={featuresData?.seoMetaTitle || ""} className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 transition-all duration-200 text-slate-700 font-medium leading-relaxed" placeholder="Enter SEO Meta Title..." />
+              <input type="text" name="seoMetaTitle" defaultValue={fullData?.seoMetaTitle || ""} className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 transition-all duration-200 text-slate-700 font-medium leading-relaxed" placeholder="Enter SEO Meta Title..." />
             </div>
             <div>
               <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Meta Description</label>
-              <textarea name="seoMetaDescription" defaultValue={featuresData?.seoMetaDescription || ""} rows={3} className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 transition-all duration-200 text-slate-700 font-medium leading-relaxed resize-none" placeholder="Enter SEO Meta Description..." />
+              <textarea name="seoMetaDescription" defaultValue={fullData?.seoMetaDescription || ""} rows={3} className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 transition-all duration-200 text-slate-700 font-medium leading-relaxed resize-none" placeholder="Enter SEO Meta Description..." />
             </div>
             <div>
               <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Keywords</label>
-              <textarea name="seoKeywords" defaultValue={featuresData?.seoKeywords || ""} rows={2} className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 transition-all duration-200 text-slate-700 font-medium leading-relaxed resize-none text-sm" placeholder="hospital, care, pune, best hospital..." />
+              <textarea name="seoKeywords" defaultValue={fullData?.seoKeywords || ""} rows={2} className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 transition-all duration-200 text-slate-700 font-medium leading-relaxed resize-none text-sm" placeholder="hospital, care, pune, best hospital..." />
             </div>
           </div>
         </div>

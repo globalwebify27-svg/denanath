@@ -3,7 +3,15 @@
 import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { ChevronRight, Globe, RefreshCw, Lock, CreditCard, User, Phone, Mail, MapPin, Building, ShieldCheck, IndianRupee, MessageSquare, Map } from "lucide-react";
+import CustomDropdown from "@/components/CustomDropdown";
 import { submitFormAction } from "@/app/actions/submit-form";
+import statesData from "@/data/statesAndDistricts.json";
+
+const stateOptions = statesData.states.map((s: any) => s.state);
+const getDistrictsForState = (stateName: string | undefined) => {
+  const stateObj = statesData.states.find((s: any) => s.state === stateName);
+  return stateObj ? stateObj.districts : [];
+};
 
 export default function OnlinePaymentClientPage({ pageData }: { pageData: any }) {
   const options = [
@@ -33,6 +41,10 @@ export default function OnlinePaymentClientPage({ pageData }: { pageData: any })
   const formRef = useRef<HTMLFormElement>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [captchaCode, setCaptchaCode] = useState("x N i R");
+  const [stateVal, setStateVal] = useState<string | undefined>(undefined);
+  const [purposeVal, setPurposeVal] = useState<string | undefined>(undefined);
+  const [countryVal, setCountryVal] = useState<string | undefined>(undefined);
+  const [cityVal, setCityVal] = useState<string | undefined>(undefined);
 
   const generateCaptcha = () => {
     const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -140,6 +152,10 @@ export default function OnlinePaymentClientPage({ pageData }: { pageData: any })
                       if (res.success) {
                         alert("Payment form submitted successfully!"); 
                         formRef.current?.reset();
+                        setStateVal("");
+                        setPurposeVal("");
+                        setCountryVal("");
+                        setCityVal("");
                       } else {
                         alert("Failed to submit form.");
                       }
@@ -148,8 +164,8 @@ export default function OnlinePaymentClientPage({ pageData }: { pageData: any })
                   >
                 
                 {/* 1. Payment Details Section */}
-                <div className="bg-slate-50 border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-sm relative overflow-hidden">
-                  <div className="absolute top-0 left-0 w-1.5 h-full bg-[#007a87]"></div>
+                <div className="bg-slate-50 border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-sm relative overflow-visible">
+                  <div className="absolute top-0 left-0 w-1.5 h-full bg-[#007a87] rounded-l-3xl"></div>
                   <h3 className="text-xl font-bold text-[#002b5c] mb-6 flex items-center gap-2 border-b border-slate-200 pb-4">
                     <CreditCard className="w-6 h-6 text-[#007a87]" />
                     Payment Details
@@ -159,18 +175,21 @@ export default function OnlinePaymentClientPage({ pageData }: { pageData: any })
                     <div className="md:col-span-2">
                       <label className="block text-sm font-semibold text-slate-700 mb-2">Purpose of Payment <span className="text-red-500">*</span></label>
                       <div className="relative">
-                        <select suppressHydrationWarning name="purpose" className="w-full appearance-none px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium cursor-pointer">
-                    <option>-- Select --</option>
-                    <option>Patient Help</option>
-                    <option>Indoor Patient Payment (IPD)</option>
-                    <option>Outdoor Patient Payment (OPD)</option>
-                    <option>Conference / Workshop</option>
-                    <option>Pharmacy</option>
-                    <option>ICU Deposit</option>
-                  </select>
-                        <CreditCard className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
-                        <ChevronRight className="w-5 h-5 text-slate-400 absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none rotate-90" />
-                      </div>
+                        <CustomDropdown
+  name="purpose"
+  placeholder="-- Select --"
+  icon={CreditCard}
+  options={[
+    "Patient Help",
+    "Indoor Patient Payment (IPD)",
+    "Outdoor Patient Payment (OPD)",
+    "Conference / Workshop",
+    "Pharmacy",
+    "ICU Deposit"
+  ]}
+  value={purposeVal}
+  onChange={setPurposeVal}
+/></div>
                     </div>
                     
                     <div className="md:col-span-2">
@@ -184,8 +203,8 @@ export default function OnlinePaymentClientPage({ pageData }: { pageData: any })
                 </div>
 
                 {/* 2. Payer Information Section */}
-                <div className="bg-slate-50 border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-sm relative overflow-hidden">
-                  <div className="absolute top-0 left-0 w-1.5 h-full bg-[#007a87]"></div>
+                <div className="bg-slate-50 border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-sm relative overflow-visible">
+                  <div className="absolute top-0 left-0 w-1.5 h-full bg-[#007a87] rounded-l-3xl"></div>
                   <h3 className="text-xl font-bold text-[#002b5c] mb-6 flex items-center gap-2 border-b border-slate-200 pb-4">
                     <User className="w-6 h-6 text-[#007a87]" />
                     Payer Information
@@ -219,8 +238,8 @@ export default function OnlinePaymentClientPage({ pageData }: { pageData: any })
                 </div>
 
                 {/* 3. Location Details Section */}
-                <div className="bg-slate-50 border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-sm relative overflow-hidden">
-                  <div className="absolute top-0 left-0 w-1.5 h-full bg-[#007a87]"></div>
+                <div className="bg-slate-50 border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-sm relative overflow-visible">
+                  <div className="absolute top-0 left-0 w-1.5 h-full bg-[#007a87] rounded-l-3xl"></div>
                   <h3 className="text-xl font-bold text-[#002b5c] mb-6 flex items-center gap-2 border-b border-slate-200 pb-4">
                     <MapPin className="w-6 h-6 text-[#007a87]" />
                     Location Details
@@ -238,314 +257,249 @@ export default function OnlinePaymentClientPage({ pageData }: { pageData: any })
                     <div>
                       <label className="block text-sm font-semibold text-slate-700 mb-2">Country <span className="text-red-500">*</span></label>
                       <div className="relative">
-                        <select suppressHydrationWarning name="country" className="w-full appearance-none px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium cursor-pointer">
-                        <option>-- Select --</option>
-                        <option>Afghanistan</option>
-                        <option>Albania</option>
-                        <option>Algeria</option>
-                        <option>Andorra</option>
-                        <option>Angola</option>
-                        <option>Antigua and Barbuda</option>
-                        <option>Argentina</option>
-                        <option>Armenia</option>
-                        <option>Australia</option>
-                        <option>Austria</option>
-                        <option>Azerbaijan</option>
-                        <option>Bahamas</option>
-                        <option>Bahrain</option>
-                        <option>Bangladesh</option>
-                        <option>Barbados</option>
-                        <option>Belarus</option>
-                        <option>Belgium</option>
-                        <option>Belize</option>
-                        <option>Benin</option>
-                        <option>Bhutan</option>
-                        <option>Bolivia</option>
-                        <option>Bosnia & Herzegovina</option>
-                        <option>Botswana</option>
-                        <option>Brazil</option>
-                        <option>Brunei</option>
-                        <option>Bulgaria</option>
-                        <option>Burkina Faso</option>
-                        <option>Burundi</option>
-                        <option>Cabo Verde</option>
-                        <option>Cambodia</option>
-                        <option>Cameroon</option>
-                        <option>Canada</option>
-                        <option>Central African Republic</option>
-                        <option>Chad</option>
-                        <option>Chile</option>
-                        <option>China</option>
-                        <option>Colombia</option>
-                        <option>Comoros</option>
-                        <option>Congo</option>
-                        <option>Congo (East Africa)</option>
-                        <option>Costa Rica</option>
-                        <option>Croatia</option>
-                        <option>Cuba</option>
-                        <option>Cyprus</option>
-                        <option>Czech Republic</option>
-                        <option>Denmark</option>
-                        <option>Djibouti</option>
-                        <option>Dominica</option>
-                        <option>Dominican Republic</option>
-                        <option>Ecuador</option>
-                        <option>Egypt</option>
-                        <option>El Salvador</option>
-                        <option>Equatorial Guinea</option>
-                        <option>Eritrea</option>
-                        <option>Estonia</option>
-                        <option>Eswatini</option>
-                        <option>Ethiopia</option>
-                        <option>Fiji</option>
-                        <option>Finland</option>
-                        <option>France</option>
-                        <option>Gabon</option>
-                        <option>Gambia</option>
-                        <option>Georgia</option>
-                        <option>Germany</option>
-                        <option>Ghana</option>
-                        <option>Gibraltar</option>
-                        <option>Greece</option>
-                        <option>Grenada</option>
-                        <option>Guatemala</option>
-                        <option>Guinea</option>
-                        <option>Guinea-Bissau</option>
-                        <option>Guyana</option>
-                        <option>Haiti</option>
-                        <option>Honduras</option>
-                        <option>HongKong</option>
-                        <option>Hungary</option>
-                        <option>Iceland</option>
-                        <option>India</option>
-                        <option>Indonesia</option>
-                        <option>Iran</option>
-                        <option>IRAQ</option>
-                        <option>Ireland</option>
-                        <option>Israel</option>
-                        <option>Italy</option>
-                        <option>Jamaica</option>
-                        <option>Japan</option>
-                        <option>Jordan</option>
-                        <option>Kazakhstan</option>
-                        <option>Kenya</option>
-                        <option>Kiribati</option>
-                        <option>Kuwait</option>
-                        <option>Kyrgyzstan</option>
-                        <option>Laos</option>
-                        <option>Latvia</option>
-                        <option>Lebanon</option>
-                        <option>Lesotho</option>
-                        <option>Liberia</option>
-                        <option>Libya</option>
-                        <option>Liechtenstein</option>
-                        <option>Lithuania</option>
-                        <option>Luxembourg</option>
-                        <option>Madagascar</option>
-                        <option>Malawi</option>
-                        <option>Malaysia</option>
-                        <option>Maldievs</option>
-                        <option>Mali</option>
-                        <option>Malta</option>
-                        <option>Marshall Islands</option>
-                        <option>Mauritania</option>
-                        <option>Mauritius</option>
-                        <option>Mexico</option>
-                        <option>Micronesia</option>
-                        <option>Moldova</option>
-                        <option>Monaco</option>
-                        <option>Mongolia</option>
-                        <option>Montenegro</option>
-                        <option>Morocco</option>
-                        <option>Mozambique</option>
-                        <option>Myanmar</option>
-                        <option>Namibia</option>
-                        <option>Nauru</option>
-                        <option>Nepal</option>
-                        <option>Netherlands</option>
-                        <option>New Zealand</option>
-                        <option>Nicaragua</option>
-                        <option>Niger</option>
-                        <option>Nigeria</option>
-                        <option>North Korea</option>
-                        <option>North Macedonia</option>
-                        <option>Norway</option>
-                        <option>Oman</option>
-                        <option>OTHER</option>
-                        <option>Pakistan</option>
-                        <option>Palau</option>
-                        <option>Palestine</option>
-                        <option>Panama</option>
-                        <option>Papua New Guinea</option>
-                        <option>Paraguay</option>
-                        <option>Peru</option>
-                        <option>PHILIPINES</option>
-                        <option>Poland</option>
-                        <option>Portugal</option>
-                        <option>Qatar</option>
-                        <option>Republic of Georgia</option>
-                        <option>Republic of Macedonia</option>
-                        <option>Romania</option>
-                        <option>Russia</option>
-                        <option>Rwanda</option>
-                        <option>Saint Kitts and Nevis</option>
-                        <option>Saint Lucia</option>
-                        <option>Saint Vincent and the Grenadines</option>
-                        <option>Samoa</option>
-                        <option>San Marino</option>
-                        <option>Sao Tome and Principe</option>
-                        <option>Saudi Arabia</option>
-                        <option>Senegal</option>
-                        <option>Serbia</option>
-                        <option>Serbia & Montenegro</option>
-                        <option>Seychelles</option>
-                        <option>SIERRA LEONEAN</option>
-                        <option>Singapore</option>
-                        <option>Slovakia</option>
-                        <option>Slovenia</option>
-                        <option>Solomon Islands</option>
-                        <option>Somalia</option>
-                        <option>South Africa</option>
-                        <option>South Korea</option>
-                        <option>South Sudan</option>
-                        <option>Spain</option>
-                        <option>Sri Lanka</option>
-                        <option>Sudan</option>
-                        <option>Suriname</option>
-                        <option>Sweden</option>
-                        <option>Switzerland</option>
-                        <option>Syria</option>
-                        <option>Taiwan</option>
-                        <option>Tajikistan</option>
-                        <option>Tanzania</option>
-                        <option>Thailand</option>
-                        <option>Timor-Leste</option>
-                        <option>Togo</option>
-                        <option>Tonga</option>
-                        <option>Trinidad and Tobago</option>
-                        <option>Tunisia</option>
-                        <option>Turkey</option>
-                        <option>Turkmenistan</option>
-                        <option>Tuvalu</option>
-                        <option>Uganda</option>
-                        <option>Ukraine</option>
-                        <option>United Arab Emirates</option>
-                        <option>United Kingdom</option>
-                        <option>United States</option>
-                        <option>Uruguay</option>
-                        <option>Uzbekistan</option>
-                        <option>Vanuatu</option>
-                        <option>Vatican City</option>
-                        <option>Venezuela</option>
-                        <option>Vietnam</option>
-                        <option>Yemen</option>
-                        <option>Zambia</option>
-                        <option>Zimbabwe</option>
-                      </select>
-                        <Globe className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
-                        <ChevronRight className="w-5 h-5 text-slate-400 absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none rotate-90" />
-                      </div>
+                        <CustomDropdown
+  name="country"
+  placeholder="-- Select --"
+  icon={Globe}
+  options={[
+    "Afghanistan",
+    "Albania",
+    "Algeria",
+    "Andorra",
+    "Angola",
+    "Antigua and Barbuda",
+    "Argentina",
+    "Armenia",
+    "Australia",
+    "Austria",
+    "Azerbaijan",
+    "Bahamas",
+    "Bahrain",
+    "Bangladesh",
+    "Barbados",
+    "Belarus",
+    "Belgium",
+    "Belize",
+    "Benin",
+    "Bhutan",
+    "Bolivia",
+    "Bosnia & Herzegovina",
+    "Botswana",
+    "Brazil",
+    "Brunei",
+    "Bulgaria",
+    "Burkina Faso",
+    "Burundi",
+    "Cabo Verde",
+    "Cambodia",
+    "Cameroon",
+    "Canada",
+    "Central African Republic",
+    "Chad",
+    "Chile",
+    "China",
+    "Colombia",
+    "Comoros",
+    "Congo",
+    "Congo (East Africa)",
+    "Costa Rica",
+    "Croatia",
+    "Cuba",
+    "Cyprus",
+    "Czech Republic",
+    "Denmark",
+    "Djibouti",
+    "Dominica",
+    "Dominican Republic",
+    "Ecuador",
+    "Egypt",
+    "El Salvador",
+    "Equatorial Guinea",
+    "Eritrea",
+    "Estonia",
+    "Eswatini",
+    "Ethiopia",
+    "Fiji",
+    "Finland",
+    "France",
+    "Gabon",
+    "Gambia",
+    "Georgia",
+    "Germany",
+    "Ghana",
+    "Gibraltar",
+    "Greece",
+    "Grenada",
+    "Guatemala",
+    "Guinea",
+    "Guinea-Bissau",
+    "Guyana",
+    "Haiti",
+    "Honduras",
+    "HongKong",
+    "Hungary",
+    "Iceland",
+    "India",
+    "Indonesia",
+    "Iran",
+    "IRAQ",
+    "Ireland",
+    "Israel",
+    "Italy",
+    "Jamaica",
+    "Japan",
+    "Jordan",
+    "Kazakhstan",
+    "Kenya",
+    "Kiribati",
+    "Kuwait",
+    "Kyrgyzstan",
+    "Laos",
+    "Latvia",
+    "Lebanon",
+    "Lesotho",
+    "Liberia",
+    "Libya",
+    "Liechtenstein",
+    "Lithuania",
+    "Luxembourg",
+    "Madagascar",
+    "Malawi",
+    "Malaysia",
+    "Maldievs",
+    "Mali",
+    "Malta",
+    "Marshall Islands",
+    "Mauritania",
+    "Mauritius",
+    "Mexico",
+    "Micronesia",
+    "Moldova",
+    "Monaco",
+    "Mongolia",
+    "Montenegro",
+    "Morocco",
+    "Mozambique",
+    "Myanmar",
+    "Namibia",
+    "Nauru",
+    "Nepal",
+    "Netherlands",
+    "New Zealand",
+    "Nicaragua",
+    "Niger",
+    "Nigeria",
+    "North Korea",
+    "North Macedonia",
+    "Norway",
+    "Oman",
+    "OTHER",
+    "Pakistan",
+    "Palau",
+    "Palestine",
+    "Panama",
+    "Papua New Guinea",
+    "Paraguay",
+    "Peru",
+    "PHILIPINES",
+    "Poland",
+    "Portugal",
+    "Qatar",
+    "Republic of Georgia",
+    "Republic of Macedonia",
+    "Romania",
+    "Russia",
+    "Rwanda",
+    "Saint Kitts and Nevis",
+    "Saint Lucia",
+    "Saint Vincent and the Grenadines",
+    "Samoa",
+    "San Marino",
+    "Sao Tome and Principe",
+    "Saudi Arabia",
+    "Senegal",
+    "Serbia",
+    "Serbia & Montenegro",
+    "Seychelles",
+    "SIERRA LEONEAN",
+    "Singapore",
+    "Slovakia",
+    "Slovenia",
+    "Solomon Islands",
+    "Somalia",
+    "South Africa",
+    "South Korea",
+    "South Sudan",
+    "Spain",
+    "Sri Lanka",
+    "Sudan",
+    "Suriname",
+    "Sweden",
+    "Switzerland",
+    "Syria",
+    "Taiwan",
+    "Tajikistan",
+    "Tanzania",
+    "Thailand",
+    "Timor-Leste",
+    "Togo",
+    "Tonga",
+    "Trinidad and Tobago",
+    "Tunisia",
+    "Turkey",
+    "Turkmenistan",
+    "Tuvalu",
+    "Uganda",
+    "Ukraine",
+    "United Arab Emirates",
+    "United Kingdom",
+    "United States",
+    "Uruguay",
+    "Uzbekistan",
+    "Vanuatu",
+    "Vatican City",
+    "Venezuela",
+    "Vietnam",
+    "Yemen",
+    "Zambia",
+    "Zimbabwe"
+  ]}
+  value={countryVal}
+  onChange={setCountryVal}
+/></div>
                     </div>
 
                     <div>
                       <label className="block text-sm font-semibold text-slate-700 mb-2">State <span className="text-red-500">*</span></label>
                       <div className="relative">
-                        <select suppressHydrationWarning name="state" className="w-full appearance-none px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium cursor-pointer">
-                        <option>-- Select --</option>
-                        <option>Andaman & Nicobar</option>
-                        <option>Andhra Pradesh</option>
-                        <option>Arunachal Pradesh</option>
-                        <option>Assam</option>
-                        <option>Bihar</option>
-                        <option>Chandigarh</option>
-                        <option>Chattisgarh</option>
-                        <option>Dadra & Nagar</option>
-                        <option>Daman & Diu</option>
-                        <option>Delhi</option>
-                        <option>Goa</option>
-                        <option>Gujrat</option>
-                        <option>Haryana</option>
-                        <option>Himachal Pradesh</option>
-                        <option>Jammu & Kashmir</option>
-                        <option>Jharkhand</option>
-                        <option>Karnataka</option>
-                        <option>Kerala</option>
-                        <option>Lakshdweep</option>
-                        <option>Madhya Pradesh</option>
-                        <option>Maharashtra</option>
-                        <option>Manipur</option>
-                        <option>Meghalaya</option>
-                        <option>Mizoram</option>
-                        <option>Nagaland</option>
-                        <option>Orissa</option>
-                        <option>Pondichery</option>
-                        <option>Punjab</option>
-                        <option>Rajasthan</option>
-                        <option>Sikkim</option>
-                        <option>Tamil Nadu</option>
-                        <option>Telangana</option>
-                        <option>Tripura</option>
-                        <option>Uttar Pradesh</option>
-                        <option>Uttaranchal</option>
-                        <option>West Bengal</option>
-                      </select>
-                        <Map className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
-                        <ChevronRight className="w-5 h-5 text-slate-400 absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none rotate-90" />
-                      </div>
+                        <CustomDropdown
+  name="state"
+  placeholder="-- Select --"
+  icon={Map}
+  options={stateOptions}
+  value={stateVal}
+  onChange={setStateVal}
+/></div>
                     </div>
                     
                     <div className="md:col-span-2">
-                      <label className="block text-sm font-semibold text-slate-700 mb-2">City <span className="text-red-500">*</span></label>
+                      <label className="block text-sm font-semibold text-slate-700 mb-2">District/City <span className="text-red-500">*</span></label>
                       <div className="relative">
-                        <select suppressHydrationWarning name="city" className="w-full md:w-1/2 appearance-none px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium cursor-pointer">
-                    <option>-- Select --</option>
-                    <option>Ahilya Nagar</option>
-                    <option>Akola</option>
-                    <option>Amravati</option>
-                    <option>Bandra(Mumbai Suburban district)</option>
-                    <option>Beed</option>
-                    <option>Bhandara</option>
-                    <option>Buldhana</option>
-                    <option>Chandrapur</option>
-                    <option>Dharashiv</option>
-                    <option>Dhule</option>
-                    <option>Gadchiroli</option>
-                    <option>Gondia</option>
-                    <option>Hingoli</option>
-                    <option>Jalgaon</option>
-                    <option>Jalna</option>
-                    <option>Kolhapur</option>
-                    <option>Latur</option>
-                    <option>Mumbai-City</option>
-                    <option>Nagpur</option>
-                    <option>Nanded</option>
-                    <option>Nandurbar</option>
-                    <option>Nashik</option>
-                    <option>Palghar</option>
-                    <option>Parbhani</option>
-                    <option>Pune</option>
-                    <option>Raigad</option>
-                    <option>Ratnagiri</option>
-                    <option>Sambhaji Nagar</option>
-                    <option>Sangli</option>
-                    <option>Satara</option>
-                    <option>Sindudurg</option>
-                    <option>Solapur</option>
-                    <option>Thane</option>
-                    <option>Wardha</option>
-                    <option>Washim</option>
-                    <option>Yavatmal</option>
-                  </select>
-                        <MapPin className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
-                        <ChevronRight className="w-5 h-5 text-slate-400 absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none rotate-90 md:right-[calc(50%+1rem)]" />
-                      </div>
+                        <CustomDropdown
+  name="city"
+  placeholder="-- Select --"
+  icon={MapPin}
+  options={getDistrictsForState(stateVal)}
+  value={cityVal}
+  onChange={setCityVal}
+/></div>
                     </div>
                   </div>
                 </div>
 
                 {/* 4. Additional Info */}
-                <div className="bg-slate-50 border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-sm relative overflow-hidden">
-                  <div className="absolute top-0 left-0 w-1.5 h-full bg-[#007a87]"></div>
+                <div className="bg-slate-50 border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-sm relative overflow-visible">
+                  <div className="absolute top-0 left-0 w-1.5 h-full bg-[#007a87] rounded-l-3xl"></div>
                   <h3 className="text-xl font-bold text-[#002b5c] mb-6 flex items-center gap-2 border-b border-slate-200 pb-4">
                     <MessageSquare className="w-6 h-6 text-[#007a87]" />
                     Additional Comments

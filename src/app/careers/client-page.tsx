@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { ChevronRight, GraduationCap, Briefcase, ClipboardList, Mail, Users, Clock, ArrowRight, ShieldCheck, Phone, X, User, Calendar, Upload, RefreshCw, FileText, Send } from "lucide-react";
 import { jobsList } from "./careersData";
+import CustomDropdown from "@/components/CustomDropdown";
 
 
 
@@ -233,8 +234,8 @@ export default function CareersClientPage({ pageData }: { pageData: any }) {
               <form className="p-6 sm:p-8 space-y-6 [&_label]:!text-[18px] [&_input]:!text-[18px] [&_select]:!text-[18px] [&_textarea]:!text-[18px] [&_button]:!text-[18px] [&_.text-sm]:!text-[18px] [&_.text-xs]:!text-[18px]" onSubmit={handleJobSubmit}>
                 
                 {/* Personal Information */}
-                <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm relative overflow-hidden group hover:shadow-md transition-shadow">
-                  <div className="absolute top-0 left-0 w-1.5 h-full bg-[#007a87]"></div>
+                <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm relative overflow-visible group hover:shadow-md transition-shadow z-40">
+                  <div className="absolute top-0 left-0 w-1.5 h-full bg-[#007a87] rounded-l-2xl"></div>
                   <h3 className="text-lg font-bold text-[#002b5c] mb-5 flex items-center gap-2">
                     <User className="w-5 h-5 text-teal-600" />
                     Personal Information
@@ -244,14 +245,12 @@ export default function CareersClientPage({ pageData }: { pageData: any }) {
                     <div className="md:col-span-1">
                       <label className="block text-sm font-semibold text-slate-700 mb-1.5">Salutation <span className="text-red-500">*</span></label>
                       <div className="relative">
-                        <select name="salutation" className="w-full appearance-none bg-slate-50 border border-slate-200 rounded-xl py-3 pl-4 pr-10 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all cursor-pointer" required>
-                          <option value="">Select</option>
-                          <option value="Mr">Mr.</option>
-                          <option value="Ms">Ms.</option>
-                          <option value="Mrs">Mrs.</option>
-                          <option value="Dr">Dr.</option>
-                        </select>
-                        <ChevronRight className="w-5 h-5 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none rotate-90" />
+                        <CustomDropdown 
+                          name="salutation" 
+                          placeholder="Select" 
+                          options={["Mr.", "Ms.", "Mrs.", "Dr."]} 
+                          required={true}
+                        />
                       </div>
                     </div>
                     
@@ -292,22 +291,21 @@ export default function CareersClientPage({ pageData }: { pageData: any }) {
                     <div>
                       <label className="block text-sm font-semibold text-slate-700 mb-1.5">Gender <span className="text-red-500">*</span></label>
                       <div className="relative">
-                        <select name="gender" className="w-full appearance-none bg-slate-50 border border-slate-200 rounded-xl py-3 pl-11 pr-10 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all cursor-pointer" required>
-                          <option value="">Select</option>
-                          <option value="Male">Male</option>
-                          <option value="Female">Female</option>
-                          <option value="Other">Other</option>
-                        </select>
-                        <User className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
-                        <ChevronRight className="w-5 h-5 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none rotate-90" />
+                        <CustomDropdown 
+                          name="gender" 
+                          placeholder="Select" 
+                          icon={User}
+                          options={["Male", "Female", "Other"]} 
+                          required={true}
+                        />
                       </div>
                     </div>
                   </div>
                 </div>
 
                 {/* Contact Information */}
-                <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm relative overflow-hidden group hover:shadow-md transition-shadow">
-                  <div className="absolute top-0 left-0 w-1.5 h-full bg-[#007a87]"></div>
+                <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm relative overflow-visible group hover:shadow-md transition-shadow z-30">
+                  <div className="absolute top-0 left-0 w-1.5 h-full bg-[#007a87] rounded-l-2xl"></div>
                   <h3 className="text-lg font-bold text-[#002b5c] mb-5 flex items-center gap-2">
                     <Phone className="w-5 h-5 text-teal-600" />
                     Contact Details
@@ -332,8 +330,8 @@ export default function CareersClientPage({ pageData }: { pageData: any }) {
                 </div>
 
                 {/* Professional Details */}
-                <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm relative overflow-hidden group hover:shadow-md transition-shadow">
-                  <div className="absolute top-0 left-0 w-1.5 h-full bg-[#007a87]"></div>
+                <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm relative overflow-visible group hover:shadow-md transition-shadow z-20">
+                  <div className="absolute top-0 left-0 w-1.5 h-full bg-[#007a87] rounded-l-2xl"></div>
                   <h3 className="text-lg font-bold text-[#002b5c] mb-5 flex items-center gap-2">
                     <Briefcase className="w-5 h-5 text-teal-600" />
                     Professional Details
@@ -350,15 +348,13 @@ export default function CareersClientPage({ pageData }: { pageData: any }) {
                     <div>
                       <label className="block text-sm font-semibold text-slate-700 mb-1.5">Joining Status <span className="text-red-500">*</span></label>
                       <div className="relative">
-                        <select name="joiningStatus" className="w-full appearance-none bg-slate-50 border border-slate-200 rounded-xl py-3 pl-11 pr-10 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all cursor-pointer" required>
-                          <option value="">Select</option>
-                          <option value="Immediate">Immediate</option>
-                          <option value="15 Days">15 Days</option>
-                          <option value="30 Days">30 Days</option>
-                          <option value="60 Days">60 Days</option>
-                        </select>
-                        <Calendar className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
-                        <ChevronRight className="w-5 h-5 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none rotate-90" />
+                        <CustomDropdown 
+                          name="joiningStatus" 
+                          placeholder="Select" 
+                          icon={Calendar}
+                          options={["Immediate", "15 Days", "30 Days", "60 Days"]} 
+                          required={true}
+                        />
                       </div>
                     </div>
                   </div>
@@ -417,7 +413,7 @@ export default function CareersClientPage({ pageData }: { pageData: any }) {
                 </div>
 
                 {/* Security and Submission */}
-                <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm relative overflow-hidden flex flex-col items-center text-center">
+                <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm relative overflow-visible flex flex-col items-center text-center z-10">
                   <div className="flex items-center gap-2 mb-4 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-100">
                     <ShieldCheck className="w-4 h-4 text-emerald-600" />
                     <span className="text-xs font-bold text-emerald-800">Secure Application</span>
