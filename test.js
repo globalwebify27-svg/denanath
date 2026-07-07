@@ -1,19 +1,11 @@
-const fs = require('fs');
-const desc = fs.readFileSync('desc.txt', 'utf8');
-
-const extractSection = (title) => {
-  const escapedTitle = title.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  const regex = new RegExp(`<h3[^>]*>${escapedTitle}<\\/h3>([\\s\\S]*?)<\\/section>`, 'i');
-  const match = desc.match(regex);
-  return match ? match[1].trim() : "";
-};
-
-const gallery = extractSection("Photo Gallery");
-console.log("Gallery section length:", gallery.length);
-
-const itemRegex = /<div class="bg-slate-50[^>]*>[\s\S]*?(?:<img[^>]*src="([^"]+)"|<div[^>]*>([^<]+)<\/div>)[\s\S]*?<p[^>]*>([^<]+)<\/p>[\s\S]*?<\/div>/gi;
-let match;
-while ((match = itemRegex.exec(gallery)) !== null) {
-  console.log("Found:", match[1] || match[2], match[3]);
-}
-console.log("Done");
+const { PrismaClient } = require('@prisma/client');
+const prisma = new PrismaClient();
+prisma.siteSetting.findUnique({ where: { key: 'page_virtual_tour' } })
+  .then(res => {
+    if (res && res.value) {
+       const parsed = JSON.parse(res.value);
+       console.log("Length:", parsed.locations.length);
+       const names = parsed.locations.map(l => l.name);
+       console.log("Names:", names);
+    }
+  });

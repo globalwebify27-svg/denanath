@@ -73,15 +73,20 @@ export default async function AdminDoctorsPage({
 
       {/* Modern Search & Filter Bar */}
       <div className="bg-white p-2 rounded-2xl shadow-[0_4px_20px_rgb(0,0,0,0.03)] border border-gray-100 mb-6 flex flex-col md:flex-row gap-4 items-center justify-between">
-        <form method="GET" action="" className="relative w-full md:max-w-lg flex items-center">
-          <Search className="absolute left-4 text-gray-400" size={18} />
-          <input
-            type="text"
-            name="q"
-            placeholder="Search doctors by name or specialty..."
-            defaultValue={query}
-            className="w-full pl-11 pr-4 py-3 bg-gray-50/50 hover:bg-gray-50 border border-transparent focus:border-[#007a87]/30 rounded-xl focus:outline-none focus:ring-4 focus:ring-[#007a87]/10 transition-all font-[500] text-gray-700 text-[14px]"
-          />
+        <form method="GET" action="" className="relative w-full md:max-w-xl flex items-center gap-2">
+          <div className="relative w-full">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+            <input
+              type="text"
+              name="q"
+              placeholder="Search doctors by name or specialty..."
+              defaultValue={query}
+              className="w-full pl-11 pr-4 py-3 bg-gray-50/50 hover:bg-gray-50 border border-gray-100 focus:border-[#007a87]/30 rounded-xl focus:outline-none focus:ring-4 focus:ring-[#007a87]/10 transition-all font-[500] text-gray-700 text-[14px]"
+            />
+          </div>
+          <button type="submit" className="bg-white text-gray-600 border border-gray-200 px-6 py-3 rounded-xl font-[700] text-[14px] tracking-wide hover:bg-gray-50 hover:text-gray-900 hover:shadow-sm transition-all duration-300 whitespace-nowrap">
+            Search
+          </button>
         </form>
         <div className="px-4 text-[13px] font-[600] text-gray-400">
           Showing <span className="text-[#002b5c] font-[800]">{totalCount}</span> physicians

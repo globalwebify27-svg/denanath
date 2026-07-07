@@ -333,7 +333,7 @@ export default function PatientPortalPage({ pageData }: { pageData: any }) {
                               Date of Birth <span className="text-red-500">*</span>
                             </label>
                             <div className="relative">
-                              <input type="text" name="dob" placeholder="DD/MM/YYYY" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
+                              <input type="date" name="dob" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium" />
                               <Calendar className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                             </div>
                           </div>

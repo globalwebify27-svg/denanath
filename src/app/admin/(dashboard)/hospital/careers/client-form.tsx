@@ -72,10 +72,10 @@ export default function CareersClientForm({ initialData }: { initialData: any })
         <div className="absolute top-0 left-0 w-2 h-full bg-gradient-to-b from-[#002b5c] to-[#007a87]"></div>
         <div className="z-10 relative">
           <h1 className="text-[32px] md:text-[40px] font-black text-[#002b5c] tracking-tight leading-tight mb-2 flex items-center gap-3">
-            Careers
+            Job & Vacancy
           </h1>
           <p className="text-[15px] font-medium text-slate-500 max-w-xl leading-relaxed">
-            Manage content for Careers
+            Manage content for Job & Vacancy
           </p>
         </div>
         <div className="z-10 shrink-0 mt-4 lg:mt-0">
@@ -108,7 +108,7 @@ export default function CareersClientForm({ initialData }: { initialData: any })
           <div className="flex flex-col sm:flex-row sm:items-center gap-4 bg-slate-50 p-4 rounded-2xl border border-slate-200">
             {data.image && (
               <div className="shrink-0 relative group">
-                <img src={data.image} alt="Careers" className="w-32 h-20 object-cover rounded-xl border border-slate-200 shadow-sm" />
+                <img src={data.image} alt="Job & Vacancy" className="w-32 h-20 object-cover rounded-xl border border-slate-200 shadow-sm" />
                 <button 
                   type="button" 
                   onClick={() => handleChange("image", "")} 

@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Save, HeartPulse, FileText, Plus, Trash2 , Search} from "lucide-react";
+import QuillEditor from "@/components/QuillEditor";
 
 export default function ResearchAboutClientForm({ initialData }: { initialData: any }) {
   const router = useRouter();
@@ -96,9 +97,9 @@ export default function ResearchAboutClientForm({ initialData }: { initialData: 
         <div class="space-y-8">
           <div class="bg-white border border-slate-200 rounded-2xl p-6 sm:p-8 hover:shadow-[0_8px_30px_rgba(0,122,135,0.1)] transition-all">
             <h4 class="text-xl font-bold text-[#007a87] mb-4">A] Investigator-Initiated In-House Research</h4>
-            <p class="text-slate-600 leading-relaxed">
+            <div class="text-slate-600 leading-relaxed quill-content">
               ${currentData.researchArms?.investigatorInitiated || ""}
-            </p>
+            </div>
             
             <div class="mt-6 pt-6 border-t border-slate-100">
               <h5 class="text-sm font-bold text-[#002b5c] uppercase tracking-wider mb-3">Ongoing Research Areas</h5>
@@ -167,9 +168,19 @@ export default function ResearchAboutClientForm({ initialData }: { initialData: 
   const handleSave = async () => {
     setLoading(true);
     try {
-      const payload = {
+      const investigatorInitiated = (document.querySelector('input[name="investigatorInitiated"]') as HTMLInputElement)?.value || data.researchArms?.investigatorInitiated || "";
+
+      const updatedData = {
         ...data,
-        content: generateHTML(data)
+        researchArms: {
+          ...data.researchArms,
+          investigatorInitiated
+        }
+      };
+
+      const payload = {
+        ...updatedData,
+        content: generateHTML(updatedData)
       };
 
       const res = await fetch("/api/settings", {
@@ -266,11 +277,9 @@ export default function ResearchAboutClientForm({ initialData }: { initialData: 
         <div className="space-y-6">
           <div>
             <label className="block text-xs font-extrabold text-[#002b5c] uppercase tracking-widest mb-2">A] INVESTIGATOR-INITIATED IN-HOUSE RESEARCH</label>
-            <textarea
-              value={data.researchArms?.investigatorInitiated || ""}
-              onChange={(e) => handleArmsChange("investigatorInitiated", e.target.value)}
-              rows={5}
-              className="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all text-sm text-slate-700 resize-y leading-relaxed"
+            <QuillEditor
+              name="investigatorInitiated"
+              defaultValue={data.researchArms?.investigatorInitiated || ""}
             />
           </div>
 

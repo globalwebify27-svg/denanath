@@ -129,7 +129,7 @@ const MENU_ITEMS = [
     ]
   },
   {
-    name: "Careers",
+    name: "Job & Vacancy",
     icon: <Briefcase size={20} />,
     links: [
       { name: "Job Postings", href: "/admin/careers" },

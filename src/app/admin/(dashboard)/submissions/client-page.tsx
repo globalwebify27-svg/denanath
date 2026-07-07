@@ -20,7 +20,8 @@ import {
   Globe,
   Pencil,
   Filter,
-  ChevronDown
+  ChevronDown,
+  CreditCard
 } from "lucide-react";
 
 interface Submission {
@@ -67,6 +68,14 @@ export default function SubmissionsClientPage({
     if (val === null || val === undefined) return "N/A";
     if (typeof val === "boolean") return val ? "Yes" : "No";
     if (typeof val === "string" && val.startsWith("/uploads/")) {
+      const isImage = /\.(jpg|jpeg|png|gif|webp)$/i.test(val);
+      if (isImage) {
+        return (
+          <a href={val} target="_blank" rel="noopener noreferrer" className="block max-w-max">
+            <img src={val} alt={camelCaseToWords(key)} className="w-24 h-24 sm:w-32 sm:h-32 object-cover rounded-xl border border-slate-200 hover:border-[#007a87] hover:shadow-md transition-all shadow-sm" />
+          </a>
+        );
+      }
       return (
         <a 
           href={val} 
@@ -94,13 +103,16 @@ export default function SubmissionsClientPage({
   // Helper to get form source page
   const getSource = (submission: Submission, parsedData: any) => {
     if (submission.formType === "Job Application") {
-      return "Careers";
+      return "Job & Vacancy";
     }
     if (submission.formType === "Book Appointment") {
       return "Book Appointment";
     }
     if (submission.formType === "Patient Registration") {
       return "Patient Registration";
+    }
+    if (submission.formType === "Online Payment") {
+      return "Simulation Center";
     }
     if (submission.formType === "Contact Us") {
       return "Contact Us";
@@ -136,6 +148,10 @@ export default function SubmissionsClientPage({
       name = `${parsedData.firstName || ""} ${parsedData.lastName || ""}`.trim();
       email = parsedData.email || "";
       phone = parsedData.localMobile || "";
+    } else if (formType === "Online Payment") {
+      name = parsedData.nameOfPayer || "";
+      email = parsedData.email || "";
+      phone = parsedData.contactNumber || "";
     } else {
       name = parsedData.name || `${parsedData.firstName || ""} ${parsedData.lastName || ""}`.trim();
       email = parsedData.email || "";
@@ -150,13 +166,14 @@ export default function SubmissionsClientPage({
   };
 
   // Unique Form Types list for filtering
-  const formTypes = ["All", "Book Appointment", "Job Application", "Patient Registration", "Contact Us"];
+  const formTypes = ["All", "Book Appointment", "Job Application", "Patient Registration", "Online Payment", "Contact Us"];
 
   // Counters
   const totalCount = submissions.length;
   const jobCount = submissions.filter(s => s.formType === "Job Application").length;
   const appointmentCount = submissions.filter(s => s.formType === "Book Appointment").length;
   const patientCount = submissions.filter(s => s.formType === "Patient Registration").length;
+  const paymentCount = submissions.filter(s => s.formType === "Online Payment").length;
   const contactCount = submissions.filter(s => s.formType === "Contact Us").length;
 
   // Filtered submissions
@@ -252,6 +269,7 @@ export default function SubmissionsClientPage({
             <option value="Book Appointment">Book Appointment</option>
             <option value="Job Application">Job Application</option>
             <option value="Patient Registration">Patient Registration</option>
+            <option value="Online Payment">Online Payment</option>
             <option value="Contact Us">Contact Us</option>
           </select>
           <div className="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">
@@ -304,6 +322,7 @@ export default function SubmissionsClientPage({
                 if (submission.formType === "Book Appointment") badgeColor = "bg-emerald-50 text-emerald-700 border-emerald-100";
                 if (submission.formType === "Job Application") badgeColor = "bg-blue-50 text-blue-700 border-blue-100";
                 if (submission.formType === "Patient Registration") badgeColor = "bg-amber-50 text-amber-700 border-amber-100";
+                if (submission.formType === "Online Payment") badgeColor = "bg-pink-50 text-pink-700 border-pink-100";
 
                 return (
                   <tr 
@@ -425,6 +444,10 @@ export default function SubmissionsClientPage({
           headerColor = "from-amber-500 to-orange-600";
           FormIcon = Globe;
         }
+        if (selectedSubmission.formType === "Online Payment") {
+          headerColor = "from-pink-500 to-rose-600";
+          FormIcon = CreditCard;
+        }
         if (selectedSubmission.formType === "Contact Us") {
           FormIcon = Mail;
         }
@@ -476,6 +499,7 @@ export default function SubmissionsClientPage({
                         <option value="Book Appointment">Book Appointment</option>
                         <option value="Job Application">Job Application</option>
                         <option value="Patient Registration">Patient Registration</option>
+                        <option value="Online Payment">Online Payment</option>
                         <option value="Contact Us">Contact Us</option>
                       </select>
                     </div>
@@ -494,7 +518,10 @@ export default function SubmissionsClientPage({
                               {isFile && <span className="text-[10px] text-teal-600 font-semibold lowercase">File Attachment Path</span>}
                             </label>
                             {isFile ? (
-                              <div className="flex gap-2">
+                              <div className="flex gap-2 items-center">
+                                {/\.(jpg|jpeg|png|gif|webp)$/i.test(String(val)) && (
+                                  <img src={String(val)} alt="Attachment" className="w-10 h-10 rounded-lg object-cover border border-slate-200 shrink-0" />
+                                )}
                                 <input
                                   type="text"
                                   value={String(val)}
@@ -505,7 +532,7 @@ export default function SubmissionsClientPage({
                                   href={String(val)}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 rounded-xl text-sm font-bold flex items-center gap-1.5 transition-colors"
+                                  className="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 rounded-xl text-sm font-bold flex items-center gap-1.5 transition-colors shrink-0"
                                 >
                                   <FileText size={16} /> View
                                 </a>

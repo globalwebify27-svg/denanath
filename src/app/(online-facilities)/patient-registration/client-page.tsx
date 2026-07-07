@@ -5,6 +5,13 @@ import Link from "next/link";
 import { ChevronRight, Globe, RefreshCw, Upload, Info, User, Calendar, MapPin, Phone, Mail, FileText, ArrowRight, ShieldCheck, HeartPulse } from "lucide-react";
 import CustomDropdown from "@/components/CustomDropdown";
 import { submitFormAction } from "@/app/actions/submit-form";
+import statesData from "@/data/statesAndDistricts.json";
+
+const stateOptions = statesData.states.map((s: any) => s.state);
+const getDistrictsForState = (stateName: string | undefined) => {
+  const stateObj = statesData.states.find((s: any) => s.state === stateName);
+  return stateObj ? stateObj.districts : [];
+};
 
 export default function PatientRegistrationFormPage({ pageData }: { pageData: any }) {
   const options = [
@@ -37,6 +44,32 @@ export default function PatientRegistrationFormPage({ pageData }: { pageData: an
   const [captchaCode, setCaptchaCode] = useState("Bnvy");
   const [patientImageName, setPatientImageName] = useState<string>("No file chosen");
   const [documentImageName, setDocumentImageName] = useState<string>("No file chosen");
+  const [patientImagePreview, setPatientImagePreview] = useState<string | null>(null);
+  const [documentImagePreview, setDocumentImagePreview] = useState<string | null>(null);
+  const patientImageInputRef = useRef<HTMLInputElement>(null);
+  const documentImageInputRef = useRef<HTMLInputElement>(null);
+  const [isCopying, setIsCopying] = useState(false);
+  const [localStateVal, setLocalStateVal] = useState<string | undefined>(undefined);
+  const [permCountryVal, setPermCountryVal] = useState<string | undefined>(undefined);
+  const [permStateVal, setPermStateVal] = useState<string | undefined>(undefined);
+  const [permDistrictVal, setPermDistrictVal] = useState<string | undefined>(undefined);
+
+  const handleCopyAddress = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const checked = e.target.checked;
+    setIsCopying(checked);
+    if (checked && formRef.current) {
+      const form = formRef.current;
+      if(form.permHouseName) form.permHouseName.value = form.localHouseName?.value || "";
+      if(form.permAddress2) form.permAddress2.value = form.localAddress2?.value || "";
+      if(form.permTown) form.permTown.value = form.localTown?.value || "";
+      if(form.permPincode) form.permPincode.value = form.localPincode?.value || "";
+      if(form.permPhone) form.permPhone.value = form.localPhone?.value || "";
+      
+      setPermCountryVal(form.localCountry?.value || "");
+      setPermStateVal(form.localState?.value || "");
+      setPermDistrictVal(form.localDistrict?.value || "");
+    }
+  };
 
   const generateCaptcha = () => {
     const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -144,6 +177,17 @@ export default function PatientRegistrationFormPage({ pageData }: { pageData: an
                     if (res.success) {
                       alert("Form submitted successfully!"); 
                       formRef.current?.reset();
+                      setPatientImageName("No file chosen");
+                      setDocumentImageName("No file chosen");
+                      setPatientImagePreview(null);
+                      setDocumentImagePreview(null);
+                      setLocalStateVal(undefined);
+                      setPermCountryVal(undefined);
+                      setPermStateVal(undefined);
+                      setPermDistrictVal(undefined);
+                      setIsCopying(false);
+                      if (patientImageInputRef.current) patientImageInputRef.current.value = "";
+                      if (documentImageInputRef.current) documentImageInputRef.current.value = "";
                     } else {
                       alert("Failed to submit form.");
                     }
@@ -172,11 +216,40 @@ export default function PatientRegistrationFormPage({ pageData }: { pageData: an
                             <input 
                               type="file" 
                               name="patientImage" 
+                              ref={patientImageInputRef}
                               className="hidden" 
-                              onChange={(e) => setPatientImageName(e.target.files?.[0]?.name || "No file chosen")}
+                              accept="image/*"
+                              onChange={(e) => {
+                                const file = e.target.files?.[0];
+                                setPatientImageName(file?.name || "No file chosen");
+                                if (file) {
+                                  const reader = new FileReader();
+                                  reader.onload = (ev) => setPatientImagePreview(ev.target?.result as string);
+                                  reader.readAsDataURL(file);
+                                } else {
+                                  setPatientImagePreview(null);
+                                }
+                              }}
                             />
                           </label>
-                          <span className="text-sm font-medium text-slate-500">{patientImageName}</span>
+                          
+                          {patientImagePreview && (
+                            <div className="relative group/imagebtn w-max h-max">
+                              <img src={patientImagePreview} alt="Preview" className="w-12 h-12 rounded-lg object-cover border border-slate-200" />
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setPatientImagePreview(null);
+                                  setPatientImageName("No file chosen");
+                                  if (patientImageInputRef.current) patientImageInputRef.current.value = "";
+                                }}
+                                className="absolute -top-1.5 -right-1.5 bg-red-100 hover:bg-red-500 text-red-600 hover:text-white rounded-full w-4 h-4 flex items-center justify-center text-[8px] font-bold transition-all shadow-sm opacity-0 pointer-events-none group-hover/imagebtn:opacity-100 group-hover/imagebtn:pointer-events-auto"
+                                title="Remove Image"
+                              >
+                                ✕
+                              </button>
+                            </div>
+                          )}
                         </div>
                       </div>
 
@@ -204,17 +277,17 @@ export default function PatientRegistrationFormPage({ pageData }: { pageData: an
                       </div>
 
                       <div>
-                        <label className="block text-sm font-semibold text-slate-700 mb-2">Last Name <span className="text-red-500">*</span></label>
+                        <label className="block text-sm font-semibold text-slate-700 mb-2">Middle Name</label>
                         <div className="relative">
-                          <input type="text" name="lastName" placeholder="Last Name" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
+                          <input type="text" name="middleName" placeholder="Middle Name" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
                           <User className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                         </div>
                       </div>
 
                       <div>
-                        <label className="block text-sm font-semibold text-slate-700 mb-2">Middle Name</label>
+                        <label className="block text-sm font-semibold text-slate-700 mb-2">Last Name <span className="text-red-500">*</span></label>
                         <div className="relative">
-                          <input type="text" name="middleName" placeholder="Middle Name" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
+                          <input type="text" name="lastName" placeholder="Last Name" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
                           <User className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                         </div>
                       </div>
@@ -277,7 +350,7 @@ export default function PatientRegistrationFormPage({ pageData }: { pageData: an
                       </div>
 
                       <div>
-                        <label className="block text-sm font-semibold text-slate-700 mb-2">Monthly Income Rs. (Approx)</label>
+                        <label className="block text-sm font-semibold text-slate-700 mb-2 whitespace-nowrap">Monthly Income Rs. (Approx)</label>
                         <div className="relative">
                           <input type="number" name="monthlyIncome" placeholder="Income Amount" className="w-full px-4 py-3.5 pl-4 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
                         </div>
@@ -541,45 +614,9 @@ export default function PatientRegistrationFormPage({ pageData }: { pageData: an
                           <CustomDropdown 
   name="localState"
   placeholder="-- Select --"
-  
-  options={[
-    "Andaman & Nicobar",
-    "Andhra Pradesh",
-    "Arunachal Pradesh",
-    "Assam",
-    "Bihar",
-    "Chandigarh",
-    "Chattisgarh",
-    "Dadra & Nagar",
-    "Daman & Diu",
-    "Delhi",
-    "Goa",
-    "Gujrat",
-    "Haryana",
-    "Himachal Pradesh",
-    "Jammu & Kashmir",
-    "Jharkhand",
-    "Karnataka",
-    "Kerala",
-    "Lakshdweep",
-    "Madhya Pradesh",
-    "Maharashtra",
-    "Manipur",
-    "Meghalaya",
-    "Mizoram",
-    "Nagaland",
-    "Orissa",
-    "Pondichery",
-    "Punjab",
-    "Rajasthan",
-    "Sikkim",
-    "Tamil Nadu",
-    "Telangana",
-    "Tripura",
-    "Uttar Pradesh",
-    "Uttaranchal",
-    "West Bengal"
-  ]}
+  options={stateOptions}
+  value={localStateVal}
+  onChange={setLocalStateVal}
 />
                           
                         </div>
@@ -589,45 +626,9 @@ export default function PatientRegistrationFormPage({ pageData }: { pageData: an
                         <label className="block text-sm font-semibold text-slate-700 mb-2">District/City <span className="text-red-500">*</span></label>
                         <div className="relative">
                           <CustomDropdown
+  name="localDistrict"
   placeholder="-- Select --"
-  options={[
-    "Ahilya Nagar",
-    "Akola",
-    "Amravati",
-    "Bandra(Mumbai Suburban district)",
-    "Beed",
-    "Bhandara",
-    "Buldhana",
-    "Chandrapur",
-    "Dharashiv",
-    "Dhule",
-    "Gadchiroli",
-    "Gondia",
-    "Hingoli",
-    "Jalgaon",
-    "Jalna",
-    "Kolhapur",
-    "Latur",
-    "Mumbai-City",
-    "Nagpur",
-    "Nanded",
-    "Nandurbar",
-    "Nashik",
-    "Palghar",
-    "Parbhani",
-    "Pune",
-    "Raigad",
-    "Ratnagiri",
-    "Sambhaji Nagar",
-    "Sangli",
-    "Satara",
-    "Sindudurg",
-    "Solapur",
-    "Thane",
-    "Wardha",
-    "Washim",
-    "Yavatmal"
-  ]}
+  options={getDistrictsForState(localStateVal)}
 /></div>
                       </div>
 
@@ -676,7 +677,7 @@ export default function PatientRegistrationFormPage({ pageData }: { pageData: an
 
                   {/* Copy to Permanent */}
                   <label className="flex items-center gap-3 bg-white p-5 rounded-2xl border-2 border-dashed border-[#007a87]/30 hover:border-[#007a87]/60 hover:bg-teal-50/30 transition-all cursor-pointer group shadow-sm">
-                    <input type="checkbox" id="copy-address" className="w-5 h-5 text-[#007a87] rounded-md border-slate-300 focus:ring-[#007a87] cursor-pointer" />
+                    <input type="checkbox" id="copy-address" checked={isCopying} onChange={handleCopyAddress} className="w-5 h-5 text-[#007a87] rounded-md border-slate-300 focus:ring-[#007a87] cursor-pointer" />
                     <span className="text-base font-bold text-[#002b5c] group-hover:text-[#007a87] transition-colors">
                       Copy Local Address to Permanent Address
                     </span>
@@ -931,46 +932,11 @@ export default function PatientRegistrationFormPage({ pageData }: { pageData: an
                         <label className="block text-sm font-semibold text-slate-700 mb-2">State <span className="text-red-500">*</span></label>
                         <div className="relative">
                           <CustomDropdown
-  name="localCity"
+  name="permState"
+  value={permStateVal}
+  onChange={setPermStateVal}
   placeholder="-- Select --"
-  options={[
-    "Andaman & Nicobar",
-    "Andhra Pradesh",
-    "Arunachal Pradesh",
-    "Assam",
-    "Bihar",
-    "Chandigarh",
-    "Chattisgarh",
-    "Dadra & Nagar",
-    "Daman & Diu",
-    "Delhi",
-    "Goa",
-    "Gujrat",
-    "Haryana",
-    "Himachal Pradesh",
-    "Jammu & Kashmir",
-    "Jharkhand",
-    "Karnataka",
-    "Kerala",
-    "Lakshdweep",
-    "Madhya Pradesh",
-    "Maharashtra",
-    "Manipur",
-    "Meghalaya",
-    "Mizoram",
-    "Nagaland",
-    "Orissa",
-    "Pondichery",
-    "Punjab",
-    "Rajasthan",
-    "Sikkim",
-    "Tamil Nadu",
-    "Telangana",
-    "Tripura",
-    "Uttar Pradesh",
-    "Uttaranchal",
-    "West Bengal"
-  ]}
+  options={stateOptions}
 /></div>
                       </div>
 
@@ -978,45 +944,10 @@ export default function PatientRegistrationFormPage({ pageData }: { pageData: an
                         <label className="block text-sm font-semibold text-slate-700 mb-2">District/City <span className="text-red-500">*</span></label>
                         <div className="relative">
                           <CustomDropdown
+  name="permDistrict"
+  value={isCopying ? permDistrictVal : undefined}
   placeholder="-- Select --"
-  options={[
-    "Ahilya Nagar",
-    "Akola",
-    "Amravati",
-    "Bandra(Mumbai Suburban district)",
-    "Beed",
-    "Bhandara",
-    "Buldhana",
-    "Chandrapur",
-    "Dharashiv",
-    "Dhule",
-    "Gadchiroli",
-    "Gondia",
-    "Hingoli",
-    "Jalgaon",
-    "Jalna",
-    "Kolhapur",
-    "Latur",
-    "Mumbai-City",
-    "Nagpur",
-    "Nanded",
-    "Nandurbar",
-    "Nashik",
-    "Palghar",
-    "Parbhani",
-    "Pune",
-    "Raigad",
-    "Ratnagiri",
-    "Sambhaji Nagar",
-    "Sangli",
-    "Satara",
-    "Sindudurg",
-    "Solapur",
-    "Thane",
-    "Wardha",
-    "Washim",
-    "Yavatmal"
-  ]}
+  options={getDistrictsForState(permStateVal)}
 /></div>
                       </div>
 
@@ -1080,6 +1011,7 @@ export default function PatientRegistrationFormPage({ pageData }: { pageData: an
                         <label className="block text-sm font-semibold text-slate-700 mb-2">Relation</label>
                         <div className="relative">
                           <CustomDropdown
+  name="emergencyRelation"
   placeholder="-- Select --"
   options={[
     "Self",
@@ -1119,7 +1051,7 @@ export default function PatientRegistrationFormPage({ pageData }: { pageData: an
                       <div>
                         <label className="block text-sm font-semibold text-slate-700 mb-2">Emergency Contact No</label>
                         <div className="relative">
-                          <input type="text" placeholder="Contact Number" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-red-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" pattern="[0-9]{10}" maxLength={10} minLength={10} title="Please enter a valid 10-digit mobile number" onInput={(e) => { e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/g, "").slice(0, 10); }} />
+                          <input type="text" name="emergencyContactNo" placeholder="Contact Number" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-red-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" pattern="[0-9]{10}" maxLength={10} minLength={10} title="Please enter a valid 10-digit mobile number" onInput={(e) => { e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/g, "").slice(0, 10); }} />
                           <Phone className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                         </div>
                       </div>
@@ -1208,11 +1140,40 @@ export default function PatientRegistrationFormPage({ pageData }: { pageData: an
                             <input 
                               type="file" 
                               name="patientDocument"
+                              ref={documentImageInputRef}
                               className="hidden" 
-                              onChange={(e) => setDocumentImageName(e.target.files?.[0]?.name || "No file chosen")}
+                              accept="image/*"
+                              onChange={(e) => {
+                                const file = e.target.files?.[0];
+                                setDocumentImageName(file?.name || "No file chosen");
+                                if (file) {
+                                  const reader = new FileReader();
+                                  reader.onload = (ev) => setDocumentImagePreview(ev.target?.result as string);
+                                  reader.readAsDataURL(file);
+                                } else {
+                                  setDocumentImagePreview(null);
+                                }
+                              }}
                             />
                           </label>
-                          <span className="text-sm font-medium text-slate-500">{documentImageName}</span>
+                          
+                          {documentImagePreview && (
+                            <div className="relative group/imagebtn w-max h-max">
+                              <img src={documentImagePreview} alt="Preview" className="w-12 h-12 rounded-lg object-cover border border-slate-200" />
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  setDocumentImagePreview(null);
+                                  setDocumentImageName("No file chosen");
+                                  if (documentImageInputRef.current) documentImageInputRef.current.value = "";
+                                }}
+                                className="absolute -top-1.5 -right-1.5 bg-red-100 hover:bg-red-500 text-red-600 hover:text-white rounded-full w-4 h-4 flex items-center justify-center text-[8px] font-bold transition-all shadow-sm opacity-0 pointer-events-none group-hover/imagebtn:opacity-100 group-hover/imagebtn:pointer-events-auto"
+                                title="Remove Document"
+                              >
+                                ✕
+                              </button>
+                            </div>
+                          )}
                         </div>
                       </div>
 
@@ -1243,9 +1204,18 @@ export default function PatientRegistrationFormPage({ pageData }: { pageData: an
                       </div>
                       <input type="text" placeholder="Enter Captcha Text" className="w-full px-5 py-4 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-[#007a87] text-center font-medium shadow-sm transition-all mb-8" />
                       
-                      <button type="button" className="group w-full py-4 bg-[#003360] text-white font-bold text-lg rounded-xl hover:bg-[#002b5c] transition-all shadow-[0_8px_20px_rgba(0,51,96,0.3)] hover:-translate-y-1 hover:shadow-[0_12px_25px_rgba(0,51,96,0.4)] flex justify-center items-center gap-3">
-                        Submit Registration
-                        <ArrowRight className="w-5 h-5 text-teal-300 group-hover:translate-x-1 transition-transform" />
+                      <button type="submit" disabled={isSubmitting} className="group w-full py-4 bg-[#003360] text-white font-bold text-lg rounded-xl hover:bg-[#002b5c] transition-all shadow-[0_8px_20px_rgba(0,51,96,0.3)] hover:-translate-y-1 hover:shadow-[0_12px_25px_rgba(0,51,96,0.4)] flex justify-center items-center gap-3 disabled:opacity-70 disabled:pointer-events-none">
+                        {isSubmitting ? (
+                          <>
+                            <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                            Submitting...
+                          </>
+                        ) : (
+                          <>
+                            Submit Registration
+                            <ArrowRight className="w-5 h-5 text-teal-300 group-hover:translate-x-1 transition-transform" />
+                          </>
+                        )}
                       </button>
                     </div>
                   </div>

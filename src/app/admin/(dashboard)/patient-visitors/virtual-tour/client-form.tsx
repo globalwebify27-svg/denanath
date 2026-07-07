@@ -82,7 +82,15 @@ export default function VirtualTourClientForm({ initialData }: { initialData: an
       const res = await fetch("/api/settings", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ key: 'page_virtual_tour', value: data })
+        body: JSON.stringify({ 
+          key: 'page_virtual_tour', 
+          value: JSON.stringify(data),
+          pathsToRevalidate: [
+            "/admin/patient-visitors/virtual-tour",
+            "/patient-visitors/virtual-tour",
+            "/virtual-tour"
+          ] 
+        })
       });
       if (res.ok) {
         alert("Settings saved successfully!");
@@ -162,14 +170,54 @@ export default function VirtualTourClientForm({ initialData }: { initialData: an
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-medium text-gray-700 mb-1">Image URL</label>
+                    <label className="block text-xs font-medium text-gray-700 mb-1">Upload Image</label>
                     <input
-                      type="text"
-                      value={loc.img}
-                      onChange={(e) => updateLocation(index, "img", e.target.value)}
-                      className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#007a87]/50 text-sm"
-                      placeholder="https://..."
+                      type="file"
+                      accept="image/*"
+                      onChange={async (e) => {
+                        const file = e.target.files?.[0];
+                        if (file) {
+                          const formData = new FormData();
+                          formData.append('file', file);
+                          try {
+                            const res = await fetch('/api/upload', { method: 'POST', body: formData });
+                            if (res.ok) {
+                              const uploadData = await res.json();
+                              updateLocation(index, "img", uploadData.url);
+                              
+                              // Auto-save to prevent user error
+                              const newLocations = [...data.locations];
+                              newLocations[index] = { ...newLocations[index], img: uploadData.url };
+                              const updatedData = { ...data, locations: newLocations };
+                              await fetch("/api/settings", {
+                                method: "POST",
+                                headers: { "Content-Type": "application/json" },
+                                body: JSON.stringify({ 
+                                  key: 'page_virtual_tour', 
+                                  value: JSON.stringify(updatedData),
+                                  pathsToRevalidate: [
+                                    "/admin/patient-visitors/virtual-tour",
+                                    "/patient-visitors/virtual-tour",
+                                    "/virtual-tour"
+                                  ] 
+                                })
+                              });
+                            } else {
+                              alert("Failed to upload image");
+                            }
+                          } catch (err) {
+                            console.error(err);
+                            alert("Error uploading image");
+                          }
+                        }
+                      }}
+                      className="w-full p-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#007a87]/50 text-sm file:mr-4 file:py-1 file:px-3 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-[#007a87]/10 file:text-[#007a87] hover:file:bg-[#007a87]/20 cursor-pointer"
                     />
+                    {loc.img && (
+                      <div className="mt-2 text-xs truncate text-emerald-600 font-medium border border-emerald-200 bg-emerald-50 rounded-md p-2" title={loc.img}>
+                        Uploaded: {loc.img.split('/').pop()?.substring(0, 30)}...
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>

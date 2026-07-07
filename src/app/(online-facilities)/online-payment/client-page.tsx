@@ -5,6 +5,13 @@ import Link from "next/link";
 import { ChevronRight, Globe, RefreshCw, Lock, CreditCard, User, Phone, Mail, MapPin, Building, ShieldCheck, IndianRupee, MessageSquare, Map } from "lucide-react";
 import CustomDropdown from "@/components/CustomDropdown";
 import { submitFormAction } from "@/app/actions/submit-form";
+import statesData from "@/data/statesAndDistricts.json";
+
+const stateOptions = statesData.states.map((s: any) => s.state);
+const getDistrictsForState = (stateName: string | undefined) => {
+  const stateObj = statesData.states.find((s: any) => s.state === stateName);
+  return stateObj ? stateObj.districts : [];
+};
 
 export default function OnlinePaymentClientPage({ pageData }: { pageData: any }) {
   const options = [
@@ -34,6 +41,10 @@ export default function OnlinePaymentClientPage({ pageData }: { pageData: any })
   const formRef = useRef<HTMLFormElement>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [captchaCode, setCaptchaCode] = useState("x N i R");
+  const [stateVal, setStateVal] = useState<string | undefined>(undefined);
+  const [purposeVal, setPurposeVal] = useState<string | undefined>(undefined);
+  const [countryVal, setCountryVal] = useState<string | undefined>(undefined);
+  const [cityVal, setCityVal] = useState<string | undefined>(undefined);
 
   const generateCaptcha = () => {
     const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -141,6 +152,10 @@ export default function OnlinePaymentClientPage({ pageData }: { pageData: any })
                       if (res.success) {
                         alert("Payment form submitted successfully!"); 
                         formRef.current?.reset();
+                        setStateVal("");
+                        setPurposeVal("");
+                        setCountryVal("");
+                        setCityVal("");
                       } else {
                         alert("Failed to submit form.");
                       }
@@ -172,6 +187,8 @@ export default function OnlinePaymentClientPage({ pageData }: { pageData: any })
     "Pharmacy",
     "ICU Deposit"
   ]}
+  value={purposeVal}
+  onChange={setPurposeVal}
 /></div>
                     </div>
                     
@@ -447,6 +464,8 @@ export default function OnlinePaymentClientPage({ pageData }: { pageData: any })
     "Zambia",
     "Zimbabwe"
   ]}
+  value={countryVal}
+  onChange={setCountryVal}
 /></div>
                     </div>
 
@@ -457,92 +476,22 @@ export default function OnlinePaymentClientPage({ pageData }: { pageData: any })
   name="state"
   placeholder="-- Select --"
   icon={Map}
-  options={[
-    "Andaman & Nicobar",
-    "Andhra Pradesh",
-    "Arunachal Pradesh",
-    "Assam",
-    "Bihar",
-    "Chandigarh",
-    "Chattisgarh",
-    "Dadra & Nagar",
-    "Daman & Diu",
-    "Delhi",
-    "Goa",
-    "Gujrat",
-    "Haryana",
-    "Himachal Pradesh",
-    "Jammu & Kashmir",
-    "Jharkhand",
-    "Karnataka",
-    "Kerala",
-    "Lakshdweep",
-    "Madhya Pradesh",
-    "Maharashtra",
-    "Manipur",
-    "Meghalaya",
-    "Mizoram",
-    "Nagaland",
-    "Orissa",
-    "Pondichery",
-    "Punjab",
-    "Rajasthan",
-    "Sikkim",
-    "Tamil Nadu",
-    "Telangana",
-    "Tripura",
-    "Uttar Pradesh",
-    "Uttaranchal",
-    "West Bengal"
-  ]}
+  options={stateOptions}
+  value={stateVal}
+  onChange={setStateVal}
 /></div>
                     </div>
                     
                     <div className="md:col-span-2">
-                      <label className="block text-sm font-semibold text-slate-700 mb-2">City <span className="text-red-500">*</span></label>
+                      <label className="block text-sm font-semibold text-slate-700 mb-2">District/City <span className="text-red-500">*</span></label>
                       <div className="relative">
                         <CustomDropdown
   name="city"
   placeholder="-- Select --"
   icon={MapPin}
-  options={[
-    "Ahilya Nagar",
-    "Akola",
-    "Amravati",
-    "Bandra(Mumbai Suburban district)",
-    "Beed",
-    "Bhandara",
-    "Buldhana",
-    "Chandrapur",
-    "Dharashiv",
-    "Dhule",
-    "Gadchiroli",
-    "Gondia",
-    "Hingoli",
-    "Jalgaon",
-    "Jalna",
-    "Kolhapur",
-    "Latur",
-    "Mumbai-City",
-    "Nagpur",
-    "Nanded",
-    "Nandurbar",
-    "Nashik",
-    "Palghar",
-    "Parbhani",
-    "Pune",
-    "Raigad",
-    "Ratnagiri",
-    "Sambhaji Nagar",
-    "Sangli",
-    "Satara",
-    "Sindudurg",
-    "Solapur",
-    "Thane",
-    "Wardha",
-    "Washim",
-    "Yavatmal"
-  ]}
+  options={getDistrictsForState(stateVal)}
+  value={cityVal}
+  onChange={setCityVal}
 /></div>
                     </div>
                   </div>

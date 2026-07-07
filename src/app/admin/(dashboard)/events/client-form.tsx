@@ -97,7 +97,7 @@ export default function EventsClientForm({ initialData }: { initialData: any }) 
       <div className="bg-white rounded-3xl shadow-sm border border-slate-100 p-6 md:p-8 space-y-6">
         <div className="flex justify-between items-center border-b pb-4">
           <h2 className="text-[20px] font-black text-[#002b5c]">Overview Paragraphs</h2>
-          <button type="button" onClick={() => addArrayItem('overview')} className="px-3 py-1.5 text-sm bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 flex items-center gap-2 font-semibold">
+          <button type="button" onClick={() => addArrayItem('overview')} className="px-4 py-2 text-sm bg-[#002b5c] text-white rounded-lg hover:bg-[#001a38] hover:shadow-sm flex items-center gap-2 font-bold transition-all duration-300">
             <Plus size={16} /> Add Paragraph
           </button>
         </div>
@@ -118,7 +118,7 @@ export default function EventsClientForm({ initialData }: { initialData: any }) 
       <div className="bg-white rounded-3xl shadow-sm border border-slate-100 p-6 md:p-8 space-y-6">
         <div className="flex justify-between items-center border-b pb-4">
           <h2 className="text-[20px] font-black text-[#002b5c]">Key Objectives</h2>
-          <button type="button" onClick={() => addArrayItem('objectives')} className="px-3 py-1.5 text-sm bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 flex items-center gap-2 font-semibold">
+          <button type="button" onClick={() => addArrayItem('objectives')} className="px-4 py-2 text-sm bg-[#002b5c] text-white rounded-lg hover:bg-[#001a38] hover:shadow-sm flex items-center gap-2 font-bold transition-all duration-300">
             <Plus size={16} /> Add Objective
           </button>
         </div>
@@ -139,7 +139,7 @@ export default function EventsClientForm({ initialData }: { initialData: any }) 
       <div className="bg-white rounded-3xl shadow-sm border border-slate-100 p-6 md:p-8 space-y-6">
         <div className="flex justify-between items-center border-b pb-4">
           <h2 className="text-[20px] font-black text-[#002b5c]">Organizers</h2>
-          <button type="button" onClick={addOrganizer} className="px-3 py-1.5 text-sm bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 flex items-center gap-2 font-semibold">
+          <button type="button" onClick={addOrganizer} className="px-4 py-2 text-sm bg-[#002b5c] text-white rounded-lg hover:bg-[#001a38] hover:shadow-sm flex items-center gap-2 font-bold transition-all duration-300">
             <Plus size={16} /> Add Organizer
           </button>
         </div>
@@ -160,7 +160,7 @@ export default function EventsClientForm({ initialData }: { initialData: any }) 
       <div className="bg-white rounded-3xl shadow-sm border border-slate-100 p-6 md:p-8 space-y-6">
         <div className="flex justify-between items-center border-b pb-4">
           <h2 className="text-[20px] font-black text-[#002b5c]">Agenda & Speakers</h2>
-          <button type="button" onClick={addAgenda} className="px-3 py-1.5 text-sm bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 flex items-center gap-2 font-semibold">
+          <button type="button" onClick={addAgenda} className="px-4 py-2 text-sm bg-[#002b5c] text-white rounded-lg hover:bg-[#001a38] hover:shadow-sm flex items-center gap-2 font-bold transition-all duration-300">
             <Plus size={16} /> Add Session
           </button>
         </div>
@@ -184,7 +184,7 @@ export default function EventsClientForm({ initialData }: { initialData: any }) 
       <div className="bg-white rounded-3xl shadow-sm border border-slate-100 p-6 md:p-8 space-y-6">
         <div className="flex justify-between items-center border-b pb-4">
           <h2 className="text-[20px] font-black text-[#002b5c]">Gallery Images</h2>
-          <button type="button" onClick={() => addArrayItem('gallery')} className="px-3 py-1.5 text-sm bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 flex items-center gap-2 font-semibold">
+          <button type="button" onClick={() => addArrayItem('gallery')} className="px-4 py-2 text-sm bg-[#002b5c] text-white rounded-lg hover:bg-[#001a38] hover:shadow-sm flex items-center gap-2 font-bold transition-all duration-300">
             <Plus size={16} /> Add Image
           </button>
         </div>
