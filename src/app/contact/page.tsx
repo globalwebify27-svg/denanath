@@ -21,11 +21,7 @@ export async function generateMetadata(): Promise<Metadata> {
 export default function ContactUsPage() {
   const options: any[] = [];
 
-<<<<<<< HEAD
-=======
 
-
->>>>>>> re-update
   return (
     <div className="min-h-screen bg-[#f8fafc] font-sans selection:bg-teal-500/30">
       {/* Premium Page Header */}
