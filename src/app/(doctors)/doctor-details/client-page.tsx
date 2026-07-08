@@ -333,8 +333,8 @@ export default function DoctorDetailsPage() {
                   <UserRound className={"w-10 h-10 sm:w-12 sm:h-12 " + (selectedDoctor.image ? "hidden" : "")} />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <h2 className="text-xl sm:text-2xl md:text-[28px] font-[900] text-[#002b5c] leading-tight mb-2 uppercase">{selectedDoctor.name}</h2>
-                  <p className="text-sm sm:text-base font-[500] text-slate-500 leading-snug">{selectedDoctor.qualifications}</p>
+                  <h2 className="text-base sm:text-2xl md:text-[28px] font-[900] text-[#002b5c] leading-tight mb-1 sm:mb-2 uppercase">{selectedDoctor.name}</h2>
+                  <p className="text-xs sm:text-base font-[500] text-slate-500 leading-snug">{selectedDoctor.qualifications}</p>
                 </div>
               </div>
               <button 

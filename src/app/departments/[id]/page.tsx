@@ -435,13 +435,13 @@ export default async function DepartmentDetailsPage({
 
               if (hasName) {
                  img.addClass('!rounded-t-2xl !rounded-b-none');
-                 textP.addClass('!mb-0 !mt-0 text-[#002b5c] font-bold');
+                 textP.addClass('!mb-0 !mt-0 text-[#002b5c] font-bold text-sm md:text-base break-words text-center w-full');
                  
                  // Only wrap if it's not already inside a p-4 div
                  if (!textP.parent().hasClass('p-4')) {
-                     textP.wrap('<div class="p-4 mt-auto w-full bg-white flex items-center justify-center border-t border-slate-50"></div>');
+                     textP.wrap('<div class="p-3 md:p-4 mt-auto w-full bg-white flex items-center justify-center border-t border-slate-50 overflow-hidden"></div>');
                  } else {
-                     textP.parent().addClass('mt-auto bg-white border-t border-slate-50 text-center');
+                     textP.parent().removeClass('p-4').addClass('p-3 md:p-4 mt-auto bg-white border-t border-slate-50 text-center flex items-center justify-center overflow-hidden w-full');
                  }
               } else {
                  img.addClass('!rounded-2xl');

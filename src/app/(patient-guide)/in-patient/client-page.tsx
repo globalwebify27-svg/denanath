@@ -277,9 +277,9 @@ export default function InPatientClientPage({ pageData }: { pageData: any }) {
                   <div className="bg-teal-50/50 p-6 md:p-8 rounded-2xl border border-teal-100/50">
                     <ul className="space-y-4">
                       {guidelines.map((g: string, i: number) => (
-                        <li key={i} className="flex items-start gap-3">
+                        <li key={i} className="flex items-start gap-3 min-w-0">
                           <ChevronRight className="w-5 h-5 text-teal-600 shrink-0 mt-0.5" />
-                          <span>{g}</span>
+                          <span className="flex-1 min-w-0 break-words md:break-normal">{g}</span>
                         </li>
                       ))}
                     </ul>
@@ -396,7 +396,10 @@ export default function InPatientClientPage({ pageData }: { pageData: any }) {
                     </div>
                     <ul className="mt-4 space-y-2 text-sm text-slate-600">
                       {mealNotes.map((note: string, i: number) => (
-                        <li key={i} className="flex items-start gap-2"><CheckCircle2 className="w-4 h-4 text-teal-500 shrink-0 mt-0.5" /> {note}</li>
+                        <li key={i} className="flex items-start gap-2">
+                          <CheckCircle2 className="w-4 h-4 text-teal-500 shrink-0 mt-1 md:mt-0.5" /> 
+                          <span>{note}</span>
+                        </li>
                       ))}
                     </ul>
                   </section>
@@ -413,7 +416,7 @@ export default function InPatientClientPage({ pageData }: { pageData: any }) {
                     {admissionProcedure.map((step: string, i: number) => (
                       <li key={i} className="flex items-start gap-3 bg-white border border-slate-100 p-4 rounded-xl shadow-sm">
                         <div className="w-8 h-8 rounded-full bg-teal-100 text-[#007a87] flex items-center justify-center font-bold shrink-0">{i + 1}</div>
-                        <span className="mt-1">{step}</span>
+                        <span className="mt-0 md:mt-1">{step}</span>
                       </li>
                     ))}
                   </ul>

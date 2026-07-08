@@ -583,7 +583,7 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
                     </div>
                     <div>
                       <label className="block text-xs font-bold text-slate-700 mb-1"><span className="text-red-500">*</span> DOB (DD/MM/YYYY)</label>
-                      <input required type="date" value={formData.dob} onChange={e => setFormData({...formData, dob: e.target.value})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:border-[#4bc2b0] focus:ring-1 focus:ring-[#4bc2b0] outline-none" />
+                      <input required type="text" placeholder="dd-mm-yyyy" onFocus={(e) => e.target.type = 'date'} onBlur={(e) => { if (!e.target.value) e.target.type = 'text'; }} value={formData.dob} onChange={e => setFormData({...formData, dob: e.target.value})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:border-[#4bc2b0] focus:ring-1 focus:ring-[#4bc2b0] outline-none" />
                     </div>
                     <div>
                       <label className="block text-xs font-bold text-slate-700 mb-1"><span className="text-red-500">*</span> Gender</label>
@@ -603,7 +603,7 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
                     </div>
                     <div>
                       <label className="block text-xs font-bold text-slate-700 mb-1"><span className="text-red-500">*</span> DOB (DD/MM/YYYY)</label>
-                      <input required type="date" value={formData.dob} onChange={e => setFormData({...formData, dob: e.target.value})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:border-[#4bc2b0] focus:ring-1 focus:ring-[#4bc2b0] outline-none" />
+                      <input required type="text" placeholder="dd-mm-yyyy" onFocus={(e) => e.target.type = 'date'} onBlur={(e) => { if (!e.target.value) e.target.type = 'text'; }} value={formData.dob} onChange={e => setFormData({...formData, dob: e.target.value})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:border-[#4bc2b0] focus:ring-1 focus:ring-[#4bc2b0] outline-none" />
                     </div>
                     
                     <div className="flex gap-4 items-center mt-2 mb-4">
