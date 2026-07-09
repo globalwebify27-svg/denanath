@@ -44,6 +44,15 @@ export default async function DepartmentDetailsPage({
   if (department.description) {
     const $ = cheerio.load(department.description, null, false);
     
+    // Strip inline margin and display from images to allow Tailwind to center them responsively
+    $('img').each((_, img) => {
+       const style = $(img).attr('style');
+       if (style) {
+          const newStyle = style.replace(/margin\s*:[^;]+;?/gi, '').replace(/display\s*:[^;]+;?/gi, '');
+          $(img).attr('style', newStyle);
+       }
+    });
+    
     // Add custom classes to sections
     $('section').each((_, section) => {
       const h3 = $(section).find('h3').first();
@@ -219,7 +228,7 @@ export default async function DepartmentDetailsPage({
               const newHtml = `
                 <details class="faq-item group cursor-pointer p-3 rounded-xl hover:bg-white hover:shadow-md transition-all duration-300 border border-transparent hover:border-slate-100 [&_summary::-webkit-details-marker]:hidden">
                   <summary class="flex items-start gap-3 list-none outline-none">
-                    <h4 class="text-lg font-bold text-slate-800 m-0 group-hover:text-black transition-colors">${question}</h4>
+                    <h4 class="text-lg font-bold text-slate-800 !m-0 group-hover:text-black transition-colors">${question}</h4>
                   </summary>
                   <div class="text-slate-600 mt-3 border-t border-slate-100 pt-3">
                     ${answerHtml.startsWith('<p') ? answerHtml : `<p class="!mb-0 mt-3 first:mt-0">${answerHtml}</p>`}
@@ -250,7 +259,7 @@ export default async function DepartmentDetailsPage({
               const newHtml = `
                 <details class="faq-item group cursor-pointer p-5 bg-white rounded-xl shadow-sm border border-slate-100 hover:shadow-md transition-all duration-300 [&_summary::-webkit-details-marker]:hidden">
                   <summary class="flex items-start justify-between gap-3 list-none outline-none">
-                    <h4 class="text-lg font-bold text-[#002b5c] m-0 group-hover:text-[#007a87] transition-colors">${question}</h4>
+                    <h4 class="text-lg font-bold text-[#002b5c] !m-0 group-hover:text-[#007a87] transition-colors">${question}</h4>
                     <span class="text-[#007a87] group-open:rotate-180 transition-transform duration-300">
                       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
                     </span>
@@ -444,8 +453,16 @@ export default async function DepartmentDetailsPage({
                      textP.parent().removeClass('p-4').addClass('p-3 md:p-4 mt-auto bg-white border-t border-slate-50 text-center flex items-center justify-center overflow-hidden w-full');
                  }
               } else {
-                 img.addClass('!rounded-2xl');
-                 if (textP.length > 0) textP.remove();
+                 $(card).removeClass('p-0').addClass('p-2 md:p-2.5');
+                 img.addClass('!rounded-xl');
+                 
+                 if (textP.length > 0) {
+                     if (textP.parent().hasClass('p-4')) {
+                         textP.parent().remove();
+                     } else {
+                         textP.remove();
+                     }
+                 }
               }
            }
         });
@@ -686,7 +703,7 @@ export default async function DepartmentDetailsPage({
             <ChevronRight className="w-3.5 h-3.5 shrink-0" />
             <span className="text-white truncate">{department.name}</span>
           </div>
-          <h1 className="text-4xl md:text-5xl font-extrabold text-white tracking-tight flex items-center gap-4">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white tracking-tight break-words" style={{ wordBreak: 'break-word' }}>
             {department.name}
           </h1>
         </div>
@@ -709,7 +726,7 @@ export default async function DepartmentDetailsPage({
                     <Stethoscope className="w-4 h-4" />
                     <span>Specialty Details</span>
                   </div>
-                  <h2 className="text-3xl md:text-4xl font-extrabold text-[#002b5c] mb-6 tracking-tight">
+                  <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#002b5c] mb-6 tracking-tight break-words" style={{ wordBreak: 'break-word' }}>
                     {department.name}
                   </h2>
                   <div className="w-20 h-1.5 bg-[#007a87] rounded-full"></div>
@@ -717,7 +734,7 @@ export default async function DepartmentDetailsPage({
               </div>
 
               {/* Department Description / Content */}
-              <div className="text-slate-700 space-y-6 break-words [&_img]:max-w-full [&_img]:h-auto [&_img]:rounded-2xl [&_img]:shadow-md [&_img]:my-6 [&_p:not(:last-child)]:mb-4
+              <div className={`text-slate-700 space-y-6 break-words [&_img]:max-w-full [&_img]:h-auto [&_img]:rounded-2xl [&_img]:shadow-md [&_img]:my-6 [&_img]:mx-auto [&_img]:block md:[&_img]:inline-block md:[&_img]:mx-0 ${department.name.toLowerCase().includes('rheumatology') ? 'md:[&_img]:mr-4 md:[&_img]:mb-4' : ''} [&_p:not(:last-child)]:mb-4 [&_section:not(:last-child)]:mb-10
                 [&_h3]:text-xl [&_h3]:font-bold [&_h3]:text-[#002b5c] [&_h3]:mb-4 [&_h3]:border-b [&_h3]:pb-2
                 [&_h4]:text-lg [&_h4]:font-semibold [&_h4]:text-[#007a87] [&_h4]:mt-6 [&_h4]:mb-3
                 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:space-y-2 [&_ul]:mb-6
@@ -730,7 +747,7 @@ export default async function DepartmentDetailsPage({
                 [&_table>tr:first-child]:!bg-[#002b5c] [&_table>tr:first-child>td]:!text-white [&_table>tr:first-child>td]:font-bold [&_table>tr:first-child>td]:uppercase [&_table>tr:first-child>td]:text-sm [&_table>tr:first-child>td]:text-center
                 [&_tbody:first-child>tr:first-child]:!bg-[#002b5c] [&_tbody:first-child>tr:first-child>td]:!text-white [&_tbody:first-child>tr:first-child>td]:font-bold [&_tbody:first-child>tr:first-child>td]:uppercase [&_tbody:first-child>tr:first-child>td]:text-sm [&_tbody:first-child>tr:first-child>td]:text-center
                 [&_.department-facilities-section]:grid [&_.department-facilities-section]:grid-cols-1 [&_.department-facilities-section]:md:grid-cols-2 [&_.department-facilities-section]:lg:grid-cols-3 [&_.department-facilities-section]:gap-4
-                [&_.department-facilities-section_h3]:col-span-full
+                [&_.department-facilities-section_h3]:col-span-full [&_.department-facilities-section_h4]:col-span-full
                 [&_.department-facilities-section_p]:bg-teal-50 [&_.department-facilities-section_p]:p-4 [&_.department-facilities-section_p]:rounded-xl [&_.department-facilities-section_p]:text-center [&_.department-facilities-section_p]:font-semibold [&_.department-facilities-section_p]:text-[#007a87] [&_.department-facilities-section_p]:shadow-sm [&_.department-facilities-section_p]:mb-0
                 
                 [&_.department-facilities-section_ul]:col-span-full [&_.department-facilities-section_ul]:grid [&_.department-facilities-section_ul]:grid-cols-1 [&_.department-facilities-section_ul]:md:grid-cols-2 [&_.department-facilities-section_ul]:lg:grid-cols-3 [&_.department-facilities-section_ul]:gap-4 [&_.department-facilities-section_ul]:list-none [&_.department-facilities-section_ul]:pl-0
@@ -740,7 +757,7 @@ export default async function DepartmentDetailsPage({
                 [&_.facilities-images-grid_img]:!m-0 [&_.facilities-images-grid_img]:!w-full [&_.facilities-images-grid_img]:!h-[200px] md:[&_.facilities-images-grid_img]:!h-[240px] [&_.facilities-images-grid_img]:!object-cover [&_.facilities-images-grid_img]:!rounded-t-xl [&_.facilities-images-grid_img]:!rounded-b-none [&_.facilities-images-grid_img]:!shadow-none
                 [&_.facilities-images-grid_span]:block [&_.facilities-images-grid_span]:p-4 [&_.facilities-images-grid_span]:!bg-white [&_.facilities-images-grid_span]:w-full [&_.facilities-images-grid_span]:empty:hidden [&_.facilities-images-grid_span]:text-[#002b5c] [&_.facilities-images-grid_span]:!mt-auto
                 
-                [&_iframe]:float-none [&_iframe]:md:float-left [&_iframe]:w-full [&_iframe]:md:w-[400px] [&_iframe]:h-[225px] [&_iframe]:mr-6 [&_iframe]:mb-4 [&_iframe]:rounded-xl [&_iframe]:shadow-md [&_iframe]:border [&_iframe]:border-slate-200">
+                [&_iframe]:float-none [&_iframe]:md:float-left [&_iframe]:w-full [&_iframe]:md:w-[400px] [&_iframe]:h-[225px] [&_iframe]:mr-6 [&_iframe]:mb-4 [&_iframe]:rounded-xl [&_iframe]:shadow-md [&_iframe]:border [&_iframe]:border-slate-200`}>
                 {department.description ? (
                   <div className="clearfix">
                     {department.videoUrl && (
@@ -767,3 +784,4 @@ export default async function DepartmentDetailsPage({
     </div>
   );
 }
+

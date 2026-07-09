@@ -325,16 +325,16 @@ export default function DoctorForm({ doctor, id }: { doctor: any; id: string }) 
                 onChange={(e) => {
                   const file = e.target.files?.[0];
                   if (file) {
-                    const formData = new FormData();
-      formData.append('file', file);
+                    const uploadData = new FormData();
+      uploadData.append('file', file);
       fetch('/api/upload', {
         method: 'POST',
-        body: formData
+        body: uploadData
       })
       .then(res => res.json())
       .then(data => {
         if (data.url) {
-                      setFormData({ ...formData, image: data.url });
+                      setFormData(prev => ({ ...prev, image: data.url }));
                     } else { alert('Upload failed'); }
       })
       .catch(err => {

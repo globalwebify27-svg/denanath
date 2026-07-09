@@ -1,8 +1,32 @@
 import type { Metadata } from "next";
 import React from "react";
 import Link from "next/link";
-import { ChevronRight, Stethoscope, Search, ArrowRight, HeartPulse, Shield, Activity, Users } from "lucide-react";
+import { 
+  ChevronRight, Stethoscope, Search, ArrowRight, HeartPulse, 
+  Shield, Activity, Users, Brain, Bone, Eye, Ear, Syringe, 
+  Microscope, Baby, Pill, Droplet, Scissors, Dna, TestTubes 
+} from "lucide-react";
 import { prisma } from "@/lib/prisma";
+
+const getDepartmentIcon = (name: string) => {
+  const lower = name.toLowerCase();
+  if (lower.includes('cardio') || lower.includes('heart') || lower.includes('vascular')) return HeartPulse;
+  if (lower.includes('neuro') || lower.includes('brain') || lower.includes('psych')) return Brain;
+  if (lower.includes('ortho') || lower.includes('bone') || lower.includes('rheum') || lower.includes('joint') || lower.includes('spine')) return Bone;
+  if (lower.includes('eye') || lower.includes('ophthal')) return Eye;
+  if (lower.includes('ear') || lower.includes('ent') || lower.includes('audio')) return Ear;
+  if (lower.includes('anaesthe') || lower.includes('anesthe') || lower.includes('vaccin') || lower.includes('pain')) return Syringe;
+  if (lower.includes('patho') || lower.includes('microbio') || lower.includes('lab') || lower.includes('histopath')) return Microscope;
+  if (lower.includes('baby') || lower.includes('paediat') || lower.includes('pediat') || lower.includes('neonat') || lower.includes('matern') || lower.includes('obstet') || lower.includes('gynae')) return Baby;
+  if (lower.includes('pharm') || lower.includes('medic') || lower.includes('physician')) return Pill;
+  if (lower.includes('blood') || lower.includes('transfu') || lower.includes('uro') || lower.includes('nephro') || lower.includes('kidney')) return Droplet;
+  if (lower.includes('surg') || lower.includes('plastic') || lower.includes('cosmet')) return Scissors;
+  if (lower.includes('onco') || lower.includes('cancer') || lower.includes('genetic')) return Dna;
+  if (lower.includes('allergy') || lower.includes('immun') || lower.includes('prevent')) return Shield;
+  if (lower.includes('test') || lower.includes('biochem')) return TestTubes;
+  if (lower.includes('radio') || lower.includes('scan') || lower.includes('ray') || lower.includes('gastro') || lower.includes('abdomin') || lower.includes('hepat') || lower.includes('liver') || lower.includes('digest')) return Activity;
+  return Stethoscope;
+};
 
 export const dynamic = "force-dynamic";
 
@@ -129,8 +153,7 @@ export default async function DepartmentDetailsPage({
               <div className="space-y-4">
                 {departments.length > 0 ? (
                   departments.map((dept: any, index: number) => {
-                    // Alternate some icons just for visual parity with the image if no icon specified
-                    const IconComponent = index % 2 === 0 ? HeartPulse : Shield;
+                    const IconComponent = getDepartmentIcon(dept.name);
                     
                     return (
                       <div key={dept.id} className="group bg-white border border-gray-100 rounded-2xl p-6 flex flex-col sm:flex-row sm:items-center gap-6 hover:border-[#D9232D] hover:shadow-[0_8px_30px_rgb(217,35,45,0.08)] hover:-translate-y-0.5 transition-all duration-300">
