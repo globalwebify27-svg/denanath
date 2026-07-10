@@ -253,6 +253,7 @@ export default function LightboxWrapper({ htmlContent }: { htmlContent: string }
         ref={containerRef}
         onClick={handleContainerClick}
         dangerouslySetInnerHTML={{ __html: htmlContent }} 
+        className="[&_img]:cursor-pointer [&_img]:transition-transform [&_img]:duration-300 [&_img]:hover:scale-[1.02] overflow-hidden"
       />
 
       {currentIndex !== null && createPortal(

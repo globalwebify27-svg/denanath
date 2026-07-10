@@ -96,11 +96,11 @@ export default function Footer() {
           </div>
 
           {/* Quick Channels Column 2 */}
-          <div className="space-y-6">
-            <h4 className="text-white font-bold text-xs uppercase tracking-[0.2em] relative select-none opacity-0">
+          <div className="space-y-6 mt-[-34px] sm:mt-0">
+            <h4 className="hidden sm:block text-white font-bold text-xs uppercase tracking-[0.2em] relative select-none opacity-0">
               Quick Channels
             </h4>
-            <ul className="space-y-3.5 text-xs pt-2">
+            <ul className="space-y-3.5 text-xs pt-0 sm:pt-2">
               {[
                 { label: "Emergency", href: "/emergency" },
                 { label: "Pharmacy", href: "/pharmacy" },

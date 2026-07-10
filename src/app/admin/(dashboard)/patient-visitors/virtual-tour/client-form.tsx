@@ -208,12 +208,14 @@ export default function VirtualTourClientForm({ initialData }: { initialData: an
                           } catch (err) {
                             console.error(err);
                             alert("Error uploading image");
+                          } finally {
+                            e.target.value = ''; // allow uploading same file again
                           }
                         }
                       }}
                       className="w-full p-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#007a87]/50 text-sm file:mr-4 file:py-1 file:px-3 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-[#007a87]/10 file:text-[#007a87] hover:file:bg-[#007a87]/20 cursor-pointer"
                     />
-                    {loc.img && (
+                    {loc.img && loc.img.startsWith('/uploads/') && (
                       <div className="mt-2 text-xs truncate text-emerald-600 font-medium border border-emerald-200 bg-emerald-50 rounded-md p-2" title={loc.img}>
                         Uploaded: {loc.img.split('/').pop()?.substring(0, 30)}...
                       </div>

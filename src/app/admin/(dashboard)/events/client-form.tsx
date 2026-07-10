@@ -1,9 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { Plus, Trash2, GripVertical, Image as ImageIcon } from "lucide-react";
+import { Plus, Trash2, GripVertical, Image as ImageIcon, Upload, Loader2 } from "lucide-react";
 
 export default function EventsClientForm({ initialData }: { initialData: any }) {
+  const [uploadingIdx, setUploadingIdx] = useState<number | null>(null);
+  
   const [data, setData] = useState({
     title: initialData?.title || "",
     date: initialData?.date || "",
@@ -68,6 +70,34 @@ export default function EventsClientForm({ initialData }: { initialData: any }) 
 
   const removeAgenda = (index: number) => {
     setData(prev => ({ ...prev, agenda: prev.agenda.filter((_, i) => i !== index) }));
+  };
+
+  const handleUpload = async (idx: number, e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploadingIdx(idx);
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (res.ok) {
+        const { url } = await res.json();
+        updateArrayItem('gallery', idx, url);
+      } else {
+        alert("Upload failed");
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Error uploading file");
+    } finally {
+      setUploadingIdx(null);
+    }
   };
 
   return (
@@ -191,8 +221,19 @@ export default function EventsClientForm({ initialData }: { initialData: any }) 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {data.gallery.map((img: string, idx: number) => (
             <div key={idx} className="flex gap-4 items-center bg-slate-50 p-3 rounded-xl border border-slate-100">
-              <ImageIcon className="text-slate-400 shrink-0" size={24} />
-              <input type="text" value={img} onChange={e => updateArrayItem('gallery', idx, e.target.value)} className="flex-1 p-2 bg-white border border-slate-200 rounded-lg text-sm" placeholder="Image filename (e.g. event1.jpg)" />
+              {img ? (
+                <img src={img} alt="Preview" className="w-10 h-10 object-cover rounded shrink-0 border border-slate-200" />
+              ) : (
+                <ImageIcon className="text-slate-400 shrink-0" size={24} />
+              )}
+              <input type="text" value={img} onChange={e => updateArrayItem('gallery', idx, e.target.value)} className="flex-1 p-2 bg-white border border-slate-200 rounded-lg text-sm" placeholder="Image URL or upload ->" />
+              <div className="relative overflow-hidden group shrink-0">
+                <input type="file" accept="image/*" onChange={(e) => handleUpload(idx, e)} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" />
+                <button type="button" className="px-4 py-2 bg-white border border-slate-200 text-[#007a87] rounded-lg text-sm font-bold flex items-center gap-2 group-hover:bg-[#007a87] group-hover:text-white transition-colors">
+                  {uploadingIdx === idx ? <Loader2 size={16} className="animate-spin" /> : <Upload size={16} />}
+                  <span>{uploadingIdx === idx ? 'Uploading...' : 'Upload'}</span>
+                </button>
+              </div>
               <button type="button" onClick={() => removeArrayItem('gallery', idx)} className="p-2 text-red-500 hover:bg-red-50 rounded-lg shrink-0">
                 <Trash2 size={18} />
               </button>

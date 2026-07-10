@@ -146,10 +146,10 @@ export default function EventsClientPage({ data }: { data: any }) {
                     <div 
                       key={idx} 
                       className="relative rounded-xl overflow-hidden group cursor-zoom-in aspect-video w-full shadow-sm"
-                      onClick={() => setSelectedImage(`/images/${img}`)}
+                      onClick={() => setSelectedImage(img.startsWith('/') || img.startsWith('http') ? img : `/images/${img}`)}
                     >
                       <img 
-                        src={`/images/${img}`} 
+                        src={img.startsWith('/') || img.startsWith('http') ? img : `/images/${img}`} 
                         alt={`${title} moment ${idx + 1}`}
                         className="w-full h-full object-cover group-hover:scale-110 transition-all duration-500"
                       />

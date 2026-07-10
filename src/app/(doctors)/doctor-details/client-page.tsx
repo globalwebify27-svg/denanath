@@ -4,7 +4,22 @@ import React, { useEffect, useRef, useState, useMemo } from "react";
 import Link from "next/link";
 import { ChevronRight, ChevronLeft, Stethoscope, Search, UserRound, GraduationCap, ArrowRight, X, Calendar, Clock, BookOpen, Briefcase } from "lucide-react";
 
+const DoctorImage = ({ doc, className, iconClassName }: { doc: any, className?: string, iconClassName?: string }) => {
+  const [error, setError] = useState(false);
+  
+  if (!doc.image || error) {
+    return <UserRound className={iconClassName} />;
+  }
 
+  return (
+    <img 
+      src={doc.image} 
+      alt={doc.name} 
+      className={className}
+      onError={() => setError(true)}
+    />
+  );
+};
 
 export default function DoctorDetailsPage() {
   const [doctorsList, setDoctorsList] = useState<any[]>([]);
@@ -211,18 +226,11 @@ export default function DoctorDetailsPage() {
                     <div key={idx} className="group bg-white border border-slate-200 hover:border-[#D9232D] rounded-2xl p-6 transition-all duration-300 hover:shadow-[0_8px_30px_rgba(217,35,45,0.15)] hover:-translate-y-1 flex flex-col h-full">
                       <div className="flex items-start gap-4 mb-4">
                         <div className="w-16 h-16 rounded-xl bg-teal-50 flex items-center justify-center shrink-0 border border-teal-100 overflow-hidden group-hover:bg-[#D9232D] group-hover:border-[#D9232D] transition-colors">
-                          {doc.image && (
-                            <img 
-                              src={doc.image} 
-                              alt={doc.name} 
-                              className="w-full h-full object-cover text-[0px]" 
-                              onError={(e) => {
-                                e.currentTarget.style.display = 'none';
-                                e.currentTarget.nextElementSibling?.classList.remove('hidden');
-                              }}
-                            />
-                          )}
-                          <UserRound className={"w-8 h-8 text-[#007a87] group-hover:text-white transition-colors " + (doc.image ? "hidden" : "")} />
+                          <DoctorImage 
+                            doc={doc}
+                            className="w-full h-full object-cover text-[0px]"
+                            iconClassName="w-8 h-8 text-[#007a87] group-hover:text-white transition-colors"
+                          />
                         </div>
                         <div>
                           <h3 className="text-lg font-extrabold text-[#002b5c] group-hover:text-[#D9232D] transition-colors line-clamp-2">
@@ -319,22 +327,15 @@ export default function DoctorDetailsPage() {
             <div className="flex items-center justify-between p-6 md:p-8 border-b border-slate-100 shrink-0 sticky top-0 bg-white z-10 rounded-t-3xl gap-4">
               <div className="flex items-center gap-5 sm:gap-6 flex-1 min-w-0">
                 <div className="w-[100px] h-[100px] sm:w-[130px] sm:h-[130px] rounded-2xl bg-white flex items-center justify-center shrink-0 border border-slate-200 shadow-sm overflow-hidden text-slate-400 p-1">
-                  {selectedDoctor.image && (
-                    <img 
-                      src={selectedDoctor.image} 
-                      alt={selectedDoctor.name} 
-                      className="w-full h-full object-contain rounded-xl bg-white" 
-                      onError={(e) => {
-                        e.currentTarget.style.display = 'none';
-                        e.currentTarget.nextElementSibling?.classList.remove('hidden');
-                      }}
-                    />
-                  )}
-                  <UserRound className={"w-10 h-10 sm:w-12 sm:h-12 " + (selectedDoctor.image ? "hidden" : "")} />
+                  <DoctorImage 
+                    doc={selectedDoctor}
+                    className="w-full h-full object-contain rounded-xl bg-white"
+                    iconClassName="w-10 h-10 sm:w-12 sm:h-12 text-slate-400"
+                  />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <h2 className="text-xl sm:text-2xl md:text-[28px] font-[900] text-[#002b5c] leading-tight mb-2 uppercase">{selectedDoctor.name}</h2>
-                  <p className="text-sm sm:text-base font-[500] text-slate-500 leading-snug">{selectedDoctor.qualifications}</p>
+                  <h2 className="text-base sm:text-2xl md:text-[28px] font-[900] text-[#002b5c] leading-tight mb-1 sm:mb-2 uppercase">{selectedDoctor.name}</h2>
+                  <p className="text-xs sm:text-base font-[500] text-slate-500 leading-snug">{selectedDoctor.qualifications}</p>
                 </div>
               </div>
               <button 

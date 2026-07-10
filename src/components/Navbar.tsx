@@ -373,7 +373,11 @@ export default function Navbar() {
                     <div onClick={() => changeLanguage('en')} className="px-4 py-3 hover:bg-[#007a87] hover:text-white transition-colors cursor-pointer text-left">English</div>
                     <div onClick={() => changeLanguage('hi')} className="px-4 py-3 hover:bg-[#007a87] hover:text-white transition-colors cursor-pointer border-t border-slate-50 text-left">Hindi</div>
                     <div onClick={() => changeLanguage('mr')} className="px-4 py-3 hover:bg-[#007a87] hover:text-white transition-colors cursor-pointer border-t border-slate-50 text-left">Marathi</div>
+                    <div onClick={() => changeLanguage('gu')} className="px-4 py-3 hover:bg-[#007a87] hover:text-white transition-colors cursor-pointer border-t border-slate-50 text-left">Gujarati</div>
+                    <div onClick={() => changeLanguage('kn')} className="px-4 py-3 hover:bg-[#007a87] hover:text-white transition-colors cursor-pointer border-t border-slate-50 text-left">Kannada</div>
+                    <div onClick={() => changeLanguage('ta')} className="px-4 py-3 hover:bg-[#007a87] hover:text-white transition-colors cursor-pointer border-t border-slate-50 text-left">Tamil</div>
                     <div onClick={() => changeLanguage('ar')} className="px-4 py-3 hover:bg-[#007a87] hover:text-white transition-colors cursor-pointer border-t border-slate-50 text-left">Arabic</div>
+                    <div onClick={() => changeLanguage('de')} className="px-4 py-3 hover:bg-[#007a87] hover:text-white transition-colors cursor-pointer border-t border-slate-50 text-left">German</div>
                   </div>
                 </div>
               </div>
