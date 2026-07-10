@@ -154,7 +154,7 @@ export default function SimulationCenterClient({ initialData, labsData }: { init
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id)}
                     style={{ fontSize: '20px' }}
-                    className={`flex items-center gap-2 px-6 py-3 rounded-full font-bold transition-all duration-300 ${
+                    className={`flex items-center gap-2 px-6 py-3 rounded-full font-bold transition-all duration-300 cursor-pointer ${
                       activeTab === tab.id 
                         ? "bg-[#002b5c] text-white shadow-md" 
                         : "bg-slate-50 text-slate-600 hover:bg-slate-100 border border-slate-200"
@@ -209,7 +209,7 @@ export default function SimulationCenterClient({ initialData, labsData }: { init
                           <div key={card.id} className={`border border-slate-200 rounded-2xl overflow-hidden transition-all duration-300 ${isExpanded ? 'shadow-md bg-white border-[#007a87]/30' : 'bg-slate-50 hover:bg-white hover:border-[#D9232D]/50 hover:shadow-sm'}`}>
                             <button 
                               onClick={() => setExpandedLab(isExpanded ? null : card.id)} 
-                              className="w-full text-left p-6 flex items-center justify-between"
+                              className="w-full text-left p-6 flex items-center justify-between cursor-pointer"
                             >
                               <div className="flex items-center gap-4">
                                 <div className={`w-12 h-12 rounded-full flex items-center justify-center transition-colors ${isExpanded ? 'bg-[#007a87] text-white' : 'bg-teal-100 text-[#007a87]'}`}>

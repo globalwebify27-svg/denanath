@@ -188,7 +188,7 @@ export default function ClinicalHub() {
     },
     {
       title: "Facilities",
-      image: "/images/unnamed (17).webp",
+      image: "/images/unnamed (18).webp",
       description: "Our world-class infrastructure is designed with a patient-first approach, combining cutting-edge medical technology with comforting, state-of-the-art healing environments.",
       Icon: Building2,
       features: [

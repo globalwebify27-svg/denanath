@@ -11,7 +11,7 @@ export default async function AdminDoctorsPage({
   searchParams: Promise<{ q?: string; page?: string }>;
 }) {
   const resolvedParams = await searchParams;
-  const query = resolvedParams.q || "";
+  const query = (resolvedParams.q || "").trim();
   const page = Math.max(1, parseInt(resolvedParams.page || "1", 10));
   const itemsPerPage = 20;
 
@@ -19,22 +19,21 @@ export default async function AdminDoctorsPage({
   let seoData: any = {};
   try { if (setting) seoData = JSON.parse(setting.value); } catch (e) {}
 
+  const whereClause = query ? {
+    OR: [
+      { name: { contains: query } },
+      { specialty: { contains: query } }
+    ]
+  } : {};
+
   const totalCount = await prisma.doctor.count({
-    where: {
-      name: {
-        contains: query,
-      },
-    },
+    where: whereClause,
   });
 
   const totalPages = Math.ceil(totalCount / itemsPerPage);
 
   const doctors = await prisma.doctor.findMany({
-    where: {
-      name: {
-        contains: query,
-      },
-    },
+    where: whereClause,
     orderBy: {
       name: "asc",
     },

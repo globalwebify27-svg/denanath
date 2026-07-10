@@ -3,11 +3,17 @@
 import React, { useEffect, useRef, useState, useMemo } from "react";
 import Link from "next/link";
 import { ChevronRight, ChevronLeft, Stethoscope, Search, UserRound, GraduationCap, ArrowRight, X, Calendar, Clock, BookOpen, Briefcase } from "lucide-react";
+import CustomDropdown from "@/components/CustomDropdown";
 
 const DoctorImage = ({ doc, className, iconClassName }: { doc: any, className?: string, iconClassName?: string }) => {
   const [error, setError] = useState(false);
   
-  if (!doc.image || error) {
+  // Reset error state if the image URL changes (e.g. during pagination or filtering)
+  useEffect(() => {
+    setError(false);
+  }, [doc?.image]);
+
+  if (!doc?.image || error) {
     return <UserRound className={iconClassName} />;
   }
 
@@ -146,13 +152,20 @@ export default function DoctorDetailsPage() {
     return Array.from(specialties).sort();
   }, [doctorsList]);
 
-  // Filter doctors based on inputs
+  // Filter and sort doctors based on inputs
   const filteredDoctors = useMemo(() => {
-    return doctorsList.filter(doc => {
+    const filtered = doctorsList.filter(doc => {
       const docSpecialty = doc.specialty || "";
       const matchSpecialty = selectedSpecialty === "--Select--" || docSpecialty === selectedSpecialty;
       const matchName = doc.name.toLowerCase().includes(searchName.toLowerCase());
       return matchSpecialty && matchName;
+    });
+
+    // Sort alphabetically by name, ignoring "Dr." or "Dr " prefix for proper sorting
+    return filtered.sort((a, b) => {
+      const nameA = a.name.trim().replace(/^Dr\.?\s+/i, "").trim().toLowerCase();
+      const nameB = b.name.trim().replace(/^Dr\.?\s+/i, "").trim().toLowerCase();
+      return nameA.localeCompare(nameB);
     });
   }, [doctorsList, selectedSpecialty, searchName]);
 
@@ -234,19 +247,14 @@ export default function DoctorDetailsPage() {
                   <div>
                     <label className="block text-sm font-bold text-slate-700 mb-2">Filter By Specialty:</label>
                     <div className="relative">
-                      <select 
-                        className="w-full appearance-none bg-white border border-slate-300 rounded-lg py-3 px-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-[#007a87] focus:border-transparent transition-shadow cursor-pointer"
-                        value={selectedSpecialty}
-                        onChange={(e) => setSelectedSpecialty(e.target.value)}
-                      >
-                        <option value="--Select--">--Select--</option>
-                        {uniqueSpecialties.map((spec, idx) => (
-                          <option key={idx} value={spec}>{spec}</option>
-                        ))}
-                      </select>
-                      <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-500">
-                        <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
-                      </div>
+                      <CustomDropdown
+                        name="specialtyFilter"
+                        options={uniqueSpecialties}
+                        placeholder="--Select--"
+                        value={selectedSpecialty === "--Select--" ? "" : selectedSpecialty}
+                        onChange={(val: string) => setSelectedSpecialty(val || "--Select--")}
+                        className="!text-sm"
+                      />
                     </div>
                   </div>
 
@@ -277,7 +285,7 @@ export default function DoctorDetailsPage() {
               ) : paginatedDoctors.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {paginatedDoctors.map((doc, idx) => (
-                    <div key={idx} className="group bg-white border border-slate-200 hover:border-[#D9232D] rounded-2xl p-6 transition-all duration-300 hover:shadow-[0_8px_30px_rgba(217,35,45,0.15)] hover:-translate-y-1 flex flex-col h-full">
+                    <div key={doc.id || idx} className="group bg-white border border-slate-200 hover:border-[#D9232D] rounded-2xl p-6 transition-all duration-300 hover:shadow-[0_8px_30px_rgba(217,35,45,0.15)] hover:-translate-y-1 flex flex-col h-full">
                       <div className="flex items-start gap-4 mb-4">
                         <div className="w-16 h-16 rounded-xl bg-teal-50 flex items-center justify-center shrink-0 border border-teal-100 overflow-hidden group-hover:bg-[#D9232D] group-hover:border-[#D9232D] transition-colors">
                           <DoctorImage 
