@@ -10,6 +10,7 @@ export default function InlineSeoForm({
 }: {
   settingKey: string;
   initialData: any;
+  pathsToRevalidate?: string[];
 }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -44,7 +45,7 @@ export default function InlineSeoForm({
         body: JSON.stringify({
           key: settingKey,
           value: payload,
-          pathsToRevalidate: [],
+          pathsToRevalidate: pathsToRevalidate || [],
         }),
       });
       if (!res.ok) throw new Error("Failed to save SEO settings");

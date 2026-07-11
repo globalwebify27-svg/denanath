@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { ChevronRight, ChevronLeft, Stethoscope, Search, ArrowRight, HeartPulse, Shield } from "lucide-react";
+import { iconMap } from "@/components/IconPicker";
 
 export default function DepartmentDetailsClientPage({ pageData, departments }: { pageData: any, departments?: any[] }) {
   const options = [
@@ -146,7 +147,7 @@ export default function DepartmentDetailsClientPage({ pageData, departments }: {
                   <div className="space-y-4">
                     {currentDepartments.length > 0 ? (
                       currentDepartments.map((dept: any, index: number) => {
-                        const IconComponent = index % 2 === 0 ? HeartPulse : Shield;
+                        const IconComponent = (dept.icon && iconMap[dept.icon]) ? iconMap[dept.icon] : (index % 2 === 0 ? HeartPulse : Shield);
                         
                         return (
                           <div key={dept.id || index} className="group bg-white border border-gray-100 rounded-2xl p-6 flex flex-col sm:flex-row sm:items-center gap-6 hover:border-[#D9232D] hover:shadow-[0_8px_30px_rgb(217,35,45,0.08)] hover:-translate-y-0.5 transition-all duration-300">

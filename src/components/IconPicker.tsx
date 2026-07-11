@@ -15,7 +15,7 @@ import {
 } from "lucide-react";
 
 // Register icons in a lookup map
-const iconMap: Record<string, React.ComponentType<{ className?: string; size?: number }>> = {
+export const iconMap: Record<string, React.ComponentType<{ className?: string; size?: number }>> = {
   HeartPulse, Activity, Pill, Scissors, Stethoscope, Brain, Eye, Bone, Dna, Baby,
   Thermometer, Droplet, Syringe, Microscope, Heart, ShieldAlert,
   Home, Shield, Star, Bookmark, FileText, Calendar, Clock, Phone, Mail, MapPin,

@@ -3,6 +3,7 @@
 import React, { useEffect, useRef } from "react";
 import Link from "next/link";
 import { ChevronRight, Stethoscope, ArrowRight, Activity } from "lucide-react";
+import { iconMap } from "@/components/IconPicker";
 
 export default function ServicesClientPage({ pageData, services }: { pageData: any, services?: any[] }) {
   const options = [
@@ -118,11 +119,13 @@ export default function ServicesClientPage({ pageData, services }: { pageData: a
                     let parsedItems: string[] = [];
                     try { parsedItems = JSON.parse(service.items || "[]"); } catch (e) {}
 
+                    const IconComponent = (service.icon && iconMap[service.icon]) ? iconMap[service.icon] : Activity;
+
                     return (
                       <div key={idx} className="bg-white border border-slate-100 rounded-[1.25rem] p-6 sm:p-8 hover:border-[#d9232d] hover:shadow-[0_8px_30px_rgb(217,35,45,0.08)] transition-all duration-300 group flex flex-col h-full">
                         <div className="flex items-center gap-5 mb-8">
                           <div className="w-[52px] h-[52px] rounded-2xl flex items-center justify-center shrink-0 bg-slate-50 text-[#002b5c] border border-slate-100 group-hover:bg-[#d9232d] group-hover:text-white group-hover:border-[#d9232d] transition-all duration-300">
-                            <Activity className="w-7 h-7" />
+                            <IconComponent className="w-7 h-7" />
                           </div>
                           <h3 className="text-[22px] font-[900] text-[#002b5c] group-hover:text-[#d9232d] tracking-tight leading-tight transition-colors duration-300">{service.title}</h3>
                         </div>

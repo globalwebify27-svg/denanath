@@ -29,7 +29,7 @@ export default async function AdminHomeSettingsPage() {
         </div>
       </div>
 
-      <InlineSeoForm settingKey="page_home" initialData={seoData} />
+      <InlineSeoForm settingKey="page_home" initialData={seoData} pathsToRevalidate={['/']} />
     </div>
   );
 }

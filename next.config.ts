@@ -6,11 +6,11 @@ const nextConfig: NextConfig = {
     serverActions: {
       bodySizeLimit: '10mb',
     },
-    outputFileTracingExcludes: {
-      '*': [
-        './public/uploads/**/*'
-      ]
-    },
+  },
+  outputFileTracingExcludes: {
+    '*': [
+      './public/uploads/**/*'
+    ]
   },
   // @ts-ignore: typescript config is valid but missing in strict NextConfig type
   typescript: {
