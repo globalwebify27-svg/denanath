@@ -1195,16 +1195,16 @@ export default function PatientRegistrationFormPage({ pageData }: { pageData: an
                         <span className="text-red-500 mr-1">*</span>Security Verification
                       </label>
                       <div className="flex flex-row items-center justify-center gap-2 sm:gap-4 mb-5 bg-white p-3 sm:p-5 rounded-2xl border border-slate-200 shadow-sm">
-                        <div className="bg-slate-800 px-4 sm:px-8 py-3 sm:py-3.5 tracking-widest sm:tracking-[0.5em] font-serif text-xl sm:text-2xl text-white select-none font-bold rounded-xl shadow-inner border border-slate-700">
+                        <div className="bg-slate-800 px-4 sm:px-8 py-3 sm:py-3.5 tracking-widest sm:tracking-[0.5em] font-serif text-[18px] leading-[28px] text-white select-none font-bold rounded-xl shadow-inner border border-slate-700">
                           {captchaCode}
                         </div>
-                        <button type="button" onClick={generateCaptcha} className="text-blue-500 hover:text-blue-700 transition-colors bg-blue-50 hover:bg-blue-100 p-3 sm:p-3.5 rounded-xl border border-blue-100 shadow-sm shrink-0">
+                        <button type="button" onClick={generateCaptcha} className="text-blue-500 hover:text-blue-700 text-[18px] leading-[28px] transition-colors bg-blue-50 hover:bg-blue-100 p-3 sm:p-3.5 rounded-xl border border-blue-100 shadow-sm shrink-0">
                           <RefreshCw className="w-5 h-5 sm:w-6 sm:h-6" />
                         </button>
                       </div>
                       <input type="text" placeholder="Enter Captcha Text" className="w-full px-5 py-4 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-[#007a87] text-center font-medium shadow-sm transition-all mb-8" />
                       
-                      <button type="submit" disabled={isSubmitting} className="group w-full py-4 bg-[#003360] text-white font-bold text-lg rounded-xl hover:bg-[#002b5c] transition-all shadow-[0_8px_20px_rgba(0,51,96,0.3)] hover:-translate-y-1 hover:shadow-[0_12px_25px_rgba(0,51,96,0.4)] flex justify-center items-center gap-3 disabled:opacity-70 disabled:pointer-events-none">
+                      <button type="submit" disabled={isSubmitting} className="group w-full py-4 bg-[#003360] text-white font-bold text-[18px] leading-[28px] rounded-xl hover:bg-[#002b5c] transition-all shadow-[0_8px_20px_rgba(0,51,96,0.3)] hover:-translate-y-1 hover:shadow-[0_12px_25px_rgba(0,51,96,0.4)] flex justify-center items-center gap-3 disabled:opacity-70 disabled:pointer-events-none">
                         {isSubmitting ? (
                           <>
                             <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>

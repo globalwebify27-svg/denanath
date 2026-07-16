@@ -133,7 +133,7 @@ export default function ContactUsClientPage({ pageData }: { pageData: any }) {
               )}
               
               {pageData.content ? (
-                <div dangerouslySetInnerHTML={{ __html: pageData.content }} />
+                <div className="text-slate-600 [&_*]:!text-[18px] [&_*]:!leading-[31px] [&_*]:!font-medium [&_a]:!font-bold [&_a_*]:!font-bold [&_a[href*='pethev']]:!text-[#3C99A3] [&_a[href*='pethev']_*]:!text-[#3C99A3] [&_.fa-envelope]:!text-[#3C99A3] [&_svg]:!text-[#3C99A3]" dangerouslySetInnerHTML={{ __html: pageData.content }} />
               ) : (
                 <div className="py-16 text-center border-2 border-dashed border-slate-200 rounded-2xl bg-slate-50">
                   <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-teal-100 mb-4">

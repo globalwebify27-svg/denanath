@@ -237,7 +237,7 @@ export default function SimulationLab2ClientForm({ initialData }: { initialData:
               value={data.content || ""} 
               onChange={(val) => handleChange("content", val)}
               modules={modules} 
-              className="h-[300px] pb-10"
+              className="h-[300px] pb-10 [&_.ql-editor]:!text-[#314158] [&_.ql-editor_*]:!text-[#314158] [&_.ql-editor]:text-[18px]"
             />
           </div>
         </div>

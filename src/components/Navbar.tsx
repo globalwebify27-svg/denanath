@@ -202,6 +202,8 @@ export default function Navbar() {
             <span className="opacity-30">|</span>
             <Link href="/pharmacy" className="hover:text-white transition-colors">Pharmacy</Link>
             <span className="opacity-30">|</span>
+            <Link href="/careers" className="hover:text-white transition-colors font-bold">Job & Vacancy</Link>
+            <span className="opacity-30">|</span>
             <Link href="/ambulance" className="hover:text-red-300 transition-colors font-bold text-red-400">Ambulance</Link>
           </div>
 

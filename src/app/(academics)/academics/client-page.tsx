@@ -150,7 +150,7 @@ export default function AcademicsClientPage({ pageData }: { pageData: any }) {
                     {pageData?.shortTermFellowships?.map((program: string, idx: number) => (
                       <div key={idx} className="group flex items-start gap-3 bg-white p-4 rounded-xl border border-slate-200 shadow-sm hover:shadow-[0_8px_30px_rgba(217,35,45,0.15)] hover:border-[#D9232D] hover:-translate-y-1 transition-all duration-300">
                         <CheckCircle2 className="w-5 h-5 text-teal-500 group-hover:text-[#D9232D] shrink-0 mt-0.5 transition-colors" />
-                        <span style={{ fontSize: '18px' }} className="text-slate-700 font-medium">{program}</span>
+                        <span style={{ fontSize: '18px' }} className="text-slate-700 font-normal leading-[31px]">{program}</span>
                       </div>
                     ))}
                   </div>

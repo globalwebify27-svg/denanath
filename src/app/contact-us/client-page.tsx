@@ -107,7 +107,7 @@ export default function ContactUsClientPage({ pageData }: { pageData: any }) {
                         }}
                       >
                       <div>
-                        <label className="block text-sm font-bold text-slate-700 mb-2">Name: <span className="text-red-500">*</span></label>
+                        <label className="block text-sm font-semibold text-slate-700 mb-2">Name: <span className="text-red-500">*</span></label>
                         <input 
                           type="text" 
                           name="name"
@@ -118,7 +118,7 @@ export default function ContactUsClientPage({ pageData }: { pageData: any }) {
                       
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                          <label className="block text-sm font-bold text-slate-700 mb-2">E-mail: <span className="text-red-500">*</span></label>
+                          <label className="block text-sm font-semibold text-slate-700 mb-2">E-mail: <span className="text-red-500">*</span></label>
                           <input 
                             type="email" 
                             name="email"
@@ -127,7 +127,7 @@ export default function ContactUsClientPage({ pageData }: { pageData: any }) {
                           />
                         </div>
                         <div>
-                          <label className="block text-sm font-bold text-slate-700 mb-2">Phone:</label>
+                          <label className="block text-sm font-semibold text-slate-700 mb-2">Phone:</label>
                           <input 
                             type="tel" 
                             name="phone"
@@ -137,7 +137,7 @@ export default function ContactUsClientPage({ pageData }: { pageData: any }) {
                       </div>
 
                       <div>
-                        <label className="block text-sm font-bold text-slate-700 mb-2">Comments: <span className="text-red-500">*</span></label>
+                        <label className="block text-sm font-semibold text-slate-700 mb-2">Comments: <span className="text-red-500">*</span></label>
                         <textarea 
                           name="comments"
                           rows={4}
@@ -148,14 +148,14 @@ export default function ContactUsClientPage({ pageData }: { pageData: any }) {
 
                       {/* CAPTCHA Placeholder */}
                       <div className="bg-white p-4 rounded-xl border border-slate-200">
-                        <label className="block text-sm font-bold text-slate-700 mb-3">Verification Code: <span className="text-red-500">*</span></label>
+                        <label className="block text-sm font-semibold text-slate-700 mb-3">Verification Code: <span className="text-red-500">*</span></label>
                         <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
                           <div className="w-32 h-12 bg-slate-100 flex items-center justify-center rounded-lg border border-slate-300 font-mono text-xl font-bold tracking-widest text-slate-600 select-none">
                             9F2X
                           </div>
                           <div className="flex flex-col gap-1">
-                            <button type="button" className="text-xs font-bold text-[#007a87] hover:underline text-left">Change the CAPTCHA code</button>
-                            <button type="button" className="text-xs font-bold text-[#007a87] hover:underline text-left">Speak the CAPTCHA code</button>
+                            <button type="button" className="text-[18px] leading-[28px] font-bold text-[#007a87] hover:underline text-left">Change the CAPTCHA code</button>
+                            <button type="button" className="text-[18px] leading-[28px] font-bold text-[#007a87] hover:underline text-left">Speak the CAPTCHA code</button>
                           </div>
                         </div>
                         <input 
@@ -170,7 +170,7 @@ export default function ContactUsClientPage({ pageData }: { pageData: any }) {
                       <button 
                         type="submit"
                         disabled={isSubmitting}
-                        className={`w-full bg-[#002b5c] hover:bg-[#001a38] text-white py-4 rounded-xl font-extrabold tracking-wider uppercase transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 group ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
+                        className={`w-full bg-[#002b5c] hover:bg-[#001a38] text-white py-4 rounded-xl text-[18px] leading-[28px] font-bold tracking-wider uppercase transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 group ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
                       >
                         {isSubmitting ? (
                           <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
@@ -219,7 +219,7 @@ export default function ContactUsClientPage({ pageData }: { pageData: any }) {
                         <div className="w-10 h-10 rounded-full bg-red-50 flex items-center justify-center shrink-0 border border-red-100">
                           <Mail className="w-5 h-5 text-[#D9232D]" />
                         </div>
-                        <a href="mailto:info@dmhospital.org" className="text-[#007a87] hover:underline font-bold pt-2">
+                        <a href="mailto:info@dmhospital.org" className="text-[#007a87] hover:underline font-bold pt-2 text-[18px] leading-[31px]">
                           info@dmhospital.org
                         </a>
                       </div>
@@ -233,7 +233,7 @@ export default function ContactUsClientPage({ pageData }: { pageData: any }) {
                       <h4 className="text-lg font-bold text-[#002b5c]">Important Members</h4>
                     </div>
                     
-                    <div className="divide-y divide-slate-100 [&_span]:!text-[18px] [&_p]:!text-[18px] [&_a]:!text-[18px] [&_.text-sm]:!text-[18px] [&_.text-xs]:!text-[18px]">
+                    <div className="divide-y divide-slate-100 [&_span]:!text-[18px] [&_p]:!text-[18px] [&_a]:!text-[18px] [&_a]:!font-bold [&_.text-sm]:!text-[18px] [&_.text-xs]:!text-[18px]">
                       
                       <div className="p-4 flex flex-col sm:flex-row justify-between gap-4 hover:bg-slate-50 transition-colors">
                         <div className="flex items-center gap-3 shrink-0">
@@ -253,7 +253,7 @@ export default function ContactUsClientPage({ pageData }: { pageData: any }) {
                         <div className="text-xs font-medium text-slate-600 text-left sm:text-right space-y-1">
                           <p><span className="text-[#007a87] font-bold">GS:</span> +91 20 4015 1115 / 157</p>
                           <p><span className="text-[#007a87] font-bold">SS:</span> 020 49153483 / 3484</p>
-                          <a href="mailto:icu@dmhospital.org" className="text-teal-600 hover:underline block pt-1">icu@dmhospital.org</a>
+                          <a href="mailto:icu@dmhospital.org" className="text-teal-600 hover:underline block pt-1 leading-[31px]">icu@dmhospital.org</a>
                         </div>
                       </div>
 
@@ -276,7 +276,7 @@ export default function ContactUsClientPage({ pageData }: { pageData: any }) {
                         </div>
                         <div className="text-xs font-medium text-slate-600 text-left sm:text-right space-y-1">
                           <p><span className="text-[#007a87] font-bold">SS:</span> +91 20 49153081 / 3089</p>
-                          <a href="mailto:bloodbank@dmhospital.org" className="text-teal-600 hover:underline block pt-1">bloodbank@dmhospital.org</a>
+                          <a href="mailto:bloodbank@dmhospital.org" className="text-teal-600 hover:underline block pt-1 leading-[31px]">bloodbank@dmhospital.org</a>
                         </div>
                       </div>
 
@@ -308,7 +308,7 @@ export default function ContactUsClientPage({ pageData }: { pageData: any }) {
                         </div>
                         <div className="text-xs font-medium text-slate-600 text-left sm:text-right space-y-1">
                           <p><span className="text-[#007a87] font-bold">SS:</span> +91 20 49153347 / 3396</p>
-                          <a href="mailto:ivf@dmhospital.org" className="text-teal-600 hover:underline block pt-1">ivf@dmhospital.org</a>
+                          <a href="mailto:ivf@dmhospital.org" className="text-teal-600 hover:underline block pt-1 leading-[31px]">ivf@dmhospital.org</a>
                         </div>
                       </div>
 

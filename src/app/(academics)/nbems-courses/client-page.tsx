@@ -108,13 +108,13 @@ export default function NbemsCoursesClient({ initialData }: { initialData: any }
 
                 <div className="flex items-start gap-3 bg-amber-50 border border-amber-200 text-amber-800 p-4 rounded-xl">
                   <AlertCircle className="w-5 h-5 shrink-0 mt-0.5 text-amber-600" />
-                  <p className="text-sm font-medium m-0 whitespace-pre-wrap">
+                  <p className="text-sm font-normal m-0 whitespace-pre-wrap">
                     {initialData.noteText}
                   </p>
                 </div>
                 
                 <div>
-                  <Link href="/training-programs" className="inline-flex items-center gap-2 px-6 py-3 bg-[#e66c4f] text-white font-bold rounded-md hover:bg-[#d05c42] transition-colors mb-8 shadow-sm">
+                  <Link href="/training-programs" className="inline-flex items-center gap-2 px-6 py-3 bg-[#e66c4f] text-white text-[18px] leading-[31px] font-normal rounded-md hover:bg-[#d05c42] transition-colors mb-8 shadow-sm">
                     <List className="w-5 h-5" />
                     The list of training programs conducted by us
                   </Link>

@@ -124,7 +124,7 @@ export default function SpecialtyClinics() {
   };
 
   return (
-    <section className="relative mt-24 overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-[#ecfdf5] via-[#f0fdf4] to-[#d1fae5] py-14 px-4 sm:px-8 shadow-sm">
+    <section className="relative overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-[#ecfdf5] via-[#f0fdf4] to-[#d1fae5] py-10 px-4 sm:px-8 shadow-sm">
       
       {/* Glow / Ambient Gradients */}
       <div className="absolute top-0 left-0 h-72 w-72 rounded-full bg-emerald-300/30 blur-3xl pointer-events-none"></div>

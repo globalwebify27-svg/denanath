@@ -104,7 +104,7 @@ export default function ForeignContributionClientPage({ fcraData }: { fcraData: 
                   Foreign Contribution
                 </h2>
                 
-                <p className="text-slate-600 leading-relaxed font-light mb-8 whitespace-pre-wrap mt-8">
+                <p className="text-slate-600 leading-relaxed font-normal mb-8 whitespace-pre-wrap mt-8">
                   {introduction}
                 </p>
               </div>
@@ -124,11 +124,11 @@ export default function ForeignContributionClientPage({ fcraData }: { fcraData: 
                           <table className="w-full text-left border-collapse min-w-[800px]">
                             <thead>
                               <tr className="border-b-2 border-slate-200 bg-slate-50">
-                                <th style={{ fontSize: '18px' }} className="py-4 px-4 font-bold text-slate-700 w-16 text-center">Sr. No.</th>
-                                <th style={{ fontSize: '18px' }} className="py-4 px-4 font-bold text-slate-700">Name and address of donors</th>
-                                <th style={{ fontSize: '18px' }} className="py-4 px-4 font-bold text-slate-700 w-40">Amount received (in INR)</th>
-                                <th style={{ fontSize: '18px' }} className="py-4 px-4 font-bold text-slate-700 w-32">Date of receipt</th>
-                                <th style={{ fontSize: '18px' }} className="py-4 px-4 font-bold text-slate-700 w-32">Purpose (Social / Medical)</th>
+                                <th style={{ fontSize: '18px' }} className="py-4 px-4 font-bold text-slate-700 leading-[31px] w-16 text-center">Sr. No.</th>
+                                <th style={{ fontSize: '18px' }} className="py-4 px-4 font-bold text-slate-700 leading-[31px]">Name and address of donors</th>
+                                <th style={{ fontSize: '18px' }} className="py-4 px-4 font-bold text-slate-700 leading-[31px] w-40">Amount received (in INR)</th>
+                                <th style={{ fontSize: '18px' }} className="py-4 px-4 font-bold text-slate-700 leading-[31px] w-32">Date of receipt</th>
+                                <th style={{ fontSize: '18px' }} className="py-4 px-4 font-bold text-slate-700 leading-[31px] w-32">Purpose (Social / Medical)</th>
                               </tr>
                             </thead>
                             <tbody>

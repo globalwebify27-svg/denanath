@@ -101,7 +101,7 @@ export default function AccreditationsClient({ data }: { data: any[] }) {
                 <p className="text-lg md:text-xl text-[#002b5c] leading-relaxed font-semibold">
                   Deenanath Mangeshkar Hospital and Research Center is accredited by
                 </p>
-                <div className="mt-4 space-y-2 text-slate-600 font-light">
+                <div className="mt-4 space-y-2 text-slate-600 font-normal">
                   <p>National Accreditation Board for Hospitals and Healthcare Providers <strong className="font-semibold text-teal-700">(NABH)</strong> since 24th September 2019</p>
                   <p>National Accreditation Board for Testing and Calibration Laboratories <strong className="font-semibold text-blue-700">(NABL)</strong> since 19th March 2007</p>
                 </div>
@@ -172,7 +172,7 @@ export default function AccreditationsClient({ data }: { data: any[] }) {
                             <FileText className="w-4 h-4" />
                             Quality Policy
                           </span>
-                          <p className="text-slate-600 font-light leading-relaxed">
+                          <p className="text-slate-600 font-normal leading-relaxed">
                             {item.policy}
                           </p>
                         </div>

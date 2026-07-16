@@ -91,7 +91,7 @@ export default function AssociatesClientPage({ associates }: { associates: any[]
                 <h2 className="text-3xl md:text-4xl font-extrabold text-[#002b5c] mb-6 tracking-tight">
                   Associates
                 </h2>
-                <p className="text-lg text-slate-500 font-light leading-relaxed max-w-3xl">
+                <p className="text-lg text-slate-500 font-normal leading-relaxed max-w-3xl">
                   Collaborating with dedicated institutions and foundations to expand the reach of quality healthcare and charitable services across the region.
                 </p>
                 <div className="w-24 h-1.5 bg-teal-500/20 rounded-full mt-6" />
@@ -119,7 +119,7 @@ export default function AssociatesClientPage({ associates }: { associates: any[]
                       <h3 className="text-2xl font-bold text-[#002b5c] mb-3 group-hover:text-[#007a87] transition-colors duration-300">
                         {associate.name}
                       </h3>
-                      <p className="text-slate-600 text-base leading-relaxed font-light mb-6">
+                      <p className="text-slate-600 text-base leading-relaxed font-normal mb-6">
                         {associate.description}
                       </p>
                       

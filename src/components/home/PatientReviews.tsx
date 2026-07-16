@@ -112,7 +112,7 @@ export default function PatientReviews() {
   }, [activeIndex]);
 
   return (
-    <section className="w-full relative z-30 py-12 sm:py-16 bg-gradient-to-br from-[#f5fbfb] via-teal-50/[0.1] to-[#f4fafb] overflow-hidden">
+    <section className="w-full relative z-30 py-10 bg-gradient-to-br from-[#f5fbfb] via-teal-50/[0.1] to-[#f4fafb] overflow-hidden">
       
       {/* Decorative elements */}
       <div className="absolute top-1/2 left-0 w-96 h-96 bg-teal-500/[0.02] rounded-full blur-[100px] pointer-events-none -z-10" />
@@ -121,7 +121,7 @@ export default function PatientReviews() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Header Block */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-6">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 gap-6">
           <div className="max-w-xl text-left">
             <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-teal-50 text-[#007a87] text-[10px] font-bold tracking-widest uppercase border border-teal-100/50 shadow-sm">
               <Heart className="w-3 h-3 fill-current text-red-500" />
@@ -415,7 +415,7 @@ export default function PatientReviews() {
         </div>
 
         {/* Clinical Trust Strip */}
-        <div className="mt-20 pt-12 border-t border-slate-100 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+        <div className="mt-10 pt-10 border-t border-slate-100 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
           <div>
             <span className="block text-3xl sm:text-4xl font-extrabold text-[#002b5c] tracking-tight">1.2M+</span>
             <span className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1.5">Consultations Done</span>

@@ -118,7 +118,7 @@ export default function TrainingProgramsClient({ initialData }: { initialData: a
                       <div className="w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center shrink-0 text-[#002b5c] font-bold group-hover/btn:border-[#D9232D] group-hover/btn:text-[#D9232D]">
                         {idx + 1}
                       </div>
-                      <span style={{ fontSize: '18px' }} className="font-semibold text-slate-700 group-hover/btn:text-[#002b5c] flex-1">
+                      <span className="text-[18px] leading-[31px] font-normal text-slate-700 group-hover/btn:text-[#002b5c] flex-1">
                         {programName}
                       </span>
                       <ChevronRight className="w-5 h-5 text-slate-300 group-hover/btn:text-[#D9232D] group-hover/btn:translate-x-1 transition-all" />

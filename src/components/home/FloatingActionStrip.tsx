@@ -33,7 +33,7 @@ export default function FloatingActionStrip({ setIsSearchOpen }: FloatingActionS
             </div>
             <span className="text-[8px] sm:text-[9px] font-semibold uppercase tracking-[0.05em] text-slate-400 group-hover:text-[#007a87] transition-colors leading-tight">News &<br/>Events</span>
           </Link>
-          <Link href="/services" className="flex flex-col items-center gap-1.5 group cursor-pointer w-16 sm:w-20 text-center">
+          <Link href="#" className="flex flex-col items-center gap-1.5 group cursor-pointer w-16 sm:w-20 text-center">
             <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl flex items-center justify-center group-hover:bg-slate-50 transition-all">
               <Ambulance className="w-6 h-6 text-slate-400 group-hover:text-[#007a87] group-hover:scale-110 transition-all duration-300" />
             </div>

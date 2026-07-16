@@ -10,7 +10,7 @@ import {
 
 export default function EmergencyCTA() {
   return (
-    <section className="relative overflow-hidden mt-24 max-w-7xl mx-auto rounded-[2.5rem] bg-gradient-to-br from-slate-50 via-white to-rose-50/50 py-16 border border-rose-100/60 shadow-[0_20px_50px_rgba(244,63,94,0.05)]">
+    <section className="relative overflow-hidden mt-10 max-w-7xl mx-auto rounded-[2.5rem] bg-gradient-to-br from-slate-50 via-white to-rose-50/50 py-10 border border-rose-100/60 shadow-[0_20px_50px_rgba(244,63,94,0.05)]">
 
       {/* Advanced Ambient Glow Effects (Medical Vibe) */}
       <div className="absolute top-[-20%] left-[-10%] h-[450px] w-[450px] rounded-full bg-gradient-to-br from-red-200/40 to-rose-300/30 blur-[100px] pointer-events-none"></div>

@@ -32,7 +32,7 @@ export default function TrustSection() {
   ];
 
   return (
-    <section className="relative overflow-hidden bg-white pt-24 pb-12">
+    <section className="relative overflow-hidden bg-white py-10">
 
       {/* Background Blur Effects */}
         <div className="absolute top-0 left-0 h-72 w-72 rounded-full bg-cyan-100 blur-3xl opacity-50"></div>

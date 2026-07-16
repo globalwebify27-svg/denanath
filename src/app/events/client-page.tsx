@@ -66,12 +66,12 @@ export default function EventsClientPage({ data }: { data: any }) {
                 </div>
                 <h2 className="text-2xl font-bold text-slate-800">Event Overview</h2>
               </div>
-              <div className="space-y-4 text-slate-600 leading-relaxed text-[17px]">
+              <div className="space-y-4 text-slate-600 font-normal leading-[31px] text-[18px]">
                 {overview && overview.map((p: string, idx: number) => (
                   idx === overview.length - 1 ? (
                     <div key={idx} className="bg-amber-50 rounded-2xl p-6 mt-6 border border-amber-100 flex items-start gap-4">
                       <Award className="w-8 h-8 text-amber-500 shrink-0 mt-1" />
-                      <p className="text-amber-900 leading-relaxed font-medium">
+                      <p className="text-amber-900 text-[18px] leading-[31px] font-normal">
                         {p}
                       </p>
                     </div>
@@ -94,7 +94,7 @@ export default function EventsClientPage({ data }: { data: any }) {
                 {objectives && objectives.map((objective: string, idx: number) => (
                   <li key={idx} className="flex items-start gap-4 p-4 rounded-2xl hover:bg-slate-50 transition-colors">
                     <CheckCircle2 className="w-6 h-6 text-[#00a69c] shrink-0 mt-0.5" />
-                    <span className="text-slate-700 text-lg leading-relaxed font-medium">{objective}</span>
+                    <span className="text-slate-700 text-[18px] leading-[31px] font-normal">{objective}</span>
                   </li>
                 ))}
               </ul>
@@ -105,7 +105,7 @@ export default function EventsClientPage({ data }: { data: any }) {
               <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full blur-[50px] -z-0" />
               <div className="relative z-10">
                 <h2 className="text-2xl font-bold mb-6 text-[#e0f2f1]">Summary</h2>
-                <p className="text-[#b2dfdb] text-lg leading-relaxed font-light">
+                <p className="text-[#b2dfdb] text-[18px] leading-[31px] font-normal">
                   {summary}
                 </p>
               </div>
@@ -186,13 +186,13 @@ export default function EventsClientPage({ data }: { data: any }) {
                     
                     {agenda.map((row: any, idx: number) => (
                       <tr key={idx} className="hover:bg-slate-50 transition-colors group">
-                        <td className="py-6 px-6 font-semibold text-slate-800 group-hover:text-[#005f6b] transition-colors">
+                        <td className="py-6 px-6 text-slate-800 text-[18px] leading-[31px] font-semibold group-hover:text-[#005f6b] transition-colors">
                           {row.topic}
                         </td>
-                        <td className="py-6 px-6 text-slate-700 font-medium">
+                        <td className="py-6 px-6 text-slate-700 text-[18px] leading-[31px] font-normal">
                           {row.speaker}
                         </td>
-                        <td className="py-6 px-6 text-slate-500">
+                        <td className="py-6 px-6 text-slate-500 text-[18px] leading-[31px] font-normal">
                           {row.role}
                         </td>
                       </tr>

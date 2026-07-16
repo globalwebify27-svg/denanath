@@ -4,7 +4,7 @@ import { ArrowRight } from "lucide-react";
 
 export default function PartnersAccreditation() {
   return (
-    <section className="relative z-30 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-24 mb-20">
+    <section className="relative z-30 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10" style={{ marginBottom: '40px' }}>
       {/* Subtle background waves behind the cards, keeping the main page background light */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <svg className="absolute -top-10 left-10 w-[45%] h-[120%] text-[#002b5c]/5 fill-current" viewBox="0 0 100 100" preserveAspectRatio="none">
@@ -216,8 +216,7 @@ export default function PartnersAccreditation() {
 
         </div>
 
-        {/* Standalone Accreditation Banner - Premium Light Modern Layout */}
-        <div className="bg-gradient-to-r from-slate-50 via-white to-slate-50/50 rounded-3xl p-6 sm:p-8 shadow-[0_20px_50px_rgba(0,0,0,0.04)] border border-slate-100 relative overflow-hidden group">
+        <div className="bg-gradient-to-r from-slate-50 via-white to-slate-50/50 rounded-3xl px-6 sm:px-8 py-10 shadow-[0_20px_50px_rgba(0,0,0,0.04)] border border-slate-100 relative overflow-hidden group">
           
           {/* Subtle background elements for depth */}
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(0,122,135,0.03),transparent_40%)] pointer-events-none" />

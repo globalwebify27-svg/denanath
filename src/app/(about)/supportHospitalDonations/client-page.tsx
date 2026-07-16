@@ -119,7 +119,7 @@ export default function SupportDonationsClientPage({ donationsData }: { donation
                   </p>
                 </div>
                 
-                <p className="text-slate-600 leading-relaxed font-light mb-6 whitespace-pre-wrap">
+                <p className="text-slate-600 leading-relaxed font-normal mb-6 whitespace-pre-wrap">
                   {introText}
                 </p>
 
@@ -132,10 +132,10 @@ export default function SupportDonationsClientPage({ donationsData }: { donation
                     return (
                       <li key={idx} className="flex items-start gap-3">
                         <ArrowRight className="w-5 h-5 text-teal-600 shrink-0 mt-0.5" />
-                        <p className="text-slate-600 leading-relaxed text-sm">
+                        <p className="text-slate-600 font-normal leading-[31px] text-[18px]">
                           {parts.length > 1 ? (
                             <>
-                              <strong className="text-slate-700">{parts[0]}</strong> – {parts.slice(1).join(" - ")}
+                              <strong className="text-slate-700 font-semibold">{parts[0]}</strong> – {parts.slice(1).join(" - ")}
                             </>
                           ) : (
                             <>{point}</>
@@ -180,7 +180,7 @@ export default function SupportDonationsClientPage({ donationsData }: { donation
                   </div>
                   <div className="overflow-y-auto flex-1 custom-scrollbar">
                     {institutionalDonors.map((donor: string, idx: number) => (
-                      <div key={idx} className="flex border-b border-slate-100 text-[18px] hover:bg-slate-50 transition-colors">
+                      <div key={idx} className="flex border-b border-slate-100 text-[18px] leading-[31px] font-normal hover:bg-slate-50 transition-colors">
                         <div className="w-16 py-3 border-r border-slate-100 text-center text-slate-400 shrink-0">{idx + 1}</div>
                         <div className="flex-1 py-3 px-4 text-slate-600">{donor}</div>
                       </div>
@@ -204,7 +204,7 @@ export default function SupportDonationsClientPage({ donationsData }: { donation
                   </div>
                   <div className="overflow-y-auto flex-1 custom-scrollbar">
                     {donationInKind.map((donor: string, idx: number) => (
-                      <div key={idx} className="flex border-b border-slate-100 text-[18px] hover:bg-slate-50 transition-colors">
+                      <div key={idx} className="flex border-b border-slate-100 text-[18px] leading-[31px] font-normal hover:bg-slate-50 transition-colors">
                         <div className="w-16 py-3 border-r border-slate-100 text-center text-slate-400 shrink-0">{idx + 1}</div>
                         <div className="flex-1 py-3 px-4 text-slate-600">{donor}</div>
                       </div>
@@ -235,7 +235,7 @@ export default function SupportDonationsClientPage({ donationsData }: { donation
                           Donation More than Rs. 1 Crore
                         </div>
                         {individualDonorsMoreThan1Cr.map((donor: string, idx: number) => (
-                          <div key={idx} className="flex border-b border-slate-100 text-[18px] hover:bg-slate-50 transition-colors">
+                          <div key={idx} className="flex border-b border-slate-100 text-[18px] leading-[31px] font-normal hover:bg-slate-50 transition-colors">
                             <div className="w-16 py-3 border-r border-slate-100 text-center text-slate-400 shrink-0">{idx + 1}</div>
                             <div className="flex-1 py-3 px-4 text-slate-600">{donor}</div>
                           </div>
@@ -250,7 +250,7 @@ export default function SupportDonationsClientPage({ donationsData }: { donation
                           Donation Rs. 50 Lakh to 1 crore
                         </div>
                         {individualDonors50to1Cr.map((donor: string, idx: number) => (
-                          <div key={idx} className="flex border-b border-slate-100 text-[18px] hover:bg-slate-50 transition-colors">
+                          <div key={idx} className="flex border-b border-slate-100 text-[18px] leading-[31px] font-normal hover:bg-slate-50 transition-colors">
                             <div className="w-16 py-3 border-r border-slate-100 text-center text-slate-400 shrink-0">{idx + 1}</div>
                             <div className="flex-1 py-3 px-4 text-slate-600">{donor}</div>
                           </div>
@@ -265,7 +265,7 @@ export default function SupportDonationsClientPage({ donationsData }: { donation
                           Donation upto Rs.1 Lakh
                         </div>
                         {individualDonorsUpto1.map((donor: string, idx: number) => (
-                          <div key={idx} className="flex border-b border-slate-100 text-[18px] hover:bg-slate-50 transition-colors">
+                          <div key={idx} className="flex border-b border-slate-100 text-[18px] leading-[31px] font-normal hover:bg-slate-50 transition-colors">
                             <div className="w-16 py-3 border-r border-slate-100 text-center text-slate-400 shrink-0">{idx + 1}</div>
                             <div className="flex-1 py-3 px-4 text-slate-600">{donor}</div>
                           </div>

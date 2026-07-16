@@ -54,7 +54,7 @@ export default async function DepartmentDetailsPage({
   const query = resolvedParams.q || "";
 
   const options = [
-    { name: "Doctor Details", href: "/doctors", active: false },
+    { name: "Doctor Details", href: "/doctor-details", active: false },
     { name: "Department Details", href: "/departments", active: true },
     { name: "Services", href: "/services", active: false }
   ];

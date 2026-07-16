@@ -12,7 +12,7 @@ import Link from "next/link";
 
 export default function QuickLinksCTA() {
   return (
-    <section className="relative overflow-hidden mt-12 max-w-7xl mx-auto rounded-[2.5rem] bg-gradient-to-br from-slate-50 via-white to-blue-50/50 py-16 border border-blue-100/60 shadow-[0_20px_50px_rgba(0,43,92,0.05)]">
+    <section className="relative overflow-hidden mt-12 max-w-7xl mx-auto rounded-[2.5rem] bg-gradient-to-br from-slate-50 via-white to-blue-50/50 py-10 border border-blue-100/60 shadow-[0_20px_50px_rgba(0,43,92,0.05)]">
 
       {/* Advanced Ambient Glow Effects (Medical Vibe) */}
       <div className="absolute top-[-20%] left-[-10%] h-[450px] w-[450px] rounded-full bg-gradient-to-br from-blue-200/40 to-blue-300/30 blur-[100px] pointer-events-none"></div>
@@ -77,7 +77,7 @@ export default function QuickLinksCTA() {
               <div className="
                 rounded-2xl border border-blue-100
                 bg-white/90 backdrop-blur-md
-                px-6 py-4.5
+                px-6 py-5
                 shadow-[0_4px_20px_rgba(0,0,0,0.02)]
               ">
                 <div className="flex items-center gap-3">
@@ -94,7 +94,7 @@ export default function QuickLinksCTA() {
               <div className="
                 rounded-2xl border border-blue-100
                 bg-white/90 backdrop-blur-md
-                px-6 py-4.5
+                px-6 py-5
                 shadow-[0_4px_20px_rgba(0,0,0,0.02)]
               ">
                 <div className="flex items-center gap-3">
@@ -222,7 +222,7 @@ export default function QuickLinksCTA() {
             </Link>
 
             {/* Action Card 3: Diagnosis */}
-            <Link href="/services" passHref>
+            <Link href="#" passHref>
               <motion.div
                 whileHover={{ y: -4, scale: 1.01 }}
                 whileTap={{ scale: 0.99 }}

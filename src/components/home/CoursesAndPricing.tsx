@@ -24,7 +24,7 @@ export default function CoursesAndPricing() {
   ];
 
   return (
-    <section className="relative w-full py-20 sm:py-24 bg-white border-t border-slate-100 overflow-hidden z-20">
+    <section className="relative w-full py-10 bg-white border-t border-slate-100 overflow-hidden z-20">
       {/* Background Blur Effects */}
       <div className="absolute top-0 left-0 h-72 w-72 rounded-full bg-cyan-100 blur-3xl opacity-50 pointer-events-none z-0"></div>
       <div className="absolute bottom-0 right-0 h-72 w-72 rounded-full bg-sky-100 blur-3xl opacity-50 pointer-events-none z-0"></div>
@@ -37,8 +37,7 @@ export default function CoursesAndPricing() {
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Modern Pricing Action Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 mb-20 max-w-5xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 mb-10 max-w-5xl mx-auto">
           <Link 
             href="/implant-pricing" 
             className="group relative overflow-hidden bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl p-6 sm:p-8 flex flex-col sm:flex-row items-center sm:justify-between gap-4 sm:gap-6 transition-all duration-300 hover:shadow-2xl hover:shadow-teal-900/20 hover:-translate-y-1 border border-slate-700/50"
@@ -50,10 +49,10 @@ export default function CoursesAndPricing() {
               </div>
               <div>
                 <p className="text-slate-400 text-[10px] font-bold tracking-widest uppercase mb-1">Pricing Details</p>
-                <h3 className="text-white text-[15px] sm:text-lg font-semibold tracking-wide leading-snug">Knee Replacement <br className="hidden sm:block" />Implants</h3>
+                <h3 className="text-white text-base font-semibold tracking-wide leading-snug">Knee Replacement <br className="hidden sm:block" />Implants</h3>
               </div>
             </div>
-            <div className="relative z-10 flex items-center gap-2 bg-teal-500/20 group-hover:bg-teal-500/30 text-teal-300 px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-colors shrink-0 w-full sm:w-auto justify-center sm:justify-start">
+            <div className="relative z-10 flex items-center gap-2 bg-teal-500/20 group-hover:bg-teal-500/30 text-teal-300 px-5 py-2.5 rounded-full text-base font-semibold leading-[22px] uppercase tracking-wider transition-colors shrink-0 w-full sm:w-auto justify-center sm:justify-start">
               <span>Click Here</span>
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </div>
@@ -70,10 +69,10 @@ export default function CoursesAndPricing() {
               </div>
               <div>
                 <p className="text-slate-400 text-[10px] font-bold tracking-widest uppercase mb-1">Pricing Details</p>
-                <h3 className="text-white text-[15px] sm:text-lg font-semibold tracking-wide leading-snug">Cathlab Pharmacy <br className="hidden sm:block" />Implants</h3>
+                <h3 className="text-white text-base font-semibold tracking-wide leading-snug">Cathlab Pharmacy <br className="hidden sm:block" />Implants</h3>
               </div>
             </div>
-            <div className="relative z-10 flex items-center gap-2 bg-blue-500/20 group-hover:bg-blue-500/30 text-blue-300 px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-colors shrink-0 w-full sm:w-auto justify-center sm:justify-start">
+            <div className="relative z-10 flex items-center gap-2 bg-blue-500/20 group-hover:bg-blue-500/30 text-blue-300 px-5 py-2.5 rounded-full text-base font-semibold leading-[22px] uppercase tracking-wider transition-colors shrink-0 w-full sm:w-auto justify-center sm:justify-start">
               <span>Click Here</span>
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </div>
@@ -90,10 +89,10 @@ export default function CoursesAndPricing() {
               </div>
               <div>
                 <p className="text-slate-400 text-[10px] font-bold tracking-widest uppercase mb-1">View our</p>
-                <h3 className="text-white text-[15px] sm:text-lg font-semibold tracking-wide leading-snug">In Patient <br className="hidden sm:block" />Guide</h3>
+                <h3 className="text-white text-base font-semibold tracking-wide leading-snug">In Patient <br className="hidden sm:block" />Guide</h3>
               </div>
             </div>
-            <div className="relative z-10 flex items-center gap-2 bg-purple-500/20 group-hover:bg-purple-500/30 text-purple-300 px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-colors shrink-0 w-full sm:w-auto justify-center sm:justify-start">
+            <div className="relative z-10 flex items-center gap-2 bg-purple-500/20 group-hover:bg-purple-500/30 text-purple-300 px-5 py-2.5 rounded-full text-base font-semibold leading-[22px] uppercase tracking-wider transition-colors shrink-0 w-full sm:w-auto justify-center sm:justify-start">
               <span>Click Here</span>
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </div>
@@ -110,10 +109,10 @@ export default function CoursesAndPricing() {
               </div>
               <div>
                 <p className="text-slate-400 text-[10px] font-bold tracking-widest uppercase mb-1">View our</p>
-                <h3 className="text-white text-[15px] sm:text-lg font-semibold tracking-wide leading-snug">Out Patient <br className="hidden sm:block" />Guide</h3>
+                <h3 className="text-white text-base font-semibold tracking-wide leading-snug">Out Patient <br className="hidden sm:block" />Guide</h3>
               </div>
             </div>
-            <div className="relative z-10 flex items-center gap-2 bg-amber-500/20 group-hover:bg-amber-500/30 text-amber-300 px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-colors shrink-0 w-full sm:w-auto justify-center sm:justify-start">
+            <div className="relative z-10 flex items-center gap-2 bg-amber-500/20 group-hover:bg-amber-500/30 text-amber-300 px-5 py-2.5 rounded-full text-base font-semibold leading-[22px] uppercase tracking-wider transition-colors shrink-0 w-full sm:w-auto justify-center sm:justify-start">
               <span>Click Here</span>
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </div>
@@ -151,7 +150,7 @@ export default function CoursesAndPricing() {
                     <div className="mt-0.5 w-5 h-5 rounded-full bg-white border border-slate-200 flex items-center justify-center shrink-0 group-hover:border-[#D30039]/30 group-hover:bg-[#D30039]/5 transition-colors">
                       <ChevronRight className="w-3 h-3 text-slate-400 group-hover:text-[#D30039] transition-colors" />
                     </div>
-                    <span className="text-[14px] sm:text-[15px] text-slate-600 group-hover:text-[#D30039] font-medium leading-relaxed transition-colors">
+                    <span className="text-[16px] text-slate-600 group-hover:text-[#D30039] font-medium leading-relaxed transition-colors">
                       {course}
                     </span>
                   </Link>
@@ -175,7 +174,7 @@ export default function CoursesAndPricing() {
                     <div className="mt-0.5 w-5 h-5 rounded-full bg-white border border-slate-200 flex items-center justify-center shrink-0 group-hover:border-[#007a87]/30 group-hover:bg-[#007a87]/5 transition-colors">
                       <ChevronRight className="w-3 h-3 text-slate-400 group-hover:text-[#007a87] transition-colors" />
                     </div>
-                    <span className="text-[14px] sm:text-[15px] text-slate-600 group-hover:text-[#007a87] font-medium leading-relaxed transition-colors">
+                    <span className="text-[16px] text-slate-600 group-hover:text-[#007a87] font-medium leading-relaxed transition-colors">
                       {course}
                     </span>
                   </Link>

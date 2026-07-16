@@ -112,7 +112,7 @@ export default function JeevanRekhaClient({ initialData }: { initialData: any })
 
                 <div className="flex items-start gap-4 p-6 bg-teal-50/50 rounded-2xl border border-teal-100">
                   <Clock className="w-6 h-6 text-teal-600 shrink-0 mt-1" />
-                  <p className="m-0 font-medium text-slate-700 whitespace-pre-wrap">
+                  <p className="m-0 font-normal text-slate-700 whitespace-pre-wrap">
                     {initialData.introText2}
                   </p>
                 </div>
@@ -144,7 +144,7 @@ export default function JeevanRekhaClient({ initialData }: { initialData: any })
                         <Mail className="w-5 h-5 text-teal-500 shrink-0" />
                         <div className="flex flex-col gap-1">
                           {initialData.contactInfo.emails.map((email: string, idx: number) => (
-                            <a key={idx} href={`mailto:${email}`} className="text-[#007a87] font-bold hover:underline">
+                            <a key={idx} href={`mailto:${email}`} className="text-[#007a87] text-[18px] leading-[31px] font-bold hover:underline">
                               {email}
                             </a>
                           ))}

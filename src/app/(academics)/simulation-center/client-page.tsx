@@ -227,7 +227,7 @@ export default function SimulationCenterClient({ initialData, labsData }: { init
                             {isExpanded && (
                               <div className="p-6 md:p-8 border-t border-slate-100 animate-in slide-in-from-top-2 fade-in duration-300 bg-white">
                                 {labInfo?.content ? (
-                                  <div style={{ fontSize: '18px' }} className="mb-8 prose prose-slate max-w-none break-words whitespace-normal overflow-hidden [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:my-4 [&_ol]:list-decimal [&_ol]:pl-6 [&_ol]:my-4 [&_li]:mb-2 [&_li]:text-[18px] [&_p]:text-[18px] prose-p:leading-relaxed prose-headings:text-[#002b5c] text-slate-700" dangerouslySetInnerHTML={{ __html: labInfo.content }} />
+                                  <div style={{ fontSize: '18px' }} className="mb-8 prose prose-slate max-w-none break-words whitespace-normal overflow-hidden [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:my-4 [&_ol]:list-decimal [&_ol]:pl-6 [&_ol]:my-4 [&_li]:mb-2 [&_li]:text-[18px] [&_li]:!text-[#314158] [&_p]:text-[18px] [&_p]:!text-[#314158] [&_strong]:!text-[#314158] [&_b]:!text-[#314158] [&_span]:!text-[#314158] [&_div]:!text-[#314158] prose-p:leading-relaxed prose-headings:!text-[#002b5c] !text-[#314158]" dangerouslySetInnerHTML={{ __html: labInfo.content.replace(/&nbsp;/g, ' ') }} />
                                 ) : (
                                   <p className="mb-8 text-slate-500 italic">Content for this section will be updated soon.</p>
                                 )}
@@ -273,7 +273,7 @@ export default function SimulationCenterClient({ initialData, labsData }: { init
                     <form className="space-y-6" onSubmit={handleSub}>
                       {/* Row 1 */}
                       <div>
-                        <label className="block text-sm font-semibold text-slate-700 mb-1">Purpose of Payment <span className="text-red-500">*</span></label>
+                        <label className="block text-[18px] leading-[26px] font-semibold text-slate-700 mb-1">Purpose of Payment <span className="text-red-500">*</span></label>
                         <div className="relative">
                           <CustomDropdown
                             name="purposeOfPayment"
@@ -290,36 +290,36 @@ export default function SimulationCenterClient({ initialData, labsData }: { init
                       {/* Row 2 */}
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                          <label className="block text-sm font-semibold text-slate-700 mb-1">Name Of Payer <span className="text-red-500">*</span></label>
-                          <input type="text" name="nameOfPayer" placeholder="Name Of Payer" className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500/50 bg-slate-50" required />
+                          <label className="block text-[18px] leading-[26px] font-semibold text-slate-700 mb-1">Name Of Payer <span className="text-red-500">*</span></label>
+                          <input type="text" name="nameOfPayer" placeholder="Name Of Payer" className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500/50 bg-slate-50 text-[18px] leading-[31px] font-normal text-slate-700" required />
                         </div>
                         <div>
-                          <label className="block text-sm font-semibold text-slate-700 mb-1">Contact Number <span className="text-red-500">*</span></label>
-                          <input type="text" name="contactNumber" placeholder="Contact Number" className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500/50 bg-slate-50" pattern="[0-9]{10}" maxLength={10} minLength={10} title="Please enter a valid 10-digit mobile number" onInput={(e) => { e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/g, "").slice(0, 10); }} required />
+                          <label className="block text-[18px] leading-[26px] font-semibold text-slate-700 mb-1">Contact Number <span className="text-red-500">*</span></label>
+                          <input type="text" name="contactNumber" placeholder="Contact Number" className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500/50 bg-slate-50 text-[18px] leading-[31px] font-normal text-slate-700" pattern="[0-9]{10}" maxLength={10} minLength={10} title="Please enter a valid 10-digit mobile number" onInput={(e) => { e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/g, "").slice(0, 10); }} required />
                         </div>
                       </div>
 
                       {/* Row 3 */}
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                          <label className="block text-sm font-semibold text-slate-700 mb-1">Email Id <span className="text-red-500">*</span></label>
-                          <input type="email" name="email" placeholder="Email ID" className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500/50 bg-slate-50" required />
+                          <label className="block text-[18px] leading-[26px] font-semibold text-slate-700 mb-1">Email Id <span className="text-red-500">*</span></label>
+                          <input type="email" name="email" placeholder="Email ID" className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500/50 bg-slate-50 text-[18px] leading-[31px] font-normal text-slate-700" required />
                         </div>
                         <div>
-                          <label className="block text-sm font-semibold text-slate-700 mb-1">Amount <span className="text-red-500">*</span></label>
-                          <input type="text" name="amount" placeholder="Amount" className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500/50 bg-slate-50" required />
+                          <label className="block text-[18px] leading-[26px] font-semibold text-slate-700 mb-1">Amount <span className="text-red-500">*</span></label>
+                          <input type="text" name="amount" placeholder="Amount" className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500/50 bg-slate-50 text-[18px] leading-[31px] font-normal text-slate-700" required />
                         </div>
                       </div>
 
                       {/* Row 4 */}
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                          <label className="block text-sm font-semibold text-slate-700 mb-1">Address <span className="text-red-500">*</span></label>
-                          <textarea name="address" rows={4} placeholder="Enter ..." className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500/50 bg-slate-50 resize-none" required></textarea>
+                          <label className="block text-[18px] leading-[26px] font-semibold text-slate-700 mb-1">Address <span className="text-red-500">*</span></label>
+                          <textarea name="address" rows={4} placeholder="Enter ..." className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500/50 bg-slate-50 resize-none text-[18px] leading-[31px] font-normal text-slate-700" required></textarea>
                         </div>
                         <div className="space-y-6">
                           <div>
-                            <label className="block text-sm font-semibold text-slate-700 mb-1">Country <span className="text-red-500">*</span></label>
+                            <label className="block text-[18px] leading-[26px] font-semibold text-slate-700 mb-1">Country <span className="text-red-500">*</span></label>
                             <div className="relative">
                               <CustomDropdown
                                 name="country"
@@ -332,7 +332,7 @@ export default function SimulationCenterClient({ initialData, labsData }: { init
                             </div>
                           </div>
                           <div>
-                            <label className="block text-sm font-semibold text-slate-700 mb-1">State <span className="text-red-500">*</span></label>
+                            <label className="block text-[18px] leading-[26px] font-semibold text-slate-700 mb-1">State <span className="text-red-500">*</span></label>
                             <div className="relative">
                               <CustomDropdown
                                 name="state"
@@ -349,7 +349,7 @@ export default function SimulationCenterClient({ initialData, labsData }: { init
 
                       {/* Row 5 */}
                       <div>
-                        <label className="block text-sm font-semibold text-slate-700 mb-1">City <span className="text-red-500">*</span></label>
+                        <label className="block text-[18px] leading-[26px] font-semibold text-slate-700 mb-1">City <span className="text-red-500">*</span></label>
                         <div className="relative w-full md:w-1/2">
                           <CustomDropdown
                             name="city"
@@ -364,12 +364,12 @@ export default function SimulationCenterClient({ initialData, labsData }: { init
 
                       {/* Row 6 */}
                       <div>
-                        <label className="block text-sm font-semibold text-slate-700 mb-1">Comments</label>
-                        <textarea name="comments" rows={2} placeholder="Enter ..." className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500/50 bg-slate-50 resize-none"></textarea>
+                        <label className="block text-[18px] leading-[26px] font-semibold text-slate-700 mb-1">Comments</label>
+                        <textarea name="comments" rows={2} placeholder="Enter ..." className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500/50 bg-slate-50 resize-none text-[18px] leading-[31px] font-normal text-slate-700"></textarea>
                       </div>
 
                       <div>
-                        <label className="block text-sm font-semibold text-slate-700 mb-2">Captcha <span className="text-red-500">*</span></label>
+                        <label className="block text-[18px] leading-[26px] font-semibold text-slate-700 mb-2">Captcha <span className="text-red-500">*</span></label>
                         <div className="flex items-center gap-3 mb-2">
                           <div className="bg-slate-200 px-4 py-2 rounded-lg tracking-widest font-mono font-bold text-lg text-slate-800 select-none">
                             {captchaCode}
@@ -382,11 +382,11 @@ export default function SimulationCenterClient({ initialData, labsData }: { init
                             <RefreshCw className="w-5 h-5" />
                           </button>
                         </div>
-                        <input name="captcha" type="text" placeholder="Enter Captcha Text" className="w-full md:w-1/2 px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500/50 bg-slate-50" required />
+                        <input name="captcha" type="text" placeholder="Enter Captcha Text" className="w-full md:w-1/2 px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500/50 bg-slate-50 text-[18px] leading-[31px] font-normal text-slate-700" required />
                       </div>
 
                       <div className="pt-4 flex justify-center md:justify-start">
-                        <button type="submit" disabled={isSubmitting} className="w-full md:w-[200px] py-3 bg-[#003360] text-white font-bold rounded-md hover:bg-[#002b5c] transition-colors shadow-sm disabled:opacity-70 disabled:cursor-not-allowed">
+                        <button type="submit" disabled={isSubmitting} className="w-full md:w-[200px] py-3 bg-[#003360] text-white text-[18px] leading-[28px] font-bold rounded-md hover:bg-[#002b5c] transition-colors shadow-sm disabled:opacity-70 disabled:cursor-not-allowed">
                           {isSubmitting ? "Submitting..." : "Submit"}
                         </button>
                       </div>

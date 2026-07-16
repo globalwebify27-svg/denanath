@@ -214,7 +214,7 @@ export default function ClinicalHub() {
   const theme = currentHub.colorTheme;
 
   return (
-    <section className="w-full bg-gradient-to-br from-[#f0f7f7] via-white to-[#f5fbfb] pt-20 sm:pt-24 pb-10 sm:pb-12 border-t border-slate-100 relative z-30 mt-0">
+    <section className="w-full bg-gradient-to-br from-[#f0f7f7] via-white to-[#f5fbfb] py-10 border-t border-slate-100 relative z-30 mt-0">
       {/* Dynamic Background Patterns (lifeline SVG in light teal color) */}
       <div className="absolute inset-0 bg-[radial-gradient(#007a8703_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none" />
       
@@ -252,7 +252,7 @@ export default function ClinicalHub() {
                   key={hub.id}
                   onClick={() => setActiveHub(idx)}
                   onMouseEnter={() => setActiveHub(idx)}
-                  className={`w-full text-left flex items-center justify-between p-5 rounded-2xl border transition-all duration-300 ${
+                  className={`w-full text-left flex items-center justify-between px-5 py-[15px] rounded-2xl border transition-all duration-300 ${
                     isActive ? hub.activeClass : hub.inactiveClass
                   }`}
                 >
@@ -279,8 +279,8 @@ export default function ClinicalHub() {
               <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808003_1px,transparent_1px),linear-gradient(to_bottom,#80808003_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none" />
 
               {/* Left text portion (60% width on md/lg screen sizes) */}
-              <div className="relative z-10 flex-1 flex flex-col justify-between space-y-6">
-                <div className="space-y-5">
+              <div className="relative z-10 flex-1 flex flex-col justify-start">
+                <div className="space-y-3">
                   <div className="flex items-center gap-4">
                     <div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${theme.iconPod} shadow-inner`}>
                       <ShowcaseIcon className="w-5 h-5 animate-pulse" />
@@ -308,7 +308,7 @@ export default function ClinicalHub() {
                   </div>
                 </div>
 
-                <div className="pt-6 mt-6 border-t border-slate-100 flex items-center justify-start">
+                <div className="pt-4 mt-4 border-t border-slate-100 flex items-center justify-start">
                   {currentHub.ctaLink.startsWith("tel:") ? (
                     <a 
                       href={currentHub.ctaLink}

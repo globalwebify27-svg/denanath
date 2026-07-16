@@ -112,7 +112,7 @@ export default function CharityDetailsClientPage({ charityData }: { charityData:
                     {heading}
                   </h3>
                   
-                  <p className="text-slate-600 text-base md:text-lg leading-relaxed max-w-3xl whitespace-pre-wrap">
+                  <p className="text-slate-600 text-[18px] leading-[31px] font-normal max-w-3xl whitespace-pre-wrap">
                     {introduction}
                   </p>
                 </div>
@@ -154,13 +154,13 @@ export default function CharityDetailsClientPage({ charityData }: { charityData:
                     <table className="w-full min-w-[700px] text-left border-collapse">
                       <thead>
                         <tr className="bg-[#1eb7a6] text-white">
-                          <th className="py-4 px-6 font-semibold text-[14px] tracking-wide border-r border-teal-600/30 whitespace-nowrap w-[180px]">
+                          <th className="py-4 px-6 font-semibold text-[18px] leading-[31px] tracking-wide border-r border-teal-600/30 whitespace-nowrap w-[180px]">
                             Month
                           </th>
-                          <th className="py-4 px-6 font-semibold text-[14px] tracking-wide border-r border-teal-600/30 leading-relaxed">
+                          <th className="py-4 px-6 font-semibold text-[18px] leading-[31px] tracking-wide border-r border-teal-600/30">
                             Total number of Indigent patients (निर्धन) to whom treatment is provided
                           </th>
-                          <th className="py-4 px-6 font-semibold text-[14px] tracking-wide leading-relaxed">
+                          <th className="py-4 px-6 font-semibold text-[18px] leading-[31px] tracking-wide">
                             Total number of Weaker section (दुर्बल) patients to whom treatment is provided
                           </th>
                         </tr>

@@ -94,7 +94,7 @@ export default function PatientJourney() {
   };
 
   return (
-    <section className="relative overflow-hidden bg-white py-16 md:py-24">
+    <section className="relative overflow-hidden bg-white py-10">
       {/* Background Glows */}
       <div className="absolute top-0 left-0 h-48 w-48 sm:h-72 sm:w-72 rounded-full bg-blue-100 blur-3xl opacity-40 pointer-events-none"></div>
       <div className="absolute bottom-0 right-0 h-48 w-48 sm:h-72 sm:w-72 rounded-full bg-cyan-100 blur-3xl opacity-40 pointer-events-none"></div>

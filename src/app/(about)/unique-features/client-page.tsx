@@ -120,7 +120,7 @@ export default function UniqueFeaturesClientPage({ featuresData }: { featuresDat
                         </h3>
                         
                         {(item.description || "").split('\n').map((para: string, pIdx: number) => (
-                          <p key={pIdx} className="text-slate-600 leading-relaxed text-[13px] sm:text-[14px] md:text-[15px] mb-2 md:mb-3 last:mb-0 font-medium">
+                          <p key={pIdx} className={`text-slate-600 mb-2 md:mb-3 last:mb-0 ${[0, 6].includes(idx) ? 'leading-[31px] font-medium text-[18px]' : 'leading-relaxed text-[13px] sm:text-[14px] md:text-[15px] font-medium'}`}>
                             {para}
                           </p>
                         ))}
@@ -132,7 +132,7 @@ export default function UniqueFeaturesClientPage({ featuresData }: { featuresDat
                               return (
                                 <li key={bIdx} className="flex items-start gap-2 md:gap-3">
                                   <div className="w-1.5 h-1.5 rounded-full bg-teal-500 shrink-0 mt-1.5 md:mt-2"></div>
-                                  <p className="text-slate-600 leading-relaxed text-[13px] sm:text-[14px] md:text-[14.5px]">
+                                  <p className={`text-slate-600 ${[0, 1, 4, 5, 6].includes(idx) ? 'leading-[31px] font-normal text-[18px]' : 'leading-relaxed text-[13px] sm:text-[14px] md:text-[14.5px]'}`}>
                                     {parts.length > 1 ? (
                                       <>
                                         <strong className="text-slate-800 font-bold">{parts[0]}</strong> - {parts.slice(1).join(' - ')}

@@ -112,7 +112,6 @@ export default function DoctorDetailsPage() {
     { name: "Doctor Details", href: "/doctor-details", active: true },
     { name: "Department Details", href: "/department-details", active: false },
     { name: "Services", href: "/services", active: false }
-
 ];
 
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -425,17 +424,17 @@ export default function DoctorDetailsPage() {
 
                   {selectedDoctor.timings && selectedDoctor.timings.length > 0 && (
                     <div className="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm">
-                      <h3 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-4 flex items-center gap-2">
+                      <h3 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-4 flex items-center gap-2 leading-[31px]">
                         <Calendar className="w-4 h-4" /> OPD Timings
                       </h3>
                       <div className="space-y-4">
                         {selectedDoctor.timings.map((t: any, i: number) => (
                           <div key={i} className="bg-slate-50 rounded-xl p-3 border border-slate-100">
                             <div className="flex flex-col gap-1 mb-3">
-                              <span className="text-xs font-bold text-[#007a87] uppercase">{t.branch}</span>
-                              <span className="text-xs font-bold text-slate-600">{t.day}</span>
+                              <span className="text-[16px] leading-[31px] font-normal text-[#007a87] uppercase">{t.branch}</span>
+                              <span className="text-[16px] leading-[31px] font-normal text-slate-600">{t.day}</span>
                             </div>
-                            <div className="flex items-start gap-2 text-sm text-slate-700 font-medium">
+                            <div className="flex items-start gap-2 text-[16px] leading-[31px] text-slate-700 font-normal">
                               <Clock className="w-4 h-4 text-slate-400 shrink-0 mt-0.5" />
                               <span>{t.time}</span>
                             </div>
@@ -443,7 +442,7 @@ export default function DoctorDetailsPage() {
                         ))}
                       </div>
                       <div className="mt-4 pt-4 border-t border-slate-100">
-                        <p className="text-xs font-medium text-slate-500 mb-2">For Appointment, please call:</p>
+                        <p className="text-[14px] leading-[31px] font-normal text-slate-500 mb-2">For Appointment, please call:</p>
                         <a href="tel:02040151100" className="inline-flex items-center justify-center w-full py-2.5 bg-[#d9232d] hover:bg-[#b81d24] text-white rounded-lg font-bold text-sm transition-colors">
                           020 4015 1100
                         </a>
@@ -457,12 +456,12 @@ export default function DoctorDetailsPage() {
                   
                   {selectedDoctor.education && selectedDoctor.education.length > 0 && (
                     <div className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-100 shadow-sm">
-                      <h3 className="text-lg font-extrabold text-[#002b5c] mb-6 flex items-center gap-3">
+                      <h3 className="text-lg font-extrabold text-[#002b5c] mb-6 flex items-center gap-3 leading-[31px]">
                         <GraduationCap className="w-6 h-6 text-[#007a87]" /> Education
                       </h3>
                       <ul className="space-y-4">
                         {selectedDoctor.education.map((item: string, i: number) => (
-                          <li key={i} className="flex gap-3 text-slate-600 font-medium text-sm sm:text-base leading-relaxed">
+                          <li key={i} className="flex gap-3 text-slate-600 font-normal text-[18px] leading-[31px]">
                             <div className="w-1.5 h-1.5 rounded-full bg-teal-400 shrink-0 mt-2.5"></div>
                             {item}
                           </li>
@@ -473,12 +472,12 @@ export default function DoctorDetailsPage() {
 
                   {selectedDoctor.training && selectedDoctor.training.length > 0 && (
                     <div className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-100 shadow-sm">
-                      <h3 className="text-lg font-extrabold text-[#002b5c] mb-6 flex items-center gap-3">
+                      <h3 className="text-lg font-extrabold text-[#002b5c] mb-6 flex items-center gap-3 leading-[31px]">
                         <BookOpen className="w-6 h-6 text-[#007a87]" /> Training
                       </h3>
                       <ul className="space-y-4">
                         {selectedDoctor.training.map((item: string, i: number) => (
-                          <li key={i} className="flex gap-3 text-slate-600 font-medium text-sm sm:text-base leading-relaxed">
+                          <li key={i} className="flex gap-3 text-slate-600 font-normal text-[18px] leading-[31px]">
                             <div className="w-1.5 h-1.5 rounded-full bg-amber-400 shrink-0 mt-2.5"></div>
                             {item}
                           </li>
@@ -489,12 +488,12 @@ export default function DoctorDetailsPage() {
 
                   {selectedDoctor.experience && selectedDoctor.experience.length > 0 && (
                     <div className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-100 shadow-sm">
-                      <h3 className="text-lg font-extrabold text-[#002b5c] mb-6 flex items-center gap-3">
+                      <h3 className="text-lg font-extrabold text-[#002b5c] mb-6 flex items-center gap-3 leading-[31px]">
                         <Briefcase className="w-6 h-6 text-[#007a87]" /> Experience
                       </h3>
                       <ul className="space-y-4">
                         {selectedDoctor.experience.map((item: string, i: number) => (
-                          <li key={i} className="flex gap-3 text-slate-600 font-medium text-sm sm:text-base leading-relaxed">
+                          <li key={i} className="flex gap-3 text-slate-600 font-normal text-[18px] leading-[31px]">
                             <div className="w-1.5 h-1.5 rounded-full bg-blue-400 shrink-0 mt-2.5"></div>
                             {item}
                           </li>
@@ -505,7 +504,7 @@ export default function DoctorDetailsPage() {
 
                   {selectedDoctor.publications && selectedDoctor.publications.length > 0 && (
                     <div className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-100 shadow-sm">
-                      <h3 className="text-lg font-extrabold text-[#002b5c] mb-6 flex items-center gap-3">
+                      <h3 className="text-lg font-extrabold text-[#002b5c] mb-6 flex items-center gap-3 leading-[31px]">
                         <BookOpen className="w-6 h-6 text-[#007a87]" /> Publications
                       </h3>
                       <ul className="space-y-4">
@@ -521,7 +520,7 @@ export default function DoctorDetailsPage() {
                           }
 
                           return (
-                            <li key={i} className="flex gap-3 text-slate-600 font-medium text-sm sm:text-base leading-relaxed">
+                            <li key={i} className="flex gap-3 text-slate-600 font-normal text-[18px] leading-[31px]">
                               <div className="w-1.5 h-1.5 rounded-full bg-purple-400 shrink-0 mt-2.5"></div>
                               <div className="flex-1">
                                 {title.includes('[PDF]') ? (

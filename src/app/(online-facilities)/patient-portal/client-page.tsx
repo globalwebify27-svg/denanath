@@ -175,13 +175,13 @@ export default function PatientPortalPage({ pageData }: { pageData: any }) {
                     
                     <button 
                       onClick={() => setActiveTab("login")}
-                      className={`flex-1 py-3 text-center text-sm font-bold relative z-10 transition-colors duration-300 ${activeTab === "login" ? "text-[#003360]" : "text-slate-500 hover:text-slate-700"}`}
+                      className={`flex-1 py-3 text-center text-[18px] leading-[31px] font-bold relative z-10 transition-colors duration-300 ${activeTab === "login" ? "text-[#003360]" : "text-slate-500 hover:text-slate-700"}`}
                     >
                       Login
                     </button>
                     <button 
                       onClick={() => setActiveTab("register")}
-                      className={`flex-1 py-3 text-center text-sm font-bold relative z-10 transition-colors duration-300 ${activeTab === "register" ? "text-[#003360]" : "text-slate-500 hover:text-slate-700"}`}
+                      className={`flex-1 py-3 text-center text-[18px] leading-[31px] font-bold relative z-10 transition-colors duration-300 ${activeTab === "register" ? "text-[#003360]" : "text-slate-500 hover:text-slate-700"}`}
                     >
                       Create Account
                     </button>

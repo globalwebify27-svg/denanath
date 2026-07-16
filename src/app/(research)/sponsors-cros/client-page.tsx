@@ -133,7 +133,7 @@ export default function SponsorsCROsClientPage({ pageData }: { pageData: any }) 
               )}
               
               {pageData.content ? (
-                <div dangerouslySetInnerHTML={{ __html: pageData.content }} />
+                <div className="text-slate-600 text-[18px] leading-[31px] font-normal [&_p]:mb-4 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:mb-4 [&_li]:mb-2 [&_p]:!text-[18px] [&_p]:!leading-[31px] [&_p]:!font-normal [&_li]:!text-[18px] [&_li]:!leading-[31px] [&_li]:!font-normal [&_strong]:!font-bold [&_b]:!font-bold [&_h1]:!font-bold [&_h2]:!font-bold [&_h3]:!font-bold [&_h4]:!font-bold" dangerouslySetInnerHTML={{ __html: pageData.content }} />
               ) : (
                 <div className="py-16 text-center border-2 border-dashed border-slate-200 rounded-2xl bg-slate-50">
                   <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-teal-100 mb-4">

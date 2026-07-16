@@ -131,7 +131,7 @@ export default function OutPatientClientPage({ pageData }: { pageData: any }) {
                       <p className="text-slate-700 font-medium mb-4">Information About Patient Registration</p>
                       <ul className="list-none space-y-3 pl-2 md:pl-4">
                         {instructions.map((inst: string, i: number) => (
-                          <li key={i} className="flex items-start gap-3 text-slate-600 leading-relaxed">
+                          <li key={i} className="flex items-start gap-3 text-slate-600 leading-[31px] font-normal text-[18px]">
                             <ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" />
                             <span>{inst}</span>
                           </li>
@@ -152,7 +152,7 @@ export default function OutPatientClientPage({ pageData }: { pageData: any }) {
                         const textClass = isRed ? "font-semibold" : "";
                         
                         return (
-                          <li key={i} className={`flex items-start gap-3 text-slate-600 leading-relaxed ${textClass}`}>
+                          <li key={i} className={`flex items-start gap-3 text-slate-600 leading-[31px] font-normal text-[18px] ${textClass}`}>
                             <div className={`w-1.5 h-1.5 rounded-full ${bgClass} shrink-0 mt-2.5`} />
                             {info.includes("020-40151100") ? (
                               <span>
@@ -187,7 +187,7 @@ export default function OutPatientClientPage({ pageData }: { pageData: any }) {
                       <h4 className="text-lg font-bold text-[#002b5c] mb-4 pb-4 border-b border-slate-100">General OPDs: Main Building :</h4>
                       <ul className="grid grid-cols-1 sm:grid-cols-2 gap-y-3 gap-x-6">
                         {generalOpds.map((opd: string, i: number) => (
-                          <li key={i} className="flex items-center gap-2 text-sm text-slate-600">
+                          <li key={i} className="flex items-center gap-2 text-[18px] leading-[31px] font-normal text-slate-600">
                             <ChevronRight className="w-4 h-4 text-teal-600 shrink-0" />
                             <span>{opd}</span>
                           </li>
@@ -200,7 +200,7 @@ export default function OutPatientClientPage({ pageData }: { pageData: any }) {
                       <h4 className="text-lg font-bold text-[#002b5c] mb-4 pb-4 border-b border-slate-100">Superspeciality OPDs : SS Building / Annexe Building :</h4>
                       <ul className="grid grid-cols-1 sm:grid-cols-2 gap-y-3 gap-x-6">
                         {superOpds.map((opd: string, i: number) => (
-                          <li key={i} className="flex items-center gap-2 text-sm text-slate-600">
+                          <li key={i} className="flex items-center gap-2 text-[18px] leading-[31px] font-normal text-slate-600">
                             <ChevronRight className="w-4 h-4 text-teal-600 shrink-0" />
                             <span>{opd}</span>
                           </li>
@@ -215,7 +215,7 @@ export default function OutPatientClientPage({ pageData }: { pageData: any }) {
                   <div className="overflow-x-auto rounded-xl border border-slate-200 shadow-sm mb-8">
                     <table className="w-full text-left border-collapse min-w-[900px]">
                       <thead>
-                        <tr className="bg-[#1eb2a6] text-white text-sm font-medium">
+                        <tr className="bg-[#1eb2a6] text-white text-[18px] leading-[31px] font-medium">
                           <th className="p-4 whitespace-nowrap font-semibold">Charges</th>
                           <th className="p-4 whitespace-nowrap font-semibold border-l border-white/20">1st Visit (Rs)</th>
                           <th className="p-4 whitespace-nowrap font-semibold border-l border-white/20">Continuum Visit (Rs)</th>
@@ -244,7 +244,7 @@ export default function OutPatientClientPage({ pageData }: { pageData: any }) {
                   <div className="space-y-6">
                     <div>
                       <h4 className="text-lg font-bold text-[#002b5c] mb-3">Some General Rules:</h4>
-                      <ul className="list-disc list-inside space-y-2 text-sm text-slate-600">
+                      <ul className="list-disc list-inside space-y-2 text-[18px] leading-[31px] font-normal text-slate-600">
                         {rules.map((rule: string, i: number) => (
                           <li key={i}>{rule}</li>
                         ))}
@@ -253,14 +253,14 @@ export default function OutPatientClientPage({ pageData }: { pageData: any }) {
 
                     <div>
                       <h4 className="text-lg font-bold text-[#002b5c] mb-3">Private OPD:</h4>
-                      <p className="text-sm text-slate-600 leading-relaxed max-w-4xl">
+                      <p className="text-[18px] leading-[31px] font-normal text-slate-600 max-w-4xl">
                         {privateOpdText}
                       </p>
                     </div>
 
                     <div>
                       <h4 className="text-lg font-bold text-[#002b5c] mb-3">Exceptional OPD consultation charges:</h4>
-                      <p className="text-sm text-slate-600">
+                      <p className="text-[18px] leading-[31px] font-normal text-slate-600">
                         {exceptionalOpdText}
                       </p>
                     </div>

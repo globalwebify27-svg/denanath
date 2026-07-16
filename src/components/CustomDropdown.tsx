@@ -31,14 +31,14 @@ export default function CustomDropdown({ name, options, placeholder = "-- Select
     <div className={`relative w-full ${isOpen ? "z-50" : "z-10"}`} ref={dropdownRef}>
       <input type="hidden" name={name} value={selected} required={required && !selected} />
       <div 
-        className={`w-full bg-white border border-slate-200 text-slate-700 font-medium ${isOpen ? 'rounded-t-xl rounded-b-none border-b-transparent' : 'rounded-xl'} py-3.5 px-4 cursor-pointer flex items-center justify-between transition-all shadow-sm hover:border-teal-400 ${Icon ? "pl-11" : ""} ${className}`}
+        className={`w-full bg-white border border-slate-200 text-slate-700 font-normal leading-[31px] ${isOpen ? 'rounded-t-xl rounded-b-none border-b-transparent' : 'rounded-xl'} py-3.5 px-4 cursor-pointer flex items-center justify-between transition-all shadow-sm hover:border-teal-400 ${Icon ? "pl-11" : ""} ${className}`}
         onClick={() => {
           setIsOpen(!isOpen);
           if (!isOpen) setSearchQuery("");
         }}
       >
         {Icon && <Icon className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />}
-        <span className="truncate text-[18px]">{selected || placeholder}</span>
+        <span className="truncate text-[18px] leading-[31px] font-normal">{selected || placeholder}</span>
         <ChevronDown className={`w-5 h-5 text-slate-400 transition-transform ${isOpen ? "rotate-180" : ""}`} />
       </div>
       
@@ -59,7 +59,7 @@ export default function CustomDropdown({ name, options, placeholder = "-- Select
           </div>
           <div className="overflow-y-auto">
             <div 
-              className="px-4 py-2 hover:bg-emerald-50 cursor-pointer text-slate-500 font-medium transition-colors text-[18px]"
+              className="px-4 py-2 hover:bg-emerald-50 cursor-pointer text-slate-500 font-normal transition-colors text-[18px] leading-[31px]"
               onClick={() => { setSelected(""); setIsOpen(false); if (onChange) onChange(""); }}
             >
               {placeholder}
@@ -67,7 +67,7 @@ export default function CustomDropdown({ name, options, placeholder = "-- Select
             {filteredOptions.length > 0 ? filteredOptions.map((opt: string, i: number) => (
               <div 
                 key={i}
-                className={`px-4 py-2 hover:bg-emerald-50 cursor-pointer font-medium transition-colors text-[18px] ${selected === opt ? "bg-emerald-50 text-emerald-800" : "text-slate-700"}`}
+                className={`px-4 py-2 hover:bg-emerald-50 cursor-pointer font-normal transition-colors text-[18px] leading-[31px] ${selected === opt ? "bg-emerald-50 text-emerald-800" : "text-slate-700"}`}
                 onClick={() => { setSelected(opt); setIsOpen(false); if (onChange) onChange(opt); }}
               >
                 {opt}
