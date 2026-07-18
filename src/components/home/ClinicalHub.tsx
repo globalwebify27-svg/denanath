@@ -214,7 +214,7 @@ export default function ClinicalHub() {
   const theme = currentHub.colorTheme;
 
   return (
-    <section className="w-full bg-gradient-to-br from-[#f0f7f7] via-white to-[#f5fbfb] py-10 border-t border-slate-100 relative z-30 mt-0">
+    <section className="w-full bg-gradient-to-br from-[#f0f7f7] via-white to-[#f5fbfb] py-[20px] md:py-10 border-t border-slate-100 relative z-30 mt-0">
       {/* Dynamic Background Patterns (lifeline SVG in light teal color) */}
       <div className="absolute inset-0 bg-[radial-gradient(#007a8703_1px,transparent_1px)] [background-size:16px_16px] pointer-events-none" />
       
@@ -227,14 +227,14 @@ export default function ClinicalHub() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Centered Modern Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
+        <div className="text-center max-w-3xl mx-auto mb-6 md:mb-16">
           <span className="px-3.5 py-1.5 rounded-full bg-white text-[#007a87] text-[10px] font-bold tracking-widest uppercase border border-slate-200 shadow-sm">
             Clinical Excellence
           </span>
           <h2 className="text-3xl sm:text-4xl font-light text-[#002b5c] tracking-tight mt-6">
             Our Specialized <span className="font-semibold">Clinical Hub</span>
           </h2>
-          <p className="text-slate-600 text-base sm:text-lg font-light leading-relaxed mt-4">
+          <p className="text-slate-600 text-base sm:text-lg font-normal leading-[31px] mt-4">
             Interact with our specialized wings and emergency response desks below to explore custom diagnostics, global assistance, and homecare.
           </p>
         </div>
@@ -243,7 +243,7 @@ export default function ClinicalHub() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-stretch">
           
           {/* Left Column: Vertical Control Desk */}
-          <div className="lg:col-span-4 flex flex-col gap-3.5 justify-center">
+          <div className="lg:col-span-4 flex flex-col gap-2 justify-center">
             {hubItems.map((hub, idx) => {
               const HubIcon = hub.Icon;
               const isActive = activeHub === idx;
@@ -291,7 +291,7 @@ export default function ClinicalHub() {
                     </div>
                   </div>
 
-                  <p className="text-slate-600 text-base sm:text-lg leading-relaxed font-light">
+                  <p className="text-slate-600 text-base sm:text-lg font-normal leading-[31px]">
                     {currentHub.description}
                   </p>
 
@@ -299,7 +299,7 @@ export default function ClinicalHub() {
                     <h4 className="text-[10px] font-bold text-[#002b5c] uppercase tracking-wider">Key Benefits & Protocols</h4>
                     <ul className="space-y-2">
                       {currentHub.features.map((feature, fIdx) => (
-                        <li key={fIdx} className="flex items-start gap-2.5 text-slate-600 text-base sm:text-lg leading-relaxed font-light">
+                        <li key={fIdx} className="flex items-start gap-2.5 text-slate-600 text-base sm:text-lg font-normal leading-[31px]">
                           <span className={`w-1.5 h-1.5 rounded-full mt-2.5 flex-shrink-0 ${theme.bullet}`} />
                           <span>{feature}</span>
                         </li>

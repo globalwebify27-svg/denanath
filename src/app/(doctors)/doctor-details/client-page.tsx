@@ -379,11 +379,16 @@ export default function DoctorDetailsPage() {
                           </div>
                         ))}
                       </div>
-                      <div className="mt-4 pt-4 border-t border-slate-100">
-                        <p className="text-[14px] leading-[31px] font-normal text-slate-500 mb-2">For Appointment, please call:</p>
-                        <a href="tel:02040151100" className="inline-flex items-center justify-center w-full py-2.5 bg-[#d9232d] hover:bg-[#b81d24] text-white rounded-lg font-bold text-sm transition-colors">
-                          020 4015 1100
-                        </a>
+                      <div className="mt-4 pt-4 border-t border-slate-100 flex flex-col gap-3">
+                        <div>
+                          <p className="text-[14px] leading-[31px] font-normal text-slate-500 mb-2">For Appointment, please call:</p>
+                          <a href="tel:02040151100" className="inline-flex items-center justify-center w-full py-2.5 bg-[#d9232d] hover:bg-[#b81d24] text-white rounded-lg font-bold text-sm transition-colors">
+                            020 4015 1100
+                          </a>
+                        </div>
+                        <Link href="/book-appointment" className="inline-flex items-center justify-center w-full py-2.5 bg-[#007a87] hover:bg-[#005f69] text-white rounded-lg font-bold text-sm transition-colors">
+                          Book Appointment
+                        </Link>
                       </div>
                     </div>
                   )}

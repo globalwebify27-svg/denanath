@@ -4,7 +4,7 @@ import { ArrowRight, ShieldCheck } from "lucide-react";
 
 export default function AboutSection() {
   return (
-    <section className="w-full bg-gradient-to-b from-white to-[#f6fafb] relative z-20 pt-12 md:pt-16 pb-10 md:pb-12 border-b border-slate-100">
+    <section className="w-full bg-gradient-to-b from-white to-[#f6fafb] relative z-20 pt-[20px] md:pt-16 pb-[20px] md:pb-12 border-b border-slate-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           
@@ -45,7 +45,7 @@ export default function AboutSection() {
               <span className="font-semibold text-[#002b5c]">Right here in Pune.</span>
             </h2>
             
-            <p className="text-slate-600 text-[18px] font-light leading-relaxed mb-8">
+            <p className="text-slate-600 text-[18px] font-normal leading-[31px] mb-8">
               Deenanath Mangeshkar Hospital & Research Center is a charitable, multi-specialty hospital located in the heart of Pune, India. Founded in 2001, today it is one of the largest hospital in Pune, with 800 beds. Deenanath Mangeshkar Hospital offers state-of-the-art diagnostic, therapeutic and intensive care facilities in a one-stop medical center.
             </p>
             
@@ -59,7 +59,7 @@ export default function AboutSection() {
               </Link>
 
               <Link 
-                href="/research-and-publication" 
+                href="/research-about" 
                 className="px-8 py-4 bg-white border border-slate-200 hover:border-slate-300 hover:bg-slate-50 text-slate-900 rounded-xl text-sm font-semibold transition-all shadow-sm flex items-center gap-2 group shrink-0"
               >
                 <span>Research & Publication</span>
@@ -68,9 +68,9 @@ export default function AboutSection() {
               
               <div className="flex items-center gap-4 shrink-0 mt-2 xl:mt-0">
                  <div className="flex -space-x-3">
-                    <img className="w-10 h-10 rounded-full border-2 border-white shadow-sm" src="https://i.pravatar.cc/100?img=1" alt="Doctor" />
-                    <img className="w-10 h-10 rounded-full border-2 border-white shadow-sm" src="https://i.pravatar.cc/100?img=2" alt="Doctor" />
-                    <img className="w-10 h-10 rounded-full border-2 border-white shadow-sm" src="https://i.pravatar.cc/100?img=3" alt="Doctor" />
+                    <img className="w-10 h-10 rounded-full border-2 border-white shadow-sm" src="/images/585_Pic.jpg" alt="Doctor" />
+                    <img className="w-10 h-10 rounded-full border-2 border-white shadow-sm" src="/images/10_Pic.jpg" alt="Doctor" />
+                    <img className="w-10 h-10 rounded-full border-2 border-white shadow-sm" src="/images/57_Pic.jpg" alt="Doctor" />
                  </div>
                  <div className="text-xs">
                    <p className="font-bold text-slate-900">400+</p>

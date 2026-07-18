@@ -121,9 +121,9 @@ export default function HealthPackagesClientPage({ pageData }: { pageData: any }
                           <h3 className="text-xl font-bold text-[#002b5c] mb-4 group-hover:text-[#007a87] transition-colors">{pkg.name}</h3>
                           <ul className="space-y-2 mb-2">
                             {pkg.tests && pkg.tests.map((test: string, testIdx: number) => (
-                              <li key={testIdx} className="flex items-start gap-2 text-sm text-slate-600">
+                              <li key={testIdx} className="flex items-start gap-2 text-slate-600">
                                 <CheckCircle2 className="w-4 h-4 text-teal-500 shrink-0 mt-0.5" />
-                                <span className="leading-tight">{test}</span>
+                                <span style={{ fontSize: '18px', lineHeight: '31px' }} className="font-normal">{test}</span>
                               </li>
                             ))}
                           </ul>
@@ -155,18 +155,18 @@ export default function HealthPackagesClientPage({ pageData }: { pageData: any }
                         {instructions.map((instruction: string, idx: number) => (
                           <li key={idx} className="flex items-start gap-3">
                             <ChevronRight className="w-5 h-5 text-blue-600 shrink-0 mt-0.5" />
-                            <span style={{ fontSize: '18px' }} className="text-slate-700 leading-relaxed">{instruction}</span>
+                            <span style={{ fontSize: '18px', lineHeight: '31px' }} className="text-slate-700 font-normal">{instruction}</span>
                           </li>
                         ))}
                       </ul>
                       
                       {womenNote && (
                         <div className="mt-6 pt-6 border-t border-blue-100">
-                          <h4 style={{ fontSize: '18px' }} className="font-bold text-slate-800 mb-3 flex items-center gap-2">
+                          <h4 style={{ fontSize: '18px', lineHeight: '31px' }} className="font-bold text-slate-800 mb-3 flex items-center gap-2">
                             <AlertCircle className="w-5 h-5 text-amber-500" />
                             For Women
                           </h4>
-                          <p style={{ fontSize: '18px' }} className="text-slate-600 leading-relaxed whitespace-pre-line">
+                          <p style={{ fontSize: '18px', lineHeight: '31px' }} className="text-slate-600 font-normal whitespace-pre-line">
                             {womenNote}
                           </p>
                         </div>
@@ -216,7 +216,7 @@ export default function HealthPackagesClientPage({ pageData }: { pageData: any }
                           {companyList.map((company: string, idx: number) => (
                             <li key={idx} className="flex items-start gap-2 border-b border-slate-50 pb-2 last:border-0 last:pb-0">
                               <CheckCircle2 className="w-4 h-4 text-teal-500 shrink-0 mt-0.5" />
-                              <span style={{ fontSize: '18px' }} className="text-slate-600">{company}</span>
+                              <span style={{ fontSize: '18px', lineHeight: '31px' }} className="text-slate-600 font-normal">{company}</span>
                             </li>
                           ))}
                         </ul>

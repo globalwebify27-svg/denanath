@@ -80,7 +80,13 @@ async function run() {
       `;
     }
 
+    let extraHeading = '';
+    if (pub.title.includes('Genetic Counselling, Testing, and Management of Hereditary Breast and Ovarian Cancer Syndrome in India')) {
+      extraHeading = `<h4 class="text-base md:text-lg font-bold text-[#002b5c] mb-6 mt-12 border-t border-slate-100 pt-8">Publications: April 2024 &ndash; March 2025</h4>`;
+    }
+
     return `
+      ${extraHeading}
       <div class="bg-white border border-slate-200 p-6 rounded-2xl hover:shadow-[0_8px_30px_rgba(217,35,45,0.15)] hover:border-[#D9232D] hover:-translate-y-1 transition-all group">
         <p class="text-[#002b5c] font-bold mb-2 group-hover:text-[#007a87] transition-colors">
           ${pub.title}
@@ -116,6 +122,7 @@ async function run() {
           </h3>
         </div>
         <div class="space-y-6">
+          <h4 class="text-base md:text-lg font-bold text-[#002b5c] mb-6 mt-2">Publications: April 2025 &ndash; March 2026</h4>
           ${pubHtml}
         </div>
       </div>

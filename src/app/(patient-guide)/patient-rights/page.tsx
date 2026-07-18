@@ -29,7 +29,7 @@ export default async function PatientRightsPage() {
     } else {
       // Fallback data
       pageData = {
-        imageUrl: "https://www.dmhospital.org/cms/Media/image/patients-rights-responsibility.jpg"
+        imageUrl: "/images/patient-rights-high-res.png"
       };
     }
   } catch (e) {}

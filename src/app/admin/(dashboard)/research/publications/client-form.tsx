@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Save, HeartPulse, Plus, Trash2 , Search} from "lucide-react";
+import { Save, HeartPulse, Plus, Trash2, Search, ArrowDown } from "lucide-react";
 
 export default function PublicationsClientForm({ initialData }: { initialData: any }) {
   const router = useRouter();
@@ -13,29 +13,60 @@ export default function PublicationsClientForm({ initialData }: { initialData: a
     setData((prev: any) => ({ ...prev, [field]: value }));
   };
 
-
-  // Initialize data if not present
   useEffect(() => {
-    setData((prev: any) => ({
-      ...prev,
-      publications: prev.publications || [],
-      archives: prev.archives || [
-        { year: "2024 - 2025", link: "#" },
-        { year: "2023 - 2024", link: "#" },
-        { year: "2022 - 2023", link: "#" },
-        { year: "2021 - 2022", link: "#" },
-        { year: "2020 - 2021", link: "#" },
-        { year: "2019 - 2020", link: "#" },
-        { year: "2018 - 2019", link: "#" },
-        { year: "2017 - 2018", link: "#" }
-      ]
-    }));
-  }, []);
+    if (initialData.content && (!data.publications || data.publications.length === 0)) {
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(initialData.content, 'text/html');
+      
+      const newPubs: any[] = [];
+      
+      // Grab all H4s and publication DIVs in document order
+      const allElements = doc.querySelectorAll('h4, div.bg-white.group');
 
-  const handleAddPublication = () => {
+      for (const child of Array.from(allElements)) {
+        if (child.tagName === 'H4') {
+          newPubs.push({
+            isHeader: true,
+            title: child.textContent?.trim() || ""
+          });
+        } else if (child.tagName === 'DIV') {
+          const pTags = child.querySelectorAll('p');
+          const title = pTags[0] ? pTags[0].textContent?.trim() || '' : '';
+          const authorsDate = pTags[1] ? pTags[1].textContent?.trim() || '' : '';
+          
+          const spans = child.querySelectorAll('.flex span');
+          const journal = spans[0] ? spans[0].textContent?.trim() || '' : '';
+          
+          const aTag = child.querySelector('a');
+          const doi = aTag ? aTag.textContent?.trim() || '' : '';
+          
+          newPubs.push({ isHeader: false, title, authorsDate, journal, doi });
+        }
+      }
+
+      const archiveGrid = doc.querySelector('.grid.grid-cols-2');
+      const newArchives: any[] = [];
+      if (archiveGrid) {
+        for (const a of Array.from(archiveGrid.querySelectorAll('a'))) {
+          newArchives.push({
+            year: a.textContent?.trim() || '',
+            link: a.getAttribute('href') || '#'
+          });
+        }
+      }
+
+      setData((prev: any) => ({
+        ...prev,
+        publications: newPubs.length > 0 ? newPubs : [],
+        archives: newArchives.length > 0 ? newArchives : prev.archives || []
+      }));
+    }
+  }, [initialData.content]);
+
+  const handleAddPublication = (isHeader: boolean) => {
     setData((prev: any) => ({
       ...prev,
-      publications: [{ title: "", authorsDate: "", journal: "", doi: "" }, ...(prev.publications || [])]
+      publications: [{ isHeader, title: "", authorsDate: "", journal: "", doi: "" }, ...(prev.publications || [])]
     }));
   };
 
@@ -79,18 +110,23 @@ export default function PublicationsClientForm({ initialData }: { initialData: a
   };
 
   const generateHTML = (publications: any[], archives: any[]) => {
-    const pubHtml = (publications || []).map(pub => {
-      let doiHtml = '';
-      if (pub.doi) {
-        doiHtml = `
-          <a href="https://doi.org/${pub.doi.replace('DOI:', '').replace('doi:', '').trim()}" target="_blank" rel="noopener noreferrer" class="text-[#007a87] hover:underline font-medium inline-flex items-center gap-1 break-all">
-            DOI: ${pub.doi.replace('DOI:', '').replace('doi:', '').trim()}
-          </a>
-        `;
-      }
-
-      return `
-        <div class="bg-white border border-slate-200 p-6 rounded-2xl hover:shadow-[0_8px_30px_rgba(217,35,45,0.15)] hover:border-[#D9232D] hover:-translate-y-1 transition-all group">
+    let pubHtml = '';
+    for (const pub of (publications || [])) {
+      if (pub.isHeader) {
+        pubHtml += `\n<h4 class="text-base md:text-lg font-bold text-[#002b5c] mb-6 mt-12 border-t border-slate-100 pt-8">${pub.title}</h4>\n`;
+      } else {
+        let doiHtml = '';
+        if (pub.doi) {
+          let doiVal = pub.doi.replace(/DOI:\s*/i, '').replace(/doi:\s*/i, '').trim();
+          doiHtml = `
+            <a href="https://doi.org/${doiVal}" target="_blank" rel="noopener noreferrer" class="text-[#007a87] hover:underline font-medium inline-flex items-center gap-1 break-all">
+              DOI: ${doiVal}
+            </a>
+          `;
+        }
+        
+        pubHtml += `
+        <div class="bg-white border border-slate-200 mb-6 p-6 rounded-2xl hover:shadow-[0_8px_30px_rgba(217,35,45,0.15)] hover:border-[#D9232D] hover:-translate-y-1 transition-all group">
           <p class="text-[#002b5c] font-bold mb-2 group-hover:text-[#007a87] transition-colors">
             ${pub.title || ''}
           </p>
@@ -104,8 +140,9 @@ export default function PublicationsClientForm({ initialData }: { initialData: a
             ${doiHtml}
           </div>
         </div>
-      `;
-    }).join('');
+        `;
+      }
+    }
 
     const arcHtml = (archives || []).map(arc => `
       <a href="${arc.link || '#'}" class="bg-white border border-slate-200 p-4 rounded-xl font-bold text-[#007a87] hover:bg-[#003360] hover:text-white hover:border-[#003360] hover:shadow-[0_8px_30px_rgba(0,51,96,0.15)] hover:-translate-y-1 transition-all shadow-sm flex items-center justify-center text-sm md:text-base decoration-transparent">
@@ -206,68 +243,101 @@ export default function PublicationsClientForm({ initialData }: { initialData: a
       <div className="space-y-6">
         <div className="flex justify-between items-end mb-6 mt-10">
           <h2 className="text-[20px] font-black text-[#002b5c]">Recent Publications</h2>
-          <button 
-            onClick={handleAddPublication}
-            className="flex items-center gap-2 px-4 py-2 bg-[#D9232D] text-white text-sm font-bold rounded-xl hover:bg-red-700 transition-colors shadow-sm"
-          >
-            <Plus size={16} /> Add Publication
-          </button>
+          <div className="flex gap-2">
+            <button 
+              onClick={() => handleAddPublication(true)}
+              className="flex items-center gap-2 px-4 py-2 bg-[#002b5c] text-white text-sm font-bold rounded-xl hover:bg-[#001a38] transition-colors shadow-sm"
+            >
+              <Plus size={16} /> Add Header
+            </button>
+            <button 
+              onClick={() => handleAddPublication(false)}
+              className="flex items-center gap-2 px-4 py-2 bg-[#D9232D] text-white text-sm font-bold rounded-xl hover:bg-red-700 transition-colors shadow-sm"
+            >
+              <Plus size={16} /> Add Publication
+            </button>
+          </div>
         </div>
 
         <div className="space-y-4">
-          {(data.publications || []).map((item: any, idx: number) => (
-            <div key={idx} className="bg-white border border-slate-100 p-6 rounded-2xl shadow-sm relative group">
-              <button 
-                onClick={() => handleRemovePublication(idx)}
-                className="absolute top-6 right-6 p-2 bg-white border border-red-100 text-red-500 rounded-xl hover:bg-red-50 hover:border-red-200 transition-colors"
-                title="Remove Publication"
-              >
-                <Trash2 size={18} />
-              </button>
-              
-              <div className="space-y-4 pr-12">
-                <div>
-                  <label className="block text-[11px] font-extrabold text-[#002b5c] uppercase tracking-widest mb-2">Title</label>
-                  <input 
-                    value={item.title} 
-                    onChange={(e) => handlePublicationChange(idx, "title", e.target.value)}
-                    placeholder="e.g. Closing the implementation gap..."
-                    className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all text-sm font-medium text-slate-700"
-                  />
-                </div>
-                <div>
-                  <label className="block text-[11px] font-extrabold text-[#002b5c] uppercase tracking-widest mb-2">Authors & Date</label>
-                  <input 
-                    value={item.authorsDate} 
-                    onChange={(e) => handlePublicationChange(idx, "authorsDate", e.target.value)}
-                    placeholder="e.g. Baliga J, Iau P... (March 2026)"
-                    className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all text-sm font-medium text-slate-700"
-                  />
-                </div>
-                
-                <div className="flex flex-col md:flex-row gap-4">
+          {(data.publications || []).map((item: any, idx: number) => {
+            if (item.isHeader) {
+              return (
+                <div key={idx} className="bg-slate-50 border border-slate-200 p-4 rounded-xl flex items-center gap-4 relative group shadow-sm">
                   <div className="flex-1">
-                    <label className="block text-[11px] font-extrabold text-[#002b5c] uppercase tracking-widest mb-2">Journal</label>
                     <input 
-                      value={item.journal} 
-                      onChange={(e) => handlePublicationChange(idx, "journal", e.target.value)}
-                      placeholder="e.g. Indian Journal of Anaesthesia. 70(3):477-484."
+                      value={item.title} 
+                      onChange={(e) => handlePublicationChange(idx, "title", e.target.value)}
+                      placeholder="Header Title (e.g. Publications: 2024-2025)"
+                      className="w-full p-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all text-base font-bold text-[#002b5c]"
+                    />
+                  </div>
+                  <button 
+                    onClick={() => handleRemovePublication(idx)}
+                    className="shrink-0 p-3 bg-white border border-red-100 text-red-500 rounded-xl hover:bg-red-50 hover:border-red-200 transition-colors"
+                    title="Remove Header"
+                  >
+                    <Trash2 size={18} />
+                  </button>
+                </div>
+              );
+            }
+
+            return (
+              <div key={idx} className="bg-white border border-slate-100 p-6 rounded-2xl shadow-sm relative group">
+                <button 
+                  onClick={() => handleRemovePublication(idx)}
+                  className="absolute top-6 right-6 p-2 bg-white border border-red-100 text-red-500 rounded-xl hover:bg-red-50 hover:border-red-200 transition-colors"
+                  title="Remove Publication"
+                >
+                  <Trash2 size={18} />
+                </button>
+                
+                <div className="space-y-4 pr-12">
+                  <div>
+                    <label className="block text-[11px] font-extrabold text-[#002b5c] uppercase tracking-widest mb-2">Title</label>
+                    <input 
+                      value={item.title} 
+                      onChange={(e) => handlePublicationChange(idx, "title", e.target.value)}
+                      placeholder="e.g. Closing the implementation gap..."
                       className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all text-sm font-medium text-slate-700"
                     />
                   </div>
-                  <div className="flex-1">
-                    <label className="block text-[11px] font-extrabold text-[#002b5c] uppercase tracking-widest mb-2">DOI (E.G., 10.4103/...)</label>
+                  <div>
+                    <label className="block text-[11px] font-extrabold text-[#002b5c] uppercase tracking-widest mb-2">Authors & Date</label>
                     <input 
-                      value={item.doi} 
-                      onChange={(e) => handlePublicationChange(idx, "doi", e.target.value)}
-                      placeholder="e.g. 10.4103/ija.ija_1716_25"
+                      value={item.authorsDate} 
+                      onChange={(e) => handlePublicationChange(idx, "authorsDate", e.target.value)}
+                      placeholder="e.g. Baliga J, Iau P... (March 2026)"
                       className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all text-sm font-medium text-slate-700"
                     />
+                  </div>
+                  
+                  <div className="flex flex-col md:flex-row gap-4">
+                    <div className="flex-1">
+                      <label className="block text-[11px] font-extrabold text-[#002b5c] uppercase tracking-widest mb-2">Journal</label>
+                      <input 
+                        value={item.journal} 
+                        onChange={(e) => handlePublicationChange(idx, "journal", e.target.value)}
+                        placeholder="e.g. Indian Journal of Anaesthesia. 70(3):477-484."
+                        className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all text-sm font-medium text-slate-700"
+                      />
+                    </div>
+                    <div className="flex-1">
+                      <label className="block text-[11px] font-extrabold text-[#002b5c] uppercase tracking-widest mb-2">DOI (E.G., 10.4103/...)</label>
+                      <input 
+                        value={item.doi} 
+                        onChange={(e) => handlePublicationChange(idx, "doi", e.target.value)}
+                        placeholder="e.g. 10.4103/ija.ija_1716_25"
+                        className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all text-sm font-medium text-slate-700"
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
+
           {(!data.publications || data.publications.length === 0) && (
             <div className="text-center p-10 bg-slate-50 rounded-2xl border border-slate-100 text-slate-500 font-medium text-sm">
               No publications found. Click "Add Publication" to create one.
@@ -351,7 +421,6 @@ export default function PublicationsClientForm({ initialData }: { initialData: a
           </div>
         </div>
       </div>
-
     </div>
   );
 }

@@ -32,7 +32,7 @@ export default function PatientRightsClientPage({ pageData }: { pageData: any })
     }
   }, []);
 
-  const { imageUrl = "https://www.dmhospital.org/cms/Media/image/patients-rights-responsibility.jpg" } = pageData || {};
+  const { imageUrl = "/images/patient-rights-high-res.png" } = pageData || {};
 
   return (
     <div className="min-h-screen bg-[#f8fafc] font-sans selection:bg-teal-500/30">
@@ -87,7 +87,7 @@ export default function PatientRightsClientPage({ pageData }: { pageData: any })
 
           {/* Right Main Content */}
           <div className="w-full flex-1">
-            <div className="bg-white rounded-3xl shadow-[0_8px_40px_rgb(0,0,0,0.03)] border border-slate-100/60 p-6 sm:p-10 md:p-14">
+            <div className="bg-white rounded-3xl shadow-[0_8px_40px_rgb(0,0,0,0.03)] border border-slate-100/60 p-4 sm:p-6 md:p-8">
               
               <div className="mb-10">
                 <div style={{ fontSize: '14px' }} className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-teal-50 border border-teal-100 text-[#007a87] font-bold tracking-wider uppercase mb-4">
@@ -100,11 +100,11 @@ export default function PatientRightsClientPage({ pageData }: { pageData: any })
                 
               </div>
               <div className="space-y-6 mt-8">
-                <div className="bg-slate-50 p-2 md:p-4 rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
+                <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
                   <img 
                     src={imageUrl} 
                     alt="Patient Rights & Responsibilities" 
-                    className="w-full h-auto rounded-xl object-contain"
+                    className="w-full h-auto object-contain mix-blend-multiply transform-gpu will-change-transform [backface-visibility:hidden]"
                   />
                 </div>
               </div>

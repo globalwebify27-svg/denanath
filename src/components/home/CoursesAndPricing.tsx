@@ -24,7 +24,7 @@ export default function CoursesAndPricing() {
   ];
 
   return (
-    <section className="relative w-full py-10 bg-white border-t border-slate-100 overflow-hidden z-20">
+    <section className="relative w-full py-[20px] md:py-10 bg-white border-t border-slate-100 overflow-hidden z-20">
       {/* Background Blur Effects */}
       <div className="absolute top-0 left-0 h-72 w-72 rounded-full bg-cyan-100 blur-3xl opacity-50 pointer-events-none z-0"></div>
       <div className="absolute bottom-0 right-0 h-72 w-72 rounded-full bg-sky-100 blur-3xl opacity-50 pointer-events-none z-0"></div>

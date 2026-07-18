@@ -432,7 +432,7 @@ export default function InPatientClientPage({ pageData }: { pageData: any }) {
                     {cashlessDescription.map((p: string, i: number) => {
                       if (p.startsWith("NOTE:")) {
                         return (
-                          <div key={i} style={{ fontSize: '18px' }} className="bg-amber-50 text-amber-800 p-5 rounded-xl border border-amber-200 my-8 shadow-sm">
+                          <div key={i} style={{ fontSize: '18px', lineHeight: '31px' }} className="bg-amber-50 text-amber-800 p-5 rounded-xl border border-amber-200 my-8 shadow-sm">
                             <strong>Note:</strong> {p.replace("NOTE:", "").trim()}
                           </div>
                         );
@@ -507,7 +507,7 @@ export default function InPatientClientPage({ pageData }: { pageData: any }) {
                   </div>
 
                   <div className="bg-white border border-slate-200 p-6 md:p-8 rounded-2xl shadow-sm">
-                    <h4 className="font-bold text-slate-800 mb-4 flex items-center gap-2">
+                    <h4 style={{ fontSize: '18px', lineHeight: '31px' }} className="font-bold text-slate-800 mb-4 flex items-center gap-2">
                       <CheckCircle2 className="w-5 h-5 text-teal-600" />
                       At the Mediclaim Department, you need to bring:
                     </h4>
@@ -528,7 +528,7 @@ export default function InPatientClientPage({ pageData }: { pageData: any }) {
                     <FileText className="w-6 h-6 text-[#007a87]" />
                     Insurance Companies, TPA & Corporate Companies
                   </h3>
-                  <p className="mb-4 text-slate-600">Deenanath Mangeshkar Hospital and Research Center is empanelled with following insurance companies / TPA’s for cashless facility.</p>
+                  <p style={{ fontSize: '18px', lineHeight: '31px' }} className="mb-4 text-slate-600 font-normal">Deenanath Mangeshkar Hospital and Research Center is empanelled with following insurance companies / TPA’s for cashless facility.</p>
                   
                   <div className="grid md:grid-cols-3 gap-8 mt-6">
                     <div>
@@ -537,7 +537,7 @@ export default function InPatientClientPage({ pageData }: { pageData: any }) {
                         {insuranceCompanies.map((company: string, i: number) => (
                           <div key={i} className="flex items-start gap-2 border-b border-slate-100 pb-2">
                             <ChevronRight className="w-4 h-4 mt-1 text-teal-500 shrink-0" />
-                            <span style={{ fontSize: '16px' }} className="text-slate-600 leading-tight">{company}</span>
+                            <span style={{ fontSize: '18px', lineHeight: '31px' }} className="text-slate-600 font-normal">{company}</span>
                           </div>
                         ))}
                       </div>
@@ -548,7 +548,7 @@ export default function InPatientClientPage({ pageData }: { pageData: any }) {
                         {tpaCompanies.map((company: string, i: number) => (
                           <div key={i} className="flex items-start gap-2 border-b border-slate-100 pb-2">
                             <ChevronRight className="w-4 h-4 mt-1 text-teal-500 shrink-0" />
-                            <span style={{ fontSize: '16px' }} className="text-slate-600 leading-tight">{company}</span>
+                            <span style={{ fontSize: '18px', lineHeight: '31px' }} className="text-slate-600 font-normal">{company}</span>
                           </div>
                         ))}
                       </div>
@@ -560,7 +560,7 @@ export default function InPatientClientPage({ pageData }: { pageData: any }) {
                         {corporateCompanies.map((company: string, i: number) => (
                           <div key={i} className="flex items-start gap-2 border-b border-slate-100 pb-2">
                             <CheckCircle2 className="w-4 h-4 mt-1 text-blue-500 shrink-0" />
-                            <span style={{ fontSize: '16px' }} className="text-slate-600 leading-tight">{company}</span>
+                            <span style={{ fontSize: '18px', lineHeight: '31px' }} className="text-slate-600 font-normal">{company}</span>
                           </div>
                         ))}
                       </div>

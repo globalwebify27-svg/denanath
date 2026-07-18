@@ -72,7 +72,7 @@ export default function DoctorsSection() {
   };
 
   return (
-    <section className="relative overflow-hidden bg-slate-50 py-10">
+    <section className="relative overflow-hidden bg-slate-50 py-[20px] md:py-10">
       <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6">
         
         {/* Header */}
@@ -88,7 +88,7 @@ export default function DoctorsSection() {
             </h2>
           </div>
 
-          <p className="max-w-xl text-[18px] text-slate-600 leading-relaxed">
+          <p className="max-w-xl text-[18px] text-slate-600 leading-[31px]">
             Our highly experienced specialists provide compassionate care.
           </p>
         </div>

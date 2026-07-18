@@ -124,14 +124,21 @@ export default function AcademicsClientPage({ pageData }: { pageData: any }) {
                   <div className="bg-white border border-slate-200 rounded-2xl p-6 md:p-8 shadow-sm space-y-6">
                     {pageData?.pgProgrammes?.map((prog: any, idx: number) => (
                       <div key={idx}>
-                        <h4 className="font-bold text-lg text-slate-800 mb-2 flex gap-2">
-                          <span className="text-[#007a87]">{idx + 1}.</span> {prog.title}
+                        <h4 className="font-bold text-lg text-slate-800 mb-2 flex items-start gap-2">
+                          <span className="text-[#007a87] shrink-0 mt-0.5">{idx + 1}.</span> 
+                          <span className="whitespace-pre-line">
+                            {prog.title}
+                            {prog.desc && (
+                              <span className="text-slate-600 font-normal ml-2">
+                                - {prog.desc}
+                              </span>
+                            )}
+                          </span>
                         </h4>
-                        {prog.desc && <p className="text-slate-600 ml-6">• {prog.desc}</p>}
                         {prog.items?.length > 0 && (
-                          <ul className="list-disc ml-10 text-slate-600 space-y-1">
+                          <ul className="list-disc ml-10 text-slate-600 space-y-1 mt-2">
                             {prog.items.map((item: string, i: number) => (
-                              <li key={i}>{item}</li>
+                              <li key={i} className="whitespace-pre-line">{item}</li>
                             ))}
                           </ul>
                         )}
@@ -150,7 +157,7 @@ export default function AcademicsClientPage({ pageData }: { pageData: any }) {
                     {pageData?.shortTermFellowships?.map((program: string, idx: number) => (
                       <div key={idx} className="group flex items-start gap-3 bg-white p-4 rounded-xl border border-slate-200 shadow-sm hover:shadow-[0_8px_30px_rgba(217,35,45,0.15)] hover:border-[#D9232D] hover:-translate-y-1 transition-all duration-300">
                         <CheckCircle2 className="w-5 h-5 text-teal-500 group-hover:text-[#D9232D] shrink-0 mt-0.5 transition-colors" />
-                        <span style={{ fontSize: '18px' }} className="text-slate-700 font-normal leading-[31px]">{program}</span>
+                        <span style={{ fontSize: '18px' }} className="text-slate-700 font-normal leading-[31px] whitespace-pre-line">{program}</span>
                       </div>
                     ))}
                   </div>

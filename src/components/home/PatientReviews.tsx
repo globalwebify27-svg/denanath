@@ -112,7 +112,7 @@ export default function PatientReviews() {
   }, [activeIndex]);
 
   return (
-    <section className="w-full relative z-30 py-10 bg-gradient-to-br from-[#f5fbfb] via-teal-50/[0.1] to-[#f4fafb] overflow-hidden">
+    <section className="w-full relative z-30 py-[20px] md:py-10 bg-gradient-to-br from-[#f5fbfb] via-teal-50/[0.1] to-[#f4fafb] overflow-hidden">
       
       {/* Decorative elements */}
       <div className="absolute top-1/2 left-0 w-96 h-96 bg-teal-500/[0.02] rounded-full blur-[100px] pointer-events-none -z-10" />
@@ -130,7 +130,7 @@ export default function PatientReviews() {
             <h2 className="text-3xl sm:text-4xl font-light text-[#002b5c] tracking-tight mt-5">
               Real Stories of <span className="font-semibold">Healing & Hope</span>
             </h2>
-            <p className="text-slate-600 text-[16px] font-light leading-relaxed mt-4">
+            <p className="text-slate-600 text-[18px] font-normal leading-[31px] mt-4">
               Read true experiences shared by our patients, detailing their journeys to wellness supported by our doctors and clinical staff.
             </p>
 
@@ -161,10 +161,7 @@ export default function PatientReviews() {
 
                 <div className="relative z-10 space-y-6">
                   <div className="flex items-center gap-1">
-                    {[...Array(reviews[activeIndex].rating)].map((_, i) => (
-                      <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
-                    ))}
-                    <span className="text-[10px] font-bold text-amber-600 ml-2 tracking-widest uppercase">Verified Patient Care</span>
+                    <span className="text-[10px] font-bold text-amber-600 tracking-widest uppercase">Verified Patient Care</span>
                   </div>
 
                   <blockquote className="text-base sm:text-lg lg:text-xl text-[#002b5c] font-light leading-relaxed tracking-tight italic min-h-[120px]">
@@ -174,13 +171,7 @@ export default function PatientReviews() {
 
                 <div className="relative z-10 mt-8 pt-6 border-t border-slate-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                   <div className="flex items-center gap-4">
-                    <div className="relative w-14 h-14 rounded-full overflow-hidden border-2 border-teal-500/10 shrink-0">
-                      <img 
-                        src={reviews[activeIndex].avatar} 
-                        alt={reviews[activeIndex].name} 
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
+
                     <div>
                       <h4 className="font-bold text-slate-800 text-sm tracking-tight flex items-center gap-1.5">
                         {reviews[activeIndex].name}
@@ -201,10 +192,10 @@ export default function PatientReviews() {
             </div>
 
             {/* Mobile Horizontal Selection Row */}
-            <div className="lg:hidden w-full mb-6">
+            <div className="lg:hidden w-full mb-2">
               <div 
                 ref={horizontalContainerRef}
-                className="flex gap-5 overflow-x-auto py-8 px-6 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden snap-x snap-mandatory"
+                className="flex gap-5 overflow-x-auto pt-4 pb-2 px-6 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden snap-x snap-mandatory"
               >
                 {reviews.map((review, idx) => {
                   const isExpandedMobile = mobileExpandedIndex === idx;
@@ -222,13 +213,7 @@ export default function PatientReviews() {
                       }`}
                     >
                       <div className="flex items-center gap-3 w-full">
-                        <div className={`relative w-12 h-12 rounded-full overflow-hidden border-2 shrink-0 transition-transform duration-500 ${isExpandedMobile ? "border-teal-500 scale-110" : "border-slate-200"}`}>
-                          <img 
-                            src={review.avatar} 
-                            alt={review.name} 
-                            className="w-full h-full object-cover"
-                          />
-                        </div>
+
                         <div className="flex-1 min-w-0 transition-opacity duration-300">
                           <h4 className={`text-sm font-bold truncate ${isExpandedMobile ? "text-[#007a87]" : "text-slate-800"}`}>
                             {review.name}
@@ -267,10 +252,7 @@ export default function PatientReviews() {
                   
                   <div className="space-y-4 relative z-10">
                     <div className="flex items-center gap-1">
-                      {[...Array(reviews[activeIndex].rating)].map((_, i) => (
-                        <Star key={i} className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-                      ))}
-                      <span className="text-[9px] font-bold text-amber-600 ml-2 tracking-widest uppercase">Verified Care</span>
+                      <span className="text-[9px] font-bold text-amber-600 tracking-widest uppercase">Verified Care</span>
                     </div>
 
                     <blockquote className="text-sm text-[#002b5c] font-light leading-relaxed italic">
@@ -279,13 +261,7 @@ export default function PatientReviews() {
 
                     <div className="pt-4 border-t border-slate-100 flex items-center justify-between gap-4">
                       <div className="flex items-center gap-3">
-                        <div className="w-11 h-11 rounded-full overflow-hidden border-2 border-teal-500/10">
-                          <img 
-                            src={reviews[activeIndex].avatar} 
-                            alt={reviews[activeIndex].name} 
-                            className="w-full h-full object-cover"
-                          />
-                        </div>
+
                         <div>
                           <h4 className="font-bold text-slate-800 text-xs tracking-tight">
                             {reviews[activeIndex].name}
@@ -347,15 +323,7 @@ export default function PatientReviews() {
                       }`}
                   >
                     <div className="flex items-center gap-4 w-full">
-                      <div className={`relative w-12 h-12 rounded-full overflow-hidden border-2 shrink-0 transition-transform duration-300 
-                        ${isActiveDesktop ? "lg:border-teal-500 lg:scale-105" : "lg:border-slate-200 lg:scale-100"} 
-                        ${isExpandedMobile ? "max-lg:border-teal-500 max-lg:scale-105" : "max-lg:border-slate-200 max-lg:scale-100"}`}>
-                        <img 
-                          src={review.avatar} 
-                          alt={review.name} 
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
+
                       <div className="flex-1 min-w-0">
                         <h4 className={`text-sm font-bold truncate 
                           ${isActiveDesktop ? "lg:text-[#007a87]" : "lg:text-slate-800"} 
@@ -385,9 +353,6 @@ export default function PatientReviews() {
                       <div className="space-y-3">
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-1">
-                            {[...Array(review.rating)].map((_, i) => (
-                              <Star key={i} className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-                            ))}
                           </div>
                           <span className="text-[9px] text-slate-400 font-medium tracking-wider">{review.date}</span>
                         </div>
@@ -415,7 +380,7 @@ export default function PatientReviews() {
         </div>
 
         {/* Clinical Trust Strip */}
-        <div className="mt-10 pt-10 border-t border-slate-100 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+        <div className="mt-4 md:mt-10 pt-4 md:pt-10 border-t border-slate-100 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
           <div>
             <span className="block text-3xl sm:text-4xl font-extrabold text-[#002b5c] tracking-tight">1.2M+</span>
             <span className="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1.5">Consultations Done</span>

@@ -32,7 +32,7 @@ export default function TrustSection() {
   ];
 
   return (
-    <section className="relative overflow-hidden bg-white py-10">
+    <section className="relative overflow-hidden bg-white py-[20px] md:py-10">
 
       {/* Background Blur Effects */}
         <div className="absolute top-0 left-0 h-72 w-72 rounded-full bg-cyan-100 blur-3xl opacity-50"></div>
@@ -50,7 +50,7 @@ export default function TrustSection() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7 }}
           viewport={{ once: true }}
-          className="mb-16 text-center"
+          className="mb-6 md:mb-16 text-center"
         >
           <span className="inline-block rounded-full bg-red-100 px-4 py-2 text-sm font-semibold text-red-700">
             Trusted Healthcare Excellence
@@ -63,7 +63,7 @@ export default function TrustSection() {
             </span>
           </h2>
 
-          <p className="mx-auto mt-5 max-w-2xl text-base sm:text-lg text-slate-600">
+          <p className="mx-auto mt-5 max-w-2xl text-base sm:text-lg font-normal leading-[31px] text-slate-600">
             Delivering compassionate healthcare with advanced medical expertise,
             modern infrastructure, and trusted specialists.
           </p>

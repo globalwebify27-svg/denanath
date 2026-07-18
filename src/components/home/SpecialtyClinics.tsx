@@ -92,29 +92,29 @@ export default function SpecialtyClinics() {
           group relative
           /* Mobile layout sizes */
           ${isDesktopOnly ? "w-full" : "w-[calc(50%-8px)] flex-shrink-0 md:w-auto md:flex-shrink"}
-          rounded-2xl border border-emerald-100/80 bg-white/80 backdrop-blur-xl p-5
+          rounded-2xl border border-emerald-100/80 bg-white/80 backdrop-blur-xl px-4 pt-4 pb-2
           overflow-hidden shadow-[0_10px_30px_rgba(16,185,129,0.06)]
           hover:shadow-[0_20px_45px_rgba(16,185,129,0.18)] hover:border-emerald-300
           hover:-translate-y-1.5 transition-all duration-400
-          flex flex-col justify-between min-h-[160px] cursor-pointer
+          flex flex-col justify-between min-h-[130px] cursor-pointer
         `}
       >
         <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition duration-500 bg-[radial-gradient(circle_at_top_right,rgba(16,185,129,0.1),transparent_60%)] pointer-events-none"></div>
         
         <div className="relative z-10 flex justify-between items-start">
-          <div className={`w-10 h-10 rounded-xl flex items-center justify-center transition-transform duration-300 group-hover:scale-110 shadow-sm ring-1 ring-black/5 ${clinic.color}`}>
-            <Icon className="w-4 h-4 sm:w-5 h-5" />
+          <div className={`w-9 h-9 rounded-xl flex items-center justify-center transition-transform duration-300 group-hover:scale-110 shadow-sm ring-1 ring-black/5 ${clinic.color}`}>
+            <Icon className="w-4 h-4" />
           </div>
           <span className="text-[10px] font-bold text-emerald-300/80 tracking-widest">{clinic.id}</span>
         </div>
 
-        <div className="relative z-10 mt-4">
-          <h3 className="text-xs sm:text-[13px] font-bold text-slate-800 tracking-tight leading-snug group-hover:text-emerald-700 transition-colors duration-300 line-clamp-2">
+        <div className="relative z-10 mt-3">
+          <h3 className="text-[11px] sm:text-[12px] font-bold text-slate-800 tracking-tight leading-snug group-hover:text-emerald-700 transition-colors duration-300 line-clamp-2">
             {clinic.name}
           </h3>
-          <div className="flex items-center gap-1 text-[9px] font-bold text-emerald-600 uppercase tracking-widest mt-2 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
+          <div className="flex items-center gap-1 text-[8px] font-bold text-emerald-600 uppercase tracking-widest mt-1.5 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
             <span>Explore</span>
-            <ArrowRight className="w-3 h-3" />
+            <ArrowRight className="w-2.5 h-2.5" />
           </div>
         </div>
 
@@ -124,7 +124,7 @@ export default function SpecialtyClinics() {
   };
 
   return (
-    <section className="relative overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-[#ecfdf5] via-[#f0fdf4] to-[#d1fae5] py-10 px-4 sm:px-8 shadow-sm">
+    <section className="relative overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-[#ecfdf5] via-[#f0fdf4] to-[#d1fae5] py-[20px] md:py-10 px-4 sm:px-8 shadow-sm">
       
       {/* Glow / Ambient Gradients */}
       <div className="absolute top-0 left-0 h-72 w-72 rounded-full bg-emerald-300/30 blur-3xl pointer-events-none"></div>
@@ -134,14 +134,14 @@ export default function SpecialtyClinics() {
       <div className="relative z-10 max-w-7xl mx-auto">
         
         {/* Section Heading */}
-        <div className="flex flex-col md:flex-row md:items-start justify-between gap-6 mb-10 border-b border-emerald-200/60 pb-8 text-center md:text-left">
+        <div className="flex flex-col md:flex-row md:items-start justify-between gap-6 mb-4 md:mb-10 border-b border-emerald-200/60 pb-4 md:pb-8 text-center md:text-left">
           <div>
             <p className="text-[10px] font-bold text-[#007a87] uppercase tracking-[0.2em] mb-2">Specialized Medical Care</p>
             <h2 className="text-3xl sm:text-4xl font-light text-slate-900 tracking-tight">
               Our Specialty <span className="font-bold text-emerald-700">Care Clinics</span>
             </h2>
           </div>
-          <p className="text-slate-600 text-base sm:text-lg font-light max-w-md leading-relaxed mx-auto md:mx-0">
+          <p className="text-slate-600 text-base sm:text-lg font-normal max-w-md leading-[31px] mx-auto md:mx-0">
             Highly focused clinical programs and centers of excellence addressing specialized therapeutic and medical disciplines.
           </p>
         </div>
@@ -176,8 +176,8 @@ export default function SpecialtyClinics() {
         </div>
 
         {/* Universal View All Button */}
-        <div className="mt-10 flex justify-center border-t border-emerald-200/60 pt-8">
-          <Link href="/doctor-details" className="
+        <div className="mt-4 md:mt-10 flex justify-center border-t border-emerald-200/60 pt-4 md:pt-8">
+          <Link href="/departments" className="
             group flex items-center gap-3 rounded-full bg-emerald-700 
             px-7 py-3.5 sm:px-8 sm:py-4 text-sm sm:text-base font-semibold text-white 
             shadow-[0_10px_30px_rgba(4,120,87,0.3)] hover:bg-emerald-800 

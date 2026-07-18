@@ -4,7 +4,7 @@ import { ArrowRight } from "lucide-react";
 
 export default function PartnersAccreditation() {
   return (
-    <section className="relative z-30 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10" style={{ marginBottom: '40px' }}>
+    <section className="relative z-30 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10 py-[20px] md:py-0" style={{ marginBottom: '40px' }}>
       {/* Subtle background waves behind the cards, keeping the main page background light */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <svg className="absolute -top-10 left-10 w-[45%] h-[120%] text-[#002b5c]/5 fill-current" viewBox="0 0 100 100" preserveAspectRatio="none">
@@ -38,7 +38,7 @@ export default function PartnersAccreditation() {
               <h3 className="text-xl sm:text-2xl font-extrabold text-[#002b5c] tracking-tight">
                 DMH - A Trusted Healthcare Partner
               </h3>
-              <p className="text-slate-500 text-sm font-light leading-relaxed flex-1">
+              <p className="text-slate-500 text-[16px] font-normal leading-[31px] flex-1">
                 &ldquo;Combining professional competence with a human touch to deliver ethical, rational care and medico-social services.&rdquo;
               </p>
               
@@ -135,7 +135,7 @@ export default function PartnersAccreditation() {
               <h3 className="text-xl sm:text-2xl font-extrabold text-[#002b5c] tracking-tight">
                 I&apos;m A Patient
               </h3>
-              <p className="text-slate-500 text-sm font-light leading-relaxed flex-1">
+              <p className="text-slate-500 text-[16px] font-normal leading-[31px] flex-1">
                 Your safety is our priority with Pune&rsquo;s pioneering Emergency Medical Service, combining international-standard infrastructure and expert care when every second counts.
               </p>
               
@@ -246,7 +246,7 @@ export default function PartnersAccreditation() {
                 <h4 className="text-lg sm:text-xl font-extrabold text-[#002b5c] tracking-tight leading-snug">
                   Best Hospital In Pune, India
                 </h4>
-                <p className="text-slate-500 text-xs sm:text-sm font-light leading-relaxed max-w-xl">
+                <p className="text-slate-500 text-[16px] font-normal leading-[31px] max-w-xl">
                   DMH is NABH and NABL accredited, ensuring patient safety, quality standards, clinical excellence, & ethical healthcare delivery.
                 </p>
               </div>

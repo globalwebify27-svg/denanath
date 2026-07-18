@@ -286,11 +286,11 @@ export default function DoctorDetailsPage() {
                   {paginatedDoctors.map((doc, idx) => (
                     <div key={doc.id || idx} className="group bg-white border border-slate-200 hover:border-[#D9232D] rounded-2xl p-6 transition-all duration-300 hover:shadow-[0_8px_30px_rgba(217,35,45,0.15)] hover:-translate-y-1 flex flex-col h-full">
                       <div className="flex items-start gap-4 mb-4">
-                        <div className="w-16 h-16 rounded-xl bg-teal-50 flex items-center justify-center shrink-0 border border-teal-100 overflow-hidden group-hover:bg-[#D9232D] group-hover:border-[#D9232D] transition-colors">
+                        <div className="w-24 h-28 rounded-xl bg-teal-50 flex items-center justify-center shrink-0 border border-teal-100 overflow-hidden group-hover:bg-[#D9232D] group-hover:border-[#D9232D] transition-colors">
                           <DoctorImage 
                             doc={doc}
                             className="w-full h-full object-cover text-[0px]"
-                            iconClassName="w-8 h-8 text-[#007a87] group-hover:text-white transition-colors"
+                            iconClassName="w-12 h-12 text-[#007a87] group-hover:text-white transition-colors"
                           />
                         </div>
                         <div>
@@ -304,9 +304,9 @@ export default function DoctorDetailsPage() {
                       </div>
                       
                       <div className="flex-1 mb-6">
-                        <div className="flex items-start gap-2 text-sm font-medium text-slate-600">
-                          <GraduationCap className="w-4 h-4 text-slate-400 shrink-0 mt-0.5" />
-                          <span className="leading-relaxed">{doc.qualifications}</span>
+                        <div className="flex items-start gap-2 text-slate-600">
+                          <GraduationCap className="w-4 h-4 text-slate-400 shrink-0 mt-[7px]" />
+                          <span className="text-[18px] leading-[31px] font-normal">{doc.qualifications}</span>
                         </div>
                       </div>
 
@@ -387,16 +387,16 @@ export default function DoctorDetailsPage() {
             {/* Modal Header */}
             <div className="relative p-6 md:p-8 border-b border-slate-100 shrink-0 sticky top-0 bg-white z-10 rounded-t-3xl">
               <div className="flex items-center gap-5 sm:gap-6 pr-12">
-                <div className="w-[90px] h-[110px] sm:w-[110px] sm:h-[135px] rounded-2xl bg-white flex items-center justify-center shrink-0 border border-slate-200 shadow-sm overflow-hidden text-slate-400">
+                <div className="w-[130px] h-[160px] sm:w-[150px] sm:h-[185px] rounded-2xl bg-white flex items-center justify-center shrink-0 border border-slate-200 shadow-sm overflow-hidden text-slate-400">
                   <DoctorImage 
                     doc={selectedDoctor}
-                    className="w-full h-full object-contain rounded-xl bg-white"
-                    iconClassName="w-10 h-10 sm:w-12 sm:h-12 text-slate-400"
+                    className="w-full h-full object-cover rounded-xl bg-white"
+                    iconClassName="w-16 h-16 sm:w-20 sm:h-20 text-slate-400"
                   />
                 </div>
                 <div className="flex-1 min-w-0">
                   <h2 className="text-xl sm:text-2xl md:text-[28px] font-[900] text-[#002b5c] leading-tight mb-2 uppercase">{selectedDoctor.name}</h2>
-                  <p className="text-sm sm:text-base font-[500] text-slate-500 leading-snug">{selectedDoctor.qualifications}</p>
+                  <p className="text-[18px] leading-[31px] font-normal text-slate-500">{selectedDoctor.qualifications}</p>
                 </div>
               </div>
               <button 
@@ -441,11 +441,16 @@ export default function DoctorDetailsPage() {
                           </div>
                         ))}
                       </div>
-                      <div className="mt-4 pt-4 border-t border-slate-100">
-                        <p className="text-[14px] leading-[31px] font-normal text-slate-500 mb-2">For Appointment, please call:</p>
-                        <a href="tel:02040151100" className="inline-flex items-center justify-center w-full py-2.5 bg-[#d9232d] hover:bg-[#b81d24] text-white rounded-lg font-bold text-sm transition-colors">
-                          020 4015 1100
-                        </a>
+                      <div className="mt-4 pt-4 border-t border-slate-100 flex flex-col gap-3">
+                        <div>
+                          <p className="text-[14px] leading-[31px] font-normal text-slate-500 mb-2">For Appointment, please call:</p>
+                          <a href="tel:02040151100" className="inline-flex items-center justify-center w-full py-2.5 bg-[#d9232d] hover:bg-[#b81d24] text-white rounded-lg font-bold text-sm transition-colors">
+                            020 4015 1100
+                          </a>
+                        </div>
+                        <Link href="/book-appointment" className="inline-flex items-center justify-center w-full py-2.5 bg-[#007a87] hover:bg-[#005f69] text-white rounded-lg font-bold text-sm transition-colors">
+                          Book Appointment
+                        </Link>
                       </div>
                     </div>
                   )}

@@ -3,26 +3,20 @@ import { Ambulance } from "lucide-react";
 
 export default function FloatingEmergencyTab() {
   return (
-    <div className="fixed left-0 top-[35%] z-50 hidden md:block">
+    <div className="fixed left-6 bottom-6 z-50 flex items-center justify-center">
+      {/* Pulse Ring */}
+      <span className="absolute inline-flex h-[52px] w-[52px] sm:h-[60px] sm:w-[60px] rounded-full bg-red-500 opacity-40 animate-ping pointer-events-none"></span>
+
       <a 
         href="tel:+912040151515" 
-        className="bg-[#c70909] text-white flex flex-col items-center py-8 px-6 shadow-2xl transition-all duration-300 border border-l-0 border-white/20 select-none group hover:bg-red-700 rounded-r-2xl hover:pr-8"
+        className="relative z-10 bg-[#c70909] text-white flex items-center p-3 sm:p-4 shadow-[0_10px_40px_rgba(199,9,9,0.4)] transition-all duration-500 ease-out border border-white/20 select-none group hover:bg-red-700 rounded-full w-[52px] sm:w-[60px] hover:w-[150px] sm:hover:w-[170px] overflow-hidden"
       >
-        {/* Ambulance Badge at Top */}
-        <div className="w-8 h-8 rounded-full border border-white flex items-center justify-center mb-4 bg-white/20 group-hover:scale-110 transition-transform duration-300">
-          <Ambulance className="w-5 h-5 text-white" />
+        <div className="flex items-center justify-center min-w-[28px] group-hover:scale-110 transition-transform duration-300">
+          <Ambulance className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
         </div>
-        {/* Spelled out vertically letter-by-letter */}
-        <div className="flex flex-col items-center gap-1.5 text-[10px] font-extrabold tracking-widest uppercase leading-none font-mono">
-          <span>E</span>
-          <span>M</span>
-          <span>E</span>
-          <span>R</span>
-          <span>G</span>
-          <span>E</span>
-          <span>N</span>
-          <span>C</span>
-          <span>Y</span>
+        
+        <div className="whitespace-nowrap ml-3 font-bold uppercase tracking-widest text-[12px] sm:text-[13px] opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-75">
+          Emergency
         </div>
       </a>
     </div>

@@ -66,16 +66,16 @@ export default function HeroSection() {
       <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-black/40 to-transparent z-10" />
 
       {/* Content */}
-      <div className="relative z-20 flex flex-col items-center justify-start px-4 sm:px-6 pt-[40px] pb-[64px]">
+      <div className="relative z-20 flex flex-col items-center justify-start px-4 sm:px-6 pt-[20px] md:pt-[40px] pb-[64px]">
         <div className="w-full max-w-5xl text-center text-white flex flex-col items-center">
           
           {/* Tag */}
-          <div className="mb-2 inline-flex items-center rounded-full border border-white/20 bg-white/10 px-6 py-2.5 sm:px-8 sm:py-3 text-[11px] xs:text-sm sm:text-base backdrop-blur-md shadow-sm font-medium tracking-wide">
+          <div className="mb-2 inline-flex items-center rounded-full border border-white/20 bg-white/10 px-4 py-1.5 sm:px-8 sm:py-3 text-[10px] xs:text-xs sm:text-base backdrop-blur-md shadow-sm font-medium tracking-wide">
             24/7 Emergency & Multi-Speciality Care
           </div>
 
           {/* Heading - Added min-height classes to prevent jumping */}
-          <div className="w-full min-h-[120px] xs:min-h-[140px] sm:min-h-[160px] md:min-h-[180px] lg:min-h-[200px] flex items-center justify-center">
+          <div className="w-full min-h-[90px] xs:min-h-[110px] sm:min-h-[160px] md:min-h-[180px] lg:min-h-[200px] flex items-center justify-center">
             <h1
               className="
               text-3xl
@@ -125,7 +125,7 @@ export default function HeroSection() {
             className="
             mt-4
             sm:mt-8
-            mb-[40px]
+            mb-[20px] md:mb-[40px]
             flex
             flex-col
             sm:flex-row

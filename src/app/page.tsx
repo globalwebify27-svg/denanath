@@ -55,7 +55,7 @@ export default function Home() {
       <Trust_Credibility/>
       <DoctorsSection/>
       <PatientJourney/>
-      <EmergencyCTA/>
+      {/* <EmergencyCTA/> */}
 
       {/* 7. CLINICAL HUB SECTION */}
 

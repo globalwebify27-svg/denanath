@@ -12,7 +12,7 @@ import Link from "next/link";
 
 export default function QuickLinksCTA() {
   return (
-    <section className="relative overflow-hidden mt-12 max-w-7xl mx-auto rounded-[2.5rem] bg-gradient-to-br from-slate-50 via-white to-blue-50/50 py-10 border border-blue-100/60 shadow-[0_20px_50px_rgba(0,43,92,0.05)]">
+    <section className="relative overflow-hidden mt-12 max-w-7xl mx-auto rounded-[2.5rem] bg-gradient-to-br from-slate-50 via-white to-blue-50/50 py-[20px] md:py-10 border border-blue-100/60 shadow-[0_20px_50px_rgba(0,43,92,0.05)]">
 
       {/* Advanced Ambient Glow Effects (Medical Vibe) */}
       <div className="absolute top-[-20%] left-[-10%] h-[450px] w-[450px] rounded-full bg-gradient-to-br from-blue-200/40 to-blue-300/30 blur-[100px] pointer-events-none"></div>
@@ -65,8 +65,8 @@ export default function QuickLinksCTA() {
             {/* Subtext Description */}
             <p className="
               mt-5 max-w-xl
-              text-sm sm:text-base
-              leading-relaxed text-slate-600
+              text-[18px] font-normal
+              leading-[31px] text-slate-600
             ">
               Discover our wide range of medical specialties, expert doctors, and advanced diagnostic facilities dedicated to providing the best healthcare.
             </p>

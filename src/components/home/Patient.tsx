@@ -94,7 +94,7 @@ export default function PatientJourney() {
   };
 
   return (
-    <section className="relative overflow-hidden bg-white py-10">
+    <section className="relative overflow-hidden bg-white py-[20px] md:py-10">
       {/* Background Glows */}
       <div className="absolute top-0 left-0 h-48 w-48 sm:h-72 sm:w-72 rounded-full bg-blue-100 blur-3xl opacity-40 pointer-events-none"></div>
       <div className="absolute bottom-0 right-0 h-48 w-48 sm:h-72 sm:w-72 rounded-full bg-cyan-100 blur-3xl opacity-40 pointer-events-none"></div>
@@ -111,7 +111,7 @@ export default function PatientJourney() {
               Your Healthcare <br /> Journey Made <br />
               Simple & <span className="text-red-800">Supportive</span>
             </h2>
-            <p className="mt-4 text-sm sm:text-base text-slate-600 leading-relaxed">
+            <p className="mt-4 text-[18px] font-normal leading-[31px] text-slate-600">
               We ensure a smooth, transparent, and compassionate experience at every phase of your recovery.
             </p>
 
