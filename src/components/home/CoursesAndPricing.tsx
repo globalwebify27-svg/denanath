@@ -1,27 +1,41 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { ChevronRight, ArrowRight, Activity, FileText, Award, Users } from "lucide-react";
+import { getHomeCourses } from "@/app/actions/get-home-courses";
 
 export default function CoursesAndPricing() {
-  const leftCourses = [
-    "Joint Replacement : Core Skills In Knee Replacement Surgery 18th July 2026",
-    "Orthopaedics : Clubfoot Course 26_July_2026",
-    "Critical Edge - Comprehensive ICU Exam Preparatory Course_May 2026 to Oct 2026",
-    "Neuro Radiology Fellowship",
-    "Oncology Imaging Fellowship",
-    "Fellowship in Musculoskeletal Imaging"
-  ];
+  const [leftCourses, setLeftCourses] = useState<{title: string, link: string}[]>([
+    { title: "Practice Course for Practical Exam - Emergency Medicine", link: "#" },
+    { title: "Breastfeeding Masterclass 2nd August 2026", link: "#" },
+    { title: "AIHA from IH Lab to Clinical Practice 7th August 2026", link: "#" },
+    { title: "Joint Replacement : Core Skills In Knee Replacement Surgery 18th July 2026", link: "#" },
+    { title: "Orthopaedics : Clubfoot Course 26_July_2026", link: "#" },
+    { title: "Critical Edge - Comprehensive ICU Exam Preparatory Course_May 2026 to Oct 2026", link: "#" },
+    { title: "Neuro Radiology Fellowship", link: "/neuro-radiology-fellowship" },
+    { title: "Oncology Imaging Fellowship", link: "#" },
+    { title: "Fellowship in Musculoskeletal Imaging", link: "#" }
+  ]);
 
-  const rightCourses = [
-    "Autism Coach Brochure",
-    "Befriending Parkinsons Program",
-    "Yoga Classes Schedule",
-    "Eye Donation form",
-    "Garbha-Swasthya Helpline",
-    "Organ Donation & Transplantation"
-  ];
+  const [rightCourses, setRightCourses] = useState<{title: string, link: string}[]>([
+    { title: "Senior Registrar Vacancy Pathology", link: "https://www.dmhospital.org/cms/Media/file/Senior_Registrar_Vacancy_Pathology.pdf" },
+    { title: "Autism Coach Brochure", link: "https://www.dmhospital.org/cms/Media/file/Autism-Coach-Brochure-2025.pdf" },
+    { title: "Befriending Parkinsons Program", link: "https://www.dmhospital.org/cms/Media/file/befriending-parkinsons.pdf" },
+    { title: "Yoga Classes Schedule", link: "/yoga-centre" },
+    { title: "Eye Donation form", link: "https://www.dmhospital.org/cms/Media/file/eye_donation_form.pdf" },
+    { title: "Garbha-Swasthya Helpline", link: "#" },
+    { title: "Organ Donation & Transplantation", link: "#" }
+  ]);
+
+  useEffect(() => {
+    getHomeCourses().then((data) => {
+      if (data) {
+        setLeftCourses(data.leftCourses);
+        setRightCourses(data.rightCourses);
+      }
+    }).catch(console.error);
+  }, []);
 
   return (
     <section className="relative w-full py-[20px] md:py-10 bg-white border-t border-slate-100 overflow-hidden z-20">
@@ -137,49 +151,64 @@ export default function CoursesAndPricing() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
           {/* Left Column Card */}
           <div className="bg-white rounded-3xl p-6 sm:p-10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 transition-shadow duration-300 hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)]">
-            <h3 className="text-lg font-bold text-slate-800 mb-6 flex items-center gap-3 border-b border-slate-100 pb-4">
+            <h3 className="text-lg font-bold text-slate-800 mb-0 flex items-center gap-3 border-b border-slate-100 pb-2">
               <div className="w-8 h-8 rounded-full bg-red-50 flex items-center justify-center shrink-0">
                 <div className="w-2.5 h-2.5 rounded-full bg-red-500"></div>
               </div>
               Upcoming Courses
             </h3>
-            <ul className="space-y-2">
-              {leftCourses.map((course, idx) => (
-                <li key={idx} className="group">
-                  <Link href="#" className="flex items-start gap-3.5 p-3 rounded-xl border border-transparent transition-all duration-300 hover:bg-white hover:shadow-md hover:border-slate-100 hover:-translate-y-0.5">
-                    <div className="mt-0.5 w-5 h-5 rounded-full bg-white border border-slate-200 flex items-center justify-center shrink-0 group-hover:border-[#D30039]/30 group-hover:bg-[#D30039]/5 transition-colors">
-                      <ChevronRight className="w-3 h-3 text-slate-400 group-hover:text-[#D30039] transition-colors" />
-                    </div>
-                    <span className="text-[16px] text-slate-600 group-hover:text-[#D30039] font-medium leading-relaxed transition-colors">
-                      {course}
-                    </span>
-                  </Link>
-                </li>
-              ))}
+            <ul className="space-y-0">
+              {leftCourses.map((course, idx) => {
+                const hasDetails = (course.content && course.content.trim() !== "") || (course.gallery && course.gallery.length > 0);
+                const customLink = course.link && course.link.trim() !== "" ? course.link : null;
+                const href = customLink ? customLink : (hasDetails ? `/courses/${course.id}` : `/courses/${course.id}`);
+                return (
+                  <li key={course.id || idx} className="group">
+                    <Link href={href} className="flex items-start gap-3.5 py-1.5 px-3 rounded-xl border border-transparent transition-all duration-300 hover:bg-white hover:shadow-md hover:border-slate-100 hover:-translate-y-0.5">
+                      <div className="mt-0.5 w-5 h-5 rounded-full bg-white border border-slate-200 flex items-center justify-center shrink-0 group-hover:border-[#D30039]/30 group-hover:bg-[#D30039]/5 transition-colors">
+                        <ChevronRight className="w-3 h-3 text-slate-400 group-hover:text-[#D30039] transition-colors" />
+                      </div>
+                      <span className="text-[16px] text-slate-600 group-hover:text-[#D30039] font-medium leading-relaxed transition-colors">
+                        {course.title}
+                      </span>
+                    </Link>
+                  </li>
+                );
+              })}
             </ul>
           </div>
 
           {/* Right Column Card */}
           <div className="bg-white rounded-3xl p-6 sm:p-10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 transition-shadow duration-300 hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)]">
-            <h3 className="text-lg font-bold text-slate-800 mb-6 flex items-center gap-3 border-b border-slate-100 pb-4">
+            <h3 className="text-lg font-bold text-slate-800 mb-0 flex items-center gap-3 border-b border-slate-100 pb-2">
               <div className="w-8 h-8 rounded-full bg-teal-50 flex items-center justify-center shrink-0">
                 <div className="w-2.5 h-2.5 rounded-full bg-[#007a87]"></div>
               </div>
               Programs & Forms
             </h3>
-            <ul className="space-y-2">
-              {rightCourses.map((course, idx) => (
-                <li key={idx} className="group">
-                  <Link href="#" className="flex items-start gap-3.5 p-3 rounded-xl border border-transparent transition-all duration-300 hover:bg-white hover:shadow-md hover:border-slate-100 hover:-translate-y-0.5">
-                    <div className="mt-0.5 w-5 h-5 rounded-full bg-white border border-slate-200 flex items-center justify-center shrink-0 group-hover:border-[#007a87]/30 group-hover:bg-[#007a87]/5 transition-colors">
-                      <ChevronRight className="w-3 h-3 text-slate-400 group-hover:text-[#007a87] transition-colors" />
-                    </div>
-                    <span className="text-[16px] text-slate-600 group-hover:text-[#007a87] font-medium leading-relaxed transition-colors">
-                      {course}
-                    </span>
-                  </Link>
-                </li>
-              ))}
+            <ul className="space-y-0">
+              {rightCourses.map((course, idx) => {
+                const hasDetails = (course.content && course.content.trim() !== "") || (course.gallery && course.gallery.length > 0);
+                const customLink = course.link && course.link.trim() !== "" ? course.link : null;
+                const href = customLink ? customLink : (hasDetails ? `/courses/${course.id}` : `/courses/${course.id}`);
+                
+                const isExternal = href.startsWith("http") || href.includes(".pdf");
+                const target = isExternal ? "_blank" : undefined;
+                const rel = isExternal ? "noopener noreferrer" : undefined;
+                
+                return (
+                  <li key={course.id || idx} className="group">
+                    <Link href={href} target={target} rel={rel} className="flex items-start gap-3.5 py-1.5 px-3 rounded-xl border border-transparent transition-all duration-300 hover:bg-white hover:shadow-md hover:border-slate-100 hover:-translate-y-0.5">
+                      <div className="mt-0.5 w-5 h-5 rounded-full bg-white border border-slate-200 flex items-center justify-center shrink-0 group-hover:border-[#007a87]/30 group-hover:bg-[#007a87]/5 transition-colors">
+                        <ChevronRight className="w-3 h-3 text-slate-400 group-hover:text-[#007a87] transition-colors" />
+                      </div>
+                      <span className="text-[16px] text-slate-600 group-hover:text-[#007a87] font-medium leading-relaxed transition-colors">
+                        {course.title}
+                      </span>
+                    </Link>
+                  </li>
+                );
+              })}
             </ul>
           </div>
         </div>

@@ -39,7 +39,7 @@ export default async function ImplantPricingPage() {
     <div className="min-h-screen bg-[#f8fafc]">
       
       {/* 1. Hero Section */}
-      <div className="relative bg-gradient-to-r from-[#002b5c] to-[#005f6b] pt-24 pb-12 overflow-hidden">
+      <div className="relative bg-gradient-to-r from-[#002b5c] to-[#005f6b] pt-12 pb-12 overflow-hidden">
         <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-white/5 rounded-full blur-[120px] pointer-events-none" />
         <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-[#00a69c]/20 rounded-full blur-[100px] pointer-events-none" />
         

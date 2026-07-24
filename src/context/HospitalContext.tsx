@@ -177,7 +177,7 @@ const initialDoctors: Doctor[] = [
     rating: 4.8,
     availableDays: ["Tuesday", "Thursday", "Saturday"],
     timings: "11:00 AM - 04:00 PM",
-    image: "https://images.unsplash.com/photo-1594824813573-246434de83fb?q=80&w=300&auto=format&fit=crop",
+    image: "https://www.dmhospital.org/images/Hospital/Doctor/Small-DMH/102_Pic.jpg",
     fee: 1200,
     bio: "Dr. Anjali Deshpande is an acclaimed brain specialist, focusing on micro-surgical tumor excisions, epilepsy surgeries, and precision spine rehabilitation."
   },

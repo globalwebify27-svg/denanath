@@ -62,6 +62,82 @@ export default function PublicationsClientPage({ pageData }: { pageData: any }) 
     }
   }, []);
 
+  useEffect(() => {
+    const container = document.querySelector('.prose');
+    if (!container) return;
+
+    const pubContainer = container.querySelector('.space-y-6');
+    if (!pubContainer) return;
+
+    const archiveGrid = document.querySelector('.grid.grid-cols-2') || document.querySelector('.grid.grid-cols-4');
+    if (!archiveGrid) return;
+    const buttons = archiveGrid.querySelectorAll('a');
+
+    const handleClick = (e: Event) => {
+      e.preventDefault();
+      const btn = e.currentTarget as HTMLAnchorElement;
+      
+      const isActive = btn.classList.contains('!bg-[#003360]');
+      
+      buttons.forEach(b => {
+        b.classList.remove('!bg-[#003360]', '!text-white');
+      });
+      
+      if (isActive) {
+         Array.from(pubContainer.children).forEach(child => {
+           (child as HTMLElement).style.display = '';
+         });
+         return;
+      }
+
+      btn.classList.add('!bg-[#003360]', '!text-white');
+
+      const btnText = btn.textContent || "";
+      const yearsMatch = btnText.match(/(\d{4})\s*-\s*(\d{4})/);
+      if (!yearsMatch) return;
+      const startYear = yearsMatch[1];
+      const endYear = yearsMatch[2];
+
+      let currentYearBlock = false;
+      let hasSeenYearHeader = false;
+      
+      Array.from(pubContainer.children).forEach((child) => {
+        if (child.tagName === 'H4') {
+          const text = child.textContent || "";
+          if (/20\d{2}/.test(text)) {
+            hasSeenYearHeader = true;
+            if (text.includes(startYear) && text.includes(endYear)) {
+              currentYearBlock = true;
+            } else {
+              currentYearBlock = false;
+            }
+          }
+        }
+        
+        if (!hasSeenYearHeader || currentYearBlock) {
+          (child as HTMLElement).style.display = '';
+        } else {
+          (child as HTMLElement).style.display = 'none';
+        }
+      });
+      
+      const target = document.querySelector('.space-y-12 h3');
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    };
+
+    buttons.forEach(btn => {
+      btn.addEventListener('click', handleClick);
+    });
+
+    return () => {
+      buttons.forEach(btn => {
+        btn.removeEventListener('click', handleClick);
+      });
+    };
+  }, [pageData.content]);
+
   return (
     <div className="min-h-screen bg-[#f8fafc] font-sans selection:bg-teal-500/30">
       <div className="w-full bg-[#002b5c] relative overflow-hidden">

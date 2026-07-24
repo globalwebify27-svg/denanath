@@ -1,47 +1,28 @@
 const fs = require('fs');
-const path = require('path');
 
-const directory = path.join(__dirname, 'src', 'app', 'admin', '(dashboard)');
+const filesToUpdate = [
+  "c:/Users/91870/Desktop/globalwebify/denanath/src/app/events/client-page.tsx",
+  "c:/Users/91870/Desktop/globalwebify/denanath/src/app/ec-approval/page.tsx",
+  "c:/Users/91870/Desktop/globalwebify/denanath/src/app/disclaimer/page.tsx",
+  "c:/Users/91870/Desktop/globalwebify/denanath/src/app/(academics)/laryngology-fellowship/client-page.tsx",
+  "c:/Users/91870/Desktop/globalwebify/denanath/src/app/(academics)/vasant-nirmala-oswal-centre/client-page.tsx",
+  "c:/Users/91870/Desktop/globalwebify/denanath/src/app/(academics)/neuro-radiology-fellowship/client-page.tsx"
+];
 
-const pattern = /<div className="mb-8">\s*<h1 className="text-\[36px\] font-\[800\] leading-\[40px\] text-\[#002b5c\] tracking-tight mb-2">(.*?)<\/h1>\s*<p className="text-\[14px\] font-\[600\] text-gray-500">(.*?)<\/p>\s*<\/div>/g;
+const targetPattern1 = /className="relative bg-gradient-to-r from-\[#004d56\] to-\[#007b8a\] pt-24 pb-16 overflow-hidden"/g;
+const replacement1 = 'className="w-full bg-[#002b5c] relative overflow-hidden pt-24 pb-16"';
 
-function replaceHeader(match, title, desc) {
-    return `<div className="mb-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 bg-white p-6 md:p-10 rounded-3xl shadow-sm border border-slate-100 relative overflow-hidden group">
-        <div className="absolute top-0 left-0 w-2 h-full bg-gradient-to-b from-[#002b5c] to-[#007a87]"></div>
-        <div className="z-10 relative">
-          <h1 className="text-[32px] md:text-[40px] font-black text-[#002b5c] tracking-tight leading-tight mb-2 flex items-center gap-3">
-            ${title}
-          </h1>
-          <p className="text-[15px] font-medium text-slate-500 max-w-xl leading-relaxed">
-            ${desc}
-          </p>
-        </div>
-      </div>`;
-}
+const targetPattern2 = /\{\/\* Abstract Background Shapes \*\/\}[\s\S]*?<div className="absolute bottom-0 left-0 w-\[400px\] h-\[400px\] bg-\[#d9232d\]\/20 rounded-full blur-\[100px\] pointer-events-none" \/>/g;
+const replacement2 = `<div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 mix-blend-overlay pointer-events-none" />\n        <div className="absolute right-0 top-0 w-1/2 h-full bg-gradient-to-l from-teal-500/20 to-transparent pointer-events-none" />`;
 
-let updatedCount = 0;
-
-function walkDir(dir) {
-    const files = fs.readdirSync(dir);
-    for (const file of files) {
-        const fullPath = path.join(dir, file);
-        const stat = fs.statSync(fullPath);
-        if (stat.isDirectory()) {
-            walkDir(fullPath);
-        } else if (file === 'page.tsx') {
-            if (fullPath.includes('about-hospital')) continue;
-            
-            let content = fs.readFileSync(fullPath, 'utf8');
-            
-            if (pattern.test(content)) {
-                content = content.replace(pattern, replaceHeader);
-                fs.writeFileSync(fullPath, content, 'utf8');
-                updatedCount++;
-                console.log(`Updated ${fullPath}`);
-            }
-        }
-    }
-}
-
-walkDir(directory);
-console.log(`Total files updated: ${updatedCount}`);
+filesToUpdate.forEach(file => {
+  if (fs.existsSync(file)) {
+    let content = fs.readFileSync(file, 'utf8');
+    content = content.replace(targetPattern1, replacement1);
+    content = content.replace(targetPattern2, replacement2);
+    fs.writeFileSync(file, content, 'utf8');
+    console.log(`Updated: ${file}`);
+  } else {
+    console.log(`File not found: ${file}`);
+  }
+});

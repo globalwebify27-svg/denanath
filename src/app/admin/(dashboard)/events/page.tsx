@@ -6,11 +6,36 @@ import EventsClientForm from "./client-form";
 
 export const dynamic = "force-dynamic";
 
+function normalizeEventsData(raw: any) {
+  if (!raw) return { events: [], seoMetaTitle: "", seoMetaDescription: "", seoKeywords: "" };
+  if (Array.isArray(raw.events)) {
+    return raw;
+  }
+  // If it's the old single-event format, wrap it
+  if (raw.title) {
+    const { seoMetaTitle, seoMetaDescription, seoKeywords, ...eventData } = raw;
+    return {
+      seoMetaTitle: seoMetaTitle || "",
+      seoMetaDescription: seoMetaDescription || "",
+      seoKeywords: seoKeywords || "",
+      events: [
+        {
+          id: "event-legacy",
+          ...eventData
+        }
+      ]
+    };
+  }
+  return { events: [], seoMetaTitle: "", seoMetaDescription: "", seoKeywords: "" };
+}
+
 export default async function AdminEventsPage() {
   const setting = await prisma.siteSetting.findUnique({ where: { key: 'page_events' } });
 
-  let eventsData: any = {};
-  try { if (setting) eventsData = JSON.parse(setting.value); } catch (e) {}
+  let rawData: any = {};
+  try { if (setting) rawData = JSON.parse(setting.value); } catch (e) {}
+  
+  const eventsData = normalizeEventsData(rawData);
 
   async function saveEventsData(formData: FormData) {
     "use server";
@@ -18,12 +43,16 @@ export default async function AdminEventsPage() {
     const rawJson = formData.get("eventsJson") as string;
     
     try {
-      const parsed = JSON.parse(rawJson);
-      parsed.seoMetaTitle = formData.get("seoMetaTitle") || "";
-      parsed.seoMetaDescription = formData.get("seoMetaDescription") || "";
-      parsed.seoKeywords = formData.get("seoKeywords") || "";
+      const parsedEvents = JSON.parse(rawJson);
       
-      const finalJson = JSON.stringify(parsed);
+      const newSettings = {
+        seoMetaTitle: formData.get("seoMetaTitle") || "",
+        seoMetaDescription: formData.get("seoMetaDescription") || "",
+        seoKeywords: formData.get("seoKeywords") || "",
+        events: parsedEvents
+      };
+      
+      const finalJson = JSON.stringify(newSettings);
       await prisma.siteSetting.upsert({
         where: { key: 'page_events' },
         update: { value: finalJson },
@@ -58,7 +87,7 @@ export default async function AdminEventsPage() {
           </div>
         </div>
 
-        <EventsClientForm initialData={eventsData} />
+        <EventsClientForm initialEvents={eventsData.events} />
       
         {/* Card: SEO Settings */}
         <div className="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden group hover:shadow-md transition-shadow duration-300">

@@ -32,7 +32,10 @@ const MENU_ITEMS = [
   {
     name: "Home Settings",
     icon: <Globe size={20} />,
-    href: "/admin/home-settings"
+    links: [
+      { name: "Home Page Settings", href: "/admin/home-settings" },
+      { name: "Home Course", href: "/admin/home-settings/home-course" }
+    ]
   },
   {
     name: "News & Events",
@@ -63,6 +66,7 @@ const MENU_ITEMS = [
       { name: "Unique Features", href: "/admin/about/unique-features" },
       { name: "Foreign Contribution", href: "/admin/about/foreign-contribution" },
       { name: "Charity Details", href: "/admin/about/charity-details" },
+      { name: "Disclaimer", href: "/admin/about/disclaimer" },
     ]
   },
   {
@@ -78,6 +82,7 @@ const MENU_ITEMS = [
       { name: "Patient Rights", href: "/admin/patient-visitors/patient-rights" },
       { name: "Photos", href: "/admin/patient-visitors/gallery-photos" },
       { name: "Videos", href: "/admin/patient-visitors/gallery-videos" },
+      { name: "OPD Schedule", href: "/admin/patient-visitors/opd-schedule" },
     ]
   },
   {
@@ -101,6 +106,7 @@ const MENU_ITEMS = [
       { name: "Annual Reports", href: "/admin/research/annual-reports" },
       { name: "Sponsors & CROs", href: "/admin/research/sponsors-cros" },
       { name: "Contact Us", href: "/admin/research/research-contact" },
+      { name: "EC Approval", href: "/admin/research/ec-approval" },
     ]
   },
   {

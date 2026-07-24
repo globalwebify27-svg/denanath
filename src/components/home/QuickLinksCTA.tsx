@@ -75,13 +75,15 @@ export default function QuickLinksCTA() {
             <div className="mt-8 flex flex-wrap gap-4">
 
               <div className="
+                group
                 rounded-2xl border border-blue-100
                 bg-white/90 backdrop-blur-md
                 px-6 py-5
                 shadow-[0_4px_20px_rgba(0,0,0,0.02)]
+                transition-all duration-300
               ">
                 <div className="flex items-center gap-3">
-                  <div className="bg-blue-50 p-2 rounded-xl text-[#002b5c]">
+                  <div className="bg-blue-50 p-2 rounded-xl text-[#002b5c] transition-colors duration-300 group-hover:text-[#9F0712]">
                     <Stethoscope size={24} />
                   </div>
                   <div>
@@ -92,13 +94,15 @@ export default function QuickLinksCTA() {
               </div>
 
               <div className="
+                group
                 rounded-2xl border border-blue-100
                 bg-white/90 backdrop-blur-md
                 px-6 py-5
                 shadow-[0_4px_20px_rgba(0,0,0,0.02)]
+                transition-all duration-300
               ">
                 <div className="flex items-center gap-3">
-                  <div className="bg-blue-50 p-2 rounded-xl text-[#002b5c]">
+                  <div className="bg-blue-50 p-2 rounded-xl text-[#002b5c] transition-colors duration-300 group-hover:text-[#9F0712]">
                     <Activity size={24} />
                   </div>
                   <div>

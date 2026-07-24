@@ -7,8 +7,10 @@ import QuickAccessWidget from "./home/QuickAccessWidget";
 
 export default function ClientLayoutWrapper({
   children,
+  latestEvent,
 }: {
   children: React.ReactNode;
+  latestEvent?: any;
 }) {
   const pathname = usePathname();
   
@@ -28,7 +30,7 @@ export default function ClientLayoutWrapper({
       <QuickAccessWidget />
       <Navbar />
       <main className="flex-grow flex flex-col">{children}</main>
-      <Footer />
+      <Footer latestEvent={latestEvent} />
     </>
   );
 }

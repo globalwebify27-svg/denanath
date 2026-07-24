@@ -109,12 +109,12 @@ export default function SpecialtyClinics() {
         </div>
 
         <div className="relative z-10 mt-3">
-          <h3 className="text-[11px] sm:text-[12px] font-bold text-slate-800 tracking-tight leading-snug group-hover:text-emerald-700 transition-colors duration-300 line-clamp-2">
+          <h3 className="text-[13px] sm:text-[15px] font-bold text-slate-800 tracking-tight leading-snug group-hover:text-emerald-700 transition-colors duration-300 line-clamp-2">
             {clinic.name}
           </h3>
-          <div className="flex items-center gap-1 text-[8px] font-bold text-emerald-600 uppercase tracking-widest mt-1.5 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
+          <div className="flex items-center gap-1 text-[10px] sm:text-[11px] font-bold text-emerald-600 uppercase tracking-widest mt-1.5 opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
             <span>Explore</span>
-            <ArrowRight className="w-2.5 h-2.5" />
+            <ArrowRight className="w-3 h-3" />
           </div>
         </div>
 

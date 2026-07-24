@@ -1,9 +1,13 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
-async function test() {
-  const res = await prisma.siteSetting.findUnique({where: {key: 'page_research_publications'}});
-  const parsed = JSON.parse(res.value);
-  console.log('Contains 2017-2018?', parsed.content.includes('Publications - April 2017 - March 2018'));
-  console.log('Contains 2016-2017?', parsed.content.includes('April 2016 - March 2017'));
+async function main() {
+  const d = await prisma.siteSetting.findUnique({where:{key:'page_research_publications'}});
+  const data = JSON.parse(d.value);
+  const lines = data.content.split('\n');
+  for (let i = 0; i < lines.length; i++) {
+    if (lines[i].includes('Publications: April')) {
+      console.log('Header at line', i, ':', lines[i].trim());
+    }
+  }
 }
-test().catch(console.error).finally(()=>prisma.$disconnect());
+main().finally(() => process.exit(0));

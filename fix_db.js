@@ -1,27 +1,60 @@
 const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient();
+const fs = require('fs');
 
-async function fix() {
-  const d = await prisma.department.findUnique({ where: { id: 'cmpxpxqmk0000p31mm8eifmtg' } });
-  if (!d) return;
+async function run() {
+  const prisma = new PrismaClient();
+  const d = await prisma.siteSetting.findUnique({where:{key:'page_research_publications'}});
+  let data = JSON.parse(d.value);
+  let content = data.content;
 
-  let desc = d.description;
+  const lines = content.split('\n');
+  
+  // Find where to insert 2023-2024
+  let insert2023 = -1;
+  let insert2022 = -1;
+  
+  for(let j=0; j<lines.length; j++) {
+    if (lines[j].includes('font-semibold text-slate-800')) {
+      const yrM = lines[j].match(/20\d{2}/);
+      if (yrM) {
+         const yr = parseInt(yrM[0]);
+         if (yr === 2023 && insert2023 === -1) {
+           // backtrack to the start of this publication div
+           for (let k = j; k >= 0; k--) {
+             if (lines[k].includes('<div class="bg-white border border-slate-200')) {
+               insert2023 = k;
+               break;
+             }
+           }
+         }
+         if (yr === 2022 && insert2022 === -1) {
+           for (let k = j; k >= 0; k--) {
+             if (lines[k].includes('<div class="bg-white border border-slate-200')) {
+               insert2022 = k;
+               break;
+             }
+           }
+         }
+      }
+    }
+  }
 
-  desc = desc.replace(
-    /<div class="grid grid-cols-2 md:grid-cols-4 gap-4">[\s\S]*?<div class="bg-teal-50 p-4 rounded-xl text-center font-semibold text-\[#007a87\]">Hepa filter isolation<\/div>[\s\S]*?<div class="bg-teal-50 p-4 rounded-xl text-center font-semibold text-\[#007a87\]">Fribroscan<\/div>[\s\S]*?<div class="bg-teal-50 p-4 rounded-xl text-center font-semibold text-\[#007a87\]">Rapid infuser<\/div>[\s\S]*?<div class="bg-teal-50 p-4 rounded-xl text-center font-semibold text-\[#007a87\]">State of Art Dedicated Transplant Operation Theatres and Transplant ICUs<\/div>[\s\S]*?<\/div>/i,
-    '<ul class="grid grid-cols-2 md:grid-cols-4 gap-4 list-none pl-0 m-0"><li class="bg-teal-50 p-4 rounded-xl text-center font-semibold text-[#007a87] shadow-sm">Hepa filter isolation</li><li class="bg-teal-50 p-4 rounded-xl text-center font-semibold text-[#007a87] shadow-sm">Fribroscan</li><li class="bg-teal-50 p-4 rounded-xl text-center font-semibold text-[#007a87] shadow-sm">Rapid infuser</li><li class="bg-teal-50 p-4 rounded-xl text-center font-semibold text-[#007a87] shadow-sm">State of Art Dedicated Transplant Operation Theatres and Transplant ICUs</li></ul>'
-  );
-
-  desc = desc.replace(
-    /<div class="mt-4 p-4 border border-slate-200 rounded-xl bg-slate-50">[\s\S]*?<p class="font-medium text-slate-800">Fatty liver clinic, Nutrition clinic & dietary advice Transplant counselling center<\/p>[\s\S]*?<\/div>/i,
-    '<p>Fatty liver clinic, Nutrition clinic & dietary advice Transplant counselling center</p>'
-  );
-
-  // Also remove any existing <p class="..."> injected by styleFacilities in case they already saved it
-  desc = desc.replace(/<p class="font-medium text-slate-800 p-4 border border-slate-200 rounded-xl bg-slate-50 mt-4">([\s\S]*?)<\/p>/gi, '<p>$1</p>');
-
-  await prisma.$executeRawUnsafe('UPDATE Department SET description = ? WHERE id = ?', desc, 'cmpxpxqmk0000p31mm8eifmtg');
-  console.log('Updated!');
+  if (insert2023 !== -1 && insert2022 !== -1) {
+    // Insert from bottom to top so indices don't shift!
+    if (insert2022 > insert2023) {
+      lines.splice(insert2022, 0, '\n<h4 class="text-base md:text-lg font-bold text-[#002b5c] mb-6 mt-12 border-t border-slate-100 pt-8">Publications: April 2022 \u2013 March 2023</h4>\n');
+      lines.splice(insert2023, 0, '\n<h4 class="text-base md:text-lg font-bold text-[#002b5c] mb-6 mt-12 border-t border-slate-100 pt-8">Publications: April 2023 \u2013 March 2024</h4>\n');
+    }
+    
+    data.content = lines.join('\n');
+    await prisma.siteSetting.update({
+      where: { key: 'page_research_publications' },
+      data: { value: JSON.stringify(data) }
+    });
+    console.log("Successfully inserted headers for 2022 and 2023.");
+  } else {
+    console.log("Could not find insertion points.");
+    console.log("2023:", insert2023, "2022:", insert2022);
+  }
 }
-
-fix().catch(console.error).finally(() => process.exit(0));
+run().finally(() => process.exit(0));

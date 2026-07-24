@@ -53,11 +53,25 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  let latestEvent = null;
+  try {
+    const setting = await prisma.siteSetting.findUnique({ where: { key: 'page_events' } });
+    if (setting && setting.value) {
+      const parsedData = JSON.parse(setting.value);
+      const eventsList = parsedData.events || [];
+      if (eventsList && eventsList.length > 0) {
+        latestEvent = eventsList[eventsList.length - 1];
+      }
+    }
+  } catch (error) {
+    console.error("Error fetching latest event for footer:", error);
+  }
+
   return (
     <html lang="en" className="h-full scroll-smooth antialiased" suppressHydrationWarning>
       <body 
@@ -86,7 +100,7 @@ export default function RootLayout({
         </Script>
         <HospitalProvider>
           <div className="flex flex-col min-h-screen w-full overflow-x-hidden relative">
-            <ClientLayoutWrapper>
+            <ClientLayoutWrapper latestEvent={latestEvent}>
               {children}
             </ClientLayoutWrapper>
           </div>

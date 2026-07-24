@@ -34,11 +34,11 @@ export default function PartnersAccreditation() {
               <div className="absolute inset-0 bg-gradient-to-t from-white via-white/20 to-transparent"></div>
             </div>
 
-            <div className="relative z-10 space-y-6 p-8 pt-2 sm:p-10 sm:pt-4 flex-1 flex flex-col">
+            <div className="relative z-10 space-y-3 p-6 pt-2 sm:p-8 sm:pt-4 flex-1 flex flex-col">
               <h3 className="text-xl sm:text-2xl font-extrabold text-[#002b5c] tracking-tight">
                 DMH - A Trusted Healthcare Partner
               </h3>
-              <p className="text-slate-500 text-[16px] font-normal leading-[31px] flex-1">
+              <p className="text-slate-500 text-[16px] font-normal leading-[31px]">
                 &ldquo;Combining professional competence with a human touch to deliver ethical, rational care and medico-social services.&rdquo;
               </p>
               
@@ -131,11 +131,11 @@ export default function PartnersAccreditation() {
               <div className="absolute inset-0 bg-gradient-to-t from-white via-white/20 to-transparent"></div>
             </div>
 
-            <div className="relative z-10 space-y-6 p-8 pt-2 sm:p-10 sm:pt-4 flex-1 flex flex-col">
+            <div className="relative z-10 space-y-3 p-6 pt-2 sm:p-8 sm:pt-4 flex-1 flex flex-col">
               <h3 className="text-xl sm:text-2xl font-extrabold text-[#002b5c] tracking-tight">
                 I&apos;m A Patient
               </h3>
-              <p className="text-slate-500 text-[16px] font-normal leading-[31px] flex-1">
+              <p className="text-slate-500 text-[16px] font-normal leading-[31px]">
                 Your safety is our priority with Pune&rsquo;s pioneering Emergency Medical Service, combining international-standard infrastructure and expert care when every second counts.
               </p>
               

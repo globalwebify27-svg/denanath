@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { ChevronRight, ShieldAlert } from "lucide-react";
+import { ChevronRight, ShieldAlert, X } from "lucide-react";
 
 export default function PatientRightsClientPage({ pageData }: { pageData: any }) {
   const patientGuideOptions = [
@@ -18,6 +18,7 @@ export default function PatientRightsClientPage({ pageData }: { pageData: any })
   ];
 
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const [isZoomed, setIsZoomed] = useState(false);
 
   useEffect(() => {
     if (window.innerWidth < 1024 && scrollContainerRef.current) {
@@ -100,11 +101,20 @@ export default function PatientRightsClientPage({ pageData }: { pageData: any })
                 
               </div>
               <div className="space-y-6 mt-8">
-                <div className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
+                <div 
+                  className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm relative group cursor-pointer"
+                  onClick={() => setIsZoomed(true)}
+                >
+                  <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center z-10">
+                    <span className="bg-white/95 text-[#002b5c] px-5 py-2.5 rounded-full font-bold shadow-lg text-sm flex items-center gap-2">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+                      Click to Zoom
+                    </span>
+                  </div>
                   <img 
                     src={imageUrl} 
                     alt="Patient Rights & Responsibilities" 
-                    className="w-full h-auto object-contain mix-blend-multiply transform-gpu will-change-transform [backface-visibility:hidden]"
+                    className="w-full h-auto object-contain mix-blend-multiply transform-gpu will-change-transform [backface-visibility:hidden] transition-transform duration-500 group-hover:scale-[1.02]"
                   />
                 </div>
               </div>
@@ -114,6 +124,31 @@ export default function PatientRightsClientPage({ pageData }: { pageData: any })
 
         </div>
       </div>
+
+      {/* Zoom Modal */}
+      {isZoomed && (
+        <div 
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 sm:p-8 animate-in fade-in duration-200"
+          onClick={() => setIsZoomed(false)}
+        >
+          <div className="relative max-w-7xl w-full h-[90vh] flex flex-col animate-in zoom-in-95 duration-200">
+            <button 
+              className="absolute -top-12 sm:-top-4 sm:-right-12 right-0 text-white/70 hover:text-white transition-colors p-2 hover:bg-white/10 rounded-full z-10"
+              onClick={(e) => { e.stopPropagation(); setIsZoomed(false); }}
+            >
+              <X className="w-8 h-8" />
+            </button>
+            <div className="bg-white rounded-xl shadow-2xl w-full h-full overflow-y-auto flex flex-col items-center">
+              <img 
+                src={imageUrl} 
+                alt="Patient Rights & Responsibilities Zoomed" 
+                className="w-full h-auto sm:min-w-[800px] cursor-pointer"
+                onClick={(e) => { e.stopPropagation(); setIsZoomed(false); }}
+              />
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

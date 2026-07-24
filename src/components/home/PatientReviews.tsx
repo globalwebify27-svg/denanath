@@ -16,58 +16,49 @@ export default function PatientReviews() {
   // Expanded patient list (Total 6)
   const reviews = [
     {
-      name: "Mukund Deshpande",
-      type: "Cardiac Care Patient",
-      treatment: "Double Bypass Surgery",
-      text: "The ethical care here is unmatched. Dr. Keskar and the cardiac team did not just perform a highly successful surgery; they supported my family at every step. Truly Pune's finest medical landmark.",
-      avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=150&auto=format&fit=crop",
-      rating: 5,
-      date: "October 2025"
-    },
-    {
-      name: "Priya Sharma",
-      type: "Maternity & Pediatrics",
-      treatment: "Neonatal & ICU Care",
-      text: "The neonatal ICU nurses are absolute angels. They looked after my newborn daughter with unbelievable tenderness and medical precision. The transparency in billing and communication was highly reassuring.",
-      avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=150&auto=format&fit=crop",
-      rating: 5,
-      date: "January 2026"
-    },
-    {
-      name: "Dr. Arvind Joshi",
-      type: "Orthopaedics Patient",
-      treatment: "Total Knee Replacement",
-      text: "Being a medical professional myself, I was critical of protocols. DMH's post-operative recovery suite, high-speed rehab plans, and zero-infection theater standards are on par with international benchmarks.",
-      avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=150&auto=format&fit=crop",
-      rating: 5,
-      date: "March 2026"
-    },
-    {
-      name: "Ananya Patil",
-      type: "Neurology Patient",
-      treatment: "Brain Tumor Excision",
-      text: "The neurology team was exceptional. From the initial MRI to the complex surgery, everything was explained with immense patience. I owe my new life to Dr. Sharma and his incredible surgical team.",
+      name: "Mrs Rajashri Anil Gavali",
+      type: "",
+      treatment: "Cancer Surgery",
+      text: "Generous help from Charity department made treatment possible. My son was diagnosed with cancer and doctor told to operate immediately. Surgery was successful but after surgery doctor recommended 6 cycles of chemotherapy which was non affordable. I approached charity department for monetary help. They verified the documents and after completing the formalities and with financial support I could avail the treatment. I am grateful to Charity department and doctors who helped me in all ways to recover my son from Cancer.",
       avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=150&auto=format&fit=crop",
       rating: 5,
-      date: "December 2025"
+      date: "Recent"
     },
     {
-      name: "Rajesh Shinde",
-      type: "Nephrology Patient",
-      treatment: "Kidney Transplant",
-      text: "Finding a matching donor was a journey, but the hospital's transplant coordinator made the legal and medical paperwork seamless. The post-op isolation rooms are simply world-class.",
+      name: "Mrs Himali Pimpalkhare",
+      type: "",
+      treatment: "Liver Transplant",
+      text: "Great support received from staff and doctors during transplant surgery. My aunty was admitted for Liver Transplant surgery which was unfortunately not successful but I wasn't to give special thanks to Doctors for their generous support. I want to appreciate the response received from Blood bank, where many known and unknown donors came forward to help when blood transfusion was required. Last but not the least the transplant co-ordinator and Billing staff also co-operated a lot for smooth transactions during admission and after discharge.",
+      avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=150&auto=format&fit=crop",
+      rating: 5,
+      date: "Recent"
+    },
+    {
+      name: "Mr Arvind Chintaman Daware",
+      type: "",
+      treatment: "Gall Bladder Surgery",
+      text: "Where there is hope there is faith. I was suffering from gall bladder stones and in Ahmednagar consulted various doctors and did numerous tests but due to age and co-morbidities doctors denied to do surgery. Due to abdominal pain I was frustrated, one of doctors recommended me to go to Deenanath Mangeshkar Hospital and Research Center. After consultation surgery was done successfully. I am grateful to all doctors and staff who were involved in this surgery. All nurses in ward, doctors and reception staff are very polite and guide in proper manner whenever required.",
+      avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=150&auto=format&fit=crop",
+      rating: 5,
+      date: "Recent"
+    },
+    {
+      name: "Mr Shankar Gundal",
+      type: "",
+      treatment: "ICU & Hemodialysis",
+      text: "Prompt action by doctors and excellent service by Mediclaim department. My wife got admitted in ICU for Hemodialysis, I appreciate the quick decision taken by doctors of admission and good treatment given. During discharge immediate help was provided by Mediclaim department for approval and excellent service during the complete process. I am thankful for the chance you gave me to appreciate you all.",
       avatar: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=150&auto=format&fit=crop",
       rating: 5,
-      date: "February 2026"
+      date: "Recent"
     },
     {
-      name: "Sunita Rao",
-      type: "Oncology Care",
-      treatment: "Chemotherapy Cycle",
-      text: "Cancer treatment is physically and emotionally draining. The nursing staff at the day-care chemo ward are incredibly compassionate. They always ensured I was comfortable and pain-free.",
-      avatar: "https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=150&auto=format&fit=crop",
+      name: "Mr Dilip Ramchandra Kale",
+      type: "",
+      treatment: "Cancer Treatment",
+      text: "Good doctors and financial help from charity made treatment possible. My wife residing in Solapur is taking treatment for cancer in this hospital since last 7 days. Our experience through out the admission was great. Doctors guide us whenever we as queries and staff is also polite. When we needed financial help we were told to approach charity department as we did not have enough money to avail the further treatment. After approaching the charity department with proper documentation they helped us financially for the treatment. I am thankful to all the staff of Deenanath Mangeshkar Hospital and Research Center who were involved and special thanks to the doctors.",
+      avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=150&auto=format&fit=crop",
       rating: 5,
-      date: "April 2026"
+      date: "Recent"
     }
   ];
 
@@ -112,7 +103,7 @@ export default function PatientReviews() {
   }, [activeIndex]);
 
   return (
-    <section className="w-full relative z-30 py-[20px] md:py-10 bg-gradient-to-br from-[#f5fbfb] via-teal-50/[0.1] to-[#f4fafb] overflow-hidden">
+    <section id="testimonials" className="w-full relative z-30 py-[20px] md:py-10 bg-gradient-to-br from-[#f5fbfb] via-teal-50/[0.1] to-[#f4fafb] overflow-hidden">
       
       {/* Decorative elements */}
       <div className="absolute top-1/2 left-0 w-96 h-96 bg-teal-500/[0.02] rounded-full blur-[100px] pointer-events-none -z-10" />
@@ -151,7 +142,7 @@ export default function PatientReviews() {
             
             {/* Left Big Focused Review Card */}
             <div className="hidden lg:block lg:col-span-8 h-full">
-              <div className="bg-white border border-slate-100 rounded-[2.5rem] p-8 sm:p-12 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.03)] relative overflow-hidden transition-all duration-500 hover:shadow-[0_30px_70px_rgba(0,122,135,0.06)] hover:border-teal-500/10 min-h-[380px] h-full flex flex-col justify-between">
+              <div className="bg-white border border-slate-100 rounded-[2.5rem] py-6 px-8 sm:py-8 sm:px-12 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.03)] relative overflow-hidden transition-all duration-500 hover:shadow-[0_30px_70px_rgba(0,122,135,0.06)] hover:border-teal-500/10 min-h-[380px] h-full flex flex-col justify-between">
                 
                 <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808003_1px,transparent_1px),linear-gradient(to_bottom,#80808003_1px,transparent_1px)] bg-[size:32px_32px] pointer-events-none" />
                 
@@ -169,7 +160,7 @@ export default function PatientReviews() {
                   </blockquote>
                 </div>
 
-                <div className="relative z-10 mt-8 pt-6 border-t border-slate-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <div className="relative z-10 mt-4 pt-4 border-t border-slate-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                   <div className="flex items-center gap-4">
 
                     <div>
@@ -177,7 +168,9 @@ export default function PatientReviews() {
                         {reviews[activeIndex].name}
                         <CheckCircle2 className="w-4.5 h-4.5 text-teal-500 fill-teal-50" />
                       </h4>
-                      <p className="text-[11px] text-[#007a87] font-semibold uppercase tracking-wider">{reviews[activeIndex].type}</p>
+                      {reviews[activeIndex].type && (
+                        <p className="text-[11px] text-[#007a87] font-semibold uppercase tracking-wider">{reviews[activeIndex].type}</p>
+                      )}
                     </div>
                   </div>
 
@@ -206,7 +199,7 @@ export default function PatientReviews() {
                         setActiveIndex(idx);
                         setMobileExpandedIndex(mobileExpandedIndex === idx ? null : idx);
                       }}
-                      className={`snap-center shrink-0 w-[280px] max-w-[85vw] min-h-[140px] text-left p-5 rounded-3xl border transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] flex flex-col justify-between cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#007a87]/30 ${
+                      className={`snap-center shrink-0 w-[280px] max-w-[85vw] min-h-[140px] text-left px-5 py-3 rounded-3xl border transition-all duration-500 ease-[cubic-bezier(0.25,1,0.5,1)] flex flex-col justify-between cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#007a87]/30 ${
                         isExpandedMobile 
                           ? "bg-white border-teal-500/30 shadow-[0_15px_35px_rgba(0,122,135,0.12)] ring-2 ring-[#007a87]/5 scale-[1.12] z-10" 
                           : "bg-white/40 border-slate-100 hover:bg-white hover:border-slate-200 scale-95 opacity-70"
@@ -223,7 +216,7 @@ export default function PatientReviews() {
                       </div>
                       
                       <div className={`flex items-center justify-between mt-4 pt-3 border-t transition-colors duration-300 ${isExpandedMobile ? "border-teal-100" : "border-slate-100/50"}`}>
-                        <span className={`text-[10px] font-medium truncate max-w-[70%] transition-colors duration-300 ${isExpandedMobile ? "text-teal-700/80" : "text-slate-500"}`}>{review.type}</span>
+                        <span className={`text-[10px] font-medium truncate max-w-[70%] transition-colors duration-300 ${isExpandedMobile ? "text-teal-700/80" : "text-slate-500"}`}>{review.type || "\u00A0"}</span>
                         <div className="shrink-0 flex items-center transition-transform duration-500">
                           {isExpandedMobile ? (
                             <ChevronUp className="w-4 h-4 text-teal-500" />
@@ -245,7 +238,7 @@ export default function PatientReviews() {
                 : "grid-rows-[0fr] opacity-0 mb-0"
             }`}>
               <div className="overflow-hidden">
-                <div className="bg-white border border-teal-500/10 rounded-[2rem] p-6 shadow-[0_15px_45px_rgba(0,122,135,0.05)] relative">
+                <div className="bg-white border border-teal-500/10 rounded-[2rem] px-6 py-4 shadow-[0_15px_45px_rgba(0,122,135,0.05)] relative">
                   <div className="absolute right-6 top-6 text-teal-500/5">
                     <Quote className="w-16 h-16 stroke-current" />
                   </div>
@@ -266,9 +259,11 @@ export default function PatientReviews() {
                           <h4 className="font-bold text-slate-800 text-xs tracking-tight">
                             {reviews[activeIndex].name}
                           </h4>
-                          <p className="text-[10px] text-[#007a87] font-semibold uppercase tracking-wider">
-                            {reviews[activeIndex].type}
-                          </p>
+                          {reviews[activeIndex].type && (
+                            <p className="text-[10px] text-[#007a87] font-semibold uppercase tracking-wider">
+                              {reviews[activeIndex].type}
+                            </p>
+                          )}
                         </div>
                       </div>
 
@@ -310,7 +305,7 @@ export default function PatientReviews() {
                     }}
                     role="button"
                     tabIndex={0}
-                    className={`w-full text-left p-4 rounded-2xl border transition-all duration-300 flex flex-col gap-2 shrink-0 cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#007a87]/30 
+                    className={`w-full text-left px-4 py-2 rounded-2xl border transition-all duration-300 flex flex-col gap-2 shrink-0 cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#007a87]/30 
                       ${
                         isActiveDesktop 
                           ? "lg:bg-white lg:border-teal-500/30 lg:shadow-[0_12px_30px_rgba(0,122,135,0.08)] lg:ring-2 lg:ring-[#007a87]/5" 
@@ -362,9 +357,11 @@ export default function PatientReviews() {
                         </p>
                         
                         <div className="flex flex-wrap items-center justify-between gap-2 pt-1">
-                          <span className="text-[10px] text-[#007a87] font-semibold uppercase tracking-wider">
-                            {review.type}
-                          </span>
+                          {review.type && (
+                            <span className="text-[10px] text-[#007a87] font-semibold uppercase tracking-wider">
+                              {review.type}
+                            </span>
+                          )}
                           <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-slate-50 text-[9px] font-bold text-slate-400 uppercase tracking-widest border border-slate-200/50">
                             {review.treatment}
                           </span>

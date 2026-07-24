@@ -9,6 +9,14 @@ export default function HeroSection() {
 
   const [displayText, setDisplayText] = useState("");
   const [index, setIndex] = useState(0);
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  useEffect(() => {
+    const slideInterval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % 10);
+    }, 5000); // Change image every 5 seconds
+    return () => clearInterval(slideInterval);
+  }, []);
 
   useEffect(() => {
     let typingInterval: NodeJS.Timeout | undefined = undefined;
@@ -37,36 +45,29 @@ export default function HeroSection() {
   }, [index, text]);
 
   return (
-    <section className="relative w-full overflow-hidden bg-slate-950 border-b border-slate-200">
-      {/* YouTube Background Video */}
-      <div className="absolute inset-0 w-full h-full overflow-hidden z-0 pointer-events-none">
-        <iframe
-          src="https://www.youtube.com/embed/tZeR1AGk_Uk?autoplay=1&mute=1&loop=1&playlist=tZeR1AGk_Uk&controls=0&showinfo=0&rel=0&iv_load_policy=3&playsinline=1&enablejsapi=1&disablekb=1&modestbranding=1"
-          frameBorder="0"
-          allow="autoplay; encrypted-media"
-          allowFullScreen
-          title="Hospital Drone Video"
-          className="
-          absolute top-1/2 left-1/2
-          -translate-x-1/2 -translate-y-1/2
-          w-[350%] h-[200vw]
-          sm:w-[180%] sm:h-[100vw]
-          md:w-[120%] md:h-[70vw]
-          lg:w-full lg:h-[56.25vw]
-          min-w-full min-h-full
-          object-cover
-          "
-        />
+    <section className="relative w-full min-h-[70vh] md:min-h-[80vh] flex flex-col justify-center overflow-hidden bg-slate-950 border-b border-slate-200">
+      {/* Image Slider Background */}
+      <div className="absolute inset-0 w-full h-full overflow-hidden z-0 pointer-events-none bg-slate-950">
+        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num, i) => (
+          <img
+            key={num}
+            src={`/images/Slider-${num}.png`}
+            alt={`Hospital Slider ${num}`}
+            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out ${
+              i === currentSlide ? "opacity-100" : "opacity-0"
+            }`}
+          />
+        ))}
       </div>
 
       {/* Overlay */}
-      <div className="absolute inset-0 bg-black/60 z-10" />
+      <div className="absolute inset-0 bg-black/10 z-10" />
 
       {/* Gradient */}
-      <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-black/40 to-transparent z-10" />
+      <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-slate-950/10 to-transparent z-10" />
 
       {/* Content */}
-      <div className="relative z-20 flex flex-col items-center justify-start px-4 sm:px-6 pt-[20px] md:pt-[40px] pb-[64px]">
+      <div className="relative z-20 flex flex-col items-center justify-center px-4 sm:px-6 py-12 md:py-20 flex-grow">
         <div className="w-full max-w-5xl text-center text-white flex flex-col items-center">
           
           {/* Tag */}
@@ -89,6 +90,7 @@ export default function HeroSection() {
               tracking-tight
               px-1
               break-words
+              drop-shadow-xl
               "
             >
               {displayText.includes("Human Care") ? (
@@ -111,9 +113,11 @@ export default function HeroSection() {
             text-sm
             sm:text-base
             md:text-lg
-            text-slate-200
+            text-slate-100
             leading-relaxed
             px-4
+            drop-shadow-lg
+            font-medium
             "
           >
             Trusted multi-speciality hospital delivering expert treatment,

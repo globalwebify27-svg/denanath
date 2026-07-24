@@ -387,10 +387,10 @@ export default function DoctorDetailsPage() {
             {/* Modal Header */}
             <div className="relative p-6 md:p-8 border-b border-slate-100 shrink-0 sticky top-0 bg-white z-10 rounded-t-3xl">
               <div className="flex items-center gap-5 sm:gap-6 pr-12">
-                <div className="w-[130px] h-[160px] sm:w-[150px] sm:h-[185px] rounded-2xl bg-white flex items-center justify-center shrink-0 border border-slate-200 shadow-sm overflow-hidden text-slate-400">
+                <div className="w-[150px] h-[200px] sm:w-[220px] sm:h-[280px] rounded-2xl bg-white flex items-center justify-center shrink-0 border border-slate-200 shadow-sm overflow-hidden text-slate-400">
                   <DoctorImage 
                     doc={selectedDoctor}
-                    className="w-full h-full object-cover rounded-xl bg-white"
+                    className="w-full h-full object-fill rounded-xl bg-white"
                     iconClassName="w-16 h-16 sm:w-20 sm:h-20 text-slate-400"
                   />
                 </div>

@@ -127,11 +127,33 @@ export default function AcademicsClientPage({ pageData }: { pageData: any }) {
                         <h4 className="font-bold text-lg text-slate-800 mb-2 flex items-start gap-2">
                           <span className="text-[#007a87] shrink-0 mt-0.5">{idx + 1}.</span> 
                           <span className="whitespace-pre-line">
-                            {prog.title}
-                            {prog.desc && (
-                              <span className="text-slate-600 font-normal ml-2">
-                                - {prog.desc}
-                              </span>
+                            {prog.title === "Laryngology Fellowship" ? (
+                              <Link href="/laryngology-fellowship" className="text-[#007a87] transition-all group cursor-pointer">
+                                <span className="font-bold">{prog.title}</span>
+                                {prog.desc && (
+                                  <span className="text-[#007a87] ml-2 font-normal">
+                                    - {prog.desc}
+                                  </span>
+                                )}
+                              </Link>
+                            ) : prog.title === "Vasant & Nirmala Oswal Centre" ? (
+                              <Link href="/vasant-nirmala-oswal-centre" className="text-[#007a87] transition-all group cursor-pointer">
+                                <span className="font-bold">{prog.title}</span>
+                                {prog.desc && (
+                                  <span className="text-[#007a87] ml-2 font-normal">
+                                    - {prog.desc}
+                                  </span>
+                                )}
+                              </Link>
+                            ) : (
+                              <>
+                                {prog.title}
+                                {prog.desc && (
+                                  <span className="text-slate-600 font-normal ml-2">
+                                    - {prog.desc}
+                                  </span>
+                                )}
+                              </>
                             )}
                           </span>
                         </h4>
@@ -154,12 +176,18 @@ export default function AcademicsClientPage({ pageData }: { pageData: any }) {
                     In-house Short term Fellowship Programs
                   </h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {pageData?.shortTermFellowships?.map((program: string, idx: number) => (
-                      <div key={idx} className="group flex items-start gap-3 bg-white p-4 rounded-xl border border-slate-200 shadow-sm hover:shadow-[0_8px_30px_rgba(217,35,45,0.15)] hover:border-[#D9232D] hover:-translate-y-1 transition-all duration-300">
-                        <CheckCircle2 className="w-5 h-5 text-teal-500 group-hover:text-[#D9232D] shrink-0 mt-0.5 transition-colors" />
-                        <span style={{ fontSize: '18px' }} className="text-slate-700 font-normal leading-[31px] whitespace-pre-line">{program}</span>
-                      </div>
-                    ))}
+                    {pageData?.shortTermFellowships?.map((program: string, idx: number) => {
+                      const isNeuro = program === "Neuro Radiology Fellowship";
+                      const Wrapper = isNeuro ? Link : "div";
+                      const wrapperProps = isNeuro ? { href: "/neuro-radiology-fellowship" } as any : {};
+                      
+                      return (
+                        <Wrapper key={idx} {...wrapperProps} className={`group flex items-start gap-3 p-4 rounded-xl shadow-sm hover:shadow-[0_8px_30px_rgba(217,35,45,0.15)] hover:border-[#D9232D] hover:-translate-y-1 transition-all duration-300 bg-white border border-slate-200 ${isNeuro ? 'cursor-pointer' : ''}`}>
+                          <CheckCircle2 className={`w-5 h-5 shrink-0 mt-0.5 transition-colors group-hover:text-[#D9232D] ${isNeuro ? 'text-[#007a87]' : 'text-teal-500'}`} />
+                          <span style={{ fontSize: '18px' }} className={`leading-[31px] whitespace-pre-line ${isNeuro ? 'text-[#007a87] font-bold' : 'text-slate-700 font-normal'}`}>{program}</span>
+                        </Wrapper>
+                      );
+                    })}
                   </div>
                 </section>
 

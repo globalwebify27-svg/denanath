@@ -17,27 +17,27 @@ export default function FloatingActionStrip({ setIsSearchOpen }: FloatingActionS
         <div className="flex flex-wrap justify-center items-center gap-2 sm:gap-4 xl:gap-6 flex-shrink-0">
           <Link href="/departments" className="flex flex-col items-center gap-1.5 group cursor-pointer w-16 sm:w-20 text-center">
             <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl flex items-center justify-center group-hover:bg-slate-50 transition-all">
-              <Stethoscope className="w-6 h-6 text-slate-400 group-hover:text-[#007a87] group-hover:scale-110 transition-all duration-300" />
+              <Stethoscope className="w-6 h-6 text-[#002b5c] group-hover:text-[#9F0712] group-hover:scale-110 transition-all duration-300" />
             </div>
-            <span className="text-[8px] sm:text-[9px] font-semibold uppercase tracking-[0.05em] text-slate-400 group-hover:text-[#007a87] transition-colors leading-tight">Doctors &<br/>Departments</span>
+            <span className="text-[8px] sm:text-[9px] font-semibold uppercase tracking-[0.05em] text-[#002b5c] group-hover:text-[#9F0712] transition-colors leading-tight">Doctors &<br/>Departments</span>
           </Link>
           <Link href="/indoor-map" className="flex flex-col items-center gap-1.5 group cursor-pointer w-16 sm:w-20 text-center">
             <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl flex items-center justify-center group-hover:bg-slate-50 transition-all">
-              <MapPin className="w-6 h-6 text-slate-400 group-hover:text-[#007a87] group-hover:scale-110 transition-all duration-300" />
+              <MapPin className="w-6 h-6 text-[#002b5c] group-hover:text-[#9F0712] group-hover:scale-110 transition-all duration-300" />
             </div>
-            <span className="text-[8px] sm:text-[9px] font-semibold uppercase tracking-[0.05em] text-slate-400 group-hover:text-[#007a87] transition-colors leading-tight">Map &<br/>Location</span>
+            <span className="text-[8px] sm:text-[9px] font-semibold uppercase tracking-[0.05em] text-[#002b5c] group-hover:text-[#9F0712] transition-colors leading-tight">Map &<br/>Location</span>
           </Link>
           <Link href="/news-events" className="flex flex-col items-center gap-1.5 group cursor-pointer w-16 sm:w-20 text-center">
             <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl flex items-center justify-center group-hover:bg-slate-50 transition-all">
-              <Newspaper className="w-6 h-6 text-slate-400 group-hover:text-[#007a87] group-hover:scale-110 transition-all duration-300" />
+              <Newspaper className="w-6 h-6 text-[#002b5c] group-hover:text-[#9F0712] group-hover:scale-110 transition-all duration-300" />
             </div>
-            <span className="text-[8px] sm:text-[9px] font-semibold uppercase tracking-[0.05em] text-slate-400 group-hover:text-[#007a87] transition-colors leading-tight">News &<br/>Events</span>
+            <span className="text-[8px] sm:text-[9px] font-semibold uppercase tracking-[0.05em] text-[#002b5c] group-hover:text-[#9F0712] transition-colors leading-tight">News &<br/>Events</span>
           </Link>
           <Link href="#" className="flex flex-col items-center gap-1.5 group cursor-pointer w-16 sm:w-20 text-center">
             <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl flex items-center justify-center group-hover:bg-slate-50 transition-all">
-              <Ambulance className="w-6 h-6 text-slate-400 group-hover:text-[#007a87] group-hover:scale-110 transition-all duration-300" />
+              <Ambulance className="w-6 h-6 text-[#002b5c] group-hover:text-[#9F0712] group-hover:scale-110 transition-all duration-300" />
             </div>
-            <span className="text-[8px] sm:text-[9px] font-semibold uppercase tracking-[0.05em] text-slate-400 group-hover:text-[#007a87] transition-colors leading-tight">OPD<br/>Schedules</span>
+            <span className="text-[8px] sm:text-[9px] font-semibold uppercase tracking-[0.05em] text-[#002b5c] group-hover:text-[#9F0712] transition-colors leading-tight">OPD<br/>Schedules</span>
           </Link>
         </div>
 
@@ -68,27 +68,27 @@ export default function FloatingActionStrip({ setIsSearchOpen }: FloatingActionS
         <div className="flex flex-wrap justify-center items-center gap-2 sm:gap-4 xl:gap-6 flex-shrink-0">
           <Link href="/health-packages" className="flex flex-col items-center gap-1.5 group cursor-pointer w-16 sm:w-20 text-center">
             <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl flex items-center justify-center group-hover:bg-slate-50 transition-all">
-              <Activity className="w-6 h-6 text-slate-400 group-hover:text-[#007a87] group-hover:scale-110 transition-all duration-300" />
+              <Activity className="w-6 h-6 text-[#002b5c] group-hover:text-[#9F0712] group-hover:scale-110 transition-all duration-300" />
             </div>
-            <span className="text-[8px] sm:text-[9px] font-semibold uppercase tracking-[0.05em] text-slate-400 group-hover:text-[#007a87] transition-colors leading-tight">Health<br/>Packages</span>
+            <span className="text-[8px] sm:text-[9px] font-semibold uppercase tracking-[0.05em] text-[#002b5c] group-hover:text-[#9F0712] transition-colors leading-tight">Health<br/>Packages</span>
           </Link>
           <Link href="/out-patient" className="flex flex-col items-center gap-1.5 group cursor-pointer w-16 sm:w-20 text-center">
             <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl flex items-center justify-center group-hover:bg-slate-50 transition-all">
-              <Building2 className="w-6 h-6 text-slate-400 group-hover:text-[#007a87] group-hover:scale-110 transition-all duration-300" />
+              <Building2 className="w-6 h-6 text-[#002b5c] group-hover:text-[#9F0712] group-hover:scale-110 transition-all duration-300" />
             </div>
-            <span className="text-[8px] sm:text-[9px] font-semibold uppercase tracking-[0.05em] text-slate-400 group-hover:text-[#007a87] transition-colors leading-tight">Patient &<br/>Visitors</span>
+            <span className="text-[8px] sm:text-[9px] font-semibold uppercase tracking-[0.05em] text-[#002b5c] group-hover:text-[#9F0712] transition-colors leading-tight">Patient &<br/>Visitors</span>
           </Link>
           <Link href="/book-appointment" className="flex flex-col items-center gap-1.5 group cursor-pointer w-16 sm:w-20 text-center">
             <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl flex items-center justify-center group-hover:bg-slate-50 transition-all">
-              <HeartPulse className="w-6 h-6 text-slate-400 group-hover:text-[#007a87] group-hover:scale-110 transition-all duration-300" />
+              <HeartPulse className="w-6 h-6 text-[#002b5c] group-hover:text-[#9F0712] group-hover:scale-110 transition-all duration-300" />
             </div>
-            <span className="text-[8px] sm:text-[9px] font-semibold uppercase tracking-[0.05em] text-slate-400 group-hover:text-[#007a87] transition-colors leading-tight">Request<br/>Appointment</span>
+            <span className="text-[8px] sm:text-[9px] font-semibold uppercase tracking-[0.05em] text-[#002b5c] group-hover:text-[#9F0712] transition-colors leading-tight">Request<br/>Appointment</span>
           </Link>
           <Link href="/patient-portal" className="flex flex-col items-center gap-1.5 group cursor-pointer w-16 sm:w-20 text-center">
             <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl flex items-center justify-center group-hover:bg-slate-50 transition-all">
-              <FileText className="w-6 h-6 text-slate-400 group-hover:text-[#007a87] group-hover:scale-110 transition-all duration-300" />
+              <FileText className="w-6 h-6 text-[#002b5c] group-hover:text-[#9F0712] group-hover:scale-110 transition-all duration-300" />
             </div>
-            <span className="text-[8px] sm:text-[9px] font-semibold uppercase tracking-[0.05em] text-slate-400 group-hover:text-[#007a87] transition-colors leading-tight">Patient<br/>Portal</span>
+            <span className="text-[8px] sm:text-[9px] font-semibold uppercase tracking-[0.05em] text-[#002b5c] group-hover:text-[#9F0712] transition-colors leading-tight">Patient<br/>Portal</span>
           </Link>
         </div>
 

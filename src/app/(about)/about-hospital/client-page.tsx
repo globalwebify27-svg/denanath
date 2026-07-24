@@ -83,26 +83,26 @@ export default function AboutHospitalClient({ data }: { data: any }) {
           <div className="w-full flex-1 min-w-0">
             <div className="bg-white rounded-3xl shadow-[0_8px_40px_rgb(0,0,0,0.03)] border border-slate-100/60 p-6 sm:p-10 md:p-14">
               
-              <div className="mb-10">
+              <div className="mb-4">
                 <div style={{ fontSize: '14px' }} className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-teal-50 border border-teal-100 text-[#007a87] font-bold tracking-wider uppercase mb-4">
                   <Building2 className="w-4 h-4" />
                   <span>About Hospital</span>
                 </div>
-                <h2 className="text-3xl md:text-4xl font-extrabold text-[#002b5c] mb-6 tracking-tight">
+                <h2 className="text-3xl md:text-4xl font-extrabold text-[#002b5c] tracking-tight">
                   About Hospital
                 </h2>
               </div>
 
               {/* Introduction */}
               <div className="prose prose-slate max-w-none">
-                <div className="text-[18px] text-slate-700 leading-[31px] font-normal mb-6" dangerouslySetInnerHTML={{ __html: data?.introduction || '' }} />
-                <p className="text-[18px] text-slate-700 leading-[29px] font-normal mb-12">
+                <div className="text-[18px] text-slate-700 leading-[31px] font-normal mb-2" dangerouslySetInnerHTML={{ __html: data?.introduction || '' }} />
+                <p className="text-[18px] text-slate-700 leading-[29px] font-normal mb-8">
                   {data?.description}
                 </p>
               </div>
 
               {/* Vision & Mission Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                 <div className="bg-gradient-to-br from-teal-50 to-white p-8 rounded-2xl border border-teal-100/50 relative overflow-hidden group">
                   <div className="absolute top-0 right-0 p-6 opacity-10 transform translate-x-4 -translate-y-4 group-hover:scale-110 transition-transform duration-500">
                     <Eye className="w-24 h-24 text-teal-600" />
@@ -135,7 +135,7 @@ export default function AboutHospitalClient({ data }: { data: any }) {
               </div>
 
               {/* Core Values */}
-              <div className="mb-14">
+              <div className="mb-8">
                 <h3 className="text-2xl font-bold text-[#002b5c] mb-6 tracking-tight flex items-center gap-2">
                   <Heart className="w-6 h-6 text-[#007a87]" />
                   Core Values
@@ -153,12 +153,12 @@ export default function AboutHospitalClient({ data }: { data: any }) {
               </div>
 
               {/* Quality Policy & Objective */}
-              <div className="bg-[#002b5c] rounded-3xl p-8 md:p-10 text-white mb-14 relative overflow-hidden">
+              <div className="bg-[#002b5c] rounded-3xl p-6 md:p-8 text-white mb-8 relative overflow-hidden">
                 <div className="absolute right-0 bottom-0 opacity-5 pointer-events-none">
                   <ShieldCheck className="w-64 h-64 -mb-10 -mr-10" />
                 </div>
                 
-                <div className="relative z-10 space-y-8">
+                <div className="relative z-10 space-y-6">
                   <div>
                     <h3 className="text-xl font-bold text-teal-300 mb-3 tracking-wide uppercase text-sm flex items-center gap-2">
                       <ShieldCheck className="w-5 h-5" />
@@ -184,9 +184,9 @@ export default function AboutHospitalClient({ data }: { data: any }) {
               </div>
 
               {/* History */}
-              <div className="mb-14">
-                <h3 className="text-3xl font-extrabold text-[#002b5c] mb-8 tracking-tight">Our History</h3>
-                <div className="space-y-6 font-normal text-slate-600 leading-[29px] border-l-4 border-teal-100 pl-6 md:pl-8 py-2 relative">
+              <div className="mb-8">
+                <h3 className="text-3xl font-extrabold text-[#002b5c] mb-6 tracking-tight">Our History</h3>
+                <div className="space-y-4 font-normal text-slate-600 leading-[29px] border-l-4 border-teal-100 pl-6 md:pl-8 py-2 relative">
                   <div className="absolute top-0 left-0 w-1 h-12 bg-[#007a87] -ml-[4px] rounded-full" />
                   {(data?.history || []).map((paragraph: string, idx: number) => (
                     <p key={idx} dangerouslySetInnerHTML={{ __html: paragraph }} />

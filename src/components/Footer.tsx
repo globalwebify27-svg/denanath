@@ -4,7 +4,7 @@ import React from "react";
 import Link from "next/link";
 import { Heart, Phone, Mail, MapPin, ExternalLink, ArrowRight } from "lucide-react";
 
-export default function Footer() {
+export default function Footer({ latestEvent }: { latestEvent?: any }) {
   return (
     <footer className="relative bg-gradient-to-br from-[#005f6b] to-[#003d45] text-[#e0f2f1] text-sm overflow-hidden z-30 border-t border-white/10">
       
@@ -83,7 +83,10 @@ export default function Footer() {
                 { label: "Research", href: "/research-about" },
                 { label: "Academics", href: "/academics" },
                 { label: "Online Facilities", href: "/email-login" },
-                { label: "Book Appointment", href: "/book-appointment" }
+                { label: "Book Appointment", href: "/book-appointment" },
+                { label: "Testimonials", href: "/#testimonials" },
+                { label: "Photo Gallery", href: "/gallery-photos" },
+                { label: "Video Gallery", href: "/gallery-videos" }
               ].map((item, idx) => (
                 <li key={idx} className="group flex items-center gap-2">
                   <ArrowRight className="w-3.5 h-3.5 text-[#a7ffeb] opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all duration-300 shrink-0" />
@@ -106,8 +109,12 @@ export default function Footer() {
                 { label: "Pharmacy", href: "/pharmacy" },
                 { label: "Ambulance", href: "/ambulance" },
                 { label: "Blood Bank", href: "/blood-bank" },
-                { label: "Job & Vacancy", href: "/careers" },
-                { label: "Contact Us", href: "/contact-us" }
+                { label: "Career", href: "/careers" },
+                { label: "Contact Us", href: "/contact-us" },
+                { label: "OPD Schedule", href: "/opd-schedule" },
+                { label: "EC Approval", href: "/ec-approval" },
+                { label: "Site Map", href: "/site-map" },
+                { label: "Disclaimer", href: "/disclaimer" }
               ].map((item, idx) => (
                 <li key={idx} className="group flex items-center gap-2">
                   <ArrowRight className="w-3.5 h-3.5 text-[#a7ffeb] opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all duration-300 shrink-0" />
@@ -162,15 +169,15 @@ export default function Footer() {
                   Events / News
                 </h4>
                 <div className="flex items-center gap-4">
-                  <div className="w-[70px] h-[36px] shrink-0 rounded-md overflow-hidden border border-white/80 bg-black/20">
+                                    <div className="w-[70px] h-[36px] shrink-0 rounded-md overflow-hidden border border-white/80 bg-black/20">
                     <img 
-                      src="/images/unnamed (7).webp" 
-                      alt="Diabetes Nursing Conference 2026" 
+                      src={latestEvent && latestEvent.gallery && latestEvent.gallery.length > 0 ? latestEvent.gallery[0] : "/images/unnamed (7).webp"} 
+                      alt={latestEvent?.title || "Diabetes Nursing Conference 2026"} 
                       className="w-full h-full object-cover opacity-90 hover:opacity-100 transition-opacity"
                     />
                   </div>
-                  <Link href="/events" className="text-[#b2dfdb] hover:text-[#a7ffeb] transition-colors text-[13px] leading-snug">
-                    Diabetes Nursing<br />Conference 2026
+                  <Link href="/events" className="text-[#b2dfdb] hover:text-[#a7ffeb] transition-colors text-[13px] leading-snug line-clamp-2" title={latestEvent?.title || "Diabetes Nursing Conference 2026"}>
+                    {latestEvent?.title || "Diabetes Nursing Conference 2026"}
                   </Link>
                 </div>
                 <div className="mt-5 border-b border-dashed border-white/20 w-11/12"></div>

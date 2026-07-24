@@ -202,9 +202,9 @@ export default function Navbar() {
             <span className="opacity-30">|</span>
             <Link href="/pharmacy" className="hover:text-white transition-colors">Pharmacy</Link>
             <span className="opacity-30">|</span>
-            <Link href="/careers" className="hover:text-white transition-colors font-bold">Job & Vacancy</Link>
-            <span className="opacity-30">|</span>
             <Link href="/ambulance" className="hover:text-red-300 transition-colors font-bold text-red-400">Ambulance</Link>
+            <span className="opacity-30">|</span>
+            <Link href="/careers" className="hover:text-white transition-colors font-bold">Career</Link>
           </div>
 
           <div className="flex items-center gap-0.5 2xl:gap-4 font-bold tracking-wide">
