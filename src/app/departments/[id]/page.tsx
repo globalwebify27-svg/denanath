@@ -6,6 +6,7 @@ import { notFound } from "next/navigation";
 import LightboxWrapper from "@/components/LightboxWrapper";
 import VideoPlayer from "@/components/VideoPlayer";
 import * as cheerio from "cheerio";
+import { DMH_API_CONFIG } from "@/lib/dmhApi";
 
 export const dynamic = "force-dynamic";
 
@@ -41,6 +42,84 @@ export default async function DepartmentDetailsPage({
   let photoGalleryHtml = "";
   let faqHtml = "";
   
+  // Pre-fetch live DMH API consultants for this department before Cheerio HTML processing
+  let apiConsultantsHtml = "";
+  try {
+    const depName = department.name.trim().toLowerCase();
+    const specRes = await fetch(`${DMH_API_CONFIG.baseUrl}${DMH_API_CONFIG.endpoints.speciality}`, {
+      method: 'POST',
+      headers: DMH_API_CONFIG.headers,
+      body: JSON.stringify({ action: 'speciality' }),
+      next: { revalidate: 3600 }
+    });
+
+    if (specRes.ok) {
+      const specData = await specRes.json();
+      const specList = specData?.specialityJSON || (Array.isArray(specData) ? specData : []);
+
+      // Exact match first, then fallback to substring
+      const matchedSpec = specList.find((s: any) => (s.speciality_name || '').toLowerCase() === depName) ||
+                          specList.find((s: any) => {
+                            const sName = (s.speciality_name || '').toLowerCase();
+                            return sName.length > 5 && (depName.includes(sName) || sName.includes(depName));
+                          });
+
+      if (matchedSpec) {
+        const docRes = await fetch(`${DMH_API_CONFIG.baseUrl}${DMH_API_CONFIG.endpoints.speciality_doctor}`, {
+          method: 'POST',
+          headers: DMH_API_CONFIG.headers,
+          body: JSON.stringify({ action: 'speciality_doctor', speciality_id: String(matchedSpec.id) }),
+          next: { revalidate: 3600 }
+        });
+
+        if (docRes.ok) {
+          const docData = await docRes.json();
+          const apiDocs = docData?.doctorJSON || (Array.isArray(docData) ? docData : []);
+
+          if (Array.isArray(apiDocs) && apiDocs.length > 0) {
+            const circlesHtml = apiDocs.map((doc: any) => {
+              const dName = doc.doctor_name || `${doc.first_name || ''} ${doc.last_name || ''}`.trim();
+              const qual = doc.qualification || 'Consultant';
+              const words = dName.split(' ').filter(Boolean);
+              let initials = 'DM';
+              if (words.length >= 2) {
+                initials = (words[0][0] + words[1][0]).toUpperCase();
+              } else if (words.length === 1) {
+                initials = words[0].substring(0, 2).toUpperCase();
+              }
+
+              return `
+                <div class="p-5 bg-white border border-slate-200 rounded-2xl flex items-center justify-between gap-4 shadow-sm hover:shadow-md transition-shadow">
+                  <div class="flex items-center gap-4">
+                    <div class="w-14 h-14 rounded-2xl bg-teal-50 border border-teal-100 flex items-center justify-center text-[#007a87] font-extrabold text-base shrink-0">
+                      ${doc.doctorImage ? `<img src="${doc.doctorImage}" alt="${dName}" class="w-full h-full object-cover rounded-2xl" />` : initials}
+                    </div>
+                    <div>
+                      <div class="text-lg font-bold text-[#002b5c] m-0 leading-snug">Dr. ${dName}</div>
+                      <div class="text-xs text-slate-500 font-medium mt-1">${qual}</div>
+                    </div>
+                  </div>
+                  <a href="/doctor-details" class="px-4 py-2 bg-teal-50 hover:bg-teal-100 text-[#007a87] rounded-xl text-xs font-bold transition-colors shrink-0">
+                    View Profile
+                  </a>
+                </div>
+              `;
+            }).join('');
+
+            apiConsultantsHtml = `
+              <h3 class="text-xl font-bold text-[#002b5c] mb-6 border-b pb-2">Consultants</h3>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                ${circlesHtml}
+              </div>
+            `;
+          }
+        }
+      }
+    }
+  } catch (e) {
+    console.warn("Failed to pre-fetch DMH API consultants for department:", e);
+  }
+
   if (department.description) {
     const $ = cheerio.load(department.description, null, false);
     
@@ -300,28 +379,44 @@ export default async function DepartmentDetailsPage({
         const imgEl = $(section).find('img').first();
         if (imgEl.length > 0) {
            imgSrc = imgEl.attr('src');
-           imgEl.remove(); // Remove it from the detailed view
+           imgEl.closest('p').length ? imgEl.closest('p').remove() : imgEl.remove();
         }
+
+        // Apply grid UI to procedures section
+        $(section).addClass('mb-12');
         
-        proceduresHtml = $(section).html() || '';
+        const introText = $(section).html() || '';
         
-        let imgHtml = '';
-        if (imgSrc) {
-           imgHtml = `<img src="${imgSrc}" class="max-w-[180px] h-auto rounded-xl shadow-sm mb-4" alt="${title}" />`;
-        }
-        
-        // Render a layout identical to the FAQ section (standard header + image + text)
-        const newHtml = `
-          <div class="mb-12">
-            <h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">${title}</h3>
-            <a href="?view=procedures" class="block no-underline group hover:opacity-95 transition-opacity">
-               ${imgHtml}
-               <p class="text-slate-600 text-[15px] leading-relaxed group-hover:text-[#007a87] transition-colors m-0">${shortText}</p>
-            </a>
-          </div>
+        proceduresHtml = `
+          <h3 class="text-xl font-bold text-[#002b5c] mb-6 border-b pb-2">${title}</h3>
+          <div class="prose prose-slate max-w-none mb-6">${introText}</div>
         `;
         
-        $(section).replaceWith(newHtml);
+        if (imgSrc) {
+           const newSectionHtml = `
+             <div class="mb-12">
+               <h3 class="text-xl font-bold text-[#002b5c] mb-6 border-b pb-2">${title}</h3>
+               <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center bg-slate-50 p-6 rounded-2xl border border-slate-100 mb-6">
+                 <div class="h-64 sm:h-80 rounded-xl overflow-hidden shadow-sm">
+                   <img src="${imgSrc}" alt="${title}" class="w-full h-full object-cover !m-0" />
+                 </div>
+                 <div>
+                   <p class="text-slate-600 leading-relaxed font-medium text-base sm:text-lg mb-6">${shortText}</p>
+                 </div>
+               </div>
+               <div class="prose prose-slate max-w-none mb-4">${introText.replace(/<h3[^>]*>.*?<\/h3>/i, '')}</div>
+             </div>
+           `;
+           $(section).replaceWith(newSectionHtml);
+        } else {
+           const newSectionHtml = `
+             <div class="mb-12">
+               <h3 class="text-xl font-bold text-[#002b5c] mb-6 border-b pb-2">${title}</h3>
+               <div class="prose prose-slate max-w-none mb-4">${introText.replace(/<h3[^>]*>.*?<\/h3>/i, '')}</div>
+             </div>
+           `;
+           $(section).replaceWith(newSectionHtml);
+        }
         
       } else if (h3Text === 'specialities' || h3Text === 'speciality') {
          const title = $(section).find('h3').first().text();
@@ -382,8 +477,6 @@ export default async function DepartmentDetailsPage({
             `;
             $(section).replaceWith(newSectionHtml);
          }
-         
-         // Auto-format any raw Q&A into accordion if it uses <h4> tags
          
       } else if (h3Text === 'photo gallery') {
         const title = $(section).find('h3').first().text();
@@ -469,60 +562,8 @@ export default async function DepartmentDetailsPage({
 
         
       } else if (h3Text === 'consultant' || h3Text === 'consultants') {
-        const consultants: string[] = [];
-        
-        // Find all potential consultant names
-        $(section).find('p, li, h4').each((_, el) => {
-           let text = $(el).text().trim();
-           // Clean up accidental recursive initials like "P D P D Dr."
-           text = text.replace(/^(?:[A-Z]\s*)+Dr\./, 'Dr.');
-           text = text.replace(/&nbsp;/g, ' ').trim();
-           // Ignore single letters or empty
-           if (text && text.length > 2) {
-              consultants.push(text);
-           }
-        });
-        
-        // Fallback if no tags were used
-        if (consultants.length === 0) {
-           let allText = '';
-            $(section).contents().each((_, el) => {
-               if ((el as any).tagName && (el as any).tagName.toLowerCase() === 'h3') return;
-               allText += $(el).text() + ' ';
-            });
-           let text = allText.replace(/<[^>]+>/g, '').trim();
-           text = text.replace(/^(?:[A-Z]\s*)+Dr\./, 'Dr.');
-           text = text.replace(/&nbsp;/g, ' ').trim();
-           if (text && text.length > 2) consultants.push(text);
-        }
-        
-        if (consultants.length > 0) {
-           const circlesHtml = consultants.map(cleanText => {
-              const words = cleanText.split(' ').filter(Boolean);
-              let initials = 'DM';
-              if (words.length >= 2) {
-                initials = (words[1][0] + (words[2]?.[0] || words[1][1] || '')).toUpperCase();
-              } else if (words.length === 1) {
-                initials = words[0].substring(0, 2).toUpperCase();
-              }
-              
-              return `
-                <div class="p-4 bg-white border border-slate-200 rounded-xl flex items-center gap-4 shadow-sm">
-                  <div class="w-12 h-12 rounded-full bg-teal-100 flex items-center justify-center text-teal-600 font-bold shrink-0">${initials}</div>
-                  <div>
-                    <div class="text-lg font-bold text-[#002b5c] m-0">${cleanText}</div>
-                  </div>
-                </div>
-              `;
-           }).join('');
-           
-           const newHtml = `
-             <h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Consultants</h3>
-             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-               ${circlesHtml}
-             </div>
-           `;
-           $(section).html(newHtml);
+        if (apiConsultantsHtml) {
+          $(section).html(apiConsultantsHtml);
         }
       }
     });

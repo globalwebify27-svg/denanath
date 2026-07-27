@@ -172,9 +172,7 @@ export default function AccreditationsClient({ data }: { data: any[] }) {
                             <FileText className="w-4 h-4" />
                             Quality Policy
                           </span>
-                          <p className="text-slate-600 font-normal leading-relaxed">
-                            {item.policy}
-                          </p>
+                          <div className="text-slate-600 font-normal leading-relaxed prose prose-slate max-w-none" dangerouslySetInnerHTML={{ __html: item.policy || '' }} />
                         </div>
 
                         {((item.link && item.link !== "#" && item.link !== "") || (item.linkText && item.linkText.startsWith('http'))) && (

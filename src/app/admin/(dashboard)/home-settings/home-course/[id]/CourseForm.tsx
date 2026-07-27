@@ -79,7 +79,7 @@ export default function CourseForm({ initialData, saveAction, col }: { initialDa
             Edit {col === "right" ? "Program" : "Course"}
           </h1>
           <p className="text-[15px] font-medium text-slate-500 max-w-xl leading-relaxed">
-            Update details for {formData.title || "this course"}
+            Update details for {formData.title || `this ${col === "right" ? "program" : "course"}`}
           </p>
         </div>
         <div className="z-10 shrink-0 mt-4 lg:mt-0">
@@ -101,8 +101,8 @@ export default function CourseForm({ initialData, saveAction, col }: { initialDa
             <Calendar size={24} strokeWidth={2.5} />
           </div>
           <div>
-            <h2 className="text-[20px] font-black text-[#002b5c]">Course Schedule</h2>
-            <p className="text-[13px] text-slate-500 font-medium">Set start and end dates. Courses past their end date will be automatically hidden.</p>
+            <h2 className="text-[20px] font-black text-[#002b5c]">{col === "right" ? "Program" : "Course"} Schedule</h2>
+            <p className="text-[13px] text-slate-500 font-medium">Set start and end dates. {col === "right" ? "Programs" : "Courses"} past their end date will be automatically hidden.</p>
           </div>
         </div>
         <div className="p-6 md:p-8">
@@ -137,12 +137,12 @@ export default function CourseForm({ initialData, saveAction, col }: { initialDa
           </div>
           <div>
             <h2 className="text-[20px] font-black text-[#002b5c]">Page Content</h2>
-            <p className="text-[13px] text-slate-500 font-medium">Update the course information text shown on the page.</p>
+            <p className="text-[13px] text-slate-500 font-medium">Update the {col === "right" ? "program" : "course"} information text shown on the page.</p>
           </div>
         </div>
         <div className="p-6 md:p-8 space-y-6">
           <div>
-            <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Course / Section Title</label>
+            <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">{col === "right" ? "Program" : "Course"} / Section Title</label>
             <input 
               type="text"
               value={formData.title}
@@ -255,7 +255,7 @@ export default function CourseForm({ initialData, saveAction, col }: { initialDa
             </div>
             <div>
               <h2 className="text-[20px] font-black text-[#002b5c]">Publications / Link</h2>
-              <p className="text-[13px] text-slate-500 font-medium">Add the custom external link and text for this course card.</p>
+              <p className="text-[13px] text-slate-500 font-medium">Add the custom external link and text for this {col === "right" ? "program" : "course"} card.</p>
             </div>
           </div>
         </div>

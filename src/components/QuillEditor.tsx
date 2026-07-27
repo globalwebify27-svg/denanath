@@ -24,10 +24,17 @@ function getYoutubeThumbnail(url: string): string | null {
   return null;
 }
 
-export default function QuillEditor({ name, defaultValue }: { name: string, defaultValue?: string }) {
+export default function QuillEditor({ name, defaultValue, value, onChange }: { name?: string, defaultValue?: string, value?: string, onChange?: (content: string) => void }) {
   const editorRef = useRef<any>(null);
   const hiddenInputRef = useRef<HTMLInputElement>(null);
-  const [content, setContent] = useState(defaultValue || "");
+  const [content, setContent] = useState(value !== undefined ? value : (defaultValue || ""));
+
+  useEffect(() => {
+    if (value !== undefined && value !== content) {
+      setContent(value);
+      if (hiddenInputRef.current) hiddenInputRef.current.value = value;
+    }
+  }, [value]);
 
   const config = useMemo(() => ({
     readonly: false,
@@ -212,7 +219,7 @@ export default function QuillEditor({ name, defaultValue }: { name: string, defa
 
   return (
     <div className="bg-white rounded-2xl overflow-hidden border border-slate-200 shadow-sm relative z-0">
-      <input type="hidden" name={name} defaultValue={defaultValue || ""} ref={hiddenInputRef} />
+      {name && <input type="hidden" name={name} defaultValue={value !== undefined ? value : (defaultValue || "")} ref={hiddenInputRef} />}
       <JoditEditor
         ref={editorRef}
         value={content}
@@ -220,9 +227,11 @@ export default function QuillEditor({ name, defaultValue }: { name: string, defa
         onBlur={newContent => {
            setContent(newContent);
            if (hiddenInputRef.current) hiddenInputRef.current.value = newContent;
+           if (onChange) onChange(newContent);
         }}
         onChange={newContent => {
            if (hiddenInputRef.current) hiddenInputRef.current.value = newContent;
+           if (onChange) onChange(newContent);
         }}
       />
     </div>

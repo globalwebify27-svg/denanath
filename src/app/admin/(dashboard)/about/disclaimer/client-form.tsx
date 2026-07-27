@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Save, Search, FileText, Plus, Trash2, Image as ImageIcon } from "lucide-react";
+import QuillEditor from "@/components/QuillEditor";
 
 export default function DisclaimerClientForm({ initialData, saveAction }: { initialData: any, saveAction: (data: FormData) => void }) {
   const router = useRouter();
@@ -119,13 +120,7 @@ export default function DisclaimerClientForm({ initialData, saveAction }: { init
         <div className="p-6 md:p-8 space-y-6">
           <div>
             <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Disclaimer Content</label>
-            <textarea 
-              value={formData.content}
-              onChange={(e) => setFormData({ ...formData, content: e.target.value })}
-              rows={15} 
-              className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-500 transition-all duration-200 text-slate-700 font-mono text-sm leading-relaxed" 
-              placeholder="<p>Disclaimer text here...</p>" 
-            />
+            <QuillEditor value={formData.content} onChange={(val) => setFormData({ ...formData, content: val })} />
           </div>
         </div>
       </div>

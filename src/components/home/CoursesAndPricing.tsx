@@ -6,7 +6,7 @@ import { ChevronRight, ArrowRight, Activity, FileText, Award, Users } from "luci
 import { getHomeCourses } from "@/app/actions/get-home-courses";
 
 export default function CoursesAndPricing() {
-  const [leftCourses, setLeftCourses] = useState<{title: string, link: string}[]>([
+  const [leftCourses, setLeftCourses] = useState<any[]>([
     { title: "Practice Course for Practical Exam - Emergency Medicine", link: "#" },
     { title: "Breastfeeding Masterclass 2nd August 2026", link: "#" },
     { title: "AIHA from IH Lab to Clinical Practice 7th August 2026", link: "#" },
@@ -18,7 +18,7 @@ export default function CoursesAndPricing() {
     { title: "Fellowship in Musculoskeletal Imaging", link: "#" }
   ]);
 
-  const [rightCourses, setRightCourses] = useState<{title: string, link: string}[]>([
+  const [rightCourses, setRightCourses] = useState<any[]>([
     { title: "Senior Registrar Vacancy Pathology", link: "https://www.dmhospital.org/cms/Media/file/Senior_Registrar_Vacancy_Pathology.pdf" },
     { title: "Autism Coach Brochure", link: "https://www.dmhospital.org/cms/Media/file/Autism-Coach-Brochure-2025.pdf" },
     { title: "Befriending Parkinsons Program", link: "https://www.dmhospital.org/cms/Media/file/befriending-parkinsons.pdf" },

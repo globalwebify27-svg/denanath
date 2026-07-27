@@ -48,12 +48,23 @@ export default function HeroSection() {
     <section className="relative w-full min-h-[70vh] md:min-h-[80vh] flex flex-col justify-center overflow-hidden bg-slate-950 border-b border-slate-200">
       {/* Image Slider Background */}
       <div className="absolute inset-0 w-full h-full overflow-hidden z-0 pointer-events-none bg-slate-950">
-        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num, i) => (
+        {[
+          { num: 1, pos: "object-[25%_30%]" },
+          { num: 2, pos: "object-[75%_40%]" },
+          { num: 3, pos: "object-[75%_40%]" },
+          { num: 4, pos: "object-[35%_40%]" },
+          { num: 5, pos: "object-[75%_40%]" },
+          { num: 6, pos: "object-[25%_35%]" },
+          { num: 7, pos: "object-[75%_40%]" },
+          { num: 8, pos: "object-[75%_40%]" },
+          { num: 9, pos: "object-[25%_35%]" },
+          { num: 10, pos: "object-[25%_40%]" },
+        ].map(({ num, pos }, i) => (
           <img
             key={num}
             src={`/images/Slider-${num}.png`}
             alt={`Hospital Slider ${num}`}
-            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out ${
+            className={`absolute inset-0 w-full h-full object-cover ${pos} md:object-center transition-opacity duration-1000 ease-in-out ${
               i === currentSlide ? "opacity-100" : "opacity-0"
             }`}
           />

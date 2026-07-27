@@ -96,9 +96,7 @@ export default function AboutHospitalClient({ data }: { data: any }) {
               {/* Introduction */}
               <div className="prose prose-slate max-w-none">
                 <div className="text-[18px] text-slate-700 leading-[31px] font-normal mb-2" dangerouslySetInnerHTML={{ __html: data?.introduction || '' }} />
-                <p className="text-[18px] text-slate-700 leading-[29px] font-normal mb-8">
-                  {data?.description}
-                </p>
+                <div className="text-[18px] text-slate-700 leading-[29px] font-normal mb-8" dangerouslySetInnerHTML={{ __html: data?.description || '' }} />
               </div>
 
               {/* Vision & Mission Grid */}
@@ -113,9 +111,7 @@ export default function AboutHospitalClient({ data }: { data: any }) {
                     </div>
                     <h3 className="text-2xl font-bold text-[#002b5c] tracking-tight">Vision</h3>
                   </div>
-                  <p className="text-slate-700 italic font-normal leading-[29px] relative z-10">
-                    {data?.vision}
-                  </p>
+                  <div className="text-slate-700 italic font-normal leading-[29px] relative z-10" dangerouslySetInnerHTML={{ __html: data?.vision || '' }} />
                 </div>
 
                 <div className="bg-gradient-to-br from-blue-50 to-white p-8 rounded-2xl border border-blue-100/50 relative overflow-hidden group">
@@ -128,9 +124,7 @@ export default function AboutHospitalClient({ data }: { data: any }) {
                     </div>
                     <h3 className="text-2xl font-bold text-[#002b5c] tracking-tight">Mission</h3>
                   </div>
-                  <p className="text-slate-700 italic font-normal leading-[29px] relative z-10">
-                    {data?.mission}
-                  </p>
+                  <div className="text-slate-700 italic font-normal leading-[29px] relative z-10" dangerouslySetInnerHTML={{ __html: data?.mission || '' }} />
                 </div>
               </div>
 
@@ -164,9 +158,7 @@ export default function AboutHospitalClient({ data }: { data: any }) {
                       <ShieldCheck className="w-5 h-5" />
                       Quality Policy
                     </h3>
-                    <p className="text-blue-50 text-sm md:text-base leading-[29px] font-normal">
-                      {data?.qualityPolicy}
-                    </p>
+                    <div className="text-blue-50 text-sm md:text-base leading-[29px] font-normal" dangerouslySetInnerHTML={{ __html: data?.qualityPolicy || '' }} />
                   </div>
                   
                   <div className="h-px w-full bg-blue-800/50" />
@@ -176,9 +168,7 @@ export default function AboutHospitalClient({ data }: { data: any }) {
                       <Award className="w-5 h-5" />
                       Quality Objective
                     </h3>
-                    <p className="text-blue-50 text-sm md:text-base leading-[29px] font-normal">
-                      {data?.qualityObjective}
-                    </p>
+                    <div className="text-blue-50 text-sm md:text-base leading-[29px] font-normal" dangerouslySetInnerHTML={{ __html: data?.qualityObjective || '' }} />
                   </div>
                 </div>
               </div>
@@ -188,8 +178,8 @@ export default function AboutHospitalClient({ data }: { data: any }) {
                 <h3 className="text-3xl font-extrabold text-[#002b5c] mb-6 tracking-tight">Our History</h3>
                 <div className="space-y-4 font-normal text-slate-600 leading-[29px] border-l-4 border-teal-100 pl-6 md:pl-8 py-2 relative">
                   <div className="absolute top-0 left-0 w-1 h-12 bg-[#007a87] -ml-[4px] rounded-full" />
-                  {(data?.history || []).map((paragraph: string, idx: number) => (
-                    <p key={idx} dangerouslySetInnerHTML={{ __html: paragraph }} />
+                  {(Array.isArray(data?.history) ? data.history : [data?.history || ""]).map((paragraph: string, idx: number) => (
+                    <div key={idx} className="mb-3 last:mb-0" dangerouslySetInnerHTML={{ __html: paragraph }} />
                   ))}
                 </div>
               </div>

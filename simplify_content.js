@@ -1,13 +1,7 @@
-"use client";
+const { PrismaClient } = require('@prisma/client');
+const prisma = new PrismaClient();
 
-import React from "react";
-import Link from "next/link";
-import { ChevronRight } from "lucide-react";
-
-export default function NeuroRadiologyFellowshipClientPage({ courseData }: { courseData?: any }) {
-  const title = courseData?.title || "Neuro Radiology Fellowship";
-  
-  const defaultHtml = `
+const simpleHtml = `
 <p>Deenanath Mangeshkar Hospital is a multi-specialty hospital located in the heart of Pune, India. Founded in 2001, it is now a tertiary care center with over 868 beds.</p>
 <p>The Royal College of Surgeons of England has accredited the post-graduate training center for academic excellence.</p>
 <p>The Department of Radiology offers comprehensive, diagnostic radiology and image-guided interventional services under one roof. It houses state-of-the-art imaging equipment like Digital Radiography, Ultrasonography, Digital Mammography and Tomosynthesis, two CT machines, Digital PET CT Scan and Two MRIs (3T).</p>
@@ -74,70 +68,25 @@ radiofellowship@gmail.com</p>
   <li>To attend weekly/monthly multidisciplinary conferences in and outside the hospital.</li>
   <li>To participate in the research activities of the Department in order to complete one paper publication and one article each by the end of the tenure of 6 months.</li>
 </ul>
-  `;
+`;
 
-  const overview = courseData?.content || courseData?.overview || defaultHtml;
-
-  return (
-    <main className="bg-slate-50 min-h-screen pb-20">
-      {/* Hero Section */}
-      <div className="w-full bg-[#002b5c] relative overflow-hidden pt-24 pb-16">
-        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 mix-blend-overlay pointer-events-none" />
-        <div className="absolute right-0 top-0 w-1/2 h-full bg-gradient-to-l from-teal-500/20 to-transparent pointer-events-none" />
-        
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          
-          {/* Breadcrumb */}
-          <nav className="flex items-center gap-2 text-sm text-[#b2dfdb] mb-8">
-            <Link href="/" className="hover:text-white transition-colors">Home</Link>
-            <ChevronRight className="w-4 h-4" />
-            <span className="text-white font-medium">{title}</span>
-          </nav>
-          
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-            <div className="max-w-3xl">
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight tracking-tight flex items-center gap-3">
-                {title}
-              </h1>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Content Section */}
-      <div className="max-w-4xl mx-auto px-4 py-12 relative z-20">
-        <div className="bg-white rounded-3xl shadow-xl shadow-slate-200/50 p-8 md:p-12 border border-slate-100">
-          <h2 className="text-2xl font-bold text-[#002b5c] border-b border-slate-100 pb-4 mb-6">
-            Overview
-          </h2>
-          <div 
-            className="prose prose-slate prose-lg max-w-none prose-headings:text-[#002b5c] prose-p:text-slate-600 prose-li:text-slate-600 prose-strong:text-slate-800"
-            dangerouslySetInnerHTML={{ __html: overview }}
-          />
-
-          {/* Gallery Section */}
-          {courseData?.gallery && courseData.gallery.length > 0 && (
-            <div className="mt-16 pt-12 border-t border-slate-100">
-              <h3 className="text-2xl font-bold text-[#002b5c] mb-8">Gallery</h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                {courseData.gallery.map((img: any, idx: number) => (
-                  <div key={idx} className="rounded-xl overflow-hidden shadow-sm border border-slate-100 bg-white">
-                    {img.image && (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img src={img.image} alt={img.caption || 'Gallery Image'} className="w-full h-48 object-cover" />
-                    )}
-                    {img.caption && (
-                      <div className="p-4 text-center text-sm font-semibold text-slate-700">
-                        {img.caption}
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
-    </main>
-  );
+async function updateDb() {
+  const setting = await prisma.siteSetting.findUnique({where: {key: 'home_courses'}});
+  if (!setting) return;
+  
+  let currentData = JSON.parse(setting.value);
+  const index = currentData.leftCourses.findIndex(c => c.link === '/neuro-radiology-fellowship');
+  
+  if (index !== -1) {
+    currentData.leftCourses[index].content = simpleHtml;
+    
+    await prisma.siteSetting.update({
+      where: { key: 'home_courses' },
+      data: { value: JSON.stringify(currentData) }
+    });
+    console.log("Updated DB content successfully.");
+  }
+  await prisma.$disconnect();
 }
+
+updateDb().catch(console.error);

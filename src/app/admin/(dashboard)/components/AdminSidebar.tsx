@@ -122,6 +122,8 @@ const MENU_ITEMS = [
       { name: "NBEMS Courses", href: "/admin/academics/nbems-courses" },
       { name: "Jeevan Rekha", href: "/admin/academics/jeevan-rekha" },
       { name: "Training Programs", href: "/admin/academics/training-programs" },
+      { name: "Laryngology Fellowship", href: "/admin/academics/laryngology-fellowship" },
+      { name: "Oswal Centre", href: "/admin/academics/vasant-nirmala-oswal-centre" },
     ]
   },
   {

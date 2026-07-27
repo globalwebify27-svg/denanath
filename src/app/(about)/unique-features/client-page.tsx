@@ -119,11 +119,7 @@ export default function UniqueFeaturesClientPage({ featuresData }: { featuresDat
                           <span className="leading-tight">{item.title}</span>
                         </h3>
                         
-                        {(item.description || "").split('\n').map((para: string, pIdx: number) => (
-                          <p key={pIdx} className={`text-slate-600 mb-2 md:mb-3 last:mb-0 ${[0, 6].includes(idx) ? 'leading-[31px] font-medium text-[18px]' : 'leading-relaxed text-[13px] sm:text-[14px] md:text-[15px] font-medium'}`}>
-                            {para}
-                          </p>
-                        ))}
+                        <div className={`text-slate-600 mb-2 md:mb-3 last:mb-0 prose prose-slate max-w-none ${[0, 6].includes(idx) ? 'leading-[31px] font-medium text-[18px]' : 'leading-relaxed text-[13px] sm:text-[14px] md:text-[15px] font-medium'}`} dangerouslySetInnerHTML={{ __html: item.description || '' }} />
                         
                         {item.bullets && item.bullets.length > 0 && (
                           <ul className="mt-3 md:mt-4 space-y-2 md:space-y-3">

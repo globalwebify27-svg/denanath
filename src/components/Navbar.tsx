@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { Menu, X, Phone, ChevronDown, Globe } from "lucide-react";
 import Link from "next/link";
+import { applyOfflineTranslation } from "@/lib/offlineTranslate";
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -15,6 +16,13 @@ export default function Navbar() {
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
+  const [isLangOpen, setIsLangOpen] = useState(false);
+
+  useEffect(() => {
+    const handleDocClick = () => setIsLangOpen(false);
+    window.addEventListener("click", handleDocClick);
+    return () => window.removeEventListener("click", handleDocClick);
+  }, []);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -83,18 +91,52 @@ export default function Navbar() {
       };
     }
 
+    // Apply offline/client translation fallback on load if offline or before Google Translate loads
+    try {
+      const match = document.cookie.match(/googtrans=\/en\/([a-z]{2,3})/);
+      if (match && match[1] && match[1] !== 'en') {
+        setTimeout(() => applyOfflineTranslation(match[1]), 50);
+      }
+    } catch (e) {}
+
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const changeLanguage = (langCode: string) => {
+    const hostname = window.location.hostname;
+    const rootDomain = hostname.split('.').slice(-2).join('.');
+
     if (langCode === 'en') {
       document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-      document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; domain=${window.location.hostname}; path=/;`;
+      document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; domain=${hostname}; path=/;`;
+      if (rootDomain && rootDomain !== hostname) {
+        document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; domain=.${rootDomain}; path=/;`;
+      }
     } else {
-      document.cookie = `googtrans=/en/${langCode}; path=/;`;
-      document.cookie = `googtrans=/en/${langCode}; domain=${window.location.hostname}; path=/;`;
+      const val = `/en/${langCode}`;
+      document.cookie = `googtrans=${val}; path=/; max-age=31536000;`;
+      document.cookie = `googtrans=${val}; domain=${hostname}; path=/; max-age=31536000;`;
+      if (rootDomain && rootDomain !== hostname) {
+        document.cookie = `googtrans=${val}; domain=.${rootDomain}; path=/; max-age=31536000;`;
+      }
     }
-    window.location.reload();
+
+    try {
+      const combo = document.querySelector('.goog-te-combo') as HTMLSelectElement | null;
+      if (combo) {
+        combo.value = langCode;
+        combo.dispatchEvent(new Event('change'));
+      }
+    } catch (e) {
+      console.error("Error triggering direct translation:", e);
+    }
+
+    // Apply offline client dictionary translation immediately
+    applyOfflineTranslation(langCode);
+
+    setTimeout(() => {
+      window.location.reload();
+    }, 150);
   };
 
   const navLinks = [
@@ -225,19 +267,25 @@ export default function Navbar() {
               <span>+91 20 4015 1000 (24/7)</span>
             </a>
             <span className="opacity-30">|</span>
-            <div className="relative group flex items-center gap-1.5 cursor-pointer hover:text-white transition-colors py-1 px-2">
+            <div 
+              className="relative group flex items-center gap-1.5 cursor-pointer hover:text-white transition-colors py-1 px-2"
+              onClick={(e) => { e.stopPropagation(); setIsLangOpen(!isLangOpen); }}
+            >
               <Globe className="w-4 h-4" />
               <span>Select Language</span>
-              <div className="absolute top-full right-0 hidden group-hover:block w-32 bg-white rounded-lg shadow-xl border border-slate-100 overflow-hidden text-slate-700 z-50 notranslate">
+              <div 
+                className={`absolute top-full right-0 ${isLangOpen ? 'block' : 'hidden'} group-hover:block w-32 bg-white rounded-lg shadow-xl border border-slate-100 overflow-hidden text-slate-700 z-50 notranslate`}
+                onClick={(e) => e.stopPropagation()}
+              >
                 <div className="flex flex-col text-[11px] 2xl:text-[12px] font-bold">
-                  <div onClick={() => changeLanguage('en')} className="px-4 py-2.5 hover:bg-[#007a87] hover:text-white transition-colors cursor-pointer">English</div>
-                  <div onClick={() => changeLanguage('hi')} className="px-4 py-2.5 hover:bg-[#007a87] hover:text-white transition-colors cursor-pointer border-t border-slate-50">Hindi</div>
-                  <div onClick={() => changeLanguage('mr')} className="px-4 py-2.5 hover:bg-[#007a87] hover:text-white transition-colors cursor-pointer border-t border-slate-50">Marathi</div>
-                  <div onClick={() => changeLanguage('gu')} className="px-4 py-2.5 hover:bg-[#007a87] hover:text-white transition-colors cursor-pointer border-t border-slate-50">Gujarati</div>
-                  <div onClick={() => changeLanguage('kn')} className="px-4 py-2.5 hover:bg-[#007a87] hover:text-white transition-colors cursor-pointer border-t border-slate-50">Kannada</div>
-                  <div onClick={() => changeLanguage('ta')} className="px-4 py-2.5 hover:bg-[#007a87] hover:text-white transition-colors cursor-pointer border-t border-slate-50">Tamil</div>
-                  <div onClick={() => changeLanguage('ar')} className="px-4 py-2.5 hover:bg-[#007a87] hover:text-white transition-colors cursor-pointer border-t border-slate-50">Arabic</div>
-                  <div onClick={() => changeLanguage('de')} className="px-4 py-2.5 hover:bg-[#007a87] hover:text-white transition-colors cursor-pointer border-t border-slate-50">German</div>
+                  <div onClick={() => { changeLanguage('en'); setIsLangOpen(false); }} className="px-4 py-2.5 hover:bg-[#007a87] hover:text-white transition-colors cursor-pointer">English</div>
+                  <div onClick={() => { changeLanguage('hi'); setIsLangOpen(false); }} className="px-4 py-2.5 hover:bg-[#007a87] hover:text-white transition-colors cursor-pointer border-t border-slate-50">Hindi</div>
+                  <div onClick={() => { changeLanguage('mr'); setIsLangOpen(false); }} className="px-4 py-2.5 hover:bg-[#007a87] hover:text-white transition-colors cursor-pointer border-t border-slate-50">Marathi</div>
+                  <div onClick={() => { changeLanguage('gu'); setIsLangOpen(false); }} className="px-4 py-2.5 hover:bg-[#007a87] hover:text-white transition-colors cursor-pointer border-t border-slate-50">Gujarati</div>
+                  <div onClick={() => { changeLanguage('kn'); setIsLangOpen(false); }} className="px-4 py-2.5 hover:bg-[#007a87] hover:text-white transition-colors cursor-pointer border-t border-slate-50">Kannada</div>
+                  <div onClick={() => { changeLanguage('ta'); setIsLangOpen(false); }} className="px-4 py-2.5 hover:bg-[#007a87] hover:text-white transition-colors cursor-pointer border-t border-slate-50">Tamil</div>
+                  <div onClick={() => { changeLanguage('ar'); setIsLangOpen(false); }} className="px-4 py-2.5 hover:bg-[#007a87] hover:text-white transition-colors cursor-pointer border-t border-slate-50">Arabic</div>
+                  <div onClick={() => { changeLanguage('de'); setIsLangOpen(false); }} className="px-4 py-2.5 hover:bg-[#007a87] hover:text-white transition-colors cursor-pointer border-t border-slate-50">German</div>
                 </div>
               </div>
             </div>
@@ -368,18 +416,24 @@ export default function Navbar() {
                 </svg>
               </button>
 
-              <div className="relative group flex items-center cursor-pointer text-slate-500 hover:text-slate-900 transition-colors py-1.5 px-1.5">
+              <div 
+                className="relative group flex items-center cursor-pointer text-slate-500 hover:text-slate-900 transition-colors py-1.5 px-1.5"
+                onClick={(e) => { e.stopPropagation(); setIsLangOpen(!isLangOpen); }}
+              >
                 <Globe className="w-4 md:w-5 h-4 md:h-5" />
-                <div className="absolute top-full right-0 hidden group-hover:block w-32 bg-white rounded-lg shadow-xl border border-slate-100 overflow-hidden text-slate-700 z-50 notranslate mt-3">
-                  <div className="flex flex-col text-[12px] font-bold">
-                    <div onClick={() => changeLanguage('en')} className="px-4 py-3 hover:bg-[#007a87] hover:text-white transition-colors cursor-pointer text-left">English</div>
-                    <div onClick={() => changeLanguage('hi')} className="px-4 py-3 hover:bg-[#007a87] hover:text-white transition-colors cursor-pointer border-t border-slate-50 text-left">Hindi</div>
-                    <div onClick={() => changeLanguage('mr')} className="px-4 py-3 hover:bg-[#007a87] hover:text-white transition-colors cursor-pointer border-t border-slate-50 text-left">Marathi</div>
-                    <div onClick={() => changeLanguage('gu')} className="px-4 py-3 hover:bg-[#007a87] hover:text-white transition-colors cursor-pointer border-t border-slate-50 text-left">Gujarati</div>
-                    <div onClick={() => changeLanguage('kn')} className="px-4 py-3 hover:bg-[#007a87] hover:text-white transition-colors cursor-pointer border-t border-slate-50 text-left">Kannada</div>
-                    <div onClick={() => changeLanguage('ta')} className="px-4 py-3 hover:bg-[#007a87] hover:text-white transition-colors cursor-pointer border-t border-slate-50 text-left">Tamil</div>
-                    <div onClick={() => changeLanguage('ar')} className="px-4 py-3 hover:bg-[#007a87] hover:text-white transition-colors cursor-pointer border-t border-slate-50 text-left">Arabic</div>
-                    <div onClick={() => changeLanguage('de')} className="px-4 py-3 hover:bg-[#007a87] hover:text-white transition-colors cursor-pointer border-t border-slate-50 text-left">German</div>
+                <div 
+                  className={`absolute top-full right-0 ${isLangOpen ? 'block' : 'hidden'} group-hover:block w-36 bg-white rounded-xl shadow-2xl border border-slate-100 overflow-hidden text-slate-700 z-50 notranslate mt-2`}
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <div className="flex flex-col text-[13px] font-bold max-h-[60vh] overflow-y-auto">
+                    <div onClick={() => { changeLanguage('en'); setIsLangOpen(false); }} className="px-4 py-3 hover:bg-[#007a87] hover:text-white transition-colors cursor-pointer text-left">English</div>
+                    <div onClick={() => { changeLanguage('hi'); setIsLangOpen(false); }} className="px-4 py-3 hover:bg-[#007a87] hover:text-white transition-colors cursor-pointer border-t border-slate-50 text-left">Hindi</div>
+                    <div onClick={() => { changeLanguage('mr'); setIsLangOpen(false); }} className="px-4 py-3 hover:bg-[#007a87] hover:text-white transition-colors cursor-pointer border-t border-slate-50 text-left">Marathi</div>
+                    <div onClick={() => { changeLanguage('gu'); setIsLangOpen(false); }} className="px-4 py-3 hover:bg-[#007a87] hover:text-white transition-colors cursor-pointer border-t border-slate-50 text-left">Gujarati</div>
+                    <div onClick={() => { changeLanguage('kn'); setIsLangOpen(false); }} className="px-4 py-3 hover:bg-[#007a87] hover:text-white transition-colors cursor-pointer border-t border-slate-50 text-left">Kannada</div>
+                    <div onClick={() => { changeLanguage('ta'); setIsLangOpen(false); }} className="px-4 py-3 hover:bg-[#007a87] hover:text-white transition-colors cursor-pointer border-t border-slate-50 text-left">Tamil</div>
+                    <div onClick={() => { changeLanguage('ar'); setIsLangOpen(false); }} className="px-4 py-3 hover:bg-[#007a87] hover:text-white transition-colors cursor-pointer border-t border-slate-50 text-left">Arabic</div>
+                    <div onClick={() => { changeLanguage('de'); setIsLangOpen(false); }} className="px-4 py-3 hover:bg-[#007a87] hover:text-white transition-colors cursor-pointer border-t border-slate-50 text-left">German</div>
                   </div>
                 </div>
               </div>
@@ -479,6 +533,34 @@ export default function Navbar() {
 
             {/* Bottom Panel Actions inside Mobile Drawer */}
             <div className="pt-3 border-t border-slate-100 mt-3 flex flex-col gap-2">
+              <div className="bg-slate-50 p-3 rounded-lg border border-slate-200">
+                <div className="flex items-center gap-1.5 text-xs font-bold text-slate-700 mb-2">
+                  <Globe className="w-4 h-4 text-[#007a87]" />
+                  <span>Select Language / भाषा चुनें</span>
+                </div>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5 text-[11px] font-semibold">
+                  {[
+                    { code: 'en', label: 'English' },
+                    { code: 'hi', label: 'Hindi' },
+                    { code: 'mr', label: 'Marathi' },
+                    { code: 'gu', label: 'Gujarati' },
+                    { code: 'kn', label: 'Kannada' },
+                    { code: 'ta', label: 'Tamil' },
+                    { code: 'ar', label: 'Arabic' },
+                    { code: 'de', label: 'German' },
+                  ].map((lang) => (
+                    <button
+                      key={lang.code}
+                      type="button"
+                      onClick={() => { changeLanguage(lang.code); setMobileMenuOpen(false); }}
+                      className="px-2 py-1.5 rounded bg-white hover:bg-[#007a87] hover:text-white border border-slate-200 transition-colors text-center shadow-sm"
+                    >
+                      {lang.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
               <a 
                 href="https://wa.me/912040151515" 
                 target="_blank" 
@@ -488,7 +570,6 @@ export default function Navbar() {
                 <span>WhatsApp Us (24/7)</span>
               </a>
               
-
             </div>
           </div>
         </div>

@@ -1,25 +1,5 @@
 import { NextResponse } from 'next/server';
-
-const BASE_URL = 'https://mapp.dmhospital.org/dmhApiRef/appointment_dummy/';
-const HEADERS = {
-  'X-User-Name': 'dmhPhr-api',
-  'X-Pass-Phrase': 'Phr25@DMH',
-};
-
-const ACTION_TO_ENDPOINT: Record<string, string> = {
-  'speciality': 'doctorList.php',
-  'doctor': 'doctorList.php',
-  'speciality_doctor': 'doctorList.php',
-  'opd_day_time': 'opdDayTime.php',
-  'check_date': 'checkDate.php',
-  'holidays_list': 'holidayJSON.php',
-  'check_slot': 'checkSlot.php',
-  'doctor_slot': 'doctorSlot.php',
-  'ptn_details': 'ptnDetails.php',
-  'save_appointment': 'saveAppointment.php',
-  'cancel_appointment': 'cancelAppointment.php',
-  'doctor_contact_no': 'doctorContactNo.php',
-};
+import { DMH_API_CONFIG } from '@/lib/dmhApi';
 
 export async function POST(request: Request) {
   try {
@@ -28,34 +8,30 @@ export async function POST(request: Request) {
     // The client should send the action and any other required params in the body
     const { action, ...restParams } = body;
 
-    if (!action || !ACTION_TO_ENDPOINT[action]) {
+    const endpoint = DMH_API_CONFIG.endpoints[action as keyof typeof DMH_API_CONFIG.endpoints];
+
+    if (!action || !endpoint) {
       return NextResponse.json({ error: 'Invalid or missing action' }, { status: 400 });
     }
 
-    const endpoint = ACTION_TO_ENDPOINT[action];
-    const url = `${BASE_URL}${endpoint}`;
+    const url = `${DMH_API_CONFIG.baseUrl}${endpoint}`;
 
-    // Format the req_data payload as a JSON object
-    const reqDataPayload = {
-      action,
-      ...restParams
-    };
+    console.log(`[DMH API Request] Calling ${url} with body:`, body);
 
     const response = await fetch(url, {
       method: 'POST',
-      headers: { ...HEADERS, 'Content-Type': 'application/json' },
-      body: JSON.stringify(reqDataPayload),
+      headers: DMH_API_CONFIG.headers,
+      body: JSON.stringify(body),
     });
 
-    // The API might return non-JSON on errors
     const text = await response.text();
     let data;
     try {
       data = JSON.parse(text);
       console.log(`[DMH API] Success -> ${action}:`, data);
     } catch (e) {
-      console.error(`[DMH API] Failed to parse JSON -> ${action}. Raw response:`, text);
-      throw new Error('Invalid JSON response from DMH API');
+      console.error(`[DMH API] Error parsing JSON for ${action}:`, text);
+      return NextResponse.json({ error: 'Invalid JSON response from DMH API', raw: text }, { status: 500 });
     }
 
     return NextResponse.json(data);

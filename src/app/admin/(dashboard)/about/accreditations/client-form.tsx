@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import {  Plus, Trash2, GripVertical } from "lucide-react";
+import QuillEditor from "@/components/QuillEditor";
 
 export default function AccreditationsClientForm({ initialData }: { initialData: any[] }) {
   const [items, setItems] = useState<any[]>(initialData.length > 0 ? initialData : [{
@@ -121,13 +122,7 @@ export default function AccreditationsClientForm({ initialData }: { initialData:
 
               <div className="md:col-span-2">
                 <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Quality Policy</label>
-                <textarea 
-                  value={item.policy} 
-                  onChange={(e) => updateItem(item.id, 'policy', e.target.value)}
-                  rows={3}
-                  className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium leading-relaxed"
-                  placeholder="Enter policy description..."
-                />
+                <QuillEditor value={item.policy} onChange={(val) => updateItem(item.id, 'policy', val)} />
               </div>
 
               <div>

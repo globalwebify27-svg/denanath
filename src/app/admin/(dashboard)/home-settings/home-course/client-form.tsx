@@ -16,18 +16,20 @@ export default function HomeCourseClientForm({ initialData }: { initialData: any
 
   const addLeftCourse = () => {
     const newId = "left-" + Date.now();
-    setFormData({
-      ...formData,
-      leftCourses: [...formData.leftCourses, { id: newId, title: "New Course", link: "", linkText: "View Details", content: "", gallery: [] }]
-    });
+    setFormData(prev => ({
+      ...prev,
+      leftCourses: [...prev.leftCourses, { id: newId, title: "New Course", link: "", linkText: "View Details", content: "", gallery: [] }]
+    }));
+    setTimeout(() => handleSave(), 100);
   };
 
   const addRightCourse = () => {
     const newId = "right-" + Date.now();
-    setFormData({
-      ...formData,
-      rightCourses: [...formData.rightCourses, { id: newId, title: "New Program", link: "", linkText: "View Form", content: "", gallery: [] }]
-    });
+    setFormData(prev => ({
+      ...prev,
+      rightCourses: [...prev.rightCourses, { id: newId, title: "New Program", link: "", linkText: "View Form", content: "", gallery: [] }]
+    }));
+    setTimeout(() => handleSave(), 100);
   };
 
   const removeLeftCourse = (index: number) => {

@@ -110,7 +110,7 @@ export default async function EditCoursePage({ params, searchParams }: { params:
 
   return (
     <div className="p-4 md:p-8 max-w-5xl mx-auto pb-32">
-      <CourseForm initialData={course} saveAction={saveAction} col={searchParams.col} />
+      <CourseForm initialData={course} saveAction={saveAction} col={resolvedSearchParams.col} />
     </div>
   );
 }

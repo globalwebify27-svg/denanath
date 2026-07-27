@@ -47,8 +47,8 @@ export default async function AdminHomeCoursePage() {
     
     try {
       const parsed = {
-        leftCourses: JSON.parse(formData.get("leftCourses") as string || "[]"),
-        rightCourses: JSON.parse(formData.get("rightCourses") as string || "[]"),
+        leftCourses: JSON.parse(formData.get("leftCourses") as string || "[]").map((c: any) => { delete c.isNew; return c; }),
+        rightCourses: JSON.parse(formData.get("rightCourses") as string || "[]").map((c: any) => { delete c.isNew; return c; }),
       };
       
       const finalJson = JSON.stringify(parsed);

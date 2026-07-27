@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import {  Plus, Trash2 } from "lucide-react";
+import QuillEditor from "@/components/QuillEditor";
 
 export default function AssociatesClientForm({ initialData }: { initialData: any[] }) {
   const [items, setItems] = useState<any[]>(initialData.length > 0 ? initialData : [{
@@ -69,13 +70,7 @@ export default function AssociatesClientForm({ initialData }: { initialData: any
 
               <div className="md:col-span-2">
                 <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Description</label>
-                <textarea 
-                  value={item.description} 
-                  onChange={(e) => updateItem(item.id, 'description', e.target.value)}
-                  rows={3}
-                  className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium leading-relaxed"
-                  placeholder="Enter associate description..."
-                />
+                <QuillEditor value={item.description} onChange={(val) => updateItem(item.id, 'description', val)} />
               </div>
 
               <div className="md:col-span-2">

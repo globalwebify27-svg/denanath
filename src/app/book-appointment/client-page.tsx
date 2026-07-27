@@ -32,6 +32,8 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
   const [patientTab, setPatientTab] = useState<"new" | "registered">("new");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [bookingSuccess, setBookingSuccess] = useState(false);
+  const [isFetchingPatient, setIsFetchingPatient] = useState(false);
+  const [isEditableContact, setIsEditableContact] = useState(false);
 
   // Form Data
   const [formData, setFormData] = useState({
@@ -39,6 +41,54 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
     dob: "", gender: "", mobileNo: "", email: "",
     mrdNo: "", isFirstVisit: true,
   });
+
+  // Helper to fetch registered patient details automatically via ptn_details API
+  const fetchRegisteredPatientDetails = async (mrdNo: string, dobInput: string) => {
+    if (!mrdNo || !dobInput) return;
+    
+    // Normalize date format to YYYY-MM-DD as expected by DMH ptnDetails API
+    let formattedDob = dobInput.trim();
+    if (formattedDob.includes('/') || formattedDob.includes('-')) {
+      const separator = formattedDob.includes('/') ? '/' : '-';
+      const parts = formattedDob.split(separator);
+      if (parts.length === 3) {
+        if (parts[0].length === 4) {
+          formattedDob = `${parts[0]}-${parts[1].padStart(2, '0')}-${parts[2].padStart(2, '0')}`;
+        } else {
+          formattedDob = `${parts[2]}-${parts[1].padStart(2, '0')}-${parts[0].padStart(2, '0')}`;
+        }
+      }
+    }
+
+    setIsFetchingPatient(true);
+    try {
+      console.log(`[Frontend] Fetching patient details for MRD: ${mrdNo}, DOB: ${formattedDob}`);
+      const res = await fetchApi("ptn_details", { mrd_no: mrdNo, dob: formattedDob });
+      console.log("[Frontend] ptn_details response:", res);
+
+      // DMH API returns response as { patientDetails: [ { lastname, firstname, mobile_no, email_id, ... } ] }
+      const list = res?.patientDetails || res?.Response || res?.patientJSON || (Array.isArray(res) ? res : []);
+      const ptn = Array.isArray(list) && list.length > 0 ? list[0] : null;
+
+      if (ptn) {
+        setFormData(prev => ({
+          ...prev,
+          firstName: ptn.firstname || ptn.first_name || ptn.firstName || prev.firstName,
+          middleName: ptn.middlename || ptn.middle_name || ptn.middleName || prev.middleName,
+          lastName: ptn.lastname || ptn.last_name || ptn.lastName || prev.lastName,
+          mobileNo: ptn.mobile_no || ptn.mobileNo || ptn.mobile || ptn.contact_no || prev.mobileNo,
+          email: ptn.email_id || ptn.emailId || ptn.email || prev.email,
+          gender: ptn.sex || ptn.gender || prev.gender
+        }));
+        // Auto-lock mobile & email fields when fetched from API
+        setIsEditableContact(false);
+      }
+    } catch (err) {
+      console.warn("Failed to auto-fetch patient details:", err);
+    } finally {
+      setIsFetchingPatient(false);
+    }
+  };
 
   // --- API Helpers ---
   const fetchApi = async (action: string, payload: any = {}) => {
@@ -63,7 +113,7 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
     }
   };
 
-  // --- Initial Load ---
+  // --- Initial Load & Direct Booking URL Query Handler ---
   useEffect(() => {
     // Fetch specialities on mount
     fetchApi("speciality").then(data => {
@@ -71,77 +121,142 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
       if (Array.isArray(data)) setSpecialities(data);
       else if (data.specialityJSON) setSpecialities(data.specialityJSON);
       else {
-        // Fallback: find the first array in the object
         const arr = Object.values(data).find(v => Array.isArray(v));
         if (arr) setSpecialities(arr as any[]);
       }
     });
+
+    // Check URL parameters for direct doctor booking
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      const urlDocId = params.get('doctor_id');
+      const urlSpecId = params.get('speciality_id');
+      const urlServicePointId = params.get('service_point_id');
+
+      if (urlDocId) {
+        if (urlSpecId) setSelectedSpeciality(urlSpecId);
+        setSelectedDoctor(urlDocId);
+
+        // Directly load calendar step for this doctor
+        const loadDirectCalendar = async () => {
+          setStep("calendar");
+          setIsLoadingCalendar(true);
+
+          // Fetch doctor details to display doctor name in header
+          if (urlSpecId) {
+            const docData = await fetchApi("speciality_doctor", { speciality_id: urlSpecId });
+            const docs = docData?.doctorJSON || (Array.isArray(docData) ? docData : []);
+            if (Array.isArray(docs)) setDoctors(docs);
+          }
+
+          const datesRes = await fetchApi("check_date", {
+            service_point_id: urlServicePointId || "0",
+            speciality_id: urlSpecId || ""
+          });
+
+          let dateArr: any[] = [];
+          if (datesRes && !datesRes.error) {
+            if (Array.isArray(datesRes)) dateArr = datesRes;
+            else dateArr = Object.values(datesRes).find(v => Array.isArray(v)) as any[] || [];
+          }
+
+          if (dateArr.length > 0) {
+            setAvailableDates(dateArr.map((d: any) => typeof d === 'string' ? d : (d.date || d.appointment_date || d.availableDate || Object.values(d)[0])));
+          } else {
+            setAvailableDates([]);
+          }
+
+          setIsLoadingCalendar(false);
+        };
+
+        loadDirectCalendar();
+      }
+    }
   }, []);
 
-  // Fetch doctors dynamically when a speciality is selected
+  // Fetch doctors dynamically: either for all specialities or for the selected speciality
   useEffect(() => {
-    if (!selectedSpeciality) {
-      setDoctors([]);
-      return;
-    }
-    
-    // API action 'speciality_doctor' requires 'speciality_id'
-    fetchApi("speciality_doctor", { speciality_id: selectedSpeciality }).then(data => {
-      if (!data) return;
-      if (Array.isArray(data)) setDoctors(data);
-      else if (data.doctorJSON) setDoctors(data.doctorJSON);
-      else {
-        // Fallback: find the first array in the object
-        const arr = Object.values(data).find(v => Array.isArray(v));
-        if (arr) setDoctors(arr as any[]);
+    const loadDoctorsList = async () => {
+      if (selectedSpeciality) {
+        const data = await fetchApi("speciality_doctor", { speciality_id: selectedSpeciality });
+        if (!data) return;
+        const docs = data.doctorJSON || (Array.isArray(data) ? data : []);
+        if (Array.isArray(docs)) setDoctors(docs);
+      } else if (specialities.length > 0) {
+        const allDocs: any[] = [];
+        await Promise.all(
+          specialities.slice(0, 15).map(async (s: any) => {
+            const specId = s.speciality_id || s.id;
+            if (!specId) return;
+            const data = await fetchApi("speciality_doctor", { speciality_id: String(specId) });
+            const docs = data?.doctorJSON || (Array.isArray(data) ? data : []);
+            if (Array.isArray(docs)) allDocs.push(...docs);
+          })
+        );
+        setDoctors(allDocs);
       }
-    });
-  }, [selectedSpeciality]);
+    };
+
+    loadDoctorsList();
+  }, [selectedSpeciality, specialities]);
+
+  // Search Results Doctors State
+  const [searchResults, setSearchResults] = useState<any[]>([]);
 
   // --- Handlers ---
   const handleSearch = async () => {
     if (!selectedSpeciality && !selectedDoctor) return alert("Please select a Speciality or Doctor");
-    
-    // Find the correct doctor object to extract required IDs
-    let docObj = doctors.find(d => String(d.doctor_id) === String(selectedDoctor));
-    if (!docObj && selectedSpeciality) {
-       docObj = doctors.find(d => String(d.speciality_id) === String(selectedSpeciality));
-    }
-    
-    if (!docObj) {
-      alert("No doctors available for this selection.");
-      return;
-    }
 
     setIsSearching(true);
-    setStep("calendar");
-    setIsLoadingCalendar(true);
+    setSearchResults([]);
+
+    // Fetch doctors directly for the selected speciality
+    let currentDoctors: any[] = [];
+    if (selectedSpeciality) {
+      const data = await fetchApi("speciality_doctor", { speciality_id: selectedSpeciality });
+      const fetchedDocs = data?.doctorJSON || (Array.isArray(data) ? data : []);
+      if (Array.isArray(fetchedDocs)) {
+        currentDoctors = fetchedDocs;
+      }
+    } else {
+      currentDoctors = doctors;
+    }
     
-    // API requires service_point_id and speciality_id
-    const payload = {
-       service_point_id: docObj.service_point_id,
-       speciality_id: docObj.speciality_id
-    };
-      
-    const datesRes = await fetchApi("check_date", payload);
-    
-    // Extract array from possible wrappers (e.g. { availableDate: [...] })
-    let dateArr: any[] = [];
-    if (datesRes && !datesRes.error) {
-       if (Array.isArray(datesRes)) dateArr = datesRes;
-       else dateArr = Object.values(datesRes).find(v => Array.isArray(v)) as any[] || [];
+    // Filter if specific doctor is selected
+    if (selectedDoctor) {
+      currentDoctors = currentDoctors.filter(d => String(d.doctor_id || d.id) === String(selectedDoctor));
     }
 
-    if (dateArr.length > 0) {
-      setAvailableDates(dateArr.map((d: any) => {
-        if (typeof d === 'string') return d;
-        return d.date || d.appointment_date || d.appointmentDate || d.availableDate || d.slotDate || Object.values(d)[0];
-      }));
-    } else {
-      setAvailableDates([]);
-    }
-    
-    setIsLoadingCalendar(false);
+    // Fetch OPD day & time for each doctor to render schedule table
+    const doctorsWithSchedule = await Promise.all(
+      currentDoctors.map(async (doc: any) => {
+        let schedule: any[] = [];
+        let isApp = doc.isApp === 'Y' || doc.isApp === 'true' || doc.isApp === true;
+
+        try {
+          const opdData = await fetchApi("opd_day_time", {
+            doctor_id: String(doc.doctor_id || ''),
+            speciality_id: String(doc.speciality_id || selectedSpeciality || '')
+          });
+
+          const list = opdData?.opdDayTimeJSON || (Array.isArray(opdData) ? opdData : []);
+          if (Array.isArray(list) && list.length > 0) {
+            schedule = list;
+            if (list[0]?.isApp === 'Y' || list[0]?.isApp === 'true') isApp = true;
+          }
+        } catch (e) {
+          console.warn("Failed to fetch OPD time:", e);
+        }
+
+        return {
+          ...doc,
+          isApp,
+          schedule
+        };
+      })
+    );
+
+    setSearchResults(doctorsWithSchedule);
     setIsSearching(false);
   };
 
@@ -344,11 +459,11 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
               
               <div className="relative">
                 <div 
-                  className="w-full bg-white border-2 border-teal-500/20 text-slate-700 text-lg rounded-full py-4 px-6 cursor-pointer flex items-center justify-between font-medium transition-colors hover:border-teal-500/40 relative z-50"
-                  onClick={() => setIsSpecOpen(!isSpecOpen)}
+                  className="w-full bg-white border-2 border-teal-500/20 text-slate-700 text-lg rounded-full py-4 px-6 cursor-pointer flex items-center justify-between font-medium transition-colors hover:border-teal-500/40 relative z-10"
+                  onClick={() => { setIsSpecOpen(!isSpecOpen); setIsDocOpen(false); }}
                 >
-                  <span className="flex-1 text-center truncate">
-                    {selectedSpeciality ? (specialities.find(s => String(s.speciality_id || s.id || s.name) === String(selectedSpeciality))?.speciality_name || specialities.find(s => String(s.speciality_id || s.id || s.name) === String(selectedSpeciality))?.name || 'Selected') : '1. Select Speciality (Required)'}
+                  <span className="flex-1 text-center truncate font-semibold">
+                    {selectedSpeciality ? (specialities.find(s => String(s.speciality_id || s.id || s.name) === String(selectedSpeciality))?.speciality_name || specialities.find(s => String(s.speciality_id || s.id || s.name) === String(selectedSpeciality))?.name || 'Selected') : 'Select Speciality'}
                   </span>
                   <ChevronDown className={`w-5 h-5 text-teal-500 transition-transform ${isSpecOpen ? 'rotate-180' : ''}`} />
                 </div>
@@ -361,7 +476,7 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
                         className="px-6 py-3 hover:bg-teal-50 cursor-pointer text-slate-600 text-center font-medium transition-colors"
                         onClick={() => { setSelectedSpeciality(""); setSelectedDoctor(""); setIsSpecOpen(false); }}
                       >
-                        1. Select Speciality (Required)
+                        Select Speciality
                       </div>
                       {specialities.map((s, i) => {
                         const val = s.speciality_id || s.id || s.name || `spec_${i}`;
@@ -369,7 +484,7 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
                         return (
                           <div 
                             key={i}
-                            className={`px-6 py-3 hover:bg-teal-50 cursor-pointer text-center font-medium transition-colors uppercase ${String(selectedSpeciality) === String(val) ? 'bg-teal-50 text-teal-700' : 'text-slate-600'}`}
+                            className={`px-6 py-3 hover:bg-teal-50 cursor-pointer text-center font-medium transition-colors uppercase ${String(selectedSpeciality) === String(val) ? 'bg-teal-50 text-teal-700 font-bold' : 'text-slate-600'}`}
                             onClick={() => { setSelectedSpeciality(val); setSelectedDoctor(""); setIsSpecOpen(false); }}
                           >
                             {label}
@@ -381,22 +496,21 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
                 )}
               </div>
               
-              <div className="text-slate-400 font-bold uppercase tracking-widest text-sm py-2">THEN</div>
+              <div className="text-slate-400 font-bold uppercase tracking-widest text-sm py-1">OR</div>
               
-              <div className={`relative bg-slate-100 rounded-full p-1 ${!selectedSpeciality ? 'opacity-50 cursor-not-allowed' : ''}`}>
+              <div className="relative">
                 <div 
-                  className="w-full bg-transparent text-slate-600 text-lg rounded-full py-3 px-6 flex items-center justify-between font-medium relative z-50"
-                  onClick={() => selectedSpeciality && setIsDocOpen(!isDocOpen)}
-                  style={{ cursor: !selectedSpeciality ? 'not-allowed' : 'pointer' }}
+                  className="w-full bg-white border-2 border-teal-500/20 text-slate-700 text-lg rounded-full py-4 px-6 cursor-pointer flex items-center justify-between font-medium transition-colors hover:border-teal-500/40 relative z-10"
+                  onClick={() => { setIsDocOpen(!isDocOpen); setIsSpecOpen(false); }}
                 >
-                  <span className="flex-1 text-center truncate">
+                  <span className="flex-1 text-center truncate font-semibold">
                     {selectedDoctor ? (
                       doctors.find(d => String(d.doctor_id || d.id || d.name) === String(selectedDoctor))?.doctor_name || 
                       doctors.find(d => String(d.doctor_id || d.id || d.name) === String(selectedDoctor))?.name || 
-                      'Selected'
-                    ) : '2. Select Doctor'}
+                      'Selected Doctor'
+                    ) : 'Select Doctor'}
                   </span>
-                  <ChevronDown className={`w-5 h-5 text-slate-400 transition-transform ${isDocOpen ? 'rotate-180' : ''}`} />
+                  <ChevronDown className={`w-5 h-5 text-teal-500 transition-transform ${isDocOpen ? 'rotate-180' : ''}`} />
                 </div>
 
                 {isDocOpen && (
@@ -407,7 +521,7 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
                         className="px-6 py-3 hover:bg-teal-50 cursor-pointer text-slate-600 text-center font-medium transition-colors"
                         onClick={() => { setSelectedDoctor(""); setIsDocOpen(false); }}
                       >
-                        2. Select Doctor
+                        Select Doctor
                       </div>
                       {doctors
                         .filter(d => selectedSpeciality ? String(d.speciality_id) === String(selectedSpeciality) : true)
@@ -417,19 +531,13 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
                           return (
                             <div 
                               key={i}
-                              className={`px-6 py-3 hover:bg-teal-50 cursor-pointer text-center font-medium transition-colors uppercase ${String(selectedDoctor) === String(val) ? 'bg-teal-50 text-teal-700' : 'text-slate-600'}`}
+                              className={`px-6 py-3 hover:bg-teal-50 cursor-pointer text-center font-medium transition-colors uppercase ${String(selectedDoctor) === String(val) ? 'bg-teal-50 text-teal-700 font-bold' : 'text-slate-600'}`}
                               onClick={() => { setSelectedDoctor(val); setIsDocOpen(false); }}
                             >
                               {label}
                             </div>
                           );
                       })}
-                      {doctors.length === 0 && (
-                        <>
-                          <div className="px-6 py-3 hover:bg-teal-50 cursor-pointer text-center font-medium transition-colors text-slate-600 uppercase" onClick={() => { setSelectedDoctor("dr1"); setIsDocOpen(false); }}>Dr. Nikhil Agarkhedkar</div>
-                          <div className="px-6 py-3 hover:bg-teal-50 cursor-pointer text-center font-medium transition-colors text-slate-600 uppercase" onClick={() => { setSelectedDoctor("dr2"); setIsDocOpen(false); }}>Dr. Renu Agarkhedkar</div>
-                        </>
-                      )}
                     </div>
                   </>
                 )}
@@ -458,16 +566,142 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
           </div>
         )}
 
+        {/* Doctor Search Results List with Timetable */}
+        {!bookingSuccess && searchResults.length > 0 && (
+          <div className="mt-10 space-y-6">
+            <div className="flex items-center justify-between border-b border-slate-200 pb-4">
+              <h2 className="text-2xl font-extrabold text-[#002b5c] tracking-tight">
+                Available Doctors ({searchResults.length})
+              </h2>
+              <span className="text-xs font-bold uppercase tracking-wider px-3 py-1 bg-teal-50 text-[#007a87] rounded-full border border-teal-100">
+                Live DMH Schedule
+              </span>
+            </div>
+
+            {searchResults.map((doc, idx) => {
+              const docName = doc.doctor_name || `${doc.first_name || ''} ${doc.last_name || ''}`.trim();
+              const specName = doc.speciality_name || 'General';
+              const qual = doc.qualification || 'MBBS';
+
+              return (
+                <div key={idx} className="bg-white rounded-3xl p-6 sm:p-8 shadow-[0_8px_30px_rgb(0,0,0,0.05)] border border-slate-100 hover:border-teal-500/30 transition-all duration-300 flex flex-col lg:flex-row gap-6 items-start justify-between">
+                  <div className="flex-1 w-full">
+                    <div className="flex items-start gap-4 mb-4">
+                      <div className="w-16 h-16 rounded-2xl bg-teal-50 flex items-center justify-center text-[#007a87] shrink-0 border border-teal-100 shadow-sm overflow-hidden p-1">
+                        {doc.doctorImage ? (
+                          <img src={doc.doctorImage} alt={docName} className="w-full h-full object-cover rounded-xl" />
+                        ) : (
+                          <User className="w-8 h-8 text-[#007a87]" />
+                        )}
+                      </div>
+                      <div>
+                        <h3 className="text-xl sm:text-2xl font-extrabold text-[#002b5c] tracking-tight uppercase">{docName}</h3>
+                        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md bg-amber-50 border border-amber-100 text-amber-700 text-xs font-bold tracking-wider uppercase mt-1">
+                          {specName}
+                        </div>
+                        <p className="text-slate-600 text-sm font-medium mt-2 leading-relaxed">{qual}</p>
+                      </div>
+                    </div>
+
+                    {/* OPD Timetable Grid */}
+                    {doc.schedule && doc.schedule.length > 0 ? (
+                      <div className="mt-6 overflow-x-auto rounded-2xl border border-slate-200 bg-slate-50/60 p-1">
+                        <table className="w-full text-xs text-center border-collapse">
+                          <thead>
+                            <tr className="bg-[#002b5c] text-white font-bold uppercase tracking-wider rounded-xl">
+                              <th className="py-2.5 px-3 rounded-l-xl">MON</th>
+                              <th className="py-2.5 px-3">TUE</th>
+                              <th className="py-2.5 px-3">WED</th>
+                              <th className="py-2.5 px-3">THU</th>
+                              <th className="py-2.5 px-3">FRI</th>
+                              <th className="py-2.5 px-3">SAT</th>
+                              <th className="py-2.5 px-3 rounded-r-xl">SUN</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {doc.schedule.map((s: any, sIdx: number) => (
+                              <tr key={sIdx} className="font-semibold text-slate-700 hover:bg-slate-100/60 transition-colors">
+                                <td className="py-3 px-2 border-r border-slate-200/60">{s.Mon || '-'}</td>
+                                <td className="py-3 px-2 border-r border-slate-200/60">{s.Tue || '-'}</td>
+                                <td className="py-3 px-2 border-r border-slate-200/60">{s.Wed || '-'}</td>
+                                <td className="py-3 px-2 border-r border-slate-200/60">{s.Thu || '-'}</td>
+                                <td className="py-3 px-2 border-r border-slate-200/60">{s.Fri || '-'}</td>
+                                <td className="py-3 px-2 border-r border-slate-200/60">{s.Sat || '-'}</td>
+                                <td className="py-3 px-2">{s.Sun || '-'}</td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    ) : (
+                      <div className="mt-4 text-xs font-semibold text-slate-500 bg-slate-50 p-3 rounded-xl border border-slate-100">
+                        OPD Schedule available via consultation query.
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Booking or Toll Free Phone Button Column */}
+                  <div className="shrink-0 w-full lg:w-auto flex flex-col items-stretch lg:items-end justify-center self-center gap-3 pt-4 lg:pt-0 border-t lg:border-t-0 border-slate-100">
+                    {doc.isApp ? (
+                      <button
+                        onClick={async () => {
+                          setSelectedDoctor(doc.doctor_id);
+                          setSelectedSpeciality(doc.speciality_id);
+                          setStep("calendar");
+                          setIsLoadingCalendar(true);
+                          const datesRes = await fetchApi("check_date", {
+                            service_point_id: doc.service_point_id || "0",
+                            speciality_id: doc.speciality_id
+                          });
+                          let dateArr: any[] = [];
+                          if (datesRes && !datesRes.error) {
+                            if (Array.isArray(datesRes)) dateArr = datesRes;
+                            else dateArr = Object.values(datesRes).find(v => Array.isArray(v)) as any[] || [];
+                          }
+                          setAvailableDates(dateArr.map((d: any) => typeof d === 'string' ? d : (d.date || d.appointment_date || Object.values(d)[0])));
+                          setIsLoadingCalendar(false);
+                        }}
+                        className="w-full lg:w-auto bg-[#007a87] hover:bg-[#005f69] text-white px-8 py-3.5 rounded-xl font-extrabold text-sm tracking-wider uppercase shadow-md hover:shadow-lg transition-all duration-300 text-center"
+                      >
+                        Book Appointment
+                      </button>
+                    ) : (
+                      <div className="text-center lg:text-right w-full">
+                        <p className="text-xs text-slate-500 font-bold mb-2">Please call for appointment:</p>
+                        <a href="tel:02049153347" className="inline-flex items-center justify-center w-full lg:w-auto bg-[#d9232d] hover:bg-[#b81d24] text-white px-6 py-3 rounded-xl font-black text-sm shadow-md hover:shadow-lg transition-all duration-300">
+                          020 4915 3347
+                        </a>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+
         {/* Step 2: Calendar View */}
         {!bookingSuccess && step === "calendar" && (
-          <div className="bg-white rounded-t-lg shadow-lg border border-slate-100 overflow-hidden mt-6">
-            <div className="bg-[#4bc2b0] text-white text-center py-4 relative">
-              <button onClick={() => setStep("search")} className="absolute left-4 top-1/2 -translate-y-1/2 text-sm font-medium hover:underline text-teal-50">
-                Back To Search
+          <div className="bg-white rounded-2xl shadow-xl border border-slate-100 overflow-hidden mt-6">
+            <div className="bg-[#007a87] text-white text-center py-5 px-6 relative flex flex-col items-center justify-center gap-1">
+              <button onClick={() => setStep("search")} className="absolute left-4 sm:left-6 top-1/2 -translate-y-1/2 text-xs sm:text-sm font-semibold hover:underline text-teal-100 bg-white/10 px-3 py-1.5 rounded-full backdrop-blur-sm transition-colors">
+                ← Back To Search
               </button>
-              <h2 className="text-lg font-bold uppercase tracking-wider">
-                Available Appointment Dates
-              </h2>
+              {(() => {
+                const currentDoc = doctors.find(d => String(d.doctor_id || d.id) === String(selectedDoctor)) || 
+                                   searchResults.find(d => String(d.doctor_id || d.id) === String(selectedDoctor));
+                const docName = currentDoc ? (currentDoc.doctor_name || `${currentDoc.first_name || ''} ${currentDoc.last_name || ''}`.trim()) : '';
+                return (
+                  <>
+                    <h2 className="text-xl sm:text-2xl font-black uppercase tracking-tight text-white">
+                      {docName ? docName : "Available Appointment Dates"}
+                    </h2>
+                    <p className="text-xs text-teal-100 font-medium uppercase tracking-wider">
+                      {docName ? "Select an Available Date Below to Book Consultation" : "Available Appointment Dates"}
+                    </p>
+                  </>
+                );
+              })()}
             </div>
             
             {isLoadingCalendar ? (
@@ -583,7 +817,21 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
                     </div>
                     <div>
                       <label className="block text-xs font-bold text-slate-700 mb-1"><span className="text-red-500">*</span> DOB (DD/MM/YYYY)</label>
-                      <input required type="text" placeholder="dd-mm-yyyy" onFocus={(e) => e.target.type = 'date'} onBlur={(e) => { if (!e.target.value) e.target.type = 'text'; }} value={formData.dob} onChange={e => setFormData({...formData, dob: e.target.value})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:border-[#4bc2b0] focus:ring-1 focus:ring-[#4bc2b0] outline-none" />
+                      <input 
+                        required 
+                        type="date" 
+                        value={formData.dob.includes('/') ? formData.dob.split('/').reverse().join('-') : formData.dob} 
+                        onChange={e => {
+                          const val = e.target.value;
+                          let formatted = val;
+                          if (val) {
+                            const parts = val.split('-');
+                            if (parts.length === 3) formatted = `${parts[2]}/${parts[1]}/${parts[0]}`;
+                          }
+                          setFormData({...formData, dob: formatted});
+                        }} 
+                        className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:border-[#4bc2b0] focus:ring-1 focus:ring-[#4bc2b0] outline-none cursor-pointer" 
+                      />
                     </div>
                     <div>
                       <label className="block text-xs font-bold text-slate-700 mb-1"><span className="text-red-500">*</span> Gender</label>
@@ -598,12 +846,49 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
                 ) : (
                   <>
                     <div>
-                      <label className="block text-xs font-bold text-slate-700 mb-1"><span className="text-red-500">*</span> Patient/MRD Number</label>
-                      <input required type="text" value={formData.mrdNo} onChange={e => setFormData({...formData, mrdNo: e.target.value})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:border-[#4bc2b0] focus:ring-1 focus:ring-[#4bc2b0] outline-none" placeholder="Enter MRD Number..." />
+                      <div className="flex justify-between items-center mb-1">
+                        <label className="block text-xs font-bold text-slate-700"><span className="text-red-500">*</span> Patient/MRD Number</label>
+                        {isFetchingPatient && <span className="text-[11px] text-teal-600 font-semibold animate-pulse">Fetching details...</span>}
+                      </div>
+                      <input 
+                        required 
+                        type="text" 
+                        value={formData.mrdNo} 
+                        onChange={e => {
+                          const val = e.target.value;
+                          setFormData({...formData, mrdNo: val});
+                          if (val && formData.dob) fetchRegisteredPatientDetails(val, formData.dob);
+                        }} 
+                        onBlur={() => {
+                          if (formData.mrdNo && formData.dob) fetchRegisteredPatientDetails(formData.mrdNo, formData.dob);
+                        }}
+                        className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:border-[#4bc2b0] focus:ring-1 focus:ring-[#4bc2b0] outline-none" 
+                        placeholder="Enter MRD Number..." 
+                      />
                     </div>
                     <div>
                       <label className="block text-xs font-bold text-slate-700 mb-1"><span className="text-red-500">*</span> DOB (DD/MM/YYYY)</label>
-                      <input required type="text" placeholder="dd-mm-yyyy" onFocus={(e) => e.target.type = 'date'} onBlur={(e) => { if (!e.target.value) e.target.type = 'text'; }} value={formData.dob} onChange={e => setFormData({...formData, dob: e.target.value})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:border-[#4bc2b0] focus:ring-1 focus:ring-[#4bc2b0] outline-none" />
+                      <div className="relative">
+                        <input 
+                          required 
+                          type="date" 
+                          value={formData.dob.includes('/') ? formData.dob.split('/').reverse().join('-') : formData.dob} 
+                          onChange={e => {
+                            const val = e.target.value; // YYYY-MM-DD
+                            let formatted = val;
+                            if (val) {
+                              const parts = val.split('-');
+                              if (parts.length === 3) formatted = `${parts[2]}/${parts[1]}/${parts[0]}`;
+                            }
+                            setFormData({...formData, dob: formatted});
+                            if (formData.mrdNo && formatted) fetchRegisteredPatientDetails(formData.mrdNo, formatted);
+                          }} 
+                          onBlur={() => {
+                            if (formData.mrdNo && formData.dob) fetchRegisteredPatientDetails(formData.mrdNo, formData.dob);
+                          }}
+                          className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:border-[#4bc2b0] focus:ring-1 focus:ring-[#4bc2b0] outline-none cursor-pointer" 
+                        />
+                      </div>
                     </div>
                     
                     <div className="flex gap-4 items-center mt-2 mb-4">
@@ -620,12 +905,39 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
                 )}
 
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1"><span className="text-red-500">*</span> Mobile No</label>
-                  <input required type="tel" value={formData.mobileNo} onChange={e => setFormData({...formData, mobileNo: e.target.value})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:border-[#4bc2b0] focus:ring-1 focus:ring-[#4bc2b0] outline-none" placeholder="Mobile No..." />
+                  <div className="flex justify-between items-center mb-1">
+                    <label className="block text-xs font-bold text-slate-700"><span className="text-red-500">*</span> Mobile No</label>
+                    {patientTab === "registered" && !isEditableContact && formData.mobileNo && (
+                      <button 
+                        type="button" 
+                        onClick={() => setIsEditableContact(true)} 
+                        className="text-[11px] font-bold text-[#007a87] hover:underline"
+                      >
+                        Update Contact Info
+                      </button>
+                    )}
+                  </div>
+                  <input 
+                    required 
+                    type="tel" 
+                    disabled={patientTab === "registered" && !isEditableContact && Boolean(formData.mobileNo)} 
+                    value={formData.mobileNo} 
+                    onChange={e => setFormData({...formData, mobileNo: e.target.value})} 
+                    className={`w-full border rounded-lg px-3 py-2 text-sm outline-none transition-colors ${patientTab === "registered" && !isEditableContact && Boolean(formData.mobileNo) ? 'bg-slate-100/80 text-slate-700 cursor-not-allowed border-slate-200' : 'border-slate-300 focus:border-[#4bc2b0] focus:ring-1 focus:ring-[#4bc2b0]'}`} 
+                    placeholder="Mobile No..." 
+                  />
                 </div>
                 <div>
                   <label className="block text-xs font-bold text-slate-700 mb-1"><span className="text-red-500">*</span> Email ID</label>
-                  <input required type="email" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:border-[#4bc2b0] focus:ring-1 focus:ring-[#4bc2b0] outline-none" placeholder="Email Address..." />
+                  <input 
+                    required 
+                    type="email" 
+                    disabled={patientTab === "registered" && !isEditableContact && Boolean(formData.email)} 
+                    value={formData.email} 
+                    onChange={e => setFormData({...formData, email: e.target.value})} 
+                    className={`w-full border rounded-lg px-3 py-2 text-sm outline-none transition-colors ${patientTab === "registered" && !isEditableContact && Boolean(formData.email) ? 'bg-slate-100/80 text-slate-700 cursor-not-allowed border-slate-200' : 'border-slate-300 focus:border-[#4bc2b0] focus:ring-1 focus:ring-[#4bc2b0]'}`} 
+                    placeholder="Email Address..." 
+                  />
                 </div>
 
                 <div className="pt-4 flex gap-3">

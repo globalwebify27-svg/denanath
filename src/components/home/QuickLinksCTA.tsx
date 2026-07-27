@@ -102,8 +102,8 @@ export default function QuickLinksCTA() {
                 transition-all duration-300
               ">
                 <div className="flex items-center gap-3">
-                  <div className="bg-blue-50 p-2 rounded-xl text-[#002b5c] transition-colors duration-300 group-hover:text-[#9F0712]">
-                    <Activity size={24} />
+                  <div className="bg-blue-50 p-2 rounded-xl text-[#002b5c] transition-colors duration-300 group-hover:text-[#9F0712] notranslate" translate="no" data-no-translate="true" aria-hidden="true">
+                    <Activity size={24} className="notranslate" aria-hidden="true" />
                   </div>
                   <div>
                     <h3 className="text-xl font-black text-slate-900">Advanced</h3>
@@ -150,9 +150,9 @@ export default function QuickLinksCTA() {
                     <div className="
                       rounded-2xl bg-white/20 
                       p-3.5 text-white ring-1 ring-white/20
-                      backdrop-blur-md
-                    ">
-                      <Activity className="h-5 w-5 animate-[bounce_3s_infinite]" />
+                      backdrop-blur-md notranslate
+                    " translate="no" data-no-translate="true" aria-hidden="true">
+                      <Activity className="h-5 w-5 animate-[bounce_3s_infinite] notranslate" aria-hidden="true" />
                     </div>
 
                     <div>
@@ -202,9 +202,9 @@ export default function QuickLinksCTA() {
                     <div className="
                       rounded-2xl bg-white/15
                       p-3.5 text-white ring-1 ring-white/20
-                      backdrop-blur-md
-                    ">
-                      <Users className="h-5 w-5 animate-[bounce_3s_infinite]" />
+                      backdrop-blur-md notranslate
+                    " translate="no" data-no-translate="true" aria-hidden="true">
+                      <Users className="h-5 w-5 animate-[bounce_3s_infinite] notranslate" aria-hidden="true" />
                     </div>
 
                     <div>
@@ -254,9 +254,9 @@ export default function QuickLinksCTA() {
                     <div className="
                       rounded-2xl bg-white/15
                       p-3.5 text-white ring-1 ring-white/20
-                      backdrop-blur-md
-                    ">
-                      <Microscope className="h-5 w-5 animate-[bounce_3s_infinite]" />
+                      backdrop-blur-md notranslate
+                    " translate="no" data-no-translate="true" aria-hidden="true">
+                      <Microscope className="h-5 w-5 animate-[bounce_3s_infinite] notranslate" aria-hidden="true" />
                     </div>
 
                     <div>

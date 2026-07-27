@@ -2,6 +2,7 @@ import { prisma } from "@/lib/prisma";
 import { Save, Info, Target, List, Award, HeartPulse, Search } from "lucide-react";
 import { revalidatePath } from "next/cache";
 import SubmitButton from "@/app/admin/(dashboard)/components/SubmitButton";
+import QuillEditor from "@/components/QuillEditor";
 
 export const dynamic = "force-dynamic";
 
@@ -65,7 +66,7 @@ Surgical facilities include one cardiac catheterization labs, 12 operating theat
       qualityPolicy: formData.get("qualityPolicy") || "",
       qualityObjective: formData.get("qualityObjective") || "",
       coreValues: ((formData.get("coreValues") as string) || "").split("\n").map(v => v.trim()).filter(v => v),
-      history: ((formData.get("history") as string) || "").split("\n").map(v => v.trim()).filter(v => v),
+      history: formData.get("history") || "",
       capabilities: {
         imaging: ((formData.get("capabilities_imaging") as string) || "").split("\n").map(v => v.trim()).filter(v => v),
         radiation: ((formData.get("capabilities_radiation") as string) || "").split("\n").map(v => v.trim()).filter(v => v),
@@ -124,11 +125,11 @@ Surgical facilities include one cardiac catheterization labs, 12 operating theat
               <label htmlFor="introduction" className="flex items-center gap-3 text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">
                  Introduction 
               </label>
-              <textarea id="introduction" name="introduction" defaultValue={aboutData.introduction} rows={5} className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium leading-relaxed" placeholder="Enter introductory text..." />
+              <QuillEditor name="introduction" defaultValue={aboutData.introduction} />
             </div>
             <div>
               <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Full Description</label>
-              <textarea name="description" defaultValue={aboutData.description} rows={5} className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium leading-relaxed resize-none" placeholder="Provide full description..." />
+              <QuillEditor name="description" defaultValue={aboutData.description} />
             </div>
           </div>
         </div>
@@ -147,11 +148,11 @@ Surgical facilities include one cardiac catheterization labs, 12 operating theat
           <div className="p-6 md:p-8 grid grid-cols-1 md:grid-cols-2 gap-8">
             <div>
               <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Vision Statement</label>
-              <textarea name="vision" defaultValue={aboutData.vision} rows={4} className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium leading-relaxed resize-none" placeholder="Our vision is..." />
+              <QuillEditor name="vision" defaultValue={aboutData.vision} />
             </div>
             <div>
               <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Mission Statement</label>
-              <textarea name="mission" defaultValue={aboutData.mission} rows={4} className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium leading-relaxed resize-none" placeholder="Our mission is..." />
+              <QuillEditor name="mission" defaultValue={aboutData.mission} />
             </div>
           </div>
         </div>
@@ -177,7 +178,7 @@ Surgical facilities include one cardiac catheterization labs, 12 operating theat
             </div>
             <div>
               <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">History Highlights</label>
-              <textarea name="history" defaultValue={(aboutData.history || []).join("\n")} rows={8} className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium leading-relaxed resize-none text-sm" placeholder="Established in 1999...&#10;Expanded in 2005..." />
+              <QuillEditor name="history" defaultValue={Array.isArray(aboutData.history) ? aboutData.history.join("<br/><br/>") : (aboutData.history || "")} />
             </div>
           </div>
         </div>
@@ -197,11 +198,11 @@ Surgical facilities include one cardiac catheterization labs, 12 operating theat
             <div className="space-y-8">
               <div>
                 <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Quality Policy</label>
-                <textarea name="qualityPolicy" defaultValue={aboutData.qualityPolicy} rows={4} className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-rose-500/30 focus:border-rose-500 transition-all duration-200 text-slate-700 font-medium leading-relaxed resize-none" placeholder="Quality policy statement..." />
+                <QuillEditor name="qualityPolicy" defaultValue={aboutData.qualityPolicy} />
               </div>
               <div>
                 <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Quality Objective</label>
-                <textarea name="qualityObjective" defaultValue={aboutData.qualityObjective} rows={4} className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-rose-500/30 focus:border-rose-500 transition-all duration-200 text-slate-700 font-medium leading-relaxed resize-none" placeholder="Quality objectives..." />
+                <QuillEditor name="qualityObjective" defaultValue={aboutData.qualityObjective} />
               </div>
             </div>
             

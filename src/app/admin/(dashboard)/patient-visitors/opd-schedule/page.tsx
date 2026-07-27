@@ -2,6 +2,8 @@ import { Save, Search, FileText } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import SubmitButton from "@/app/admin/(dashboard)/components/SubmitButton";
+import QuillEditor from "@/components/QuillEditor";
+import ScheduleCrud from "./ScheduleCrud";
 
 export const dynamic = "force-dynamic";
 
@@ -29,8 +31,18 @@ export default async function AdminOpdSchedulePage() {
         heroBreadcrumb: formData.get("heroBreadcrumb") || "OPD Schedule",
         pageTitle: formData.get("pageTitle") || "Hospital OPD Schedule",
         subtitle: formData.get("subtitle") || "Timetable",
-        filterSpecialtyLabel: formData.get("filterSpecialtyLabel") || "Filter By Specialty:",
-        filterDoctorLabel: formData.get("filterDoctorLabel") || "Filter By Doctor:",
+        content: formData.get("content") || "",
+        filterSpecialtyLabel: formData.get("filterSpecialtyLabel") || data.filterSpecialtyLabel || "Filter By Specialty:",
+        filterDoctorLabel: formData.get("filterDoctorLabel") || data.filterDoctorLabel || "Filter By Doctor:",
+        tableDaysHeader: formData.get("tableDaysHeader") || data.tableDaysHeader || "Days",
+        tableAppointmentHeader: formData.get("tableAppointmentHeader") || data.tableAppointmentHeader || "Appointment",
+        tableAvailabilityLabel: formData.get("tableAvailabilityLabel") || data.tableAvailabilityLabel || "Availability",
+        tableBookBtnLabel: formData.get("tableBookBtnLabel") || data.tableBookBtnLabel || "Book",
+        detailedTimingsLabel: formData.get("detailedTimingsLabel") || data.detailedTimingsLabel || "Detailed Timings",
+        loadingMessage: formData.get("loadingMessage") || data.loadingMessage || "Loading Schedule...",
+        noDoctorsTitle: formData.get("noDoctorsTitle") || data.noDoctorsTitle || "No Doctors Found",
+        noDoctorsDesc: formData.get("noDoctorsDesc") || data.noDoctorsDesc || "We couldn't find any doctors matching your current filters. Try adjusting the specialty or name.",
+        clearFiltersBtnLabel: formData.get("clearFiltersBtnLabel") || data.clearFiltersBtnLabel || "Clear Filters",
         seoMetaTitle: formData.get("seoMetaTitle") || "",
         seoMetaDescription: formData.get("seoMetaDescription") || "",
         seoKeywords: formData.get("seoKeywords") || ""
@@ -52,8 +64,8 @@ export default async function AdminOpdSchedulePage() {
   }
 
   return (
-    <div className="p-4 md:p-8 max-w-5xl mx-auto pb-32">
-      <form action={saveData} className="space-y-8">
+    <div className="p-4 md:p-8 max-w-5xl mx-auto pb-32 space-y-8">
+      <form id="opd-schedule-form" action={saveData} className="space-y-8">
         
         {/* Header */}
         <div className="mb-10 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 bg-white p-6 md:p-10 rounded-3xl shadow-sm border border-slate-100 relative overflow-hidden group">
@@ -112,20 +124,21 @@ export default async function AdminOpdSchedulePage() {
                 <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Subtitle / Label</label>
                 <input type="text" name="subtitle" defaultValue={data.subtitle || "Timetable"} className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-500 transition-all duration-200 text-slate-700 font-medium leading-relaxed" placeholder="e.g. Timetable" />
               </div>
-              <div>
-                <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Specialty Filter Label</label>
-                <input type="text" name="filterSpecialtyLabel" defaultValue={data.filterSpecialtyLabel || "Filter By Specialty:"} className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-500 transition-all duration-200 text-slate-700 font-medium leading-relaxed" placeholder="e.g. Filter By Specialty:" />
-              </div>
-              <div>
-                <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Doctor Filter Label</label>
-                <input type="text" name="filterDoctorLabel" defaultValue={data.filterDoctorLabel || "Filter By Doctor:"} className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-500 transition-all duration-200 text-slate-700 font-medium leading-relaxed" placeholder="e.g. Filter By Doctor:" />
-              </div>
+            </div>
+            
+            <div className="pt-4">
+              <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Page Content / Guidelines</label>
+              <QuillEditor name="content" defaultValue={data.content || ""} />
             </div>
           </div>
         </div>
+      </form>
 
-        {/* SEO Settings */}
-        <div className="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden group hover:shadow-md transition-shadow duration-300">
+      {/* OPD Timings & Doctor Details CRUD placed exactly after Main Content & Filters */}
+      <ScheduleCrud />
+
+      {/* SEO Settings */}
+      <div className="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden group hover:shadow-md transition-shadow duration-300">
           <div className="bg-slate-50/50 border-b border-slate-100 p-5 md:p-6 flex items-center gap-4">
             <div className="bg-indigo-500/10 p-3 rounded-2xl text-indigo-600">
               <Search size={24} strokeWidth={2.5} />
@@ -138,20 +151,18 @@ export default async function AdminOpdSchedulePage() {
           <div className="p-6 md:p-8 space-y-6">
             <div>
               <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Meta Title</label>
-              <input type="text" name="seoMetaTitle" defaultValue={data.seoMetaTitle || ""} className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 transition-all duration-200 text-slate-700 font-medium leading-relaxed" placeholder="Enter SEO Meta Title..." />
+              <input form="opd-schedule-form" type="text" name="seoMetaTitle" defaultValue={data.seoMetaTitle || ""} className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 transition-all duration-200 text-slate-700 font-medium leading-relaxed" placeholder="Enter SEO Meta Title..." />
             </div>
             <div>
               <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Meta Description</label>
-              <textarea name="seoMetaDescription" defaultValue={data.seoMetaDescription || ""} rows={3} className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 transition-all duration-200 text-slate-700 font-medium leading-relaxed resize-none" placeholder="Enter SEO Meta Description..." />
+              <textarea form="opd-schedule-form" name="seoMetaDescription" defaultValue={data.seoMetaDescription || ""} rows={3} className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 transition-all duration-200 text-slate-700 font-medium leading-relaxed resize-none" placeholder="Enter SEO Meta Description..." />
             </div>
             <div>
               <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Keywords</label>
-              <textarea name="seoKeywords" defaultValue={data.seoKeywords || ""} rows={2} className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 transition-all duration-200 text-slate-700 font-medium leading-relaxed resize-none text-sm" placeholder="hospital, care, pune, best hospital..." />
+              <textarea form="opd-schedule-form" name="seoKeywords" defaultValue={data.seoKeywords || ""} rows={2} className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 transition-all duration-200 text-slate-700 font-medium leading-relaxed resize-none text-sm" placeholder="hospital, care, pune, best hospital..." />
             </div>
           </div>
         </div>
-
-      </form>
     </div>
   );
 }

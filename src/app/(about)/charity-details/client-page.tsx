@@ -112,9 +112,7 @@ export default function CharityDetailsClientPage({ charityData }: { charityData:
                     {heading}
                   </h3>
                   
-                  <p className="text-slate-600 text-[18px] leading-[31px] font-normal max-w-3xl whitespace-pre-wrap">
-                    {introduction}
-                  </p>
+                  <div className="text-slate-600 text-[18px] leading-[31px] font-normal max-w-3xl prose prose-slate max-w-none" dangerouslySetInnerHTML={{ __html: introduction || '' }} />
                 </div>
 
                 {/* Impact Metric Cards (Dashboard look) */}

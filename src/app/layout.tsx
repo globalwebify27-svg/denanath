@@ -19,12 +19,12 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 export async function generateMetadata(): Promise<Metadata> {
   let seoData: any = {};
   try {
-    const setting = await prisma.siteSetting.findUnique({ where: { key: 'page_home' } });
+    const setting = await prisma.siteSetting.findUnique({ where: { key: 'page_home' } }).catch(() => null);
     if (setting && setting.value) {
       seoData = JSON.parse(setting.value);
     }
   } catch (error) {
-    console.error("Error fetching home SEO:", error);
+    console.warn("Could not reach database for layout SEO metadata, using default fallbacks.");
   }
 
   const sanitize = (str: string | undefined | null) => str ? str.replace(/[\r\n]+/g, ' ').trim() : undefined;

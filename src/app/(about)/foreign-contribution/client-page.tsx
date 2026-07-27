@@ -104,9 +104,7 @@ export default function ForeignContributionClientPage({ fcraData }: { fcraData: 
                   Foreign Contribution
                 </h2>
                 
-                <p className="text-slate-600 leading-relaxed font-normal mb-8 whitespace-pre-wrap mt-8">
-                  {introduction}
-                </p>
+                <div className="text-slate-600 leading-relaxed font-normal mb-8 mt-8 prose prose-slate max-w-none" dangerouslySetInnerHTML={{ __html: introduction || '' }} />
               </div>
 
               {/* FCRA Data Blocks */}

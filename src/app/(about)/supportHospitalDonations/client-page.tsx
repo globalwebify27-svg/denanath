@@ -119,9 +119,7 @@ export default function SupportDonationsClientPage({ donationsData }: { donation
                   </p>
                 </div>
                 
-                <p className="text-slate-600 leading-relaxed font-normal mb-6 whitespace-pre-wrap">
-                  {introText}
-                </p>
+                <div className="text-slate-600 leading-relaxed font-normal mb-6 prose prose-slate max-w-none" dangerouslySetInnerHTML={{ __html: introText || '' }} />
 
                 <p className="text-slate-700 font-medium mb-4">
                   Your contributions will help us, You can count on us to be:

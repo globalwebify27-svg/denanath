@@ -178,6 +178,13 @@ export default function OpdScheduleClientPage({ initialData }: { initialData?: a
               {initialData?.pageTitle || "Hospital OPD Schedule"}
             </h2>
             <div className="w-20 h-1.5 bg-[#007a87] rounded-full mb-8"></div>
+            
+            {initialData?.content && (
+              <div 
+                className="prose prose-slate max-w-none mb-10 text-slate-600 leading-relaxed"
+                dangerouslySetInnerHTML={{ __html: initialData.content }}
+              />
+            )}
           </div>
 
           {/* Filters */}
@@ -215,7 +222,7 @@ export default function OpdScheduleClientPage({ initialData }: { initialData?: a
           {/* Schedule List */}
           {loading ? (
             <div className="py-12 text-center border-2 border-dashed border-slate-200 rounded-2xl bg-slate-50">
-              <h3 className="text-xl font-bold text-slate-700 mb-2">Loading Schedule...</h3>
+              <h3 className="text-xl font-bold text-slate-700 mb-2">{initialData?.loadingMessage || "Loading Schedule..."}</h3>
             </div>
           ) : Object.keys(groupedDoctors).length > 0 ? (
             <div className="space-y-12">
@@ -243,16 +250,16 @@ export default function OpdScheduleClientPage({ initialData }: { initialData?: a
                             <table className="w-full text-left border-collapse min-w-[800px]">
                               <thead>
                                 <tr className="bg-slate-50 text-slate-700 text-[18px] leading-[31px] font-[700]">
-                                  <th className="p-4 border-b border-slate-200">Days</th>
+                                  <th className="p-4 border-b border-slate-200">{initialData?.tableDaysHeader || "Days"}</th>
                                   {daysOfWeek.map(day => (
                                     <th key={day} className="p-4 border-b border-l border-slate-200 text-center">{day}</th>
                                   ))}
-                                  <th className="p-4 border-b border-l border-slate-200 text-center">Appointment</th>
+                                  <th className="p-4 border-b border-l border-slate-200 text-center">{initialData?.tableAppointmentHeader || "Appointment"}</th>
                                 </tr>
                               </thead>
                               <tbody className="text-xs text-slate-600 bg-white">
                                 <tr>
-                                  <td className="p-4 font-[700] text-[18px] leading-[31px] text-slate-700 align-top">Availability</td>
+                                  <td className="p-4 font-[700] text-[18px] leading-[31px] text-slate-700 align-top">{initialData?.tableAvailabilityLabel || "Availability"}</td>
                                   {daysOfWeek.map(day => (
                                     <td key={day} className="p-4 border-l border-slate-100 align-top text-center">
                                       {availability[day].length > 0 ? (
@@ -270,7 +277,7 @@ export default function OpdScheduleClientPage({ initialData }: { initialData?: a
                                   ))}
                                   <td className="p-4 border-l border-slate-100 align-middle text-center">
                                     <Link href="/book-appointment" className="inline-flex items-center justify-center px-4 py-2 bg-[#007a87] hover:bg-[#005f69] text-white text-lg rounded-lg font-bold transition-colors w-full">
-                                      Book
+                                      {initialData?.tableBookBtnLabel || "Book"}
                                     </Link>
                                   </td>
                                 </tr>
@@ -279,18 +286,20 @@ export default function OpdScheduleClientPage({ initialData }: { initialData?: a
                           </div>
                           
                           {/* Full timings text backup for complex schedules */}
-                          <div className="mt-4 p-4 bg-amber-50/50 rounded-xl border border-amber-100/50">
-                            <h5 className="text-[18px] leading-[31px] font-[700] text-amber-800 mb-2 uppercase flex items-center gap-1">
-                              <Clock className="w-3 h-3" /> Detailed Timings
-                            </h5>
-                            <ul className="space-y-1.5">
-                              {doc.timings.map((t: any, i: number) => (
-                                <li key={i} className="text-[18px] leading-[31px] font-[400] text-slate-700">
-                                  <span className="text-amber-700">{t.day}:</span> {t.time} {t.branch && <span className="text-slate-500">({t.branch})</span>}
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
+                          {doc.timings.filter((t: any) => t.day?.trim() || t.time?.trim()).length > 0 && (
+                            <div className="mt-4 p-4 bg-amber-50/50 rounded-xl border border-amber-100/50">
+                              <h5 className="text-[18px] leading-[31px] font-[700] text-amber-800 mb-2 uppercase flex items-center gap-1">
+                                <Clock className="w-3 h-3" /> {initialData?.detailedTimingsLabel || "Detailed Timings"}
+                              </h5>
+                              <ul className="space-y-1.5">
+                                {doc.timings.filter((t: any) => t.day?.trim() || t.time?.trim()).map((t: any, i: number) => (
+                                  <li key={i} className="text-[18px] leading-[31px] font-[400] text-slate-700">
+                                    {t.day && <><span className="text-amber-700">{t.day}:</span> </>}{t.time} {t.branch && <span className="text-slate-500">({t.branch})</span>}
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          )}
 
                         </div>
                       );
@@ -301,15 +310,15 @@ export default function OpdScheduleClientPage({ initialData }: { initialData?: a
             </div>
           ) : (
             <div className="py-12 text-center border-2 border-dashed border-slate-200 rounded-2xl bg-slate-50">
-              <h3 className="text-xl font-bold text-slate-700 mb-2">No Doctors Found</h3>
+              <h3 className="text-xl font-bold text-slate-700 mb-2">{initialData?.noDoctorsTitle || "No Doctors Found"}</h3>
               <p className="text-slate-500 max-w-md mx-auto">
-                We couldn't find any doctors matching your current filters. Try adjusting the specialty or name.
+                {initialData?.noDoctorsDesc || "We couldn't find any doctors matching your current filters. Try adjusting the specialty or name."}
               </p>
               <button 
                 onClick={() => { setSelectedSpecialty("--Select--"); setSelectedDoctor("-- Doctor --"); }}
                 className="mt-6 text-sm font-bold text-[#007a87] hover:underline"
               >
-                Clear Filters
+                {initialData?.clearFiltersBtnLabel || "Clear Filters"}
               </button>
             </div>
           )}

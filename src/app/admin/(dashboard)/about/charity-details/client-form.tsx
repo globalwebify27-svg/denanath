@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import {  Plus, Trash2, HeartHandshake } from "lucide-react";
+import QuillEditor from "@/components/QuillEditor";
 
 export default function CharityDetailsClientForm({ initialData }: { initialData: any }) {
   const [badgeText, setBadgeText] = useState(initialData.badgeText || "Our Commitment to Society");
@@ -87,13 +88,7 @@ export default function CharityDetailsClientForm({ initialData }: { initialData:
             </div>
             <div>
               <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Introduction Text</label>
-              <textarea 
-                value={introduction} 
-                onChange={(e) => setIntroduction(e.target.value)}
-                rows={4}
-                className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium leading-relaxed text-sm"
-                placeholder="e.g. Deenanath Mangeshkar Hospital and Research Center actively provides..."
-              />
+              <QuillEditor value={introduction} onChange={(val) => setIntroduction(val)} />
             </div>
           </div>
         </div>

@@ -26,27 +26,72 @@ export default function DoctorDetailsPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const safeParse = (str: any) => {
-      if (!str) return [];
-      try { return JSON.parse(str); } catch (e) { return []; }
+    const loadDoctorsFromApi = async () => {
+      setLoading(true);
+      try {
+        const specRes = await fetch('/api/dmh', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'speciality' }),
+        });
+        if (!specRes.ok) return;
+        const specData = await specRes.json();
+        const specialtiesList = specData?.specialityJSON || (Array.isArray(specData) ? specData : []);
+        if (!Array.isArray(specialtiesList) || specialtiesList.length === 0) return;
+
+        let firstResultShown = false;
+        const allDoctors: any[] = [];
+
+        await Promise.all(
+          specialtiesList.map(async (spec: any) => {
+            const specId = spec.id || spec.speciality_id;
+            if (!specId) return;
+            try {
+              const docRes = await fetch('/api/dmh', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: 'speciality_doctor', speciality_id: String(specId) }),
+              });
+              if (!docRes.ok) return;
+              const docData = await docRes.json();
+              const doctors = docData?.doctorJSON || (Array.isArray(docData) ? docData : []);
+              if (!Array.isArray(doctors) || doctors.length === 0) return;
+
+              const mapped = doctors.map((doc: any, dIdx: number) => ({
+                id: `${doc.doctor_id || 'doc'}_${specId}_${dIdx}`,
+                doctor_id: doc.doctor_id || '',
+                speciality_id: doc.speciality_id || String(specId),
+                service_center_id: doc.service_center_id || '',
+                service_point_id: doc.service_point_id || '',
+                name: doc.doctor_name || `${doc.first_name || ''} ${doc.last_name || ''}`.trim() || 'Doctor',
+                specialty: doc.speciality_name || spec.speciality_name || 'General',
+                qualifications: doc.qualification || doc.qualifications || 'MBBS',
+                image: doc.doctorImage || doc.photo || '',
+                isApp: doc.isApp === 'Y' || doc.isApp === 'true' || doc.isApp === true,
+                timings: [],
+              }));
+
+              allDoctors.push(...mapped);
+              setDoctorsList([...allDoctors]);
+              if (!firstResultShown) {
+                firstResultShown = true;
+                setLoading(false);
+              }
+            } catch (e) {
+              // silently skip
+            }
+          })
+        );
+
+        setDoctorsList([...allDoctors]);
+      } catch (err) {
+        console.error("Failed to fetch doctors from DMH API:", err);
+      } finally {
+        setLoading(false);
+      }
     };
 
-    fetch('/api/doctors')
-      .then(res => res.json())
-      .then(data => {
-        // Parse JSON strings back to objects/arrays for the UI safely
-        const parsedData = data.map((doc: any) => ({
-          ...doc,
-          timings: safeParse(doc.timings),
-          education: safeParse(doc.education),
-          training: safeParse(doc.training),
-          experience: safeParse(doc.experience),
-          publications: safeParse(doc.publications),
-        }));
-        setDoctorsList(parsedData);
-      })
-      .catch(err => console.error("Failed to fetch doctors:", err))
-      .finally(() => setLoading(false));
+    loadDoctorsFromApi();
   }, []);
   const options = [
     { name: "Doctor Details", href: "/doctor-details", active: true },
@@ -61,7 +106,58 @@ export default function DoctorDetailsPage() {
   const [searchName, setSearchName] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedDoctor, setSelectedDoctor] = useState<any>(null);
+  const [isAppAllowed, setIsAppAllowed] = useState<boolean | null>(null);
+  const [loadingSchedule, setLoadingSchedule] = useState(false);
   const itemsPerPage = 30;
+
+  // Whenever a doctor is selected, check opd_day_time using API doctor_id and speciality_id
+  useEffect(() => {
+    if (!selectedDoctor) {
+      setIsAppAllowed(null);
+      return;
+    }
+
+    // If doctor object from API already provides explicit boolean isApp, use it
+    if (typeof selectedDoctor.isApp === 'boolean') {
+      setIsAppAllowed(selectedDoctor.isApp);
+      return;
+    }
+
+    const checkDoctorSchedule = async () => {
+      setLoadingSchedule(true);
+      try {
+        const response = await fetch('/api/dmh', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'opd_day_time',
+            doctor_id: String(selectedDoctor.doctor_id || selectedDoctor.id || ''),
+            speciality_id: String(selectedDoctor.speciality_id || selectedDoctor.specialty_id || ''),
+          }),
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          console.log('[opd_day_time API Response]:', data);
+
+          // Direct read of isApp / is_app boolean property from API response
+          const rawVal = data?.isApp ?? data?.is_app ?? data?.data?.isApp ?? data?.data?.is_app;
+          const isApp = rawVal === true || rawVal === 'true' || rawVal === 1 || rawVal === '1';
+          
+          setIsAppAllowed(isApp);
+        } else {
+          setIsAppAllowed(false);
+        }
+      } catch (err) {
+        console.warn('Failed to check opd_day_time schedule:', err);
+        setIsAppAllowed(false);
+      } finally {
+        setLoadingSchedule(false);
+      }
+    };
+
+    checkDoctorSchedule();
+  }, [selectedDoctor]);
 
   // Reset page when filters change
   useEffect(() => {
@@ -91,13 +187,20 @@ export default function DoctorDetailsPage() {
     return Array.from(specialties).sort();
   }, [doctorsList]);
 
-  // Filter doctors based on inputs
+  // Filter and sort doctors alphabetically by name
   const filteredDoctors = useMemo(() => {
-    return doctorsList.filter(doc => {
+    const filtered = doctorsList.filter(doc => {
       const docSpecialty = doc.specialty || "";
       const matchSpecialty = selectedSpecialty === "--Select--" || docSpecialty === selectedSpecialty;
       const matchName = doc.name.toLowerCase().includes(searchName.toLowerCase());
       return matchSpecialty && matchName;
+    });
+
+    // Sort alphabetically by doctor name
+    return filtered.sort((a, b) => {
+      const nameA = a.name.trim().replace(/^Dr\.?\s+/i, "").trim().toLowerCase();
+      const nameB = b.name.trim().replace(/^Dr\.?\s+/i, "").trim().toLowerCase();
+      return nameA.localeCompare(nameB);
     });
   }, [doctorsList, selectedSpecialty, searchName]);
 
@@ -222,7 +325,7 @@ export default function DoctorDetailsPage() {
               ) : paginatedDoctors.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {paginatedDoctors.map((doc, idx) => (
-                    <div key={idx} className="group bg-white border border-slate-200 hover:border-[#D9232D] rounded-2xl p-6 transition-all duration-300 hover:shadow-[0_8px_30px_rgba(217,35,45,0.15)] hover:-translate-y-1 flex flex-col h-full">
+                    <div key={`${doc.id || doc.doctor_id || 'doc'}_card_${idx}`} className="group bg-white border border-slate-200 hover:border-[#D9232D] rounded-2xl p-6 transition-all duration-300 hover:shadow-[0_8px_30px_rgba(217,35,45,0.15)] hover:-translate-y-1 flex flex-col h-full">
                       <div className="flex items-start gap-4 mb-4">
                         <div className="w-16 h-16 rounded-xl bg-teal-50 flex items-center justify-center shrink-0 border border-teal-100 overflow-hidden group-hover:bg-[#D9232D] group-hover:border-[#D9232D] transition-colors">
                           <DoctorImage 
@@ -386,9 +489,13 @@ export default function DoctorDetailsPage() {
                             020 4015 1100
                           </a>
                         </div>
-                        <Link href="/book-appointment" className="inline-flex items-center justify-center w-full py-2.5 bg-[#007a87] hover:bg-[#005f69] text-white rounded-lg font-bold text-sm transition-colors">
-                          Book Appointment
-                        </Link>
+                        {loadingSchedule ? (
+                          <div className="text-center py-2 text-xs font-semibold text-slate-400">Checking appointment availability...</div>
+                        ) : isAppAllowed !== false ? (
+                          <Link href={`/book-appointment?doctor_id=${selectedDoctor.doctor_id || selectedDoctor.id || ''}&speciality_id=${selectedDoctor.speciality_id || ''}&service_point_id=${selectedDoctor.service_point_id || ''}`} className="inline-flex items-center justify-center w-full py-2.5 bg-[#007a87] hover:bg-[#005f69] text-white rounded-lg font-bold text-sm transition-colors">
+                            Book Appointment
+                          </Link>
+                        ) : null}
                       </div>
                     </div>
                   )}

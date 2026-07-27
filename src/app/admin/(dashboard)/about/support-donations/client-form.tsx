@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import {  Users } from "lucide-react";
+import QuillEditor from "@/components/QuillEditor";
 
 export default function SupportDonationsClientForm({ initialData }: { initialData: any }) {
   // Convert arrays to newline-separated strings for easy editing in textarea
@@ -77,12 +78,7 @@ export default function SupportDonationsClientForm({ initialData }: { initialDat
 
             <div>
               <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Introduction Text</label>
-              <textarea 
-                value={data.introText} 
-                onChange={(e) => handleChange('introText', e.target.value)}
-                rows={4}
-                className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium leading-relaxed font-mono text-sm"
-              />
+              <QuillEditor value={data.introText} onChange={(val) => handleChange('introText', val)} />
             </div>
             
             <div>

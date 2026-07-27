@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import {  Plus, Trash2, Calendar, FileText } from "lucide-react";
+import QuillEditor from "@/components/QuillEditor";
 
 export default function ForeignContributionClientForm({ initialData }: { initialData: any }) {
   const [introduction, setIntroduction] = useState(initialData.introduction || "Information regarding receipt of Foreign Contribution");
@@ -94,13 +95,7 @@ export default function ForeignContributionClientForm({ initialData }: { initial
         {/* Introduction Field */}
         <div className="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden relative p-6 md:p-8 shadow-sm">
           <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Introduction Text</label>
-          <input 
-            type="text" 
-            value={introduction} 
-            onChange={(e) => setIntroduction(e.target.value)}
-            className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium"
-            placeholder="e.g. Information regarding receipt of Foreign Contribution"
-          />
+          <QuillEditor value={introduction} onChange={(val) => setIntroduction(val)} />
         </div>
 
         {quarters.map((q, qIndex) => (

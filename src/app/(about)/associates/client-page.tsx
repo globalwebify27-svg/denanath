@@ -119,9 +119,7 @@ export default function AssociatesClientPage({ associates }: { associates: any[]
                       <h3 className="text-2xl font-bold text-[#002b5c] mb-3 group-hover:text-[#007a87] transition-colors duration-300">
                         {associate.name}
                       </h3>
-                      <p className="text-slate-600 text-base leading-relaxed font-normal mb-6">
-                        {associate.description}
-                      </p>
+                      <div className="text-slate-600 text-base leading-relaxed font-normal mb-6 prose prose-slate max-w-none" dangerouslySetInnerHTML={{ __html: associate.description || '' }} />
                       
                       <div className="mt-auto">
                         <Link 

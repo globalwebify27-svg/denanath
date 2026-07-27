@@ -32,82 +32,79 @@ export default function DoctorDetailsPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const safeParse = (str: any) => {
-      if (!str) return [];
-      if (typeof str !== 'string') return str;
+    const loadDoctorsFromApi = async () => {
+      setLoading(true);
       try {
-        return JSON.parse(str);
-      } catch (e) {
-        const clean = str.trim();
-        if (!clean.startsWith('[')) {
-          return [];
-        }
-        
-        if (clean.includes('"branch"') || clean.includes('"day"') || clean.includes('"time"')) {
-          const matches = [...clean.matchAll(/\{[^}]*\}/g)];
-          const result: any[] = [];
-          for (const m of matches) {
-            try {
-              let objStr = m[0];
-              if (!objStr.endsWith('}')) objStr += '}';
-              result.push(JSON.parse(objStr));
-            } catch (err) {}
-          }
-          return result;
-        }
+        // Step 1: Fetch all specialties
+        const specRes = await fetch('/api/dmh', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'speciality' }),
+        });
+        if (!specRes.ok) return;
+        const specData = await specRes.json();
+        const specialtiesList = specData?.specialityJSON || (Array.isArray(specData) ? specData : []);
+        if (!Array.isArray(specialtiesList) || specialtiesList.length === 0) return;
 
-        const result: string[] = [];
-        const stringRegex = /"([^"\\]|\\.)*"/g;
-        let match;
-        let lastIndex = 0;
-        
-        const content = clean.substring(1);
-        while ((match = stringRegex.exec(content)) !== null) {
-          try {
-            result.push(JSON.parse(match[0]));
-          } catch (err) {}
-          lastIndex = stringRegex.lastIndex;
-        }
-        
-        const remaining = content.substring(lastIndex).trim();
-        let rawStr = remaining;
-        if (rawStr.startsWith(',')) {
-          rawStr = rawStr.substring(1).trim();
-        }
-        if (rawStr.startsWith('"')) {
-          let unclosed = rawStr.substring(1);
-          if (unclosed.endsWith('\\')) {
-            unclosed = unclosed.substring(0, unclosed.length - 1);
-          }
-          unclosed = unclosed.replace(/\]\s*$/, '');
-          try {
-            result.push(JSON.parse('"' + unclosed + '"'));
-          } catch (err) {
-            if (unclosed) result.push(unclosed);
-          }
-        }
-        
-        return result;
+        // Step 2: Fire ALL requests in parallel, stream results as they arrive
+        let firstResultShown = false;
+        const allDoctors: any[] = [];
+
+        await Promise.all(
+          specialtiesList.map(async (spec: any) => {
+            const specId = spec.id || spec.speciality_id;
+            if (!specId) return;
+            try {
+              const docRes = await fetch('/api/dmh', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: 'speciality_doctor', speciality_id: String(specId) }),
+              });
+              if (!docRes.ok) return;
+              const docData = await docRes.json();
+              const doctors = docData?.doctorJSON || (Array.isArray(docData) ? docData : []);
+              if (!Array.isArray(doctors) || doctors.length === 0) return;
+
+              const mapped = doctors.map((doc: any, dIdx: number) => ({
+                id: `${doc.doctor_id || 'doc'}_${specId}_${dIdx}`,
+                doctor_id: doc.doctor_id || '',
+                speciality_id: doc.speciality_id || String(specId),
+                service_center_id: doc.service_center_id || '',
+                service_point_id: doc.service_point_id || '',
+                name: doc.doctor_name || `${doc.first_name || ''} ${doc.last_name || ''}`.trim() || 'Doctor',
+                specialty: doc.speciality_name || spec.speciality_name || 'General',
+                qualifications: doc.qualification || doc.qualifications || 'MBBS',
+                image: doc.doctorImage || doc.photo || '',
+                isApp: doc.isApp === 'Y' || doc.isApp === 'true' || doc.isApp === true,
+                timings: [],
+              }));
+
+              allDoctors.push(...mapped);
+
+              // Stream: update UI immediately as each specialty's doctors arrive
+              setDoctorsList([...allDoctors]);
+              if (!firstResultShown) {
+                firstResultShown = true;
+                setLoading(false);
+              }
+            } catch (e) {
+              // silently skip failed specialties
+            }
+          })
+        );
+
+        // Final update with complete list
+        setDoctorsList([...allDoctors]);
+      } catch (err) {
+        console.error("Failed to fetch doctors from DMH API:", err);
+      } finally {
+        setLoading(false);
       }
     };
 
-    fetch('/api/doctors')
-      .then(res => res.json())
-      .then(data => {
-        // Parse JSON strings back to objects/arrays for the UI safely
-        const parsedData = data.map((doc: any) => ({
-          ...doc,
-          timings: safeParse(doc.timings),
-          education: safeParse(doc.education),
-          training: safeParse(doc.training),
-          experience: safeParse(doc.experience),
-          publications: safeParse(doc.publications),
-        }));
-        setDoctorsList(parsedData);
-      })
-      .catch(err => console.error("Failed to fetch doctors:", err))
-      .finally(() => setLoading(false));
+    loadDoctorsFromApi();
   }, []);
+
   const options = [
     { name: "Doctor Details", href: "/doctor-details", active: true },
     { name: "Department Details", href: "/department-details", active: false },
@@ -121,7 +118,85 @@ export default function DoctorDetailsPage() {
   const [searchName, setSearchName] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedDoctor, setSelectedDoctor] = useState<any>(null);
+  const [isAppAllowed, setIsAppAllowed] = useState<boolean | null>(null);
+  const [loadingSchedule, setLoadingSchedule] = useState(false);
   const itemsPerPage = 30;
+
+  // Whenever a doctor is selected, check opd_day_time using API doctor_id and speciality_id
+  // Whenever a doctor is selected, fetch opd_day_time from API using doctor_id and speciality_id
+  useEffect(() => {
+    if (!selectedDoctor) {
+      setIsAppAllowed(null);
+      return;
+    }
+
+    const checkDoctorSchedule = async () => {
+      setLoadingSchedule(true);
+      try {
+        const response = await fetch('/api/dmh', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'opd_day_time',
+            doctor_id: String(selectedDoctor.doctor_id || ''),
+            speciality_id: String(selectedDoctor.speciality_id || ''),
+          }),
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          console.log('[opd_day_time API Response]:', data);
+
+          const list = data?.opdDayTimeJSON || (Array.isArray(data) ? data : []);
+          if (Array.isArray(list) && list.length > 0) {
+            const firstSlot = list[0];
+            const isApp = firstSlot?.isApp === 'Y' || firstSlot?.isApp === 'true' || firstSlot?.isApp === true || data?.isApp === 'Y' || data?.isApp === true;
+            setIsAppAllowed(isApp);
+
+            // Construct human-readable OPD timings array from API Mon-Sun days
+            const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+            const dayNames: Record<string, string> = {
+              Mon: 'Monday', Tue: 'Tuesday', Wed: 'Wednesday', Thu: 'Thursday', Fri: 'Friday', Sat: 'Saturday', Sun: 'Sunday'
+            };
+
+            const parsedTimings: any[] = [];
+            list.forEach((slot: any) => {
+              days.forEach(d => {
+                if (slot[d] && slot[d] !== '-') {
+                  // Clean raw HTML tags (e.g. <br>, <br/>) from API time string
+                  const cleanTime = String(slot[d])
+                    .replace(/<br\s*\/?>/gi, '\n')
+                    .replace(/<[^>]*>/g, '')
+                    .trim();
+
+                  parsedTimings.push({
+                    branch: selectedDoctor.specialty || slot.opd_type || 'General OPD',
+                    day: dayNames[d] || d,
+                    time: cleanTime,
+                  });
+                }
+              });
+            });
+
+            if (parsedTimings.length > 0) {
+              setSelectedDoctor((prev: any) => ({ ...prev, timings: parsedTimings }));
+            }
+          } else {
+            setIsAppAllowed(selectedDoctor.isApp ?? false);
+          }
+        } else {
+          setIsAppAllowed(selectedDoctor.isApp ?? false);
+        }
+      } catch (err) {
+        console.warn('Failed to check opd_day_time schedule:', err);
+        setIsAppAllowed(selectedDoctor.isApp ?? false);
+      } finally {
+        setLoadingSchedule(false);
+      }
+    };
+
+    checkDoctorSchedule();
+  }, [selectedDoctor?.doctor_id, selectedDoctor?.speciality_id]);
 
   // Reset page when filters change
   useEffect(() => {
@@ -284,7 +359,7 @@ export default function DoctorDetailsPage() {
               ) : paginatedDoctors.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {paginatedDoctors.map((doc, idx) => (
-                    <div key={doc.id || idx} className="group bg-white border border-slate-200 hover:border-[#D9232D] rounded-2xl p-6 transition-all duration-300 hover:shadow-[0_8px_30px_rgba(217,35,45,0.15)] hover:-translate-y-1 flex flex-col h-full">
+                    <div key={`${doc.id || doc.doctor_id || 'doc'}_card_${idx}`} className="group bg-white border border-slate-200 hover:border-[#D9232D] rounded-2xl p-6 transition-all duration-300 hover:shadow-[0_8px_30px_rgba(217,35,45,0.15)] hover:-translate-y-1 flex flex-col h-full">
                       <div className="flex items-start gap-4 mb-4">
                         <div className="w-24 h-28 rounded-xl bg-teal-50 flex items-center justify-center shrink-0 border border-teal-100 overflow-hidden group-hover:bg-[#D9232D] group-hover:border-[#D9232D] transition-colors">
                           <DoctorImage 
@@ -435,8 +510,8 @@ export default function DoctorDetailsPage() {
                               <span className="text-[16px] leading-[31px] font-normal text-slate-600">{t.day}</span>
                             </div>
                             <div className="flex items-start gap-2 text-[16px] leading-[31px] text-slate-700 font-normal">
-                              <Clock className="w-4 h-4 text-slate-400 shrink-0 mt-0.5" />
-                              <span>{t.time}</span>
+                              <Clock className="w-4 h-4 text-slate-400 shrink-0 mt-2" />
+                              <span className="whitespace-pre-line">{t.time}</span>
                             </div>
                           </div>
                         ))}
@@ -448,9 +523,13 @@ export default function DoctorDetailsPage() {
                             020 4015 1100
                           </a>
                         </div>
-                        <Link href="/book-appointment" className="inline-flex items-center justify-center w-full py-2.5 bg-[#007a87] hover:bg-[#005f69] text-white rounded-lg font-bold text-sm transition-colors">
-                          Book Appointment
-                        </Link>
+                        {loadingSchedule ? (
+                          <div className="text-center py-2 text-xs font-semibold text-slate-400">Checking appointment availability...</div>
+                        ) : isAppAllowed !== false ? (
+                          <Link href={`/book-appointment?doctor_id=${selectedDoctor.doctor_id || selectedDoctor.id || ''}&speciality_id=${selectedDoctor.speciality_id || ''}&service_point_id=${selectedDoctor.service_point_id || ''}`} className="inline-flex items-center justify-center w-full py-2.5 bg-[#007a87] hover:bg-[#005f69] text-[#ffffff] font-extrabold text-sm transition-colors rounded-lg">
+                            Book Appointment
+                          </Link>
+                        ) : null}
                       </div>
                     </div>
                   )}
