@@ -1,4 +1,6 @@
 "use client";
+import QuillEditor from "@/components/QuillEditor";
+
 
 import React, { useState } from "react";
 import { Plus, Trash2, GripVertical, Building2, Briefcase, GraduationCap, Clock, FileText, Send, Phone, Mail, AlertCircle, Calendar, ChevronDown, ChevronUp, User, ShieldCheck, HeartPulse, Pill, Stethoscope } from "lucide-react";
@@ -246,12 +248,7 @@ export default function CareersClientForm({ initialData }: { initialData: any })
 
                   <div className="md:col-span-2">
                     <label className="block text-xs font-bold text-slate-500 mb-1.5 uppercase">Job Description</label>
-                    <textarea 
-                      value={job.description}
-                      onChange={(e) => updateJob(index, 'description', e.target.value)}
-                      rows={3}
-                      className="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 px-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-[#007a87]/50 focus:border-[#007a87] transition-all resize-none"
-                    />
+                    <QuillEditor value={job.description} onChange={content => updateJob(index, 'description', content)} />
                   </div>
 
                   <div>

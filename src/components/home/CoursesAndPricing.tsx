@@ -22,7 +22,7 @@ export default function CoursesAndPricing() {
     { title: "Senior Registrar Vacancy Pathology", link: "https://www.dmhospital.org/cms/Media/file/Senior_Registrar_Vacancy_Pathology.pdf" },
     { title: "Autism Coach Brochure", link: "https://www.dmhospital.org/cms/Media/file/Autism-Coach-Brochure-2025.pdf" },
     { title: "Befriending Parkinsons Program", link: "https://www.dmhospital.org/cms/Media/file/befriending-parkinsons.pdf" },
-    { title: "Yoga Classes Schedule", link: "/yoga-centre" },
+    { title: "Yoga Classes Schedule", link: "" },
     { title: "Eye Donation form", link: "https://www.dmhospital.org/cms/Media/file/eye_donation_form.pdf" },
     { title: "Garbha-Swasthya Helpline", link: "#" },
     { title: "Organ Donation & Transplantation", link: "#" }

@@ -366,14 +366,6 @@ export default async function DepartmentDetailsPage({
         const title = $(section).find('h3').first().text();
         $(section).find('h3').first().remove();
         
-        // Extract the first paragraph to use as the short description
-        let shortText = "Click to view detailed procedure information.";
-        const firstP = $(section).find('p').first().text().trim();
-        if (firstP) {
-           // Truncate to reasonable length
-           shortText = firstP.length > 120 ? firstP.substring(0, 120) + "..." : firstP;
-        }
-        
         // Check for an uploaded image to use
         let imgSrc = null;
         const imgEl = $(section).find('img').first();
@@ -396,13 +388,8 @@ export default async function DepartmentDetailsPage({
            const newSectionHtml = `
              <div class="mb-12">
                <h3 class="text-xl font-bold text-[#002b5c] mb-6 border-b pb-2">${title}</h3>
-               <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center bg-slate-50 p-6 rounded-2xl border border-slate-100 mb-6">
-                 <div class="h-64 sm:h-80 rounded-xl overflow-hidden shadow-sm">
-                   <img src="${imgSrc}" alt="${title}" class="w-full h-full object-cover !m-0" />
-                 </div>
-                 <div>
-                   <p class="text-slate-600 leading-relaxed font-medium text-base sm:text-lg mb-6">${shortText}</p>
-                 </div>
+               <div class="mb-6 max-w-sm sm:max-w-md">
+                 <img src="${imgSrc}" alt="${title}" class="max-h-72 w-auto object-contain !m-0" />
                </div>
                <div class="prose prose-slate max-w-none mb-4">${introText.replace(/<h3[^>]*>.*?<\/h3>/i, '')}</div>
              </div>
@@ -603,6 +590,47 @@ export default async function DepartmentDetailsPage({
         $(el).remove();
       }
     });
+
+    // General fix for Hypoxic and Posture clinics
+    if (['hypoxic-training-center', 'posture-pain-clinic'].includes(department.id)) {
+      $('img').each((_, img) => {
+         $(img).addClass('!max-w-full !w-auto md:!max-w-md !h-auto !rounded-2xl !my-6 !shadow-sm !object-contain !mr-auto !ml-0 !block');
+         $(img).removeAttr('width');
+         $(img).removeAttr('height');
+         $(img).css('width', '');
+         
+         const parentLi = $(img).closest('li');
+         if (parentLi.length > 0 && parentLi.text().trim() === '') {
+            parentLi.addClass('!list-none !pl-0 !ml-0 before:!hidden marker:!hidden');
+            parentLi.css('list-style', 'none');
+         }
+      });
+    }
+
+    // Specific fix for Knee Specialty Clinic to ensure ALL images are EXACTLY the same compact size
+    if (department.id === 'knee-specialty-clinic') {
+      $('img').each((_, img) => {
+         const surroundingText = ($(img).parent().prev().text() + ' ' + $(img).parent().text()).trim();
+         
+         if (surroundingText.includes('BILD') || $(img).attr('src')?.includes('bild') || $(img).attr('src')?.includes('logo')) {
+            // Exempt the BILD logo from the strict cropping so it shows full size
+            $(img).addClass('!max-w-full !w-auto md:!max-w-sm !h-auto !object-contain !my-6 !mr-auto !ml-0 !block');
+         } else {
+            // Force a uniform width and height with object-cover so equipment photos all perfectly match
+            $(img).addClass('!max-w-full !w-full sm:!w-[400px] !h-[260px] !object-cover !rounded-2xl !my-6 !shadow-sm !mr-auto !ml-0 !block');
+         }
+         
+         $(img).removeAttr('width');
+         $(img).removeAttr('height');
+         $(img).css('width', '');
+         
+         const parentLi = $(img).closest('li');
+         if (parentLi.length > 0 && parentLi.text().trim() === '') {
+            parentLi.addClass('!list-none !pl-0 !ml-0 before:!hidden marker:!hidden');
+            parentLi.css('list-style', 'none');
+         }
+      });
+    }
 
     processedHtml = $.html().replace(/&nbsp;/g, ' ');
   }

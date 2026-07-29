@@ -1,4 +1,6 @@
 "use client";
+import QuillEditor from "@/components/QuillEditor";
+
 
 import { useState } from "react";
 import { Plus, X, Trash2, ChevronDown, ChevronRight } from "lucide-react";
@@ -172,12 +174,7 @@ export default function AcademicsInfoClientForm({ initialData }: { initialData: 
             <div className="p-6 md:p-8 bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden space-y-6 animate-in fade-in relative mt-4">
               <div>
                 <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Introductory Text</label>
-                <textarea 
-                  value={data.introText || ""} 
-                  onChange={(e) => handleChange("introText", e.target.value)}
-                  rows={4} 
-                  className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium leading-relaxed"
-                />
+                <QuillEditor value={data.introText || ""} onChange={content => handleChange("introText", content)} />
               </div>
             </div>
           )}

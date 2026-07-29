@@ -1,4 +1,6 @@
 "use client";
+import QuillEditor from "@/components/QuillEditor";
+
 
 import { useState } from "react";
 import {  Plus, Trash2, CheckCircle2, Building2, FileText, IndianRupee } from "lucide-react";
@@ -123,13 +125,7 @@ export default function HealthPackagesClientForm({ initialData }: { initialData:
                   </div>
                   <div>
                     <label className="block text-[10px] font-[800] text-gray-700 uppercase tracking-widest mb-1">Tests Included (One per line)</label>
-                    <textarea 
-                      value={pkg.testsStr} 
-                      onChange={(e) => updatePackage(pkg.id, 'testsStr', e.target.value)}
-                      rows={6}
-                      className="w-full p-3 border border-slate-200 rounded-lg text-sm" 
-                      placeholder="Physician Consultation&#10;Eye Consultation"
-                    />
+                    <QuillEditor value={pkg.testsStr} onChange={content => updatePackage(pkg.id, 'testsStr', content)} />
                   </div>
                 </div>
               </div>
@@ -145,20 +141,10 @@ export default function HealthPackagesClientForm({ initialData }: { initialData:
               Important Instructions
             </h3>
             <p className="text-sm text-slate-500 mb-4">Enter each instruction on a new line.</p>
-            <textarea 
-              value={data.instructions} 
-              onChange={(e) => handleChange('instructions', e.target.value)}
-              rows={8}
-              className="w-full p-4 border border-gray-200 rounded-xl focus:ring-[#007a87] focus:outline-none text-sm leading-relaxed mb-6"
-            />
+            <QuillEditor value={data.instructions} onChange={content => handleChange('instructions', content)} />
             
             <h4 className="font-bold text-slate-700 mb-3">For Women Disclaimer</h4>
-            <textarea 
-              value={data.womenNote} 
-              onChange={(e) => handleChange('womenNote', e.target.value)}
-              rows={3}
-              className="w-full p-4 border border-gray-200 rounded-xl focus:ring-[#007a87] focus:outline-none text-sm leading-relaxed"
-            />
+            <QuillEditor value={data.womenNote} onChange={content => handleChange('womenNote', content)} />
           </div>
 
           <div className="space-y-6">
@@ -204,12 +190,7 @@ export default function HealthPackagesClientForm({ initialData }: { initialData:
                 Corporate Company List
               </h3>
               <p className="text-sm text-slate-500 mb-4">Enter each company name on a new line.</p>
-              <textarea 
-                value={data.companyList} 
-                onChange={(e) => handleChange('companyList', e.target.value)}
-                rows={5}
-                className="w-full p-4 border border-gray-200 rounded-xl focus:ring-[#007a87] focus:outline-none text-sm leading-relaxed"
-              />
+              <QuillEditor value={data.companyList} onChange={content => handleChange('companyList', content)} />
             </div>
           </div>
         </div>

@@ -426,23 +426,35 @@ export default function DoctorDetailsPage() {
           <div className="bg-white rounded-3xl shadow-2xl w-full max-w-4xl max-h-[90vh] flex flex-col relative my-auto animate-slideUp">
             
             {/* Modal Header */}
-            <div className="flex items-center justify-between p-6 md:p-8 border-b border-slate-100 shrink-0 sticky top-0 bg-white z-10 rounded-t-3xl gap-4">
-              <div className="flex items-center gap-5 sm:gap-6 flex-1 min-w-0">
-                <div className="w-[100px] h-[100px] sm:w-[130px] sm:h-[130px] rounded-2xl bg-white flex items-center justify-center shrink-0 border border-slate-200 shadow-sm overflow-hidden text-slate-400 p-1">
+            <div className="flex items-start justify-between p-6 md:p-8 border-b border-slate-100 shrink-0 sticky top-0 bg-white z-10 rounded-t-3xl gap-4">
+              <div className="flex items-start gap-5 sm:gap-6 flex-1 min-w-0">
+                <div className="w-[120px] h-[160px] sm:w-[150px] sm:h-[200px] rounded-2xl bg-white flex items-center justify-center shrink-0 border border-slate-200 shadow-sm overflow-hidden text-slate-400 p-1">
                   <DoctorImage 
                     doc={selectedDoctor}
                     className="w-full h-full object-contain rounded-xl bg-white"
-                    iconClassName="w-10 h-10 sm:w-12 sm:h-12 text-slate-400"
+                    iconClassName="w-16 h-16 sm:w-20 sm:h-20 text-slate-300"
                   />
                 </div>
-                <div className="flex-1 min-w-0">
-                  <h2 className="text-base sm:text-2xl md:text-[28px] font-[900] text-[#002b5c] leading-tight mb-1 sm:mb-2 uppercase">{selectedDoctor.name}</h2>
-                  <p className="text-xs sm:text-base font-[500] text-slate-500 leading-snug">{selectedDoctor.qualifications}</p>
+                <div className="flex-1 min-w-0 flex flex-col justify-between h-[160px] sm:h-[200px] py-1">
+                  <div>
+                    <h2 className="text-xl sm:text-2xl md:text-[28px] font-[900] text-[#002b5c] leading-tight mb-2 uppercase">{selectedDoctor.name}</h2>
+                    <p className="text-sm sm:text-base font-[500] text-slate-500 leading-snug">{selectedDoctor.qualifications}</p>
+                  </div>
+                  
+                  <div className="mt-auto flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4">
+                    {loadingSchedule ? (
+                      <div className="text-xs font-semibold text-slate-400 mt-2 sm:mt-0">Checking appointment availability...</div>
+                    ) : isAppAllowed !== false ? (
+                      <Link href={`/book-appointment?doctor_id=${selectedDoctor.doctor_id || selectedDoctor.id || ''}&speciality_id=${selectedDoctor.speciality_id || ''}&service_point_id=${selectedDoctor.service_point_id || ''}`} className="inline-flex items-center justify-center px-6 py-2.5 bg-[#007a87] hover:bg-[#005f69] text-[#ffffff] font-extrabold text-sm transition-colors rounded-lg w-fit mt-5 sm:mt-6">
+                        Book Appointment
+                      </Link>
+                    ) : null}
+                  </div>
                 </div>
               </div>
               <button 
                 onClick={() => setSelectedDoctor(null)}
-                className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-slate-50 text-slate-500 hover:bg-red-50 hover:text-red-500 flex items-center justify-center transition-all duration-300 hover:rotate-90 shrink-0 mt-1 sm:mt-0"
+                className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-slate-50 text-slate-500 hover:bg-red-50 hover:text-red-500 flex items-center justify-center transition-all duration-300 hover:rotate-90 shrink-0"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -489,13 +501,6 @@ export default function DoctorDetailsPage() {
                             020 4015 1100
                           </a>
                         </div>
-                        {loadingSchedule ? (
-                          <div className="text-center py-2 text-xs font-semibold text-slate-400">Checking appointment availability...</div>
-                        ) : isAppAllowed !== false ? (
-                          <Link href={`/book-appointment?doctor_id=${selectedDoctor.doctor_id || selectedDoctor.id || ''}&speciality_id=${selectedDoctor.speciality_id || ''}&service_point_id=${selectedDoctor.service_point_id || ''}`} className="inline-flex items-center justify-center w-full py-2.5 bg-[#007a87] hover:bg-[#005f69] text-white rounded-lg font-bold text-sm transition-colors">
-                            Book Appointment
-                          </Link>
-                        ) : null}
                       </div>
                     </div>
                   )}

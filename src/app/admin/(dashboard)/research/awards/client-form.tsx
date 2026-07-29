@@ -1,4 +1,6 @@
 "use client";
+import QuillEditor from "@/components/QuillEditor";
+
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -296,12 +298,7 @@ export default function AwardsClientForm({ initialData }: { initialData: any }) 
                 <div className="space-y-3">
                   {(awardYear.items || []).map((item: string, itemIdx: number) => (
                     <div key={itemIdx} className="flex gap-3 items-center">
-                      <textarea
-                        value={item}
-                        onChange={(e) => handleAwardItemChange(idx, itemIdx, e.target.value)}
-                        rows={2}
-                        className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all text-sm text-slate-700 resize-y"
-                      />
+                      <QuillEditor value={item} onChange={content => handleAwardItemChange(idx, itemIdx, content)} />
                       <button
                         onClick={() => handleRemoveAwardItem(idx, itemIdx)}
                         className="shrink-0 w-8 h-8 bg-red-600 text-white rounded-lg flex items-center justify-center hover:bg-red-700 transition-colors shadow-sm"
@@ -378,13 +375,7 @@ export default function AwardsClientForm({ initialData }: { initialData: any }) 
 
               <div className="w-full">
                 <label className="block text-[11px] font-extrabold text-[#002b5c] uppercase tracking-widest mb-2">Details</label>
-                <textarea 
-                  value={item.details || ""} 
-                  onChange={(e) => handleGrantChange(idx, "details", e.target.value)}
-                  placeholder="e.g. Received DBT-Denmark joint proposal Grant..."
-                  rows={3}
-                  className="w-full p-4 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all text-sm text-slate-700 resize-y"
-                />
+                <QuillEditor value={item.details || ""} onChange={content => handleGrantChange(idx, "details", content)} />
               </div>
 
             </div>
@@ -436,13 +427,7 @@ export default function AwardsClientForm({ initialData }: { initialData: any }) 
                 </div>
                 <div>
                   <label className="block text-[11px] font-extrabold text-[#002b5c] uppercase tracking-widest mb-1">Details</label>
-                  <textarea 
-                    value={item.details || ""} 
-                    onChange={(e) => handlePastGrantChange(idx, "details", e.target.value)}
-                    placeholder="e.g. European Society of intensive care medicine study..."
-                    rows={3}
-                    className="w-full p-3 bg-slate-50 border border-slate-200 rounded-lg focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all text-sm text-slate-700 resize-y"
-                  />
+                  <QuillEditor value={item.details || ""} onChange={content => handlePastGrantChange(idx, "details", content)} />
                 </div>
               </div>
             </div>

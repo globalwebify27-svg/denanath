@@ -42,8 +42,38 @@ export default function HealthPackagesClientPage({ pageData }: { pageData: any }
     appointmentEmail = "pr@dmhospital.org"
   } = pageData || {};
 
+  const parseHtmlLines = (htmlLines: string[]) => {
+    if (!htmlLines) return [];
+    return htmlLines.flatMap((line: string) => 
+      line.replace(/(<\/p>|<\/ul>|<\/ol>)\s*(<p[^>]*>)/gi, '$1|||$2')
+          .split('|||')
+          .map(s => s.trim())
+          .filter(s => {
+             const textOnly = s.replace(/<[^>]*>/g, '').replace(/&nbsp;/gi, '').trim();
+             return textOnly.length > 0 || s.includes('<img');
+          })
+    );
+  };
+
   return (
     <div className="min-h-screen bg-[#f8fafc] font-sans selection:bg-teal-500/30">
+      <style>{`
+        .health-package-rich-text ul {
+          list-style-type: disc !important;
+          padding-left: 1.5rem !important;
+          margin-top: 0.25rem !important;
+          margin-bottom: 0.25rem !important;
+        }
+        .health-package-rich-text ol {
+          list-style-type: decimal !important;
+          padding-left: 1.5rem !important;
+          margin-top: 0.25rem !important;
+          margin-bottom: 0.25rem !important;
+        }
+        .health-package-rich-text li {
+          display: list-item !important;
+        }
+      `}</style>
       {/* Premium Page Header */}
       <div className="w-full bg-[#002b5c] relative overflow-hidden">
         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 mix-blend-overlay pointer-events-none" />
@@ -120,10 +150,10 @@ export default function HealthPackagesClientPage({ pageData }: { pageData: any }
                         <div className="p-5 md:p-6 bg-slate-50 border-b border-slate-100 flex-1">
                           <h3 className="text-xl font-bold text-[#002b5c] mb-4 group-hover:text-[#007a87] transition-colors">{pkg.name}</h3>
                           <ul className="space-y-2 mb-2">
-                            {pkg.tests && pkg.tests.map((test: string, testIdx: number) => (
+                            {pkg.tests && parseHtmlLines(pkg.tests).map((test: string, testIdx: number) => (
                               <li key={testIdx} className="flex items-start gap-2 text-slate-600">
-                                <CheckCircle2 className="w-4 h-4 text-teal-500 shrink-0 mt-0.5" />
-                                <span style={{ fontSize: '18px', lineHeight: '31px' }} className="font-normal">{test}</span>
+                                <CheckCircle2 className="w-4 h-4 text-teal-500 shrink-0 mt-2" />
+                                <div style={{ fontSize: '18px', lineHeight: '31px' }} className="health-package-rich-text font-normal prose prose-sm max-w-none prose-p:my-0 prose-ul:my-0 prose-ol:my-0 prose-li:my-0" dangerouslySetInnerHTML={{ __html: test }}></div>
                               </li>
                             ))}
                           </ul>
@@ -152,10 +182,10 @@ export default function HealthPackagesClientPage({ pageData }: { pageData: any }
                     </h3>
                     <div className="bg-blue-50/50 rounded-2xl p-6 border border-blue-100">
                       <ul className="space-y-3">
-                        {instructions.map((instruction: string, idx: number) => (
+                        {parseHtmlLines(instructions).map((instruction: string, idx: number) => (
                           <li key={idx} className="flex items-start gap-3">
-                            <ChevronRight className="w-5 h-5 text-blue-600 shrink-0 mt-0.5" />
-                            <span style={{ fontSize: '18px', lineHeight: '31px' }} className="text-slate-700 font-normal">{instruction}</span>
+                            <ChevronRight className="w-5 h-5 text-blue-600 shrink-0 mt-1.5" />
+                            <div style={{ fontSize: '18px', lineHeight: '31px' }} className="health-package-rich-text text-slate-700 font-normal prose prose-sm max-w-none prose-p:my-0 prose-ul:my-0 prose-ol:my-0 prose-li:my-0" dangerouslySetInnerHTML={{ __html: instruction }}></div>
                           </li>
                         ))}
                       </ul>
@@ -166,9 +196,8 @@ export default function HealthPackagesClientPage({ pageData }: { pageData: any }
                             <AlertCircle className="w-5 h-5 text-amber-500" />
                             For Women
                           </h4>
-                          <p style={{ fontSize: '18px', lineHeight: '31px' }} className="text-slate-600 font-normal whitespace-pre-line">
-                            {womenNote}
-                          </p>
+                          <div style={{ fontSize: '18px', lineHeight: '31px' }} className="health-package-rich-text text-slate-600 font-normal whitespace-pre-line prose prose-sm max-w-none prose-p:my-0 prose-ul:my-0 prose-ol:my-0 prose-li:my-0" dangerouslySetInnerHTML={{ __html: womenNote }}>
+                          </div>
                         </div>
                       )}
                     </div>
@@ -213,10 +242,10 @@ export default function HealthPackagesClientPage({ pageData }: { pageData: any }
                       </h3>
                       <div className="bg-white border border-slate-200 rounded-2xl p-5 h-[300px] overflow-y-auto custom-scrollbar">
                         <ul className="space-y-2">
-                          {companyList.map((company: string, idx: number) => (
+                          {parseHtmlLines(companyList).map((company: string, idx: number) => (
                             <li key={idx} className="flex items-start gap-2 border-b border-slate-50 pb-2 last:border-0 last:pb-0">
-                              <CheckCircle2 className="w-4 h-4 text-teal-500 shrink-0 mt-0.5" />
-                              <span style={{ fontSize: '18px', lineHeight: '31px' }} className="text-slate-600 font-normal">{company}</span>
+                              <CheckCircle2 className="w-4 h-4 text-teal-500 shrink-0 mt-2" />
+                              <div style={{ fontSize: '18px', lineHeight: '31px' }} className="health-package-rich-text text-slate-600 font-normal prose prose-sm max-w-none prose-p:my-0 prose-ul:my-0 prose-ol:my-0 prose-li:my-0" dangerouslySetInnerHTML={{ __html: company }}></div>
                             </li>
                           ))}
                         </ul>

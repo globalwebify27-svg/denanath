@@ -1,4 +1,6 @@
 "use client";
+import QuillEditor from "@/components/QuillEditor";
+
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -335,12 +337,7 @@ export default function InPatientClientForm({ initialData }: { initialData: any 
             Important Guidelines
           </h3>
           <p className="text-sm text-slate-500 mb-4">Enter each guideline on a new line.</p>
-          <textarea 
-            value={data.guidelines} 
-            onChange={(e) => handleChange('guidelines', e.target.value)}
-            rows={5}
-            className="w-full p-4 border border-gray-200 rounded-xl focus:ring-[#007a87] focus:outline-none text-sm leading-relaxed"
-          />
+          <QuillEditor value={data.guidelines} onChange={content => handleChange('guidelines', content)} />
         </div>
 
         {/* Room Details */}
@@ -508,30 +505,15 @@ export default function InPatientClientForm({ initialData }: { initialData: any 
           <div className="grid md:grid-cols-3 gap-6">
             <div>
               <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">ICU (One per line)</label>
-              <textarea 
-                value={data.icuList} 
-                onChange={(e) => handleChange('icuList', e.target.value)}
-                rows={6}
-                className="w-full p-4 border border-gray-200 rounded-xl focus:ring-[#007a87] focus:outline-none text-sm leading-relaxed"
-              />
+              <QuillEditor value={data.icuList} onChange={content => handleChange('icuList', content)} />
             </div>
             <div>
               <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">NICU (One per line)</label>
-              <textarea 
-                value={data.nicuList} 
-                onChange={(e) => handleChange('nicuList', e.target.value)}
-                rows={6}
-                className="w-full p-4 border border-gray-200 rounded-xl focus:ring-[#007a87] focus:outline-none text-sm leading-relaxed"
-              />
+              <QuillEditor value={data.nicuList} onChange={content => handleChange('nicuList', content)} />
             </div>
             <div>
               <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">PICU (One per line)</label>
-              <textarea 
-                value={data.picuList} 
-                onChange={(e) => handleChange('picuList', e.target.value)}
-                rows={6}
-                className="w-full p-4 border border-gray-200 rounded-xl focus:ring-[#007a87] focus:outline-none text-sm leading-relaxed"
-              />
+              <QuillEditor value={data.picuList} onChange={content => handleChange('picuList', content)} />
             </div>
           </div>
         </div>
@@ -553,12 +535,7 @@ export default function InPatientClientForm({ initialData }: { initialData: any 
             </div>
             <div>
               <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Meal Notes (One per line)</label>
-              <textarea 
-                value={data.mealNotes} 
-                onChange={(e) => handleChange('mealNotes', e.target.value)}
-                rows={6}
-                className="w-full p-4 border border-gray-200 rounded-xl focus:ring-[#007a87] focus:outline-none text-sm leading-relaxed"
-              />
+              <QuillEditor value={data.mealNotes} onChange={content => handleChange('mealNotes', content)} />
             </div>
           </div>
         </div>
@@ -570,12 +547,7 @@ export default function InPatientClientForm({ initialData }: { initialData: any 
             Admission Procedure
           </h3>
           <p className="text-sm text-slate-500 mb-4">Enter each step on a new line. They will be numbered automatically.</p>
-          <textarea 
-            value={data.admissionProcedure} 
-            onChange={(e) => handleChange('admissionProcedure', e.target.value)}
-            rows={8}
-            className="w-full p-4 border border-gray-200 rounded-xl focus:ring-[#007a87] focus:outline-none text-sm leading-relaxed"
-          />
+          <QuillEditor value={data.admissionProcedure} onChange={content => handleChange('admissionProcedure', content)} />
         </div>
 
         {/* Cashless Hospitalization */}
@@ -587,12 +559,7 @@ export default function InPatientClientForm({ initialData }: { initialData: any 
           
           <div className="mb-6">
             <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Description Paragraphs (One per line. 'NOTE: ' will be styled specially)</label>
-            <textarea 
-              value={data.cashlessDescription} 
-              onChange={(e) => handleChange('cashlessDescription', e.target.value)}
-              rows={10}
-              className="w-full p-4 border border-gray-200 rounded-xl focus:ring-[#007a87] focus:outline-none text-sm leading-relaxed"
-            />
+            <QuillEditor value={data.cashlessDescription} onChange={content => handleChange('cashlessDescription', content)} />
           </div>
 
           <div className="grid md:grid-cols-2 gap-6">
@@ -624,21 +591,11 @@ export default function InPatientClientForm({ initialData }: { initialData: any 
           <div className="grid md:grid-cols-2 gap-6">
             <div>
               <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Timing</label>
-              <textarea 
-                value={data.preAuthDetails.timing} 
-                onChange={(e) => updatePreAuthDetails('timing', e.target.value)}
-                rows={3}
-                className="w-full p-4 border border-gray-200 rounded-xl focus:ring-[#007a87] focus:outline-none text-sm leading-relaxed"
-              />
+              <QuillEditor value={data.preAuthDetails.timing} onChange={content => updatePreAuthDetails('timing', content)} />
             </div>
             <div>
               <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Requirements (One per line)</label>
-              <textarea 
-                value={data.preAuthDetails.requirements} 
-                onChange={(e) => updatePreAuthDetails('requirements', e.target.value)}
-                rows={8}
-                className="w-full p-4 border border-gray-200 rounded-xl focus:ring-[#007a87] focus:outline-none text-sm leading-relaxed"
-              />
+              <QuillEditor value={data.preAuthDetails.requirements} onChange={content => updatePreAuthDetails('requirements', content)} />
             </div>
           </div>
         </div>
@@ -652,32 +609,15 @@ export default function InPatientClientForm({ initialData }: { initialData: any 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div>
               <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Insurance Companies (One per line)</label>
-              <textarea 
-                value={data.insuranceCompanies} 
-                onChange={(e) => handleChange('insuranceCompanies', e.target.value)}
-                rows={10}
-                className="w-full p-4 border border-gray-200 rounded-xl focus:ring-[#007a87] focus:outline-none text-sm leading-relaxed"
-                placeholder="Acko General Insurance Company..."
-              />
+              <QuillEditor value={data.insuranceCompanies} onChange={content => handleChange('insuranceCompanies', content)} />
             </div>
             <div>
               <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">TPAs (One per line)</label>
-              <textarea 
-                value={data.tpaCompanies} 
-                onChange={(e) => handleChange('tpaCompanies', e.target.value)}
-                rows={10}
-                className="w-full p-4 border border-gray-200 rounded-xl focus:ring-[#007a87] focus:outline-none text-sm leading-relaxed"
-                placeholder="Ericson Tpa Healthcare..."
-              />
+              <QuillEditor value={data.tpaCompanies} onChange={content => handleChange('tpaCompanies', content)} />
             </div>
             <div>
               <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Corporate Companies (One per line)</label>
-              <textarea 
-                value={data.corporateCompanies} 
-                onChange={(e) => handleChange('corporateCompanies', e.target.value)}
-                rows={10}
-                className="w-full p-4 border border-gray-200 rounded-xl focus:ring-[#007a87] focus:outline-none text-sm leading-relaxed"
-              />
+              <QuillEditor value={data.corporateCompanies} onChange={content => handleChange('corporateCompanies', content)} />
             </div>
           </div>
         </div>

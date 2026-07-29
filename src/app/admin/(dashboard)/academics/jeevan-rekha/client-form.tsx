@@ -1,4 +1,6 @@
 "use client";
+import QuillEditor from "@/components/QuillEditor";
+
 
 import { useState } from "react";
 import {  Plus, Trash2, ChevronDown, ChevronRight } from "lucide-react";
@@ -77,30 +79,15 @@ export default function JeevanRekhaClientForm({ initialData }: { initialData: an
             <div className="p-6 md:p-8 bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden space-y-6 animate-in fade-in relative mt-4">
               <div>
                 <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Highlight Text</label>
-                <textarea 
-                  value={data.highlightText || ""} 
-                  onChange={(e) => handleChange("highlightText", e.target.value)}
-                  rows={2} 
-                  className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium leading-relaxed"
-                />
+                <QuillEditor value={data.highlightText || ""} onChange={content => handleChange("highlightText", content)} />
               </div>
               <div>
                 <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Introductory Text 1</label>
-                <textarea 
-                  value={data.introText1 || ""} 
-                  onChange={(e) => handleChange("introText1", e.target.value)}
-                  rows={4} 
-                  className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium leading-relaxed"
-                />
+                <QuillEditor value={data.introText1 || ""} onChange={content => handleChange("introText1", content)} />
               </div>
               <div>
                 <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Introductory Text 2</label>
-                <textarea 
-                  value={data.introText2 || ""} 
-                  onChange={(e) => handleChange("introText2", e.target.value)}
-                  rows={2} 
-                  className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium leading-relaxed"
-                />
+                <QuillEditor value={data.introText2 || ""} onChange={content => handleChange("introText2", content)} />
               </div>
             </div>
           )}

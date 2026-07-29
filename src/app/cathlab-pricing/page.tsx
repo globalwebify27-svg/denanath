@@ -40,15 +40,24 @@ export default async function CathlabPricingPage() {
       
       {/* 1. Hero Section */}
       <div className="relative bg-gradient-to-r from-[#0f172a] to-[#1e3a8a] pt-24 pb-12 overflow-hidden">
-        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-blue-500/10 rounded-full blur-[120px] pointer-events-none" />
-        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-cyan-500/10 rounded-full blur-[100px] pointer-events-none" />
+        {data.bannerImage ? (
+          <div className="absolute inset-0 z-0">
+            <img src={data.bannerImage} alt="Banner" className="w-full h-full object-cover opacity-30" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#0f172a] via-[#1e3a8a]/80 to-transparent"></div>
+          </div>
+        ) : (
+          <>
+            <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-blue-500/10 rounded-full blur-[120px] pointer-events-none" />
+            <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-cyan-500/10 rounded-full blur-[100px] pointer-events-none" />
+          </>
+        )}
         
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           
           <nav className="flex items-center gap-2 text-sm text-blue-200 mb-8">
             <Link href="/" className="hover:text-white transition-colors">Home</Link>
             <ChevronRight className="w-4 h-4" />
-            <span className="text-white font-medium">{data.title}</span>
+            <span className="text-white font-medium">{data.pageTitle || data.title}</span>
           </nav>
           
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
@@ -57,7 +66,7 @@ export default async function CathlabPricingPage() {
                 <HeartPulse className="w-4 h-4 text-cyan-400" />
                 <span>Cardiology Department</span>
               </div>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight tracking-tight mb-4" dangerouslySetInnerHTML={{ __html: data.title.replace('Pharmacy', 'Pharmacy <br className="hidden md:block"/>') }}>
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight tracking-tight mb-4" dangerouslySetInnerHTML={{ __html: (data.pageTitle || data.title || "").replace('Pharmacy', 'Pharmacy <br className="hidden md:block"/>') }}>
               </h1>
               <p className="text-lg text-blue-100 font-light max-w-2xl">
                 {data.subtitle}

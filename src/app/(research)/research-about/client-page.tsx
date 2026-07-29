@@ -74,10 +74,10 @@ export default function AboutUsClientPage({ pageData }: { pageData: any }) {
             <ChevronRight className="w-3.5 h-3.5" />
             <span className="hover:text-white transition-colors cursor-pointer">Research</span>
             <ChevronRight className="w-3.5 h-3.5" />
-            <span className="text-white">About Us</span>
+            <span className="text-white">{pageData.pageTitle || pageData.title || "About Us"}</span>
           </div>
           <h1 className="text-4xl md:text-5xl font-extrabold text-white tracking-tight flex items-center gap-4">
-            {pageData.title || "About Us"}
+            {pageData.pageTitle || pageData.title || "About Us"}
           </h1>
         </div>
       </div>
@@ -121,14 +121,14 @@ export default function AboutUsClientPage({ pageData }: { pageData: any }) {
                   <span>Research</span>
                 </div>
                 <h2 className="text-3xl md:text-4xl font-extrabold text-[#002b5c] mb-6 tracking-tight">
-                  {pageData.title || "About Us"}
+                  {pageData.pageTitle || pageData.title || "About Us"}
                 </h2>
                 <div className="w-20 h-1.5 bg-[#007a87] rounded-full mb-8"></div>
               </div>
 
-              {pageData.image && (
+              {(pageData.bannerImage || pageData.image) && (
                 <div className="mb-10 rounded-2xl overflow-hidden border border-slate-200">
-                  <img src={pageData.image} alt={pageData.title || "About Us"} className="w-full h-auto object-contain max-h-[500px] bg-slate-50" />
+                  <img src={pageData.bannerImage || pageData.image} alt={pageData.pageTitle || pageData.title || "About Us"} className="w-full h-auto object-contain max-h-[500px] bg-slate-50" />
                 </div>
               )}
               

@@ -16,6 +16,9 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
   const [isSearching, setIsSearching] = useState(false);
   const [isSpecOpen, setIsSpecOpen] = useState(false);
   const [isDocOpen, setIsDocOpen] = useState(false);
+  const [specQuery, setSpecQuery] = useState("");
+  const [docQuery, setDocQuery] = useState("");
+  const [selectedDays, setSelectedDays] = useState<string[]>([]);
 
   // Calendar State
   const [currentMonth, setCurrentMonth] = useState(new Date());
@@ -34,6 +37,8 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
   const [bookingSuccess, setBookingSuccess] = useState(false);
   const [isFetchingPatient, setIsFetchingPatient] = useState(false);
   const [isEditableContact, setIsEditableContact] = useState(false);
+  const [realMobileNo, setRealMobileNo] = useState("");
+  const [realEmail, setRealEmail] = useState("");
 
   // Form Data
   const [formData, setFormData] = useState({
@@ -41,6 +46,31 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
     dob: "", gender: "", mobileNo: "", email: "",
     mrdNo: "", isFirstVisit: true,
   });
+
+  // Helper to mask phone number with asterisks
+  const maskPhone = (phone: string) => {
+    if (!phone) return "";
+    const cleaned = phone.toString().trim();
+    if (cleaned.length <= 4) return "****";
+    const first2 = cleaned.slice(0, 2);
+    const last2 = cleaned.slice(-2);
+    const stars = "*".repeat(cleaned.length - 4);
+    return `${first2}${stars}${last2}`;
+  };
+
+  // Helper to mask email with asterisks
+  const maskEmail = (email: string) => {
+    if (!email) return "";
+    const cleaned = email.toString().trim();
+    const parts = cleaned.split("@");
+    if (parts.length !== 2) return "****";
+    const user = parts[0];
+    const domain = parts[1];
+    if (user.length <= 2) return `*@${domain}`;
+    const first2 = user.slice(0, 2);
+    const stars = "*".repeat(user.length - 2);
+    return `${first2}${stars}@${domain}`;
+  };
 
   // Helper to fetch registered patient details automatically via ptn_details API
   const fetchRegisteredPatientDetails = async (mrdNo: string, dobInput: string) => {
@@ -71,13 +101,18 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
       const ptn = Array.isArray(list) && list.length > 0 ? list[0] : null;
 
       if (ptn) {
+        const actualMobile = ptn.mobile_no || ptn.mobileNo || ptn.mobile || ptn.contact_no || formData.mobileNo || "";
+        const actualEmail = ptn.email_id || ptn.emailId || ptn.email || formData.email || "";
+        setRealMobileNo(actualMobile);
+        setRealEmail(actualEmail);
+
         setFormData(prev => ({
           ...prev,
           firstName: ptn.firstname || ptn.first_name || ptn.firstName || prev.firstName,
           middleName: ptn.middlename || ptn.middle_name || ptn.middleName || prev.middleName,
           lastName: ptn.lastname || ptn.last_name || ptn.lastName || prev.lastName,
-          mobileNo: ptn.mobile_no || ptn.mobileNo || ptn.mobile || ptn.contact_no || prev.mobileNo,
-          email: ptn.email_id || ptn.emailId || ptn.email || prev.email,
+          mobileNo: maskPhone(actualMobile),
+          email: maskEmail(actualEmail),
           gender: ptn.sex || ptn.gender || prev.gender
         }));
         // Auto-lock mobile & email fields when fetched from API
@@ -170,18 +205,60 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
         };
 
         loadDirectCalendar();
+      } else if (urlSpecId) {
+        setSelectedSpeciality(urlSpecId);
       }
     }
   }, []);
 
-  // Fetch doctors dynamically: either for all specialities or for the selected speciality
+  // Fetch doctors dynamically and automatically load schedule when speciality changes
   useEffect(() => {
-    const loadDoctorsList = async () => {
+    const loadDoctorsAndSchedule = async () => {
       if (selectedSpeciality) {
+        setIsSearching(true);
         const data = await fetchApi("speciality_doctor", { speciality_id: selectedSpeciality });
-        if (!data) return;
+        if (!data) {
+          setIsSearching(false);
+          return;
+        }
         const docs = data.doctorJSON || (Array.isArray(data) ? data : []);
-        if (Array.isArray(docs)) setDoctors(docs);
+        if (Array.isArray(docs)) {
+          const docsWithSpec = docs.map((d: any) => ({
+            ...d,
+            speciality_id: d.speciality_id || selectedSpeciality
+          }));
+          setDoctors(docsWithSpec);
+
+          // Auto-fetch OPD schedule so available doctors list appears automatically!
+          const doctorsWithSchedule = await Promise.all(
+            docsWithSpec.map(async (doc: any) => {
+              let schedule: any[] = [];
+              let isApp = doc.isApp === 'Y' || doc.isApp === 'true' || doc.isApp === true;
+              try {
+                const opdData = await fetchApi("opd_day_time", {
+                  doctor_id: String(doc.doctor_id || ''),
+                  speciality_id: String(selectedSpeciality)
+                });
+                const list = opdData?.opdDayTimeJSON || (Array.isArray(opdData) ? opdData : []);
+                if (Array.isArray(list) && list.length > 0) {
+                  schedule = list;
+                  if (list[0]?.isApp === 'Y' || list[0]?.isApp === 'true') isApp = true;
+                }
+              } catch (e) {
+                console.warn("Failed to fetch OPD time:", e);
+              }
+              return { ...doc, isApp, schedule };
+            })
+          );
+
+          const sortedResults = [...doctorsWithSchedule].sort((a, b) => {
+            const nameA = (a.doctor_name || `${a.first_name || ''} ${a.last_name || ''}`).trim().toLowerCase();
+            const nameB = (b.doctor_name || `${b.first_name || ''} ${b.last_name || ''}`).trim().toLowerCase();
+            return nameA.localeCompare(nameB);
+          });
+          setSearchResults(sortedResults);
+        }
+        setIsSearching(false);
       } else if (specialities.length > 0) {
         const allDocs: any[] = [];
         await Promise.all(
@@ -190,18 +267,31 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
             if (!specId) return;
             const data = await fetchApi("speciality_doctor", { speciality_id: String(specId) });
             const docs = data?.doctorJSON || (Array.isArray(data) ? data : []);
-            if (Array.isArray(docs)) allDocs.push(...docs);
+            if (Array.isArray(docs)) {
+              allDocs.push(...docs.map((d: any) => ({ ...d, speciality_id: d.speciality_id || specId })));
+            }
           })
         );
         setDoctors(allDocs);
       }
     };
 
-    loadDoctorsList();
+    loadDoctorsAndSchedule();
   }, [selectedSpeciality, specialities]);
 
   // Search Results Doctors State
   const [searchResults, setSearchResults] = useState<any[]>([]);
+  const displayedResults = searchResults.filter(doc => {
+    if (selectedDoctor && String(doc.doctor_id || doc.id) !== String(selectedDoctor)) return false;
+    if (selectedDays.length === 0) return true;
+    if (!doc.schedule || doc.schedule.length === 0) return false;
+    return selectedDays.some(dayKey => {
+      return doc.schedule.some((s: any) => {
+        const val = s[dayKey];
+        return val && typeof val === 'string' && val.trim() !== '' && val.trim() !== '-' && !val.toLowerCase().includes('no opd') && !val.toLowerCase().includes('none');
+      });
+    });
+  });
 
   // --- Handlers ---
   const handleSearch = async () => {
@@ -256,7 +346,13 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
       })
     );
 
-    setSearchResults(doctorsWithSchedule);
+    const sortedResults = [...doctorsWithSchedule].sort((a, b) => {
+      const nameA = (a.doctor_name || `${a.first_name || ''} ${a.last_name || ''}`).trim().toLowerCase();
+      const nameB = (b.doctor_name || `${b.first_name || ''} ${b.last_name || ''}`).trim().toLowerCase();
+      return nameA.localeCompare(nameB);
+    });
+
+    setSearchResults(sortedResults);
     setIsSearching(false);
   };
 
@@ -315,10 +411,19 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
     
     // Determine patient details if registered
     let patientDetails: any = {};
+    let actualMobile = (!isEditableContact && realMobileNo) ? realMobileNo : (formData.mobileNo || "");
+    let actualEmail = (!isEditableContact && realEmail) ? realEmail : (formData.email || "");
+
     if (patientTab === "registered" && formData.mrdNo) {
       const ptnRes = await fetchApi("ptn_details", { mrd_no: formData.mrdNo, dob: formData.dob });
       if (ptnRes && !ptnRes.error) {
         patientDetails = ptnRes;
+        const list = ptnRes?.patientDetails || ptnRes?.Response || ptnRes?.patientJSON || (Array.isArray(ptnRes) ? ptnRes : []);
+        const ptn = Array.isArray(list) && list.length > 0 ? list[0] : null;
+        if (ptn && !isEditableContact) {
+          actualMobile = ptn.mobile_no || ptn.mobileNo || ptn.mobile || ptn.contact_no || actualMobile;
+          actualEmail = ptn.email_id || ptn.emailId || ptn.email || actualEmail;
+        }
       }
     }
 
@@ -341,8 +446,8 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
       last_name: formData.lastName || "",
       dob: formData.dob || "",
       gender: formData.gender || "Male",
-      mobile_no: formData.mobileNo || "",
-      email_id: formData.email || "",
+      mobile_no: actualMobile,
+      email_id: actualEmail,
       service_center_id: docObj?.service_center_id || "",
       service_point_id: docObj?.service_point_id || "",
       speciality_id: selectedSpeciality || docObj?.speciality_id || "",
@@ -460,10 +565,10 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
               <div className="relative">
                 <div 
                   className="w-full bg-white border-2 border-teal-500/20 text-slate-700 text-lg rounded-full py-4 px-6 cursor-pointer flex items-center justify-between font-medium transition-colors hover:border-teal-500/40 relative z-10"
-                  onClick={() => { setIsSpecOpen(!isSpecOpen); setIsDocOpen(false); }}
+                  onClick={() => { setIsSpecOpen(!isSpecOpen); setIsDocOpen(false); setSpecQuery(""); }}
                 >
                   <span className="flex-1 text-center truncate font-semibold">
-                    {selectedSpeciality ? (specialities.find(s => String(s.speciality_id || s.id || s.name) === String(selectedSpeciality))?.speciality_name || specialities.find(s => String(s.speciality_id || s.id || s.name) === String(selectedSpeciality))?.name || 'Selected') : 'Select Speciality'}
+                    {selectedSpeciality ? (specialities.find(s => String(s.speciality_id || s.id || s.name) === String(selectedSpeciality))?.speciality_name || specialities.find(s => String(s.speciality_id || s.id || s.name) === String(selectedSpeciality))?.name || (specialities.length === 0 ? 'Loading Speciality...' : 'Selected Speciality')) : 'Select Speciality'}
                   </span>
                   <ChevronDown className={`w-5 h-5 text-teal-500 transition-transform ${isSpecOpen ? 'rotate-180' : ''}`} />
                 </div>
@@ -471,26 +576,57 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
                 {isSpecOpen && (
                   <>
                     <div className="fixed inset-0 z-40" onClick={() => setIsSpecOpen(false)} />
-                    <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-xl border border-slate-100 max-h-60 overflow-y-auto z-50 py-2 custom-scrollbar">
+                    <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-xl border border-slate-100 max-h-72 overflow-y-auto z-50 py-2 custom-scrollbar">
+                      <div className="px-4 py-2 border-b border-slate-100 sticky top-0 bg-white z-10" onClick={(e) => e.stopPropagation()}>
+                        <div className="relative flex items-center">
+                          <Search className="w-4 h-4 text-slate-400 absolute left-3 pointer-events-none" />
+                          <input
+                            type="text"
+                            placeholder="Type to search speciality..."
+                            value={specQuery}
+                            onChange={(e) => setSpecQuery(e.target.value)}
+                            className="w-full pl-9 pr-3 py-2 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 text-slate-700 font-medium"
+                            autoFocus
+                          />
+                        </div>
+                      </div>
                       <div 
                         className="px-6 py-3 hover:bg-teal-50 cursor-pointer text-slate-600 text-center font-medium transition-colors"
                         onClick={() => { setSelectedSpeciality(""); setSelectedDoctor(""); setIsSpecOpen(false); }}
                       >
                         Select Speciality
                       </div>
-                      {specialities.map((s, i) => {
-                        const val = s.speciality_id || s.id || s.name || `spec_${i}`;
-                        const label = s.speciality_name || s.name || `Speciality ${i+1}`;
-                        return (
-                          <div 
-                            key={i}
-                            className={`px-6 py-3 hover:bg-teal-50 cursor-pointer text-center font-medium transition-colors uppercase ${String(selectedSpeciality) === String(val) ? 'bg-teal-50 text-teal-700 font-bold' : 'text-slate-600'}`}
-                            onClick={() => { setSelectedSpeciality(val); setSelectedDoctor(""); setIsSpecOpen(false); }}
-                          >
-                            {label}
-                          </div>
-                        );
-                      })}
+                      {specialities
+                        .filter(s => {
+                          const label = s.speciality_name || s.name || "";
+                          return label.toString().toLowerCase().includes(specQuery.toLowerCase());
+                        })
+                        .sort((a, b) => {
+                          const nameA = (a.speciality_name || a.name || "").toString().toLowerCase();
+                          const nameB = (b.speciality_name || b.name || "").toString().toLowerCase();
+                          return nameA.localeCompare(nameB);
+                        })
+                        .map((s, i) => {
+                          const val = s.speciality_id || s.id || s.name || `spec_${i}`;
+                          const label = s.speciality_name || s.name || `Speciality ${i+1}`;
+                          return (
+                            <div 
+                              key={i}
+                              className={`px-6 py-3 hover:bg-teal-50 cursor-pointer text-center font-medium transition-colors uppercase ${String(selectedSpeciality) === String(val) ? 'bg-teal-50 text-teal-700 font-bold' : 'text-slate-600'}`}
+                              onClick={() => { setSelectedSpeciality(val); setSelectedDoctor(""); setIsSpecOpen(false); }}
+                            >
+                              {label}
+                            </div>
+                          );
+                        })}
+                      {specialities
+                        .filter(s => {
+                          const label = s.speciality_name || s.name || "";
+                          return label.toString().toLowerCase().includes(specQuery.toLowerCase());
+                        })
+                        .length === 0 && (
+                          <div className="py-4 text-center text-slate-400 text-sm font-medium">No specialities found</div>
+                      )}
                     </div>
                   </>
                 )}
@@ -501,7 +637,7 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
               <div className="relative">
                 <div 
                   className="w-full bg-white border-2 border-teal-500/20 text-slate-700 text-lg rounded-full py-4 px-6 cursor-pointer flex items-center justify-between font-medium transition-colors hover:border-teal-500/40 relative z-10"
-                  onClick={() => { setIsDocOpen(!isDocOpen); setIsSpecOpen(false); }}
+                  onClick={() => { setIsDocOpen(!isDocOpen); setIsSpecOpen(false); setDocQuery(""); }}
                 >
                   <span className="flex-1 text-center truncate font-semibold">
                     {selectedDoctor ? (
@@ -516,7 +652,20 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
                 {isDocOpen && (
                   <>
                     <div className="fixed inset-0 z-40" onClick={() => setIsDocOpen(false)} />
-                    <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-xl border border-slate-100 max-h-60 overflow-y-auto z-50 py-2 custom-scrollbar">
+                    <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-xl border border-slate-100 max-h-72 overflow-y-auto z-50 py-2 custom-scrollbar">
+                      <div className="px-4 py-2 border-b border-slate-100 sticky top-0 bg-white z-10" onClick={(e) => e.stopPropagation()}>
+                        <div className="relative flex items-center">
+                          <Search className="w-4 h-4 text-slate-400 absolute left-3 pointer-events-none" />
+                          <input
+                            type="text"
+                            placeholder="Type to search doctor..."
+                            value={docQuery}
+                            onChange={(e) => setDocQuery(e.target.value)}
+                            className="w-full pl-9 pr-3 py-2 text-sm bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 text-slate-700 font-medium"
+                            autoFocus
+                          />
+                        </div>
+                      </div>
                       <div 
                         className="px-6 py-3 hover:bg-teal-50 cursor-pointer text-slate-600 text-center font-medium transition-colors"
                         onClick={() => { setSelectedDoctor(""); setIsDocOpen(false); }}
@@ -525,6 +674,15 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
                       </div>
                       {doctors
                         .filter(d => selectedSpeciality ? String(d.speciality_id) === String(selectedSpeciality) : true)
+                        .filter(d => {
+                          const label = d.doctor_name || d.name || "";
+                          return label.toString().toLowerCase().includes(docQuery.toLowerCase());
+                        })
+                        .sort((a, b) => {
+                          const nameA = (a.doctor_name || a.name || "").toString().toLowerCase();
+                          const nameB = (b.doctor_name || b.name || "").toString().toLowerCase();
+                          return nameA.localeCompare(nameB);
+                        })
                         .map((d, i) => {
                           const val = d.doctor_id || d.id || d.name || `doc_${i}`;
                           const label = d.doctor_name || d.name || `Doctor ${i+1}`;
@@ -537,10 +695,50 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
                               {label}
                             </div>
                           );
-                      })}
+                        })}
+                      {doctors
+                        .filter(d => selectedSpeciality ? String(d.speciality_id) === String(selectedSpeciality) : true)
+                        .filter(d => {
+                          const label = d.doctor_name || d.name || "";
+                          return label.toString().toLowerCase().includes(docQuery.toLowerCase());
+                        })
+                        .length === 0 && (
+                          <div className="py-4 text-center text-slate-400 text-sm font-medium">No doctors found</div>
+                      )}
                     </div>
                   </>
                 )}
+              </div>
+
+              <div className="pt-4 flex flex-wrap items-center justify-center gap-4 sm:gap-6">
+                {[
+                  { label: "MON", key: "Mon" },
+                  { label: "TUE", key: "Tue" },
+                  { label: "WED", key: "Wed" },
+                  { label: "THU", key: "Thu" },
+                  { label: "FRI", key: "Fri" },
+                  { label: "SAT", key: "Sat" },
+                  { label: "SUN", key: "Sun" },
+                ].map((item) => (
+                  <label 
+                    key={item.key} 
+                    className="flex items-center gap-2 cursor-pointer text-slate-600 font-bold text-xs sm:text-sm uppercase tracking-wider select-none hover:text-teal-600 transition-colors"
+                  >
+                    <input
+                      type="checkbox"
+                      checked={selectedDays.includes(item.key)}
+                      onChange={() => {
+                        if (selectedDays.includes(item.key)) {
+                          setSelectedDays(selectedDays.filter(d => d !== item.key));
+                        } else {
+                          setSelectedDays([...selectedDays, item.key]);
+                        }
+                      }}
+                      className="w-4 h-4 rounded text-teal-600 focus:ring-teal-500 border-slate-300 cursor-pointer accent-teal-600"
+                    />
+                    <span>{item.label}</span>
+                  </label>
+                ))}
               </div>
 
               <div className="pt-6 flex justify-center gap-4">
@@ -552,7 +750,7 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
                   {isSearching ? "Searching..." : "Search"}
                 </button>
                 <button 
-                  onClick={() => { setSelectedSpeciality(""); setSelectedDoctor(""); }}
+                  onClick={() => { setSelectedSpeciality(""); setSelectedDoctor(""); setSelectedDays([]); }}
                   className="bg-slate-500 hover:bg-slate-600 text-white px-10 py-3 rounded-full font-bold uppercase tracking-wider transition-colors shadow-md"
                 >
                   Clear
@@ -571,14 +769,21 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
           <div className="mt-10 space-y-6">
             <div className="flex items-center justify-between border-b border-slate-200 pb-4">
               <h2 className="text-2xl font-extrabold text-[#002b5c] tracking-tight">
-                Available Doctors ({searchResults.length})
+                Available Doctors ({displayedResults.length})
               </h2>
               <span className="text-xs font-bold uppercase tracking-wider px-3 py-1 bg-teal-50 text-[#007a87] rounded-full border border-teal-100">
                 Live DMH Schedule
               </span>
             </div>
 
-            {searchResults.map((doc, idx) => {
+            {displayedResults.length === 0 ? (
+              <div className="bg-white rounded-3xl p-12 text-center border border-slate-100 shadow-sm">
+                <Clock className="w-12 h-12 text-slate-300 mx-auto mb-4" />
+                <h3 className="text-xl font-bold text-slate-700">No doctors available on selected days</h3>
+                <p className="text-slate-500 mt-2 text-sm">Please try selecting different day filters or clear the filter to see all doctors.</p>
+              </div>
+            ) : (
+              displayedResults.map((doc, idx) => {
               const docName = doc.doctor_name || `${doc.first_name || ''} ${doc.last_name || ''}`.trim();
               const specName = doc.speciality_name || 'General';
               const qual = doc.qualification || 'MBBS';
@@ -676,7 +881,7 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
                   </div>
                 </div>
               );
-            })}
+            }))}
           </div>
         )}
 
@@ -910,7 +1115,12 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
                     {patientTab === "registered" && !isEditableContact && formData.mobileNo && (
                       <button 
                         type="button" 
-                        onClick={() => setIsEditableContact(true)} 
+                        onClick={() => {
+                          setIsEditableContact(true);
+                          setFormData(prev => ({ ...prev, mobileNo: "", email: "" }));
+                          setRealMobileNo("");
+                          setRealEmail("");
+                        }} 
                         className="text-[11px] font-bold text-[#007a87] hover:underline"
                       >
                         Update Contact Info

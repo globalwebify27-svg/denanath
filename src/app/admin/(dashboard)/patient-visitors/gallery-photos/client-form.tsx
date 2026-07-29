@@ -1,4 +1,6 @@
 "use client";
+import QuillEditor from "@/components/QuillEditor";
+
 
 import { useState } from "react";
 import {  Plus, Trash2, Image as ImageIcon, Folder } from "lucide-react";
@@ -105,12 +107,7 @@ export default function GalleryPhotosClientForm({ initialData }: { initialData: 
             Photo Categories
           </h3>
           <p className="text-sm text-slate-500 mb-4">Enter one category per line. These categories will appear in the dropdown for each photo.</p>
-          <textarea 
-            value={data.categories} 
-            onChange={(e) => handleChange('categories', e.target.value)}
-            rows={4}
-            className="w-full p-4 border border-gray-200 rounded-xl focus:ring-[#007a87] focus:outline-none text-sm leading-relaxed uppercase"
-          />
+          <QuillEditor value={data.categories} onChange={content => handleChange('categories', content)} />
         </div>
 
         {/* Photos List */}

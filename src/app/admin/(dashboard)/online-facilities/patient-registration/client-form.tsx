@@ -1,4 +1,6 @@
 "use client";
+import QuillEditor from "@/components/QuillEditor";
+
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -100,13 +102,7 @@ export default function PatientRegistrationClientForm({ initialData }: { initial
             {/* Introductory Text */}
             <div>
               <label className="block text-sm font-bold text-[#002b5c] mb-2">Introductory Text</label>
-              <textarea
-                value={formData.introText}
-                onChange={(e) => setFormData({ ...formData, introText: e.target.value })}
-                rows={4}
-                className="w-full px-5 py-4 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-slate-50 focus:bg-white transition-all text-slate-700 font-medium resize-y"
-                placeholder="Registration is a process..."
-              />
+              <QuillEditor value={formData.introText} onChange={content => setFormData({ ...formData, introText: content })} />
             </div>
 
             {/* Highlighted Notice */}

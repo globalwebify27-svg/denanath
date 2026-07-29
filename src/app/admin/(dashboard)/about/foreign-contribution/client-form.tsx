@@ -164,13 +164,7 @@ export default function ForeignContributionClientForm({ initialData }: { initial
                     <div key={d.id} className="grid grid-cols-1 md:grid-cols-12 gap-3 items-start bg-slate-50 p-3 rounded-xl border border-slate-100">
                       <div className="md:col-span-4">
                         <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Donor Name & Address</label>
-                        <textarea 
-                          value={d.name} 
-                          onChange={(e) => updateDonation(q.id, d.id, 'name', e.target.value)}
-                          rows={2}
-                          className="w-full p-2 text-sm border border-gray-200 rounded-lg focus:ring-[#007a87] focus:outline-none"
-                          placeholder="Donor name..."
-                        />
+                        <QuillEditor value={d.name} onChange={content => updateDonation(q.id, d.id, 'name', content)} />
                       </div>
                       <div className="md:col-span-3">
                         <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">Amount (INR)</label>

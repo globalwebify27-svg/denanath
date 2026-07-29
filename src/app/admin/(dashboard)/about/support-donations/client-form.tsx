@@ -83,23 +83,12 @@ export default function SupportDonationsClientForm({ initialData }: { initialDat
             
             <div>
               <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">"Count on us to be" Points (Double new-line separated. Use ' - ' or ' – ' to separate bold heading from text)</label>
-              <textarea 
-                value={data.countOnUsPoints} 
-                onChange={(e) => handleChange('countOnUsPoints', e.target.value)}
-                rows={8}
-                placeholder="100% dedicated... – Our focus remains...&#10;&#10;100% committed... – Deenanath Mangeshkar..."
-                className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium leading-relaxed font-mono text-sm"
-              />
+              <QuillEditor value={data.countOnUsPoints} onChange={content => handleChange('countOnUsPoints', content)} />
             </div>
 
             <div>
               <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">"Donate in form of" Points (One per line)</label>
-              <textarea 
-                value={data.donateForms} 
-                onChange={(e) => handleChange('donateForms', e.target.value)}
-                rows={4}
-                className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium leading-relaxed font-mono text-sm"
-              />
+              <QuillEditor value={data.donateForms} onChange={content => handleChange('donateForms', content)} />
             </div>
           </div>
         </div>
@@ -114,21 +103,11 @@ export default function SupportDonationsClientForm({ initialData }: { initialDat
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Institutional Donors</label>
-              <textarea 
-                value={data.institutionalDonors} 
-                onChange={(e) => handleChange('institutionalDonors', e.target.value)}
-                rows={10}
-                className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium leading-relaxed font-mono text-sm"
-              />
+              <QuillEditor value={data.institutionalDonors} onChange={content => handleChange('institutionalDonors', content)} />
             </div>
             <div>
               <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Donation In Kind</label>
-              <textarea 
-                value={data.donationInKind} 
-                onChange={(e) => handleChange('donationInKind', e.target.value)}
-                rows={10}
-                className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium leading-relaxed font-mono text-sm"
-              />
+              <QuillEditor value={data.donationInKind} onChange={content => handleChange('donationInKind', content)} />
             </div>
           </div>
         </div>
@@ -143,30 +122,15 @@ export default function SupportDonationsClientForm({ initialData }: { initialDat
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="md:col-span-2">
               <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">More than 1 Crore</label>
-              <textarea 
-                value={data.individualDonorsMoreThan1Cr} 
-                onChange={(e) => handleChange('individualDonorsMoreThan1Cr', e.target.value)}
-                rows={8}
-                className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium leading-relaxed font-mono text-sm"
-              />
+              <QuillEditor value={data.individualDonorsMoreThan1Cr} onChange={content => handleChange('individualDonorsMoreThan1Cr', content)} />
             </div>
             <div>
               <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">50 Lakh to 1 Crore</label>
-              <textarea 
-                value={data.individualDonors50to1Cr} 
-                onChange={(e) => handleChange('individualDonors50to1Cr', e.target.value)}
-                rows={8}
-                className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium leading-relaxed font-mono text-sm"
-              />
+              <QuillEditor value={data.individualDonors50to1Cr} onChange={content => handleChange('individualDonors50to1Cr', content)} />
             </div>
             <div>
               <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Up to 1 Lakh</label>
-              <textarea 
-                value={data.individualDonorsUpto1} 
-                onChange={(e) => handleChange('individualDonorsUpto1', e.target.value)}
-                rows={15}
-                className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium leading-relaxed font-mono text-sm"
-              />
+              <QuillEditor value={data.individualDonorsUpto1} onChange={content => handleChange('individualDonorsUpto1', content)} />
             </div>
           </div>
         </div>

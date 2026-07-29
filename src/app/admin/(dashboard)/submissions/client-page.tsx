@@ -1,4 +1,6 @@
 "use client";
+import QuillEditor from "@/components/QuillEditor";
+
 
 import React, { useState, useTransition } from "react";
 import { 
@@ -538,12 +540,7 @@ export default function SubmissionsClientPage({
                                 </a>
                               </div>
                             ) : typeof val === "string" && (val.length > 60 || val.includes("\n")) ? (
-                              <textarea
-                                value={String(val)}
-                                onChange={(e) => setEditData({ ...editData, [key]: e.target.value })}
-                                rows={3}
-                                className="w-full bg-white border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm text-slate-800 font-medium focus:outline-none focus:ring-2 focus:ring-[#007a87]/50 focus:border-[#007a87] transition-all"
-                              />
+                              <QuillEditor value={String(val)} onChange={content => setEditData({ ...editData, [key]: content })} />
                             ) : (
                               <input
                                 type="text"

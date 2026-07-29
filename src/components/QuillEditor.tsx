@@ -219,6 +219,23 @@ export default function QuillEditor({ name, defaultValue, value, onChange }: { n
 
   return (
     <div className="bg-white rounded-2xl overflow-hidden border border-slate-200 shadow-sm relative z-0">
+      <style>{`
+        .jodit-wysiwyg ul {
+          list-style-type: disc !important;
+          padding-left: 2rem !important;
+          margin-top: 0.5rem !important;
+          margin-bottom: 0.5rem !important;
+        }
+        .jodit-wysiwyg ol {
+          list-style-type: decimal !important;
+          padding-left: 2rem !important;
+          margin-top: 0.5rem !important;
+          margin-bottom: 0.5rem !important;
+        }
+        .jodit-wysiwyg li {
+          display: list-item !important;
+        }
+      `}</style>
       {name && <input type="hidden" name={name} defaultValue={value !== undefined ? value : (defaultValue || "")} ref={hiddenInputRef} />}
       <JoditEditor
         ref={editorRef}
@@ -230,6 +247,8 @@ export default function QuillEditor({ name, defaultValue, value, onChange }: { n
            if (onChange) onChange(newContent);
         }}
         onChange={newContent => {
+           if (newContent === content) return;
+           setContent(newContent);
            if (hiddenInputRef.current) hiddenInputRef.current.value = newContent;
            if (onChange) onChange(newContent);
         }}

@@ -1,4 +1,6 @@
 "use client";
+import QuillEditor from "@/components/QuillEditor";
+
 
 import { useState } from "react";
 import {  Plus, Trash2, Building, CreditCard, Clock, MapPin, Phone } from "lucide-react";
@@ -115,23 +117,11 @@ export default function FacilitiesClientForm({ initialData }: { initialData: any
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">IPD Billing Rules</label>
-              <textarea 
-                value={data.ipdBillingRules} 
-                onChange={(e) => handleChange('ipdBillingRules', e.target.value)}
-                rows={6}
-                className="w-full p-4 border border-gray-200 rounded-xl focus:ring-[#007a87] focus:outline-none text-sm leading-relaxed"
-                placeholder="One rule per line"
-              />
+              <QuillEditor value={data.ipdBillingRules} onChange={content => handleChange('ipdBillingRules', content)} />
             </div>
             <div>
               <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">OPD Billing Rules</label>
-              <textarea 
-                value={data.opdBillingRules} 
-                onChange={(e) => handleChange('opdBillingRules', e.target.value)}
-                rows={6}
-                className="w-full p-4 border border-gray-200 rounded-xl focus:ring-[#007a87] focus:outline-none text-sm leading-relaxed"
-                placeholder="One rule per line"
-              />
+              <QuillEditor value={data.opdBillingRules} onChange={content => handleChange('opdBillingRules', content)} />
             </div>
           </div>
           
@@ -235,13 +225,7 @@ export default function FacilitiesClientForm({ initialData }: { initialData: any
                   </div>
                   <div>
                     <label className="block text-[10px] font-[800] text-gray-700 uppercase tracking-widest mb-1">Details (One per line)</label>
-                    <textarea 
-                      value={fac.detailsStr} 
-                      onChange={(e) => updateFacility(fac.id, 'detailsStr', e.target.value)}
-                      rows={3}
-                      className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium" 
-                      placeholder="Detail 1&#10;Detail 2"
-                    />
+                    <QuillEditor value={fac.detailsStr} onChange={content => updateFacility(fac.id, 'detailsStr', content)} />
                   </div>
                 </div>
               </div>

@@ -308,25 +308,7 @@ export default function ClinicalHub() {
                   </div>
                 </div>
 
-                <div className="pt-4 mt-4 border-t border-slate-100 flex items-center justify-start">
-                  {currentHub.ctaLink.startsWith("tel:") ? (
-                    <a 
-                      href={currentHub.ctaLink}
-                      className={`inline-flex items-center gap-2 px-5 py-3 rounded-xl font-bold text-[10px] uppercase tracking-widest text-white transition-all duration-300 shadow-md ${theme.btn}`}
-                    >
-                      <span>{currentHub.ctaText}</span>
-                      <ArrowRight className="w-3.5 h-3.5" />
-                    </a>
-                  ) : (
-                    <Link 
-                      href={currentHub.ctaLink}
-                      className={`inline-flex items-center gap-2 px-5 py-3 rounded-xl font-bold text-[10px] uppercase tracking-widest text-white transition-all duration-300 shadow-md ${theme.btn}`}
-                    >
-                      <span>{currentHub.ctaText}</span>
-                      <ArrowRight className="w-3.5 h-3.5" />
-                    </Link>
-                  )}
-                </div>
+
               </div>
 
               {/* Right image portion (40% width on md/lg screens) */}

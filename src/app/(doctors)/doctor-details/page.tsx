@@ -381,7 +381,7 @@ export default function DoctorDetailsPage() {
                       <div className="flex-1 mb-6">
                         <div className="flex items-start gap-2 text-slate-600">
                           <GraduationCap className="w-4 h-4 text-slate-400 shrink-0 mt-[7px]" />
-                          <span className="text-[18px] leading-[31px] font-normal">{doc.qualifications}</span>
+                          <span className="text-[16px] leading-[31px] font-normal">{doc.qualifications}</span>
                         </div>
                       </div>
 
@@ -461,7 +461,7 @@ export default function DoctorDetailsPage() {
             
             {/* Modal Header */}
             <div className="relative p-6 md:p-8 border-b border-slate-100 shrink-0 sticky top-0 bg-white z-10 rounded-t-3xl">
-              <div className="flex items-center gap-5 sm:gap-6 pr-12">
+              <div className="flex items-start gap-5 sm:gap-6 pr-12">
                 <div className="w-[150px] h-[200px] sm:w-[220px] sm:h-[280px] rounded-2xl bg-white flex items-center justify-center shrink-0 border border-slate-200 shadow-sm overflow-hidden text-slate-400">
                   <DoctorImage 
                     doc={selectedDoctor}
@@ -469,9 +469,21 @@ export default function DoctorDetailsPage() {
                     iconClassName="w-16 h-16 sm:w-20 sm:h-20 text-slate-400"
                   />
                 </div>
-                <div className="flex-1 min-w-0">
-                  <h2 className="text-xl sm:text-2xl md:text-[28px] font-[900] text-[#002b5c] leading-tight mb-2 uppercase">{selectedDoctor.name}</h2>
-                  <p className="text-[18px] leading-[31px] font-normal text-slate-500">{selectedDoctor.qualifications}</p>
+                <div className="flex-1 min-w-0 flex flex-col justify-between h-[200px] sm:h-[280px] py-2">
+                  <div>
+                    <h2 className="text-xl sm:text-2xl md:text-[28px] font-[900] text-[#002b5c] leading-tight mb-2 uppercase">{selectedDoctor.name}</h2>
+                    <p className="text-[16px] leading-[31px] font-normal text-slate-500">{selectedDoctor.qualifications}</p>
+                  </div>
+                  
+                  <div className="mt-auto flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4">
+                    {loadingSchedule ? (
+                      <div className="text-xs font-semibold text-slate-400 mt-2 sm:mt-0">Checking appointment availability...</div>
+                    ) : isAppAllowed !== false ? (
+                      <Link href={`/book-appointment?doctor_id=${selectedDoctor.doctor_id || selectedDoctor.id || ''}&speciality_id=${selectedDoctor.speciality_id || ''}&service_point_id=${selectedDoctor.service_point_id || ''}`} className="inline-flex items-center justify-center px-6 py-2.5 bg-[#007a87] hover:bg-[#005f69] text-[#ffffff] font-extrabold text-sm transition-colors rounded-lg w-fit mt-5 sm:mt-6">
+                        Book Appointment
+                      </Link>
+                    ) : null}
+                  </div>
                 </div>
               </div>
               <button 
@@ -523,13 +535,6 @@ export default function DoctorDetailsPage() {
                             020 4015 1100
                           </a>
                         </div>
-                        {loadingSchedule ? (
-                          <div className="text-center py-2 text-xs font-semibold text-slate-400">Checking appointment availability...</div>
-                        ) : isAppAllowed !== false ? (
-                          <Link href={`/book-appointment?doctor_id=${selectedDoctor.doctor_id || selectedDoctor.id || ''}&speciality_id=${selectedDoctor.speciality_id || ''}&service_point_id=${selectedDoctor.service_point_id || ''}`} className="inline-flex items-center justify-center w-full py-2.5 bg-[#007a87] hover:bg-[#005f69] text-[#ffffff] font-extrabold text-sm transition-colors rounded-lg">
-                            Book Appointment
-                          </Link>
-                        ) : null}
                       </div>
                     </div>
                   )}
@@ -545,7 +550,7 @@ export default function DoctorDetailsPage() {
                       </h3>
                       <ul className="space-y-4">
                         {selectedDoctor.education.map((item: string, i: number) => (
-                          <li key={i} className="flex gap-3 text-slate-600 font-normal text-[18px] leading-[31px]">
+                          <li key={i} className="flex gap-3 text-slate-600 font-normal text-[16px] leading-[31px]">
                             <div className="w-1.5 h-1.5 rounded-full bg-teal-400 shrink-0 mt-2.5"></div>
                             {item}
                           </li>
@@ -561,7 +566,7 @@ export default function DoctorDetailsPage() {
                       </h3>
                       <ul className="space-y-4">
                         {selectedDoctor.training.map((item: string, i: number) => (
-                          <li key={i} className="flex gap-3 text-slate-600 font-normal text-[18px] leading-[31px]">
+                          <li key={i} className="flex gap-3 text-slate-600 font-normal text-[16px] leading-[31px]">
                             <div className="w-1.5 h-1.5 rounded-full bg-amber-400 shrink-0 mt-2.5"></div>
                             {item}
                           </li>
@@ -577,7 +582,7 @@ export default function DoctorDetailsPage() {
                       </h3>
                       <ul className="space-y-4">
                         {selectedDoctor.experience.map((item: string, i: number) => (
-                          <li key={i} className="flex gap-3 text-slate-600 font-normal text-[18px] leading-[31px]">
+                          <li key={i} className="flex gap-3 text-slate-600 font-normal text-[16px] leading-[31px]">
                             <div className="w-1.5 h-1.5 rounded-full bg-blue-400 shrink-0 mt-2.5"></div>
                             {item}
                           </li>
@@ -604,7 +609,7 @@ export default function DoctorDetailsPage() {
                           }
 
                           return (
-                            <li key={i} className="flex gap-3 text-slate-600 font-normal text-[18px] leading-[31px]">
+                            <li key={i} className="flex gap-3 text-slate-600 font-normal text-[16px] leading-[31px]">
                               <div className="w-1.5 h-1.5 rounded-full bg-purple-400 shrink-0 mt-2.5"></div>
                               <div className="flex-1">
                                 {title.includes('[PDF]') ? (

@@ -209,7 +209,10 @@ export default function Navbar() {
         { name: "Patient Registration Form", href: "/patient-registration" },
       ],
     },
-
+    {
+      name: "Career",
+      href: "/careers",
+    },
     {
       name: "Contact Us",
       href: "/contact-us",
@@ -245,8 +248,6 @@ export default function Navbar() {
             <Link href="/pharmacy" className="hover:text-white transition-colors">Pharmacy</Link>
             <span className="opacity-30">|</span>
             <Link href="/ambulance" className="hover:text-red-300 transition-colors font-bold text-red-400">Ambulance</Link>
-            <span className="opacity-30">|</span>
-            <Link href="/careers" className="hover:text-white transition-colors font-bold">Career</Link>
           </div>
 
           <div className="flex items-center gap-0.5 2xl:gap-4 font-bold tracking-wide">
@@ -338,7 +339,7 @@ export default function Navbar() {
           <div className="flex justify-between items-center">
 
             {/* DMH Logo Section */}
-            <div className="flex items-center shrink-0 gap-2 sm:gap-4 lg:gap-6">
+            <div className="flex items-center shrink-0 gap-0 sm:gap-1 lg:gap-2">
               <Link href="/" className="flex items-center gap-1 sm:gap-2 group focus:outline-none">
                 <div className="relative flex items-center justify-start w-[180px] sm:w-[220px] xl:w-[280px] 2xl:w-[380px] h-[40px] sm:h-[55px] xl:h-[65px] shrink-0 transition-all">
                   <img
@@ -348,10 +349,10 @@ export default function Navbar() {
                   />
                 </div>
               </Link>
-              <div className="relative flex items-center justify-start w-[70px] sm:w-[100px] xl:w-[140px] 2xl:w-[180px] h-[30px] sm:h-[45px] xl:h-[55px] shrink transition-all">
+              <div className="relative flex items-center justify-start w-[70px] sm:w-[100px] xl:w-[140px] 2xl:w-[180px] h-[30px] sm:h-[45px] xl:h-[55px] shrink transition-all -ml-2 sm:-ml-3 xl:-ml-6 2xl:-ml-8">
                 <img
-                  src="/images/Screenshot 2026-07-02 221435_transparent.png"
-                  alt="Accreditation"
+                  src="/images/ChatGPT Image Jul 27, 2026, 05_05_55 PM (1)_transparent.png"
+                  alt="25 Years Image"
                   className="w-full h-full object-contain"
                 />
               </div>

@@ -15,20 +15,19 @@ export default function SpecialtyClinics() {
 
   // Static Clinics (Jo hamesha upar fix rahenge)
   const staticClinics = [
-    { id: "01", name: "Voice Clinic", icon: Mic, color: "text-teal-600 bg-teal-50" },
-    { id: "02", name: "IVF (In Vitro Fertilisation)", icon: Baby, color: "text-blue-600 bg-blue-50" }
+    { id: "01", name: "Voice Clinic", icon: Mic, color: "text-teal-600 bg-teal-50", href: "/departments/voice-clinic" },
+    { id: "02", name: "IVF (In Vitro Fertilisation)", icon: Baby, color: "text-blue-600 bg-blue-50", href: "https://www.ivfinpune.com/" }
   ];
 
-  // Animated Clinics (Jo mobile par slide karenge)
   const scrollingClinics = [
-    { id: "03", name: "Obesity Clinic", icon: Activity, color: "text-amber-600 bg-amber-50" },
-    { id: "04", name: "Small Step", icon: Footprints, color: "text-purple-600 bg-purple-50" },
-    { id: "05", name: "Thyroid Centre", icon: Activity, color: "text-teal-600 bg-teal-50" },
-    { id: "06", name: "BILD Exercise Clinic", icon: Dumbbell, color: "text-blue-600 bg-blue-50" },
-    { id: "07", name: "Swallowing Clinic", icon: Activity, color: "text-amber-600 bg-amber-50" },
-    { id: "08", name: "Posture Pain Clinic", icon: Activity, color: "text-purple-600 bg-purple-50" },
-    { id: "09", name: "VBS Mani Hypoxic Training", icon: Mountain, color: "text-teal-600 bg-teal-50" },
-    { id: "10", name: "Knee Speciality Exercise", icon: Activity, color: "text-blue-600 bg-blue-50" }
+    { id: "03", name: "Obesity Clinic", icon: Activity, color: "text-amber-600 bg-amber-50", href: "/departments/obesity-clinic" },
+    { id: "04", name: "Small Step", icon: Footprints, color: "text-purple-600 bg-purple-50", href: "/departments/paediatric-small-steps" },
+    { id: "05", name: "Thyroid Centre", icon: Activity, color: "text-teal-600 bg-teal-50", href: "https://www.dmhospital.org/cms/Media/file/thyroid_brocher.pdf" },
+    { id: "06", name: "BILD Exercise Clinic", icon: Dumbbell, color: "text-blue-600 bg-blue-50", href: "https://bildclinic.com/" },
+    { id: "07", name: "Swallowing Clinic", icon: Activity, color: "text-amber-600 bg-amber-50", href: "/departments/swallowing-clinic" },
+    { id: "08", name: "Posture Pain Clinic", icon: Activity, color: "text-purple-600 bg-purple-50", href: "/departments/posture-pain-clinic" },
+    { id: "09", name: "VBS Mani Hypoxic Training", icon: Mountain, color: "text-teal-600 bg-teal-50", href: "/departments/hypoxic-training-center" },
+    { id: "10", name: "Knee Speciality Exercise", icon: Activity, color: "text-blue-600 bg-blue-50", href: "/departments/knee-specialty-clinic" }
   ];
 
   // Pure list for Desktop grid rendering
@@ -87,7 +86,10 @@ export default function SpecialtyClinics() {
   const ClinicCard = ({ clinic, isDesktopOnly = false }: { clinic: any, isDesktopOnly?: boolean }) => {
     const Icon = clinic.icon;
     return (
-      <div
+      <Link
+        href={clinic.href || "/departments"}
+        target={clinic.href?.startsWith("http") ? "_blank" : undefined}
+        rel={clinic.href?.startsWith("http") ? "noopener noreferrer" : undefined}
         className={`
           group relative
           /* Mobile layout sizes */
@@ -119,7 +121,7 @@ export default function SpecialtyClinics() {
         </div>
 
         <div className="absolute bottom-0 left-0 h-[3px] w-0 bg-gradient-to-r from-emerald-500 to-teal-500 group-hover:w-full transition-all duration-500"></div>
-      </div>
+      </Link>
     );
   };
 

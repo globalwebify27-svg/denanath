@@ -7,7 +7,13 @@ export const dynamic = "force-dynamic";
 function normalizeEventsData(raw: any) {
   if (!raw) return { events: [], seoMetaTitle: "", seoMetaDescription: "", seoKeywords: "" };
   if (Array.isArray(raw.events)) {
-    return raw;
+    return { ...raw, events: raw.events };
+  }
+  if (Array.isArray(raw.items)) {
+    return { ...raw, events: raw.items };
+  }
+  if (Array.isArray(raw)) {
+    return { events: raw, pageTitle: "", bannerImage: "" };
   }
   // If it's the old single-event format, wrap it
   if (raw.title) {
@@ -24,7 +30,7 @@ function normalizeEventsData(raw: any) {
       ]
     };
   }
-  return { events: [], seoMetaTitle: "", seoMetaDescription: "", seoKeywords: "" };
+  return { events: [], seoMetaTitle: "", seoMetaDescription: "", seoKeywords: "", pageTitle: "", bannerImage: "" };
 }
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -53,5 +59,5 @@ export default async function EventsPage() {
   
   const data = normalizeEventsData(rawData);
 
-  return <EventsClientPage events={data.events || []} />;
+  return <EventsClientPage events={data.events || []} pageData={{ pageTitle: data.pageTitle, bannerImage: data.bannerImage }} />;
 }

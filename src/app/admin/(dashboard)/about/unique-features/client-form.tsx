@@ -120,13 +120,7 @@ export default function UniqueFeaturesClientForm({ initialData }: { initialData:
 
                 <div className="md:col-span-2">
                   <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Bullets (One per line)</label>
-                  <textarea 
-                    value={item.bulletsText} 
-                    onChange={(e) => updateItem(item.id, 'bulletsText', e.target.value)}
-                    rows={5}
-                    className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium leading-relaxed font-mono text-sm"
-                    placeholder="Enter bullet points, each on a new line..."
-                  />
+                  <QuillEditor value={item.bulletsText} onChange={content => updateItem(item.id, 'bulletsText', content)} />
                 </div>
 
                 <div>

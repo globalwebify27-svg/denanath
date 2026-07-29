@@ -69,7 +69,7 @@ export default function PublicationsClientPage({ pageData }: { pageData: any }) 
     const pubContainer = container.querySelector('.space-y-6');
     if (!pubContainer) return;
 
-    const archiveGrid = document.querySelector('.grid.grid-cols-2') || document.querySelector('.grid.grid-cols-4');
+    const archiveGrid = container.querySelector('.grid.grid-cols-2') || container.querySelector('.grid.grid-cols-4');
     if (!archiveGrid) return;
     const buttons = archiveGrid.querySelectorAll('a');
 
@@ -83,6 +83,9 @@ export default function PublicationsClientPage({ pageData }: { pageData: any }) 
         b.classList.remove('!bg-[#003360]', '!text-white');
       });
       
+      const dynamicHeader = pubContainer.querySelector('.dynamic-year-header');
+      if (dynamicHeader) dynamicHeader.remove();
+      
       if (isActive) {
          Array.from(pubContainer.children).forEach(child => {
            (child as HTMLElement).style.display = '';
@@ -93,33 +96,35 @@ export default function PublicationsClientPage({ pageData }: { pageData: any }) 
       btn.classList.add('!bg-[#003360]', '!text-white');
 
       const btnText = btn.textContent || "";
-      const yearsMatch = btnText.match(/(\d{4})\s*-\s*(\d{4})/);
-      if (!yearsMatch) return;
-      const startYear = yearsMatch[1];
-      const endYear = yearsMatch[2];
+      const yearsMatch = btnText.match(/(\d{4})/g);
+      if (!yearsMatch || yearsMatch.length === 0) return;
 
-      let currentYearBlock = false;
-      let hasSeenYearHeader = false;
-      
+      let hasVisiblePublications = false;
+
       Array.from(pubContainer.children).forEach((child) => {
-        if (child.tagName === 'H4') {
+        if (child.tagName === 'H4' && !child.classList.contains('dynamic-year-header')) {
+          // Hide all existing admin-created headers while filtering
+          (child as HTMLElement).style.display = 'none';
+        } else if (child.tagName === 'DIV') {
           const text = child.textContent || "";
-          if (/20\d{2}/.test(text)) {
-            hasSeenYearHeader = true;
-            if (text.includes(startYear) && text.includes(endYear)) {
-              currentYearBlock = true;
-            } else {
-              currentYearBlock = false;
-            }
+          let pubMatches = yearsMatch.some(year => text.includes(year));
+          
+          if (pubMatches) {
+            (child as HTMLElement).style.display = '';
+            hasVisiblePublications = true;
+          } else {
+            (child as HTMLElement).style.display = 'none';
           }
         }
-        
-        if (!hasSeenYearHeader || currentYearBlock) {
-          (child as HTMLElement).style.display = '';
-        } else {
-          (child as HTMLElement).style.display = 'none';
-        }
       });
+
+      if (hasVisiblePublications) {
+        const btnText = btn.textContent ? btn.textContent.trim() : '';
+        const h4 = document.createElement('h4');
+        h4.className = 'text-base md:text-lg font-bold text-[#002b5c] mb-6 mt-12 border-t border-slate-100 pt-8 dynamic-year-header';
+        h4.textContent = `Publications: ${btnText}`;
+        pubContainer.insertBefore(h4, pubContainer.firstChild);
+      }
       
       const target = document.querySelector('.space-y-12 h3');
       if (target) {

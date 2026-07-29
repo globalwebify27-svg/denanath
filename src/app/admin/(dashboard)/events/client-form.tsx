@@ -1,4 +1,6 @@
 "use client";
+import QuillEditor from "@/components/QuillEditor";
+
 
 import { useState, useEffect } from "react";
 import { Plus, Trash2, GripVertical, Image as ImageIcon, Upload, Loader2, Calendar } from "lucide-react";
@@ -270,7 +272,7 @@ export default function EventsClientForm({ initialEvents }: { initialEvents: any
               {(data.overview || []).map((p: string, idx: number) => (
                 <div key={idx} className="flex gap-4 items-start">
                   <div className="mt-2 text-slate-400 cursor-move"><GripVertical size={20} /></div>
-                  <textarea value={p} onChange={e => updateArrayItem(selectedIndex, 'overview', idx, e.target.value)} rows={3} className="flex-1 p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87]" placeholder="Paragraph content..." />
+                  <QuillEditor value={p} onChange={content=> updateArrayItem(selectedIndex, 'overview', idx, content)} />
                   <button type="button" onClick={() => removeArrayItem(selectedIndex, 'overview', idx)} className="mt-2 p-2 text-red-500 hover:bg-red-50 rounded-lg">
                     <Trash2 size={20} />
                   </button>

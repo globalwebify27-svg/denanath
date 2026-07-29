@@ -1,4 +1,6 @@
 "use client";
+import QuillEditor from "@/components/QuillEditor";
+
 
 import { useState } from "react";
 import {  Plus, Trash2, MessageSquareQuote } from "lucide-react";
@@ -129,13 +131,7 @@ export default function FeedbacksClientForm({ initialData }: { initialData: any 
                   </div>
                   <div>
                     <label className="block text-[10px] font-[800] text-gray-700 uppercase tracking-widest mb-1">Feedback Content</label>
-                    <textarea 
-                      value={story.content} 
-                      onChange={(e) => updateStory(story.id, 'content', e.target.value)}
-                      rows={4}
-                      className="w-full p-3 border border-slate-200 rounded-lg text-sm leading-relaxed" 
-                      placeholder="Enter the patient's full feedback story here..."
-                    />
+                    <QuillEditor value={story.content} onChange={content => updateStory(story.id, 'content', content)} />
                   </div>
                 </div>
               </div>

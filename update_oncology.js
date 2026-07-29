@@ -1,81 +1,128 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
-const html = `<div class="space-y-8 text-slate-700">
-  <section>
-    <h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">About Department</h3>
-    <p>"The V.L. Mutha Cancer Center" at the Deenanath Mangeshkar Hospital is a one-stop place for state-of-the art cancer treatment. Modern cancer management needs a multi-disciplinary approach with multiple specialists working together to plan and offer best treatment.</p>
-    
-    <p class="mt-4 font-bold text-[#007a87]">We offer following treatments and facilities at "The V.L. Mutha Cancer Center":</p>
-    <ul class="list-disc pl-5 mt-2 space-y-2">
-      <li><strong>Medical Oncology</strong> - Cancer treatment with medicines</li>
-      <li><strong>Oncosurgery</strong> - Cancer surgery</li>
-      <li><strong>Radiation Oncology</strong> - Use of powerful X-rays for cancer treatment.</li>
-      <li><strong>Palliative Care</strong> - Symptomatic care of end stage patient</li>
-    </ul>
+const htmlContent = `<h3>About Us:</h3>
+<p>Deenanath Mangeshkar Hospital & Research Center is a charitable, multi-specialty hospital located in Pune, India. Founded in 2001, it’s a leading tertiary care center with over 868 beds, specializing in Oncology and Oncosurgery.</p>
 
-    <p class="mt-6 font-bold text-[#007a87]">Apart from these principal treatments, we also offer following ancillary services:</p>
-    <ul class="list-disc pl-5 mt-2 space-y-2">
-      <li><strong>Genetic Clinic</strong> - To study genetic basis of cancer in a patient</li>
-      <li><strong>Dietician</strong> - For planning diet of the patient as per requirement</li>
-      <li><strong>Stoma Specialist</strong> - Take care of patients with need of colostomy/Ileostomy etc</li>
-      <li><strong>Speech Therapist</strong> - For patients undergoing laryngectomy etc</li>
-      <li><strong>Integrative Cancer Care</strong> - The INTEGRATIVE CANCER CARE program is to provide best possible integrative treatments in acute as well as chronic toxicities / side effects during and after Radiation and Chemotherapy treatments with AYURVEDA.</li>
-    </ul>
-    
-    <p class="mt-6">We aim to providing best suppotive care in patients with a broader goal of improvement in Progession Free Survival, Overall Survival, Quality of Life of cancer patients alongside the conventional oncology protocols.</p>
-    <p class="mt-2">The cancer treatment is backed by our strong team of blood bank, radiology team, nuclear medicine department, modern pharmacy and state-of-the art laboratory.</p>
-  </section>
+<h3>Accredited Excellence:</h3>
+<p>Proudly accredited by The Royal College of Surgeons of England for academic excellence 🏆!</p>
 
-  <section>
-    <h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Understanding Cancer</h3>
-    <p>Cancer is “Uncontrolled, Unnecessary proliferation” of body part. It can occur at any age and in any part of the body. Cancer is a genetic disease which means it is caused by damage to genes. However, less than 10% cancers are familial.</p>
-    <p class="mt-4">Cancer usually presents as a lump or swelling of any body part. It also produces various symptoms caused by its spread to other parts of the body. Depending on the spread, cancer is broadly divided in 4 stages. Stage I & II cancers are localized and have a high chance of cure. Stage III cancer is locally advanced and needs very aggressive treatment for control and to increase life. Stage IV cancer is generally not curable and is treated with palliative treatments.</p>
-    <p class="mt-4">Cancer does not spread by physical contact or by living together, by sharing food or playing together.</p>
-  </section>
+<h3>Department of Radiology:</h3>
+<p>Our Radiology department offers comprehensive diagnostic and interventional services, featuring state-of-the-art equipment.</p>
+<p>Experience cutting-edge technology under one roof:</p>
+<ul>
+  <li>2 CT machines</li>
+  <li>2 MRIs (3T)</li>
+  <li>Digital PET CT</li>
+  <li>Digital Mammography and Tomosynthesis</li>
+  <li>Digital Radiography & Fluoroscopy (2 machines)</li>
+  <li>Ultrasonography and Colour Doppler</li>
+</ul>
 
-  <section>
-    <h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Chemotherapy</h3>
-    <p>Chemotherapy is the use of drugs to destroy rapidly growing cancer cells. There are many caners which can be cured with chemotherapy e.g. leukemia, lymphoma, germ cell tumors etc. Some kinds of chemotherapy may slow the growth of cancer cells, and keep them from spreading to other parts of the body. When used before surgery, chemotherapy helps to shrink the tumour and makes it amenable to further treatment e.g. breast cancer, head & neck cancer. It may also be used after surgery or radiation to destroy remnant cancer cells.</p>
-    <p class="mt-4">A team of qualified experienced Medical Oncologists and staff specially trained in handling and administration of chemotherapy medicines is associated with the department. Apart from chemotherapy other forms of systemic anticancer therapies like immunotherapy, targeted therapy are effectively being performed.</p>
-    <p class="mt-4">At the centre, chemotherapy is prepared using a laminar flow machine which maximizes the safety and efficacy of treatment to patients. Chemotherapy is usually given as an outpatient procedure at our specialised treatment areas, managed by a team of Medical Oncologists, Resident junior doctors and oncology trained nurses provide close monitoring.</p>
-  </section>
+<h3>Oncology section expertly handling:</h3>
+<ul>
+  <li>6000+ PET CT scans/year</li>
+  <li>5000+ MRI scans/year</li>
+  <li>5000 + CT scans/year</li>
+  <li>1500 Ultrasonography and 400 CT-guided interventions/year</li>
+</ul>
 
-  <section>
-    <h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Comprehensive Care</h3>
-    <p>The V.L. Mutha Cancer Center provides comprehensive and coordinated care for patients with all types of cancers, including solid tumours and blood related diseases. We offer broad scope of cancer services, ranging from public education, screening and diagnosis, to treatment, pain management, palliative care and integrative cancer care with Ayurveda, the Indian system of medicine.</p>
-  </section>
+<h3>Fellowship Program:</h3>
+<p>Join our cross-sectional fellowship and master:</p>
+<ul>
+  <li>CT-MR</li>
+  <li>PET-CT</li>
+  <li>Mammography</li>
+  <li>Image-guided interventions</li>
+</ul>
 
-  <section>
-    <h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Infrastructure</h3>
-    <ul class="list-disc pl-5 space-y-2">
-      <li>Seperate cancer facility</li>
-      <li>Medical Oncology, Surgical Oncology & Radiation Oncology under one roof – OPD & Wards</li>
-      <li>Total of 27 Beds for Oncology Patients</li>
-      <li>Seperate Bone Marrow Transplant unit with dedicated beds</li>
-      <li>Chemotherapy Administered (Jan 14 to Aug 14)</li>
-    </ul>
-  </section>
+<h3>Program Details:</h3>
+<ul>
+  <li>Duration: 6 months</li>
+  <li>Intake: Biannual (April and October)</li>
+  <li>Eligibility: Indian Nationals, post-MD/DNB</li>
+  <li>Posts: 2 per session</li>
+</ul>
 
-  <section>
-    <h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Consultants</h3>
-    <p>Dr. DESHMUKH CHETAN</p>
-    <p>Dr. GANDHI SHRUTI</p>
-    <p>Dr. HINGMIRE SACHIN</p>
-    <p>Dr. KULKARNI PADMAJ</p>
-    <p>Dr. KULKARNI-ONCO- RAHUL SUHAS</p>
-    <p>Mrs. LIMAYE DEVIKA SHASHIN</p>
-    <p>Ms. MOGRE ADITI</p>
-    <p>Dr. PAWAR SATYAJIT</p>
-  </section>
-</div>`;
+<h3>Training Schedule:</h3>
+<ul>
+  <li>Hours: Minimum 10 hours/day, 6 days a week</li>
+</ul>
+
+<h3>Stipend:</h3>
+<p>Monthly Stipend: ₹50,000/- (gross) per month</p>
+
+<h3>Rotation:</h3>
+<p>Rotation of Two fellows - postings will be interchanged every 15 days for 6 months between 2 fellows</p>
+<p>Fellow 1 – CT MRI department</p>
+<p>Fellow 2 - PET CT , mammography posting and image guided interventions</p>
+
+<h3>Selection Process:</h3>
+<ul>
+  <li>Evaluation of application forms filled by the candidate will be done.</li>
+</ul>
+<p>Applications have to be sent on email address as below-</p>
+<p><a href="mailto:oncoraddmh@gmail.com">oncoraddmh@gmail.com</a></p>
+<p>-The candidate also has to fill the Google form in the link below. He/she needs to upload the CV in the form although he or she may have mailed it previously. Kindly also upload one letter of reference along with the CV.</p>
+<p>Please fill the-</p>
+<p><a href="#">Application form</a></p>
+
+<h3>Examination and Interviews</h3>
+<p>Personal interviews and Spot MCQs will be conducted through online platforms on decided date and time, which will be informed to the shortlisted candidates through email.</p>
+
+<h3>Oncology Imaging Fellow training Activities:</h3>
+<ul>
+  <li>To review and interpret Mammography, CT, MRI and PET-CT studies under direct faculty supervision.</li>
+  <li>To rotate in all the modalities in Oncology Imaging on a pre-decided time table</li>
+  <li>To conduct routine follow-up of cases reported and correlate with operative findings and further course of treatment.</li>
+  <li>To attend weekly lectures by the mentors along with active involvement in DNB academic activities.</li>
+  <li>To participate in the tumor board meetings of the hospital.</li>
+</ul>
+
+<h3>Completion Criteria:</h3>
+<p>End of the term assessment is made based on an oral examination</p>
+
+<h3>TIME LINE (INDIAN CANDIDATES)</h3>
+<p>Application process starts: 9th July 2026</p>
+<p>Ends: 23rd July 2026</p>
+<p>Tentative online written exam date for all applicants: 24th July 2026</p>
+<p>Tentative online interview date for selected candidates: 26th July 2026</p>
+<p>Selection of candidates: 30th July 2026</p>
+<p>Acceptance of fellowship: 30th July 2026</p>
+<p>Fellowship Begins: 1st October 2026</p>
+
+<h3>Correspondence:</h3>
+<p>Dr. Aditi Gujarathi<br/>
+Department of Radiology<br/>
+Deenanath Mangeshkar Hospital & Research Center<br/>
+Erandwane, Pune- 411014<br/>
+<a href="mailto:oncoraddmh@gmail.com">oncoraddmh@gmail.com</a></p>`;
 
 async function main() {
-  await prisma.department.updateMany({
-    where: { name: 'ONCOLOGY' },
-    data: { description: html }
-  });
-  console.log('Update successful');
+  const setting = await prisma.siteSetting.findUnique({ where: { key: 'home_courses' } });
+  
+  if (setting) {
+    let data = JSON.parse(setting.value);
+    
+    const courseIndex = data.leftCourses.findIndex(c => c.title === "Oncology Imaging Fellowship");
+    if (courseIndex !== -1) {
+      data.leftCourses[courseIndex].content = htmlContent;
+      // Also make sure link is set so they can view details
+      if (!data.leftCourses[courseIndex].link) {
+         data.leftCourses[courseIndex].link = "/courses/" + data.leftCourses[courseIndex].id;
+      }
+    } else {
+      console.log("Course not found in DB.");
+    }
+    
+    await prisma.siteSetting.update({
+      where: { key: 'home_courses' },
+      data: { value: JSON.stringify(data) }
+    });
+    console.log("Database updated successfully.");
+  } else {
+    console.log("No home_courses setting found in DB.");
+  }
 }
 
 main().catch(console.error).finally(() => prisma.$disconnect());

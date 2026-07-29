@@ -27,7 +27,7 @@ export default function FloatingActionStrip({ setIsSearchOpen }: FloatingActionS
             </div>
             <span className="text-[8px] sm:text-[9px] font-semibold uppercase tracking-[0.05em] text-[#002b5c] group-hover:text-[#9F0712] transition-colors leading-tight">Map &<br/>Location</span>
           </Link>
-          <Link href="/news-events" className="flex flex-col items-center gap-1.5 group cursor-pointer w-16 sm:w-20 text-center">
+          <Link href="/events" className="flex flex-col items-center gap-1.5 group cursor-pointer w-16 sm:w-20 text-center">
             <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl flex items-center justify-center group-hover:bg-slate-50 transition-all notranslate" translate="no" data-no-translate="true" aria-hidden="true">
               <Newspaper className="w-6 h-6 text-[#002b5c] group-hover:text-[#9F0712] group-hover:scale-110 transition-all duration-300 notranslate" aria-hidden="true" />
             </div>

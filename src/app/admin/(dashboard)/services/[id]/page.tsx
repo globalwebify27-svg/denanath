@@ -1,3 +1,4 @@
+import QuillEditor from "@/components/QuillEditor";
 import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
 import Link from "next/link";
@@ -132,14 +133,7 @@ export default async function EditServicePage({
 
             <div className="space-y-2">
               <label htmlFor="items" className="text-[12px] font-[800] text-gray-700 uppercase tracking-widest">Services Included</label>
-              <textarea
-                id="items"
-                name="items"
-                defaultValue={itemsStr}
-                rows={3}
-                placeholder="e.g. 2D Echo, Holter, Colour Doppler (comma separated)"
-                className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#007a87]/20 focus:border-[#007a87] font-[500] text-[14px] transition-all resize-none"
-              ></textarea>
+              <QuillEditor name="items" defaultValue={itemsStr} />
               <p className="text-[11px] font-[600] text-gray-400 mt-1">Separate each item with a comma.</p>
             </div>
 

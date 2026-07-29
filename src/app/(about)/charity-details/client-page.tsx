@@ -43,7 +43,14 @@ export default function CharityDetailsClientPage({ charityData }: { charityData:
     <div className="min-h-screen bg-[#f8fafc] font-sans selection:bg-teal-500/30">
       {/* Premium Page Header */}
       <div className="w-full bg-[#002b5c] relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 mix-blend-overlay pointer-events-none" />
+        {charityData.bannerImage ? (
+          <div className="absolute inset-0 z-0">
+            <img src={charityData.bannerImage} alt="Banner" className="w-full h-full object-cover opacity-30" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#002b5c] via-[#002b5c]/80 to-transparent"></div>
+          </div>
+        ) : (
+          <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 mix-blend-overlay pointer-events-none" />
+        )}
         <div className="absolute right-0 top-0 w-1/2 h-full bg-gradient-to-l from-teal-500/20 to-transparent pointer-events-none" />
         
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16 relative z-10">
@@ -52,9 +59,9 @@ export default function CharityDetailsClientPage({ charityData }: { charityData:
             <ChevronRight className="w-3.5 h-3.5" />
             <Link href="/about-hospital" className="hover:text-white transition-colors">About Us</Link>
             <ChevronRight className="w-3.5 h-3.5" />
-            <span className="text-white">Charity Details</span>
+            <span className="text-white">{charityData.pageTitle || "Charity Details"}</span>
           </div>
-          <h1 className="text-4xl md:text-5xl font-extrabold text-white tracking-tight">Charity Details</h1>
+          <h1 className="text-4xl md:text-5xl font-extrabold text-white tracking-tight">{charityData.pageTitle || "Charity Details"}</h1>
         </div>
       </div>
 

@@ -1,4 +1,6 @@
 "use client";
+import QuillEditor from "@/components/QuillEditor";
+
 
 import { useState } from "react";
 import {  Plus, Trash2, Edit2, List, Activity, Settings, Info } from "lucide-react";
@@ -72,28 +74,13 @@ export default function OutPatientClientForm({ initialData }: { initialData: any
             1. Registration Instructions
           </h3>
           <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Part 1 Instructions (One per line)</label>
-          <textarea 
-            value={data.instructions} 
-            onChange={(e) => handleChange('instructions', e.target.value)}
-            rows={5}
-            className="w-full p-4 border border-gray-200 rounded-xl focus:ring-[#007a87] focus:outline-none font-mono text-sm leading-relaxed mb-6"
-          />
+          <QuillEditor value={data.instructions} onChange={content => handleChange('instructions', content)} />
 
           <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Additional Steps (One per line)</label>
-          <textarea 
-            value={data.additionalSteps} 
-            onChange={(e) => handleChange('additionalSteps', e.target.value)}
-            rows={3}
-            className="w-full p-4 border border-gray-200 rounded-xl focus:ring-[#007a87] focus:outline-none font-mono text-sm leading-relaxed mb-6"
-          />
+          <QuillEditor value={data.additionalSteps} onChange={content => handleChange('additionalSteps', content)} />
 
           <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Appointment & Walk-in Info (One per line)</label>
-          <textarea 
-            value={data.appointmentInfo} 
-            onChange={(e) => handleChange('appointmentInfo', e.target.value)}
-            rows={4}
-            className="w-full p-4 border border-gray-200 rounded-xl focus:ring-[#007a87] focus:outline-none font-mono text-sm leading-relaxed mb-6"
-          />
+          <QuillEditor value={data.appointmentInfo} onChange={content => handleChange('appointmentInfo', content)} />
 
           <div className="border-t border-slate-200 pt-6 mt-6">
             <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">OP Consultation Room Image</label>
@@ -153,21 +140,11 @@ export default function OutPatientClientForm({ initialData }: { initialData: any
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">General OPDs (One per line)</label>
-              <textarea 
-                value={data.generalOpds} 
-                onChange={(e) => handleChange('generalOpds', e.target.value)}
-                rows={10}
-                className="w-full p-4 border border-gray-200 rounded-xl focus:ring-[#007a87] focus:outline-none font-mono text-sm leading-relaxed"
-              />
+              <QuillEditor value={data.generalOpds} onChange={content => handleChange('generalOpds', content)} />
             </div>
             <div>
               <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Superspeciality OPDs (One per line)</label>
-              <textarea 
-                value={data.superOpds} 
-                onChange={(e) => handleChange('superOpds', e.target.value)}
-                rows={10}
-                className="w-full p-4 border border-gray-200 rounded-xl focus:ring-[#007a87] focus:outline-none font-mono text-sm leading-relaxed"
-              />
+              <QuillEditor value={data.superOpds} onChange={content => handleChange('superOpds', content)} />
             </div>
           </div>
         </div>
@@ -248,22 +225,12 @@ export default function OutPatientClientForm({ initialData }: { initialData: any
           <div className="space-y-6">
             <div>
               <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">General Rules (One per line)</label>
-              <textarea 
-                value={data.rules} 
-                onChange={(e) => handleChange('rules', e.target.value)}
-                rows={4}
-                className="w-full p-4 border border-gray-200 rounded-xl focus:ring-[#007a87] focus:outline-none font-mono text-sm leading-relaxed"
-              />
+              <QuillEditor value={data.rules} onChange={content => handleChange('rules', content)} />
             </div>
             
             <div>
               <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Private OPD Text</label>
-              <textarea 
-                value={data.privateOpdText} 
-                onChange={(e) => handleChange('privateOpdText', e.target.value)}
-                rows={3}
-                className="w-full p-4 border border-gray-200 rounded-xl focus:ring-[#007a87] focus:outline-none text-sm"
-              />
+              <QuillEditor value={data.privateOpdText} onChange={content => handleChange('privateOpdText', content)} />
             </div>
 
             <div>

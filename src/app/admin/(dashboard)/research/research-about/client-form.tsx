@@ -251,12 +251,7 @@ export default function ResearchAboutClientForm({ initialData }: { initialData: 
         <div className="space-y-4">
           {(data.introduction || []).map((item: string, idx: number) => (
             <div key={idx} className="relative group">
-              <textarea
-                value={item || ""}
-                onChange={(e) => handleIntroChange(idx, e.target.value)}
-                rows={4}
-                className="w-full p-4 pr-12 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all text-sm text-slate-700 resize-y leading-relaxed"
-              />
+              <QuillEditor value={item || ""} onChange={content => handleIntroChange(idx, content)} />
               <button 
                 onClick={() => handleRemoveIntro(idx)}
                 className="absolute right-3 top-3 p-1.5 text-red-500 hover:bg-red-50 rounded-lg transition-colors opacity-0 group-hover:opacity-100"
@@ -285,22 +280,12 @@ export default function ResearchAboutClientForm({ initialData }: { initialData: 
 
           <div>
             <label className="block text-xs font-extrabold text-[#002b5c] uppercase tracking-widest mb-2">ONGOING RESEARCH AREAS</label>
-            <textarea
-              value={data.researchArms?.ongoingResearch || ""}
-              onChange={(e) => handleArmsChange("ongoingResearch", e.target.value)}
-              rows={4}
-              className="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all text-sm text-slate-700 resize-y leading-relaxed"
-            />
+            <QuillEditor value={data.researchArms?.ongoingResearch || ""} onChange={content => handleArmsChange("ongoingResearch", content)} />
           </div>
 
           <div>
             <label className="block text-xs font-extrabold text-[#002b5c] uppercase tracking-widest mb-2">B] SPONSORED CLINICAL TRIAL RESEARCH</label>
-            <textarea
-              value={data.researchArms?.sponsoredClinical || ""}
-              onChange={(e) => handleArmsChange("sponsoredClinical", e.target.value)}
-              rows={5}
-              className="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all text-sm text-slate-700 resize-y leading-relaxed"
-            />
+            <QuillEditor value={data.researchArms?.sponsoredClinical || ""} onChange={content => handleArmsChange("sponsoredClinical", content)} />
           </div>
         </div>
       </div>

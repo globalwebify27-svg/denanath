@@ -116,7 +116,14 @@ export default function InPatientClientPage({ pageData }: { pageData: any }) {
     <div className="min-h-screen bg-[#f8fafc] font-sans selection:bg-teal-500/30">
       {/* Premium Page Header */}
       <div className="w-full bg-[#002b5c] relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 mix-blend-overlay pointer-events-none" />
+        {pageData.bannerImage ? (
+          <div className="absolute inset-0 z-0">
+            <img src={pageData.bannerImage} alt="Banner" className="w-full h-full object-cover opacity-30" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#002b5c] via-[#002b5c]/80 to-transparent"></div>
+          </div>
+        ) : (
+          <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 mix-blend-overlay pointer-events-none" />
+        )}
         <div className="absolute right-0 top-0 w-1/2 h-full bg-gradient-to-l from-teal-500/20 to-transparent pointer-events-none" />
         
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16 relative z-10">
@@ -128,7 +135,7 @@ export default function InPatientClientPage({ pageData }: { pageData: any }) {
             <span className="text-white">In Patient Guide</span>
           </div>
           <h1 className="text-4xl md:text-5xl font-extrabold text-white tracking-tight flex items-center gap-4">
-            In Patient Guide
+            {pageData.pageTitle || "In Patient Guide"}
           </h1>
         </div>
       </div>
@@ -173,7 +180,7 @@ export default function InPatientClientPage({ pageData }: { pageData: any }) {
                   <span>Patient Guide</span>
                 </div>
                 <h2 className="text-3xl md:text-4xl font-extrabold text-[#002b5c] mb-6 tracking-tight">
-                  In Patient Guide
+                  {pageData.pageTitle || "In Patient Guide"}
                 </h2>
                 <div className="w-20 h-1.5 bg-[#007a87] rounded-full mb-8"></div>
               </div>
