@@ -161,7 +161,7 @@ export default function CoursesAndPricing() {
               {leftCourses.map((course, idx) => {
                 const hasDetails = (course.content && course.content.trim() !== "") || (course.gallery && course.gallery.length > 0);
                 const customLink = course.link && course.link.trim() !== "" ? course.link : null;
-                const href = customLink ? customLink : (hasDetails ? `/courses/${course.id}` : `/courses/${course.id}`);
+                const href = hasDetails ? `/courses/${course.id}` : (customLink || `/courses/${course.id}`);
                 return (
                   <li key={course.id || idx} className="group">
                     <Link href={href} className="flex items-start gap-3.5 py-1.5 px-3 rounded-xl border border-transparent transition-all duration-300 hover:bg-white hover:shadow-md hover:border-slate-100 hover:-translate-y-0.5">
@@ -190,7 +190,7 @@ export default function CoursesAndPricing() {
               {rightCourses.map((course, idx) => {
                 const hasDetails = (course.content && course.content.trim() !== "") || (course.gallery && course.gallery.length > 0);
                 const customLink = course.link && course.link.trim() !== "" ? course.link : null;
-                const href = customLink ? customLink : (hasDetails ? `/courses/${course.id}` : `/courses/${course.id}`);
+                const href = hasDetails ? `/courses/${course.id}` : (customLink || `/courses/${course.id}`);
                 
                 const isExternal = href.startsWith("http") || href.includes(".pdf");
                 const target = isExternal ? "_blank" : undefined;

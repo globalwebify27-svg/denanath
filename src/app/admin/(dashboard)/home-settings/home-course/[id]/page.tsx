@@ -27,9 +27,12 @@ const defaultRightCourses = [
   { id: "right-7", title: "Organ Donation & Transplantation", link: "", linkText: "View Form", content: "", gallery: [] }
 ];
 
-export default async function EditCoursePage({ params, searchParams }: { params: any, searchParams: any }) {
-  const resolvedParams = await params;
-  const resolvedSearchParams = await searchParams;
+export default async function EditCoursePage(props: { params: Promise<any>, searchParams: Promise<any> }) {
+  const resolvedParams = await props.params;
+  const resolvedSearchParams = await props.searchParams;
+  
+  const courseId = resolvedParams?.id;
+  const colParam = resolvedSearchParams?.col;
   
   const setting = await prisma.siteSetting.findUnique({ where: { key: 'home_courses' } });
   
@@ -43,14 +46,14 @@ export default async function EditCoursePage({ params, searchParams }: { params:
     } catch(e) {}
   }
 
-  const col = resolvedSearchParams.col === "right" ? "rightCourses" : "leftCourses";
-  const course = parsed[col]?.find((c: any) => c.id === resolvedParams.id);
+  const col = colParam === "right" ? "rightCourses" : "leftCourses";
+  const course = parsed[col]?.find((c: any) => c.id === courseId);
   
   if (!course) {
     return (
       <div className="p-8 max-w-5xl mx-auto text-center">
         <h1 className="text-2xl font-bold text-red-500 mb-4">Course Not Found</h1>
-        <p className="text-slate-600 mb-4">Could not find a course with ID: <strong>{resolvedParams.id}</strong> in column: <strong>{col}</strong></p>
+        <p className="text-slate-600 mb-4">Could not find a course with ID: <strong>{courseId}</strong> in column: <strong>{colParam}</strong></p>
         <div className="bg-slate-100 p-4 rounded text-left overflow-auto text-xs font-mono">
           <p>Available IDs in this column:</p>
           <ul>
@@ -77,8 +80,8 @@ export default async function EditCoursePage({ params, searchParams }: { params:
         } catch(e) {}
       }
       
-      const colStr = resolvedSearchParams.col === "right" ? "rightCourses" : "leftCourses";
-      const index = currentData[colStr].findIndex((c: any) => c.id === resolvedParams.id);
+      const colStr = colParam === "right" ? "rightCourses" : "leftCourses";
+      const index = currentData[colStr].findIndex((c: any) => c.id === courseId);
       
       if (index === -1) return;
       
@@ -101,7 +104,7 @@ export default async function EditCoursePage({ params, searchParams }: { params:
       
       revalidatePath("/");
       revalidatePath("/admin/home-settings/home-course");
-      revalidatePath(`/admin/home-settings/home-course/${resolvedParams.id}`);
+      revalidatePath(`/admin/home-settings/home-course/${courseId}`);
     } catch (e) {
       console.error(e);
       throw new Error("Failed to save");
@@ -110,7 +113,7 @@ export default async function EditCoursePage({ params, searchParams }: { params:
 
   return (
     <div className="p-4 md:p-8 max-w-5xl mx-auto pb-32">
-      <CourseForm initialData={course} saveAction={saveAction} col={resolvedSearchParams.col} />
+      <CourseForm initialData={course} saveAction={saveAction} col={colParam} />
     </div>
   );
 }

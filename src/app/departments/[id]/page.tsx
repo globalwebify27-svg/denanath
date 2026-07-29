@@ -5,6 +5,7 @@ import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import LightboxWrapper from "@/components/LightboxWrapper";
 import VideoPlayer from "@/components/VideoPlayer";
+import ClientDoctorModal from "@/components/ClientDoctorModal";
 import * as cheerio from "cheerio";
 import { DMH_API_CONFIG } from "@/lib/dmhApi";
 
@@ -44,6 +45,9 @@ export default async function DepartmentDetailsPage({
   
   // Pre-fetch live DMH API consultants for this department before Cheerio HTML processing
   let apiConsultantsHtml = "";
+  // Move allApiDocs outside the try-catch block so we can pass it to the ClientDoctorModal
+  let allApiDocs: any[] = [];
+
   try {
     const depName = department.name.trim().toLowerCase();
     const specRes = await fetch(`${DMH_API_CONFIG.baseUrl}${DMH_API_CONFIG.endpoints.speciality}`, {
@@ -75,12 +79,14 @@ export default async function DepartmentDetailsPage({
         if (docRes.ok) {
           const docData = await docRes.json();
           const apiDocs = docData?.doctorJSON || (Array.isArray(docData) ? docData : []);
+          allApiDocs = apiDocs;
 
           if (Array.isArray(apiDocs) && apiDocs.length > 0) {
             const circlesHtml = apiDocs.map((doc: any) => {
               const dName = doc.doctor_name || `${doc.first_name || ''} ${doc.last_name || ''}`.trim();
+              const cleanName = dName.replace(/\s*\(.*?\)\s*/g, '').trim();
               const qual = doc.qualification || 'Consultant';
-              const words = dName.split(' ').filter(Boolean);
+              const words = cleanName.split(' ').filter(Boolean);
               let initials = 'DM';
               if (words.length >= 2) {
                 initials = (words[0][0] + words[1][0]).toUpperCase();
@@ -90,16 +96,13 @@ export default async function DepartmentDetailsPage({
 
               return `
                 <div class="p-5 bg-white border border-slate-200 rounded-2xl flex items-center justify-between gap-4 shadow-sm hover:shadow-md transition-shadow">
-                  <div class="flex items-center gap-4">
+                  <div class="flex items-center gap-4 cursor-pointer doctor-modal-link" data-doctor-id="${doc.doctor_id || doc.id || ''}">
                     <div class="w-14 h-14 rounded-2xl bg-teal-50 border border-teal-100 flex items-center justify-center text-[#007a87] font-extrabold text-base shrink-0">
-                      ${doc.doctorImage ? `<img src="${doc.doctorImage}" alt="${dName}" class="w-full h-full object-cover rounded-2xl" />` : initials}
+                      ${doc.doctorImage ? `<img src="${doc.doctorImage}" alt="${cleanName}" class="w-full h-full object-cover rounded-2xl" />` : initials}
                     </div>
-                    <div>
-                      <div class="text-lg font-bold text-[#002b5c] m-0 leading-snug">Dr. ${dName}</div>
-                      <div class="text-xs text-slate-500 font-medium mt-1">${qual}</div>
-                    </div>
+                    <div class="text-lg font-bold text-[#002b5c] m-0 leading-snug hover:text-[#007a87] transition-colors">Dr. ${cleanName}</div>
                   </div>
-                  <a href="/doctor-details" class="px-4 py-2 bg-teal-50 hover:bg-teal-100 text-[#007a87] rounded-xl text-xs font-bold transition-colors shrink-0">
+                  <a href="/doctor-details?doctor_id=${doc.doctor_id || doc.id || ''}" data-doctor-id="${doc.doctor_id || doc.id || ''}" class="doctor-modal-link px-4 py-2 bg-teal-50 hover:bg-teal-100 text-[#007a87] rounded-xl text-xs font-bold transition-colors shrink-0 whitespace-nowrap">
                     View Profile
                   </a>
                 </div>
@@ -552,6 +555,8 @@ export default async function DepartmentDetailsPage({
         if (apiConsultantsHtml) {
           $(section).html(apiConsultantsHtml);
         }
+      } else if (h3Text === 'contact us') {
+        $(section).addClass('department-contact-us');
       }
     });
 
@@ -826,6 +831,8 @@ export default async function DepartmentDetailsPage({
                 [&_.facilities-images-grid_img]:!m-0 [&_.facilities-images-grid_img]:!w-full [&_.facilities-images-grid_img]:!h-[200px] md:[&_.facilities-images-grid_img]:!h-[240px] [&_.facilities-images-grid_img]:!object-cover [&_.facilities-images-grid_img]:!rounded-t-xl [&_.facilities-images-grid_img]:!rounded-b-none [&_.facilities-images-grid_img]:!shadow-none
                 [&_.facilities-images-grid_span]:block [&_.facilities-images-grid_span]:p-4 [&_.facilities-images-grid_span]:!bg-white [&_.facilities-images-grid_span]:w-full [&_.facilities-images-grid_span]:empty:hidden [&_.facilities-images-grid_span]:text-[#002b5c] [&_.facilities-images-grid_span]:!mt-auto
                 
+                [&_.department-contact-us_p:not(:last-child)]:!mb-1 [&_.department-contact-us_p]:!mt-1
+                
                 [&_iframe]:float-none [&_iframe]:md:float-left [&_iframe]:w-full [&_iframe]:md:w-[400px] [&_iframe]:h-[225px] [&_iframe]:mr-6 [&_iframe]:mb-4 [&_iframe]:rounded-xl [&_iframe]:shadow-md [&_iframe]:border [&_iframe]:border-slate-200`}>
                 {department.description ? (
                   <div className="clearfix">
@@ -850,6 +857,7 @@ export default async function DepartmentDetailsPage({
 
         </div>
       </div>
+      <ClientDoctorModal apiDocs={allApiDocs} />
     </div>
   );
 }
