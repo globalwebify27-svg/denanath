@@ -14,6 +14,15 @@ export default function HomeCourseClientForm({ initialData }: { initialData: any
     rightCourses: initialData.rightCourses || []
   });
 
+  const now = new Date();
+  now.setHours(0, 0, 0, 0);
+  const isExpired = (c: any) => {
+    if (!c.endDate) return false;
+    const endDate = new Date(c.endDate);
+    if (isNaN(endDate.getTime())) return false;
+    return endDate < now;
+  };
+
   const addLeftCourse = () => {
     const newId = "left-" + Date.now();
     setFormData(prev => ({
@@ -102,7 +111,9 @@ export default function HomeCourseClientForm({ initialData }: { initialData: any
             </button>
           </div>
           <div className="p-6 md:p-8 space-y-3 max-h-[600px] overflow-y-auto custom-scrollbar">
-            {formData.leftCourses.map((course: any, idx: number) => (
+            {formData.leftCourses.map((course: any, idx: number) => {
+              if (isExpired(course)) return null;
+              return (
               <div key={course.id || idx} className="flex items-center justify-between p-4 bg-white rounded-xl border border-slate-200 hover:border-[#007a87] transition-all hover:shadow-md group/item">
                 <div className="flex items-center gap-3">
                   <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-400 font-bold text-xs">
@@ -127,9 +138,47 @@ export default function HomeCourseClientForm({ initialData }: { initialData: any
                   </button>
                 </div>
               </div>
-            ))}
-            {formData.leftCourses.length === 0 && (
-              <div className="text-center py-8 text-slate-400 font-medium text-sm">No courses added yet.</div>
+            )})}
+            {formData.leftCourses.filter((c: any) => !isExpired(c)).length === 0 && (
+              <div className="text-center py-8 text-slate-400 font-medium text-sm">No active courses added yet.</div>
+            )}
+            
+            {formData.leftCourses.some(isExpired) && (
+              <details className="mt-6 border border-slate-200 rounded-xl bg-slate-50 overflow-hidden">
+                <summary className="p-4 text-sm font-bold text-slate-500 cursor-pointer hover:bg-slate-100 transition-colors select-none outline-none">
+                  View {formData.leftCourses.filter(isExpired).length} Expired / Past Courses
+                </summary>
+                <div className="p-4 pt-0 space-y-3 bg-slate-50">
+                  {formData.leftCourses.map((course: any, idx: number) => {
+                    if (!isExpired(course)) return null;
+                    return (
+                    <div key={course.id || idx} className="flex items-center justify-between p-4 bg-white rounded-xl border border-slate-200 hover:border-slate-300 transition-all opacity-75 grayscale hover:grayscale-0 hover:opacity-100">
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-400 font-bold text-xs">
+                          {idx + 1}
+                        </div>
+                        <span className="font-semibold text-slate-500 line-through decoration-slate-300">{course.title}</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Link 
+                          href={`/admin/home-settings/home-course/${course.id || `left-legacy-${idx}`}?col=left`}
+                          className="p-2 text-slate-500 hover:bg-slate-100 rounded-lg transition-colors border border-transparent flex items-center gap-1 text-sm font-bold"
+                        >
+                          <Edit size={16} /> Edit
+                        </Link>
+                        <button
+                          type="button"
+                          onClick={() => removeLeftCourse(idx)}
+                          className="p-2 text-red-400 hover:bg-red-50 rounded-lg transition-colors border border-transparent hover:border-red-100"
+                          title="Remove"
+                        >
+                          <Trash2 size={16} />
+                        </button>
+                      </div>
+                    </div>
+                  )})}
+                </div>
+              </details>
             )}
           </div>
         </div>
@@ -155,7 +204,9 @@ export default function HomeCourseClientForm({ initialData }: { initialData: any
             </button>
           </div>
           <div className="p-6 md:p-8 space-y-3 max-h-[600px] overflow-y-auto custom-scrollbar">
-            {formData.rightCourses.map((course: any, idx: number) => (
+            {formData.rightCourses.map((course: any, idx: number) => {
+              if (isExpired(course)) return null;
+              return (
               <div key={course.id || idx} className="flex items-center justify-between p-4 bg-white rounded-xl border border-slate-200 hover:border-[#007a87] transition-all hover:shadow-md group/item">
                 <div className="flex items-center gap-3">
                   <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-400 font-bold text-xs">
@@ -180,9 +231,47 @@ export default function HomeCourseClientForm({ initialData }: { initialData: any
                   </button>
                 </div>
               </div>
-            ))}
-            {formData.rightCourses.length === 0 && (
-              <div className="text-center py-8 text-slate-400 font-medium text-sm">No programs added yet.</div>
+            )})}
+            {formData.rightCourses.filter((c: any) => !isExpired(c)).length === 0 && (
+              <div className="text-center py-8 text-slate-400 font-medium text-sm">No active programs added yet.</div>
+            )}
+
+            {formData.rightCourses.some(isExpired) && (
+              <details className="mt-6 border border-slate-200 rounded-xl bg-slate-50 overflow-hidden">
+                <summary className="p-4 text-sm font-bold text-slate-500 cursor-pointer hover:bg-slate-100 transition-colors select-none outline-none">
+                  View {formData.rightCourses.filter(isExpired).length} Expired / Past Programs
+                </summary>
+                <div className="p-4 pt-0 space-y-3 bg-slate-50">
+                  {formData.rightCourses.map((course: any, idx: number) => {
+                    if (!isExpired(course)) return null;
+                    return (
+                    <div key={course.id || idx} className="flex items-center justify-between p-4 bg-white rounded-xl border border-slate-200 hover:border-slate-300 transition-all opacity-75 grayscale hover:grayscale-0 hover:opacity-100">
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-400 font-bold text-xs">
+                          {idx + 1}
+                        </div>
+                        <span className="font-semibold text-slate-500 line-through decoration-slate-300">{course.title}</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Link 
+                          href={`/admin/home-settings/home-course/${course.id || `right-legacy-${idx}`}?col=right`}
+                          className="p-2 text-slate-500 hover:bg-slate-100 rounded-lg transition-colors border border-transparent flex items-center gap-1 text-sm font-bold"
+                        >
+                          <Edit size={16} /> Edit
+                        </Link>
+                        <button
+                          type="button"
+                          onClick={() => removeRightCourse(idx)}
+                          className="p-2 text-red-400 hover:bg-red-50 rounded-lg transition-colors border border-transparent hover:border-red-100"
+                          title="Remove"
+                        >
+                          <Trash2 size={16} />
+                        </button>
+                      </div>
+                    </div>
+                  )})}
+                </div>
+              </details>
             )}
           </div>
         </div>

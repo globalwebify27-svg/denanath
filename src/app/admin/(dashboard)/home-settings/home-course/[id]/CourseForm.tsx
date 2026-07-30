@@ -42,14 +42,17 @@ export default function CourseForm({ initialData, saveAction, col }: { initialDa
 
     try {
       const formNode = e.currentTarget;
-      const htmlContent = new FormData(formNode).get("content") as string;
+      const htmlContent = new FormData(formNode).get("content");
+      const finalContent = htmlContent !== null ? (htmlContent as string) : formData.content;
+      const cleanedContent = finalContent === "<p><br></p>" ? "" : finalContent;
+
       const data = new FormData();
       data.append("title", formData.title);
       data.append("startDate", formData.startDate);
       data.append("endDate", formData.endDate);
       data.append("link", formData.link);
       data.append("linkText", formData.linkText);
-      data.append("content", htmlContent || formData.content);
+      data.append("content", cleanedContent);
       data.append("gallery", JSON.stringify(formData.gallery.filter((g: any) => g.image || g.caption)));
 
       await saveAction(data);

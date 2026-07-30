@@ -96,7 +96,7 @@ export default async function EditDepartmentPage({
             let assigned = false;
             if (img.name) {
               const searchName = img.name.trim().toLowerCase();
-              $('p, li').each((_, el) => {
+              $('p, li').each((_: any, el: any) => {
                  const text = $(el).text().trim().toLowerCase();
                  if (text && (text === searchName || text.includes(searchName))) {
                     const imgHtml = img.url && !img.url.startsWith('Image:') 
@@ -230,7 +230,7 @@ export default async function EditDepartmentPage({
   
   const extractAndRemoveSection = (titles: string[]) => {
     let content = "";
-    $('section').each((_, el: any) => {
+    $('section').each((_: number, el: any) => {
       const h3 = $(el).find('h3').first();
       const text = h3.text().trim().toLowerCase();
       if (titles.map(t => t.toLowerCase()).includes(text)) {
@@ -261,7 +261,7 @@ export default async function EditDepartmentPage({
   if (faqSectionHTML) {
      const cheerio = await import('cheerio');
      const $ = cheerio.load(faqSectionHTML, null, false);
-     $('ul').first().children('li').each((_, li) => {
+     $('ul').first().children('li').each((_: any, li: any) => {
         const $li = $(li);
         let question = "Question";
         const strong = $li.find('strong, b, h4').first();
@@ -272,13 +272,13 @@ export default async function EditDepartmentPage({
            const childNodes = $li.contents();
            let firstTextNode = null;
            for (let i = 0; i < childNodes.length; i++) {
-              if (childNodes[i].type === 'text' && childNodes[i].data.trim().length > 0) {
+              if (childNodes[i].type === 'text' && (childNodes[i] as any).data.trim().length > 0) {
                  firstTextNode = childNodes[i];
                  break;
               }
            }
            if (firstTextNode) {
-              question = firstTextNode.data.trim();
+              question = (firstTextNode as any).data.trim();
               $(firstTextNode).remove();
            }
         }
@@ -288,7 +288,7 @@ export default async function EditDepartmentPage({
   }
   
   const customSections: { title: string; content: string }[] = [];
-  $('section').each((_, el: any) => {
+  $('section').each((_: number, el: any) => {
      const h3 = $(el).find('h3').first();
      const rawTitle = h3.text().trim();
      if (rawTitle) {
@@ -303,7 +303,7 @@ export default async function EditDepartmentPage({
     const consultantNames: string[] = [];
     
     // Extract names from styled circles or just raw tags
-    $('p, li, h4').each((_, el) => {
+    $('p, li, h4').each((_: any, el: any) => {
        let text = $(el).text().trim();
        text = text.replace(/^(?:[A-Z]\s*)+Dr\./, 'Dr.');
        text = text.replace(/&nbsp;/g, ' ').trim();
@@ -314,7 +314,7 @@ export default async function EditDepartmentPage({
     
     if (consultantNames.length === 0) {
        let allText = '';
-       $.root().contents().each((_, el) => {
+       $.root().contents().each((_: any, el: any) => {
           allText += $(el).text() + ' ';
        });
        let text = allText.replace(/<[^>]+>/g, '').trim();
@@ -332,7 +332,7 @@ export default async function EditDepartmentPage({
   if (gallery) {
     const cheerio = await import('cheerio');
     const $ = cheerio.load(gallery, null, false);
-    $('div.bg-slate-50').each((_, el) => {
+    $('div.bg-slate-50').each((_: any, el: any) => {
       const imgEl = $(el).find('img').first();
       const divPlaceholderEl = $(el).find('div.bg-slate-200').first();
       const pEl = $(el).find('p').first();
@@ -349,7 +349,7 @@ export default async function EditDepartmentPage({
     const cheerio = await import('cheerio');
     const $ = cheerio.load(facilities, null, false);
     
-    $('div.facilities-images-grid > div.bg-slate-50').each((_, el) => {
+    $('div.facilities-images-grid > div.bg-slate-50').each((_: any, el: any) => {
       const imgEl = $(el).find('img').first();
       const divPlaceholderEl = $(el).find('div.bg-slate-200').first();
       const textEl = $(el).find('span').length ? $(el).find('span').first() : $(el).find('p').first();
@@ -361,15 +361,15 @@ export default async function EditDepartmentPage({
     });
     $('div.facilities-images-grid').remove();
 
-    $('img.facility-assigned-image, div.facility-assigned-image').each((_, el) => {
+    $('img.facility-assigned-image, div.facility-assigned-image').each((_: any, el: any) => {
        const url = $(el).attr('src') || $(el).text() || "";
        const name = $(el).attr('alt') || "";
        facilitiesImageItems.push({ url, name });
        $(el).closest('.facility-img-wrapper').remove();
     });
 
-    $('div.facility-item-wrapper').each((_, el) => {
-       $(el).replaceWith($(el).html());
+    $('div.facility-item-wrapper').each((_: any, el: any) => {
+       $(el).replaceWith($(el).html() || "");
     });
 
     facilities = $.html();
