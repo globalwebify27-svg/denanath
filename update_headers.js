@@ -13,7 +13,7 @@ const targetPattern1 = /className="relative bg-gradient-to-r from-\[#004d56\] to
 const replacement1 = 'className="w-full bg-[#002b5c] relative overflow-hidden pt-24 pb-16"';
 
 const targetPattern2 = /\{\/\* Abstract Background Shapes \*\/\}[\s\S]*?<div className="absolute bottom-0 left-0 w-\[400px\] h-\[400px\] bg-\[#d9232d\]\/20 rounded-full blur-\[100px\] pointer-events-none" \/>/g;
-const replacement2 = `<div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 mix-blend-overlay pointer-events-none" />\n        <div className="absolute right-0 top-0 w-1/2 h-full bg-gradient-to-l from-teal-500/20 to-transparent pointer-events-none" />`;
+const replacement2 = `<div className="absolute inset-0 bg-[url(https://www.transparenttextures.com/patterns/cubes.png)] opacity-10 mix-blend-overlay pointer-events-none" />\n        <div className="absolute right-0 top-0 w-1/2 h-full bg-gradient-to-l from-teal-500/20 to-transparent pointer-events-none" />`;
 
 filesToUpdate.forEach(file => {
   if (fs.existsSync(file)) {

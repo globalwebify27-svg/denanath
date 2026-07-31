@@ -109,7 +109,7 @@ export default function DoctorsSection() {
                   snap-start overflow-hidden flex-shrink-0 flex flex-col
                 "
               >
-                <div className="relative h-[340px] w-full overflow-hidden">
+                <div style={{ position: "relative" }} className="relative h-[340px] w-full overflow-hidden">
                   <Image
                     src={doctor.image}
                     alt={doctor.name}

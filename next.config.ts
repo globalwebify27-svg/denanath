@@ -2,6 +2,13 @@ import type { NextConfig } from "next";
 
 // Trigger dev server reload to rebuild routing cache
 const nextConfig: NextConfig = {
+  webpack: (config) => {
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      './&': false,
+    };
+    return config;
+  },
   experimental: {
     serverActions: {
       bodySizeLimit: '10mb',
@@ -25,7 +32,6 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  turbopack: {},
 };
 
 import withSerwistInit from "@serwist/next";

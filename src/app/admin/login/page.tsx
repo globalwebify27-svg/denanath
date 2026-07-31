@@ -28,7 +28,7 @@ export default function AdminLogin() {
         {/* Left Side: Brand Cover */}
         <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden bg-[#002b5c] p-12 flex-col justify-between">
           <div className="absolute inset-0 bg-gradient-to-br from-[#002b5c] via-[#004799] to-[#007a87] z-0" />
-          <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-20 mix-blend-overlay z-0" />
+          <div className="absolute inset-0 bg-[url(https://www.transparenttextures.com/patterns/cubes.png)] opacity-20 mix-blend-overlay z-0" />
           
           {/* Top Logo */}
           <div className="relative z-10 flex items-center gap-3">
