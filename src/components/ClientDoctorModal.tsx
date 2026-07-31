@@ -144,26 +144,26 @@ export default function ClientDoctorModal({ apiDocs = [] }: { apiDocs: any[] }) 
       <div className="bg-white rounded-3xl shadow-2xl w-full max-w-4xl max-h-[90vh] flex flex-col relative my-auto animate-slideUp">
         
         {/* Modal Header */}
-        <div className="relative p-6 md:p-8 border-b border-slate-100 shrink-0 sticky top-0 bg-white z-10 rounded-t-3xl">
-          <div className="flex items-start gap-5 sm:gap-6 pr-12">
-            <div className="w-[150px] h-[200px] sm:w-[220px] sm:h-[280px] rounded-2xl bg-white flex items-center justify-center shrink-0 border border-slate-200 shadow-sm overflow-hidden text-slate-400">
+        <div className="relative p-4 sm:p-6 md:p-8 border-b border-slate-100 shrink-0 sticky top-0 bg-white z-10 rounded-t-3xl">
+          <div className="flex items-start gap-4 sm:gap-6 pr-8 sm:pr-12">
+            <div className="w-[110px] h-[150px] sm:w-[220px] sm:h-[280px] rounded-2xl bg-white flex items-center justify-center shrink-0 border border-slate-200 shadow-sm overflow-hidden text-slate-400">
               <DoctorImage 
                 doc={selectedDoctor}
                 className="w-full h-full object-fill rounded-xl bg-white"
-                iconClassName="w-16 h-16 sm:w-20 sm:h-20 text-slate-400"
+                iconClassName="w-12 h-12 sm:w-20 sm:h-20 text-slate-400"
               />
             </div>
-            <div className="flex-1 min-w-0 flex flex-col justify-between h-[200px] sm:h-[280px] py-2">
+            <div className="flex-1 min-w-0 flex flex-col justify-between h-[150px] sm:h-[280px] py-1 sm:py-2">
               <div>
-                <h2 className="text-xl sm:text-2xl md:text-[28px] font-[900] text-[#002b5c] leading-tight mb-2 uppercase">{selectedDoctor.name}</h2>
-                <p className="text-[16px] leading-[31px] font-normal text-slate-500">{selectedDoctor.qualifications}</p>
+                <h2 className="text-lg sm:text-2xl md:text-[28px] font-[900] text-[#002b5c] leading-tight mb-1 sm:mb-2 uppercase break-words hyphens-auto">{selectedDoctor.name}</h2>
+                <p className="text-[13px] sm:text-[16px] leading-snug sm:leading-[31px] font-normal text-slate-500 line-clamp-3 sm:line-clamp-none">{selectedDoctor.qualifications}</p>
               </div>
               
-              <div className="mt-auto flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4">
+              <div className="mt-auto flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4">
                 {loadingSchedule ? (
                   <div className="text-xs font-semibold text-slate-400 mt-2 sm:mt-0">Checking appointment availability...</div>
                 ) : isAppAllowed !== false ? (
-                  <Link href={`/book-appointment?doctor_id=${selectedDoctor.doctor_id || selectedDoctor.id || ''}&speciality_id=${selectedDoctor.speciality_id || ''}&service_point_id=${selectedDoctor.service_point_id || ''}`} className="inline-flex items-center justify-center px-6 py-2.5 bg-[#007a87] hover:bg-[#005f69] text-[#ffffff] font-extrabold text-sm transition-colors rounded-lg w-fit mt-5 sm:mt-6">
+                  <Link href={`/book-appointment?doctor_id=${selectedDoctor.doctor_id || selectedDoctor.id || ''}&speciality_id=${selectedDoctor.speciality_id || ''}&service_point_id=${selectedDoctor.service_point_id || ''}`} className="inline-flex items-center justify-center px-3 py-1.5 sm:px-6 sm:py-2.5 bg-[#007a87] hover:bg-[#005f69] text-white font-bold sm:font-extrabold text-[11px] sm:text-sm transition-colors rounded-md sm:rounded-lg w-fit mt-2 sm:mt-6 whitespace-nowrap">
                     Book Appointment
                   </Link>
                 ) : null}

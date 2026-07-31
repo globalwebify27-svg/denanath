@@ -351,7 +351,19 @@ export default function Navbar() {
                   />
                 </div>
               </Link>
-              <div className="relative flex items-center justify-start w-[70px] sm:w-[100px] xl:w-[140px] 2xl:w-[180px] h-[30px] sm:h-[45px] xl:h-[55px] shrink transition-all -ml-2 sm:-ml-3 xl:-ml-6 2xl:-ml-8">
+              {/* Desktop 25 Years Image */}
+              <div className="hidden xl:flex relative items-center justify-start w-[140px] 2xl:w-[180px] h-[55px] shrink transition-all -ml-6 2xl:-ml-8">
+                <img
+                  src="/images/ChatGPT Image Jul 27, 2026, 05_05_55 PM (1)_transparent.png"
+                  alt="25 Years Image"
+                  className="w-full h-full object-contain"
+                />
+              </div>
+            </div>
+
+            {/* Mobile 25 Years Image (Centered between logo and triggers) */}
+            <div className="flex xl:hidden flex-1 justify-center items-center px-2">
+              <div className="relative flex items-center justify-center w-[70px] sm:w-[100px] h-[30px] sm:h-[45px] shrink transition-all">
                 <img
                   src="/images/ChatGPT Image Jul 27, 2026, 05_05_55 PM (1)_transparent.png"
                   alt="25 Years Image"

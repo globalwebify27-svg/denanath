@@ -265,7 +265,7 @@ export default function OpdScheduleClientPage({ initialData }: { initialData?: a
                                       {availability[day].length > 0 ? (
                                         <div className="space-y-2">
                                           {availability[day].map((time, i) => (
-                                            <div key={i} className="text-slate-700 text-[18px] leading-[31px] font-[400]">
+                                            <div key={i} className="text-slate-700 text-[16px] leading-[31px] font-[400]">
                                               {time}
                                             </div>
                                           ))}
@@ -293,7 +293,7 @@ export default function OpdScheduleClientPage({ initialData }: { initialData?: a
                               </h5>
                               <ul className="space-y-1.5">
                                 {doc.timings.filter((t: any) => t.day?.trim() || t.time?.trim()).map((t: any, i: number) => (
-                                  <li key={i} className="text-[18px] leading-[31px] font-[400] text-slate-700">
+                                  <li key={i} className="text-[16px] leading-[31px] font-[400] text-slate-700">
                                     {t.day && <><span className="text-amber-700">{t.day}:</span> </>}{t.time} {t.branch && <span className="text-slate-500">({t.branch})</span>}
                                   </li>
                                 ))}

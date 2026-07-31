@@ -62,7 +62,7 @@ export default function ClientPage({ data }: { data: any }) {
               <p className="text-slate-500">Detailed information about this program is currently being updated. Please check back later.</p>
             )}
             
-            {data.link && data.link.trim() !== "" && (
+            {data.link && data.link.trim() !== "" && data.title !== "Neuro Radiology Fellowship" && (
               <div className="mt-8 pt-8 border-t border-slate-100">
                 <a 
                   href={data.link} 
