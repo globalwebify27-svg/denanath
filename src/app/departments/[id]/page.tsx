@@ -612,6 +612,26 @@ export default async function DepartmentDetailsPage({
       });
     }
 
+    // Specific fix for Paediatric Small Steps to ensure images match exactly without caching issues
+    if (department.id === 'paediatric-small-steps') {
+      $('img').each((_, img) => {
+         // Using inline styles guarantees the exact dimensions without relying on Tailwind compiler cache.
+         // Force 400x260 matching Knee clinic, with object-contain to prevent data loss.
+         $(img).attr('style', 'width: 100%; max-width: 400px; height: 260px; object-fit: contain; border-radius: 1rem; margin-top: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); display: block; margin-left: 0; margin-right: auto; background-color: transparent;');
+         
+         // Remove all classes to prevent any database-injected classes from conflicting
+         $(img).removeAttr('class');
+         $(img).removeAttr('width');
+         $(img).removeAttr('height');
+
+         const parentLi = $(img).closest('li');
+         if (parentLi.length > 0 && parentLi.text().trim() === '') {
+            parentLi.addClass('!list-none !pl-0 !ml-0 before:!hidden marker:!hidden');
+            parentLi.css('list-style', 'none');
+         }
+      });
+    }
+
     // Specific fix for Knee Specialty Clinic to ensure ALL images are EXACTLY the same compact size
     if (department.id === 'knee-specialty-clinic') {
       $('img').each((_, img) => {
