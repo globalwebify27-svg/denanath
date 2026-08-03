@@ -67,9 +67,7 @@ export default function ResearchAboutClientForm({ initialData }: { initialData: 
     });
   };
 
-  const handleCommitteesChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setData((prev: any) => ({ ...prev, researchReviewCommittees: e.target.value }));
-  };
+
 
   const generateHTML = (currentData: any) => {
     const tableRows = (currentData.awardsTableData || []).map((row: any, i: number) => {
@@ -328,11 +326,9 @@ export default function ResearchAboutClientForm({ initialData }: { initialData: 
           <h2 className="text-[20px] font-black text-[#002b5c]">Research Review Committees</h2>
         </div>
 
-        <textarea
+        <QuillEditor
           value={data.researchReviewCommittees || ""}
-          onChange={handleCommitteesChange}
-          rows={7}
-          className="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all text-sm text-slate-700 resize-y leading-relaxed"
+          onChange={(content) => setData((prev: any) => ({ ...prev, researchReviewCommittees: content }))}
         />
       </div>
 

@@ -323,7 +323,7 @@ export default function Navbar() {
             </div>
 
             {/* Desktop Navigation Links */}
-            <div className="hidden xl:flex items-center justify-start flex-1 gap-1 xl:gap-1.5 2xl:gap-3 transition-all">
+            <div className="hidden xl:flex items-center justify-end flex-1 gap-1 xl:gap-1.5 2xl:gap-3 transition-all whitespace-nowrap">
               {navLinks.map((link, idx) => (
                 <div key={idx} className="relative group py-2">
                   <Link 

@@ -7,7 +7,7 @@ import { ArrowLeft, Save, FileText, Info, Layout } from "lucide-react";
 import Link from "next/link";
 import CustomDropdown from "@/components/CustomDropdown";
 import QuillEditor from "@/components/QuillEditor";
-import PhotoGalleryEditor from "@/components/PhotoGalleryEditor";
+
 
 interface PageFormProps {
   pageId?: string;
@@ -260,12 +260,7 @@ export default function PageForm({ pageId }: PageFormProps) {
               </div>
             </div>
 
-            <PhotoGalleryEditor 
-              name="gallery"
-              title="HEADER IMAGES / GALLERY"
-              defaultItems={JSON.parse(formData.gallery || "[]")}
-              onChange={(val) => setFormData({ ...formData, gallery: JSON.stringify(val) })}
-            />
+
 
             <div className="bg-white p-6 md:p-8 rounded-3xl shadow-sm border border-slate-100">
               <h2 className="text-[18px] font-black text-[#002b5c] mb-6 tracking-tight">SEO Settings</h2>

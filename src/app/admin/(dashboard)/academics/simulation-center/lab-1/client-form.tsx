@@ -3,10 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Save, HeartPulse } from "lucide-react";
-import dynamic from 'next/dynamic';
-import 'react-quill-new/dist/quill.snow.css';
-
-const ReactQuill = dynamic(() => import('react-quill-new'), { ssr: false });
+import QuillEditor from "@/components/QuillEditor";
 
 export default function SimulationLab1ClientForm({ initialData }: { initialData: any }) {
   const router = useRouter();
@@ -107,15 +104,7 @@ export default function SimulationLab1ClientForm({ initialData }: { initialData:
   };
 
   
-  const modules = {
-    toolbar: [
-      [{ 'header': [1, 2, 3, false] }],
-      ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-      [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
-      ['link', 'image', 'video'],
-      ['clean']
-    ],
-  };
+
 
   return (
     <div className="space-y-8">
@@ -156,6 +145,16 @@ export default function SimulationLab1ClientForm({ initialData }: { initialData:
         </div>
         
         
+        <div>
+          <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Content</label>
+          <div className="bg-white rounded-2xl overflow-hidden border border-slate-200">
+            <QuillEditor 
+              value={data.content || ""} 
+              onChange={(val) => handleChange("content", val)}
+            />
+          </div>
+        </div>
+
         <div>
           <div className="flex items-center justify-between mb-4">
             <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest">Header Images</label>
@@ -225,19 +224,6 @@ export default function SimulationLab1ClientForm({ initialData }: { initialData:
                 })}
               </div>
             )}
-          </div>
-        </div>
-
-        <div>
-          <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Content</label>
-          <div className="bg-white rounded-2xl overflow-hidden border border-slate-200">
-            <ReactQuill 
-              theme="snow" 
-              value={data.content || ""} 
-              onChange={(val) => handleChange("content", val)}
-              modules={modules} 
-              className="h-[300px] pb-10"
-            />
           </div>
         </div>
       </div>

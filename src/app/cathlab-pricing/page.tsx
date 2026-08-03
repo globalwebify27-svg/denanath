@@ -68,9 +68,6 @@ export default async function CathlabPricingPage() {
               </div>
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight tracking-tight mb-4" dangerouslySetInnerHTML={{ __html: (data.pageTitle || data.title || "").replace('Pharmacy', 'Pharmacy <br className="hidden md:block"/>') }}>
               </h1>
-              <p className="text-lg text-blue-100 font-light max-w-2xl">
-                {data.subtitle}
-              </p>
             </div>
             
             <Link 
@@ -87,6 +84,20 @@ export default async function CathlabPricingPage() {
       {/* 2. Main Content */}
       <div className="max-w-[95%] xl:max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 pt-8 relative z-20">
         
+        {data.subtitle && (
+          <div className="mb-6 bg-white rounded-2xl shadow-sm border border-slate-200 p-6 flex items-start gap-4">
+            <div className="bg-teal-50 p-2 rounded-xl shrink-0 mt-1">
+              <Info className="w-6 h-6 text-[#007a87]" />
+            </div>
+            <div>
+              <h2 className="text-xl font-bold text-[#002b5c] mb-2">{data.pageTitle || data.title}</h2>
+              <p className="text-[17px] text-slate-700 font-medium leading-relaxed">
+                {data.subtitle}
+              </p>
+            </div>
+          </div>
+        )}
+
         <div className="bg-white rounded-3xl shadow-xl border border-slate-100 overflow-hidden [&_td]:!text-[18px] [&_th]:!text-[18px] [&_.text-sm]:!text-[18px] [&_.text-xs]:!text-[18px]">
           
           {/* Note Banner */}

@@ -128,9 +128,12 @@ export default function AboutHospitalClient({ data }: { data: any }) {
               {/* History */}
               <div className="mb-8">
                 <h3 className="text-3xl font-extrabold text-[#002b5c] mb-6 tracking-tight">Our History</h3>
-                <div className="prose prose-slate max-w-none prose-p:leading-[29px] [&_p]:mb-2 [&_p]:mt-0 last:[&_p]:mb-0 font-normal text-slate-600 border-l-4 border-teal-100 pl-6 md:pl-8 py-2 relative">
+                <div className="prose prose-slate max-w-none prose-p:leading-[29px] font-normal text-slate-600 border-l-4 border-teal-100 pl-6 md:pl-8 py-2 relative">
                   <div className="absolute top-0 left-0 w-1 h-12 bg-[#007a87] -ml-[4px] rounded-full" />
-                  <div dangerouslySetInnerHTML={{ __html: (Array.isArray(data?.history) ? data.history : [data?.history || ""]).join('') }} />
+                  <div 
+                    dangerouslySetInnerHTML={{ __html: (Array.isArray(data?.history) ? data.history : [data?.history || ""]).join('') }} 
+                    className="flex flex-col gap-3 [&>p]:!my-0 [&>p:empty]:hidden [&>div]:!my-0 [&_br]:hidden"
+                  />
                 </div>
               </div>
 

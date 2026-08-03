@@ -27,7 +27,13 @@ function getYoutubeThumbnail(url: string): string | null {
 export default function QuillEditor({ name, defaultValue, value, onChange }: { name?: string, defaultValue?: string, value?: string, onChange?: (content: string) => void }) {
   const editorRef = useRef<any>(null);
   const hiddenInputRef = useRef<HTMLInputElement>(null);
+  const isMounted = useRef(false);
   const [content, setContent] = useState(value !== undefined ? value : (defaultValue || ""));
+
+  useEffect(() => {
+    isMounted.current = true;
+    return () => { isMounted.current = false; };
+  }, []);
 
   useEffect(() => {
     if (value !== undefined && value !== content) {
@@ -242,11 +248,13 @@ export default function QuillEditor({ name, defaultValue, value, onChange }: { n
         value={content}
         config={config}
         onBlur={newContent => {
+           if (!isMounted.current) return;
            setContent(newContent);
            if (hiddenInputRef.current) hiddenInputRef.current.value = newContent;
            if (onChange) onChange(newContent);
         }}
         onChange={newContent => {
+           if (!isMounted.current) return;
            if (newContent === content) return;
            setContent(newContent);
            if (hiddenInputRef.current) hiddenInputRef.current.value = newContent;

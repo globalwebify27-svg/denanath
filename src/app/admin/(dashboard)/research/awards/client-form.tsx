@@ -297,11 +297,13 @@ export default function AwardsClientForm({ initialData }: { initialData: any }) 
                 <label className="block text-[11px] font-extrabold text-[#002b5c] uppercase tracking-widest mb-2">Award Items (Plain Text)</label>
                 <div className="space-y-3">
                   {(awardYear.items || []).map((item: string, itemIdx: number) => (
-                    <div key={itemIdx} className="flex gap-3 items-center">
-                      <QuillEditor value={item} onChange={content => handleAwardItemChange(idx, itemIdx, content)} />
+                    <div key={itemIdx} className="flex gap-3 items-start">
+                      <div className="flex-1 min-w-0">
+                        <QuillEditor value={item} onChange={content => handleAwardItemChange(idx, itemIdx, content)} />
+                      </div>
                       <button
                         onClick={() => handleRemoveAwardItem(idx, itemIdx)}
-                        className="shrink-0 w-8 h-8 bg-red-600 text-white rounded-lg flex items-center justify-center hover:bg-red-700 transition-colors shadow-sm"
+                        className="shrink-0 w-8 h-8 bg-red-600 text-white rounded-lg flex items-center justify-center hover:bg-red-700 transition-colors shadow-sm mt-2"
                       >
                         <X size={16} />
                       </button>
