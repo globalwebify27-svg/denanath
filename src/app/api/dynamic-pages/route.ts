@@ -16,7 +16,7 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     const data = await request.json();
-    const { title, slug, navbarMenu, content, status, seoMetaTitle, seoMetaDescription, seoKeywords } = data;
+    const { title, slug, navbarMenu, content, status, seoMetaTitle, seoMetaDescription, seoKeywords, gallery } = data;
 
     if (!title || !slug || !content || !navbarMenu) {
       return NextResponse.json({ error: 'Title, slug, navbarMenu, and content are required' }, { status: 400 });
@@ -41,6 +41,7 @@ export async function POST(request: Request) {
         seoMetaTitle,
         seoMetaDescription,
         seoKeywords,
+        gallery,
       },
     });
 

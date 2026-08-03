@@ -83,6 +83,7 @@ model DynamicPage {
   seoMetaTitle       String?
   seoMetaDescription String?  @db.LongText
   seoKeywords        String?  @db.LongText
+  gallery            String?  @db.LongText
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt
 }

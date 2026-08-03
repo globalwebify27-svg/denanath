@@ -2,13 +2,17 @@
 
 import { useState } from "react";
 
-export default function PhotoGalleryEditor({ name, defaultItems = [], title = "Header Images / Gallery" }: { name: string, defaultItems?: any[], title?: string }) {
+export default function PhotoGalleryEditor({ name, defaultItems = [], title = "Header Images / Gallery", onChange }: { name: string, defaultItems?: any[], title?: string, onChange?: (items: any[]) => void }) {
   const [gallery, setGallery] = useState<{url: string, name: string}[]>(defaultItems);
 
   const [uploading, setUploading] = useState<number | null>(null);
 
   const handleAddImage = () => {
-    setGallery(prev => [...prev, { url: "", name: "" }]);
+    setGallery(prev => {
+      const next = [...prev, { url: "", name: "" }];
+      if (onChange) onChange(next);
+      return next;
+    });
   };
 
   const handleImageChange = async (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
@@ -31,6 +35,7 @@ export default function PhotoGalleryEditor({ name, defaultItems = [], title = "H
         setGallery(prev => {
           const newGallery = [...prev];
           newGallery[index] = { ...newGallery[index], url: data.url };
+          if (onChange) onChange(newGallery);
           return newGallery;
         });
       } catch (err) {
@@ -46,12 +51,17 @@ export default function PhotoGalleryEditor({ name, defaultItems = [], title = "H
     setGallery(prev => {
       const newGallery = [...prev];
       newGallery[index] = { ...newGallery[index], name: newName };
+      if (onChange) onChange(newGallery);
       return newGallery;
     });
   };
 
   const handleRemoveImage = (index: number) => {
-    setGallery(prev => prev.filter((_, i) => i !== index));
+    setGallery(prev => {
+      const next = prev.filter((_, i) => i !== index);
+      if (onChange) onChange(next);
+      return next;
+    });
   };
 
   return (

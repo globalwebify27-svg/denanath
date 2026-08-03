@@ -92,7 +92,7 @@ const MENU_ITEMS = [
     ]
   },
   {
-    name: "Doctors & Depts",
+    name: "Doctors & Departments",
     icon: <Stethoscope size={20} />,
     links: [
       { name: "Doctors Directory", href: "/admin/doctors" },
@@ -158,10 +158,14 @@ const MENU_ITEMS = [
   }
 ];
 
-export default function AdminSidebar() {
+export default function AdminSidebar({ 
+  dynamicPages = [] 
+}: { 
+  dynamicPages?: { id: string; title: string; slug: string; navbarMenu: string }[] 
+}) {
   const pathname = usePathname();
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({
-    "Doctors & Depts": true // Keep the primary one open by default
+    "Doctors & Departments": true // Keep the primary one open by default
   });
   const [isMobileOpen, setIsMobileOpen] = useState(false);
 
@@ -171,6 +175,23 @@ export default function AdminSidebar() {
       [name]: !prev[name]
     }));
   };
+
+  const finalMenuItems = MENU_ITEMS.map(section => {
+    const sectionPages = dynamicPages.filter(p => p.navbarMenu === section.name);
+    if (sectionPages.length > 0) {
+      return {
+        ...section,
+        links: [
+          ...(section.links || []),
+          ...sectionPages.map(page => ({
+            name: page.title,
+            href: `/admin/pages/${page.id}`
+          }))
+        ]
+      };
+    }
+    return section;
+  });
 
   return (
     <>
@@ -202,7 +223,7 @@ export default function AdminSidebar() {
 
         {/* Navigation */}
         <nav className="flex-1 overflow-y-auto no-scrollbar p-4 space-y-1 mt-4">
-          {MENU_ITEMS.map((section) => {
+          {finalMenuItems.map((section) => {
             const hasChildren = section.links && section.links.length > 0;
             const isOpen = openSections[section.name];
             

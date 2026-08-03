@@ -23,7 +23,7 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
   try {
     const resolvedParams = await params;
     const data = await request.json();
-    const { title, slug, navbarMenu, content, status, seoMetaTitle, seoMetaDescription, seoKeywords } = data;
+    const { title, slug, navbarMenu, content, status, seoMetaTitle, seoMetaDescription, seoKeywords, gallery } = data;
 
     if (!title || !slug || !content || !navbarMenu) {
       return NextResponse.json({ error: 'Title, slug, navbarMenu, and content are required' }, { status: 400 });
@@ -52,6 +52,7 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
         seoMetaTitle,
         seoMetaDescription,
         seoKeywords,
+        gallery,
       },
     });
 

@@ -38,7 +38,7 @@ export default function CustomDropdown({ name, options, placeholder = "-- Select
         }}
       >
         {Icon && <Icon className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />}
-        <span className="truncate text-xs font-medium">{selected || placeholder}</span>
+        <span className="truncate text-[15px] font-medium">{selected || placeholder}</span>
         <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform ${isOpen ? "rotate-180" : ""}`} />
       </div>
       
@@ -53,13 +53,13 @@ export default function CustomDropdown({ name, options, placeholder = "-- Select
                 value={searchQuery} 
                 onChange={(e) => setSearchQuery(e.target.value)} 
                 onClick={(e) => e.stopPropagation()} 
-                className="w-full pl-9 pr-3 py-2 text-sm border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-teal-500 font-medium text-slate-700" 
+                className="w-full pl-9 pr-3 py-2 text-[15px] border border-slate-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-teal-500 font-medium text-slate-700" 
               />
             </div>
           </div>
           <div className="overflow-y-auto">
             <div 
-              className="px-3 py-2 hover:bg-emerald-50 cursor-pointer text-slate-500 font-normal transition-colors text-xs"
+              className="px-3 py-2.5 hover:bg-emerald-50 cursor-pointer text-slate-500 font-normal transition-colors text-[15px]"
               onClick={() => { setSelected(""); setIsOpen(false); if (onChange) onChange(""); }}
             >
               {placeholder}
@@ -67,13 +67,13 @@ export default function CustomDropdown({ name, options, placeholder = "-- Select
             {filteredOptions.length > 0 ? filteredOptions.map((opt: string, i: number) => (
               <div 
                 key={i}
-                className={`px-3 py-2 hover:bg-emerald-50 cursor-pointer font-normal transition-colors text-xs ${selected === opt ? "bg-emerald-50 text-emerald-800 font-medium" : "text-slate-700"}`}
+                className={`px-3 py-2.5 hover:bg-emerald-50 cursor-pointer font-normal transition-colors text-[15px] ${selected === opt ? "bg-emerald-50 text-emerald-800 font-medium" : "text-slate-700"}`}
                 onClick={() => { setSelected(opt); setIsOpen(false); if (onChange) onChange(opt); }}
               >
                 {opt}
               </div>
             )) : (
-              <div className="px-4 py-3 text-slate-400 text-sm italic text-center">No results found</div>
+              <div className="px-4 py-3 text-slate-400 text-[15px] italic text-center">No results found</div>
             )}
           </div>
         </div>

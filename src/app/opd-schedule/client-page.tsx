@@ -7,6 +7,33 @@ import CustomDropdown from "@/components/CustomDropdown";
 
 const daysOfWeek = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
+const generatePagination = (currentPage: number, totalPages: number) => {
+  const delta = 1;
+  const range = [];
+  const rangeWithDots: (number | string)[] = [];
+  let l;
+
+  for (let i = 1; i <= totalPages; i++) {
+    if (i === 1 || i === totalPages || (i >= currentPage - delta && i <= currentPage + delta)) {
+      range.push(i);
+    }
+  }
+
+  for (let i of range) {
+    if (l) {
+      if (i - l === 2) {
+        rangeWithDots.push(l + 1);
+      } else if (i - l !== 1) {
+        rangeWithDots.push('...');
+      }
+    }
+    rangeWithDots.push(i);
+    l = i;
+  }
+
+  return rangeWithDots;
+};
+
 // Component for rendering individual doctor with staggered schedule loading
 const DoctorScheduleCard = ({ doc, initialData, index }: { doc: any, initialData: any, index: number }) => {
   const [timings, setTimings] = useState<any[]>([]);
@@ -72,7 +99,14 @@ const DoctorScheduleCard = ({ doc, initialData, index }: { doc: any, initialData
       }
     });
     // For original timings loaded directly with "Mon to Sat" parsing fallback
-    doc.timings?.forEach((t: any) => {
+    let fallbackTimings: any[] = [];
+    if (typeof doc.timings === 'string' && doc.timings.trim().startsWith('[')) {
+      try { fallbackTimings = JSON.parse(doc.timings); } catch(e) {}
+    } else if (Array.isArray(doc.timings)) {
+      fallbackTimings = doc.timings;
+    }
+
+    fallbackTimings.forEach((t: any) => {
       const dayStr = (t.day || "").toLowerCase();
       const timeStr = t.time || "";
       const branchStr = t.branch ? ` (${t.branch})` : "";
@@ -373,18 +407,24 @@ export default function OpdScheduleClientPage({ initialData }: { initialData?: a
                     <ChevronLeft className="w-5 h-5" />
                   </button>
                   
-                  {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
-                    <button
-                      key={page}
-                      onClick={() => setCurrentPage(page)}
-                      className={`w-10 h-10 flex items-center justify-center rounded-lg border font-bold transition-colors ${
-                        currentPage === page 
-                          ? "bg-[#007a87] border-[#007a87] text-white" 
-                          : "border-slate-200 text-slate-600 hover:bg-slate-50"
-                      }`}
-                    >
-                      {page}
-                    </button>
+                  {generatePagination(currentPage, totalPages).map((page, idx) => (
+                    page === '...' ? (
+                      <span key={`dots-${idx}`} className="w-10 h-10 flex items-center justify-center text-slate-500">
+                        ...
+                      </span>
+                    ) : (
+                      <button
+                        key={`page-${page}`}
+                        onClick={() => setCurrentPage(page as number)}
+                        className={`w-10 h-10 flex items-center justify-center rounded-lg border font-bold transition-colors ${
+                          currentPage === page 
+                            ? "bg-[#007a87] border-[#007a87] text-white" 
+                            : "border-slate-200 text-slate-600 hover:bg-slate-50"
+                        }`}
+                      >
+                        {page}
+                      </button>
+                    )
                   ))}
 
                   <button 

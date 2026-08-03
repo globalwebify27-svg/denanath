@@ -64,7 +64,7 @@ export default async function DynamicPageRoute({ params }: { params: Promise<{ s
               <div className="mb-8">
                 <div style={{ fontSize: '14px' }} className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-teal-50 border border-teal-100 text-[#007a87] font-bold tracking-wider uppercase mb-4">
                   <FileText className="w-4 h-4" />
-                  <span>{page.navbarMenu}</span>
+                  <span>{page.title}</span>
                 </div>
                 <h2 className="text-3xl md:text-4xl font-extrabold text-[#002b5c] tracking-tight">
                   {page.title}
@@ -72,7 +72,7 @@ export default async function DynamicPageRoute({ params }: { params: Promise<{ s
               </div>
 
               <div 
-                className="prose prose-slate max-w-none prose-headings:text-[#002b5c] prose-a:text-teal-600 prose-img:rounded-xl [&_p]:text-slate-700 [&_p]:leading-[29px] [&_p]:font-normal"
+                className="prose prose-slate max-w-none prose-headings:text-[#002b5c] prose-a:text-teal-600 prose-img:rounded-xl [&_p]:text-slate-700 [&_p]:leading-[29px] [&_p]:font-normal overflow-hidden break-words [&_*]:!whitespace-normal [&_*]:!break-words"
                 dangerouslySetInnerHTML={{ __html: page.content }} 
               />
             </div>

@@ -3,11 +3,11 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
-import { ArrowLeft, Save, FileText } from "lucide-react";
+import { ArrowLeft, Save, FileText, Info, Layout } from "lucide-react";
 import Link from "next/link";
-import 'react-quill-new/dist/quill.snow.css';
-
-const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
+import CustomDropdown from "@/components/CustomDropdown";
+import QuillEditor from "@/components/QuillEditor";
+import PhotoGalleryEditor from "@/components/PhotoGalleryEditor";
 
 interface PageFormProps {
   pageId?: string;
@@ -26,6 +26,7 @@ export default function PageForm({ pageId }: PageFormProps) {
     seoMetaTitle: "",
     seoMetaDescription: "",
     seoKeywords: "",
+    gallery: "[]",
   });
 
   const menus = [
@@ -37,15 +38,6 @@ export default function PageForm({ pageId }: PageFormProps) {
     "Online Facilities"
   ];
 
-  const modules = {
-    toolbar: [
-      [{ 'header': [1, 2, 3, false] }],
-      ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-      [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
-      ['link', 'image', 'video'],
-      ['clean']
-    ],
-  };
 
   useEffect(() => {
     if (pageId) {
@@ -59,14 +51,15 @@ export default function PageForm({ pageId }: PageFormProps) {
       if (response.ok) {
         const data = await response.json();
         setFormData({
-          title: data.title,
-          slug: data.slug,
-          navbarMenu: data.navbarMenu,
-          content: data.content,
-          status: data.status,
+          title: data.title || "",
+          slug: data.slug || "",
+          navbarMenu: data.navbarMenu || "",
+          content: data.content || "",
+          status: data.status ?? true,
           seoMetaTitle: data.seoMetaTitle || "",
           seoMetaDescription: data.seoMetaDescription || "",
           seoKeywords: data.seoKeywords || "",
+          gallery: data.gallery || "[]"
         });
       } else {
         alert("Failed to fetch page data");
@@ -170,13 +163,27 @@ export default function PageForm({ pageId }: PageFormProps) {
         </div>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          
-          {/* Main Column */}
-          <div className="lg:col-span-2 space-y-8">
-            <div className="bg-white p-6 md:p-8 rounded-3xl shadow-sm border border-slate-100">
-              <h2 className="text-[18px] font-black text-[#002b5c] mb-6 tracking-tight">Basic Information</h2>
+      <form onSubmit={handleSubmit} className="space-y-8">
+        {/* Publishing Card */}
+        <div className="bg-white p-6 md:p-8 rounded-3xl shadow-sm border border-slate-100">
+          <h2 className="text-[18px] font-black text-[#002b5c] mb-6 tracking-tight">Publishing</h2>
+          <div>
+            <label className="flex items-center gap-3 cursor-pointer p-4 bg-slate-50 rounded-2xl border border-slate-100 hover:border-[#007a87]/30 transition-colors">
+              <input
+                suppressHydrationWarning={true}
+                type="checkbox"
+                checked={formData.status}
+                onChange={(e) => setFormData({ ...formData, status: e.target.checked })}
+                className="w-5 h-5 text-[#007a87] rounded border-slate-300 focus:ring-[#007a87]"
+              />
+              <span className="text-[15px] text-[#002b5c] font-bold">Active (Visible to public)</span>
+            </label>
+          </div>
+        </div>
+
+        {/* Basic Information Card */}
+        <div className="bg-white p-6 md:p-8 rounded-3xl shadow-sm border border-slate-100">
+          <h2 className="text-[18px] font-black text-[#002b5c] mb-6 tracking-tight">Basic Information</h2>
               <div className="space-y-6">
                 <div>
                   <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Page Title *</label>
@@ -211,54 +218,54 @@ export default function PageForm({ pageId }: PageFormProps) {
 
                 <div>
                   <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Navbar Menu *</label>
-                  <select
-                    suppressHydrationWarning={true}
-                    required
-                    value={formData.navbarMenu}
-                    onChange={(e) => setFormData({ ...formData, navbarMenu: e.target.value })}
-                    className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium leading-relaxed"
-                  >
-                    <option value="">Select Menu</option>
-                    {menus.map((menu) => (
-                      <option key={menu} value={menu}>{menu}</option>
-                    ))}
-                  </select>
+                  <div className="relative">
+                    <CustomDropdown
+                      name="navbarMenu"
+                      placeholder="Select Menu"
+                      icon={Layout}
+                      options={menus}
+                      value={formData.navbarMenu}
+                      onChange={(val: string) => setFormData({ ...formData, navbarMenu: val })}
+                      required
+                      className="p-4 bg-slate-50 rounded-2xl text-[15px]"
+                    />
+                  </div>
                   <p className="text-[13px] font-medium text-slate-500 mt-2">Select which primary menu this page will appear under (Careers is omitted per settings).</p>
                 </div>
               </div>
             </div>
 
-            <div>
-              <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Page Content *</label>
-              <div className="bg-white rounded-2xl overflow-hidden border border-slate-200">
-                <ReactQuill
-                  theme="snow"
-                  value={formData.content}
-                  onChange={(val) => setFormData({ ...formData, content: val })}
-                  modules={modules}
-                  className="h-[400px] pb-10 [&_.ql-editor]:!text-[#314158] [&_.ql-editor_*]:!text-[#314158] [&_.ql-editor]:text-[18px]"
-                />
+            {/* Card: General Information */}
+            <div className="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden group hover:shadow-md transition-shadow duration-300">
+              <div className="bg-slate-50/50 border-b border-slate-100 p-5 md:p-6 flex items-center gap-4">
+                <div className="bg-[#002b5c]/5 p-3 rounded-2xl text-[#002b5c]">
+                  <Info size={24} strokeWidth={2.5} />
+                </div>
+                <div>
+                  <h2 className="text-[20px] font-black text-[#002b5c]">General Information</h2>
+                  <p className="text-[13px] text-slate-500 font-medium">Core introduction texts displayed on the front page.</p>
+                </div>
               </div>
-            </div>
-          </div>
-
-          {/* Sidebar Column */}
-          <div className="space-y-8">
-            <div className="bg-white p-6 md:p-8 rounded-3xl shadow-sm border border-slate-100">
-              <h2 className="text-[18px] font-black text-[#002b5c] mb-6 tracking-tight">Publishing</h2>
-              <div>
-                <label className="flex items-center gap-3 cursor-pointer p-4 bg-slate-50 rounded-2xl border border-slate-100 hover:border-[#007a87]/30 transition-colors">
-                  <input
-                    suppressHydrationWarning={true}
-                    type="checkbox"
-                    checked={formData.status}
-                    onChange={(e) => setFormData({ ...formData, status: e.target.checked })}
-                    className="w-5 h-5 text-[#007a87] rounded border-slate-300 focus:ring-[#007a87]"
+              <div className="p-6 md:p-8 space-y-8">
+                <div>
+                  <label className="flex items-center gap-3 text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">
+                    INTRODUCTION
+                  </label>
+                  <QuillEditor
+                    name="content"
+                    value={formData.content}
+                    onChange={(val) => setFormData({ ...formData, content: val })}
                   />
-                  <span className="text-[15px] text-[#002b5c] font-bold">Active (Visible to public)</span>
-                </label>
+                </div>
               </div>
             </div>
+
+            <PhotoGalleryEditor 
+              name="gallery"
+              title="HEADER IMAGES / GALLERY"
+              defaultItems={JSON.parse(formData.gallery || "[]")}
+              onChange={(val) => setFormData({ ...formData, gallery: JSON.stringify(val) })}
+            />
 
             <div className="bg-white p-6 md:p-8 rounded-3xl shadow-sm border border-slate-100">
               <h2 className="text-[18px] font-black text-[#002b5c] mb-6 tracking-tight">SEO Settings</h2>
@@ -296,8 +303,6 @@ export default function PageForm({ pageId }: PageFormProps) {
                 </div>
               </div>
             </div>
-          </div>
-        </div>
       </form>
     </div>
   );

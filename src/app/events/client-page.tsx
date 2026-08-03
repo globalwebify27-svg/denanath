@@ -56,7 +56,7 @@ export default function EventsClientPage({ events = [], pageData }: { events: an
           
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div className="max-w-3xl">
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight tracking-tight">
+              <h1 className="text-[48px] font-bold text-white leading-tight tracking-tight">
                 {pageData?.pageTitle || "News & Events"}
               </h1>
             </div>
@@ -89,7 +89,7 @@ export default function EventsClientPage({ events = [], pageData }: { events: an
                   </div>
                 )}
                 {title && (
-                  <h2 className="text-4xl lg:text-5xl font-black text-slate-800 tracking-tight leading-tight">
+                  <h2 className="text-[35px] font-black text-slate-800 tracking-tight leading-tight">
                     {title}
                   </h2>
                 )}
