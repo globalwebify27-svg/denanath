@@ -4,10 +4,10 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Plus, Trash2, GraduationCap, FileText, Edit } from "lucide-react";
+import SubmitButton from "../../components/SubmitButton";
 
 export default function HomeCourseClientForm({ initialData }: { initialData: any }) {
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
   
   const [formData, setFormData] = useState({
     leftCourses: initialData.leftCourses || [],
@@ -51,15 +51,26 @@ export default function HomeCourseClientForm({ initialData }: { initialData: any
     setFormData({ ...formData, rightCourses: updated });
   };
 
+  const toggleLeftCourseStatus = (index: number) => {
+    const updated = [...formData.leftCourses];
+    updated[index].status = updated[index].status === false ? true : false;
+    setFormData({ ...formData, leftCourses: updated });
+    setTimeout(() => handleSave(), 100);
+  };
+
+  const toggleRightCourseStatus = (index: number) => {
+    const updated = [...formData.rightCourses];
+    updated[index].status = updated[index].status === false ? true : false;
+    setFormData({ ...formData, rightCourses: updated });
+    setTimeout(() => handleSave(), 100);
+  };
+
   async function handleSave() {
-    setLoading(true);
-    
     try {
       const form = document.getElementById("home-course-form") as HTMLFormElement;
       if (form) form.requestSubmit();
     } catch (e) {
       console.error(e);
-      setLoading(false);
     }
   }
 
@@ -78,13 +89,7 @@ export default function HomeCourseClientForm({ initialData }: { initialData: any
           </p>
         </div>
         <div className="z-10 shrink-0 mt-4 lg:mt-0">
-          <button
-            onClick={handleSave}
-            disabled={loading}
-            className="flex items-center gap-2 px-8 py-4 bg-[#007a87] hover:bg-[#005f69] text-white rounded-xl font-bold transition-all duration-300 shadow-[0_8px_20px_rgba(0,122,135,0.2)] hover:shadow-[0_10px_25px_rgba(0,122,135,0.3)] hover:-translate-y-0.5 disabled:opacity-70 disabled:pointer-events-none"
-          >
-            {loading ? "Saving..." : "Save List Order"}
-          </button>
+          <SubmitButton text="Save List Order" loadingText="Saving..." />
         </div>
       </div>
 
@@ -122,6 +127,14 @@ export default function HomeCourseClientForm({ initialData }: { initialData: any
                   <span className="font-semibold text-slate-700">{course.title}</span>
                 </div>
                 <div className="flex items-center gap-2">
+                  <button 
+                    onClick={() => toggleLeftCourseStatus(idx)}
+                    type="button" 
+                    className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors focus:outline-none ${course.status !== false ? 'bg-[#007a87]' : 'bg-slate-200'} mr-2`}
+                    title={course.status !== false ? "Active (Click to disable)" : "Inactive (Click to enable)"}
+                  >
+                    <span className={`inline-block h-3.5 w-3.5 transform rounded-full bg-white transition-transform ${course.status !== false ? 'translate-x-4' : 'translate-x-1'}`} />
+                  </button>
                   <Link 
                     href={`/admin/home-settings/home-course/${course.id || `left-legacy-${idx}`}?col=left`}
                     className="p-2 text-[#007a87] hover:bg-teal-50 rounded-lg transition-colors border border-transparent hover:border-teal-100 flex items-center gap-1 text-sm font-bold"
@@ -215,6 +228,14 @@ export default function HomeCourseClientForm({ initialData }: { initialData: any
                   <span className="font-semibold text-slate-700">{course.title}</span>
                 </div>
                 <div className="flex items-center gap-2">
+                  <button 
+                    onClick={() => toggleRightCourseStatus(idx)}
+                    type="button" 
+                    className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors focus:outline-none ${course.status !== false ? 'bg-indigo-500' : 'bg-slate-200'} mr-2`}
+                    title={course.status !== false ? "Active (Click to disable)" : "Inactive (Click to enable)"}
+                  >
+                    <span className={`inline-block h-3.5 w-3.5 transform rounded-full bg-white transition-transform ${course.status !== false ? 'translate-x-4' : 'translate-x-1'}`} />
+                  </button>
                   <Link 
                     href={`/admin/home-settings/home-course/${course.id || `right-legacy-${idx}`}?col=right`}
                     className="p-2 text-[#007a87] hover:bg-teal-50 rounded-lg transition-colors border border-transparent hover:border-teal-100 flex items-center gap-1 text-sm font-bold"

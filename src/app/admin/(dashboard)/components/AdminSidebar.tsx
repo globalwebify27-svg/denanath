@@ -20,7 +20,8 @@ import {
   X,
   Inbox,
   Calendar,
-  Activity
+  Activity,
+  FileText
 } from "lucide-react";
 
 const MENU_ITEMS = [
@@ -54,6 +55,11 @@ const MENU_ITEMS = [
     name: "Form Submissions",
     icon: <Inbox size={20} />,
     href: "/admin/submissions"
+  },
+  {
+    name: "Dynamic Pages",
+    icon: <FileText size={20} />,
+    href: "/admin/pages"
   },
   {
     name: "About Us",
@@ -170,6 +176,7 @@ export default function AdminSidebar() {
     <>
       {/* Mobile Toggle */}
       <button 
+        suppressHydrationWarning={true}
         className="md:hidden fixed top-4 right-4 z-50 p-2 bg-white rounded-lg shadow-md"
         onClick={() => setIsMobileOpen(!isMobileOpen)}
       >
@@ -226,6 +233,7 @@ export default function AdminSidebar() {
             return (
               <div key={section.name} className="mb-1">
                 <button
+                  suppressHydrationWarning={true}
                   onClick={() => toggleSection(section.name)}
                   className={`w-full flex items-center justify-between p-3 rounded-lg transition-colors ${
                     isActiveSection && !isOpen 

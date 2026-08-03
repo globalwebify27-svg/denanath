@@ -100,6 +100,7 @@ export default function QuickAccessWidget() {
 
       {/* Main Floating Button */}
       <motion.button
+        suppressHydrationWarning={true}
         whileTap={{ scale: 0.9 }}
         onClick={() => setOpen(!open)}
         className="relative flex h-12 w-12 md:h-14 md:w-14 items-center justify-center rounded-full bg-[#002b5c] text-white shadow-[0_10px_40px_rgba(0,43,92,0.35)]"

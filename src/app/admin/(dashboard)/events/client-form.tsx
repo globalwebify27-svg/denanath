@@ -245,6 +245,22 @@ export default function EventsClientForm({ initialEvents }: { initialEvents: any
           <div className="bg-white rounded-3xl shadow-sm border border-slate-100 p-6 md:p-8 space-y-6">
             <h2 className="text-[20px] font-black text-[#002b5c] border-b pb-4">Basic Details</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="md:col-span-2 flex items-center gap-3 bg-slate-50 p-4 rounded-xl border border-slate-200">
+                <div className="flex-1">
+                  <h3 className="text-[14px] font-bold text-slate-700">Event Status</h3>
+                  <p className="text-[12px] text-slate-500">Determine if this event is publicly visible</p>
+                </div>
+                <label className="relative inline-flex items-center cursor-pointer">
+                  <input 
+                    type="checkbox" 
+                    className="sr-only peer" 
+                    checked={data.status !== false} 
+                    onChange={(e) => updateField(selectedIndex, "status", e.target.checked)}
+                  />
+                  <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-[#007a87]/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#007a87]"></div>
+                  <span className="ml-3 text-sm font-bold text-slate-700">{data.status !== false ? "Active" : "Inactive"}</span>
+                </label>
+              </div>
               <div>
                 <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Event Title</label>
                 <input type="text" value={data.title || ""} onChange={e => updateField(selectedIndex, "title", e.target.value)} className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87]" placeholder="e.g. Diabetes Nursing Conference 2026" />

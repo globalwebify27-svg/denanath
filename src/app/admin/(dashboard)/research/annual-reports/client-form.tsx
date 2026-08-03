@@ -8,6 +8,7 @@ export default function AnnualReportsClientForm({ initialData }: { initialData: 
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState(initialData);
+  const [uploadingIdx, setUploadingIdx] = useState<number | null>(null);
 
   const handleSeoChange = (field: string, value: string) => {
     setData((prev: any) => ({ ...prev, [field]: value }));
@@ -48,6 +49,33 @@ export default function AnnualReportsClientForm({ initialData }: { initialData: 
       newItems[index] = { ...newItems[index], [field]: value };
       return { ...prev, items: newItems };
     });
+  };
+
+  const handleFileUpload = async (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setUploadingIdx(index);
+      try {
+        const formData = new FormData();
+        formData.append("file", file);
+        
+        const res = await fetch("/api/upload", {
+          method: "POST",
+          body: formData,
+        });
+        
+        if (!res.ok) throw new Error("Upload failed");
+        
+        const resData = await res.json();
+        
+        handleItemChange(index, "link", resData.url);
+      } catch (err) {
+        console.error("Error uploading file:", err);
+        alert("Failed to upload file.");
+      } finally {
+        setUploadingIdx(null);
+      }
+    }
   };
 
   const generateHTML = (items: any[]) => {
@@ -187,12 +215,27 @@ export default function AnnualReportsClientForm({ initialData }: { initialData: 
                 </div>
                 <div className="flex-1">
                   <label className="block text-[11px] font-extrabold text-[#002b5c] uppercase tracking-widest mb-2">PDF Link</label>
-                  <input 
-                    value={item.link || ""} 
-                    onChange={(e) => handleItemChange(idx, "link", e.target.value)}
-                    placeholder="https://www.dmhospital.org/cms/Media/file..."
-                    className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all text-sm font-medium text-slate-700"
-                  />
+                  <div className="flex gap-2 items-center">
+                    <input 
+                      value={item.link || ""} 
+                      onChange={(e) => handleItemChange(idx, "link", e.target.value)}
+                      placeholder="https://www.dmhospital.org/cms/Media/file..."
+                      className="flex-1 p-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all text-sm font-medium text-slate-700"
+                    />
+                    <div className="relative shrink-0">
+                      <input 
+                        type="file"
+                        accept=".pdf"
+                        onChange={(e) => handleFileUpload(idx, e)}
+                        disabled={uploadingIdx === idx}
+                        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer disabled:cursor-not-allowed z-10"
+                        title="Upload PDF"
+                      />
+                      <button type="button" disabled={uploadingIdx === idx} className="px-4 py-3 bg-[#007a87] text-white text-sm font-bold rounded-xl hover:bg-[#005f69] transition-colors disabled:opacity-50 relative z-0">
+                        {uploadingIdx === idx ? "Uploading..." : "Upload PDF"}
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

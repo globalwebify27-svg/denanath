@@ -5,7 +5,49 @@ import Link from "next/link";
 import { ChevronRight, ArrowRight, Activity, FileText, Award, Users } from "lucide-react";
 import { getHomeCourses } from "@/app/actions/get-home-courses";
 
-export default function CoursesAndPricing() {
+export const defaultCoursesPricingData = {
+  pricingCards: [
+    {
+      title: 'Knee Replacement <br class="hidden sm:block" />Implants',
+      subtitle: "Pricing Details",
+      url: "/implant-pricing",
+      iconString: "Activity",
+      theme: "#14b8a6"
+    },
+    {
+      title: 'Cathlab Pharmacy <br class="hidden sm:block" />Implants',
+      subtitle: "Pricing Details",
+      url: "/cathlab-pricing",
+      iconString: "FileText",
+      theme: "#3b82f6"
+    },
+    {
+      title: 'In Patient <br class="hidden sm:block" />Guide',
+      subtitle: "View our",
+      url: "/in-patient",
+      iconString: "Users",
+      theme: "#a855f7"
+    },
+    {
+      title: 'Out Patient <br class="hidden sm:block" />Guide',
+      subtitle: "View our",
+      url: "/out-patient",
+      iconString: "Award",
+      theme: "#f59e0b"
+    }
+  ],
+  educationHeader: {
+    tagline: "Education & Resources",
+    title: 'Courses & <span class="font-semibold">Conferences</span>',
+    leftTitle: "Upcoming Courses",
+    rightTitle: "Programs & Forms"
+  }
+};
+
+export default function CoursesAndPricing({ data = defaultCoursesPricingData }: { data?: any }) {
+  if (!data || Object.keys(data).length === 0) data = defaultCoursesPricingData;
+  const pricingCards = data.pricingCards || defaultCoursesPricingData.pricingCards;
+  const educationHeader = data.educationHeader || defaultCoursesPricingData.educationHeader;
   const [leftCourses, setLeftCourses] = useState<any[]>([
     { title: "Practice Course for Practical Exam - Emergency Medicine", link: "#" },
     { title: "Breastfeeding Masterclass 2nd August 2026", link: "#" },
@@ -52,94 +94,58 @@ export default function CoursesAndPricing() {
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 mb-10 max-w-5xl mx-auto">
-          <Link 
-            href="/implant-pricing" 
-            className="group relative overflow-hidden bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl p-6 sm:p-8 flex flex-col sm:flex-row items-center sm:justify-between gap-4 sm:gap-6 transition-all duration-300 hover:shadow-2xl hover:shadow-teal-900/20 hover:-translate-y-1 border border-slate-700/50"
-          >
-            <div className="absolute top-0 right-0 w-32 h-32 bg-teal-500/10 rounded-bl-full -mr-4 -mt-4 transition-transform duration-500 group-hover:scale-110"></div>
-            <div className="flex items-center gap-4 sm:gap-5 relative z-10 w-full sm:w-auto">
-              <div className="w-12 h-12 rounded-full bg-slate-800/80 border border-slate-700 flex items-center justify-center shrink-0 shadow-inner">
-                <Activity className="w-5 h-5 text-teal-400" />
-              </div>
-              <div>
-                <p className="text-slate-400 text-[10px] font-bold tracking-widest uppercase mb-1">Pricing Details</p>
-                <h3 className="text-white text-base font-semibold tracking-wide leading-snug">Knee Replacement <br className="hidden sm:block" />Implants</h3>
-              </div>
-            </div>
-            <div className="relative z-10 flex items-center gap-2 bg-teal-500/20 group-hover:bg-teal-500/30 text-teal-300 px-5 py-2.5 rounded-full text-base font-semibold leading-[22px] uppercase tracking-wider transition-colors shrink-0 w-full sm:w-auto justify-center sm:justify-start">
-              <span>Click Here</span>
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </div>
-          </Link>
-
-          <Link 
-            href="/cathlab-pricing" 
-            className="group relative overflow-hidden bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl p-6 sm:p-8 flex flex-col sm:flex-row items-center sm:justify-between gap-4 sm:gap-6 transition-all duration-300 hover:shadow-2xl hover:shadow-blue-900/20 hover:-translate-y-1 border border-slate-700/50"
-          >
-            <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-bl-full -mr-4 -mt-4 transition-transform duration-500 group-hover:scale-110"></div>
-            <div className="flex items-center gap-4 sm:gap-5 relative z-10 w-full sm:w-auto">
-              <div className="w-12 h-12 rounded-full bg-slate-800/80 border border-slate-700 flex items-center justify-center shrink-0 shadow-inner">
-                <FileText className="w-5 h-5 text-blue-400" />
-              </div>
-              <div>
-                <p className="text-slate-400 text-[10px] font-bold tracking-widest uppercase mb-1">Pricing Details</p>
-                <h3 className="text-white text-base font-semibold tracking-wide leading-snug">Cathlab Pharmacy <br className="hidden sm:block" />Implants</h3>
-              </div>
-            </div>
-            <div className="relative z-10 flex items-center gap-2 bg-blue-500/20 group-hover:bg-blue-500/30 text-blue-300 px-5 py-2.5 rounded-full text-base font-semibold leading-[22px] uppercase tracking-wider transition-colors shrink-0 w-full sm:w-auto justify-center sm:justify-start">
-              <span>Click Here</span>
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </div>
-          </Link>
-
-          <Link 
-            href="/in-patient" 
-            className="group relative overflow-hidden bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl p-6 sm:p-8 flex flex-col sm:flex-row items-center sm:justify-between gap-4 sm:gap-6 transition-all duration-300 hover:shadow-2xl hover:shadow-purple-900/20 hover:-translate-y-1 border border-slate-700/50"
-          >
-            <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/10 rounded-bl-full -mr-4 -mt-4 transition-transform duration-500 group-hover:scale-110"></div>
-            <div className="flex items-center gap-4 sm:gap-5 relative z-10 w-full sm:w-auto">
-              <div className="w-12 h-12 rounded-full bg-slate-800/80 border border-slate-700 flex items-center justify-center shrink-0 shadow-inner">
-                <Users className="w-5 h-5 text-purple-400" />
-              </div>
-              <div>
-                <p className="text-slate-400 text-[10px] font-bold tracking-widest uppercase mb-1">View our</p>
-                <h3 className="text-white text-base font-semibold tracking-wide leading-snug">In Patient <br className="hidden sm:block" />Guide</h3>
-              </div>
-            </div>
-            <div className="relative z-10 flex items-center gap-2 bg-purple-500/20 group-hover:bg-purple-500/30 text-purple-300 px-5 py-2.5 rounded-full text-base font-semibold leading-[22px] uppercase tracking-wider transition-colors shrink-0 w-full sm:w-auto justify-center sm:justify-start">
-              <span>Click Here</span>
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </div>
-          </Link>
-
-          <Link 
-            href="/out-patient" 
-            className="group relative overflow-hidden bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl p-6 sm:p-8 flex flex-col sm:flex-row items-center sm:justify-between gap-4 sm:gap-6 transition-all duration-300 hover:shadow-2xl hover:shadow-amber-900/20 hover:-translate-y-1 border border-slate-700/50"
-          >
-            <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/10 rounded-bl-full -mr-4 -mt-4 transition-transform duration-500 group-hover:scale-110"></div>
-            <div className="flex items-center gap-4 sm:gap-5 relative z-10 w-full sm:w-auto">
-              <div className="w-12 h-12 rounded-full bg-slate-800/80 border border-slate-700 flex items-center justify-center shrink-0 shadow-inner">
-                <Award className="w-5 h-5 text-amber-400" />
-              </div>
-              <div>
-                <p className="text-slate-400 text-[10px] font-bold tracking-widest uppercase mb-1">View our</p>
-                <h3 className="text-white text-base font-semibold tracking-wide leading-snug">Out Patient <br className="hidden sm:block" />Guide</h3>
-              </div>
-            </div>
-            <div className="relative z-10 flex items-center gap-2 bg-amber-500/20 group-hover:bg-amber-500/30 text-amber-300 px-5 py-2.5 rounded-full text-base font-semibold leading-[22px] uppercase tracking-wider transition-colors shrink-0 w-full sm:w-auto justify-center sm:justify-start">
-              <span>Click Here</span>
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </div>
-          </Link>
+          {pricingCards.map((card: any, idx: number) => {
+            const Icons = require('lucide-react');
+            const Icon = Icons[card.iconString] || Icons.Activity;
+            
+            const themeValue = card.theme || "#14b8a6";
+            const isHex = themeValue.startsWith('#');
+            
+            const themeColors: any = {
+              teal: { hover: "hover:shadow-teal-900/20", icon: "text-teal-400", badge: "bg-teal-500/20 group-hover:bg-teal-500/30 text-teal-300", accent: "bg-teal-500/10" },
+              blue: { hover: "hover:shadow-blue-900/20", icon: "text-blue-400", badge: "bg-blue-500/20 group-hover:bg-blue-500/30 text-blue-300", accent: "bg-blue-500/10" },
+              purple: { hover: "hover:shadow-purple-900/20", icon: "text-purple-400", badge: "bg-purple-500/20 group-hover:bg-purple-500/30 text-purple-300", accent: "bg-purple-500/10" },
+              amber: { hover: "hover:shadow-amber-900/20", icon: "text-amber-400", badge: "bg-amber-500/20 group-hover:bg-amber-500/30 text-amber-300", accent: "bg-amber-500/10" }
+            };
+            const theme = isHex ? {} : (themeColors[themeValue] || themeColors.teal);
+            
+            return (
+              <Link 
+                key={idx}
+                href={card.url} 
+                className={`group relative overflow-hidden bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl p-6 sm:p-8 flex flex-col sm:flex-row items-center sm:justify-between gap-4 sm:gap-6 transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 border border-slate-700/50 ${isHex ? '' : theme.hover}`}
+              >
+                <div 
+                  className={`absolute top-0 right-0 w-32 h-32 rounded-bl-full -mr-4 -mt-4 transition-transform duration-500 group-hover:scale-110 ${isHex ? '' : theme.accent}`}
+                  style={isHex ? { backgroundColor: `${themeValue}1A` } : {}}
+                ></div>
+                <div className="flex items-center gap-4 sm:gap-5 relative z-10 w-full sm:w-auto">
+                  <div className="w-12 h-12 rounded-full bg-slate-800/80 border border-slate-700 flex items-center justify-center shrink-0 shadow-inner">
+                    <Icon className={`w-5 h-5 ${isHex ? '' : theme.icon}`} style={isHex ? { color: themeValue } : {}} />
+                  </div>
+                  <div>
+                    <p className="text-slate-400 text-[10px] font-bold tracking-widest uppercase mb-1">{card.subtitle}</p>
+                    <h3 className="text-white text-base font-semibold tracking-wide leading-snug" dangerouslySetInnerHTML={{__html: card.title}}></h3>
+                  </div>
+                </div>
+                <div 
+                  className={`relative z-10 flex items-center gap-2 px-5 py-2.5 rounded-full text-base font-semibold leading-[22px] uppercase tracking-wider transition-colors shrink-0 w-full sm:w-auto justify-center sm:justify-start ${isHex ? 'group-hover:opacity-90' : theme.badge}`}
+                  style={isHex ? { backgroundColor: `${themeValue}33`, color: themeValue } : {}}
+                >
+                  <span>Click Here</span>
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </div>
+              </Link>
+            );
+          })}
         </div>
 
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-14">
           <span className="px-3.5 py-1.5 rounded-full bg-teal-50 text-[#007a87] text-[10px] font-bold tracking-widest uppercase border border-teal-100 shadow-sm inline-block mb-4">
-            Education & Resources
+            {educationHeader.tagline}
           </span>
-          <h2 className="text-3xl sm:text-4xl font-light text-[#002b5c] tracking-tight">
-            Courses & <span className="font-semibold">Conferences</span>
+          <h2 className="text-3xl sm:text-4xl font-light text-[#002b5c] tracking-tight" dangerouslySetInnerHTML={{__html: educationHeader.title}}>
           </h2>
           <div className="flex justify-center items-center mt-5">
             <div className="w-12 h-1 bg-slate-200 rounded-l-full"></div>
@@ -155,7 +161,7 @@ export default function CoursesAndPricing() {
               <div className="w-8 h-8 rounded-full bg-red-50 flex items-center justify-center shrink-0">
                 <div className="w-2.5 h-2.5 rounded-full bg-red-500"></div>
               </div>
-              Upcoming Courses
+              {educationHeader.leftTitle}
             </h3>
             <ul className="space-y-0">
               {leftCourses.map((course, idx) => {
@@ -184,7 +190,7 @@ export default function CoursesAndPricing() {
               <div className="w-8 h-8 rounded-full bg-teal-50 flex items-center justify-center shrink-0">
                 <div className="w-2.5 h-2.5 rounded-full bg-[#007a87]"></div>
               </div>
-              Programs & Forms
+              {educationHeader.rightTitle}
             </h3>
             <ul className="space-y-0">
               {rightCourses.map((course, idx) => {

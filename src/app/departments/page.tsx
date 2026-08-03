@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import React from "react";
+import DynamicSidebar from "@/components/DynamicSidebar";
 import Link from "next/link";
 import { 
   ChevronRight, Stethoscope, Search, ArrowRight, HeartPulse, 
@@ -53,12 +54,6 @@ export default async function DepartmentDetailsPage({
   const resolvedParams = await searchParams;
   const query = resolvedParams.q || "";
 
-  const options = [
-    { name: "Doctor Details", href: "/doctor-details", active: false },
-    { name: "Department Details", href: "/departments", active: true },
-    { name: "Services", href: "/services", active: false }
-  ];
-
   const departments = await prisma.department.findMany({
     where: {
       status: true,
@@ -91,31 +86,8 @@ export default async function DepartmentDetailsPage({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-16">
         <div className="flex flex-col lg:flex-row gap-8 xl:gap-12 items-start">
           
-          {/* Left Sidebar Navigation */}
-          <div className="w-full lg:w-[280px] shrink-0 sticky top-14 lg:top-28 z-30 bg-[#f8fafc] py-2 lg:py-0">
-            <div className="bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 overflow-hidden flex flex-row lg:flex-col overflow-x-auto lg:overflow-x-visible">
-              {options.map((option, idx) => (
-                <Link
-                  key={idx}
-                  href={option.href}
-                  className={"group flex items-center justify-between px-6 py-4 text-sm font-bold transition-all duration-300 lg:border-l-4 lg:border-b-0 border-b-4 whitespace-nowrap lg:whitespace-normal " + (
-                    option.active
-                      ? "border-[#007a87] bg-teal-50/40 text-[#007a87]"
-                      : "border-transparent text-slate-600 hover:bg-slate-50 hover:text-[#002b5c] hover:border-slate-200"
-                  ) + " " + (idx !== options.length - 1 ? "lg:border-b lg:border-b-slate-50" : "")}
-                >
-                  <span>{option.name}</span>
-                  <ChevronRight 
-                    className={"hidden lg:block w-4 h-4 transition-transform duration-300 " + (
-                      option.active 
-                        ? "text-[#007a87] translate-x-1" 
-                        : "text-slate-300 group-hover:translate-x-1 group-hover:text-[#002b5c]"
-                    )} 
-                  />
-                </Link>
-              ))}
-            </div>
-          </div>
+          {/* Dynamic Sidebar */}
+          <DynamicSidebar categoryName="Doctors & Departments" activeHref="/departments" />
 
           {/* Right Main Content */}
           <div className="w-full flex-1">
@@ -134,19 +106,33 @@ export default async function DepartmentDetailsPage({
 
               {/* Search Box Matching Image */}
               <div className="bg-gray-50/50 rounded-2xl border border-gray-100 p-6 mb-8">
-                <form action="/departments" method="GET">
-                  <label className="block text-[#002b5c] font-[800] mb-3">Search Department:</label>
-                  <div className="relative">
-                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
-                    <input
-                      type="text"
-                      name="q"
-                      defaultValue={query}
-                      placeholder="Enter department name..."
-                      className="w-full pl-11 pr-4 py-3 bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#007a87]/20 focus:border-[#007a87] font-[500] text-gray-700 shadow-sm"
-                    />
-                  </div>
-                </form>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <form action="/departments" method="GET">
+                    <label className="block text-[#002b5c] font-[800] mb-3">Search Department:</label>
+                    <div className="relative">
+                      <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+                      <input
+                        type="text"
+                        name="q"
+                        defaultValue={query}
+                        placeholder="Enter department name..."
+                        className="w-full pl-11 pr-4 py-3 bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#007a87]/20 focus:border-[#007a87] font-[500] text-gray-700 shadow-sm"
+                      />
+                    </div>
+                  </form>
+                  <form action="/doctor-details" method="GET">
+                    <label className="block text-[#002b5c] font-[800] mb-3">Filter By Doctor Name:</label>
+                    <div className="relative">
+                      <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+                      <input
+                        type="text"
+                        name="name"
+                        placeholder="Enter doctor name..."
+                        className="w-full pl-11 pr-4 py-3 bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#007a87]/20 focus:border-[#007a87] font-[500] text-gray-700 shadow-sm"
+                      />
+                    </div>
+                  </form>
+                </div>
               </div>
 
               {/* Vertical Stacked Cards Matching Image */}

@@ -3,33 +3,43 @@
 import CountUp from "react-countup";
 import { motion } from "framer-motion";
 
-export default function TrustSection() {
-  const stats = [
+export const defaultTrustData = {
+  tagline: "Trusted Healthcare Excellence",
+  title: 'Building Trust Through <br/> <span class="text-[#007a87]">Care, Experience & Excellence</span>',
+  description: "Delivering compassionate healthcare with advanced medical expertise, modern infrastructure, and trusted specialists.",
+  nabhTitle: "NABH",
+  nabhSubtitle: "Accredited Hospital",
+  stats: [
     {
       number: 25,
       suffix: "+",
       label: "Years of Experience",
-      color: "text-[#007a87]",
+      color: "#007a87",
     },
     {
       number: 1.2,
       suffix: "M+",
       label: "Patients Served",
-      color: "text-[#007a87]",
+      color: "#007a87",
     },
     {
       number: 400,
       suffix: "+",
       label: "Expert Doctors",
-      color: "text-[#007a87]",
+      color: "#007a87",
     },
     {
       number: 24,
       suffix: "x7",
       label: "Emergency Services",
-      color: "text-[#007a87]",
+      color: "#007a87",
     },
-  ];
+  ]
+};
+
+export default function TrustSection({ data = defaultTrustData }: { data?: any }) {
+  if (!data || Object.keys(data).length === 0) data = defaultTrustData;
+  const stats = data.stats || defaultTrustData.stats;
 
   return (
     <section className="relative overflow-hidden bg-white py-[20px] md:py-10">
@@ -53,20 +63,16 @@ export default function TrustSection() {
           className="mb-6 md:mb-16 text-center"
         >
           <span className="inline-block rounded-full bg-red-100 px-4 py-2 text-sm font-semibold text-red-700">
-            Trusted Healthcare Excellence
+            {data.tagline}
           </span>
 
-          <h2 className="mt-5 text-2xl font-semibold text-slate-900 md:text-4xl">
-            Building Trust Through <br />
-            <span className="text-[#007a87]">
-              Care, Experience & Excellence
-            </span>
+          <h2 className="mt-5 text-2xl font-semibold text-slate-900 md:text-4xl" dangerouslySetInnerHTML={{__html: (data.title || "").replace(/\\n/g, '<br/>')}}>
           </h2>
 
-          <p className="mx-auto mt-5 max-w-2xl text-base sm:text-lg font-normal leading-[31px] text-slate-600">
-            Delivering compassionate healthcare with advanced medical expertise,
-            modern infrastructure, and trusted specialists.
-          </p>
+          <div 
+            className="mx-auto mt-5 max-w-2xl text-base sm:text-lg font-normal leading-[31px] text-slate-600 prose prose-sm prose-p:leading-[31px] prose-p:m-0"
+            dangerouslySetInnerHTML={{__html: data.description}}
+          />
         </motion.div>
 
         {/* Stats Grid */}
@@ -82,10 +88,10 @@ export default function TrustSection() {
     className="rounded-2xl border border-slate-200 bg-white p-6 sm:p-8 text-center shadow-sm hover:shadow-2xl transition col-span-1"
   >
     <h3 className="text-xl sm:text-2xl font-semibold text-[#007a87]">
-      NABH
+      {data.nabhTitle}
     </h3>
     <p className="mt-3 text-xs sm:text-sm text-slate-700">
-      Accredited Hospital
+      {data.nabhSubtitle}
     </p>
   </motion.div>
 
@@ -113,7 +119,10 @@ export default function TrustSection() {
         ${isLast ? "col-span-2 sm:col-span-1 lg:col-span-1 w-full" : ""}
       `}
     >
-      <h3 className={`text-xl sm:text-3xl font-semibold ${item.color}`}>
+      <h3 
+        className={`text-xl sm:text-3xl font-semibold ${item.color?.startsWith('text-') ? item.color : ''}`}
+        style={item.color?.startsWith('#') ? { color: item.color } : {}}
+      >
         <CountUp
           end={item.number}
           duration={3}

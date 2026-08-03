@@ -7,13 +7,13 @@ export const dynamic = "force-dynamic";
 function normalizeEventsData(raw: any) {
   if (!raw) return { events: [], seoMetaTitle: "", seoMetaDescription: "", seoKeywords: "" };
   if (Array.isArray(raw.events)) {
-    return { ...raw, events: raw.events };
+    return { ...raw, events: raw.events.filter((e: any) => e.status !== false && e.status !== "false") };
   }
   if (Array.isArray(raw.items)) {
-    return { ...raw, events: raw.items };
+    return { ...raw, events: raw.items.filter((e: any) => e.status !== false && e.status !== "false") };
   }
   if (Array.isArray(raw)) {
-    return { events: raw, pageTitle: "", bannerImage: "" };
+    return { events: raw.filter((e: any) => e.status !== false && e.status !== "false"), pageTitle: "", bannerImage: "" };
   }
   // If it's the old single-event format, wrap it
   if (raw.title) {

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState, useMemo } from "react";
+import DynamicSidebar from "@/components/DynamicSidebar";
 import Link from "next/link";
 import { ChevronRight, ChevronLeft, Stethoscope, Search, UserRound, GraduationCap, ArrowRight, X, Calendar, Clock, BookOpen, Briefcase } from "lucide-react";
 
@@ -29,63 +30,33 @@ export default function DoctorDetailsPage() {
     const loadDoctorsFromApi = async () => {
       setLoading(true);
       try {
-        const specRes = await fetch('/api/dmh', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ action: 'speciality' }),
-        });
-        if (!specRes.ok) return;
-        const specData = await specRes.json();
-        const specialtiesList = specData?.specialityJSON || (Array.isArray(specData) ? specData : []);
-        if (!Array.isArray(specialtiesList) || specialtiesList.length === 0) return;
+        const docRes = await fetch('/api/doctors');
+        if (!docRes.ok) return;
+        const doctors = await docRes.json();
+        
+        if (!Array.isArray(doctors) || doctors.length === 0) return;
 
-        let firstResultShown = false;
-        const allDoctors: any[] = [];
+        const mapped = doctors.map((doc: any) => ({
+          id: doc.id,
+          doctor_id: doc.dmhDoctorId || '',
+          speciality_id: doc.dmhSpecialityId || '',
+          service_point_id: doc.dmhServicePointId || '',
+          service_center_id: doc.dmhServiceCenterId || '',
+          name: doc.name || 'Doctor',
+          specialty: doc.specialty || 'General',
+          isAppAllowed: doc.isAppAllowed !== false,
+          qualifications: doc.qualifications || '',
+          image: doc.image || '',
+          timings: doc.timings ? (typeof doc.timings === 'string' ? JSON.parse(doc.timings) : doc.timings) : [],
+          education: doc.education ? (typeof doc.education === 'string' ? JSON.parse(doc.education) : doc.education) : [],
+          training: doc.training ? (typeof doc.training === 'string' ? JSON.parse(doc.training) : doc.training) : [],
+          experience: doc.experience ? (typeof doc.experience === 'string' ? JSON.parse(doc.experience) : doc.experience) : [],
+          publications: doc.publications ? (typeof doc.publications === 'string' ? JSON.parse(doc.publications) : doc.publications) : [],
+        }));
 
-        await Promise.all(
-          specialtiesList.map(async (spec: any) => {
-            const specId = spec.id || spec.speciality_id;
-            if (!specId) return;
-            try {
-              const docRes = await fetch('/api/dmh', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ action: 'speciality_doctor', speciality_id: String(specId) }),
-              });
-              if (!docRes.ok) return;
-              const docData = await docRes.json();
-              const doctors = docData?.doctorJSON || (Array.isArray(docData) ? docData : []);
-              if (!Array.isArray(doctors) || doctors.length === 0) return;
-
-              const mapped = doctors.map((doc: any, dIdx: number) => ({
-                id: `${doc.doctor_id || 'doc'}_${specId}_${dIdx}`,
-                doctor_id: doc.doctor_id || '',
-                speciality_id: doc.speciality_id || String(specId),
-                service_center_id: doc.service_center_id || '',
-                service_point_id: doc.service_point_id || '',
-                name: doc.doctor_name || `${doc.first_name || ''} ${doc.last_name || ''}`.trim() || 'Doctor',
-                specialty: doc.speciality_name || spec.speciality_name || 'General',
-                qualifications: doc.qualification || doc.qualifications || 'MBBS',
-                image: doc.doctorImage || doc.photo || '',
-                isApp: doc.isApp === 'Y' || doc.isApp === 'true' || doc.isApp === true,
-                timings: [],
-              }));
-
-              allDoctors.push(...mapped);
-              setDoctorsList([...allDoctors]);
-              if (!firstResultShown) {
-                firstResultShown = true;
-                setLoading(false);
-              }
-            } catch (e) {
-              // silently skip
-            }
-          })
-        );
-
-        setDoctorsList([...allDoctors]);
+        setDoctorsList(mapped);
       } catch (err) {
-        console.error("Failed to fetch doctors from DMH API:", err);
+        console.error("Failed to fetch doctors from local DB:", err);
       } finally {
         setLoading(false);
       }
@@ -93,14 +64,6 @@ export default function DoctorDetailsPage() {
 
     loadDoctorsFromApi();
   }, []);
-  const options = [
-    { name: "Doctor Details", href: "/doctor-details", active: true },
-    { name: "Department Details", href: "/department-details", active: false },
-    { name: "Services", href: "/services", active: false }
-];
-
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
-  
   // State for filters & pagination
   const [selectedSpecialty, setSelectedSpecialty] = useState("--Select--");
   const [searchName, setSearchName] = useState("");
@@ -116,66 +79,15 @@ export default function DoctorDetailsPage() {
       setIsAppAllowed(null);
       return;
     }
-
-    // If doctor object from API already provides explicit boolean isApp, use it
-    if (typeof selectedDoctor.isApp === 'boolean') {
-      setIsAppAllowed(selectedDoctor.isApp);
-      return;
-    }
-
-    const checkDoctorSchedule = async () => {
-      setLoadingSchedule(true);
-      try {
-        const response = await fetch('/api/dmh', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            action: 'opd_day_time',
-            doctor_id: String(selectedDoctor.doctor_id || selectedDoctor.id || ''),
-            speciality_id: String(selectedDoctor.speciality_id || selectedDoctor.specialty_id || ''),
-          }),
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-          console.log('[opd_day_time API Response]:', data);
-
-          // Direct read of isApp / is_app boolean property from API response
-          const rawVal = data?.isApp ?? data?.is_app ?? data?.data?.isApp ?? data?.data?.is_app;
-          const isApp = rawVal === true || rawVal === 'true' || rawVal === 1 || rawVal === '1';
-          
-          setIsAppAllowed(isApp);
-        } else {
-          setIsAppAllowed(false);
-        }
-      } catch (err) {
-        console.warn('Failed to check opd_day_time schedule:', err);
-        setIsAppAllowed(false);
-      } finally {
-        setLoadingSchedule(false);
-      }
-    };
-
-    checkDoctorSchedule();
+    
+    setIsAppAllowed(selectedDoctor.isAppAllowed);
+    setLoadingSchedule(false);
   }, [selectedDoctor]);
 
   // Reset page when filters change
   useEffect(() => {
     setCurrentPage(1);
   }, [selectedSpecialty, searchName]);
-
-  useEffect(() => {
-    if (window.innerWidth < 1024 && scrollContainerRef.current) {
-      const activeEl = scrollContainerRef.current.querySelector('[data-active="true"]') as HTMLElement;
-      if (activeEl) {
-        const container = scrollContainerRef.current;
-        const scrollPos = activeEl.offsetLeft - (container.offsetWidth / 2) + (activeEl.offsetWidth / 2);
-        setTimeout(() => {
-          container.scrollTo({ left: Math.max(0, scrollPos), behavior: 'smooth' });
-        }, 100);
-      }
-    }
-  }, []);
 
   // Get unique specialties for dropdown
   const uniqueSpecialties = useMemo(() => {
@@ -231,34 +143,8 @@ export default function DoctorDetailsPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-16">
         <div className="flex flex-col lg:flex-row gap-8 xl:gap-12 items-start">
           
-          {/* Left Sidebar Navigation */}
-          {options.length > 0 && (
-            <div className="w-full lg:w-[280px] shrink-0 sticky top-14 lg:top-28 z-30 bg-[#f8fafc] py-2 lg:py-0">
-              <div ref={scrollContainerRef} className="bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 overflow-hidden flex flex-row lg:flex-col overflow-x-auto lg:overflow-x-visible scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden snap-x snap-mandatory">
-                {options.map((option, idx) => (
-                  <Link
-                    key={idx}
-                    href={option.href}
-                    data-active={option.active}
-                    className={"snap-start shrink-0 group flex items-center justify-between px-6 py-4 lg:py-4 text-sm font-bold transition-all duration-300 lg:border-l-4 lg:border-b-0 border-b-4 whitespace-nowrap lg:whitespace-normal " + (
-                      option.active
-                        ? "border-[#007a87] bg-teal-50/40 text-[#007a87]"
-                        : "border-transparent text-slate-600 hover:bg-slate-50 hover:text-[#002b5c] lg:hover:border-slate-200 hover:border-slate-200"
-                    ) + " " + (idx !== options.length - 1 ? "lg:border-b lg:border-b-slate-50" : "") + (idx === 0 ? " lg:rounded-t-[15px]" : "") + (idx === options.length - 1 ? " lg:rounded-b-[15px]" : "")}
-                  >
-                    <span>{option.name}</span>
-                    <ChevronRight 
-                      className={"hidden lg:block w-4 h-4 transition-transform duration-300 " + (
-                        option.active 
-                          ? "text-[#007a87] translate-x-1" 
-                          : "text-slate-300 group-hover:translate-x-1 group-hover:text-[#002b5c]"
-                      )} 
-                    />
-                  </Link>
-                ))}
-              </div>
-            </div>
-          )}
+          {/* Dynamic Sidebar */}
+          <DynamicSidebar categoryName="Doctors & Departments" activeHref="/doctor-details" />
 
           {/* Right Main Content */}
           <div className="w-full flex-1">

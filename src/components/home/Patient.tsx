@@ -15,42 +15,50 @@ import {
 import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 
-export default function PatientJourney() {
-  const [isPaused, setIsPaused] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  const steps = [
+export const defaultPatientJourneyData = {
+  tagline: "Patient Journey",
+  title: 'Your Healthcare <br/> Journey Made <br/> Simple & <span class="text-red-800">Supportive</span>',
+  description: "We ensure a smooth, transparent, and compassionate experience at every phase of your recovery.",
+  steps: [
     {
       title: "Book Appointment",
       description: "Schedule your consultation online or through our support team.",
-      icon: CalendarCheck,
-      color: "bg-blue-50 text-blue-600",
+      iconString: "CalendarCheck",
+      color: "#2563eb",
     },
     {
       title: "Visit Hospital",
       description: "Experience seamless check-in and personalized patient assistance.",
-      icon: Building2,
-      color: "bg-cyan-50 text-cyan-600",
+      iconString: "Building2",
+      color: "#0891b2",
     },
     {
       title: "Consultation",
       description: "Meet our experienced specialists for expert diagnosis and guidance.",
-      icon: Stethoscope,
-      color: "bg-purple-50 text-purple-600",
+      iconString: "Stethoscope",
+      color: "#9333ea",
     },
     {
       title: "Treatment",
       description: "Receive advanced treatment with world-class medical technology.",
-      icon: HeartPulse,
-      color: "bg-red-50 text-red-600",
+      iconString: "HeartPulse",
+      color: "#dc2626",
     },
     {
       title: "Recovery Support",
       description: "Continuous follow-up care and recovery assistance for better healing.",
-      icon: ShieldCheck,
-      color: "bg-emerald-50 text-emerald-600",
-    },
-  ];
+      iconString: "ShieldCheck",
+      color: "#059669",
+    }
+  ]
+};
+
+export default function PatientJourney({ data = defaultPatientJourneyData }: { data?: any }) {
+  if (!data || Object.keys(data).length === 0) data = defaultPatientJourneyData;
+  const steps = data.steps || defaultPatientJourneyData.steps;
+
+  const [isPaused, setIsPaused] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   // Do boxes ko support karne ke liye array ko multiply kiya taaki smooth infinite loop bane
   const extendedSteps = [...steps, ...steps, ...steps];
@@ -105,14 +113,12 @@ export default function PatientJourney() {
           {/* Left Side: Content and Titles */}
           <div className="lg:col-span-5 text-center lg:text-left">
             <p className="mb-3 text-xs font-semibold uppercase tracking-[0.25em] text-[#007a87]">
-              Patient Journey
+              {data.tagline}
             </p>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-slate-900 leading-tight">
-              Your Healthcare <br /> Journey Made <br />
-              Simple & <span className="text-red-800">Supportive</span>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-slate-900 leading-tight" dangerouslySetInnerHTML={{__html: (data.title || "").replace(/\\n/g, '<br/>')}}>
             </h2>
             <p className="mt-4 text-[18px] font-normal leading-[31px] text-slate-600">
-              We ensure a smooth, transparent, and compassionate experience at every phase of your recovery.
+              {data.description}
             </p>
 
 
@@ -136,7 +142,8 @@ export default function PatientJourney() {
               style={{ scrollBehavior: "auto" }}
             >
               {extendedSteps.map((step, index) => {
-                const Icon = step.icon;
+                const Icons = require('lucide-react');
+                const Icon = Icons[step.iconString] || Icons.CalendarCheck;
                 // Original Index detection for 01, 02 numbering loop
                 const originalIndex = (index % steps.length) + 1;
 
@@ -151,7 +158,10 @@ export default function PatientJourney() {
                     </div>
 
                     {/* Left Icon Panel */}
-                    <div className={`flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl ${step.color}`}>
+                    <div 
+                      className={`flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-xl ${step.color?.startsWith('bg-') ? step.color : ''}`}
+                      style={step.color?.startsWith('#') ? { backgroundColor: `${step.color}15`, color: step.color } : {}}
+                    >
                       <Icon className="h-5 w-5" />
                     </div>
 

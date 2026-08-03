@@ -9,6 +9,7 @@ import QuillEditor from "@/components/QuillEditor";
 export default function CourseForm({ initialData, saveAction, col }: { initialData: any, saveAction: (data: FormData) => Promise<void>, col: string }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [uploadingLink, setUploadingLink] = useState(false);
   
   const [formData, setFormData] = useState({
     title: initialData.title || "",
@@ -18,6 +19,7 @@ export default function CourseForm({ initialData, saveAction, col }: { initialDa
     startDate: initialData.startDate || "",
     endDate: initialData.endDate || "",
     gallery: initialData.gallery || [],
+    status: initialData.status !== false,
   });
 
   const handleGalleryChange = (index: number, key: string, value: string) => {
@@ -34,6 +36,32 @@ export default function CourseForm({ initialData, saveAction, col }: { initialDa
     const newGallery = [...formData.gallery];
     newGallery.splice(index, 1);
     setFormData({ ...formData, gallery: newGallery });
+  };
+
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setUploadingLink(true);
+      try {
+        const uploadData = new FormData();
+        uploadData.append("file", file);
+        
+        const res = await fetch("/api/upload", {
+          method: "POST",
+          body: uploadData,
+        });
+        
+        if (!res.ok) throw new Error("Upload failed");
+        
+        const resData = await res.json();
+        setFormData({ ...formData, link: resData.url });
+      } catch (err) {
+        console.error("Error uploading file:", err);
+        alert("Failed to upload file.");
+      } finally {
+        setUploadingLink(false);
+      }
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -53,6 +81,7 @@ export default function CourseForm({ initialData, saveAction, col }: { initialDa
       data.append("link", formData.link);
       data.append("linkText", formData.linkText);
       data.append("content", cleanedContent);
+      data.append("status", formData.status.toString());
       data.append("gallery", JSON.stringify(formData.gallery.filter((g: any) => g.image || g.caption)));
 
       await saveAction(data);
@@ -129,6 +158,31 @@ export default function CourseForm({ initialData, saveAction, col }: { initialDa
               />
             </div>
           </div>
+        </div>
+      </div>
+
+      {/* Status Settings */}
+      <div className="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden group hover:shadow-md transition-shadow duration-300">
+        <div className="bg-slate-50/50 border-b border-slate-100 p-5 md:p-6 flex items-center gap-4">
+          <div className="bg-teal-500/10 p-3 rounded-2xl text-teal-600">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-eye"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+          </div>
+          <div>
+            <h2 className="text-[20px] font-black text-[#002b5c]">Visibility Status</h2>
+            <p className="text-[13px] text-slate-500 font-medium">Determine if this {col === "right" ? "program" : "course"} is publicly visible.</p>
+          </div>
+        </div>
+        <div className="p-6 md:p-8">
+          <label className="relative inline-flex items-center cursor-pointer">
+            <input 
+              type="checkbox" 
+              className="sr-only peer" 
+              checked={formData.status} 
+              onChange={(e) => setFormData({ ...formData, status: e.target.checked })}
+            />
+            <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-[#007a87]/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#007a87]"></div>
+            <span className="ml-3 text-sm font-bold text-slate-700">{formData.status ? "Active" : "Inactive"}</span>
+          </label>
         </div>
       </div>
 
@@ -273,13 +327,28 @@ export default function CourseForm({ initialData, saveAction, col }: { initialDa
                 placeholder="e.g. View PDF Link"
                 className="flex-1 p-2.5 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-rose-500/30 focus:border-rose-500 transition-all duration-200 text-sm"
               />
-              <input
-                type="text"
-                value={formData.link}
-                onChange={(e) => setFormData({ ...formData, link: e.target.value })}
-                placeholder="https://..."
-                className="flex-[2] p-2.5 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-rose-500/30 focus:border-rose-500 transition-all duration-200 text-sm"
-              />
+              <div className="flex-[2] flex gap-2 items-center">
+                <input
+                  type="text"
+                  value={formData.link}
+                  onChange={(e) => setFormData({ ...formData, link: e.target.value })}
+                  placeholder="https://..."
+                  className="flex-1 p-2.5 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-rose-500/30 focus:border-rose-500 transition-all duration-200 text-sm"
+                />
+                <div className="relative shrink-0">
+                  <input 
+                    type="file"
+                    accept=".pdf"
+                    onChange={handleFileUpload}
+                    disabled={uploadingLink}
+                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer disabled:cursor-not-allowed z-10"
+                    title="Upload File"
+                  />
+                  <button type="button" disabled={uploadingLink} className="px-3 py-2 bg-[#007a87] text-white text-xs font-bold rounded-lg hover:bg-[#005f69] transition-colors disabled:opacity-50 relative z-0">
+                    {uploadingLink ? "Uploading..." : "Upload"}
+                  </button>
+                </div>
+              </div>
               <button
                 type="button"
                 onClick={() => setFormData({ ...formData, link: "", linkText: "" })}

@@ -22,6 +22,7 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
       where: { id: resolvedParams.id },
       data: {
         name: data.name,
+        isAppAllowed: data.isAppAllowed,
         specialty: data.specialty,
         qualifications: data.qualifications,
         image: data.image,

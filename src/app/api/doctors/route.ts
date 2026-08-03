@@ -20,6 +20,7 @@ export async function POST(request: Request) {
     const doctor = await prisma.doctor.create({
       data: {
         name: data.name,
+        isAppAllowed: data.isAppAllowed !== undefined ? data.isAppAllowed : true,
         specialty: data.specialty,
         qualifications: data.qualifications,
         image: data.image,

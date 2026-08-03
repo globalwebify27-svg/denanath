@@ -38,6 +38,7 @@ export async function getHomeCourses() {
       now.setHours(0, 0, 0, 0);
       
       const isValidCourse = (c: any) => {
+        if (c.status === false || c.status === "false") return false;
         if (!c.endDate) return true;
         const endDate = new Date(c.endDate);
         if (isNaN(endDate.getTime())) return true;

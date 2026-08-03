@@ -78,11 +78,15 @@ export default function FloatingActionStrip({ setIsSearchOpen }: FloatingActionS
             </div>
             <span className="text-[8px] sm:text-[9px] font-semibold uppercase tracking-[0.05em] text-[#002b5c] group-hover:text-[#9F0712] transition-colors leading-tight">Patient &<br/>Visitors</span>
           </Link>
-          <Link href="/book-appointment" className="flex flex-col items-center gap-1.5 group cursor-pointer w-16 sm:w-20 text-center">
-            <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl flex items-center justify-center group-hover:bg-slate-50 transition-all notranslate" translate="no" data-no-translate="true" aria-hidden="true">
-              <HeartPulse className="w-6 h-6 text-[#002b5c] group-hover:text-[#9F0712] group-hover:scale-110 transition-all duration-300 notranslate" aria-hidden="true" />
+          <Link href="/book-appointment" className="flex flex-col items-center gap-1.5 group cursor-pointer w-16 sm:w-20 text-center relative">
+            <div className="absolute top-0 right-1 sm:right-2 flex h-3.5 w-3.5 z-10">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#c70909] opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-3.5 w-3.5 bg-[#c70909] border-2 border-white"></span>
             </div>
-            <span className="text-[8px] sm:text-[9px] font-semibold uppercase tracking-[0.05em] text-[#002b5c] group-hover:text-[#9F0712] transition-colors leading-tight">Request<br/>Appointment</span>
+            <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl flex items-center justify-center bg-[#c70909]/10 group-hover:bg-[#c70909]/20 transition-all shadow-sm notranslate" translate="no" data-no-translate="true" aria-hidden="true">
+              <HeartPulse className="w-6 h-6 text-[#c70909] group-hover:scale-110 transition-all duration-300 notranslate" aria-hidden="true" />
+            </div>
+            <span className="text-[8px] sm:text-[9px] font-bold uppercase tracking-[0.05em] text-[#c70909] transition-colors leading-tight">Request<br/>Appointment</span>
           </Link>
           <Link href="/patient-portal" className="flex flex-col items-center gap-1.5 group cursor-pointer w-16 sm:w-20 text-center">
             <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl flex items-center justify-center group-hover:bg-slate-50 transition-all notranslate" translate="no" data-no-translate="true" aria-hidden="true">

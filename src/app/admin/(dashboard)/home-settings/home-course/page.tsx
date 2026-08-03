@@ -69,9 +69,8 @@ export default async function AdminHomeCoursePage() {
   return (
     <div className="p-4 md:p-8 max-w-7xl mx-auto pb-32">
       <form id="home-course-form" action={saveData}>
-        {/* Hidden inputs are inside the Client Form */}
+        <HomeCourseClientForm initialData={data} />
       </form>
-      <HomeCourseClientForm initialData={data} />
     </div>
   );
 }

@@ -3,25 +3,20 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Save, HeartPulse, Plus, Trash2 , Search} from "lucide-react";
+import QuillEditor from "@/components/QuillEditor";
 
 export default function TrainingEventsClientForm({ initialData }: { initialData: any }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [data, setData] = useState(initialData);
+  const [data, setData] = useState(() => ({
+    ...initialData,
+    events: initialData.events || [],
+    description: initialData.description !== undefined ? initialData.description : "Join our upcoming medical training sessions, workshops, and international conferences."
+  }));
 
   const handleSeoChange = (field: string, value: string) => {
     setData((prev: any) => ({ ...prev, [field]: value }));
   };
-
-
-  useEffect(() => {
-    if (!data.events) {
-      setData((prev: any) => ({
-        ...prev,
-        events: []
-      }));
-    }
-  }, []);
 
   const handleAddEvent = () => {
     setData((prev: any) => ({
@@ -66,7 +61,7 @@ export default function TrainingEventsClientForm({ initialData }: { initialData:
     return `
       <div class="space-y-6">
         <p class="text-[15px] text-slate-600 leading-relaxed">
-          Join our upcoming medical training sessions, workshops, and international conferences.
+          ${data.description}
         </p>
         
         <div class="flex flex-col relative z-10">
@@ -137,13 +132,21 @@ export default function TrainingEventsClientForm({ initialData }: { initialData:
 
       <div className="space-y-6">
         <div className="flex justify-between items-end mb-6 mt-10">
-          <h2 className="text-[20px] font-black text-[#002b5c]">Events List</h2>
+          <h2 className="text-[20px] font-black text-[#002b5c]">Page Content & Events</h2>
           <button 
             onClick={handleAddEvent}
             className="flex items-center gap-2 px-4 py-2 bg-[#002b5c] text-white text-sm font-bold rounded-xl hover:bg-[#001a38] transition-colors shadow-sm"
           >
             <Plus size={16} /> Add Event
           </button>
+        </div>
+
+        <div className="bg-white border border-slate-100 p-6 rounded-2xl shadow-sm mb-6">
+          <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Introductory Description</label>
+          <QuillEditor 
+            value={data.description || ""}
+            onChange={(val) => setData({ ...data, description: val })}
+          />
         </div>
 
         <div className="space-y-6">
@@ -181,12 +184,9 @@ export default function TrainingEventsClientForm({ initialData }: { initialData:
 
               <div className="w-full">
                 <label className="block text-[11px] font-extrabold text-[#002b5c] uppercase tracking-widest mb-2">Details (HTML or Plain Text)</label>
-                <textarea 
-                  value={(item.details || "").replace(/<br\s*\/?>/gi, '\n')} 
-                  onChange={(e) => handleEventChange(idx, "details", e.target.value.replace(/\n/g, '<br/>'))}
-                  placeholder="e.g. Training organizer: Dr Shweta..."
-                  rows={4}
-                  className="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all text-sm text-slate-700 resize-y"
+                <QuillEditor 
+                  value={item.details || ""} 
+                  onChange={(val) => handleEventChange(idx, "details", val)}
                 />
               </div>
 

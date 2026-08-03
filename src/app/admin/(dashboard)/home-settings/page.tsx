@@ -1,35 +1,78 @@
 import { prisma } from "@/lib/prisma";
 import { Home } from "lucide-react";
-import InlineSeoForm from "@/app/admin/(dashboard)/components/InlineSeoForm";
+import HomeSettingsClient from "./HomeSettingsClient";
+
+// Import defaults
+import { defaultHeroData } from "@/components/home/HeroSection";
+import { defaultAboutData } from "@/components/home/AboutSection";
+import { defaultSpecialtyClinicsData } from "@/components/home/SpecialtyClinics";
+import { defaultClinicalHubData } from "@/components/home/ClinicalHub";
+import { defaultTrustData } from "@/components/home/Trust_Credibility";
+import { defaultDoctorsData } from "@/components/home/Doctors";
+import { defaultPatientJourneyData } from "@/components/home/Patient";
+import { defaultCoursesPricingData } from "@/components/home/CoursesAndPricing";
+import { defaultQuickLinksData } from "@/components/home/QuickLinksCTA";
+import { defaultPatientReviewsData } from "@/components/home/PatientReviews";
+import { defaultPartnersData } from "@/components/home/PartnersAccreditation";
 
 export const dynamic = "force-dynamic";
 
 export default async function AdminHomeSettingsPage() {
-  const setting = await prisma.siteSetting.findUnique({ where: { key: 'page_home' } });
-  let seoData: any = {};
-  try { if (setting) seoData = JSON.parse(setting.value); } catch (e) {}
+  const settingKeys = [
+    'page_home',
+    'home_hero', 
+    'home_about', 
+    'home_specialty_clinics',
+    'home_clinical_hub', 
+    'home_trust', 
+    'home_doctors', 
+    'home_patient_journey', 
+    'home_courses_pricing',
+    'home_quick_links',
+    'home_reviews', 
+    'home_partners'
+  ];
+
+  const settings = await prisma.siteSetting.findMany({ 
+    where: { key: { in: settingKeys } } 
+  });
+  
+  const defaults: Record<string, any> = {
+    'home_hero': defaultHeroData,
+    'home_about': defaultAboutData,
+    'home_specialty_clinics': defaultSpecialtyClinicsData,
+    'home_clinical_hub': defaultClinicalHubData,
+    'home_trust': defaultTrustData,
+    'home_doctors': defaultDoctorsData,
+    'home_patient_journey': defaultPatientJourneyData,
+    'home_courses_pricing': defaultCoursesPricingData,
+    'home_quick_links': defaultQuickLinksData,
+    'home_reviews': defaultPatientReviewsData,
+    'home_partners': defaultPartnersData
+  };
+
+  const settingsData: Record<string, any> = {};
+  for (const key of settingKeys) {
+    const s = settings.find(set => set.key === key);
+    if (s && s.value) {
+      try {
+        const parsed = JSON.parse(s.value);
+        if (Object.keys(parsed).length > 0) {
+           settingsData[key] = parsed;
+        } else {
+           settingsData[key] = defaults[key] || {};
+        }
+      } catch (e) {
+        settingsData[key] = defaults[key] || {};
+      }
+    } else {
+      settingsData[key] = defaults[key] || {};
+    }
+  }
 
   return (
     <div className="p-8 space-y-8">
-      {/* Header Section */}
-      <div className="mb-10 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 bg-white p-6 md:p-10 rounded-3xl shadow-sm border border-slate-100 relative overflow-hidden group">
-        <div className="absolute top-0 left-0 w-2 h-full bg-gradient-to-b from-[#002b5c] to-[#007a87]"></div>
-        <div className="z-10 relative">
-          <h1 className="text-[32px] md:text-[40px] font-black text-[#002b5c] tracking-tight leading-tight mb-2 flex items-center gap-3">
-            Home Settings
-          </h1>
-          <p className="text-[15px] font-medium text-slate-500 max-w-xl leading-relaxed">
-            Manage the SEO metadata and main configurations for the public homepage.
-          </p>
-        </div>
-        
-        {/* subtle background decoration */}
-        <div className="absolute right-0 top-0 opacity-[0.03] pointer-events-none group-hover:scale-110 transition-transform duration-700">
-           <Home size={200} className="text-[#007a87] -mt-10 -mr-10" />
-        </div>
-      </div>
-
-      <InlineSeoForm settingKey="page_home" initialData={seoData} pathsToRevalidate={['/']} />
+      <HomeSettingsClient settingsData={settingsData} />
     </div>
   );
 }

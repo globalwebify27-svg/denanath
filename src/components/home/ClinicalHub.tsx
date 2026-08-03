@@ -1,70 +1,67 @@
+"use client";
+
 import React, { useState } from "react";
 import Link from "next/link";
 import { 
   Globe, FlaskConical, Heart, Home as HomeIcon, ShieldAlert, ChevronRight, ArrowRight, Microscope, Building2 
 } from "lucide-react";
 
-export default function ClinicalHub() {
-  const [activeHub, setActiveHub] = useState(0);
+import * as Icons from 'lucide-react';
 
-  const hubItems = [
+export const defaultClinicalHubData = {
+  tagline: "Clinical Excellence",
+  title: 'Our Specialized <span class="font-semibold">Clinical Hub</span>',
+  description: "Interact with our specialized wings and emergency response desks below to explore custom diagnostics, global assistance, and homecare.",
+  hubItems: [
     {
       id: "01",
       title: "International Desk",
-      Icon: Globe,
+      iconString: "Globe",
+      themeColor: "#007a87",
       activeClass: "border-l-4 border-l-[#007a87] text-[#007a87] bg-white shadow-[0_15px_30px_-10px_rgba(0,122,135,0.12)] border-slate-200",
       inactiveClass: "border-l-4 border-l-transparent text-slate-700 bg-white/70 hover:bg-white hover:text-[#007a87] hover:shadow-md border-slate-100"
     },
     {
       id: "02",
       title: "DMH Diagnostics",
-      Icon: FlaskConical,
+      iconString: "FlaskConical",
+      themeColor: "#2563eb",
       activeClass: "border-l-4 border-l-blue-600 text-blue-600 bg-white shadow-[0_15px_30px_-10px_rgba(37,99,235,0.12)] border-slate-200",
       inactiveClass: "border-l-transparent text-slate-700 bg-white/70 hover:bg-white hover:text-blue-600 hover:shadow-md border-slate-100"
     },
     {
       id: "03",
       title: "Wellness Packages",
-      Icon: Heart,
+      iconString: "Heart",
+      themeColor: "#d97706",
       activeClass: "border-l-4 border-l-amber-600 text-amber-600 bg-white shadow-[0_15px_30px_-10px_rgba(217,119,6,0.12)] border-slate-200",
       inactiveClass: "border-l-transparent text-slate-700 bg-white/70 hover:bg-white hover:text-amber-600 hover:shadow-md border-slate-100"
     },
     {
       id: "04",
-      title: "DMH @ Home",
-      Icon: HomeIcon,
-      activeClass: "border-l-4 border-l-purple-600 text-purple-600 bg-white shadow-[0_15px_30px_-10px_rgba(147,51,234,0.12)] border-slate-200",
-      inactiveClass: "border-l-transparent text-slate-700 bg-white/70 hover:bg-white hover:text-purple-600 hover:shadow-md border-slate-100"
-    },
-    {
-      id: "05",
-      title: "Trauma & ER Desk",
-      Icon: ShieldAlert,
-      activeClass: "border-l-4 border-l-red-600 text-red-600 bg-white shadow-[0_15px_30px_-10px_rgba(220,38,38,0.12)] border-slate-200",
-      inactiveClass: "border-l-transparent text-slate-700 bg-white/70 hover:bg-white hover:text-red-600 hover:shadow-md border-slate-100"
-    },
-    {
-      id: "06",
       title: "Unique Clinics",
-      Icon: Microscope,
+      iconString: "Microscope",
+      themeColor: "#0d9488",
       activeClass: "border-l-4 border-l-teal-600 text-teal-600 bg-white shadow-[0_15px_30px_-10px_rgba(13,148,136,0.12)] border-slate-200",
       inactiveClass: "border-l-transparent text-slate-700 bg-white/70 hover:bg-white hover:text-teal-600 hover:shadow-md border-slate-100"
     },
     {
-      id: "07",
+      id: "05",
       title: "Facilities",
-      Icon: Building2,
+      iconString: "Building2",
+      themeColor: "#4f46e5",
       activeClass: "border-l-4 border-l-indigo-600 text-indigo-600 bg-white shadow-[0_15px_30px_-10px_rgba(79,70,229,0.12)] border-slate-200",
       inactiveClass: "border-l-transparent text-slate-700 bg-white/70 hover:bg-white hover:text-indigo-600 hover:shadow-md border-slate-100"
     }
-  ];
-
-  const hubDetails = [
+  ],
+  hubDetails: [
     {
       title: "International Desk",
       image: "/images/unnamed (9).webp",
       description: "Dedicated global support tailored for international patients. We provide custom medical itineraries, language translation services, visa coordination, and luxury lodging guides to ensure a comfortable stay.",
-      Icon: Globe,
+      iconString: "Globe",
+      themeColor: "#007a87",
+      featuresHeader: "Key Benefits & Protocols",
       features: [
         "Personalized multi-lingual support coordinators",
         "Assistance with visa processing & travel logistics",
@@ -85,7 +82,9 @@ export default function ClinicalHub() {
       title: "DMH Diagnostics",
       image: "/images/hospital (2).webp",
       description: "NABL-accredited diagnostic laboratory and imaging services utilizing high-precision medical machinery. Book clinical pathology, advanced radiology, MRI, CT scans, and other profiles with instant online report retrieval.",
-      Icon: FlaskConical,
+      iconString: "FlaskConical",
+      themeColor: "#2563eb",
+      featuresHeader: "Key Benefits & Protocols",
       features: [
         "Advanced high-precision laboratories and imaging",
         "Online test booking with secure patient login",
@@ -106,7 +105,9 @@ export default function ClinicalHub() {
       title: "Wellness Packages",
       image: "/images/unnamed (10).webp",
       description: "Take charge of your health with preventive care screening programs. We offer multi-profile physicals, age-custom checkups, corporate screening packages, and dedicated wellness consultations.",
-      Icon: Heart,
+      iconString: "Heart",
+      themeColor: "#d97706",
+      featuresHeader: "Key Benefits & Protocols",
       features: [
         "Executive & corporate health checkup programs",
         "Comprehensive diagnostics & physical consultations",
@@ -124,52 +125,12 @@ export default function ClinicalHub() {
       }
     },
     {
-      title: "DMH @ Home",
-      image: "/images/unnamed (15).webp",
-      description: "Access high-quality clinical care from the comfort of your home. Services include experienced visiting nurses, dedicated physical recovery therapy, home blood collection, and professional elder care assistance.",
-      Icon: HomeIcon,
-      features: [
-        "Post-operative care & visiting nurses",
-        "Home collection for all diagnostics & lab profiles",
-        "Elder care assistance & physical therapy support"
-      ],
-      ctaText: "Book Home Services",
-      ctaLink: "/facilities",
-      colorTheme: {
-        border: "border-purple-100",
-        bg: "bg-purple-50/30",
-        iconPod: "bg-purple-50 text-purple-600",
-        textAccent: "text-purple-600",
-        bullet: "bg-purple-500",
-        btn: "bg-purple-600 hover:bg-purple-700 focus:ring-purple-500"
-      }
-    },
-    {
-      title: "Trauma & ER Desk",
-      image: "/images/hospita6.webp",
-      description: "A state-of-the-art level-1 emergency response department operating 24 hours a day. Outfitted with cardiac monitors, ventilators, emergency response vehicles, and specialized trauma surgeons.",
-      Icon: ShieldAlert,
-      features: [
-        "24/7 direct access line to trauma department",
-        "Advanced cardiac care & acute stroke protocols",
-        "Quick ambulance dispatch & emergency response team"
-      ],
-      ctaText: "Emergency Hotline: +91 20 4015 1515",
-      ctaLink: "tel:+912040151515",
-      colorTheme: {
-        border: "border-red-100",
-        bg: "bg-red-50/30",
-        iconPod: "bg-red-50 text-red-600",
-        textAccent: "text-red-600",
-        bullet: "bg-red-500",
-        btn: "bg-red-600 hover:bg-red-700 focus:ring-red-500"
-      }
-    },
-    {
       title: "Unique Clinics",
       image: "/images/unnamed (16).webp",
       description: "Dedicated specialty clinics providing focused and comprehensive care for complex and rare conditions, staffed by our most experienced multi-disciplinary teams.",
-      Icon: Microscope,
+      iconString: "Microscope",
+      themeColor: "#0d9488",
+      featuresHeader: "Key Benefits & Protocols",
       features: [
         "Specialized voice and swallow clinics",
         "Comprehensive pediatric and adult obesity management",
@@ -190,7 +151,9 @@ export default function ClinicalHub() {
       title: "Facilities",
       image: "/images/unnamed (18).webp",
       description: "Our world-class infrastructure is designed with a patient-first approach, combining cutting-edge medical technology with comforting, state-of-the-art healing environments.",
-      Icon: Building2,
+      iconString: "Building2",
+      themeColor: "#4f46e5",
+      featuresHeader: "Key Benefits & Protocols",
       features: [
         "Advanced modular operation theaters with latest tech",
         "Spacious, luxury private rooms and deluxe suites",
@@ -207,10 +170,20 @@ export default function ClinicalHub() {
         btn: "bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500"
       }
     }
-  ];
+  ]
+};
+
+export default function ClinicalHub({ data = defaultClinicalHubData }: { data?: any }) {
+  if (!data || Object.keys(data).length === 0) data = defaultClinicalHubData;
+  const [activeHub, setActiveHub] = useState(0);
+  const [hoveredHub, setHoveredHub] = useState<number | null>(null);
+
+  const hubItems = data.hubItems || defaultClinicalHubData.hubItems;
+
+  const hubDetails = data.hubDetails || defaultClinicalHubData.hubDetails;
 
   const currentHub = hubDetails[activeHub];
-  const ShowcaseIcon = currentHub.Icon;
+  const ShowcaseIcon = (Icons as any)[currentHub.iconString] || Icons.Globe;
   const theme = currentHub.colorTheme;
 
   return (
@@ -229,32 +202,56 @@ export default function ClinicalHub() {
         {/* Centered Modern Header */}
         <div className="text-center max-w-3xl mx-auto mb-6 md:mb-16">
           <span className="px-3.5 py-1.5 rounded-full bg-white text-[#007a87] text-[10px] font-bold tracking-widest uppercase border border-slate-200 shadow-sm">
-            Clinical Excellence
+            {data.tagline}
           </span>
-          <h2 className="text-3xl sm:text-4xl font-light text-[#002b5c] tracking-tight mt-6">
-            Our Specialized <span className="font-semibold">Clinical Hub</span>
-          </h2>
-          <p className="text-slate-600 text-base sm:text-lg font-normal leading-[31px] mt-4">
-            Interact with our specialized wings and emergency response desks below to explore custom diagnostics, global assistance, and homecare.
-          </p>
+          <h2 className="text-3xl sm:text-4xl font-light text-[#002b5c] tracking-tight mt-6" dangerouslySetInnerHTML={{__html: data.title}}></h2>
+          <p className="text-slate-600 text-base sm:text-lg font-normal leading-[31px] mt-4">{data.description}</p>
         </div>
 
         {/* Interactive Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-stretch">
           
           {/* Left Column: Vertical Control Desk */}
+          {/* Left Navigation Tabs */}
           <div className="lg:col-span-4 flex flex-col gap-2 justify-center">
-            {hubItems.map((hub, idx) => {
-              const HubIcon = hub.Icon;
+            {hubItems.map((hub: any, idx: number) => {
+              const HubIcon = (Icons as any)[hub.iconString] || Icons.Globe;
               const isActive = activeHub === idx;
+              const isHovered = hoveredHub === idx;
+              const themeColor = hub.themeColor;
+              
+              let dynamicStyle: React.CSSProperties = {};
+              
+              if (themeColor) {
+                if (isActive) {
+                  dynamicStyle = {
+                    borderLeftColor: themeColor,
+                    color: themeColor,
+                    backgroundColor: 'white',
+                    boxShadow: `0 15px 30px -10px ${themeColor}20`,
+                    borderLeftWidth: '4px'
+                  };
+                } else {
+                   dynamicStyle = {
+                    borderLeftColor: 'transparent',
+                    color: isHovered ? themeColor : '#334155',
+                    backgroundColor: isHovered ? 'white' : 'rgba(255,255,255,0.7)',
+                    boxShadow: isHovered ? '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)' : 'none',
+                    borderLeftWidth: '4px'
+                   };
+                }
+              }
+
               return (
                 <button
                   key={hub.id}
                   onClick={() => setActiveHub(idx)}
-                  onMouseEnter={() => setActiveHub(idx)}
-                  className={`w-full text-left flex items-center justify-between px-5 py-[15px] rounded-2xl border transition-all duration-300 ${
-                    isActive ? hub.activeClass : hub.inactiveClass
+                  onMouseEnter={() => setHoveredHub(idx)}
+                  onMouseLeave={() => setHoveredHub(null)}
+                  className={`w-full text-left flex items-center justify-between px-5 py-[15px] rounded-2xl border transition-all duration-300 transform-gpu ${
+                    themeColor ? (isActive ? 'border-slate-200' : 'border-slate-100') : (isActive ? hub.activeClass : hub.inactiveClass)
                   }`}
+                  style={dynamicStyle}
                 >
                   <div className="flex items-center gap-4">
                     <span className={`text-[10px] font-bold tracking-widest ${isActive ? "opacity-100" : "text-slate-400"}`}>
@@ -273,7 +270,7 @@ export default function ClinicalHub() {
 
           {/* Right Column: Premium Dynamic Detail Showcase with Split Image Layout */}
           <div className="lg:col-span-8">
-            <div className={`h-full border border-slate-200 bg-white rounded-3xl p-6 sm:p-8 flex flex-col md:flex-row gap-8 items-stretch transition-all duration-500 relative overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.04)]`}>
+            <div className={`h-full border border-slate-200 bg-white rounded-3xl p-6 sm:p-8 flex flex-col md:flex-row gap-8 items-stretch transition-all duration-300 relative overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.04)] min-h-[380px] transform-gpu`}>
               
               {/* Subtle decorative grid background inside the card */}
               <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808003_1px,transparent_1px),linear-gradient(to_bottom,#80808003_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none" />
@@ -282,8 +279,11 @@ export default function ClinicalHub() {
               <div className="relative z-10 flex-1 flex flex-col justify-start">
                 <div className="space-y-3">
                   <div className="flex items-center gap-4">
-                    <div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${theme.iconPod} shadow-inner`}>
-                      <ShowcaseIcon className="w-5 h-5 animate-pulse" />
+                    <div 
+                      className={`w-12 h-12 rounded-2xl flex items-center justify-center shadow-inner ${currentHub.themeColor ? '' : theme?.iconPod}`}
+                      style={currentHub.themeColor ? { backgroundColor: `${currentHub.themeColor}15`, color: currentHub.themeColor } : {}}
+                    >
+                      <ShowcaseIcon className="w-5 h-5" />
                     </div>
                     <div>
                       <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Selected Department</span>
@@ -291,23 +291,28 @@ export default function ClinicalHub() {
                     </div>
                   </div>
 
-                  <p className="text-slate-600 text-base sm:text-lg font-normal leading-[31px]">
-                    {currentHub.description}
-                  </p>
+                  <div 
+                    className="text-slate-600 text-base sm:text-lg font-normal leading-[31px] prose prose-slate prose-p:leading-[31px] max-w-none"
+                    dangerouslySetInnerHTML={{ __html: currentHub.description }}
+                  />
 
                   <div className="space-y-3 pt-1">
-                    <h4 className="text-[10px] font-bold text-[#002b5c] uppercase tracking-wider">Key Benefits & Protocols</h4>
+                    <h4 className="text-[10px] font-bold text-[#002b5c] uppercase tracking-wider">
+                      {currentHub.featuresHeader || "Key Benefits & Protocols"}
+                    </h4>
                     <ul className="space-y-2">
-                      {currentHub.features.map((feature, fIdx) => (
+                      {currentHub.features.map((feature: string, fIdx: number) => (
                         <li key={fIdx} className="flex items-start gap-2.5 text-slate-600 text-base sm:text-lg font-normal leading-[31px]">
-                          <span className={`w-1.5 h-1.5 rounded-full mt-2.5 flex-shrink-0 ${theme.bullet}`} />
+                          <span 
+                            className={`w-1.5 h-1.5 rounded-full mt-2.5 flex-shrink-0 ${currentHub.themeColor ? '' : theme?.bullet}`} 
+                            style={currentHub.themeColor ? { backgroundColor: currentHub.themeColor } : {}}
+                          />
                           <span>{feature}</span>
                         </li>
                       ))}
                     </ul>
                   </div>
                 </div>
-
 
               </div>
 
@@ -316,7 +321,7 @@ export default function ClinicalHub() {
                 <img 
                   src={currentHub.image} 
                   alt={currentHub.title}
-                  className="w-full h-full object-cover object-center absolute inset-0 transition-transform duration-700 hover:scale-105"
+                  className="w-full h-full object-cover object-center absolute inset-0 transition-transform duration-500 hover:scale-105"
                 />
                 {/* Subtle brand overlay on image */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />

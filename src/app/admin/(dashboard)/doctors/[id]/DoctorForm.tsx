@@ -77,9 +77,9 @@ export default function DoctorForm({ doctor, id }: { doctor: any; id: string }) 
     qualifications: doctor?.qualifications || "",
     image: doctor?.image || "",
     timings: safeParse(doctor?.timings),
-    education: safeParse(doctor?.education),
-    training: safeParse(doctor?.training),
-    experience: safeParse(doctor?.experience),
+    education: safeParse(doctor?.education).map((e: any) => typeof e === 'string' ? { degree: e, collegeName: '', year: '' } : e),
+    training: safeParse(doctor?.training).map((t: any) => typeof t === 'string' ? { trainingName: t, institute: '', duration: '', completionYear: '' } : t),
+    experience: safeParse(doctor?.experience).map((e: any) => typeof e === 'string' ? { specialist: e, organization: '', duration: '', completionYear: '' } : e),
     publications: safeParse(doctor?.publications).map((p: any) => typeof p === 'string' ? { title: p, link: "" } : p),
     seoMetaTitle: doctor?.seoMetaTitle || "",
     seoMetaDescription: doctor?.seoMetaDescription || "",
@@ -102,6 +102,19 @@ export default function DoctorForm({ doctor, id }: { doctor: any; id: string }) 
   const handleArrayRemove = (field: string, index: number) => {
     const newArray = [...formData[field as keyof typeof formData] as string[]];
     newArray.splice(index, 1);
+    setFormData({ ...formData, [field]: newArray });
+  };
+
+  const handleObjectArrayAdd = (field: string, template: any) => {
+    setFormData({
+      ...formData,
+      [field]: [...(formData[field as keyof typeof formData] as any[]), template],
+    });
+  };
+
+  const handleObjectArrayChange = (field: string, index: number, key: string, value: string) => {
+    const newArray = [...formData[field as keyof typeof formData] as any[]];
+    newArray[index] = { ...newArray[index], [key]: value };
     setFormData({ ...formData, [field]: newArray });
   };
 
@@ -192,27 +205,40 @@ export default function DoctorForm({ doctor, id }: { doctor: any; id: string }) 
     }
   };
 
-  const renderStringArrayField = (label: string, field: "education" | "training" | "experience") => (
+  const renderObjectArrayField = (label: string, field: string, columns: { key: string, placeholder: string }[], template: any) => (
     <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 mb-6">
       <div className="flex justify-between items-center mb-4">
         <h3 className="text-lg font-semibold text-gray-800">{label}</h3>
         <button
           type="button"
-          onClick={() => handleArrayAdd(field)}
+          onClick={() => handleObjectArrayAdd(field, template)}
           className="flex items-center gap-1.5 px-4 py-2.5 bg-[#003360] text-white hover:bg-[#002545] rounded-xl text-xs font-bold transition-all duration-300 shadow-sm hover:shadow"
         >
           <Plus size={14} /> Add Item
         </button>
       </div>
-      {formData[field].map((item: string, index: number) => (
-        <div key={index} className="flex gap-2 mb-2">
-          <input
-            type="text"
-            value={item}
-            onChange={(e) => handleArrayChange(field, index, e.target.value)}
-            className="flex-1 p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            placeholder={`Enter ${label.toLowerCase()} item...`}
-          />
+      {(formData[field as keyof typeof formData] as any[]).length > 0 && (
+        <div className="hidden sm:flex gap-2 mb-2 px-3 text-sm font-bold text-gray-700 border-b border-gray-200 pb-2">
+          {columns.map(col => (
+            <div key={col.key} className="flex-1">
+              {col.placeholder}
+            </div>
+          ))}
+          <div className="w-[36px] text-center shrink-0">Action</div>
+        </div>
+      )}
+      {(formData[field as keyof typeof formData] as any[]).map((item: any, index: number) => (
+        <div key={index} className="flex flex-col sm:flex-row gap-2 mb-2 bg-gray-50 p-3 rounded-lg border border-gray-200">
+          {columns.map(col => (
+            <input
+              key={col.key}
+              type="text"
+              placeholder={col.placeholder}
+              value={item[col.key] || ''}
+              onChange={(e) => handleObjectArrayChange(field, index, col.key, e.target.value)}
+              className="w-full sm:flex-1 p-2 border border-gray-300 rounded-lg text-sm"
+            />
+          ))}
           <button
             type="button"
             onClick={() => handleArrayRemove(field, index)}
@@ -222,7 +248,7 @@ export default function DoctorForm({ doctor, id }: { doctor: any; id: string }) 
           </button>
         </div>
       ))}
-      {formData[field].length === 0 && (
+      {(formData[field as keyof typeof formData] as any[]).length === 0 && (
         <p className="text-gray-500 text-sm italic">No items added yet.</p>
       )}
     </div>
@@ -370,11 +396,19 @@ export default function DoctorForm({ doctor, id }: { doctor: any; id: string }) 
             <Plus size={14} /> Add Timing
           </button>
         </div>
+        {formData.timings.length > 0 && (
+          <div className="hidden sm:flex gap-2 mb-2 px-3 text-sm font-bold text-gray-700 border-b border-gray-200 pb-2">
+            <div className="flex-1">Speciality</div>
+            <div className="flex-1">Day</div>
+            <div className="flex-1">Time</div>
+            <div className="w-[36px] text-center shrink-0">Action</div>
+          </div>
+        )}
         {formData.timings.map((timing: any, index: number) => (
           <div key={index} className="flex flex-col sm:flex-row gap-2 mb-3 bg-gray-50 p-3 rounded-lg border border-gray-200">
             <input
               type="text"
-              placeholder="Branch"
+              placeholder="Speciality"
               value={timing.branch}
               onChange={(e) => handleTimingChange(index, "branch", e.target.value)}
               className="w-full sm:flex-1 p-2 border border-gray-300 rounded-lg text-sm"
@@ -407,9 +441,9 @@ export default function DoctorForm({ doctor, id }: { doctor: any; id: string }) 
         )}
       </div>
 
-      {renderStringArrayField("Education", "education")}
-      {renderStringArrayField("Training", "training")}
-      {renderStringArrayField("Experience", "experience")}
+      {renderObjectArrayField("Education", "education", [{key: "degree", placeholder: "Degree"}, {key: "collegeName", placeholder: "College Name"}, {key: "year", placeholder: "Year"}], {degree: "", collegeName: "", year: ""})}
+      {renderObjectArrayField("Training", "training", [{key: "trainingName", placeholder: "Training Name"}, {key: "institute", placeholder: "Institute"}, {key: "duration", placeholder: "Duration"}, {key: "completionYear", placeholder: "Completion Year"}], {trainingName: "", institute: "", duration: "", completionYear: ""})}
+      {renderObjectArrayField("Experience", "experience", [{key: "specialist", placeholder: "Specialist"}, {key: "organization", placeholder: "Organization"}, {key: "duration", placeholder: "Duration"}, {key: "completionYear", placeholder: "Completion Year"}], {specialist: "", organization: "", duration: "", completionYear: ""})}
 
       <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 mb-6">
         <div className="flex items-center justify-between mb-4 gap-2">

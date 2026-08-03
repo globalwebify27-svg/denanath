@@ -8,12 +8,17 @@ datasource db {
 }
 
 model Doctor {
-  id             String   @id @default(cuid())
-  name           String
-  image          String?  @db.LongText
-  qualifications String?
-  specialty      String?
-  timings        String?  @db.LongText
+  id               String   @id @default(cuid())
+  dmhDoctorId      String?  @unique
+  dmhSpecialityId  String?
+  dmhServicePointId String?
+  dmhServiceCenterId String?
+  isAppAllowed     Boolean  @default(true)
+  name             String
+  image            String?  @db.LongText
+  qualifications   String?
+  specialty        String?
+  timings          String?  @db.LongText
   education      String?  @db.LongText
   training       String?  @db.LongText
   experience         String?  @db.LongText
@@ -66,4 +71,18 @@ model FormSubmission {
   files     String?  @db.LongText
   status    String   @default("NEW")
   createdAt DateTime @default(now())
+}
+
+model DynamicPage {
+  id                 String   @id @default(cuid())
+  title              String
+  slug               String   @unique
+  navbarMenu         String   // E.g., "About Us", "Patient & Visitors", etc.
+  content            String   @db.LongText
+  status             Boolean  @default(true)
+  seoMetaTitle       String?
+  seoMetaDescription String?  @db.LongText
+  seoKeywords        String?  @db.LongText
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
 }

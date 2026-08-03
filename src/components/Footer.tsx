@@ -21,7 +21,7 @@ export default function Footer({ latestEvent }: { latestEvent?: any }) {
 
       {/* 1. Primary Footer Grid */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 relative z-10">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1.8fr_1fr_1fr_1.4fr] gap-12 lg:gap-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1.5fr_0.7fr_0.8fr_0.8fr_1.3fr] gap-6 lg:gap-8 xl:gap-9">
           
           {/* Logo & Brand Column */}
           <div className="space-y-6">
@@ -74,6 +74,28 @@ export default function Footer({ latestEvent }: { latestEvent?: any }) {
             </div>
           </div>
 
+          {/* Events / News Column (Placed between Logo and Quick Links) */}
+          <div className="space-y-6">
+            <h4 className="text-white font-bold text-xs uppercase tracking-[0.2em] relative">
+              Events / News
+              <span className="absolute -bottom-2 left-0 w-8 h-[2px] bg-[#a7ffeb] rounded-full" />
+            </h4>
+            <div className="pt-2">
+              <Link href="/events" className="group flex flex-col gap-2.5 max-w-[140px]">
+                <div className="w-full h-14 rounded-lg overflow-hidden border border-white/20 bg-black/20 shrink-0">
+                  <img 
+                    src={latestEvent && latestEvent.gallery && latestEvent.gallery.length > 0 ? latestEvent.gallery[0] : "/images/unnamed (7).webp"} 
+                    alt={latestEvent?.title || "Diabetes Nursing Conference 2026"} 
+                    className="w-full h-full object-cover opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-300"
+                  />
+                </div>
+                <span className="text-[#b2dfdb] group-hover:text-[#a7ffeb] transition-colors text-xs font-medium leading-snug line-clamp-3" title={latestEvent?.title || "Diabetes Nursing Conference 2026"}>
+                  {latestEvent?.title || "Diabetes Nursing Conference 2026"}
+                </span>
+              </Link>
+            </div>
+          </div>
+
           {/* Quick Channels Column 1 */}
           <div className="space-y-6">
             <h4 className="text-white font-bold text-xs uppercase tracking-[0.2em] relative">
@@ -114,7 +136,7 @@ export default function Footer({ latestEvent }: { latestEvent?: any }) {
                 { label: "Pharmacy", href: "/pharmacy" },
                 { label: "Ambulance", href: "/ambulance" },
                 { label: "Blood Bank", href: "/blood-bank" },
-                { label: "Career", href: "/careers" },
+                { label: "Careers", href: "/careers" },
                 { label: "Contact Us", href: "/contact-us" },
                 { label: "OPD Schedule", href: "/opd-schedule" },
                 { label: "EC Approval", href: "/ec-approval" },
@@ -166,26 +188,6 @@ export default function Footer({ latestEvent }: { latestEvent?: any }) {
                   <ExternalLink className="w-4 h-4 text-[#a7ffeb] group-hover/btn:scale-110 transition-transform" />
                   <span>Get Campus Directions</span>
                 </a>
-              </div>
-
-              {/* Events / News Section */}
-              <div className="pt-8">
-                <h4 className="text-white font-medium text-[15px] mb-4">
-                  Events / News
-                </h4>
-                <div className="flex items-center gap-4">
-                                    <div className="w-[70px] h-[36px] shrink-0 rounded-md overflow-hidden border border-white/80 bg-black/20">
-                    <img 
-                      src={latestEvent && latestEvent.gallery && latestEvent.gallery.length > 0 ? latestEvent.gallery[0] : "/images/unnamed (7).webp"} 
-                      alt={latestEvent?.title || "Diabetes Nursing Conference 2026"} 
-                      className="w-full h-full object-cover opacity-90 hover:opacity-100 transition-opacity"
-                    />
-                  </div>
-                  <Link href="/events" className="text-[#b2dfdb] hover:text-[#a7ffeb] transition-colors text-[13px] leading-snug line-clamp-2" title={latestEvent?.title || "Diabetes Nursing Conference 2026"}>
-                    {latestEvent?.title || "Diabetes Nursing Conference 2026"}
-                  </Link>
-                </div>
-                <div className="mt-5 border-b border-dashed border-white/20 w-11/12"></div>
               </div>
             </div>
           </div>

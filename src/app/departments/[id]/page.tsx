@@ -5,7 +5,6 @@ import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import LightboxWrapper from "@/components/LightboxWrapper";
 import VideoPlayer from "@/components/VideoPlayer";
-import ClientDoctorModal from "@/components/ClientDoctorModal";
 import * as cheerio from "cheerio";
 import { DMH_API_CONFIG } from "@/lib/dmhApi";
 
@@ -96,13 +95,13 @@ export default async function DepartmentDetailsPage({
 
               return `
                 <div class="p-5 bg-white border border-slate-200 rounded-2xl flex items-center justify-between gap-4 shadow-sm hover:shadow-md transition-shadow">
-                  <div class="flex items-center gap-4 cursor-pointer doctor-modal-link" data-doctor-id="${doc.doctor_id || doc.id || ''}">
+                  <a href="/doctor-details/${doc.doctor_id || doc.id || ''}" class="flex items-center gap-4 cursor-pointer flex-1">
                     <div class="w-14 h-14 rounded-2xl bg-teal-50 border border-teal-100 flex items-center justify-center text-[#007a87] font-extrabold text-base shrink-0">
                       ${doc.doctorImage ? `<img src="${doc.doctorImage}" alt="${cleanName}" class="w-full h-full object-cover rounded-2xl" />` : initials}
                     </div>
                     <div class="text-lg font-bold text-[#002b5c] m-0 leading-snug hover:text-[#007a87] transition-colors">Dr. ${cleanName}</div>
-                  </div>
-                  <a href="/doctor-details?doctor_id=${doc.doctor_id || doc.id || ''}" data-doctor-id="${doc.doctor_id || doc.id || ''}" class="doctor-modal-link px-4 py-2 bg-teal-50 hover:bg-teal-100 text-[#007a87] rounded-xl text-xs font-bold transition-colors shrink-0 whitespace-nowrap">
+                  </a>
+                  <a href="/doctor-details/${doc.doctor_id || doc.id || ''}" class="px-4 py-2 bg-teal-50 hover:bg-teal-100 text-[#007a87] rounded-xl text-xs font-bold transition-colors shrink-0 whitespace-nowrap">
                     View Profile
                   </a>
                 </div>
@@ -493,26 +492,26 @@ export default async function DepartmentDetailsPage({
            }
         }
 
-        // Apply beautiful grid UI to the section itself
+        // Apply beautiful compact grid UI to the section itself
         $(section).addClass('mb-12');
         const gridContainer = $(section).find('div.grid');
         if (gridContainer.length > 0) {
-           gridContainer.addClass('grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8');
+           gridContainer.addClass('grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 sm:gap-6');
         } else {
            // Wrap children in a grid if they aren't already
            const children = $(section).children('div');
            if (children.length > 0) {
-               children.wrapAll('<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-6"></div>');
+               children.wrapAll('<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 sm:gap-6 mt-6"></div>');
            }
         }
         
         // Re-add the title
         $(section).prepend(`<h3 class="text-xl font-bold text-[#002b5c] mb-6 border-b pb-2">${title}</h3>`);
         
-        // The original formatting for the cards themselves
+        // Compact formatting for the cards themselves
         $(section).find('div.bg-slate-50, div.bg-white').each((_, card) => {
            $(card).removeClass('bg-slate-50 p-4 border-slate-200')
-                  .addClass('bg-white overflow-hidden shadow-sm border border-slate-100 p-0 flex flex-col h-full rounded-2xl');
+                  .addClass('bg-white overflow-hidden shadow-sm border border-slate-100 p-0 flex flex-col h-full rounded-xl');
            
            const img = $(card).find('img');
            const textP = $(card).find('p');
@@ -522,22 +521,22 @@ export default async function DepartmentDetailsPage({
            } else if (img.length) {
               const hasName = textP.length > 0 && textP.text().trim().length > 0;
               
-              // Apply standard gallery image size and crop regardless of whether it has a name
-              img.addClass('!m-0 !shadow-none !w-full !object-cover !h-[200px] md:!h-[240px]');
+              // Compact gallery image size
+              img.addClass('!m-0 !shadow-none !w-full !object-cover !h-[135px] sm:!h-[155px] md:!h-[165px]');
 
               if (hasName) {
-                 img.addClass('!rounded-t-2xl !rounded-b-none');
-                 textP.addClass('!mb-0 !mt-0 text-[#002b5c] font-bold text-sm md:text-base break-words text-center w-full');
+                 img.addClass('!rounded-t-xl !rounded-b-none');
+                 textP.addClass('!mb-0 !mt-0 text-[#002b5c] font-bold text-xs md:text-sm break-words text-center w-full');
                  
-                 // Only wrap if it's not already inside a p-4 div
-                 if (!textP.parent().hasClass('p-4')) {
-                     textP.wrap('<div class="p-3 md:p-4 mt-auto w-full bg-white flex items-center justify-center border-t border-slate-50 overflow-hidden"></div>');
+                 // Only wrap if it's not already inside a p-2/p-3 div
+                 if (!textP.parent().hasClass('p-2') && !textP.parent().hasClass('p-3')) {
+                     textP.wrap('<div class="p-2 md:p-3 mt-auto w-full bg-white flex items-center justify-center border-t border-slate-50 overflow-hidden"></div>');
                  } else {
-                     textP.parent().removeClass('p-4').addClass('p-3 md:p-4 mt-auto bg-white border-t border-slate-50 text-center flex items-center justify-center overflow-hidden w-full');
+                     textP.parent().removeClass('p-4').addClass('p-2 md:p-3 mt-auto bg-white border-t border-slate-50 text-center flex items-center justify-center overflow-hidden w-full');
                  }
               } else {
-                 $(card).removeClass('p-0').addClass('p-2 md:p-2.5');
-                 img.addClass('!rounded-xl');
+                 $(card).removeClass('p-0').addClass('p-1.5 md:p-2');
+                 img.addClass('!rounded-lg');
                  
                  if (textP.length > 0) {
                      if (textP.parent().hasClass('p-4')) {
@@ -797,21 +796,21 @@ export default async function DepartmentDetailsPage({
             <ChevronRight className="w-3.5 h-3.5 shrink-0" />
             <span className="text-white truncate">{department.name}</span>
           </div>
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white tracking-tight break-words" style={{ wordBreak: 'break-word' }}>
+          <h1 className="text-[36px] md:text-[48px] leading-tight font-extrabold text-white tracking-tight break-words" style={{ wordBreak: 'break-word' }}>
             {department.name}
           </h1>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-16">
-        <div className="flex flex-col lg:flex-row gap-8 xl:gap-12 items-start">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-10">
+        <Link href="/departments" className="inline-flex items-center gap-2 text-[#007a87] hover:text-[#002b5c] font-bold mb-6 transition-colors">
+          <ArrowLeft className="w-4 h-4" /> Back to Specialties
+        </Link>
+
+        <div className="flex flex-col lg:flex-row gap-6 xl:gap-8 items-start">
           
           {/* Main Content */}
-          <div className="w-full flex-1">
-            <Link href="/departments" className="inline-flex items-center gap-2 text-[#007a87] hover:text-[#002b5c] font-bold mb-8 transition-colors">
-              <ArrowLeft className="w-4 h-4" /> Back to Specialties
-            </Link>
-
+          <div className="w-full flex-1 min-w-0">
             <div className="bg-white rounded-3xl shadow-[0_8px_40px_rgb(0,0,0,0.03)] border border-slate-100/60 p-6 sm:p-10">
               
               <div className="mb-10 flex items-start justify-between flex-wrap gap-4">
@@ -820,7 +819,7 @@ export default async function DepartmentDetailsPage({
                     <Stethoscope className="w-4 h-4" />
                     <span>Specialty Details</span>
                   </div>
-                  <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#002b5c] mb-6 tracking-tight break-words" style={{ wordBreak: 'break-word' }}>
+                  <h2 className="text-[30px] md:text-[30px] leading-tight font-extrabold text-[#002b5c] mb-6 tracking-tight break-words" style={{ wordBreak: 'break-word' }}>
                     {department.name}
                   </h2>
                   <div className="w-20 h-1.5 bg-[#007a87] rounded-full"></div>
@@ -847,9 +846,11 @@ export default async function DepartmentDetailsPage({
                 [&_.department-facilities-section_ul]:col-span-full [&_.department-facilities-section_ul]:grid [&_.department-facilities-section_ul]:grid-cols-1 [&_.department-facilities-section_ul]:md:grid-cols-2 [&_.department-facilities-section_ul]:lg:grid-cols-3 [&_.department-facilities-section_ul]:gap-4 [&_.department-facilities-section_ul]:list-none [&_.department-facilities-section_ul]:pl-0
                 [&_.department-facilities-section_li]:bg-teal-50 [&_.department-facilities-section_li]:p-4 [&_.department-facilities-section_li]:rounded-xl [&_.department-facilities-section_li]:text-center [&_.department-facilities-section_li]:font-semibold [&_.department-facilities-section_li]:text-[#007a87] [&_.department-facilities-section_li]:shadow-sm
                 
-                [&_.facilities-images-grid>div]:!p-0 [&_.facilities-images-grid>div]:!bg-white [&_.facilities-images-grid>div]:!border-slate-100 [&_.facilities-images-grid>div]:overflow-hidden [&_.facilities-images-grid>div]:flex [&_.facilities-images-grid>div]:flex-col
-                [&_.facilities-images-grid_img]:!m-0 [&_.facilities-images-grid_img]:!w-full [&_.facilities-images-grid_img]:!h-[200px] md:[&_.facilities-images-grid_img]:!h-[240px] [&_.facilities-images-grid_img]:!object-cover [&_.facilities-images-grid_img]:!rounded-t-xl [&_.facilities-images-grid_img]:!rounded-b-none [&_.facilities-images-grid_img]:!shadow-none
-                [&_.facilities-images-grid_span]:block [&_.facilities-images-grid_span]:p-4 [&_.facilities-images-grid_span]:!bg-white [&_.facilities-images-grid_span]:w-full [&_.facilities-images-grid_span]:empty:hidden [&_.facilities-images-grid_span]:text-[#002b5c] [&_.facilities-images-grid_span]:!mt-auto
+                [&_.facilities-images-grid>div]:!p-0 [&_.facilities-images-grid>div]:!bg-white [&_.facilities-images-grid>div]:!border-slate-100 [&_.facilities-images-grid>div]:overflow-hidden [&_.facilities-images-grid>div]:flex [&_.facilities-images-grid>div]:flex-col [&_.facilities-images-grid>div]:rounded-xl
+                [&_.facilities-images-grid_img]:!m-0 [&_.facilities-images-grid_img]:!w-full [&_.facilities-images-grid_img]:!h-[135px] sm:[&_.facilities-images-grid_img]:!h-[155px] md:[&_.facilities-images-grid_img]:!h-[165px] [&_.facilities-images-grid_img]:!object-cover [&_.facilities-images-grid_img]:!rounded-t-xl [&_.facilities-images-grid_img]:!rounded-b-none [&_.facilities-images-grid_img]:!shadow-none
+                [&_.facilities-images-grid_span]:block [&_.facilities-images-grid_span]:p-3 [&_.facilities-images-grid_span]:!bg-white [&_.facilities-images-grid_span]:w-full [&_.facilities-images-grid_span]:empty:hidden [&_.facilities-images-grid_span]:text-[#002b5c] [&_.facilities-images-grid_span]:!mt-auto [&_.facilities-images-grid_span]:!text-[16px] [&_.facilities-images-grid_span]:!font-extrabold [&_.facilities-images-grid_span]:leading-snug
+                
+                [&_.grid_div_p]:!text-[16px] [&_.grid_div_p]:!font-extrabold [&_.grid_div_p]:!mt-3
                 
                 [&_.department-contact-us_p:not(:last-child)]:!mb-1 [&_.department-contact-us_p]:!mt-1
                 
@@ -875,9 +876,42 @@ export default async function DepartmentDetailsPage({
             </div>
           </div>
 
+          {/* Right Sidebar: Specialties (Matching Old Website Layout) */}
+          <div className="w-full lg:w-[280px] xl:w-[320px] shrink-0 sticky top-24 space-y-6">
+            <div className="bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.03)] border border-slate-100 p-4 xl:p-5">
+              <h3 className="text-base font-extrabold text-[#007a87] mb-3 pb-2.5 border-b border-slate-100 uppercase tracking-wide flex items-center gap-2">
+                <Stethoscope className="w-4 h-4 text-[#007a87] shrink-0" />
+                <span>Specialties</span>
+              </h3>
+              <div className="max-h-[75vh] overflow-y-auto pr-1 space-y-1 scrollbar-thin scrollbar-thumb-teal-100 scrollbar-track-transparent">
+                {allDepartments
+                  .slice()
+                  .sort((a, b) => a.name.localeCompare(b.name))
+                  .map((dept) => {
+                    const isActive = dept.id === department.id;
+                    return (
+                      <Link
+                        key={dept.id}
+                        href={`/departments/${dept.id}`}
+                        className={`group flex items-start gap-2 py-2 px-2.5 rounded-xl text-[10.5px] xl:text-[11.5px] font-semibold uppercase tracking-wider transition-all leading-tight ${
+                          isActive
+                            ? "bg-[#007a87] text-white shadow-sm font-bold"
+                            : "text-slate-700 hover:bg-teal-50/80 hover:text-[#007a87]"
+                        }`}
+                      >
+                        <span className={`shrink-0 mt-0.5 transition-transform duration-200 ${isActive ? "text-white" : "text-[#007a87] group-hover:translate-x-0.5"}`}>
+                          ➔
+                        </span>
+                        <span className="whitespace-normal break-words">{dept.name}</span>
+                      </Link>
+                    );
+                  })}
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
-      <ClientDoctorModal apiDocs={allApiDocs} />
     </div>
   );
 }

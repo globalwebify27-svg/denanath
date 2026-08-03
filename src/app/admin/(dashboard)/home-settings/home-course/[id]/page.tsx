@@ -93,6 +93,7 @@ export default async function EditCoursePage(props: { params: Promise<any>, sear
         endDate: formData.get("endDate"),
         link: formData.get("link"),
         linkText: formData.get("linkText"),
+        status: formData.get("status") === "true",
         gallery: JSON.parse(formData.get("gallery") as string || "[]")
       };
       

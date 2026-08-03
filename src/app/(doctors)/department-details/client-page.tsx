@@ -130,16 +130,34 @@ export default function DepartmentDetailsClientPage({ pageData, departments }: {
               {departments && departments.length > 0 && (
                 <>
                   <div className="bg-gray-50/50 rounded-2xl border border-gray-100 p-6 mt-12 mb-8">
-                    <label className="block text-[#002b5c] font-[800] mb-3">Search Department:</label>
-                    <div className="relative">
-                      <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
-                      <input
-                        type="text"
-                        placeholder="Enter department name..."
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        className="w-full pl-11 pr-4 py-3 bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#007a87]/20 focus:border-[#007a87] font-[500] text-gray-700 shadow-sm"
-                      />
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div>
+                        <label className="block text-[#002b5c] font-[800] mb-3">Search Department:</label>
+                        <div className="relative">
+                          <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+                          <input
+                            type="text"
+                            placeholder="Enter department name..."
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            className="w-full pl-11 pr-4 py-3 bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#007a87]/20 focus:border-[#007a87] font-[500] text-gray-700 shadow-sm"
+                            suppressHydrationWarning
+                          />
+                        </div>
+                      </div>
+                      <form action="/doctor-details" method="GET">
+                        <label className="block text-[#002b5c] font-[800] mb-3">Filter By Doctor Name:</label>
+                        <div className="relative">
+                          <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+                          <input
+                            type="text"
+                            name="name"
+                            placeholder="Enter doctor name..."
+                            className="w-full pl-11 pr-4 py-3 bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#007a87]/20 focus:border-[#007a87] font-[500] text-gray-700 shadow-sm"
+                            suppressHydrationWarning
+                          />
+                        </div>
+                      </form>
                     </div>
                   </div>
 

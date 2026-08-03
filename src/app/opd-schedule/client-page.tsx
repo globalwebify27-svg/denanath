@@ -2,49 +2,195 @@
 
 import React, { useEffect, useState, useMemo } from "react";
 import Link from "next/link";
-import { ChevronRight, Calendar, UserRound, Clock } from "lucide-react";
+import { ChevronRight, Calendar, UserRound, Clock, Loader2, ChevronLeft } from "lucide-react";
 import CustomDropdown from "@/components/CustomDropdown";
 
-export default function OpdScheduleClientPage({ initialData }: { initialData?: any }) {
-  const [doctorsList, setDoctorsList] = useState<any[]>([]);
+const daysOfWeek = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+
+// Component for rendering individual doctor with staggered schedule loading
+const DoctorScheduleCard = ({ doc, initialData, index }: { doc: any, initialData: any, index: number }) => {
+  const [timings, setTimings] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const safeParse = (str: any) => {
-      if (!str) return [];
-      if (typeof str !== 'string') return str;
+    let isMounted = true;
+    
+    const fetchSchedule = async () => {
       try {
-        return JSON.parse(str);
-      } catch (e) {
-        const clean = str.trim();
-        if (!clean.startsWith('[')) return [];
-        if (clean.includes('"branch"') || clean.includes('"day"') || clean.includes('"time"')) {
-          const matches = [...clean.matchAll(/\{[^}]*\}/g)];
-          const result: any[] = [];
-          for (const m of matches) {
-            try {
-              let objStr = m[0];
-              if (!objStr.endsWith('}')) objStr += '}';
-              result.push(JSON.parse(objStr));
-            } catch (err) {}
-          }
-          return result;
+        const res = await fetch('/api/dmh', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'opd_day_time',
+            doctor_id: doc.dmhDoctorId || String(doc.doctor_id || doc.id || ''),
+            speciality_id: doc.dmhSpecialityId || String(doc.speciality_id || ''),
+            service_point_id: doc.dmhServicePointId || '',
+            service_center_id: doc.dmhServiceCenterId || ''
+          })
+        });
+        const data = await res.json();
+        if (!isMounted) return;
+
+        const list = data?.opdDayTimeJSON || (Array.isArray(data) ? data : []);
+        if (list.length > 0) {
+          const dmhSchedule = list[0];
+          const parsedTimings: any[] = [];
+          daysOfWeek.forEach((day: string) => {
+            const val = dmhSchedule[day];
+            if (val && val !== '-' && !val.toLowerCase().includes('no opd') && !val.toLowerCase().includes('none')) {
+              const cleanVal = val.replace(/<br\s*\/?>/gi, " | ").replace(/\[.*?\]/g, "");
+              parsedTimings.push({ day, time: cleanVal.trim() });
+            }
+          });
+          setTimings(parsedTimings);
         }
-        return [];
+      } catch (err) {
+        console.error("Failed to fetch schedule for", doc.doctor_name, err);
+      } finally {
+        if (isMounted) setLoading(false);
       }
     };
 
-    fetch('/api/doctors')
-      .then(res => res.json())
-      .then(data => {
-        const parsedData = data.map((doc: any) => ({
-          ...doc,
-          timings: safeParse(doc.timings),
-        }));
-        setDoctorsList(parsedData);
-      })
-      .catch(err => console.error("Failed to fetch doctors:", err))
-      .finally(() => setLoading(false));
+    // Deterministic stagger based on index to completely avoid WAF blocks (200ms between each request)
+    const timer = setTimeout(() => {
+      if (isMounted) fetchSchedule();
+    }, index * 200);
+
+    return () => { 
+      isMounted = false; 
+      clearTimeout(timer);
+    };
+  }, [doc, index]);
+
+  const availability = useMemo(() => {
+    const mapping: { [key: string]: string[] } = {
+      Mon: [], Tue: [], Wed: [], Thu: [], Fri: [], Sat: [], Sun: []
+    };
+    timings.forEach(t => {
+      if (mapping[t.day]) {
+        mapping[t.day].push(t.time + (t.branch ? ` (${t.branch})` : ''));
+      }
+    });
+    // For original timings loaded directly with "Mon to Sat" parsing fallback
+    doc.timings?.forEach((t: any) => {
+      const dayStr = (t.day || "").toLowerCase();
+      const timeStr = t.time || "";
+      const branchStr = t.branch ? ` (${t.branch})` : "";
+      const displayStr = `${timeStr}${branchStr}`;
+      
+      if (dayStr.includes("mon") || dayStr.includes("monday")) mapping.Mon.push(displayStr);
+      if (dayStr.includes("tue") || dayStr.includes("tuesday")) mapping.Tue.push(displayStr);
+      if (dayStr.includes("wed") || dayStr.includes("wednesday")) mapping.Wed.push(displayStr);
+      if (dayStr.includes("thu") || dayStr.includes("thursday")) mapping.Thu.push(displayStr);
+      if (dayStr.includes("fri") || dayStr.includes("friday")) mapping.Fri.push(displayStr);
+      if (dayStr.includes("sat") || dayStr.includes("saturday")) mapping.Sat.push(displayStr);
+      if (dayStr.includes("sun") || dayStr.includes("sunday")) mapping.Sun.push(displayStr);
+      if (dayStr.includes("monday to saturday") || dayStr.includes("mon to sat")) {
+        mapping.Mon.push(displayStr); mapping.Tue.push(displayStr); mapping.Wed.push(displayStr);
+        mapping.Thu.push(displayStr); mapping.Fri.push(displayStr); mapping.Sat.push(displayStr);
+      } else if (dayStr.includes("monday to friday") || dayStr.includes("mon to fri")) {
+        mapping.Mon.push(displayStr); mapping.Tue.push(displayStr); mapping.Wed.push(displayStr);
+        mapping.Thu.push(displayStr); mapping.Fri.push(displayStr);
+      }
+    });
+    for (const key in mapping) {
+      mapping[key] = Array.from(new Set(mapping[key]));
+    }
+    return mapping;
+  }, [timings, doc.timings]);
+
+  const docName = doc.doctor_name || doc.name || "";
+  const qual = doc.qualification || doc.qualifications || "";
+
+  return (
+    <div className="p-6">
+      <div className="mb-4">
+        <h4 className="text-lg font-extrabold text-black mb-1">{docName}</h4>
+        <p className="text-[18px] leading-[31px] font-[400] text-slate-600">{qual}</p>
+      </div>
+      
+      {/* Schedule Table */}
+      <div className="overflow-x-auto rounded-xl border border-slate-200 relative min-h-[120px]">
+        {loading && (
+          <div className="absolute inset-0 bg-white/60 flex items-center justify-center z-10 backdrop-blur-[1px]">
+             <Loader2 className="w-6 h-6 text-teal-600 animate-spin" />
+          </div>
+        )}
+        <table className="w-full text-left border-collapse min-w-[800px]">
+          <thead>
+            <tr className="bg-slate-50 text-slate-700 text-[18px] leading-[31px] font-[700]">
+              <th className="p-4 border-b border-slate-200">{initialData?.tableDaysHeader || "Days"}</th>
+              {daysOfWeek.map(day => (
+                <th key={day} className="p-4 border-b border-l border-slate-200 text-center">{day}</th>
+              ))}
+              <th className="p-4 border-b border-l border-slate-200 text-center">{initialData?.tableAppointmentHeader || "Appointment"}</th>
+            </tr>
+          </thead>
+          <tbody className="text-xs text-slate-600 bg-white">
+            <tr>
+              <td className="p-4 font-[700] text-[18px] leading-[31px] text-slate-700 align-top">{initialData?.tableAvailabilityLabel || "Availability"}</td>
+              {daysOfWeek.map(day => (
+                <td key={day} className="p-4 border-l border-slate-100 align-top text-center">
+                  {availability[day].length > 0 ? (
+                    <div className="space-y-2">
+                      {availability[day].map((time, i) => (
+                        <div key={i} className="text-slate-700 text-[16px] leading-[31px] font-[400]">
+                          {time}
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <span className="text-slate-300">-</span>
+                  )}
+                </td>
+              ))}
+              <td className="p-4 border-l border-slate-100 align-middle text-center">
+                <Link href={`/book-appointment?doctor_id=${doc.dmhDoctorId || doc.doctor_id || doc.id || ''}&speciality_id=${doc.dmhSpecialityId || doc.speciality_id || ''}`} className="inline-flex items-center justify-center px-4 py-2 bg-[#007a87] hover:bg-[#005f69] text-white text-lg rounded-lg font-bold transition-colors w-full">
+                  {initialData?.tableBookBtnLabel || "Book"}
+                </Link>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+};
+
+export default function OpdScheduleClientPage({ initialData }: { initialData?: any }) {
+  const [doctorsList, setDoctorsList] = useState<any[]>([]);
+  const [specialitiesList, setSpecialitiesList] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+
+  useEffect(() => {
+    const loadInitialData = async () => {
+      try {
+        const specRes = await fetch('/api/dmh', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'speciality' })
+        });
+        const specData = await specRes.json();
+        let specs = specData?.specialityJSON || (Array.isArray(specData) ? specData : []);
+        setSpecialitiesList(specs);
+
+        const docRes = await fetch('/api/doctors');
+        const docs = await docRes.json();
+        
+        if (Array.isArray(docs) && docs.length > 0) {
+           setDoctorsList(docs);
+        }
+      } catch (err) {
+        console.error("Failed to fetch initial schedule data:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    loadInitialData();
   }, []);
 
   const [selectedSpecialty, setSelectedSpecialty] = useState("--Select--");
@@ -53,7 +199,8 @@ export default function OpdScheduleClientPage({ initialData }: { initialData?: a
   const uniqueSpecialties = useMemo(() => {
     const specialties = new Set<string>();
     doctorsList.forEach(doc => {
-      if (doc.specialty) specialties.add(doc.specialty);
+      const sName = doc.speciality_name || doc.specialty;
+      if (sName) specialties.add(sName);
     });
     return Array.from(specialties).sort();
   }, [doctorsList]);
@@ -61,8 +208,9 @@ export default function OpdScheduleClientPage({ initialData }: { initialData?: a
   const uniqueDoctors = useMemo(() => {
     const doctors = new Set<string>();
     doctorsList.forEach(doc => {
-      if (selectedSpecialty === "--Select--" || doc.specialty === selectedSpecialty) {
-        doctors.add(doc.name);
+      const sName = doc.speciality_name || doc.specialty;
+      if (selectedSpecialty === "--Select--" || sName === selectedSpecialty) {
+        doctors.add(doc.doctor_name || doc.name);
       }
     });
     return Array.from(doctors).sort((a, b) => {
@@ -72,7 +220,7 @@ export default function OpdScheduleClientPage({ initialData }: { initialData?: a
     });
   }, [doctorsList, selectedSpecialty]);
 
-  // When specialty changes, reset doctor selection if it no longer matches
+  // When specialty changes, reset doctor selection and reset to page 1
   useEffect(() => {
     if (selectedDoctor !== "-- Doctor --" && !uniqueDoctors.includes(selectedDoctor)) {
       setSelectedDoctor("-- Doctor --");
@@ -81,71 +229,37 @@ export default function OpdScheduleClientPage({ initialData }: { initialData?: a
 
   const filteredDoctors = useMemo(() => {
     return doctorsList.filter(doc => {
-      const matchSpecialty = selectedSpecialty === "--Select--" || doc.specialty === selectedSpecialty;
-      const matchDoctor = selectedDoctor === "-- Doctor --" || doc.name === selectedDoctor;
-      // Only show doctors with valid timings
-      return matchSpecialty && matchDoctor && doc.timings && doc.timings.length > 0;
+      const sName = doc.speciality_name || doc.specialty;
+      const dName = doc.doctor_name || doc.name;
+      const matchSpecialty = selectedSpecialty === "--Select--" || sName === selectedSpecialty;
+      const matchDoctor = selectedDoctor === "-- Doctor --" || dName === selectedDoctor;
+      return matchSpecialty && matchDoctor;
     }).sort((a, b) => {
-      const specA = a.specialty || "";
-      const specB = b.specialty || "";
+      const specA = a.speciality_name || a.specialty || "";
+      const specB = b.speciality_name || b.specialty || "";
       if (specA !== specB) return specA.localeCompare(specB);
-      const nameA = a.name.replace(/^Dr\.?\s+/i, "").trim().toLowerCase();
-      const nameB = b.name.replace(/^Dr\.?\s+/i, "").trim().toLowerCase();
+      const nameA = (a.doctor_name || a.name || "").replace(/^Dr\.?\s+/i, "").trim().toLowerCase();
+      const nameB = (b.doctor_name || b.name || "").replace(/^Dr\.?\s+/i, "").trim().toLowerCase();
       return nameA.localeCompare(nameB);
     });
   }, [doctorsList, selectedSpecialty, selectedDoctor]);
 
-  // Group by specialty for display
+  // Calculate Pagination
+  const totalPages = Math.ceil(filteredDoctors.length / itemsPerPage);
+  const currentDoctors = filteredDoctors.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+
+  // Group current page doctors by specialty for display
   const groupedDoctors = useMemo(() => {
     const groups: { [key: string]: any[] } = {};
-    filteredDoctors.forEach(doc => {
-      const spec = doc.specialty || "OTHER";
+    currentDoctors.forEach(doc => {
+      const spec = doc.speciality_name || doc.specialty || "OTHER";
       if (!groups[spec]) groups[spec] = [];
       groups[spec].push(doc);
     });
     return groups;
-  }, [filteredDoctors]);
+  }, [currentDoctors]);
 
-  const daysOfWeek = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-
-  // Helper function to map free-text day strings to columns
-  const getDayAvailability = (timings: any[]) => {
-    const mapping: { [key: string]: string[] } = {
-      Mon: [], Tue: [], Wed: [], Thu: [], Fri: [], Sat: [], Sun: []
-    };
-
-    timings.forEach(t => {
-      const dayStr = (t.day || "").toLowerCase();
-      const timeStr = t.time || "";
-      const branchStr = t.branch ? ` (${t.branch})` : "";
-      
-      const displayStr = `${timeStr}${branchStr}`;
-
-      if (dayStr.includes("mon") || dayStr.includes("monday")) mapping.Mon.push(displayStr);
-      if (dayStr.includes("tue") || dayStr.includes("tuesday")) mapping.Tue.push(displayStr);
-      if (dayStr.includes("wed") || dayStr.includes("wednesday")) mapping.Wed.push(displayStr);
-      if (dayStr.includes("thu") || dayStr.includes("thursday")) mapping.Thu.push(displayStr);
-      if (dayStr.includes("fri") || dayStr.includes("friday")) mapping.Fri.push(displayStr);
-      if (dayStr.includes("sat") || dayStr.includes("saturday")) mapping.Sat.push(displayStr);
-      if (dayStr.includes("sun") || dayStr.includes("sunday")) mapping.Sun.push(displayStr);
-
-      // Handle "to" ranges like "Monday to Saturday"
-      if (dayStr.includes("monday to saturday") || dayStr.includes("mon to sat")) {
-        mapping.Mon.push(displayStr); mapping.Tue.push(displayStr); mapping.Wed.push(displayStr);
-        mapping.Thu.push(displayStr); mapping.Fri.push(displayStr); mapping.Sat.push(displayStr);
-      } else if (dayStr.includes("monday to friday") || dayStr.includes("mon to fri")) {
-        mapping.Mon.push(displayStr); mapping.Tue.push(displayStr); mapping.Wed.push(displayStr);
-        mapping.Thu.push(displayStr); mapping.Fri.push(displayStr);
-      }
-    });
-
-    // Remove duplicates
-    for (const key in mapping) {
-      mapping[key] = Array.from(new Set(mapping[key]));
-    }
-
-    return mapping;
-  };
+  const sortedSpecialties = Object.keys(groupedDoctors).sort();
 
   return (
     <div className="min-h-screen bg-[#f8fafc] font-sans selection:bg-teal-500/30">
@@ -198,7 +312,7 @@ export default function OpdScheduleClientPage({ initialData }: { initialData?: a
                     options={uniqueSpecialties}
                     placeholder="--Select--"
                     value={selectedSpecialty === "--Select--" ? "" : selectedSpecialty}
-                    onChange={(val: string) => setSelectedSpecialty(val || "--Select--")}
+                    onChange={(val: string) => { setSelectedSpecialty(val || "--Select--"); setCurrentPage(1); }}
                     className="!text-sm"
                   />
                 </div>
@@ -211,7 +325,7 @@ export default function OpdScheduleClientPage({ initialData }: { initialData?: a
                     options={uniqueDoctors}
                     placeholder="-- Doctor --"
                     value={selectedDoctor === "-- Doctor --" ? "" : selectedDoctor}
-                    onChange={(val: string) => setSelectedDoctor(val || "-- Doctor --")}
+                    onChange={(val: string) => { setSelectedDoctor(val || "-- Doctor --"); setCurrentPage(1); }}
                     className="!text-sm"
                   />
                 </div>
@@ -221,12 +335,13 @@ export default function OpdScheduleClientPage({ initialData }: { initialData?: a
 
           {/* Schedule List */}
           {loading ? (
-            <div className="py-12 text-center border-2 border-dashed border-slate-200 rounded-2xl bg-slate-50">
+            <div className="py-12 flex flex-col items-center justify-center border-2 border-dashed border-slate-200 rounded-2xl bg-slate-50">
+              <Loader2 className="w-10 h-10 text-[#007a87] animate-spin mb-4" />
               <h3 className="text-xl font-bold text-slate-700 mb-2">{initialData?.loadingMessage || "Loading Schedule..."}</h3>
             </div>
-          ) : Object.keys(groupedDoctors).length > 0 ? (
+          ) : sortedSpecialties.length > 0 ? (
             <div className="space-y-12">
-              {Object.keys(groupedDoctors).sort().map((spec, specIdx) => (
+              {sortedSpecialties.map((spec, specIdx) => (
                 <div key={specIdx} className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
                   {/* Specialty Header */}
                   <div className="bg-[#002b5c] px-6 py-4">
@@ -235,78 +350,52 @@ export default function OpdScheduleClientPage({ initialData }: { initialData?: a
                   
                   {/* Doctors in this specialty */}
                   <div className="divide-y divide-slate-100">
-                    {groupedDoctors[spec].map((doc, docIdx) => {
-                      const availability = getDayAvailability(doc.timings);
-                      
-                      return (
-                        <div key={docIdx} className="p-6">
-                          <div className="mb-4">
-                            <h4 className="text-lg font-extrabold text-black mb-1">{doc.name}</h4>
-                            <p className="text-[18px] leading-[31px] font-[400] text-slate-600">{doc.qualifications}</p>
-                          </div>
-                          
-                          {/* Schedule Table */}
-                          <div className="overflow-x-auto rounded-xl border border-slate-200">
-                            <table className="w-full text-left border-collapse min-w-[800px]">
-                              <thead>
-                                <tr className="bg-slate-50 text-slate-700 text-[18px] leading-[31px] font-[700]">
-                                  <th className="p-4 border-b border-slate-200">{initialData?.tableDaysHeader || "Days"}</th>
-                                  {daysOfWeek.map(day => (
-                                    <th key={day} className="p-4 border-b border-l border-slate-200 text-center">{day}</th>
-                                  ))}
-                                  <th className="p-4 border-b border-l border-slate-200 text-center">{initialData?.tableAppointmentHeader || "Appointment"}</th>
-                                </tr>
-                              </thead>
-                              <tbody className="text-xs text-slate-600 bg-white">
-                                <tr>
-                                  <td className="p-4 font-[700] text-[18px] leading-[31px] text-slate-700 align-top">{initialData?.tableAvailabilityLabel || "Availability"}</td>
-                                  {daysOfWeek.map(day => (
-                                    <td key={day} className="p-4 border-l border-slate-100 align-top text-center">
-                                      {availability[day].length > 0 ? (
-                                        <div className="space-y-2">
-                                          {availability[day].map((time, i) => (
-                                            <div key={i} className="text-slate-700 text-[16px] leading-[31px] font-[400]">
-                                              {time}
-                                            </div>
-                                          ))}
-                                        </div>
-                                      ) : (
-                                        <span className="text-slate-300">-</span>
-                                      )}
-                                    </td>
-                                  ))}
-                                  <td className="p-4 border-l border-slate-100 align-middle text-center">
-                                    <Link href="/book-appointment" className="inline-flex items-center justify-center px-4 py-2 bg-[#007a87] hover:bg-[#005f69] text-white text-lg rounded-lg font-bold transition-colors w-full">
-                                      {initialData?.tableBookBtnLabel || "Book"}
-                                    </Link>
-                                  </td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </div>
-                          
-                          {/* Full timings text backup for complex schedules */}
-                          {doc.timings.filter((t: any) => t.day?.trim() || t.time?.trim()).length > 0 && (
-                            <div className="mt-4 p-4 bg-amber-50/50 rounded-xl border border-amber-100/50">
-                              <h5 className="text-[18px] leading-[31px] font-[700] text-amber-800 mb-2 uppercase flex items-center gap-1">
-                                <Clock className="w-3 h-3" /> {initialData?.detailedTimingsLabel || "Detailed Timings"}
-                              </h5>
-                              <ul className="space-y-1.5">
-                                {doc.timings.filter((t: any) => t.day?.trim() || t.time?.trim()).map((t: any, i: number) => (
-                                  <li key={i} className="text-[16px] leading-[31px] font-[400] text-slate-700">
-                                    {t.day && <><span className="text-amber-700">{t.day}:</span> </>}{t.time} {t.branch && <span className="text-slate-500">({t.branch})</span>}
-                                  </li>
-                                ))}
-                              </ul>
-                            </div>
-                          )}
-
-                        </div>
-                      );
-                    })}
+                    {groupedDoctors[spec].map((doc, docIdx) => (
+                      <DoctorScheduleCard 
+                        key={doc.doctor_id || docIdx} 
+                        doc={doc} 
+                        initialData={initialData} 
+                        index={docIdx} 
+                      />
+                    ))}
                   </div>
                 </div>
               ))}
+              
+              {/* Pagination Controls */}
+              {totalPages > 1 && (
+                <div className="flex items-center justify-center gap-2 pt-8">
+                  <button 
+                    onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                    disabled={currentPage === 1}
+                    className="p-2 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  >
+                    <ChevronLeft className="w-5 h-5" />
+                  </button>
+                  
+                  {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+                    <button
+                      key={page}
+                      onClick={() => setCurrentPage(page)}
+                      className={`w-10 h-10 flex items-center justify-center rounded-lg border font-bold transition-colors ${
+                        currentPage === page 
+                          ? "bg-[#007a87] border-[#007a87] text-white" 
+                          : "border-slate-200 text-slate-600 hover:bg-slate-50"
+                      }`}
+                    >
+                      {page}
+                    </button>
+                  ))}
+
+                  <button 
+                    onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                    disabled={currentPage === totalPages}
+                    className="p-2 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  >
+                    <ChevronRight className="w-5 h-5" />
+                  </button>
+                </div>
+              )}
             </div>
           ) : (
             <div className="py-12 text-center border-2 border-dashed border-slate-200 rounded-2xl bg-slate-50">
@@ -315,7 +404,7 @@ export default function OpdScheduleClientPage({ initialData }: { initialData?: a
                 {initialData?.noDoctorsDesc || "We couldn't find any doctors matching your current filters. Try adjusting the specialty or name."}
               </p>
               <button 
-                onClick={() => { setSelectedSpecialty("--Select--"); setSelectedDoctor("-- Doctor --"); }}
+                onClick={() => { setSelectedSpecialty("--Select--"); setSelectedDoctor("-- Doctor --"); setCurrentPage(1); }}
                 className="mt-6 text-sm font-bold text-[#007a87] hover:underline"
               >
                 {initialData?.clearFiltersBtnLabel || "Clear Filters"}

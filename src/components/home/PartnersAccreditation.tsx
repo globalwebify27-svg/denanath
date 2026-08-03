@@ -2,7 +2,53 @@ import React from "react";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
-export default function PartnersAccreditation() {
+export const defaultPartnersData = {
+  card1: {
+    image: "/images/unnamed (13).webp",
+    title: "DMH - A Trusted Healthcare Partner",
+    description: "&ldquo;Combining professional competence with a human touch to deliver ethical, rational care and medico-social services.&rdquo;",
+    links: [
+      { text: "Associates Hospital", url: "/about-hospital" },
+      { text: "Charity", url: "/charity" },
+      { text: "Basic Infrastructure", url: "/basic-infrastructure" },
+      { text: "Room Photo", url: "/room-photo" },
+      { text: "Pillar of Support", url: "/pillar-of-support" },
+      { text: "Academics", url: "/academics" },
+      { text: "Values", url: "/values" },
+    ]
+  },
+  card2: {
+    image: "/images/unnamed (14).webp",
+    title: "I'm A Patient",
+    description: "Your safety is our priority with Pune's pioneering Emergency Medical Service, combining international-standard infrastructure and expert care when every second counts.",
+    links: [
+      { text: "Patient Rights & Responsibilities", url: "/patient-rights" },
+      { text: "Hospital Admission Guide", url: "/patient-guide" },
+      { text: "Patient & Visitor Experience", url: "/patient-guide" },
+      { text: "Patient Guide", url: "/patient-guide" },
+      { text: "Virtual Tour", url: "/virtual-tour" },
+      { text: "Indoor Map", url: "/indoor-map" },
+      { text: "Patient Stories", url: "/patient-stories" },
+    ]
+  },
+  banner: {
+    title: "Best Hospital In Pune, India",
+    description: "DMH is NABH and NABL accredited, ensuring patient safety, quality standards, clinical excellence, & ethical healthcare delivery.",
+    buttonText: "Accreditation & Quality",
+    buttonUrl: "/accreditations",
+    logos: [
+      "/images/nabh-logo-23.png",
+      "/images/NABL-LOGO.png"
+    ]
+  }
+};
+
+export default function PartnersAccreditation({ data = defaultPartnersData }: { data?: any }) {
+  if (!data || Object.keys(data).length === 0) data = defaultPartnersData;
+  const card1 = data.card1 || defaultPartnersData.card1;
+  const card2 = data.card2 || defaultPartnersData.card2;
+  const banner = data.banner || defaultPartnersData.banner;
+
   return (
     <section className="relative z-30 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10 py-[20px] md:py-0" style={{ marginBottom: '40px' }}>
       {/* Subtle background waves behind the cards, keeping the main page background light */}
@@ -26,8 +72,8 @@ export default function PartnersAccreditation() {
             {/* Image Banner Header */}
             <div className="h-48 sm:h-56 w-full relative overflow-hidden">
               <img 
-                src="/images/unnamed (13).webp" 
-                alt="Medical Team Collaboration" 
+                src={card1.image} 
+                alt={card1.title} 
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
               />
               {/* Gradient overlay for smooth blending into the card */}
@@ -36,82 +82,24 @@ export default function PartnersAccreditation() {
 
             <div className="relative z-10 space-y-3 p-6 pt-2 sm:p-8 sm:pt-4 flex-1 flex flex-col">
               <h3 className="text-xl sm:text-2xl font-extrabold text-[#002b5c] tracking-tight">
-                DMH - A Trusted Healthcare Partner
+                {card1.title}
               </h3>
-              <p className="text-slate-500 text-[16px] font-normal leading-[31px]">
-                &ldquo;Combining professional competence with a human touch to deliver ethical, rational care and medico-social services.&rdquo;
+              <p className="text-slate-500 text-[16px] font-normal leading-[31px]" dangerouslySetInnerHTML={{__html: card1.description}}>
               </p>
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 border-t border-slate-50">
-                <Link 
-                  href="/about-hospital" 
-                  className="inline-flex items-center gap-3 text-slate-700 hover:text-[#002b5c] text-xs font-bold transition-colors group/link"
-                >
-                  <span className="w-7 h-7 rounded-full bg-[#002b5c] text-white flex items-center justify-center group-hover/link:bg-[#007a87] transition-colors shadow-sm">
-                    <ArrowRight className="w-3.5 h-3.5 group-hover/link:translate-x-0.5 transition-transform" />
-                  </span>
-                  <span>Associates Hospital</span>
-                </Link>
-
-                <Link 
-                  href="/charity" 
-                  className="inline-flex items-center gap-3 text-slate-700 hover:text-[#002b5c] text-xs font-bold transition-colors group/link"
-                >
-                  <span className="w-7 h-7 rounded-full bg-[#002b5c] text-white flex items-center justify-center group-hover/link:bg-[#007a87] transition-colors shadow-sm">
-                    <ArrowRight className="w-3.5 h-3.5 group-hover/link:translate-x-0.5 transition-transform" />
-                  </span>
-                  <span>Charity</span>
-                </Link>
-
-                <Link 
-                  href="/basic-infrastructure" 
-                  className="inline-flex items-center gap-3 text-slate-700 hover:text-[#002b5c] text-xs font-bold transition-colors group/link"
-                >
-                  <span className="w-7 h-7 rounded-full bg-[#002b5c] text-white flex items-center justify-center group-hover/link:bg-[#007a87] transition-colors shadow-sm">
-                    <ArrowRight className="w-3.5 h-3.5 group-hover/link:translate-x-0.5 transition-transform" />
-                  </span>
-                  <span>Basic Infrastructure</span>
-                </Link>
-
-                <Link 
-                  href="/room-photo" 
-                  className="inline-flex items-center gap-3 text-slate-700 hover:text-[#002b5c] text-xs font-bold transition-colors group/link"
-                >
-                  <span className="w-7 h-7 rounded-full bg-[#002b5c] text-white flex items-center justify-center group-hover/link:bg-[#007a87] transition-colors shadow-sm">
-                    <ArrowRight className="w-3.5 h-3.5 group-hover/link:translate-x-0.5 transition-transform" />
-                  </span>
-                  <span>Room Photo</span>
-                </Link>
-
-                <Link 
-                  href="/pillar-of-support" 
-                  className="inline-flex items-center gap-3 text-slate-700 hover:text-[#002b5c] text-xs font-bold transition-colors group/link"
-                >
-                  <span className="w-7 h-7 rounded-full bg-[#002b5c] text-white flex items-center justify-center group-hover/link:bg-[#007a87] transition-colors shadow-sm">
-                    <ArrowRight className="w-3.5 h-3.5 group-hover/link:translate-x-0.5 transition-transform" />
-                  </span>
-                  <span>Pillar of Support</span>
-                </Link>
-
-                <Link 
-                  href="/academics" 
-                  className="inline-flex items-center gap-3 text-slate-700 hover:text-[#002b5c] text-xs font-bold transition-colors group/link"
-                >
-                  <span className="w-7 h-7 rounded-full bg-[#002b5c] text-white flex items-center justify-center group-hover/link:bg-[#007a87] transition-colors shadow-sm">
-                    <ArrowRight className="w-3.5 h-3.5 group-hover/link:translate-x-0.5 transition-transform" />
-                  </span>
-                  <span>Academics</span>
-                </Link>
-
-                <Link 
-                  href="/values" 
-                  className="inline-flex items-center gap-3 text-slate-700 hover:text-[#002b5c] text-xs font-bold transition-colors group/link"
-                >
-                  <span className="w-7 h-7 rounded-full bg-[#002b5c] text-white flex items-center justify-center group-hover/link:bg-[#007a87] transition-colors shadow-sm">
-                    <ArrowRight className="w-3.5 h-3.5 group-hover/link:translate-x-0.5 transition-transform" />
-                  </span>
-                  <span>Values</span>
-                </Link>
+                {card1.links.map((link: any, i: number) => (
+                  <Link 
+                    key={i}
+                    href={link.url} 
+                    className="inline-flex items-center gap-3 text-slate-700 hover:text-[#002b5c] text-xs font-bold transition-colors group/link"
+                  >
+                    <span className="w-7 h-7 rounded-full bg-[#002b5c] text-white flex items-center justify-center group-hover/link:bg-[#007a87] transition-colors shadow-sm">
+                      <ArrowRight className="w-3.5 h-3.5 group-hover/link:translate-x-0.5 transition-transform" />
+                    </span>
+                    <span>{link.text}</span>
+                  </Link>
+                ))}
               </div>
             </div>
 
@@ -123,8 +111,8 @@ export default function PartnersAccreditation() {
             {/* Image Banner Header */}
             <div className="h-48 sm:h-56 w-full relative overflow-hidden">
               <img 
-                src="/images/unnamed (14).webp" 
-                alt="Compassionate Patient Care" 
+                src={card2.image} 
+                alt={card2.title} 
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 object-top"
               />
               {/* Gradient overlay for smooth blending into the card */}
@@ -133,82 +121,24 @@ export default function PartnersAccreditation() {
 
             <div className="relative z-10 space-y-3 p-6 pt-2 sm:p-8 sm:pt-4 flex-1 flex flex-col">
               <h3 className="text-xl sm:text-2xl font-extrabold text-[#002b5c] tracking-tight">
-                I&apos;m A Patient
+                {card2.title}
               </h3>
-              <p className="text-slate-500 text-[16px] font-normal leading-[31px]">
-                Your safety is our priority with Pune&rsquo;s pioneering Emergency Medical Service, combining international-standard infrastructure and expert care when every second counts.
+              <p className="text-slate-500 text-[16px] font-normal leading-[31px]" dangerouslySetInnerHTML={{__html: card2.description}}>
               </p>
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 border-t border-slate-50">
-                <Link 
-                  href="/patient-rights" 
-                  className="inline-flex items-center gap-3 text-slate-700 hover:text-red-600 text-xs font-bold transition-colors group/link"
-                >
-                  <span className="w-7 h-7 rounded-full bg-[#c70909] text-white flex items-center justify-center group-hover/link:bg-red-700 transition-colors shadow-sm">
-                    <ArrowRight className="w-3.5 h-3.5 group-hover/link:translate-x-0.5 transition-transform" />
-                  </span>
-                  <span>Patient Rights & Responsibilities</span>
-                </Link>
-
-                <Link 
-                  href="/patient-guide" 
-                  className="inline-flex items-center gap-3 text-slate-700 hover:text-red-600 text-xs font-bold transition-colors group/link"
-                >
-                  <span className="w-7 h-7 rounded-full bg-[#c70909] text-white flex items-center justify-center group-hover/link:bg-red-700 transition-colors shadow-sm">
-                    <ArrowRight className="w-3.5 h-3.5 group-hover/link:translate-x-0.5 transition-transform" />
-                  </span>
-                  <span>Hospital Admission Guide</span>
-                </Link>
-
-                <Link 
-                  href="/patient-guide" 
-                  className="inline-flex items-center gap-3 text-slate-700 hover:text-red-600 text-xs font-bold transition-colors group/link"
-                >
-                  <span className="w-7 h-7 rounded-full bg-[#c70909] text-white flex items-center justify-center group-hover/link:bg-red-700 transition-colors shadow-sm">
-                    <ArrowRight className="w-3.5 h-3.5 group-hover/link:translate-x-0.5 transition-transform" />
-                  </span>
-                  <span>Patient & Visitor Experience</span>
-                </Link>
-
-                <Link 
-                  href="/patient-guide" 
-                  className="inline-flex items-center gap-3 text-slate-700 hover:text-red-600 text-xs font-bold transition-colors group/link"
-                >
-                  <span className="w-7 h-7 rounded-full bg-[#c70909] text-white flex items-center justify-center group-hover/link:bg-red-700 transition-colors shadow-sm">
-                    <ArrowRight className="w-3.5 h-3.5 group-hover/link:translate-x-0.5 transition-transform" />
-                  </span>
-                  <span>Patient Guide</span>
-                </Link>
-
-                <Link 
-                  href="/virtual-tour" 
-                  className="inline-flex items-center gap-3 text-slate-700 hover:text-red-600 text-xs font-bold transition-colors group/link"
-                >
-                  <span className="w-7 h-7 rounded-full bg-[#c70909] text-white flex items-center justify-center group-hover/link:bg-red-700 transition-colors shadow-sm">
-                    <ArrowRight className="w-3.5 h-3.5 group-hover/link:translate-x-0.5 transition-transform" />
-                  </span>
-                  <span>Virtual Tour</span>
-                </Link>
-
-                <Link 
-                  href="/indoor-map" 
-                  className="inline-flex items-center gap-3 text-slate-700 hover:text-red-600 text-xs font-bold transition-colors group/link"
-                >
-                  <span className="w-7 h-7 rounded-full bg-[#c70909] text-white flex items-center justify-center group-hover/link:bg-red-700 transition-colors shadow-sm">
-                    <ArrowRight className="w-3.5 h-3.5 group-hover/link:translate-x-0.5 transition-transform" />
-                  </span>
-                  <span>Indoor Map</span>
-                </Link>
-
-                <Link 
-                  href="/patient-stories" 
-                  className="inline-flex items-center gap-3 text-slate-700 hover:text-red-600 text-xs font-bold transition-colors group/link"
-                >
-                  <span className="w-7 h-7 rounded-full bg-[#c70909] text-white flex items-center justify-center group-hover/link:bg-red-700 transition-colors shadow-sm">
-                    <ArrowRight className="w-3.5 h-3.5 group-hover/link:translate-x-0.5 transition-transform" />
-                  </span>
-                  <span>Patient Stories</span>
-                </Link>
+                {card2.links.map((link: any, i: number) => (
+                  <Link 
+                    key={i}
+                    href={link.url} 
+                    className="inline-flex items-center gap-3 text-slate-700 hover:text-red-600 text-xs font-bold transition-colors group/link"
+                  >
+                    <span className="w-7 h-7 rounded-full bg-[#c70909] text-white flex items-center justify-center group-hover/link:bg-red-700 transition-colors shadow-sm">
+                      <ArrowRight className="w-3.5 h-3.5 group-hover/link:translate-x-0.5 transition-transform" />
+                    </span>
+                    <span>{link.text}</span>
+                  </Link>
+                ))}
               </div>
             </div>
 
@@ -243,12 +173,14 @@ export default function PartnersAccreditation() {
               </div>
 
               <div className="space-y-1">
-                <h4 className="text-lg sm:text-xl font-extrabold text-[#002b5c] tracking-tight leading-snug">
-                  Best Hospital In Pune, India
-                </h4>
-                <p className="text-slate-500 text-[16px] font-normal leading-[31px] max-w-xl">
-                  DMH is NABH and NABL accredited, ensuring patient safety, quality standards, clinical excellence, & ethical healthcare delivery.
-                </p>
+                <div 
+                  className="text-lg sm:text-xl font-extrabold text-[#002b5c] tracking-tight leading-snug prose prose-sm prose-p:leading-snug prose-p:m-0 prose-p:font-extrabold"
+                  dangerouslySetInnerHTML={{__html: banner.title}}
+                />
+                <div 
+                  className="text-slate-500 text-[16px] font-normal leading-[31px] max-w-xl prose prose-sm prose-p:leading-[31px] prose-p:m-0"
+                  dangerouslySetInnerHTML={{__html: banner.description}}
+                />
               </div>
 
             </div>
@@ -257,26 +189,20 @@ export default function PartnersAccreditation() {
             <div className="lg:col-span-5 flex flex-col sm:flex-row items-center gap-6 lg:justify-end w-full overflow-hidden">
               
               <Link 
-                href="/accreditations" 
+                href={banner.buttonUrl} 
                 className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-[#007a87] text-white hover:bg-[#c70909] font-bold text-xs uppercase tracking-widest transition-all duration-300 shadow-md hover:shadow-lg text-center"
               >
-                <span>Accreditation & Quality</span>
+                <span>{banner.buttonText}</span>
                 <ArrowRight className="w-4 h-4 flex-shrink-0" />
               </Link>
 
               {/* Rendered SVG Logos of NABH and NABL */}
               <div className="flex items-center gap-4 flex-shrink-0">
-                
-                {/* NABH Badge Logo */}
-                <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-white flex items-center justify-center shadow-sm cursor-help p-2 overflow-hidden" title="NABH Accredited">
-                  <img src="/images/nabh-logo-23.png" alt="NABH Accredited" className="w-full h-full object-contain scale-[0.85]" />
-                </div>
-
-                {/* NABL Badge Logo */}
-                <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-white flex items-center justify-center shadow-sm cursor-help p-2 overflow-hidden" title="NABL Accredited">
-                  <img src="/images/NABL-LOGO.png" alt="NABL Accredited" className="w-full h-full object-contain scale-[0.85]" />
-                </div>
-
+                {banner.logos.map((logo: string, idx: number) => (
+                  <div key={idx} className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-white flex items-center justify-center shadow-sm p-2 overflow-hidden">
+                    <img src={logo} alt="Accreditation" className="w-full h-full object-contain scale-[0.85]" />
+                  </div>
+                ))}
               </div>
 
             </div>

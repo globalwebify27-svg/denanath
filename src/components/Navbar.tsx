@@ -5,6 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { Menu, X, Phone, ChevronDown, Globe } from "lucide-react";
 import Link from "next/link";
 import { applyOfflineTranslation } from "@/lib/offlineTranslate";
+import { baseNavLinks } from "@/lib/navConfig";
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -17,10 +18,22 @@ export default function Navbar() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
   const [isLangOpen, setIsLangOpen] = useState(false);
+  const [dynamicLinks, setDynamicLinks] = useState<any[]>([]);
 
   useEffect(() => {
     const handleDocClick = () => setIsLangOpen(false);
     window.addEventListener("click", handleDocClick);
+    
+    // Fetch dynamic pages
+    fetch('/api/dynamic-pages')
+      .then(res => res.json())
+      .then(data => {
+        if(Array.isArray(data)) {
+           setDynamicLinks(data.filter((page: any) => page.status));
+        }
+      })
+      .catch(err => console.error("Error fetching dynamic pages:", err));
+
     return () => window.removeEventListener("click", handleDocClick);
   }, []);
 
@@ -141,85 +154,19 @@ export default function Navbar() {
     }, 150);
   };
 
-  const navLinks = [
-    {
-      name: "About Us",
-      href: "/about-hospital",
-      dropdown: [
-        { name: "About Hospital", href: "/about-hospital" },
-        { name: "Associates", href: "/associates" },
-        { name: "Accreditations", href: "/accreditations" },
-        { name: "Support Hospital / Donations", href: "/supportHospitalDonations" },
-        { name: "Unique features of DMH", href: "/unique-features" },
-        { name: "Foreign Contribution", href: "/foreign-contribution" },
-        { name: "Charity Details", href: "/charity-details" },
-      ],
-    },
-    {
-      name: "Patient & Visitors",
-      href: "/out-patient",
-      dropdown: [
-        { name: "Out Patient Guide", href: "/out-patient" },
-        { name: "In Patient Guide", href: "/in-patient" },
-        { name: "Health Packages", href: "/health-packages" },
-        { name: "Facilities", href: "/facilities" },
-        { name: "Virtual Tour", href: "/virtual-tour" },
-        { name: "Patients Stories / Feedbacks", href: "/feedbacks" },
-        { name: "Patient Rights & Responsibilities", href: "/patient-rights" },
-        { name: "Photos", href: "/gallery-photos" },
-        { name: "Videos", href: "/gallery-videos" },
-      ],
-    },
-    {
-      name: "Doctors & Departments",
-      href: "/doctor-details",
-      dropdown: [
-        { name: "Doctor Details", href: "/doctor-details" },
-        { name: "Department Details", href: "/departments" },
-        { name: "Services", href: "/services" },
-      ],
-    },
-    {
-      name: "Research",
-      href: "/research-about",
-      dropdown: [
-        { name: "About Us", href: "/research-about" },
-        { name: "Training And Events", href: "/training-events" },
-        { name: "Awards", href: "/awards" },
-        { name: "Newsletter Articles", href: "/newsletter-articles" },
-        { name: "Publications", href: "/publications" },
-        { name: "Annual Reports", href: "/annual-reports" },
-        { name: "Sponsors & CROs", href: "/sponsors-cros" },
-        { name: "Contact Us", href: "/research-contact" },
-      ],
-    },
-    {
-      name: "Academics",
-      href: "/academics",
-      dropdown: [
-        { name: "Academics", href: "/academics" },
-        { name: "Simulation Center", href: "/simulation-center" },
-      ],
-    },
-    {
-      name: "Online Facilities",
-      href: "/email-login",
-      dropdown: [
-        { name: "E-Mail Login (DMH Users)", href: "/email-login" },
-        { name: "Online Payment", href: "/online-payment" },
-        { name: "Patient Portal", href: "/patient-portal" },
-        { name: "Patient Registration Form", href: "/patient-registration" },
-      ],
-    },
-    {
-      name: "Career",
-      href: "/careers",
-    },
-    {
-      name: "Contact Us",
-      href: "/contact-us",
-    },
-  ];
+  // baseNavLinks is now imported from @/lib/navConfig
+
+  const navLinks = baseNavLinks.map(link => {
+    const pagesForMenu = dynamicLinks.filter(p => p.navbarMenu === link.name);
+    if (pagesForMenu.length > 0) {
+      const newDropdown = link.dropdown ? [...link.dropdown] : [];
+      pagesForMenu.forEach(p => {
+        newDropdown.push({ name: p.title, href: `/${p.slug}` });
+      });
+      return { ...link, dropdown: newDropdown };
+    }
+    return link;
+  });
 
   const toggleMobileDropdown = (name: string) => {
     if (expandedMobileMenu === name) {
@@ -341,9 +288,9 @@ export default function Navbar() {
           <div className="flex justify-between items-center">
 
             {/* DMH Logo Section */}
-            <div className="flex items-center shrink-0 gap-0 sm:gap-1 lg:gap-2">
-              <Link href="/" className="flex items-center gap-1 sm:gap-2 group focus:outline-none">
-                <div className="relative flex items-center justify-start w-[180px] sm:w-[220px] xl:w-[280px] 2xl:w-[380px] h-[40px] sm:h-[55px] xl:h-[65px] shrink-0 transition-all">
+            <div className="flex items-center shrink-0">
+              <Link href="/" className="flex items-center group focus:outline-none shrink-0">
+                <div className="relative flex items-center justify-start w-[180px] sm:w-[230px] xl:w-[280px] 2xl:w-[380px] h-[40px] sm:h-[55px] xl:h-[65px] shrink-0 transition-all">
                   <img
                     src="/images/Untitled design11.png"
                     alt="DMH Logo"
@@ -351,19 +298,22 @@ export default function Navbar() {
                   />
                 </div>
               </Link>
-              {/* Desktop 25 Years Image */}
-              <div className="hidden xl:flex relative items-center justify-start w-[140px] 2xl:w-[180px] h-[55px] shrink transition-all -ml-6 2xl:-ml-8">
-                <img
-                  src="/images/ChatGPT Image Jul 27, 2026, 05_05_55 PM (1)_transparent.png"
-                  alt="25 Years Image"
-                  className="w-full h-full object-contain"
-                />
+
+              {/* Desktop 25 Years Image (Snug, Equal Spacing) */}
+              <div className="hidden xl:flex items-center justify-center shrink-0 px-0.5 xl:px-1 2xl:px-1.5 -ml-1 xl:-ml-2 2xl:-ml-3 mr-0.5 xl:mr-1">
+                <div className="relative flex items-center justify-center w-[110px] 2xl:w-[150px] h-[45px] 2xl:h-[55px] shrink-0 transition-all">
+                  <img
+                    src="/images/ChatGPT Image Jul 27, 2026, 05_05_55 PM (1)_transparent.png"
+                    alt="25 Years Image"
+                    className="w-full h-full object-contain"
+                  />
+                </div>
               </div>
             </div>
 
             {/* Mobile 25 Years Image (Centered between logo and triggers) */}
             <div className="flex xl:hidden flex-1 justify-center items-center px-2">
-              <div className="relative flex items-center justify-center w-[70px] sm:w-[100px] h-[30px] sm:h-[45px] shrink transition-all">
+              <div className="relative flex items-center justify-center w-[70px] sm:w-[100px] h-[30px] sm:h-[45px] shrink-0 transition-all">
                 <img
                   src="/images/ChatGPT Image Jul 27, 2026, 05_05_55 PM (1)_transparent.png"
                   alt="25 Years Image"
@@ -373,7 +323,7 @@ export default function Navbar() {
             </div>
 
             {/* Desktop Navigation Links */}
-            <div className="hidden xl:flex items-center justify-end flex-1 mx-0 2xl:mx-3 gap-1 2xl:gap-2 transition-all">
+            <div className="hidden xl:flex items-center justify-start flex-1 gap-1 xl:gap-1.5 2xl:gap-3 transition-all">
               {navLinks.map((link, idx) => (
                 <div key={idx} className="relative group py-2">
                   <Link 
@@ -409,6 +359,7 @@ export default function Navbar() {
             {/* Right Action Stack */}
             <div className="hidden xl:flex items-center gap-0.5 2xl:gap-2 shrink-0 justify-end relative">
               <button 
+                suppressHydrationWarning={true}
                 onClick={() => setIsSearchOpen(!isSearchOpen)}
                 className="p-1.5 text-slate-500 hover:text-slate-900 transition-colors shrink-0"
                 aria-label="Toggle Search"
@@ -422,6 +373,7 @@ export default function Navbar() {
             {/* Mobile / Tablet View Trigger (Triggers under 1280px Screen width) */}
             <div className="xl:hidden flex items-center gap-1.5 md:gap-3 shrink-0">
               <button 
+                suppressHydrationWarning={true}
                 onClick={() => setIsSearchOpen(!isSearchOpen)}
                 className="p-1.5 text-slate-500 hover:text-slate-900 transition-colors shrink-0"
                 aria-label="Toggle Search"

@@ -1,35 +1,11 @@
 "use client";
 
 import React, { useEffect, useRef } from "react";
+import DynamicSidebar from "@/components/DynamicSidebar";
 import Link from "next/link";
 import { ChevronRight, Target, Eye, Heart, ShieldCheck, Activity, Award, CheckCircle2, Building2 } from "lucide-react";
 
 export default function AboutHospitalClient({ data }: { data: any }) {
-  const aboutOptions = [
-    { name: "About Hospital", href: "/about-hospital", active: true },
-    { name: "Associates", href: "/associates", active: false },
-    { name: "Accreditations", href: "/accreditations", active: false },
-    { name: "Support Hospital / Donations", href: "/supportHospitalDonations", active: false },
-    { name: "Unique features of DMH", href: "/unique-features", active: false },
-    { name: "Foreign Contribution", href: "/foreign-contribution", active: false },
-    { name: "Charity Details", href: "/charity-details", active: false },
-  ];
-
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (window.innerWidth < 1024 && scrollContainerRef.current) {
-      const activeEl = scrollContainerRef.current.querySelector('[data-active="true"]') as HTMLElement;
-      if (activeEl) {
-        const container = scrollContainerRef.current;
-        const scrollPos = activeEl.offsetLeft - (container.offsetWidth / 2) + (activeEl.offsetWidth / 2);
-        setTimeout(() => {
-          container.scrollTo({ left: Math.max(0, scrollPos), behavior: 'smooth' });
-        }, 100);
-      }
-    }
-  }, []);
-
   return (
     <div className="min-h-screen bg-[#f8fafc] font-sans selection:bg-teal-500/30">
       {/* Premium Page Header */}
@@ -52,32 +28,8 @@ export default function AboutHospitalClient({ data }: { data: any }) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-16">
         <div className="flex flex-col lg:flex-row gap-8 xl:gap-12 items-start">
           
-          {/* Left Sidebar Navigation */}
-          <div className="w-full lg:w-[280px] shrink-0 sticky top-14 lg:top-28 z-30 bg-[#f8fafc] py-2 lg:py-0">
-            <div ref={scrollContainerRef} className="bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 overflow-hidden flex flex-row lg:flex-col overflow-x-auto lg:overflow-x-visible scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden snap-x snap-mandatory">
-              {aboutOptions.map((option, idx) => (
-                <Link
-                  key={idx}
-                  href={option.href}
-                  data-active={option.active}
-                  className={`snap-start shrink-0 group flex items-center justify-between px-6 py-4 lg:py-4 text-sm font-bold transition-all duration-300 lg:border-l-4 lg:border-b-0 border-b-4 whitespace-nowrap lg:whitespace-normal ${
-                    option.active
-                      ? "border-[#007a87] bg-teal-50/40 text-[#007a87]"
-                      : "border-transparent text-slate-600 hover:bg-slate-50 hover:text-[#002b5c] lg:hover:border-slate-200 hover:border-slate-200"
-                  } ${idx !== aboutOptions.length - 1 ? "lg:border-b lg:border-b-slate-50" : ""}`}
-                >
-                  <span>{option.name}</span>
-                  <ChevronRight 
-                    className={`hidden lg:block w-4 h-4 transition-transform duration-300 ${
-                      option.active 
-                        ? "text-[#007a87] translate-x-1" 
-                        : "text-slate-300 group-hover:translate-x-1 group-hover:text-[#002b5c]"
-                    }`} 
-                  />
-                </Link>
-              ))}
-            </div>
-          </div>
+          {/* Dynamic Sidebar */}
+          <DynamicSidebar categoryName="About Us" activeHref="/about-hospital" />
 
           {/* Right Main Content */}
           <div className="w-full flex-1 min-w-0">
@@ -176,11 +128,9 @@ export default function AboutHospitalClient({ data }: { data: any }) {
               {/* History */}
               <div className="mb-8">
                 <h3 className="text-3xl font-extrabold text-[#002b5c] mb-6 tracking-tight">Our History</h3>
-                <div className="space-y-4 font-normal text-slate-600 leading-[29px] border-l-4 border-teal-100 pl-6 md:pl-8 py-2 relative">
+                <div className="prose prose-slate max-w-none prose-p:leading-[29px] [&_p]:mb-2 [&_p]:mt-0 last:[&_p]:mb-0 font-normal text-slate-600 border-l-4 border-teal-100 pl-6 md:pl-8 py-2 relative">
                   <div className="absolute top-0 left-0 w-1 h-12 bg-[#007a87] -ml-[4px] rounded-full" />
-                  {(Array.isArray(data?.history) ? data.history : [data?.history || ""]).map((paragraph: string, idx: number) => (
-                    <div key={idx} className="mb-3 last:mb-0" dangerouslySetInnerHTML={{ __html: paragraph }} />
-                  ))}
+                  <div dangerouslySetInnerHTML={{ __html: (Array.isArray(data?.history) ? data.history : [data?.history || ""]).join('') }} />
                 </div>
               </div>
 

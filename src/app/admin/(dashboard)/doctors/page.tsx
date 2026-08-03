@@ -2,6 +2,7 @@ import { prisma } from "@/lib/prisma";
 import Link from "next/link";
 import { Search, Plus, Edit, HeartPulse } from "lucide-react";
 import InlineSeoForm from "@/app/admin/(dashboard)/components/InlineSeoForm";
+import SyncDoctorsButton from "@/app/admin/(dashboard)/components/SyncDoctorsButton";
 
 export const dynamic = "force-dynamic";
 
@@ -54,7 +55,8 @@ export default async function AdminDoctorsPage({
             Manage hospital medical staff and physician profiles.
           </p>
         </div>
-        <div className="z-10 shrink-0 mt-4 lg:mt-0">
+        <div className="z-10 shrink-0 mt-4 lg:mt-0 flex gap-4">
+          <SyncDoctorsButton />
           <Link
             href="/admin/doctors/new"
             className="flex items-center gap-2 bg-[#007a87] text-white px-7 py-3.5 rounded-xl hover:bg-[#006570] hover:shadow-[0_8px_20px_rgba(0,122,135,0.3)] font-bold transition-all duration-300 transform hover:-translate-y-0.5"

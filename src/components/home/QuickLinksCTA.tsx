@@ -10,7 +10,49 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 
-export default function QuickLinksCTA() {
+export const defaultQuickLinksData = {
+  tagline: "Comprehensive Care",
+  title: 'Explore Our <span class="font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-[#001730] to-[#003f8a]">Clinical Services</span>',
+  description: "Discover our wide range of medical specialties, expert doctors, and advanced diagnostic facilities dedicated to providing the best healthcare.",
+  stats: [
+    { title: "Expert", subtitle: "Specialists", iconString: "Stethoscope" },
+    { title: "Advanced", subtitle: "Diagnosis", iconString: "Activity" }
+  ],
+  links: [
+    { 
+      title: "Specialities and Departments", 
+      subtitle: "Medical / Surgical / Allied", 
+      url: "/departments", 
+      iconString: "Activity", 
+      bgColorFrom: "#001730", 
+      bgColorTo: "#002b5c", 
+      hoverColor: "#001730" 
+    },
+    { 
+      title: "Doctors", 
+      subtitle: "Medical / Surgical Experts", 
+      url: "/doctors", 
+      iconString: "Users", 
+      bgColorFrom: "#002145", 
+      bgColorTo: "#003570", 
+      hoverColor: "#002145" 
+    },
+    { 
+      title: "Diagnosis", 
+      subtitle: "Advanced Diagnostic Services", 
+      url: "#", 
+      iconString: "Microscope", 
+      bgColorFrom: "#002b5c", 
+      bgColorTo: "#004085", 
+      hoverColor: "#002b5c" 
+    }
+  ]
+};
+
+export default function QuickLinksCTA({ data = defaultQuickLinksData }: { data?: any }) {
+  if (!data || Object.keys(data).length === 0) data = defaultQuickLinksData;
+  const stats = data.stats || defaultQuickLinksData.stats;
+  const links = data.links || defaultQuickLinksData.links;
   return (
     <section className="relative overflow-hidden mt-12 max-w-7xl mx-auto rounded-[2.5rem] bg-gradient-to-br from-slate-50 via-white to-blue-50/50 py-[20px] md:py-10 border border-blue-100/60 shadow-[0_20px_50px_rgba(0,43,92,0.05)]">
 
@@ -46,7 +88,7 @@ export default function QuickLinksCTA() {
               </span>
 
               <p className="text-[11px] font-extrabold uppercase tracking-[0.22em] text-[#002b5c]">
-                Comprehensive Care
+                {data.tagline}
               </p>
             </div>
 
@@ -55,11 +97,7 @@ export default function QuickLinksCTA() {
               mt-6 text-3xl sm:text-5xl
               font-light tracking-tight
               leading-tight text-slate-900
-            ">
-              Explore Our{" "}
-              <span className="font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-[#001730] to-[#003f8a]">
-                Clinical Services
-              </span>
+            " dangerouslySetInnerHTML={{__html: data.title}}>
             </h2>
 
             {/* Subtext Description */}
@@ -68,215 +106,110 @@ export default function QuickLinksCTA() {
               text-[18px] font-normal
               leading-[31px] text-slate-600
             ">
-              Discover our wide range of medical specialties, expert doctors, and advanced diagnostic facilities dedicated to providing the best healthcare.
+              {data.description}
             </p>
 
-            {/* Visual Stats Indicators */}
             <div className="mt-8 flex flex-wrap gap-4">
-
-              <div className="
-                group
-                rounded-2xl border border-blue-100
-                bg-white/90 backdrop-blur-md
-                px-6 py-5
-                shadow-[0_4px_20px_rgba(0,0,0,0.02)]
-                transition-all duration-300
-              ">
-                <div className="flex items-center gap-3">
-                  <div className="bg-blue-50 p-2 rounded-xl text-[#002b5c] transition-colors duration-300 group-hover:text-[#9F0712]">
-                    <Stethoscope size={24} />
+              {stats.map((stat: any, index: number) => {
+                const Icons = require('lucide-react');
+                const Icon = Icons[stat.iconString] || Icons.Activity;
+                return (
+                  <div key={index} className="
+                    group
+                    rounded-2xl border border-blue-100
+                    bg-white/90 backdrop-blur-md
+                    px-6 py-5
+                    shadow-[0_4px_20px_rgba(0,0,0,0.02)]
+                    transition-all duration-300
+                  ">
+                    <div className="flex items-center gap-3">
+                      <div className="bg-blue-50 p-2 rounded-xl text-[#002b5c] transition-colors duration-300 group-hover:text-[#9F0712]">
+                        <Icon size={24} />
+                      </div>
+                      <div>
+                        <h3 className="text-xl font-black text-slate-900">{stat.title}</h3>
+                        <p className="text-xs font-medium text-slate-500 mt-0.5">{stat.subtitle}</p>
+                      </div>
+                    </div>
                   </div>
-                  <div>
-                    <h3 className="text-xl font-black text-slate-900">Expert</h3>
-                    <p className="text-xs font-medium text-slate-500 mt-0.5">Specialists</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="
-                group
-                rounded-2xl border border-blue-100
-                bg-white/90 backdrop-blur-md
-                px-6 py-5
-                shadow-[0_4px_20px_rgba(0,0,0,0.02)]
-                transition-all duration-300
-              ">
-                <div className="flex items-center gap-3">
-                  <div className="bg-blue-50 p-2 rounded-xl text-[#002b5c] transition-colors duration-300 group-hover:text-[#9F0712] notranslate" translate="no" data-no-translate="true" aria-hidden="true">
-                    <Activity size={24} className="notranslate" aria-hidden="true" />
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-black text-slate-900">Advanced</h3>
-                    <p className="text-xs font-medium text-slate-500 mt-0.5">Diagnosis</p>
-                  </div>
-                </div>
-              </div>
-
+                );
+              })}
             </div>
 
           </div>
 
-          {/* Right Actionable Blue Buttons */}
           <div className="grid gap-4.5">
+            {links.map((link: any, index: number) => {
+              const Icons = require('lucide-react');
+              const Icon = Icons[link.iconString] || Icons.Activity;
+              
+              // Helper to safely extract a hex color from any format (raw hex or tailwind class like from-[#123456])
+              const extractHex = (val: string, fallback: string) => {
+                if (!val) return fallback;
+                if (val.startsWith('#')) return val;
+                const match = val.match(/\[(#.*?)\]/);
+                if (match) return match[1];
+                return fallback;
+              };
+              
+              const fromHex = extractHex(link.bgColorFrom, '#002b5c');
+              const toHex = extractHex(link.bgColorTo, '#004085');
+              const hoverHex = extractHex(link.hoverColor, '#002b5c');
 
-            {/* Action Card 1: Specialities */}
-            <Link href="/departments" passHref>
-              <motion.div
-                whileHover={{ y: -4, scale: 1.01 }}
-                whileTap={{ scale: 0.99 }}
-                className="
-                  group relative overflow-hidden
-                  rounded-[2rem]
-                  bg-gradient-to-r from-[#001730] to-[#002b5c]
-                  p-6
-                  shadow-[0_15px_30px_rgba(0,43,92,0.25)]
-                  hover:shadow-[0_20px_40px_rgba(0,43,92,0.35)]
-                  transition-all duration-300
-                  cursor-pointer
-                "
-              >
-                {/* Internal Smooth Flare Highlight on Hover */}
-                <div className="
-                  absolute inset-0 opacity-0
-                  group-hover:opacity-100
-                  transition duration-500
-                  bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.15),transparent_60%)]
-                "></div>
-
-                <div className="relative z-10 flex items-center justify-between">
-                  <div className="flex items-center gap-5">
-                    
-                    {/* High Contrast White Icon Box */}
+              return (
+                <Link key={index} href={link.url} passHref>
+                  <motion.div
+                    whileHover={{ y: -4, scale: 1.01 }}
+                    whileTap={{ scale: 0.99 }}
+                    className={`
+                      group relative overflow-hidden
+                      rounded-[2rem]
+                      p-6
+                      shadow-[0_15px_30px_rgba(0,43,92,0.25)]
+                      hover:shadow-[0_20px_40px_rgba(0,43,92,0.35)]
+                      transition-all duration-300
+                      cursor-pointer
+                    `}
+                    style={{ 
+                      background: `linear-gradient(to right, ${fromHex}, ${toHex})`,
+                      '--hover-color': hoverHex
+                    } as React.CSSProperties}
+                  >
                     <div className="
-                      rounded-2xl bg-white/20 
-                      p-3.5 text-white ring-1 ring-white/20
-                      backdrop-blur-md notranslate
-                    " translate="no" data-no-translate="true" aria-hidden="true">
-                      <Activity className="h-5 w-5 animate-[bounce_3s_infinite] notranslate" aria-hidden="true" />
+                      absolute inset-0 opacity-0
+                      group-hover:opacity-100
+                      transition duration-500
+                      bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.15),transparent_60%)]
+                    "></div>
+
+                    <div className="relative z-10 flex items-center justify-between">
+                      <div className="flex items-center gap-5">
+                        <div className="
+                          rounded-2xl bg-white/20 
+                          p-3.5 text-white ring-1 ring-white/20
+                          backdrop-blur-md notranslate
+                        " translate="no" data-no-translate="true" aria-hidden="true">
+                          <Icon className="h-5 w-5 animate-[bounce_3s_infinite] notranslate" aria-hidden="true" />
+                        </div>
+
+                        <div>
+                          <h3 className="font-bold text-lg text-white tracking-wide">
+                            {link.title}
+                          </h3>
+                          <p className="text-xs sm:text-sm text-blue-100/80 mt-0.5 font-medium">
+                            {link.subtitle}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/10 group-hover:bg-white text-white transition-all duration-300 group-hover:text-[color:var(--hover-color)]`}>
+                        <ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-0.5" />
+                      </div>
                     </div>
-
-                    <div>
-                      <h3 className="font-bold text-lg text-white tracking-wide">
-                        Specialities and Departments
-                      </h3>
-                      <p className="text-xs sm:text-sm text-blue-100/80 mt-0.5 font-medium">
-                        Medical / Surgical / Allied
-                      </p>
-                    </div>
-
-                  </div>
-
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/10 group-hover:bg-white text-white group-hover:text-[#001730] transition-all duration-300">
-                    <ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-0.5" />
-                  </div>
-                </div>
-              </motion.div>
-            </Link>
-
-            {/* Action Card 2: Doctors */}
-            <Link href="/doctors" passHref>
-              <motion.div
-                whileHover={{ y: -4, scale: 1.01 }}
-                whileTap={{ scale: 0.99 }}
-                className="
-                  group relative overflow-hidden
-                  rounded-[2rem]
-                  bg-gradient-to-r from-[#002145] to-[#003570]
-                  p-6
-                  shadow-[0_15px_30px_rgba(0,79,107,0.25)]
-                  hover:shadow-[0_20px_40px_rgba(0,79,107,0.35)]
-                  transition-all duration-300
-                  cursor-pointer
-                "
-              >
-                <div className="
-                  absolute inset-0 opacity-0
-                  group-hover:opacity-100
-                  transition duration-500
-                  bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.15),transparent_60%)]
-                "></div>
-
-                <div className="relative z-10 flex items-center justify-between">
-                  <div className="flex items-center gap-5">
-
-                    <div className="
-                      rounded-2xl bg-white/15
-                      p-3.5 text-white ring-1 ring-white/20
-                      backdrop-blur-md notranslate
-                    " translate="no" data-no-translate="true" aria-hidden="true">
-                      <Users className="h-5 w-5 animate-[bounce_3s_infinite] notranslate" aria-hidden="true" />
-                    </div>
-
-                    <div>
-                      <h3 className="font-bold text-lg text-white tracking-wide">
-                        Doctors
-                      </h3>
-                      <p className="text-xs sm:text-sm text-blue-100/80 mt-0.5 font-medium">
-                        Medical / Surgical Experts
-                      </p>
-                    </div>
-
-                  </div>
-
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/10 group-hover:bg-white text-white group-hover:text-[#002145] transition-all duration-300">
-                    <ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-0.5" />
-                  </div>
-                </div>
-              </motion.div>
-            </Link>
-
-            {/* Action Card 3: Diagnosis */}
-            <Link href="#" passHref>
-              <motion.div
-                whileHover={{ y: -4, scale: 1.01 }}
-                whileTap={{ scale: 0.99 }}
-                className="
-                  group relative overflow-hidden
-                  rounded-[2rem]
-                  bg-gradient-to-r from-[#002b5c] to-[#004085]
-                  p-6
-                  shadow-[0_15px_30px_rgba(0,122,135,0.2)]
-                  hover:shadow-[0_20px_40px_rgba(0,122,135,0.3)]
-                  transition-all duration-300
-                  cursor-pointer
-                "
-              >
-                <div className="
-                  absolute inset-0 opacity-0
-                  group-hover:opacity-100
-                  transition duration-500
-                  bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.15),transparent_60%)]
-                "></div>
-
-                <div className="relative z-10 flex items-center justify-between">
-                  <div className="flex items-center gap-5">
-
-                    <div className="
-                      rounded-2xl bg-white/15
-                      p-3.5 text-white ring-1 ring-white/20
-                      backdrop-blur-md notranslate
-                    " translate="no" data-no-translate="true" aria-hidden="true">
-                      <Microscope className="h-5 w-5 animate-[bounce_3s_infinite] notranslate" aria-hidden="true" />
-                    </div>
-
-                    <div>
-                      <h3 className="font-bold text-lg text-white tracking-wide">
-                        Diagnosis
-                      </h3>
-                      <p className="text-xs sm:text-sm text-blue-100/80 mt-0.5 font-medium">
-                        Advanced Diagnostic Services
-                      </p>
-                    </div>
-
-                  </div>
-
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/10 group-hover:bg-white text-white group-hover:text-[#002b5c] transition-all duration-300">
-                    <ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-0.5" />
-                  </div>
-                </div>
-              </motion.div>
-            </Link>
-
+                  </motion.div>
+                </Link>
+              );
+            })}
           </div>
 
         </motion.div>

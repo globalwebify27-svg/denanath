@@ -6,37 +6,49 @@ import { motion } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useEffect, useRef } from "react";
 
-export default function DoctorsSection() {
-  const doctors = [
+export const defaultDoctorsData = {
+  tagline: "Meet Our Specialists",
+  title: "Expert Doctors Dedicated \\nto Your Health",
+  description: "Our highly experienced specialists provide compassionate care.",
+  doctors: [
     {
-      name: "Dr. GADRE ANIKET",
-      specialization: "Cardiologist",
-      experience: "12+ Years Experience",
-      qualification: "MBBS, MD Medicine, DNB Cardiology",
-      image: "/images/1084_Pic.jpg",
+      name: "Dr. Agarkhedkar Nikhil",
+      specialization: "Plastic Surgery",
+      experience: "11+ Years Experience",
+      qualification: "MBBS, MS, MCh (Plastic Surgery)",
+      image: "/images/3678_Pic.png",
+      id: "3678",
     },
     {
-      name: "Dr. BHAGWAT ANIRUDDHA ABHAY",
-      specialization: "Neurosurgeon",
-      experience: "2+ Years Experience",
-      qualification: "MBBS, MS, M.Ch. Neurosurgery",
-      image: "/images/2076_Pic.jpg",
+      name: "Dr. Rege Ishant",
+      specialization: "Neurological Surgery",
+      experience: "6+ Years Experience",
+      qualification: "MBBS, MS, MCh Neurosurgery",
+      image: "/images/1955_Pic.jpg",
+      id: "19518",
     },
     {
-      name: "Dr. BARVE RAGHAV",
-      specialization: "Orthopedic Surgeon",
-      experience: "16+ Years Experience",
-      qualification: "MBBS, MS (Ortho), DNB (Ortho)",
-      image: "/images/1025_Pic.jpg",
+      name: "Dr. Nagare Umesh",
+      specialization: "Orthopaedics",
+      experience: "14+ Years Experience",
+      qualification: "MBBS, D' ORTHO, MS (UK), MRCSI",
+      image: "/images/1100_Pic.jpg",
+      id: "764",
     },
     {
-      name: "Dr. BHIDE GAYATRI",
-      specialization: "Pediatrician",
-      experience: "3+ Years Experience",
-      qualification: "MBBS, MD (Paediatrics), DNB (Paediatrics)",
-      image: "/images/73_Pic.jpg",
+      name: "Dr. Nadkarni Anupama",
+      specialization: "Paediatrics",
+      experience: "17+ Years Experience",
+      qualification: "MBBS, MS (PUNE), FRCS (LONDON)",
+      image: "/images/971_Pic.jpg",
+      id: "649",
     },
-  ];
+  ]
+};
+
+export default function DoctorsSection({ data = defaultDoctorsData }: { data?: any }) {
+  if (!data || Object.keys(data).length === 0) data = defaultDoctorsData;
+  const doctors = data.doctors || defaultDoctorsData.doctors;
 
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -79,17 +91,15 @@ export default function DoctorsSection() {
         <div className="mb-14 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <div>
             <p className="mb-3 text-xs font-semibold uppercase tracking-[0.25em] text-[#007a87]">
-              Meet Our Specialists
+              {data.tagline}
             </p>
 
-            <h2 className="text-2xl md:text-4xl tracking-tight text-slate-900">
-              Expert Doctors Dedicated <br />
-              to Your Health
+            <h2 className="text-2xl md:text-4xl tracking-tight text-slate-900" dangerouslySetInnerHTML={{ __html: (data.title || "").replace(/\\n/g, '<br/>') }}>
             </h2>
           </div>
 
           <p className="max-w-xl text-[18px] text-slate-600 leading-[31px]">
-            Our highly experienced specialists provide compassionate care.
+            {data.description}
           </p>
         </div>
 
@@ -109,24 +119,26 @@ export default function DoctorsSection() {
                   snap-start overflow-hidden flex-shrink-0 flex flex-col
                 "
               >
-                <div style={{ position: "relative" }} className="relative h-[340px] w-full overflow-hidden">
+                <Link href={`/doctor-details/${doctor.id}`} className="relative h-[340px] w-full overflow-hidden block group">
                   <Image
                     src={doctor.image}
                     alt={doctor.name}
                     fill
-                    className="object-cover object-top sm:object-center"
+                    className="object-cover object-top sm:object-center group-hover:scale-105 transition-transform duration-300"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
 
                   <div className="absolute top-3 left-3 rounded-full bg-white/90 px-3 py-1 text-[10px] sm:text-xs font-semibold text-[#002b5c]">
                     {doctor.specialization}
                   </div>
-                </div>
+                </Link>
 
                 <div className="p-4 sm:p-6 flex flex-col flex-1">
-                  <h3 className="text-lg sm:text-xl font-bold text-slate-900">
-                    {doctor.name}
-                  </h3>
+                  <Link href={`/doctor-details/${doctor.id}`} className="hover:text-[#007a87] transition-colors">
+                    <h3 className="text-lg sm:text-xl font-bold text-slate-900">
+                      {doctor.name}
+                    </h3>
+                  </Link>
 
                   <p className="mt-2 text-xs sm:text-sm text-[#007a87] font-medium">
                     {doctor.qualification}
@@ -136,7 +148,7 @@ export default function DoctorsSection() {
                     {doctor.experience}
                   </p>
 
-                  <Link href="/book-appointment" className="mt-auto w-full rounded-xl bg-[#002b5c] px-4 py-2.5 text-sm font-semibold text-white hover:bg-[#007a87] transition flex items-center justify-center">
+                  <Link href={`/doctor-details/${doctor.id}`} className="mt-auto w-full rounded-xl bg-[#002b5c] px-4 py-2.5 text-sm font-semibold text-white hover:bg-[#007a87] transition flex items-center justify-center">
                     Book Appointment
                   </Link>
                 </div>

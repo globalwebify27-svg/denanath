@@ -6,29 +6,36 @@ import {
   Mic, Baby, Activity, Footprints, Dumbbell, Mountain, Heart, Brain, ArrowRight, Stethoscope 
 } from "lucide-react";
 
-export default function SpecialtyClinics() {
+export const defaultSpecialtyClinicsData = {
+  tagline: "Specialized Medical Care",
+  title: 'Our Specialty <span class="font-bold text-emerald-700">Care Clinics</span>',
+  description: "Highly focused clinical programs and centers of excellence addressing specialized therapeutic and medical disciplines.",
+  staticClinics: [
+    { id: "01", name: "Voice Clinic", iconString: "Mic", color: "text-teal-600 bg-teal-50", href: "/departments/voice-clinic" },
+    { id: "02", name: "IVF (In Vitro Fertilisation)", iconString: "Baby", color: "text-blue-600 bg-blue-50", href: "https://www.ivfinpune.com/" }
+  ],
+  scrollingClinics: [
+    { id: "03", name: "Obesity Clinic", iconString: "Activity", color: "text-amber-600 bg-amber-50", href: "/departments/obesity-clinic" },
+    { id: "04", name: "Small Step", iconString: "Footprints", color: "text-purple-600 bg-purple-50", href: "/departments/paediatric-small-steps" },
+    { id: "05", name: "Thyroid Centre", iconString: "Activity", color: "text-teal-600 bg-teal-50", href: "https://www.dmhospital.org/cms/Media/file/thyroid_brocher.pdf" },
+    { id: "06", name: "BILD Exercise Clinic", iconString: "Dumbbell", color: "text-blue-600 bg-blue-50", href: "https://bildclinic.com/" },
+    { id: "07", name: "Swallowing Clinic", iconString: "Activity", color: "text-amber-600 bg-amber-50", href: "/departments/swallowing-clinic" },
+    { id: "08", name: "Posture Pain Clinic", iconString: "Activity", color: "text-purple-600 bg-purple-50", href: "/departments/posture-pain-clinic" },
+    { id: "09", name: "VBS Mani Hypoxic Training", iconString: "Mountain", color: "text-teal-600 bg-teal-50", href: "/departments/hypoxic-training-center" },
+    { id: "10", name: "Knee Speciality Exercise", iconString: "Activity", color: "text-blue-600 bg-blue-50", href: "/departments/knee-specialty-clinic" }
+  ]
+};
+
+export default function SpecialtyClinics({ data = defaultSpecialtyClinicsData }: { data?: any }) {
+  if (!data || Object.keys(data).length === 0) data = defaultSpecialtyClinicsData;
+  const staticClinics = data.staticClinics || defaultSpecialtyClinicsData.staticClinics;
+  const scrollingClinics = data.scrollingClinics || defaultSpecialtyClinicsData.scrollingClinics;
+
   const [isPaused, setIsPaused] = useState(false);
   const sliderRef = useRef<HTMLDivElement>(null);
   
   // Isse hum current scroll position ko track karenge bina real DOM ko baar-baar force kiye
   const scrollPosRef = useRef(0);
-
-  // Static Clinics (Jo hamesha upar fix rahenge)
-  const staticClinics = [
-    { id: "01", name: "Voice Clinic", icon: Mic, color: "text-teal-600 bg-teal-50", href: "/departments/voice-clinic" },
-    { id: "02", name: "IVF (In Vitro Fertilisation)", icon: Baby, color: "text-blue-600 bg-blue-50", href: "https://www.ivfinpune.com/" }
-  ];
-
-  const scrollingClinics = [
-    { id: "03", name: "Obesity Clinic", icon: Activity, color: "text-amber-600 bg-amber-50", href: "/departments/obesity-clinic" },
-    { id: "04", name: "Small Step", icon: Footprints, color: "text-purple-600 bg-purple-50", href: "/departments/paediatric-small-steps" },
-    { id: "05", name: "Thyroid Centre", icon: Activity, color: "text-teal-600 bg-teal-50", href: "https://www.dmhospital.org/cms/Media/file/thyroid_brocher.pdf" },
-    { id: "06", name: "BILD Exercise Clinic", icon: Dumbbell, color: "text-blue-600 bg-blue-50", href: "https://bildclinic.com/" },
-    { id: "07", name: "Swallowing Clinic", icon: Activity, color: "text-amber-600 bg-amber-50", href: "/departments/swallowing-clinic" },
-    { id: "08", name: "Posture Pain Clinic", icon: Activity, color: "text-purple-600 bg-purple-50", href: "/departments/posture-pain-clinic" },
-    { id: "09", name: "VBS Mani Hypoxic Training", icon: Mountain, color: "text-teal-600 bg-teal-50", href: "/departments/hypoxic-training-center" },
-    { id: "10", name: "Knee Speciality Exercise", icon: Activity, color: "text-blue-600 bg-blue-50", href: "/departments/knee-specialty-clinic" }
-  ];
 
   // Pure list for Desktop grid rendering
   const allClinics = [...staticClinics, ...scrollingClinics];
@@ -84,7 +91,8 @@ export default function SpecialtyClinics() {
 
   // Card component wrapper
   const ClinicCard = ({ clinic, isDesktopOnly = false }: { clinic: any, isDesktopOnly?: boolean }) => {
-    const Icon = clinic.icon;
+    const Icons = require('lucide-react');
+    const Icon = Icons[clinic.iconString] || Icons.Activity;
     return (
       <Link
         href={clinic.href || "/departments"}
@@ -138,14 +146,14 @@ export default function SpecialtyClinics() {
         {/* Section Heading */}
         <div className="flex flex-col md:flex-row md:items-start justify-between gap-6 mb-4 md:mb-10 border-b border-emerald-200/60 pb-4 md:pb-8 text-center md:text-left">
           <div>
-            <p className="text-[10px] font-bold text-[#007a87] uppercase tracking-[0.2em] mb-2">Specialized Medical Care</p>
-            <h2 className="text-3xl sm:text-4xl font-light text-slate-900 tracking-tight">
-              Our Specialty <span className="font-bold text-emerald-700">Care Clinics</span>
+            <p className="text-[10px] font-bold text-[#007a87] uppercase tracking-[0.2em] mb-2">{data.tagline}</p>
+            <h2 className="text-3xl sm:text-4xl font-light text-slate-900 tracking-tight" dangerouslySetInnerHTML={{__html: data.title}}>
             </h2>
           </div>
-          <p className="text-slate-600 text-base sm:text-lg font-normal max-w-md leading-[31px] mx-auto md:mx-0">
-            Highly focused clinical programs and centers of excellence addressing specialized therapeutic and medical disciplines.
-          </p>
+          <div 
+            className="text-slate-600 text-base sm:text-lg font-normal max-w-md leading-[31px] mx-auto md:mx-0 prose prose-sm prose-p:leading-[31px] prose-p:m-0"
+            dangerouslySetInnerHTML={{__html: data.description}}
+          />
         </div>
 
         {/* 1. MOBILE-ONLY VIEW */}

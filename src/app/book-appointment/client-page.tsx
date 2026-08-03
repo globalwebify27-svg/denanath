@@ -259,20 +259,27 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
           setSearchResults(sortedResults);
         }
         setIsSearching(false);
-      } else if (specialities.length > 0) {
-        const allDocs: any[] = [];
-        await Promise.all(
-          specialities.slice(0, 15).map(async (s: any) => {
-            const specId = s.speciality_id || s.id;
-            if (!specId) return;
-            const data = await fetchApi("speciality_doctor", { speciality_id: String(specId) });
-            const docs = data?.doctorJSON || (Array.isArray(data) ? data : []);
-            if (Array.isArray(docs)) {
-              allDocs.push(...docs.map((d: any) => ({ ...d, speciality_id: d.speciality_id || specId })));
+      } else {
+        try {
+          const res = await fetch('/api/doctors');
+          if (res.ok) {
+            const dbDocs = await res.json();
+            if (Array.isArray(dbDocs)) {
+              const mapped = dbDocs.map((d: any) => ({
+                doctor_id: d.dmhDoctorId || d.id,
+                doctor_name: d.name,
+                speciality_id: d.dmhSpecialityId,
+                specialty_name: d.specialty,
+                service_point_id: d.dmhServicePointId,
+                service_center_id: d.dmhServiceCenterId,
+                isApp: d.isAppAllowed,
+              }));
+              setDoctors(mapped);
             }
-          })
-        );
-        setDoctors(allDocs);
+          }
+        } catch (err) {
+          console.warn("Failed to fetch doctors list from DB:", err);
+        }
       }
     };
 
@@ -564,7 +571,7 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
               
               <div className="relative">
                 <div 
-                  className="w-full bg-white border-2 border-teal-500/20 text-slate-700 text-lg rounded-full py-4 px-6 cursor-pointer flex items-center justify-between font-medium transition-colors hover:border-teal-500/40 relative z-10"
+                  className={`w-full ${selectedSpeciality ? 'bg-teal-50/90 border-teal-500 text-teal-900 shadow-sm' : 'bg-slate-50/70 border-teal-500/30 text-slate-700 hover:bg-teal-50/50 hover:border-teal-500/60'} border-2 text-lg rounded-full py-4 px-6 cursor-pointer flex items-center justify-between font-medium transition-all relative z-10`}
                   onClick={() => { setIsSpecOpen(!isSpecOpen); setIsDocOpen(false); setSpecQuery(""); }}
                 >
                   <span className="flex-1 text-center truncate font-semibold">
@@ -636,7 +643,7 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
               
               <div className="relative">
                 <div 
-                  className="w-full bg-white border-2 border-teal-500/20 text-slate-700 text-lg rounded-full py-4 px-6 cursor-pointer flex items-center justify-between font-medium transition-colors hover:border-teal-500/40 relative z-10"
+                  className={`w-full ${selectedDoctor ? 'bg-teal-50/90 border-teal-500 text-teal-900 shadow-sm' : 'bg-slate-50/70 border-teal-500/30 text-slate-700 hover:bg-teal-50/50 hover:border-teal-500/60'} border-2 text-lg rounded-full py-4 px-6 cursor-pointer flex items-center justify-between font-medium transition-all relative z-10`}
                   onClick={() => { setIsDocOpen(!isDocOpen); setIsSpecOpen(false); setDocQuery(""); }}
                 >
                   <span className="flex-1 text-center truncate font-semibold">
@@ -690,7 +697,13 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
                             <div 
                               key={i}
                               className={`px-6 py-3 hover:bg-teal-50 cursor-pointer text-center font-medium transition-colors uppercase ${String(selectedDoctor) === String(val) ? 'bg-teal-50 text-teal-700 font-bold' : 'text-slate-600'}`}
-                              onClick={() => { setSelectedDoctor(val); setIsDocOpen(false); }}
+                              onClick={() => { 
+                                setSelectedDoctor(val); 
+                                if (d.speciality_id && !selectedSpeciality) {
+                                  setSelectedSpeciality(d.speciality_id);
+                                }
+                                setIsDocOpen(false); 
+                              }}
                             >
                               {label}
                             </div>

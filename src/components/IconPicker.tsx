@@ -11,7 +11,8 @@ import {
   Users, Share2, Download, Upload, List, Grid, Image, Video, Layers, Link, Map,
   Lock, Unlock, Key, Check, Plus, Minus, Trash2, Edit3, Clipboard, Award,
   TrendingUp, Globe, HeartHandshake, Sparkles, Accessibility, FileSpreadsheet,
-  Hand, Lightbulb, Compass, Send, ChevronDown, Leaf, Flame, Utensils, BookOpen
+  Hand, Lightbulb, Compass, Send, ChevronDown, Leaf, Flame, Utensils, BookOpen, Mic,
+  Footprints, Dumbbell, Mountain, FlaskConical, Building2, ShieldCheck, CalendarCheck
 } from "lucide-react";
 
 // Register icons in a lookup map
@@ -23,7 +24,8 @@ export const iconMap: Record<string, React.ComponentType<{ className?: string; s
   Users, Share2, Download, Upload, List, Grid, Image, Video, Layers, Link, Map,
   Lock, Unlock, Key, Check, Plus, Minus, Trash2, Edit3, Clipboard, Award,
   TrendingUp, Globe, HeartHandshake, Sparkles, Accessibility, FileSpreadsheet,
-  Hand, Lightbulb, Compass, Send, Leaf, Flame, Utensils, BookOpen
+  Hand, Lightbulb, Compass, Send, Leaf, Flame, Utensils, BookOpen, Mic,
+  Footprints, Dumbbell, Mountain, FlaskConical, Building2, ShieldCheck, CalendarCheck
 };
 
 interface IconItem {
@@ -50,20 +52,24 @@ const AVAILABLE_ICONS: IconItem[] = [
   { name: "Heart", category: "Medical" },
   { name: "Leaf", category: "Medical" },
   { name: "Utensils", category: "Medical" },
+  { name: "FlaskConical", category: "Medical" },
 
   // General & Utilities
   { name: "Home", category: "General" },
   { name: "Shield", category: "General" },
   { name: "ShieldAlert", category: "General" },
+  { name: "ShieldCheck", category: "General" },
   { name: "Star", category: "General" },
   { name: "Bookmark", category: "General" },
   { name: "FileText", category: "General" },
   { name: "Calendar", category: "General" },
+  { name: "CalendarCheck", category: "General" },
   { name: "Clock", category: "General" },
   { name: "Phone", category: "General" },
   { name: "Mail", category: "General" },
   { name: "MapPin", category: "General" },
   { name: "Building", category: "General" },
+  { name: "Building2", category: "General" },
   { name: "CheckCircle", category: "General" },
   { name: "AlertCircle", category: "General" },
   { name: "Info", category: "General" },
@@ -102,16 +108,21 @@ const AVAILABLE_ICONS: IconItem[] = [
   { name: "Compass", category: "General" },
   { name: "Send", category: "General" },
   { name: "Flame", category: "General" },
-  { name: "BookOpen", category: "General" }
+  { name: "BookOpen", category: "General" },
+  { name: "Mic", category: "General" },
+  { name: "Footprints", category: "General" },
+  { name: "Dumbbell", category: "General" },
+  { name: "Mountain", category: "General" }
 ];
 
 interface IconPickerProps {
-  name: string;
+  name?: string;
   defaultValue?: string;
   placeholder?: string;
+  onChange?: (val: string) => void;
 }
 
-export default function IconPicker({ name, defaultValue = "", placeholder = "Select an icon" }: IconPickerProps) {
+export default function IconPicker({ name, defaultValue = "", placeholder = "Select an icon", onChange }: IconPickerProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedIcon, setSelectedIcon] = useState(defaultValue);
   const [searchQuery, setSearchQuery] = useState("");
@@ -216,6 +227,7 @@ export default function IconPicker({ name, defaultValue = "", placeholder = "Sel
                       type="button"
                       onClick={() => {
                         setSelectedIcon(iconItem.name);
+                        onChange?.(iconItem.name);
                         setIsOpen(false);
                       }}
                       title={iconItem.name}

@@ -9,6 +9,7 @@ import { Save, Search, FileText, Plus, Trash2, Image as ImageIcon } from "lucide
 export default function ECApprovalClientForm({ initialData, saveAction }: { initialData: any, saveAction: (data: FormData) => void }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [uploadingIdx, setUploadingIdx] = useState<number | null>(null);
   
   const [formData, setFormData] = useState({
     title: initialData.title || "Official Approval Information",
@@ -56,6 +57,33 @@ export default function ECApprovalClientForm({ initialData, saveAction }: { init
     const newLinks = [...formData.links];
     newLinks.splice(index, 1);
     setFormData({ ...formData, links: newLinks });
+  };
+
+  const handleFileUpload = async (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setUploadingIdx(index);
+      try {
+        const uploadData = new FormData();
+        uploadData.append("file", file);
+        
+        const res = await fetch("/api/upload", {
+          method: "POST",
+          body: uploadData,
+        });
+        
+        if (!res.ok) throw new Error("Upload failed");
+        
+        const resData = await res.json();
+        
+        handleLinkChange(index, "link", resData.url);
+      } catch (err) {
+        console.error("Error uploading file:", err);
+        alert("Failed to upload file.");
+      } finally {
+        setUploadingIdx(null);
+      }
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -265,13 +293,28 @@ export default function ECApprovalClientForm({ initialData, saveAction }: { init
                   placeholder="e.g. View PDF Link"
                   className="flex-1 p-2.5 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-rose-500/30 focus:border-rose-500 transition-all duration-200 text-sm"
                 />
-                <input
-                  type="text"
-                  value={item.link}
-                  onChange={(e) => handleLinkChange(index, "link", e.target.value)}
-                  placeholder="https://..."
-                  className="flex-[2] p-2.5 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-rose-500/30 focus:border-rose-500 transition-all duration-200 text-sm"
-                />
+                <div className="flex-[2] flex gap-2 items-center">
+                  <input
+                    type="text"
+                    value={item.link}
+                    onChange={(e) => handleLinkChange(index, "link", e.target.value)}
+                    placeholder="https://..."
+                    className="flex-1 p-2.5 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-rose-500/30 focus:border-rose-500 transition-all duration-200 text-sm"
+                  />
+                  <div className="relative shrink-0">
+                    <input 
+                      type="file"
+                      accept=".pdf"
+                      onChange={(e) => handleFileUpload(index, e)}
+                      disabled={uploadingIdx === index}
+                      className="absolute inset-0 w-full h-full opacity-0 cursor-pointer disabled:cursor-not-allowed z-10"
+                      title="Upload File"
+                    />
+                    <button type="button" disabled={uploadingIdx === index} className="px-3 py-2 bg-[#007a87] text-white text-xs font-bold rounded-lg hover:bg-[#005f69] transition-colors disabled:opacity-50 relative z-0">
+                      {uploadingIdx === index ? "Uploading..." : "Upload"}
+                    </button>
+                  </div>
+                </div>
                 <button
                   type="button"
                   onClick={() => handleLinkRemove(index)}

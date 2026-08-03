@@ -4,17 +4,11 @@ import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { Star, Quote, CheckCircle2, Heart, ArrowLeft, ArrowRight, ChevronDown, ChevronUp } from "lucide-react";
 
-export default function PatientReviews() {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
-  const [mobileExpandedIndex, setMobileExpandedIndex] = useState<number | null>(null);
-  
-  const listContainerRef = useRef<HTMLDivElement>(null);
-  const activeButtonRef = useRef<HTMLDivElement>(null);
-  const horizontalContainerRef = useRef<HTMLDivElement>(null);
-
-  // Expanded patient list (Total 6)
-  const reviews = [
+export const defaultPatientReviewsData = {
+  tagline: "Patient Gratitude",
+  title: 'Real Stories of <span class="font-semibold">Healing & Hope</span>',
+  description: "Read true experiences shared by our patients, detailing their journeys to wellness supported by our doctors and clinical staff.",
+  reviews: [
     {
       name: "Mrs Rajashri Anil Gavali",
       type: "",
@@ -60,7 +54,20 @@ export default function PatientReviews() {
       rating: 5,
       date: "Recent"
     }
-  ];
+  ]
+};
+
+export default function PatientReviews({ data = defaultPatientReviewsData }: { data?: any }) {
+  if (!data || Object.keys(data).length === 0) data = defaultPatientReviewsData;
+  const reviews = data.reviews || defaultPatientReviewsData.reviews;
+  
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+  const [mobileExpandedIndex, setMobileExpandedIndex] = useState<number | null>(null);
+  
+  const listContainerRef = useRef<HTMLDivElement>(null);
+  const activeButtonRef = useRef<HTMLDivElement>(null);
+  const horizontalContainerRef = useRef<HTMLDivElement>(null);
 
   const handleNext = () => setActiveIndex((prev) => (prev + 1) % reviews.length);
   const handlePrev = () => setActiveIndex((prev) => (prev - 1 + reviews.length) % reviews.length);
@@ -116,13 +123,12 @@ export default function PatientReviews() {
           <div className="max-w-xl text-left">
             <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-teal-50 text-[#007a87] text-[10px] font-bold tracking-widest uppercase border border-teal-100/50 shadow-sm">
               <Heart className="w-3 h-3 fill-current text-red-500" />
-              <span>Patient Gratitude</span>
+              <span>{data.tagline}</span>
             </span>
-            <h2 className="text-3xl sm:text-4xl font-light text-[#002b5c] tracking-tight mt-5">
-              Real Stories of <span className="font-semibold">Healing & Hope</span>
+            <h2 className="text-3xl sm:text-4xl font-light text-[#002b5c] tracking-tight mt-5" dangerouslySetInnerHTML={{__html: data.title}}>
             </h2>
             <p className="text-slate-600 text-[18px] font-normal leading-[31px] mt-4">
-              Read true experiences shared by our patients, detailing their journeys to wellness supported by our doctors and clinical staff.
+              {data.description}
             </p>
 
           </div>
@@ -155,9 +161,10 @@ export default function PatientReviews() {
                     <span className="text-[10px] font-bold text-amber-600 tracking-widest uppercase">Verified Patient Care</span>
                   </div>
 
-                  <blockquote className="text-base sm:text-lg lg:text-xl text-[#002b5c] font-light leading-relaxed tracking-tight italic min-h-[120px]">
-                    &ldquo;{reviews[activeIndex].text}&rdquo;
-                  </blockquote>
+                  <blockquote 
+                    className="text-base sm:text-lg lg:text-xl text-[#002b5c] font-light leading-relaxed tracking-tight italic min-h-[120px] prose prose-sm prose-p:leading-relaxed max-w-none"
+                    dangerouslySetInnerHTML={{__html: reviews[activeIndex].text}}
+                  />
                 </div>
 
                 <div className="relative z-10 mt-4 pt-4 border-t border-slate-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
@@ -248,9 +255,10 @@ export default function PatientReviews() {
                       <span className="text-[9px] font-bold text-amber-600 tracking-widest uppercase">Verified Care</span>
                     </div>
 
-                    <blockquote className="text-sm text-[#002b5c] font-light leading-relaxed italic">
-                      &ldquo;{reviews[activeIndex].text}&rdquo;
-                    </blockquote>
+                    <blockquote 
+                      className="text-sm text-[#002b5c] font-light leading-relaxed italic prose prose-sm prose-p:leading-relaxed max-w-none"
+                      dangerouslySetInnerHTML={{__html: reviews[activeIndex].text}}
+                    />
 
                     <div className="pt-4 border-t border-slate-100 flex items-center justify-between gap-4">
                       <div className="flex items-center gap-3">
@@ -325,6 +333,9 @@ export default function PatientReviews() {
                           ${isExpandedMobile ? "max-lg:text-[#007a87]" : "max-lg:text-slate-800"}`}>
                           {review.name}
                         </h4>
+                        {review.type && (
+                          <p className="text-[9.5px] text-[#007a87] font-bold uppercase tracking-wider mt-0.5 truncate">{review.type}</p>
+                        )}
                         <p className="text-[10.5px] text-slate-400 truncate font-light mt-0.5">{review.treatment}</p>
                       </div>
                       <div className="shrink-0 flex items-center">
@@ -352,9 +363,10 @@ export default function PatientReviews() {
                           <span className="text-[9px] text-slate-400 font-medium tracking-wider">{review.date}</span>
                         </div>
                         
-                        <p className="text-xs text-[#002b5c] font-light leading-relaxed italic">
-                          &ldquo;{review.text}&rdquo;
-                        </p>
+                        <div 
+                          className="text-xs text-[#002b5c] font-light leading-relaxed italic prose prose-sm prose-p:leading-relaxed max-w-none"
+                          dangerouslySetInnerHTML={{__html: review.text}}
+                        />
                         
                         <div className="flex flex-wrap items-center justify-between gap-2 pt-1">
                           {review.type && (

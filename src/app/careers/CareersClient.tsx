@@ -229,7 +229,7 @@ export default function CareersClient({ data }: { data: any }) {
                 <div className="p-5 sm:p-6 pt-0 mt-auto">
                   <button 
                     onClick={() => { setApplyingJob(job); setSelectedFile(null); }}
-                    className="w-full inline-flex items-center justify-center gap-2 py-3 bg-slate-100 hover:bg-[#002b5c] text-slate-700 hover:text-white font-bold rounded-xl transition-colors group/btn"
+                    className="w-full inline-flex items-center justify-center gap-2 py-2 bg-slate-100 hover:bg-[#002b5c] text-slate-700 hover:text-white font-bold text-sm rounded-lg transition-colors group/btn"
                   >
                     Apply Now
                     <ArrowRight className="w-4 h-4 opacity-0 -ml-4 group-hover/btn:opacity-100 group-hover/btn:ml-0 transition-all" />
@@ -286,14 +286,14 @@ export default function CareersClient({ data }: { data: any }) {
             {/* Modal Header */}
             <div className="flex items-center justify-between p-6 border-b border-slate-100 shrink-0 sticky top-0 bg-white z-10 rounded-t-3xl">
               <div>
-                <h2 className="text-2xl font-extrabold text-[#002b5c]">Job Application Form</h2>
-                <p className="text-sm font-semibold text-slate-500 mt-0.5">Applying for: {applyingJob.title}</p>
+                <h2 className="text-xl font-extrabold text-[#002b5c]">Job Application Form</h2>
+                <p className="text-xs font-semibold text-slate-500 mt-0.5">Applying for: {applyingJob.title}</p>
               </div>
               <button 
                 onClick={() => { setApplyingJob(null); setSelectedFile(null); setSubmitSuccess(false); }}
-                className="w-10 h-10 rounded-full bg-slate-50 text-slate-500 hover:bg-red-50 hover:text-red-500 flex items-center justify-center transition-all duration-300 hover:rotate-180 shrink-0"
+                className="w-8 h-8 rounded-full bg-slate-50 text-slate-500 hover:bg-red-50 hover:text-red-500 flex items-center justify-center transition-all duration-300 hover:rotate-180 shrink-0"
               >
-                <X className="w-5 h-5" />
+                <X className="w-4 h-4" />
               </button>
             </div>
 
@@ -308,7 +308,7 @@ export default function CareersClient({ data }: { data: any }) {
                   <p className="text-slate-600 mb-8 max-w-md">Thank you for applying to the {applyingJob?.title} position. Our HR team will review your application and contact you soon.</p>
                   <button 
                     onClick={() => { setApplyingJob(null); setSelectedFile(null); setSubmitSuccess(false); }}
-                    className="bg-[#002b5c] hover:bg-[#001a38] text-white px-8 py-3 rounded-xl font-bold transition-colors"
+                    className="bg-[#002b5c] hover:bg-[#001a38] text-white px-6 py-2 text-sm rounded-lg font-bold transition-colors"
                   >
                     Close Window
                   </button>
@@ -319,14 +319,14 @@ export default function CareersClient({ data }: { data: any }) {
                 {/* Personal Information */}
                 <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm relative overflow-visible group hover:shadow-md transition-shadow z-40">
                   <div className="absolute top-0 left-0 w-1.5 h-full bg-[#007a87] rounded-l-2xl"></div>
-                  <h3 className="text-lg font-bold text-[#002b5c] mb-5 flex items-center gap-2">
+                  <h3 className="text-base font-bold text-[#002b5c] mb-4 flex items-center gap-2">
                     <User className="w-5 h-5 text-teal-600" />
                     Personal Information
                   </h3>
                   
                   <div className="grid grid-cols-1 md:grid-cols-4 gap-5">
                     <div className="md:col-span-1">
-                      <label className="block text-sm font-semibold text-slate-700 mb-1.5">Salutation <span className="text-red-500">*</span></label>
+                      <label className="block text-xs font-semibold text-slate-700 mb-1">Salutation <span className="text-red-500">*</span></label>
                       <div className="relative">
                         <CustomDropdown 
                           name="salutation" 
@@ -338,9 +338,9 @@ export default function CareersClient({ data }: { data: any }) {
                     </div>
                     
                     <div className="md:col-span-3">
-                      <label className="block text-sm font-semibold text-slate-700 mb-1.5">First Name <span className="text-red-500">*</span></label>
+                      <label className="block text-xs font-semibold text-slate-700 mb-1">First Name <span className="text-red-500">*</span></label>
                       <div className="relative">
-                        <input name="firstName" type="text" placeholder="Enter your first name" className="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 pl-11 pr-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all placeholder-slate-400" required />
+                        <input name="firstName" type="text" placeholder="Enter your first name" className="w-full bg-slate-50 border border-slate-200 rounded-lg py-1.5 pl-10 pr-3 text-xs text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all placeholder-slate-400" required />
                         <User className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                       </div>
                     </div>
@@ -348,16 +348,16 @@ export default function CareersClient({ data }: { data: any }) {
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-5">
                     <div>
-                      <label className="block text-sm font-semibold text-slate-700 mb-1.5">Middle Name</label>
+                      <label className="block text-xs font-semibold text-slate-700 mb-1">Middle Name</label>
                       <div className="relative">
-                        <input name="middleName" type="text" placeholder="Enter middle name" className="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 pl-11 pr-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all placeholder-slate-400" />
+                        <input name="middleName" type="text" placeholder="Enter middle name" className="w-full bg-slate-50 border border-slate-200 rounded-lg py-1.5 pl-10 pr-3 text-xs text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all placeholder-slate-400" />
                         <User className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                       </div>
                     </div>
                     <div>
-                      <label className="block text-sm font-semibold text-slate-700 mb-1.5">Surname <span className="text-red-500">*</span></label>
+                      <label className="block text-xs font-semibold text-slate-700 mb-1">Surname <span className="text-red-500">*</span></label>
                       <div className="relative">
-                        <input name="lastName" type="text" placeholder="Enter surname" className="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 pl-11 pr-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all placeholder-slate-400" required />
+                        <input name="lastName" type="text" placeholder="Enter surname" className="w-full bg-slate-50 border border-slate-200 rounded-lg py-1.5 pl-10 pr-3 text-xs text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all placeholder-slate-400" required />
                         <User className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                       </div>
                     </div>
@@ -365,14 +365,14 @@ export default function CareersClient({ data }: { data: any }) {
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-5">
                     <div>
-                      <label className="block text-sm font-semibold text-slate-700 mb-1.5">Date of Birth <span className="text-red-500">*</span></label>
+                      <label className="block text-xs font-semibold text-slate-700 mb-1">Date of Birth <span className="text-red-500">*</span></label>
                       <div className="relative">
-                        <input name="dob" type="text" placeholder="dd-mm-yyyy" onFocus={(e) => e.target.type = 'date'} onBlur={(e) => { if (!e.target.value) e.target.type = 'text'; }} className="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 pl-11 pr-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all" required />
+                        <input name="dob" type="text" placeholder="dd-mm-yyyy" onFocus={(e) => e.target.type = 'date'} onBlur={(e) => { if (!e.target.value) e.target.type = 'text'; }} className="w-full bg-slate-50 border border-slate-200 rounded-lg py-1.5 pl-10 pr-3 text-xs text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all" required />
                         <Calendar className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                       </div>
                     </div>
                     <div>
-                      <label className="block text-sm font-semibold text-slate-700 mb-1.5">Gender <span className="text-red-500">*</span></label>
+                      <label className="block text-xs font-semibold text-slate-700 mb-1">Gender <span className="text-red-500">*</span></label>
                       <div className="relative">
                         <CustomDropdown 
                           name="gender" 
@@ -389,23 +389,23 @@ export default function CareersClient({ data }: { data: any }) {
                 {/* Contact Information */}
                 <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm relative overflow-visible group hover:shadow-md transition-shadow z-30">
                   <div className="absolute top-0 left-0 w-1.5 h-full bg-[#007a87] rounded-l-2xl"></div>
-                  <h3 className="text-lg font-bold text-[#002b5c] mb-5 flex items-center gap-2">
+                  <h3 className="text-base font-bold text-[#002b5c] mb-4 flex items-center gap-2">
                     <Phone className="w-5 h-5 text-teal-600" />
                     Contact Details
                   </h3>
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                     <div>
-                      <label className="block text-sm font-semibold text-slate-700 mb-1.5">Contact No <span className="text-red-500">*</span></label>
+                      <label className="block text-xs font-semibold text-slate-700 mb-1">Contact No <span className="text-red-500">*</span></label>
                       <div className="relative">
-                        <input name="mobile" type="tel" placeholder="Mobile Number" maxLength={10} pattern="[0-9]{10}" title="Please enter a valid 10-digit mobile number" onInput={(e) => { e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/g, ''); }} className="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 pl-11 pr-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all placeholder-slate-400" required />
+                        <input name="mobile" type="tel" placeholder="Mobile Number" maxLength={10} pattern="[0-9]{10}" title="Please enter a valid 10-digit mobile number" onInput={(e) => { e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/g, ''); }} className="w-full bg-slate-50 border border-slate-200 rounded-lg py-1.5 pl-10 pr-3 text-xs text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all placeholder-slate-400" required />
                         <Phone className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                       </div>
                     </div>
                     <div>
-                      <label className="block text-sm font-semibold text-slate-700 mb-1.5">Email ID <span className="text-red-500">*</span></label>
+                      <label className="block text-xs font-semibold text-slate-700 mb-1">Email ID <span className="text-red-500">*</span></label>
                       <div className="relative">
-                        <input name="email" type="email" placeholder="Email Address" className="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 pl-11 pr-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all placeholder-slate-400" required />
+                        <input name="email" type="email" placeholder="Email Address" className="w-full bg-slate-50 border border-slate-200 rounded-lg py-1.5 pl-10 pr-3 text-xs text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all placeholder-slate-400" required />
                         <Mail className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                       </div>
                     </div>
@@ -415,21 +415,21 @@ export default function CareersClient({ data }: { data: any }) {
                 {/* Professional Details */}
                 <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm relative overflow-visible group hover:shadow-md transition-shadow z-20">
                   <div className="absolute top-0 left-0 w-1.5 h-full bg-[#007a87] rounded-l-2xl"></div>
-                  <h3 className="text-lg font-bold text-[#002b5c] mb-5 flex items-center gap-2">
+                  <h3 className="text-base font-bold text-[#002b5c] mb-4 flex items-center gap-2">
                     <Briefcase className="w-5 h-5 text-teal-600" />
                     Professional Details
                   </h3>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                     <div>
-                      <label className="block text-sm font-semibold text-slate-700 mb-1.5">Highest Qualification <span className="text-red-500">*</span></label>
+                      <label className="block text-xs font-semibold text-slate-700 mb-1">Highest Qualification <span className="text-red-500">*</span></label>
                       <div className="relative">
-                        <input name="highestQualification" type="text" placeholder="e.g. B.Sc Nursing" className="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 pl-11 pr-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all placeholder-slate-400" required />
+                        <input name="highestQualification" type="text" placeholder="e.g. B.Sc Nursing" className="w-full bg-slate-50 border border-slate-200 rounded-lg py-1.5 pl-10 pr-3 text-xs text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all placeholder-slate-400" required />
                         <FileText className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                       </div>
                     </div>
                     <div>
-                      <label className="block text-sm font-semibold text-slate-700 mb-1.5">Joining Status <span className="text-red-500">*</span></label>
+                      <label className="block text-xs font-semibold text-slate-700 mb-1">Joining Status <span className="text-red-500">*</span></label>
                       <div className="relative">
                         <CustomDropdown 
                           name="joiningStatus" 
@@ -444,23 +444,23 @@ export default function CareersClient({ data }: { data: any }) {
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-5">
                     <div>
-                      <label className="block text-sm font-semibold text-slate-700 mb-1.5">Current Salary <span className="text-red-500">*</span></label>
+                      <label className="block text-xs font-semibold text-slate-700 mb-1">Current Salary <span className="text-red-500">*</span></label>
                       <div className="relative flex items-center">
-                        <span className="absolute left-4 font-bold text-slate-400">₹</span>
-                        <input name="currentSalary" type="text" placeholder="Amount" className="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 pl-9 pr-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all placeholder-slate-400" required />
+                        <span className="absolute left-4 font-bold text-slate-400 text-xs">₹</span>
+                        <input name="currentSalary" type="text" placeholder="Amount" className="w-full bg-slate-50 border border-slate-200 rounded-lg py-1.5 pl-8 pr-3 text-xs text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all placeholder-slate-400" required />
                       </div>
                     </div>
                     <div>
-                      <label className="block text-sm font-semibold text-slate-700 mb-1.5">Expected Salary <span className="text-red-500">*</span></label>
+                      <label className="block text-xs font-semibold text-slate-700 mb-1">Expected Salary <span className="text-red-500">*</span></label>
                       <div className="relative flex items-center">
-                        <span className="absolute left-4 font-bold text-slate-400">₹</span>
-                        <input name="expectedSalary" type="text" placeholder="Amount" className="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 pl-9 pr-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all placeholder-slate-400" required />
+                        <span className="absolute left-4 font-bold text-slate-400 text-xs">₹</span>
+                        <input name="expectedSalary" type="text" placeholder="Amount" className="w-full bg-slate-50 border border-slate-200 rounded-lg py-1.5 pl-8 pr-3 text-xs text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all placeholder-slate-400" required />
                       </div>
                     </div>
                   </div>
 
                   <div className="mt-6">
-                    <label className="block text-sm font-semibold text-slate-700 mb-2">Resume / CV (PDF Max 2MB) <span className="text-red-500">*</span></label>
+                    <label className="block text-xs font-semibold text-slate-700 mb-2">Resume / CV (PDF Max 2MB) <span className="text-red-500">*</span></label>
                     <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-slate-300 border-dashed rounded-xl cursor-pointer bg-slate-50 hover:bg-teal-50/50 hover:border-teal-400 transition-colors group">
                       <div className="flex flex-col items-center justify-center pt-5 pb-6">
                         {selectedFile ? (
@@ -503,25 +503,25 @@ export default function CareersClient({ data }: { data: any }) {
                   </div>
                   
                   <div className="w-full max-w-sm">
-                    <label className="block text-sm font-bold text-slate-700 mb-3">Security Verification <span className="text-red-500">*</span></label>
+                    <label className="block text-sm font-bold text-slate-700 mb-2">Security Verification <span className="text-red-500">*</span></label>
                     <div className="flex flex-col gap-3">
                       <div className="flex items-center gap-3">
-                        <div className="flex-1 h-14 bg-slate-800 flex items-center justify-center rounded-xl border border-slate-700 font-mono text-2xl font-bold tracking-[0.3em] text-white select-none shadow-inner">
+                        <div className="flex-1 h-10 bg-slate-800 flex items-center justify-center rounded-lg border border-slate-700 font-mono text-lg font-bold tracking-[0.3em] text-white select-none shadow-inner">
                           {captchaCode}
                         </div>
                         <button 
                           type="button" 
                           onClick={() => setCaptchaCode(generateCaptcha())}
-                          className="w-14 h-14 rounded-xl bg-blue-50 text-blue-600 hover:bg-blue-100 flex items-center justify-center transition-colors border border-blue-100"
+                          className="w-10 h-10 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 flex items-center justify-center transition-colors border border-blue-100"
                         >
-                          <RefreshCw className="w-5 h-5" />
+                          <RefreshCw className="w-4 h-4" />
                         </button>
                       </div>
                       <input 
                         name="captcha"
                         type="text" 
                         placeholder="Enter the code above"
-                        className="w-full bg-slate-50 border border-slate-200 rounded-xl py-3.5 px-4 text-center text-slate-700 font-bold tracking-wide focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all"
+                        className="w-full bg-slate-50 border border-slate-200 rounded-lg py-2.5 px-3 text-center text-sm text-slate-700 font-bold tracking-wide focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all"
                         required
                       />
                     </div>
@@ -529,10 +529,10 @@ export default function CareersClient({ data }: { data: any }) {
                     <button 
                       type="submit"
                       disabled={isSubmitting}
-                      className="group w-full mt-8 bg-[#003360] hover:bg-[#002b5c] text-white py-4 rounded-xl font-bold text-lg transition-all shadow-[0_8px_20px_rgba(0,51,96,0.3)] hover:-translate-y-1 hover:shadow-[0_12px_25px_rgba(0,51,96,0.4)] flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none"
+                      className="group w-full mt-5 bg-[#003360] hover:bg-[#002b5c] text-white py-2 rounded-lg font-bold text-sm transition-all shadow-[0_8px_20px_rgba(0,51,96,0.3)] hover:-translate-y-1 hover:shadow-[0_12px_25px_rgba(0,51,96,0.4)] flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none"
                     >
                       {isSubmitting ? "Submitting..." : "Submit Application"}
-                      {!isSubmitting && <ArrowRight className="w-5 h-5 text-teal-300 group-hover:translate-x-1 transition-transform" />}
+                      {!isSubmitting && <ArrowRight className="w-4 h-4 text-teal-300 group-hover:translate-x-1 transition-transform" />}
                     </button>
                   </div>
                 </div>
