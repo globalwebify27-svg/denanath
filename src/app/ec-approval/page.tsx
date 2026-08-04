@@ -47,7 +47,7 @@ export default async function ECApprovalPage() {
           
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div className="max-w-3xl">
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight tracking-tight">
+              <h1 className="text-[48px] font-bold text-white leading-tight tracking-tight">
                 EC Approval
               </h1>
             </div>

@@ -93,7 +93,7 @@ export default function ContactUsClientPage({ pageData }: { pageData: any }) {
                     ) : (
                       <form 
                         ref={formRef}
-                        className="space-y-6 [&_label]:!text-[18px] [&_input]:!text-[18px] [&_textarea]:!text-[18px] [&_button]:!text-[18px] [&_.text-sm]:!text-[18px] [&_.text-xs]:!text-[18px]" 
+                        className="space-y-6 [&_label]:!text-[18px] [&_input]:!text-[18px] [&_textarea]:!text-[18px] [&_.text-sm]:!text-[18px] [&_.text-xs]:!text-[18px]" 
                         action={async (formData) => { 
                           setIsSubmitting(true);
                           const res = await submitFormAction("Contact Us", formData); 
@@ -148,21 +148,22 @@ export default function ContactUsClientPage({ pageData }: { pageData: any }) {
 
                       {/* CAPTCHA Placeholder */}
                       <div className="bg-white p-4 rounded-xl border border-slate-200">
-                        <label className="block text-sm font-semibold text-slate-700 mb-3">Verification Code: <span className="text-red-500">*</span></label>
+                        <label className="block font-semibold text-slate-700 mb-3 !text-[16px]" style={{ fontSize: '16px' }}>Verification Code: <span className="text-red-500">*</span></label>
                         <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
                           <div className="w-32 h-12 bg-slate-100 flex items-center justify-center rounded-lg border border-slate-300 font-mono text-xl font-bold tracking-widest text-slate-600 select-none">
                             9F2X
                           </div>
                           <div className="flex flex-col gap-1">
-                            <button type="button" className="text-[18px] leading-[28px] font-bold text-[#007a87] hover:underline text-left">Change the CAPTCHA code</button>
-                            <button type="button" className="text-[18px] leading-[28px] font-bold text-[#007a87] hover:underline text-left">Speak the CAPTCHA code</button>
+                            <button type="button" className="leading-[28px] font-bold text-[#007a87] hover:underline text-left" style={{ fontSize: '16px' }}>Change the CAPTCHA code</button>
+                            <button type="button" className="leading-[28px] font-bold text-[#007a87] hover:underline text-left" style={{ fontSize: '16px' }}>Speak the CAPTCHA code</button>
                           </div>
                         </div>
                         <input 
                           type="text" 
                           name="captcha"
                           placeholder="Enter code here"
-                          className="mt-3 w-full sm:w-48 bg-white border border-slate-300 rounded-lg py-2 px-3 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-[#007a87] focus:border-transparent transition-shadow uppercase"
+                          className="mt-3 w-full sm:w-48 bg-white border border-slate-300 rounded-lg py-2 px-3 text-slate-700 font-medium !text-[16px] placeholder:!text-[16px] focus:outline-none focus:ring-2 focus:ring-[#007a87] focus:border-transparent transition-shadow uppercase"
+                          style={{ fontSize: '16px' }}
                           required
                         />
                       </div>
@@ -195,31 +196,31 @@ export default function ContactUsClientPage({ pageData }: { pageData: any }) {
                       Deenanath Mangeshkar Hospital & Research Center
                     </h3>
                     <div className="space-y-4">
-                      <div className="flex items-start gap-4">
+                      <div className="flex items-center gap-4">
                         <div className="w-10 h-10 rounded-full bg-red-50 flex items-center justify-center shrink-0 border border-red-100">
                           <MapPin className="w-5 h-5 text-[#D9232D]" />
                         </div>
-                        <p className="text-slate-600 font-medium pt-2">
+                        <p className="text-slate-600 font-medium !text-[16px] leading-relaxed m-0 p-0">
                           Near Mhatre Bridge,<br />
                           Erandwane, Pune 411004
                         </p>
                       </div>
                       
-                      <div className="flex items-start gap-4">
+                      <div className="flex items-center gap-4">
                         <div className="w-10 h-10 rounded-full bg-red-50 flex items-center justify-center shrink-0 border border-red-100">
                           <Phone className="w-5 h-5 text-[#D9232D]" />
                         </div>
-                        <div className="pt-2 text-slate-600 font-medium">
-                          <p>Tel: +91 20 4015 1000 / 49153000</p>
-                          <p className="text-sm mt-1">Fax: (+91) 20 2542 0104</p>
+                        <div className="text-slate-600 font-medium">
+                          <p className="!text-[16px] leading-relaxed m-0 p-0">Tel: +91 20 4015 1000 / 49153000</p>
+                          <p className="!text-[16px] mt-1 leading-relaxed m-0 p-0">Fax: (+91) 20 2542 0104</p>
                         </div>
                       </div>
 
-                      <div className="flex items-start gap-4">
+                      <div className="flex items-center gap-4">
                         <div className="w-10 h-10 rounded-full bg-red-50 flex items-center justify-center shrink-0 border border-red-100">
                           <Mail className="w-5 h-5 text-[#D9232D]" />
                         </div>
-                        <a href="mailto:info@dmhospital.org" className="text-[#007a87] hover:underline font-bold pt-2 text-[18px] leading-[31px]">
+                        <a href="mailto:info@dmhospital.org" className="text-[#007a87] hover:underline font-bold !text-[16px] leading-relaxed m-0 p-0">
                           info@dmhospital.org
                         </a>
                       </div>
@@ -233,7 +234,7 @@ export default function ContactUsClientPage({ pageData }: { pageData: any }) {
                       <h4 className="text-lg font-bold text-[#002b5c]">Important Members</h4>
                     </div>
                     
-                    <div className="divide-y divide-slate-100 [&_span]:!text-[18px] [&_p]:!text-[18px] [&_a]:!text-[18px] [&_a]:!font-bold [&_.text-sm]:!text-[18px] [&_.text-xs]:!text-[18px]">
+                    <div className="divide-y divide-slate-100 [&_span]:!text-[16px] [&_p]:!text-[16px] [&_a]:!text-[16px] [&_a]:!font-bold [&_.text-sm]:!text-[16px] [&_.text-xs]:!text-[16px]">
                       
                       <div className="p-4 flex flex-col sm:flex-row justify-between gap-4 hover:bg-slate-50 transition-colors">
                         <div className="flex items-center gap-3 shrink-0">

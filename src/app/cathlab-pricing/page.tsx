@@ -39,7 +39,7 @@ export default async function CathlabPricingPage() {
     <div className="min-h-screen bg-[#f8fafc]">
       
       {/* 1. Hero Section */}
-      <div className="relative bg-gradient-to-r from-[#0f172a] to-[#1e3a8a] pt-24 pb-12 overflow-hidden">
+      <div className="relative bg-gradient-to-r from-[#0f172a] to-[#1e3a8a] py-16 overflow-hidden">
         {data.bannerImage ? (
           <div className="absolute inset-0 z-0">
             <img src={data.bannerImage} alt="Banner" className="w-full h-full object-cover opacity-30" />
@@ -57,7 +57,7 @@ export default async function CathlabPricingPage() {
           <nav className="flex items-center gap-2 text-sm text-blue-200 mb-8">
             <Link href="/" className="hover:text-white transition-colors">Home</Link>
             <ChevronRight className="w-4 h-4" />
-            <span className="text-white font-medium">{data.pageTitle || data.title}</span>
+            <span className="text-white font-medium">{(data.pageTitle || data.title || "").replace(/<[^>]*>?/gm, '')}</span>
           </nav>
           
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
@@ -66,7 +66,7 @@ export default async function CathlabPricingPage() {
                 <HeartPulse className="w-4 h-4 text-cyan-400" />
                 <span>Cardiology Department</span>
               </div>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight tracking-tight mb-4" dangerouslySetInnerHTML={{ __html: (data.pageTitle || data.title || "").replace('Pharmacy', 'Pharmacy <br className="hidden md:block"/>') }}>
+              <h1 className="text-[48px] font-bold text-white leading-tight tracking-tight mb-4" dangerouslySetInnerHTML={{ __html: (data.pageTitle || data.title || "").replace('Pharmacy', 'Pharmacy <br className="hidden md:block"/>') }}>
               </h1>
             </div>
             
@@ -90,7 +90,7 @@ export default async function CathlabPricingPage() {
               <Info className="w-6 h-6 text-[#007a87]" />
             </div>
             <div>
-              <h2 className="text-xl font-bold text-[#002b5c] mb-2">{data.pageTitle || data.title}</h2>
+              <h2 className="text-xl font-bold text-[#002b5c] mb-2">{(data.pageTitle || data.title || "").replace(/<[^>]*>?/gm, '')}</h2>
               <p className="text-[17px] text-slate-700 font-medium leading-relaxed">
                 {data.subtitle}
               </p>

@@ -39,7 +39,7 @@ export default async function ImplantPricingPage() {
     <div className="min-h-screen bg-[#f8fafc]">
       
       {/* 1. Hero Section */}
-      <div className="relative bg-gradient-to-r from-[#002b5c] to-[#005f6b] pt-12 pb-12 overflow-hidden">
+      <div className="relative bg-gradient-to-r from-[#002b5c] to-[#005f6b] py-16 overflow-hidden">
         {data.bannerImage ? (
           <div className="absolute inset-0 z-0">
             <img src={data.bannerImage} alt="Banner" className="w-full h-full object-cover opacity-30" />
@@ -57,7 +57,7 @@ export default async function ImplantPricingPage() {
           <nav className="flex items-center gap-2 text-sm text-[#b2dfdb] mb-8">
             <Link href="/" className="hover:text-white transition-colors">Home</Link>
             <ChevronRight className="w-4 h-4" />
-            <span className="text-white font-medium">{data.pageTitle || data.title}</span>
+            <span className="text-white font-medium">{(data.pageTitle || data.title || "").replace(/<[^>]*>?/gm, '')}</span>
           </nav>
           
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
@@ -66,7 +66,7 @@ export default async function ImplantPricingPage() {
                 <Stethoscope className="w-4 h-4 text-[#a7ffeb]" />
                 <span>Orthopedics Department</span>
               </div>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight tracking-tight mb-4">
+              <h1 className="text-[48px] font-bold text-white leading-tight tracking-tight mb-4">
                 {data.pageTitle || data.title}
               </h1>
             </div>
@@ -91,7 +91,7 @@ export default async function ImplantPricingPage() {
               <Info className="w-6 h-6 text-[#007a87]" />
             </div>
             <div>
-              <h2 className="text-xl font-bold text-[#002b5c] mb-2">{data.pageTitle || data.title}</h2>
+              <h2 className="text-xl font-bold text-[#002b5c] mb-2">{(data.pageTitle || data.title || "").replace(/<[^>]*>?/gm, '')}</h2>
               <p className="text-[17px] text-slate-700 font-medium leading-relaxed">
                 {data.subtitle}
               </p>

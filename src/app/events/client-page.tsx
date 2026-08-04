@@ -35,7 +35,7 @@ export default function EventsClientPage({ events = [], pageData }: { events: an
     <div className="min-h-screen bg-[#f8fafc]">
       
       {/* 1. Global Hero Section (News & Events Header) */}
-      <div className="w-full bg-[#002b5c] relative overflow-hidden pt-24 pb-16">
+      <div className="w-full bg-[#002b5c] relative overflow-hidden py-16">
         {pageData?.bannerImage ? (
           <div className="absolute inset-0 z-0">
             <img src={pageData.bannerImage} alt="Banner" className="w-full h-full object-cover opacity-30" />

@@ -553,6 +553,48 @@ export default async function DepartmentDetailsPage({
       } else if (h3Text === 'consultant' || h3Text === 'consultants') {
         if (apiConsultantsHtml) {
           $(section).html(apiConsultantsHtml);
+        } else {
+          // Process hardcoded consultants into cards
+          const pTags = $(section).find('p, li');
+          const docCards: string[] = [];
+          
+          pTags.each((_, p) => {
+            let name = $(p).text().trim();
+            if (name && (name.toLowerCase().startsWith('dr.') || name.toLowerCase().includes('dr '))) {
+               name = name.replace(/^dr\.?\s*/i, 'Dr. ');
+               const cleanName = name.replace(/^Dr\.\s*/, '');
+               const words = cleanName.split(' ').filter(Boolean);
+               let initials = 'DM';
+               if (words.length >= 2) {
+                 initials = (words[0][0] + words[1][0]).toUpperCase();
+               } else if (words.length === 1) {
+                 initials = words[0].substring(0, 2).toUpperCase();
+               }
+
+               docCards.push(`
+                <div class="p-5 bg-white border border-slate-200 rounded-2xl flex items-center justify-between gap-4 shadow-sm hover:shadow-md transition-shadow">
+                  <div class="flex items-center gap-4 flex-1">
+                    <div class="w-14 h-14 rounded-2xl bg-teal-50 border border-teal-100 flex items-center justify-center text-[#007a87] font-extrabold text-base shrink-0">
+                      ${initials}
+                    </div>
+                    <div class="text-lg font-bold text-[#002b5c] m-0 leading-snug hover:text-[#007a87] transition-colors">${name}</div>
+                  </div>
+                  <button class="px-4 py-2 bg-teal-50 hover:bg-teal-100 text-[#007a87] rounded-xl text-xs font-bold transition-colors shrink-0 whitespace-nowrap cursor-not-allowed opacity-70">
+                    View Profile
+                  </button>
+                </div>
+               `);
+               $(p).remove(); // Remove original text
+            }
+          });
+
+          if (docCards.length > 0) {
+            $(section).append(`
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+                ${docCards.join('')}
+              </div>
+            `);
+          }
         }
       } else if (h3Text === 'contact us') {
         $(section).addClass('department-contact-us');
