@@ -26,13 +26,13 @@ export default function ClientPage({ data }: { data: any }) {
     <main className="min-h-screen bg-slate-50 flex flex-col">
       <div className="flex-grow">
         {/* Hero Section */}
-        <div className="w-full bg-[#002b5c] relative overflow-hidden py-16">
+        <div className="w-full bg-[#002b5c] relative overflow-hidden py-4">
           <div className="absolute inset-0 bg-[url(https://www.transparenttextures.com/patterns/cubes.png)] opacity-10 mix-blend-overlay pointer-events-none"></div>
           <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-teal-500/20 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/3 pointer-events-none"></div>
           
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             {/* Breadcrumb */}
-            <nav className="flex items-center gap-2 text-sm text-[#b2dfdb] mb-8">
+            <nav className="flex items-center gap-2 text-sm text-[#b2dfdb] mb-2">
               <Link href="/" className="hover:text-white transition-colors">Home</Link>
               <ChevronRight className="w-4 h-4" />
               <Link href="/#courses" className="hover:text-white transition-colors">Courses</Link>

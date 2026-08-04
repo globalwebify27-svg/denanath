@@ -1,54 +1,74 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import React, { useEffect, useState, useRef } from "react";
 
 export const defaultHeroData = {
   slides: [
-    { src: "/images/Slider-1.png", alt: "Hospital Slider 1", pos: "object-[25%_30%]" },
-    { src: "/images/Slider-2.png", alt: "Hospital Slider 2", pos: "object-[75%_40%]" },
-    { src: "/images/Slider-3.png", alt: "Hospital Slider 3", pos: "object-[75%_40%]" },
-    { src: "/images/Slider-4.png", alt: "Hospital Slider 4", pos: "object-[35%_40%]" },
-    { src: "/images/Slider-5.png", alt: "Hospital Slider 5", pos: "object-[75%_40%]" },
-    { src: "/images/Slider-6.png", alt: "Hospital Slider 6", pos: "object-[25%_35%]" },
-    { src: "/images/Slider-7.png", alt: "Hospital Slider 7", pos: "object-[75%_40%]" },
-    { src: "/images/Slider-8.png", alt: "Hospital Slider 8", pos: "object-[75%_40%]" },
-    { src: "/images/Slider-9.png", alt: "Hospital Slider 9", pos: "object-[25%_35%]" },
-    { src: "/images/Slider-10.png", alt: "Hospital Slider 10", pos: "object-[25%_40%]" },
+    { src: "/images/Slider-1.png", alt: "Hospital Slider 1", pos: "object-[25%_30%]", link: "" },
+    { src: "/images/Slider-2.png", alt: "Hospital Slider 2", pos: "object-[75%_40%]", link: "" },
+    { src: "/images/Slider-3.png", alt: "Hospital Slider 3", pos: "object-[75%_40%]", link: "" },
+    { src: "/images/Slider-4.png", alt: "Hospital Slider 4", pos: "object-[35%_40%]", link: "" },
+    { src: "/images/Slider-5.png", alt: "Hospital Slider 5", pos: "object-[75%_40%]", link: "" },
+    { src: "/images/Slider-6.png", alt: "Hospital Slider 6", pos: "object-[25%_35%]", link: "" },
+    { src: "/images/Slider-7.png", alt: "Hospital Slider 7", pos: "object-[75%_40%]", link: "" },
+    { src: "/images/Slider-8.png", alt: "Hospital Slider 8", pos: "object-[75%_40%]", link: "" },
+    { src: "/images/Slider-9.png", alt: "Hospital Slider 9", pos: "object-[25%_35%]", link: "" },
+    { src: "/images/Slider-10.png", alt: "Hospital Slider 10", pos: "object-[25%_40%]", link: "" },
   ]
 };
 
 export default function HeroSection({ data = defaultHeroData }: { data?: any }) {
   if (!data || !data.slides) data = defaultHeroData;
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
 
   const slides = data.slides;
 
+  // Auto-slide every 5 seconds, pauses when mouse is hovering on the hero
   useEffect(() => {
-    const slideInterval = setInterval(() => {
+    if (isPaused) return;
+    const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slides.length);
-    }, 5000); // Change image every 5 seconds
-    return () => clearInterval(slideInterval);
-  }, [slides.length]);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, [slides.length, isPaused]);
 
-  const prevSlide = () => {
-    setCurrentSlide((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
-  };
+  // Click on left half = previous slide, right half = next slide
+  const handleClick = (e: React.MouseEvent<HTMLElement>) => {
+    // Don't trigger if user clicked on dots
+    if ((e.target as HTMLElement).closest('[data-dots]')) return;
+    if (!sectionRef.current) return;
 
-  const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % slides.length);
+    const rect = sectionRef.current.getBoundingClientRect();
+    const clickX = e.clientX - rect.left;
+    const halfWidth = rect.width / 2;
+
+    if (clickX < halfWidth) {
+      // Clicked left half → previous slide
+      setCurrentSlide((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
+    } else {
+      // Clicked right half → next slide
+      setCurrentSlide((prev) => (prev + 1) % slides.length);
+    }
   };
 
   return (
-    <section className="relative w-full min-h-[70vh] md:min-h-[80vh] flex flex-col justify-center overflow-hidden bg-slate-950 border-b border-slate-200 group">
+    <section
+      ref={sectionRef}
+      className="relative w-full min-h-[70vh] md:min-h-[80vh] flex flex-col justify-center overflow-hidden bg-slate-950 border-b border-slate-200 cursor-pointer"
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+      onClick={handleClick}
+    >
       {/* Image Slider Background */}
       <div className="absolute inset-0 w-full h-full overflow-hidden z-0 bg-slate-950">
-        {slides.map(({ src, alt, pos }, i) => (
+        {slides.map(({ src, alt, pos }: { src: string; alt: string; pos: string }, i: number) => (
           <img
             key={src}
             src={src}
             alt={alt}
-            className={`absolute inset-0 w-full h-full object-cover ${pos} md:object-center transition-opacity duration-1000 ease-in-out ${
+            className={`absolute inset-0 w-full h-full object-cover ${pos} md:object-center transition-opacity duration-700 ease-in-out ${
               i === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"
             }`}
           />
@@ -61,29 +81,13 @@ export default function HeroSection({ data = defaultHeroData }: { data?: any }) 
       {/* Gradient */}
       <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-slate-950/10 to-transparent z-10 pointer-events-none" />
 
-      {/* Navigation Arrows */}
-      <button 
-        onClick={prevSlide}
-        className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-20 p-2 md:p-3 rounded-full bg-black/30 hover:bg-black/60 text-white backdrop-blur-sm transition-all opacity-0 group-hover:opacity-100 cursor-pointer"
-        aria-label="Previous slide"
-      >
-        <ChevronLeft className="w-6 h-6 md:w-8 md:h-8" />
-      </button>
-
-      <button 
-        onClick={nextSlide}
-        className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-20 p-2 md:p-3 rounded-full bg-black/30 hover:bg-black/60 text-white backdrop-blur-sm transition-all opacity-0 group-hover:opacity-100 cursor-pointer"
-        aria-label="Next slide"
-      >
-        <ChevronRight className="w-6 h-6 md:w-8 md:h-8" />
-      </button>
-
-      {/* Dots Indicator */}
-      <div className="absolute bottom-6 md:bottom-10 left-1/2 -translate-x-1/2 z-20 flex gap-2">
-        {slides.map((_, i) => (
+      {/* Dots Indicator — hover on a dot to switch to that slide */}
+      <div data-dots className="absolute bottom-6 md:bottom-10 left-1/2 -translate-x-1/2 z-20 flex gap-2">
+        {slides.map((_: any, i: number) => (
           <button
             key={i}
-            onClick={() => setCurrentSlide(i)}
+            onMouseEnter={() => setCurrentSlide(i)}
+            onClick={(e) => { e.stopPropagation(); setCurrentSlide(i); }}
             className={`w-2.5 h-2.5 md:w-3 md:h-3 rounded-full transition-all cursor-pointer ${
               i === currentSlide ? "bg-white scale-125" : "bg-white/40 hover:bg-white/80"
             }`}
@@ -94,5 +98,4 @@ export default function HeroSection({ data = defaultHeroData }: { data?: any }) 
     </section>
   );
 }
-
 

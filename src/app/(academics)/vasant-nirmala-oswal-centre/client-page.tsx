@@ -58,13 +58,13 @@ export default function VasantNirmalaOswalCentreClientPage({ initialData }: { in
     <div className="min-h-screen bg-[#f8fafc] font-sans selection:bg-teal-500/30">
       
       {/* 1. Hero Section */}
-      <div className="w-full bg-[#002b5c] relative overflow-hidden pt-24 pb-16">
+      <div className="w-full bg-[#002b5c] relative overflow-hidden pt-8 pb-4">
         <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-white/5 rounded-full blur-[120px] pointer-events-none" />
         <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-[#d9232d]/20 rounded-full blur-[100px] pointer-events-none" />
         
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           
-          <nav className="flex flex-wrap items-center gap-2 text-sm text-[#b2dfdb] mb-8">
+          <nav className="flex flex-wrap items-center gap-2 text-sm text-[#b2dfdb] mb-2">
             <Link href="/" className="hover:text-white transition-colors">Home</Link>
             <ChevronRight className="w-4 h-4 shrink-0" />
             <Link href="/academics" className="hover:text-white transition-colors">Academics</Link>
@@ -74,7 +74,7 @@ export default function VasantNirmalaOswalCentreClientPage({ initialData }: { in
           
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div className="max-w-4xl">
-              <h1 className="text-4xl md:text-5xl lg:text-5xl font-bold text-white leading-tight tracking-tight">
+              <h1 className="text-[40px] leading-tight font-bold text-white leading-tight tracking-tight">
                 {data.heroTitle}
               </h1>
             </div>

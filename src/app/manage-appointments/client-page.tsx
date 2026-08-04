@@ -47,21 +47,21 @@ export default function ManageAppointmentsClientPage() {
         <div className="absolute inset-0 bg-[url(https://www.transparenttextures.com/patterns/cubes.png)] opacity-10 mix-blend-overlay pointer-events-none" />
         <div className="absolute right-0 top-0 w-1/2 h-full bg-gradient-to-l from-teal-500/20 to-transparent pointer-events-none" />
         
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16 relative z-10">
-          <div className="flex items-center gap-2 text-blue-200 text-xs md:text-sm font-medium tracking-wide mb-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 md:py-4 relative z-10">
+          <div className="flex items-center gap-2 text-blue-200 text-[10px] font-medium tracking-wide mb-1">
             <Link href="/" className="hover:text-white transition-colors">Home</Link>
             <ChevronRight className="w-3.5 h-3.5" />
             <span className="hover:text-white transition-colors cursor-pointer">Hospital</span>
             <ChevronRight className="w-3.5 h-3.5" />
             <span className="text-white">Manage Appointments</span>
           </div>
-          <h1 className="text-4xl md:text-5xl font-extrabold text-white tracking-tight flex items-center gap-4">
+          <h1 className="text-[40px] leading-tight font-extrabold text-white tracking-tight flex items-center gap-4">
             Cancel Appointment
           </h1>
         </div>
       </div>
 
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-16">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-3 md:py-5">
         <div className="bg-white rounded-3xl shadow-[0_8px_40px_rgb(0,0,0,0.03)] border border-slate-100 p-8 md:p-12">
           
           <div className="mb-8 text-center">

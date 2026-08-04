@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { 
-  Globe, FlaskConical, Heart, Home as HomeIcon, ShieldAlert, ChevronRight, ArrowRight, Microscope, Building2 
+  Globe, FlaskConical, Heart, Home as HomeIcon, ShieldAlert, ChevronRight, ArrowRight, Microscope, Building2, GraduationCap, Users, BookOpen, Award 
 } from "lucide-react";
 
 import * as Icons from 'lucide-react';
@@ -15,14 +15,6 @@ export const defaultClinicalHubData = {
   hubItems: [
     {
       id: "01",
-      title: "International Desk",
-      iconString: "Globe",
-      themeColor: "#007a87",
-      activeClass: "border-l-4 border-l-[#007a87] text-[#007a87] bg-white shadow-[0_15px_30px_-10px_rgba(0,122,135,0.12)] border-slate-200",
-      inactiveClass: "border-l-4 border-l-transparent text-slate-700 bg-white/70 hover:bg-white hover:text-[#007a87] hover:shadow-md border-slate-100"
-    },
-    {
-      id: "02",
       title: "DMH Diagnostics",
       iconString: "FlaskConical",
       themeColor: "#2563eb",
@@ -30,7 +22,7 @@ export const defaultClinicalHubData = {
       inactiveClass: "border-l-transparent text-slate-700 bg-white/70 hover:bg-white hover:text-blue-600 hover:shadow-md border-slate-100"
     },
     {
-      id: "03",
+      id: "02",
       title: "Wellness Packages",
       iconString: "Heart",
       themeColor: "#d97706",
@@ -38,7 +30,7 @@ export const defaultClinicalHubData = {
       inactiveClass: "border-l-transparent text-slate-700 bg-white/70 hover:bg-white hover:text-amber-600 hover:shadow-md border-slate-100"
     },
     {
-      id: "04",
+      id: "03",
       title: "Unique Clinics",
       iconString: "Microscope",
       themeColor: "#0d9488",
@@ -46,38 +38,47 @@ export const defaultClinicalHubData = {
       inactiveClass: "border-l-transparent text-slate-700 bg-white/70 hover:bg-white hover:text-teal-600 hover:shadow-md border-slate-100"
     },
     {
-      id: "05",
+      id: "04",
       title: "Facilities",
       iconString: "Building2",
       themeColor: "#4f46e5",
       activeClass: "border-l-4 border-l-indigo-600 text-indigo-600 bg-white shadow-[0_15px_30px_-10px_rgba(79,70,229,0.12)] border-slate-200",
       inactiveClass: "border-l-transparent text-slate-700 bg-white/70 hover:bg-white hover:text-indigo-600 hover:shadow-md border-slate-100"
+    },
+    {
+      id: "05",
+      title: "Academics",
+      iconString: "GraduationCap",
+      themeColor: "#7c3aed",
+      activeClass: "border-l-4 border-l-violet-600 text-violet-600 bg-white shadow-[0_15px_30px_-10px_rgba(124,58,237,0.12)] border-slate-200",
+      inactiveClass: "border-l-transparent text-slate-700 bg-white/70 hover:bg-white hover:text-violet-600 hover:shadow-md border-slate-100"
+    },
+    {
+      id: "06",
+      title: "Associates",
+      iconString: "Users",
+      themeColor: "#0891b2",
+      activeClass: "border-l-4 border-l-cyan-600 text-cyan-600 bg-white shadow-[0_15px_30px_-10px_rgba(8,145,178,0.12)] border-slate-200",
+      inactiveClass: "border-l-transparent text-slate-700 bg-white/70 hover:bg-white hover:text-cyan-600 hover:shadow-md border-slate-100"
+    },
+    {
+      id: "07",
+      title: "Research",
+      iconString: "BookOpen",
+      themeColor: "#059669",
+      activeClass: "border-l-4 border-l-emerald-600 text-emerald-600 bg-white shadow-[0_15px_30px_-10px_rgba(5,150,105,0.12)] border-slate-200",
+      inactiveClass: "border-l-transparent text-slate-700 bg-white/70 hover:bg-white hover:text-emerald-600 hover:shadow-md border-slate-100"
+    },
+    {
+      id: "08",
+      title: "Accreditation",
+      iconString: "Award",
+      themeColor: "#dc2626",
+      activeClass: "border-l-4 border-l-red-600 text-red-600 bg-white shadow-[0_15px_30px_-10px_rgba(220,38,38,0.12)] border-slate-200",
+      inactiveClass: "border-l-transparent text-slate-700 bg-white/70 hover:bg-white hover:text-red-600 hover:shadow-md border-slate-100"
     }
   ],
   hubDetails: [
-    {
-      title: "International Desk",
-      image: "/images/unnamed (9).webp",
-      description: "Dedicated global support tailored for international patients. We provide custom medical itineraries, language translation services, visa coordination, and luxury lodging guides to ensure a comfortable stay.",
-      iconString: "Globe",
-      themeColor: "#007a87",
-      featuresHeader: "Key Benefits & Protocols",
-      features: [
-        "Personalized multi-lingual support coordinators",
-        "Assistance with visa processing & travel logistics",
-        "Curated luxury lodging & local transport arrangements"
-      ],
-      ctaText: "Access Global Support",
-      ctaLink: "/patient-guide",
-      colorTheme: {
-        border: "border-teal-100",
-        bg: "bg-teal-50/30",
-        iconPod: "bg-teal-50 text-teal-600",
-        textAccent: "text-teal-600",
-        bullet: "bg-teal-500",
-        btn: "bg-[#007a87] hover:bg-[#007a87]/90 focus:ring-teal-500"
-      }
-    },
     {
       title: "DMH Diagnostics",
       image: "/images/hospital (2).webp",
@@ -168,6 +169,98 @@ export const defaultClinicalHubData = {
         textAccent: "text-indigo-600",
         bullet: "bg-indigo-500",
         btn: "bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500"
+      }
+    },
+    {
+      title: "Academics",
+      image: "/images/unnamed (9).webp",
+      description: "Explore our comprehensive academic programs including NBEMS courses, fellowship programs, simulation-based training, and continuing medical education designed to nurture the next generation of healthcare professionals.",
+      iconString: "GraduationCap",
+      themeColor: "#7c3aed",
+      featuresHeader: "Key Benefits & Programs",
+      features: [
+        "NBEMS-accredited postgraduate & fellowship courses",
+        "State-of-the-art simulation center for hands-on training",
+        "Continuing medical education & training programs"
+      ],
+      ctaText: "Explore Academics",
+      ctaLink: "/academics",
+      colorTheme: {
+        border: "border-violet-100",
+        bg: "bg-violet-50/30",
+        iconPod: "bg-violet-50 text-violet-600",
+        textAccent: "text-violet-600",
+        bullet: "bg-violet-500",
+        btn: "bg-violet-600 hover:bg-violet-700 focus:ring-violet-500"
+      }
+    },
+    {
+      title: "Associates",
+      image: "/images/unnamed (10).webp",
+      description: "Our network of distinguished associate hospitals and partner institutions extends our reach and ensures that world-class healthcare is accessible to communities across the region.",
+      iconString: "Users",
+      themeColor: "#0891b2",
+      featuresHeader: "Key Highlights",
+      features: [
+        "Network of trusted associate hospitals & clinics",
+        "Seamless patient referral & transfer coordination",
+        "Shared expertise & collaborative medical programs"
+      ],
+      ctaText: "View Associates",
+      ctaLink: "/associates",
+      colorTheme: {
+        border: "border-cyan-100",
+        bg: "bg-cyan-50/30",
+        iconPod: "bg-cyan-50 text-cyan-600",
+        textAccent: "text-cyan-600",
+        bullet: "bg-cyan-500",
+        btn: "bg-cyan-600 hover:bg-cyan-700 focus:ring-cyan-500"
+      }
+    },
+    {
+      title: "Research",
+      image: "/images/unnamed (16).webp",
+      description: "Our dedicated research wing drives innovation in clinical and translational research. We publish in leading journals, host training events, and collaborate with global sponsors and CROs.",
+      iconString: "BookOpen",
+      themeColor: "#059669",
+      featuresHeader: "Key Highlights",
+      features: [
+        "Published research in leading medical journals",
+        "Active clinical trials & translational research programs",
+        "Collaboration with global sponsors & CROs"
+      ],
+      ctaText: "Explore Research",
+      ctaLink: "/research-about",
+      colorTheme: {
+        border: "border-emerald-100",
+        bg: "bg-emerald-50/30",
+        iconPod: "bg-emerald-50 text-emerald-600",
+        textAccent: "text-emerald-600",
+        bullet: "bg-emerald-500",
+        btn: "bg-emerald-600 hover:bg-emerald-700 focus:ring-emerald-500"
+      }
+    },
+    {
+      title: "Accreditation",
+      image: "/images/unnamed (18).webp",
+      description: "Our hospital proudly holds accreditations from leading national and international bodies, reflecting our unwavering commitment to quality, patient safety, and clinical excellence.",
+      iconString: "Award",
+      themeColor: "#dc2626",
+      featuresHeader: "Key Highlights",
+      features: [
+        "NABH & NABL accredited for quality & safety standards",
+        "International accreditations ensuring global benchmarks",
+        "Continuous quality improvement & patient safety programs"
+      ],
+      ctaText: "View Accreditations",
+      ctaLink: "/accreditations",
+      colorTheme: {
+        border: "border-red-100",
+        bg: "bg-red-50/30",
+        iconPod: "bg-red-50 text-red-600",
+        textAccent: "text-red-600",
+        bullet: "bg-red-500",
+        btn: "bg-red-600 hover:bg-red-700 focus:ring-red-500"
       }
     }
   ]

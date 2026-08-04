@@ -718,8 +718,8 @@ export default async function DepartmentDetailsPage({
             <div className="absolute inset-0 bg-[url(https://www.transparenttextures.com/patterns/cubes.png)] opacity-10 mix-blend-overlay pointer-events-none" />
             <div className="absolute right-0 top-0 w-1/2 h-full bg-gradient-to-l from-teal-500/20 to-transparent pointer-events-none" />
             
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16 relative z-10">
-              <div className="flex items-center gap-2 text-blue-200 text-xs md:text-sm font-medium tracking-wide mb-4 flex-wrap">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 md:py-4 relative z-10">
+              <div className="flex items-center gap-2 text-blue-200 text-[10px] font-medium tracking-wide mb-1 flex-wrap">
                 <Link href="/" className="hover:text-white transition-colors whitespace-nowrap">Home</Link>
                 <ChevronRight className="w-3.5 h-3.5 shrink-0" />
                 <Link href="/departments" className="hover:text-white transition-colors whitespace-nowrap">Specialties</Link>
@@ -728,7 +728,7 @@ export default async function DepartmentDetailsPage({
                 <ChevronRight className="w-3.5 h-3.5 shrink-0" />
                 <span className="text-white truncate">Procedures</span>
               </div>
-              <h1 className="text-4xl md:text-5xl font-extrabold text-white tracking-tight flex items-center gap-4">
+              <h1 className="text-[40px] leading-tight font-extrabold text-white tracking-tight flex items-center gap-4">
                 {department.name} Procedures
               </h1>
             </div>
@@ -760,8 +760,8 @@ export default async function DepartmentDetailsPage({
             <div className="absolute inset-0 bg-[url(https://www.transparenttextures.com/patterns/cubes.png)] opacity-10 mix-blend-overlay pointer-events-none" />
             <div className="absolute right-0 top-0 w-1/2 h-full bg-gradient-to-l from-teal-500/20 to-transparent pointer-events-none" />
             
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16 relative z-10">
-              <div className="flex items-center gap-2 text-blue-200 text-xs md:text-sm font-medium tracking-wide mb-4 flex-wrap">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 md:py-4 relative z-10">
+              <div className="flex items-center gap-2 text-blue-200 text-[10px] font-medium tracking-wide mb-1 flex-wrap">
                 <Link href="/" className="hover:text-white transition-colors whitespace-nowrap">Home</Link>
                 <ChevronRight className="w-3.5 h-3.5 shrink-0" />
                 <Link href="/departments" className="hover:text-white transition-colors whitespace-nowrap">Specialties</Link>
@@ -770,7 +770,7 @@ export default async function DepartmentDetailsPage({
                 <ChevronRight className="w-3.5 h-3.5 shrink-0" />
                 <span className="text-white truncate">Photo Gallery</span>
               </div>
-              <h1 className="text-4xl md:text-5xl font-extrabold text-white tracking-tight flex items-center gap-4">
+              <h1 className="text-[40px] leading-tight font-extrabold text-white tracking-tight flex items-center gap-4">
                 {department.name} Photo Gallery
               </h1>
             </div>
@@ -802,8 +802,8 @@ export default async function DepartmentDetailsPage({
             <div className="absolute inset-0 bg-[url(https://www.transparenttextures.com/patterns/cubes.png)] opacity-10 mix-blend-overlay pointer-events-none" />
             <div className="absolute right-0 top-0 w-1/2 h-full bg-gradient-to-l from-teal-500/20 to-transparent pointer-events-none" />
             
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16 relative z-10">
-              <div className="flex items-center gap-2 text-blue-200 text-xs md:text-sm font-medium tracking-wide mb-4 flex-wrap">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 md:py-4 relative z-10">
+              <div className="flex items-center gap-2 text-blue-200 text-[10px] font-medium tracking-wide mb-1 flex-wrap">
                 <Link href="/" className="hover:text-white transition-colors whitespace-nowrap">Home</Link>
                 <ChevronRight className="w-3.5 h-3.5 shrink-0" />
                 <Link href="/departments" className="hover:text-white transition-colors whitespace-nowrap">Specialties</Link>
@@ -812,7 +812,7 @@ export default async function DepartmentDetailsPage({
                 <ChevronRight className="w-3.5 h-3.5 shrink-0" />
                 <span className="text-white truncate">FAQ&apos;s</span>
               </div>
-              <h1 className="text-4xl md:text-5xl font-extrabold text-white tracking-tight flex items-center gap-4">
+              <h1 className="text-[40px] leading-tight font-extrabold text-white tracking-tight flex items-center gap-4">
                 {department.name} {" "}FAQ&apos;s
               </h1>
             </div>
@@ -839,8 +839,8 @@ export default async function DepartmentDetailsPage({
         <div className="absolute inset-0 bg-[url(https://www.transparenttextures.com/patterns/cubes.png)] opacity-10 mix-blend-overlay pointer-events-none" />
         <div className="absolute right-0 top-0 w-1/2 h-full bg-gradient-to-l from-teal-500/20 to-transparent pointer-events-none" />
         
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16 relative z-10">
-          <div className="flex items-center gap-2 text-blue-200 text-xs md:text-sm font-medium tracking-wide mb-4 flex-wrap">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 md:py-4 relative z-10">
+          <div className="flex items-center gap-2 text-blue-200 text-[10px] font-medium tracking-wide mb-1 flex-wrap">
             <Link href="/" className="hover:text-white transition-colors whitespace-nowrap">Home</Link>
             <ChevronRight className="w-3.5 h-3.5 shrink-0" />
             <Link href="/departments" className="hover:text-white transition-colors whitespace-nowrap">Specialties</Link>
@@ -853,7 +853,7 @@ export default async function DepartmentDetailsPage({
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 md:py-4">
         <Link href="/departments" className="inline-flex items-center gap-2 text-[#007a87] hover:text-[#002b5c] font-bold mb-6 transition-colors">
           <ArrowLeft className="w-4 h-4" /> Back to Specialties
         </Link>
@@ -866,7 +866,7 @@ export default async function DepartmentDetailsPage({
               
               <div className="mb-10 flex items-start justify-between flex-wrap gap-4">
                 <div>
-                  <div style={{ fontSize: '14px' }} className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-teal-50 border border-teal-100 text-[#007a87] font-bold tracking-wider uppercase mb-4">
+                  <div style={{ fontSize: '10px' }} className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-teal-50 border border-teal-100 text-[#007a87] font-bold tracking-wider uppercase mb-4">
                     <Stethoscope className="w-4 h-4" />
                     <span>Specialty Details</span>
                   </div>

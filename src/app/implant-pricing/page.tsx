@@ -54,7 +54,7 @@ export default async function ImplantPricingPage() {
         
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           
-          <nav className="flex items-center gap-2 text-sm text-[#b2dfdb] mb-8">
+          <nav className="flex items-center gap-2 text-sm text-[#b2dfdb] mb-2">
             <Link href="/" className="hover:text-white transition-colors">Home</Link>
             <ChevronRight className="w-4 h-4" />
             <span className="text-white font-medium">{(data.pageTitle || data.title || "").replace(/<[^>]*>?/gm, '')}</span>

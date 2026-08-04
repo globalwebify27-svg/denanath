@@ -48,14 +48,14 @@ export default async function DisclaimerPage() {
   return (
     <main className="bg-slate-50 min-h-screen pb-20">
       {/* Hero Section */}
-      <div className="w-full bg-[#002b5c] relative overflow-hidden py-16">
+      <div className="w-full bg-[#002b5c] relative overflow-hidden py-4">
         <div className="absolute inset-0 bg-[url(https://www.transparenttextures.com/patterns/cubes.png)] opacity-10 mix-blend-overlay pointer-events-none" />
         <div className="absolute right-0 top-0 w-1/2 h-full bg-gradient-to-l from-teal-500/20 to-transparent pointer-events-none" />
         
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           
           {/* Breadcrumb */}
-          <nav className="flex items-center gap-2 text-sm text-[#b2dfdb] mb-8">
+          <nav className="flex items-center gap-2 text-sm text-[#b2dfdb] mb-2">
             <Link href="/" className="hover:text-white transition-colors">Home</Link>
             <ChevronRight className="w-4 h-4" />
             <span className="text-white font-medium">Disclaimer</span>
@@ -63,7 +63,7 @@ export default async function DisclaimerPage() {
           
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div className="max-w-3xl">
-              <h1 className="font-bold text-white leading-tight tracking-tight flex items-center gap-3" style={{ fontSize: '48px' }}>
+              <h1 className="font-bold text-white leading-tight tracking-tight flex items-center gap-3" style={{ fontSize: '40px', lineHeight: '48px' }}>
                 Disclaimer
               </h1>
             </div>

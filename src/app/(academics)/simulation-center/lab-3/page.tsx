@@ -29,8 +29,8 @@ export default async function SimulationLab3Page() {
         <div className="absolute inset-0 bg-[url(https://www.transparenttextures.com/patterns/cubes.png)] opacity-10 mix-blend-overlay pointer-events-none" />
         <div className="absolute right-0 top-0 w-1/2 h-full bg-gradient-to-l from-teal-500/20 to-transparent pointer-events-none" />
         
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16 relative z-10">
-          <div className="flex items-center gap-2 text-blue-200 text-xs md:text-sm font-medium tracking-wide mb-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 md:py-4 relative z-10">
+          <div className="flex items-center gap-2 text-blue-200 text-[10px] font-medium tracking-wide mb-1">
             <Link href="/" className="hover:text-white transition-colors">Home</Link>
             <ChevronRight className="w-3.5 h-3.5" />
             <Link href="/academics" className="hover:text-white transition-colors">Academics</Link>
@@ -39,13 +39,13 @@ export default async function SimulationLab3Page() {
             <ChevronRight className="w-3.5 h-3.5" />
             <span className="text-white">Simulation Lab 3</span>
           </div>
-          <h1 className="text-4xl md:text-5xl font-extrabold text-white tracking-tight flex items-center gap-4">
+          <h1 className="text-[40px] leading-tight font-extrabold text-white tracking-tight flex items-center gap-4">
             {pageData.title || "Simulation Lab 3"}
           </h1>
         </div>
       </div>
 
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-16">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-3 md:py-5">
         <Link href="/simulation-center" className="inline-flex items-center gap-2 text-[#007a87] hover:text-[#002b5c] font-bold mb-8 transition-colors">
           <ArrowLeft className="w-4 h-4" /> Back to Simulation Center
         </Link>

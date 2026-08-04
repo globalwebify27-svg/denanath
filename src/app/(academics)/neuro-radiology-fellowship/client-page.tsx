@@ -81,14 +81,14 @@ radiofellowship@gmail.com</p>
   return (
     <main className="bg-slate-50 min-h-screen pb-20">
       {/* Hero Section */}
-      <div className="w-full bg-[#002b5c] relative overflow-hidden pt-24 pb-16">
+      <div className="w-full bg-[#002b5c] relative overflow-hidden pt-8 pb-4">
         <div className="absolute inset-0 bg-[url(https://www.transparenttextures.com/patterns/cubes.png)] opacity-10 mix-blend-overlay pointer-events-none" />
         <div className="absolute right-0 top-0 w-1/2 h-full bg-gradient-to-l from-teal-500/20 to-transparent pointer-events-none" />
         
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           
           {/* Breadcrumb */}
-          <nav className="flex items-center gap-2 text-sm text-[#b2dfdb] mb-8">
+          <nav className="flex items-center gap-2 text-sm text-[#b2dfdb] mb-2">
             <Link href="/" className="hover:text-white transition-colors">Home</Link>
             <ChevronRight className="w-4 h-4" />
             <span className="text-white font-medium">{title}</span>

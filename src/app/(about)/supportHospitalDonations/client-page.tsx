@@ -32,19 +32,19 @@ export default function SupportDonationsClientPage({ donationsData }: { donation
         <div className="absolute inset-0 bg-[url(https://www.transparenttextures.com/patterns/cubes.png)] opacity-10 mix-blend-overlay pointer-events-none" />
         <div className="absolute right-0 top-0 w-1/2 h-full bg-gradient-to-l from-teal-500/20 to-transparent pointer-events-none" />
         
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16 relative z-10">
-          <div className="flex items-center gap-2 text-blue-200 text-xs md:text-sm font-medium tracking-wide mb-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 md:py-4 relative z-10">
+          <div className="flex items-center gap-2 text-blue-200 text-[10px] font-medium tracking-wide mb-1">
             <Link href="/" className="hover:text-white transition-colors">Home</Link>
             <ChevronRight className="w-3.5 h-3.5" />
             <Link href="/about-hospital" className="hover:text-white transition-colors">About Us</Link>
             <ChevronRight className="w-3.5 h-3.5" />
             <span className="text-white">Support Hospital / Donations</span>
           </div>
-          <h1 className="text-4xl md:text-5xl font-extrabold text-white tracking-tight">Support Hospital / Donations</h1>
+          <h1 className="text-[40px] leading-tight font-extrabold text-white tracking-tight">Support Hospital / Donations</h1>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 md:py-5">
         <div className="flex flex-col lg:flex-row gap-8 xl:gap-12 items-start">
           
           {/* Dynamic Sidebar */}
@@ -56,7 +56,7 @@ export default function SupportDonationsClientPage({ donationsData }: { donation
               
               {/* Introduction & Contact */}
               <div className="mb-10">
-                <div style={{ fontSize: '14px' }} className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-teal-50 border border-teal-100 text-[#007a87] font-bold tracking-wider uppercase mb-4">
+                <div style={{ fontSize: '10px' }} className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-teal-50 border border-teal-100 text-[#007a87] font-bold tracking-wider uppercase mb-4">
                   <Building2 className="w-4 h-4" />
                   <span>Support Hospital / Donations</span>
                 </div>
