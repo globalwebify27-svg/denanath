@@ -48,7 +48,7 @@ export default async function DisclaimerPage() {
   return (
     <main className="bg-slate-50 min-h-screen pb-20">
       {/* Hero Section */}
-      <div className="w-full bg-[#002b5c] relative overflow-hidden pt-24 pb-24">
+      <div className="w-full bg-[#002b5c] relative overflow-hidden py-16">
         <div className="absolute inset-0 bg-[url(https://www.transparenttextures.com/patterns/cubes.png)] opacity-10 mix-blend-overlay pointer-events-none" />
         <div className="absolute right-0 top-0 w-1/2 h-full bg-gradient-to-l from-teal-500/20 to-transparent pointer-events-none" />
         

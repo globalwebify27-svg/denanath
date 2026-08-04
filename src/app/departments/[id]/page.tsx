@@ -571,17 +571,26 @@ export default async function DepartmentDetailsPage({
                  initials = words[0].substring(0, 2).toUpperCase();
                }
 
+               // Try to match with API doctors to get doctor_id
+               const matchedApiDoc = allApiDocs.find((apiDoc: any) => {
+                 const apiName = (apiDoc.doctor_name || `${apiDoc.first_name || ''} ${apiDoc.last_name || ''}`.trim()).toLowerCase().replace(/\s*\(.*?\)\s*/g, '').trim();
+                 const hardcodedName = cleanName.toLowerCase().trim();
+                 return apiName === hardcodedName || apiName.includes(hardcodedName) || hardcodedName.includes(apiName);
+               });
+               const doctorProfileUrl = matchedApiDoc ? `/doctor-details/${matchedApiDoc.doctor_id || matchedApiDoc.id || ''}` : `/doctors`;
+               const doctorImage = matchedApiDoc?.doctorImage || '';
+
                docCards.push(`
                 <div class="p-5 bg-white border border-slate-200 rounded-2xl flex items-center justify-between gap-4 shadow-sm hover:shadow-md transition-shadow">
-                  <div class="flex items-center gap-4 flex-1">
+                  <a href="${doctorProfileUrl}" class="flex items-center gap-4 cursor-pointer flex-1">
                     <div class="w-14 h-14 rounded-2xl bg-teal-50 border border-teal-100 flex items-center justify-center text-[#007a87] font-extrabold text-base shrink-0">
-                      ${initials}
+                      ${doctorImage ? `<img src="${doctorImage}" alt="${cleanName}" class="w-full h-full object-cover rounded-2xl" />` : initials}
                     </div>
                     <div class="text-lg font-bold text-[#002b5c] m-0 leading-snug hover:text-[#007a87] transition-colors">${name}</div>
-                  </div>
-                  <button class="px-4 py-2 bg-teal-50 hover:bg-teal-100 text-[#007a87] rounded-xl text-xs font-bold transition-colors shrink-0 whitespace-nowrap cursor-not-allowed opacity-70">
+                  </a>
+                  <a href="${doctorProfileUrl}" class="px-4 py-2 bg-teal-50 hover:bg-teal-100 text-[#007a87] rounded-xl text-xs font-bold transition-colors shrink-0 whitespace-nowrap">
                     View Profile
-                  </button>
+                  </a>
                 </div>
                `);
                $(p).remove(); // Remove original text
