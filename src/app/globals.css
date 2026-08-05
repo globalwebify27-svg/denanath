@@ -97,3 +97,17 @@ body {
 .w-full.flex-1.min-w-0 > .bg-white.rounded-3xl .text-xs li {
   font-size: 12px !important;
 }
+/* Dynamic Input Icons */
+.dynamic-icon-input {
+  padding-left: 1rem !important;
+}
+.dynamic-icon-input:placeholder-shown:not(:focus) {
+  padding-left: 2.5rem !important;
+}
+.dynamic-input-icon {
+  opacity: 0 !important;
+  transition: opacity 0.2s;
+}
+.dynamic-icon-input:placeholder-shown:not(:focus) + .dynamic-input-icon {
+  opacity: 1 !important;
+}

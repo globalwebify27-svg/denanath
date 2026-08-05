@@ -15,6 +15,7 @@ import DoctorsSection from "@/components/home/Doctors";
 import PatientJourney from "@/components/home/Patient";
 import CoursesAndPricing from "@/components/home/CoursesAndPricing";
 import QuickLinksCTA from "@/components/home/QuickLinksCTA";
+import { getHomeCourses } from "@/app/actions/get-home-courses";
 
 export const dynamic = "force-dynamic";
 
@@ -46,6 +47,8 @@ export default async function Home() {
     } catch(e) {}
   }
 
+  const { leftCourses, rightCourses } = await getHomeCourses();
+
   return (
     <div className="relative overflow-hidden bg-[#f6fafb] min-h-screen">
       {/* Subtle top background gradient overlay */}
@@ -71,7 +74,11 @@ export default async function Home() {
       <PatientJourney data={parsedSettings['home_patient_journey']} />
 
       {/* 7. CLINICAL HUB SECTION (Courses) */}
-      <CoursesAndPricing data={parsedSettings['home_courses_pricing']} />
+      <CoursesAndPricing 
+        data={parsedSettings['home_courses_pricing']} 
+        initialLeftCourses={leftCourses} 
+        initialRightCourses={rightCourses} 
+      />
       <QuickLinksCTA data={parsedSettings['home_quick_links']} />
 
       {/* 8. PATIENT REVIEWS & STORIES */}

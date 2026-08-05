@@ -316,16 +316,19 @@ export default function CareersClient({ data }: { data: any }) {
               ) : (
               <form className="p-6 sm:p-8 space-y-6" onSubmit={handleJobSubmit}>
                 
-                {/* Personal Information */}
+                {/* All Form Fields - Single Box */}
                 <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm relative overflow-visible group hover:shadow-md transition-shadow z-40">
                   <div className="absolute top-0 left-0 w-1.5 h-full bg-[#007a87] rounded-l-2xl"></div>
+                  
+                  {/* Personal Information */}
                   <h3 className="text-base font-bold text-[#002b5c] mb-4 flex items-center gap-2">
                     <User className="w-5 h-5 text-teal-600" />
                     Personal Information
                   </h3>
                   
-                  <div className="grid grid-cols-1 md:grid-cols-4 gap-5">
-                    <div className="md:col-span-1">
+                  {/* Row 1: Salutation + First Name + Middle Name */}
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+                    <div>
                       <label className="block text-xs font-semibold text-slate-700 mb-1">Salutation <span className="text-red-500">*</span></label>
                       <div className="relative">
                         <CustomDropdown 
@@ -336,24 +339,24 @@ export default function CareersClient({ data }: { data: any }) {
                         />
                       </div>
                     </div>
-                    
-                    <div className="md:col-span-3">
+                    <div>
                       <label className="block text-xs font-semibold text-slate-700 mb-1">First Name <span className="text-red-500">*</span></label>
                       <div className="relative">
                         <input name="firstName" type="text" placeholder="Enter your first name" className="w-full bg-slate-50 border border-slate-200 rounded-lg py-1.5 pl-10 pr-3 text-xs text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all placeholder-slate-400" required />
                         <User className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                       </div>
                     </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-5">
                     <div>
-                      <label className="block text-xs font-semibold text-slate-700 mb-1">Middle Name</label>
+                      <label className="block text-xs font-semibold text-slate-700 mb-1">Middle Name <span className="text-red-500">*</span></label>
                       <div className="relative">
                         <input name="middleName" type="text" placeholder="Enter middle name" className="w-full bg-slate-50 border border-slate-200 rounded-lg py-1.5 pl-10 pr-3 text-xs text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all placeholder-slate-400" />
                         <User className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                       </div>
                     </div>
+                  </div>
+
+                  {/* Row 2: Surname + Date of Birth + Gender */}
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mt-5">
                     <div>
                       <label className="block text-xs font-semibold text-slate-700 mb-1">Surname <span className="text-red-500">*</span></label>
                       <div className="relative">
@@ -361,9 +364,6 @@ export default function CareersClient({ data }: { data: any }) {
                         <User className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                       </div>
                     </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-5">
                     <div>
                       <label className="block text-xs font-semibold text-slate-700 mb-1">Date of Birth <span className="text-red-500">*</span></label>
                       <div className="relative">
@@ -384,11 +384,11 @@ export default function CareersClient({ data }: { data: any }) {
                       </div>
                     </div>
                   </div>
-                </div>
 
-                {/* Contact Information */}
-                <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm relative overflow-visible group hover:shadow-md transition-shadow z-30">
-                  <div className="absolute top-0 left-0 w-1.5 h-full bg-[#007a87] rounded-l-2xl"></div>
+                  {/* Divider */}
+                  <div className="border-t border-slate-100 my-6"></div>
+
+                  {/* Contact Details */}
                   <h3 className="text-base font-bold text-[#002b5c] mb-4 flex items-center gap-2">
                     <Phone className="w-5 h-5 text-teal-600" />
                     Contact Details
@@ -410,11 +410,11 @@ export default function CareersClient({ data }: { data: any }) {
                       </div>
                     </div>
                   </div>
-                </div>
 
-                {/* Professional Details */}
-                <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm relative overflow-visible group hover:shadow-md transition-shadow z-20">
-                  <div className="absolute top-0 left-0 w-1.5 h-full bg-[#007a87] rounded-l-2xl"></div>
+                  {/* Divider */}
+                  <div className="border-t border-slate-100 my-6"></div>
+
+                  {/* Professional Details */}
                   <h3 className="text-base font-bold text-[#002b5c] mb-4 flex items-center gap-2">
                     <Briefcase className="w-5 h-5 text-teal-600" />
                     Professional Details
@@ -446,15 +446,15 @@ export default function CareersClient({ data }: { data: any }) {
                     <div>
                       <label className="block text-xs font-semibold text-slate-700 mb-1">Current Salary <span className="text-red-500">*</span></label>
                       <div className="relative flex items-center">
-                        <span className="absolute left-4 font-bold text-slate-400 text-xs">₹</span>
                         <input name="currentSalary" type="text" placeholder="Amount" className="w-full bg-slate-50 border border-slate-200 rounded-lg py-1.5 pl-8 pr-3 text-xs text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all placeholder-slate-400" required />
+                        <span className="absolute left-4 font-bold text-slate-400 text-xs pointer-events-none">₹</span>
                       </div>
                     </div>
                     <div>
                       <label className="block text-xs font-semibold text-slate-700 mb-1">Expected Salary <span className="text-red-500">*</span></label>
                       <div className="relative flex items-center">
-                        <span className="absolute left-4 font-bold text-slate-400 text-xs">₹</span>
                         <input name="expectedSalary" type="text" placeholder="Amount" className="w-full bg-slate-50 border border-slate-200 rounded-lg py-1.5 pl-8 pr-3 text-xs text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all placeholder-slate-400" required />
+                        <span className="absolute left-4 font-bold text-slate-400 text-xs pointer-events-none">₹</span>
                       </div>
                     </div>
                   </div>

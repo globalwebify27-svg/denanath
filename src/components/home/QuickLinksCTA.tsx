@@ -105,8 +105,7 @@ export default function QuickLinksCTA({ data = defaultQuickLinksData }: { data?:
               mt-5 max-w-xl
               text-[18px] font-normal
               leading-[31px] text-slate-600
-            ">
-              {data.description}
+            " dangerouslySetInnerHTML={{__html: data.description}}>
             </p>
 
             <div className="mt-8 flex flex-wrap gap-4">
@@ -194,7 +193,7 @@ export default function QuickLinksCTA({ data = defaultQuickLinksData }: { data?:
 
                         <div>
                           <h3 className="font-bold text-lg text-white tracking-wide">
-                            {link.title}
+                            {typeof link.title === 'string' ? link.title.replace(/<[^>]*>/g, '') : link.title}
                           </h3>
                           <p className="text-xs sm:text-sm text-blue-100/80 mt-0.5 font-medium">
                             {link.subtitle}

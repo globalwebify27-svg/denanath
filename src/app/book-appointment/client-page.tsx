@@ -583,8 +583,8 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
                 {isSpecOpen && (
                   <>
                     <div className="fixed inset-0 z-40" onClick={() => setIsSpecOpen(false)} />
-                    <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-xl border border-slate-100 max-h-72 overflow-y-auto z-50 py-2 custom-scrollbar">
-                      <div className="px-4 py-2 border-b border-slate-100 sticky top-0 bg-white z-10" onClick={(e) => e.stopPropagation()}>
+                    <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-xl border border-slate-100 max-h-72 overflow-y-auto z-50 pb-2 custom-scrollbar">
+                      <div className="px-4 pt-4 pb-2 border-b border-slate-100 sticky top-0 bg-white z-10" onClick={(e) => e.stopPropagation()}>
                         <div className="relative flex items-center">
                           <Search className="w-4 h-4 text-slate-400 absolute left-3 pointer-events-none" />
                           <input
@@ -659,8 +659,8 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
                 {isDocOpen && (
                   <>
                     <div className="fixed inset-0 z-40" onClick={() => setIsDocOpen(false)} />
-                    <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-xl border border-slate-100 max-h-72 overflow-y-auto z-50 py-2 custom-scrollbar">
-                      <div className="px-4 py-2 border-b border-slate-100 sticky top-0 bg-white z-10" onClick={(e) => e.stopPropagation()}>
+                    <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl shadow-xl border border-slate-100 max-h-72 overflow-y-auto z-50 pb-2 custom-scrollbar">
+                      <div className="px-4 pt-4 pb-2 border-b border-slate-100 sticky top-0 bg-white z-10" onClick={(e) => e.stopPropagation()}>
                         <div className="relative flex items-center">
                           <Search className="w-4 h-4 text-slate-400 absolute left-3 pointer-events-none" />
                           <input

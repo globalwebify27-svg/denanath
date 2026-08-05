@@ -152,7 +152,7 @@ export default function PatientPortalPage({ pageData }: { pageData: any }) {
                   </div>
                   
                   <div className="flex flex-col items-center mb-2">
-                    <div className="relative w-32 h-24 mb-4">
+                    <div className="relative w-20 h-16 mb-4">
                       <Image 
                         src="/logo.png" 
                         alt="Deenanath Mangeshkar Hospital Logo" 
@@ -175,13 +175,13 @@ export default function PatientPortalPage({ pageData }: { pageData: any }) {
                     
                     <button 
                       onClick={() => setActiveTab("login")}
-                      className={`flex-1 py-3 text-center text-[18px] leading-[31px] font-bold relative z-10 transition-colors duration-300 ${activeTab === "login" ? "text-[#003360]" : "text-slate-500 hover:text-slate-700"}`}
+                      className={`flex-1 py-1.5 text-center text-sm font-bold relative z-10 transition-colors duration-300 ${activeTab === "login" ? "text-[#003360]" : "text-slate-500 hover:text-slate-700"}`}
                     >
                       Login
                     </button>
                     <button 
                       onClick={() => setActiveTab("register")}
-                      className={`flex-1 py-3 text-center text-[18px] leading-[31px] font-bold relative z-10 transition-colors duration-300 ${activeTab === "register" ? "text-[#003360]" : "text-slate-500 hover:text-slate-700"}`}
+                      className={`flex-1 py-1.5 text-center text-sm font-bold relative z-10 transition-colors duration-300 ${activeTab === "register" ? "text-[#003360]" : "text-slate-500 hover:text-slate-700"}`}
                     >
                       Create Account
                     </button>
@@ -193,7 +193,7 @@ export default function PatientPortalPage({ pageData }: { pageData: any }) {
                     <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
                       <form 
                         ref={loginFormRef}
-                        className="space-y-6 [&_label]:!text-[18px] [&_input]:!text-[18px] [&_select]:!text-[18px] [&_textarea]:!text-[18px] [&_button]:!text-[18px] [&_.text-sm]:!text-[18px] [&_.text-xs]:!text-[18px]" 
+                        className="space-y-6" 
                         action={async (formData) => { 
                           setIsLoginSubmitting(true);
                           const res = await submitFormAction("Patient Portal Login", formData); 
@@ -212,8 +212,8 @@ export default function PatientPortalPage({ pageData }: { pageData: any }) {
                             MRD Number <span className="text-red-500">*</span>
                           </label>
                           <div className="relative">
-                            <input type="number" name="mrdNumber" placeholder="Enter MRD Number" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
-                            <Hash className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
+                            <input type="number" name="mrdNumber" placeholder="Enter MRD Number" className="w-full px-4 py-1.5 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400 text-sm dynamic-icon-input" />
+                            <Hash className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none transition-opacity duration-200 dynamic-input-icon" />
                           </div>
                         </div>
 
@@ -222,8 +222,8 @@ export default function PatientPortalPage({ pageData }: { pageData: any }) {
                             Password <span className="text-red-500">*</span>
                           </label>
                           <div className="relative">
-                            <input type="password" name="password" placeholder="Enter Password" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
-                            <Lock className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
+                            <input type="password" name="password" placeholder="Enter Password" className="w-full px-4 py-1.5 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400 text-sm dynamic-icon-input" />
+                            <Lock className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none transition-opacity duration-200 dynamic-input-icon" />
                           </div>
                         </div>
 
@@ -240,7 +240,7 @@ export default function PatientPortalPage({ pageData }: { pageData: any }) {
                                 <RefreshCw className="w-5 h-5" />
                               </button>
                             </div>
-                            <input type="text" name="captcha" placeholder="Enter text" className="w-full sm:w-40 px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all font-medium placeholder-slate-400" />
+                            <input type="text" name="captcha" placeholder="Enter text" className="w-full sm:w-40 px-4 py-1.5 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all font-medium placeholder-slate-400 text-sm" />
                           </div>
                         </div>
 
@@ -248,7 +248,7 @@ export default function PatientPortalPage({ pageData }: { pageData: any }) {
                           <button 
                               type="submit" 
                               disabled={isLoginSubmitting}
-                              className={`group w-full sm:w-auto inline-flex items-center justify-center gap-3 px-8 py-3.5 bg-[#003360] hover:bg-[#002b5c] text-white font-bold text-base rounded-xl transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5 ${isLoginSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
+                              className={`group w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-1.5 bg-[#003360] hover:bg-[#002b5c] text-white font-bold text-sm rounded-lg transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5 ${isLoginSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
                             >
                               {isLoginSubmitting ? (
                                 <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
@@ -293,7 +293,7 @@ export default function PatientPortalPage({ pageData }: { pageData: any }) {
                     <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
                       <form 
                         ref={registerFormRef}
-                        className="space-y-6 [&_label]:!text-[18px] [&_input]:!text-[18px] [&_select]:!text-[18px] [&_textarea]:!text-[18px] [&_button]:!text-[18px] [&_.text-sm]:!text-[18px] [&_.text-xs]:!text-[18px]" 
+                        className="space-y-6" 
                         action={async (formData) => { 
                           setIsRegisterSubmitting(true);
                           const res = await submitFormAction("Patient Portal Register", formData); 
@@ -313,8 +313,8 @@ export default function PatientPortalPage({ pageData }: { pageData: any }) {
                               MRD Number <span className="text-red-500">*</span>
                             </label>
                             <div className="relative">
-                              <input type="text" name="mrdNumber" placeholder="MRD Number" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
-                              <Hash className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
+                              <input type="text" name="mrdNumber" placeholder="MRD Number" className="w-full px-4 py-1.5 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400 dynamic-icon-input" />
+                              <Hash className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none transition-opacity duration-200 dynamic-input-icon" />
                             </div>
                           </div>
                           
@@ -323,8 +323,8 @@ export default function PatientPortalPage({ pageData }: { pageData: any }) {
                               Patient Name
                             </label>
                             <div className="relative">
-                              <input type="text" name="patientName" placeholder="Patient Name" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
-                              <User className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
+                              <input type="text" name="patientName" placeholder="Patient Name" className="w-full px-4 py-1.5 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400 dynamic-icon-input" />
+                              <User className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none transition-opacity duration-200 dynamic-input-icon" />
                             </div>
                           </div>
 
@@ -333,8 +333,8 @@ export default function PatientPortalPage({ pageData }: { pageData: any }) {
                               Date of Birth <span className="text-red-500">*</span>
                             </label>
                             <div className="relative">
-                              <input type="text" placeholder="dd-mm-yyyy" onFocus={(e) => e.target.type = 'date'} onBlur={(e) => { if (!e.target.value) e.target.type = 'text'; }} name="dob" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium" />
-                              <Calendar className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
+                              <input type="text" placeholder="dd-mm-yyyy" onFocus={(e) => e.target.type = 'date'} onBlur={(e) => { if (!e.target.value) e.target.type = 'text'; }} name="dob" className="w-full px-4 py-1.5 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium dynamic-icon-input" />
+                              <Calendar className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none transition-opacity duration-200 dynamic-input-icon" />
                             </div>
                           </div>
 
@@ -344,15 +344,16 @@ export default function PatientPortalPage({ pageData }: { pageData: any }) {
                             </label>
                             <div className="relative">
                               <CustomDropdown
-  name="gender"
-  placeholder="-- Select --"
-  icon={User}
-  options={[
-    "Male",
-    "Female",
-    "Other"
-  ]}
-/></div>
+                                name="gender"
+                                placeholder="-- Select --"
+                                icon={User}
+                                options={[
+                                  "Male",
+                                  "Female",
+                                  "Other"
+                                ]}
+                              />
+                            </div>
                           </div>
 
                           <div className="md:col-span-2">
@@ -360,8 +361,8 @@ export default function PatientPortalPage({ pageData }: { pageData: any }) {
                               Email ID <span className="text-red-500">*</span>
                             </label>
                             <div className="relative">
-                              <input type="email" name="email" placeholder="Email Address" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
-                              <Mail className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
+                              <input type="email" name="email" placeholder="Email Address" className="w-full px-4 py-1.5 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400 dynamic-icon-input" />
+                              <Mail className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none transition-opacity duration-200 dynamic-input-icon" />
                             </div>
                           </div>
 
@@ -370,8 +371,8 @@ export default function PatientPortalPage({ pageData }: { pageData: any }) {
                               Mobile Number <span className="text-red-500">*</span>
                             </label>
                             <div className="relative">
-                              <input type="tel" name="mobile" placeholder="Mobile Number" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" pattern="[0-9]{10}" maxLength={10} minLength={10} title="Please enter a valid 10-digit mobile number" onInput={(e) => { e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/g, "").slice(0, 10); }} />
-                              <Phone className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
+                              <input type="tel" name="mobile" placeholder="Mobile Number" className="w-full px-4 py-1.5 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400 dynamic-icon-input" pattern="[0-9]{10}" maxLength={10} minLength={10} title="Please enter a valid 10-digit mobile number" onInput={(e) => { e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/g, "").slice(0, 10); }} />
+                              <Phone className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none transition-opacity duration-200 dynamic-input-icon" />
                             </div>
                           </div>
                         </div>
@@ -380,7 +381,7 @@ export default function PatientPortalPage({ pageData }: { pageData: any }) {
                           <button 
                               type="submit" 
                               disabled={isRegisterSubmitting}
-                              className={`group w-full md:w-auto inline-flex items-center justify-center gap-2 md:gap-3 px-6 md:px-10 py-3.5 bg-[#003360] hover:bg-[#002b5c] text-white font-bold text-base whitespace-nowrap rounded-xl transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5 ${isRegisterSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
+                              className={`group w-full md:w-auto inline-flex items-center justify-center gap-2 px-10 py-3 bg-[#003360] hover:bg-[#002b5c] text-white font-bold text-base whitespace-nowrap rounded-lg transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5 ${isRegisterSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
                             >
                               {isRegisterSubmitting ? (
                                 <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>

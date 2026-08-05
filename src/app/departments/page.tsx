@@ -2,35 +2,11 @@ import type { Metadata } from "next";
 import React from "react";
 import DynamicSidebar from "@/components/DynamicSidebar";
 import Link from "next/link";
-import { 
-  ChevronRight, Stethoscope, Search, ArrowRight, HeartPulse, 
-  Shield, Activity, Users, Brain, Bone, Eye, Ear, Syringe, 
-  Microscope, Baby, Pill, Droplet, Scissors, Dna, TestTubes 
-} from "lucide-react";
+import { ChevronRight, Stethoscope } from "lucide-react";
 import { prisma } from "@/lib/prisma";
-
-const getDepartmentIcon = (name: string) => {
-  const lower = name.toLowerCase();
-  if (lower.includes('cardio') || lower.includes('heart') || lower.includes('vascular')) return HeartPulse;
-  if (lower.includes('neuro') || lower.includes('brain') || lower.includes('psych')) return Brain;
-  if (lower.includes('ortho') || lower.includes('bone') || lower.includes('rheum') || lower.includes('joint') || lower.includes('spine')) return Bone;
-  if (lower.includes('eye') || lower.includes('ophthal')) return Eye;
-  if (lower.includes('ear') || lower.includes('ent') || lower.includes('audio')) return Ear;
-  if (lower.includes('anaesthe') || lower.includes('anesthe') || lower.includes('vaccin') || lower.includes('pain')) return Syringe;
-  if (lower.includes('patho') || lower.includes('microbio') || lower.includes('lab') || lower.includes('histopath')) return Microscope;
-  if (lower.includes('baby') || lower.includes('paediat') || lower.includes('pediat') || lower.includes('neonat') || lower.includes('matern') || lower.includes('obstet') || lower.includes('gynae')) return Baby;
-  if (lower.includes('pharm') || lower.includes('medic') || lower.includes('physician')) return Pill;
-  if (lower.includes('blood') || lower.includes('transfu') || lower.includes('uro') || lower.includes('nephro') || lower.includes('kidney')) return Droplet;
-  if (lower.includes('surg') || lower.includes('plastic') || lower.includes('cosmet')) return Scissors;
-  if (lower.includes('onco') || lower.includes('cancer') || lower.includes('genetic')) return Dna;
-  if (lower.includes('allergy') || lower.includes('immun') || lower.includes('prevent')) return Shield;
-  if (lower.includes('test') || lower.includes('biochem')) return TestTubes;
-  if (lower.includes('radio') || lower.includes('scan') || lower.includes('ray') || lower.includes('gastro') || lower.includes('abdomin') || lower.includes('hepat') || lower.includes('liver') || lower.includes('digest')) return Activity;
-  return Stethoscope;
-};
+import DepartmentsClientPage from "./client-page";
 
 export const dynamic = "force-dynamic";
-
 
 export async function generateMetadata(): Promise<Metadata> {
   let seoData: any = {};
@@ -46,20 +22,10 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default async function DepartmentDetailsPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ q?: string }>;
-}) {
-  const resolvedParams = await searchParams;
-  const query = resolvedParams.q || "";
-
+export default async function DepartmentDetailsPage() {
   const departments = await prisma.department.findMany({
-    where: {
-      status: true,
-      name: { contains: query }
-    },
-    orderBy: { name: 'asc' }
+    where: { status: true },
+    orderBy: { name: 'asc' },
   });
 
   return (
@@ -68,7 +34,7 @@ export default async function DepartmentDetailsPage({
       <div className="w-full bg-[#002b5c] relative overflow-hidden">
         <div className="absolute inset-0 bg-[url(https://www.transparenttextures.com/patterns/cubes.png)] opacity-10 mix-blend-overlay pointer-events-none" />
         <div className="absolute right-0 top-0 w-1/2 h-full bg-gradient-to-l from-teal-500/20 to-transparent pointer-events-none" />
-        
+
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 md:py-4 relative z-10">
           <div className="flex items-center gap-2 text-blue-200 text-[10px] font-medium tracking-wide mb-1">
             <Link href="/" className="hover:text-white transition-colors">Home</Link>
@@ -85,14 +51,14 @@ export default async function DepartmentDetailsPage({
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 md:py-5">
         <div className="flex flex-col lg:flex-row gap-8 xl:gap-12 items-start">
-          
+
           {/* Dynamic Sidebar */}
           <DynamicSidebar categoryName="Doctors & Departments" activeHref="/departments" />
 
           {/* Right Main Content */}
           <div className="w-full flex-1">
-            <div className="bg-white rounded-3xl shadow-[0_8px_40px_rgb(0,0,0,0.03)] border border-slate-100/60 p-6 sm:p-10">
-              
+            <div className="bg-white rounded-3xl shadow-[0_8px_40px_rgb(0,0,0,0.03)] border border-slate-100/60 px-6 pt-2 pb-6 sm:px-10 sm:pt-3 sm:pb-10 md:px-14 md:pt-4 md:pb-14">
+
               <div className="mb-10">
                 <div style={{ fontSize: '10px' }} className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-teal-50 border border-teal-100 text-[#007a87] font-bold tracking-wider uppercase mb-4">
                   <Stethoscope className="w-4 h-4" />
@@ -104,68 +70,8 @@ export default async function DepartmentDetailsPage({
                 <div className="w-20 h-1.5 bg-[#007a87] rounded-full mb-8"></div>
               </div>
 
-              {/* Search Box Matching Image */}
-              <div className="bg-gray-50/50 rounded-2xl border border-gray-100 p-6 mb-8">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <form action="/departments" method="GET">
-                    <label className="block text-[#002b5c] font-[800] mb-3">Search Department:</label>
-                    <div className="relative">
-                      <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
-                      <input
-                        type="text"
-                        name="q"
-                        defaultValue={query}
-                        placeholder="Enter department name..."
-                        className="w-full pl-11 pr-4 py-3 bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#007a87]/20 focus:border-[#007a87] font-[500] text-gray-700 shadow-sm"
-                      />
-                    </div>
-                  </form>
-                  <form action="/doctor-details" method="GET">
-                    <label className="block text-[#002b5c] font-[800] mb-3">Filter By Doctor Name:</label>
-                    <div className="relative">
-                      <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
-                      <input
-                        type="text"
-                        name="name"
-                        placeholder="Enter doctor name..."
-                        className="w-full pl-11 pr-4 py-3 bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#007a87]/20 focus:border-[#007a87] font-[500] text-gray-700 shadow-sm"
-                      />
-                    </div>
-                  </form>
-                </div>
-              </div>
-
-              {/* Vertical Stacked Cards Matching Image */}
-              <div className="space-y-4">
-                {departments.length > 0 ? (
-                  departments.map((dept: any, index: number) => {
-                    const IconComponent = getDepartmentIcon(dept.name);
-                    
-                    return (
-                      <div key={dept.id} className="group bg-white border border-gray-100 rounded-2xl p-6 flex flex-col sm:flex-row sm:items-center gap-6 hover:border-[#D9232D] hover:shadow-[0_8px_30px_rgb(217,35,45,0.08)] hover:-translate-y-0.5 transition-all duration-300">
-                        <div className="w-14 h-14 rounded-xl bg-[#007a87]/5 group-hover:bg-[#D9232D]/5 flex items-center justify-center shrink-0 border border-[#007a87]/10 group-hover:border-[#D9232D]/20 transition-colors">
-                          <IconComponent className="w-7 h-7 text-[#007a87] group-hover:text-[#D9232D] transition-colors" />
-                        </div>
-                        <div className="flex-1">
-                          <h3 className="text-[18px] font-[900] text-[#002b5c] group-hover:text-[#D9232D] uppercase tracking-wide mb-2 leading-tight transition-colors">
-                            {dept.name}
-                          </h3>
-                          <Link 
-                            href={`/departments/${dept.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`} 
-                            className="inline-flex items-center gap-1.5 text-[12px] font-[800] text-[#007a87] group-hover:text-[#D9232D] uppercase tracking-widest transition-colors"
-                          >
-                            VIEW DETAILS <ArrowRight size={14} />
-                          </Link>
-                        </div>
-                      </div>
-                    );
-                  })
-                ) : (
-                  <div className="py-16 text-center border-2 border-dashed border-slate-200 rounded-2xl bg-slate-50">
-                    <p className="text-slate-500 font-medium">No departments found matching your search.</p>
-                  </div>
-                )}
-              </div>
+              {/* Client component handles search + pagination */}
+              <DepartmentsClientPage departments={departments} />
 
             </div>
           </div>

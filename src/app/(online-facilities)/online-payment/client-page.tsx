@@ -145,7 +145,7 @@ export default function OnlinePaymentClientPage({ pageData }: { pageData: any })
 
               <form 
                     ref={formRef}
-                    className="max-w-4xl space-y-8 [&_label]:!text-[18px] [&_input]:!text-[18px] [&_select]:!text-[18px] [&_textarea]:!text-[18px] [&_button]:!text-[18px] [&_.text-sm]:!text-[18px] [&_.text-xs]:!text-[18px]" 
+                    className="max-w-4xl space-y-8" 
                     action={async (formData) => { 
                       setIsSubmitting(true);
                       const res = await submitFormAction("Online Payment", formData); 
@@ -195,8 +195,8 @@ export default function OnlinePaymentClientPage({ pageData }: { pageData: any })
                     <div className="md:col-span-2">
                       <label className="block text-sm font-semibold text-slate-700 mb-2">Amount <span className="text-red-500">*</span></label>
                       <div className="relative">
-                        <input suppressHydrationWarning type="text" name="amount" placeholder="Enter Amount" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
-                        <IndianRupee className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
+                        <input suppressHydrationWarning type="text" name="amount" placeholder="Enter Amount" className="w-full px-4 py-1.5 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 text-sm font-medium placeholder-slate-400 dynamic-icon-input" />
+                        <IndianRupee className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none transition-opacity duration-200 dynamic-input-icon" />
                       </div>
                     </div>
                   </div>
@@ -214,24 +214,24 @@ export default function OnlinePaymentClientPage({ pageData }: { pageData: any })
                     <div>
                       <label className="block text-sm font-semibold text-slate-700 mb-2">Name Of Payer <span className="text-red-500">*</span></label>
                       <div className="relative">
-                        <input suppressHydrationWarning type="text" name="payerName" placeholder="Full Name" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
-                        <User className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
+                        <input suppressHydrationWarning type="text" name="payerName" placeholder="Full Name" className="w-full px-4 py-1.5 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 text-sm font-medium placeholder-slate-400 dynamic-icon-input" />
+                        <User className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none transition-opacity duration-200 dynamic-input-icon" />
                       </div>
                     </div>
                     
                     <div>
                       <label className="block text-sm font-semibold text-slate-700 mb-2">Contact Number <span className="text-red-500">*</span></label>
                       <div className="relative">
-                        <input suppressHydrationWarning type="tel" name="contactNumber" placeholder="Mobile Number" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" pattern="[0-9]{10}" maxLength={10} minLength={10} title="Please enter a valid 10-digit mobile number" onInput={(e) => { e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/g, "").slice(0, 10); }} />
-                        <Phone className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
+                        <input suppressHydrationWarning type="tel" name="contactNumber" placeholder="Mobile Number" className="w-full px-4 py-1.5 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 text-sm font-medium placeholder-slate-400 dynamic-icon-input" pattern="[0-9]{10}" maxLength={10} minLength={10} title="Please enter a valid 10-digit mobile number" onInput={(e) => { e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/g, "").slice(0, 10); }} />
+                        <Phone className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none transition-opacity duration-200 dynamic-input-icon" />
                       </div>
                     </div>
                     
                     <div className="md:col-span-2">
                       <label className="block text-sm font-semibold text-slate-700 mb-2">Email ID <span className="text-red-500">*</span></label>
                       <div className="relative">
-                        <input suppressHydrationWarning type="email" name="email" placeholder="Email Address" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400" />
-                        <Mail className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
+                        <input suppressHydrationWarning type="email" name="email" placeholder="Email Address" className="w-full px-4 py-1.5 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 text-sm font-medium placeholder-slate-400 dynamic-icon-input" />
+                        <Mail className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none transition-opacity duration-200 dynamic-input-icon" />
                       </div>
                     </div>
                   </div>
@@ -249,8 +249,8 @@ export default function OnlinePaymentClientPage({ pageData }: { pageData: any })
                     <div className="md:col-span-2">
                       <label className="block text-sm font-semibold text-slate-700 mb-2">Address <span className="text-red-500">*</span></label>
                       <div className="relative">
-                        <textarea suppressHydrationWarning rows={3} name="address" placeholder="Complete Address" className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400 resize-none"></textarea>
-                        <Building className="w-5 h-5 text-slate-400 absolute left-4 top-4 pointer-events-none" />
+                        <textarea suppressHydrationWarning rows={3} name="address" placeholder="Complete Address" className="w-full px-4 py-2 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 text-sm font-medium placeholder-slate-400 resize-none dynamic-icon-input"></textarea>
+                        <Building className="w-5 h-5 text-slate-400 absolute left-4 top-2.5 pointer-events-none transition-opacity duration-200 dynamic-input-icon" />
                       </div>
                     </div>
 
@@ -507,47 +507,45 @@ export default function OnlinePaymentClientPage({ pageData }: { pageData: any })
                   
                   <div>
                     <div className="relative">
-                      <textarea suppressHydrationWarning rows={2} name="comments" placeholder="Any specific instructions..." className="w-full px-4 py-3.5 pl-11 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400 resize-none"></textarea>
-                      <MessageSquare className="w-5 h-5 text-slate-400 absolute left-4 top-4 pointer-events-none" />
+                      <textarea suppressHydrationWarning rows={2} name="comments" placeholder="Any specific instructions..." className="w-full px-4 py-3.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400 resize-none dynamic-icon-input"></textarea>
+                      <MessageSquare className="w-5 h-5 text-slate-400 absolute left-4 top-4 pointer-events-none transition-opacity duration-200 dynamic-input-icon" />
                     </div>
                   </div>
                 </div>
 
                 {/* Captcha & Submit */}
                 <div className="bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-md">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-                    <div>
-                      <label className="block text-sm font-semibold text-slate-700 mb-3">Security Verification <span className="text-red-500">*</span></label>
-                      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-                        <div className="flex items-center gap-3">
-                          <div className="bg-slate-800 text-white px-5 py-2.5 rounded-lg tracking-widest font-mono font-bold text-lg select-none shadow-inner border border-slate-700 w-32 text-center">
-                            {captchaCode}
-                          </div>
-                          <button suppressHydrationWarning type="button" onClick={generateCaptcha} className="text-blue-500 hover:text-blue-600 transition-colors bg-blue-50 p-2.5 rounded-lg hover:bg-blue-100">
-                            <RefreshCw className="w-5 h-5" />
-                          </button>
-                        </div>
-                        <input suppressHydrationWarning type="text" name="captcha" placeholder="Enter text" className="w-full sm:w-40 px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-slate-50 transition-all font-medium" />
+                  <label className="block text-sm font-semibold text-slate-700 mb-3">Security Verification <span className="text-red-500">*</span></label>
+                  <div className="flex items-center justify-between gap-4 flex-wrap">
+                    {/* Left group: captcha box + refresh + enter text */}
+                    <div className="flex items-center gap-2">
+                      {/* Captcha code box */}
+                      <div className="bg-slate-800 text-white px-6 py-3 rounded-lg tracking-widest font-mono font-bold text-sm select-none shadow-inner border border-slate-700 text-center whitespace-nowrap">
+                        {captchaCode}
                       </div>
-                    </div>
-                    
-                    <div className="flex justify-end pt-4 md:pt-0 border-t border-slate-100 md:border-none">
-                      <button suppressHydrationWarning 
-                        type="submit" 
-                        disabled={isSubmitting}
-                        className={`group w-full md:w-auto inline-flex items-center justify-center gap-2 md:gap-3 px-6 md:px-10 py-4 bg-[#003360] hover:bg-[#002b5c] text-white font-bold text-base md:text-lg whitespace-nowrap rounded-xl transition-all shadow-md hover:shadow-xl hover:-translate-y-1 ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
-                      >
-                        {isSubmitting ? (
-                          <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                        ) : (
-                          <>
-                            <Lock className="w-5 h-5 shrink-0 text-teal-300" />
-                            Proceed to Pay
-                            <ChevronRight className="w-5 h-5 text-teal-300 group-hover:translate-x-1 transition-transform" />
-                          </>
-                        )}
+                      {/* Refresh button */}
+                      <button suppressHydrationWarning type="button" onClick={generateCaptcha} className="text-blue-500 hover:text-blue-600 transition-colors bg-blue-50 p-2.5 rounded-lg hover:bg-blue-100 text-[16px]">
+                        <RefreshCw className="w-5 h-5" />
                       </button>
+                      {/* Enter text input */}
+                      <input suppressHydrationWarning type="text" name="captcha" placeholder="Enter text" className="w-40 px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-slate-50 transition-all font-medium text-sm" />
                     </div>
+                    {/* Proceed to Pay button */}
+                    <button suppressHydrationWarning
+                      type="submit"
+                      disabled={isSubmitting}
+                      className={`group inline-flex items-center justify-center gap-2 px-9 py-3 bg-[#003360] hover:bg-[#002b5c] text-white font-bold text-sm whitespace-nowrap rounded-lg transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5 ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
+                    >
+                      {isSubmitting ? (
+                        <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                      ) : (
+                        <>
+                          <Lock className="w-5 h-5 shrink-0 text-teal-300" />
+                          Proceed to Pay
+                          <ChevronRight className="w-5 h-5 text-teal-300 group-hover:translate-x-1 transition-transform" />
+                        </>
+                      )}
+                    </button>
                   </div>
                 </div>
               </form>

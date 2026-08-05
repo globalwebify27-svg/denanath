@@ -57,6 +57,39 @@ export default function SearchModal({ isOpen, onClose, doctors, departments }: S
         if (isMounted) setApiDepartments(mappedDepts);
         if (isMounted) setIsLoading(false);
 
+        // 1.5 Fetch doctors from local DB first to ensure all doctors are available
+        try {
+          const dbRes = await fetch('/api/doctors');
+          if (dbRes.ok) {
+            const dbDocs = await dbRes.json();
+            if (Array.isArray(dbDocs)) {
+              const mappedDbDocs: Doctor[] = dbDocs.map((doc: any, dIdx: number) => ({
+                id: String(doc.dmhDoctorId || doc.id || `dbdoc-${dIdx}`),
+                name: doc.name || "Doctor",
+                specialtyId: String(doc.dmhSpecialityId || "general"),
+                specialtyName: doc.specialty || "General",
+                qualifications: doc.qualifications || "MBBS, MD",
+                experience: doc.experience || 15,
+                rating: 4.8,
+                availableDays: ["Monday", "Wednesday", "Friday"],
+                timings: doc.timings || "10:00 AM - 02:00 PM",
+                image: doc.image || "https://images.unsplash.com/photo-1622253692010-333f2da6031d?q=80&w=300&auto=format&fit=crop",
+                fee: 1000,
+                bio: "Experienced specialist providing comprehensive clinical care and personalized treatment protocols."
+              }));
+              if (isMounted) {
+                setApiDoctors(prev => {
+                  const existingIds = new Set(prev.map(p => p.id));
+                  const newDocs = mappedDbDocs.filter(d => !existingIds.has(d.id));
+                  return [...prev, ...newDocs];
+                });
+              }
+            }
+          }
+        } catch (e) {
+          console.warn("Failed to fetch doctors from local DB:", e);
+        }
+
         // 2. Fetch Doctors progressively from DMH API
         mappedDepts.slice(0, 25).forEach(async (dept) => {
           try {

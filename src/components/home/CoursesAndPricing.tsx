@@ -1,9 +1,8 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Link from "next/link";
 import { ChevronRight, ArrowRight, Activity, FileText, Award, Users } from "lucide-react";
-import { getHomeCourses } from "@/app/actions/get-home-courses";
 
 export const defaultCoursesPricingData = {
   pricingCards: [
@@ -44,40 +43,21 @@ export const defaultCoursesPricingData = {
   }
 };
 
-export default function CoursesAndPricing({ data = defaultCoursesPricingData }: { data?: any }) {
+export default function CoursesAndPricing({ 
+  data = defaultCoursesPricingData,
+  initialLeftCourses = [],
+  initialRightCourses = []
+}: { 
+  data?: any,
+  initialLeftCourses?: any[],
+  initialRightCourses?: any[]
+}) {
   if (!data || Object.keys(data).length === 0) data = defaultCoursesPricingData;
   const pricingCards = data.pricingCards || defaultCoursesPricingData.pricingCards;
   const educationHeader = data.educationHeader || defaultCoursesPricingData.educationHeader;
-  const [leftCourses, setLeftCourses] = useState<any[]>([
-    { title: "Practice Course for Practical Exam - Emergency Medicine", link: "#" },
-    { title: "Breastfeeding Masterclass 2nd August 2026", link: "#" },
-    { title: "AIHA from IH Lab to Clinical Practice 7th August 2026", link: "#" },
-    { title: "Joint Replacement : Core Skills In Knee Replacement Surgery 18th July 2026", link: "#" },
-    { title: "Orthopaedics : Clubfoot Course 26_July_2026", link: "#" },
-    { title: "Critical Edge - Comprehensive ICU Exam Preparatory Course_May 2026 to Oct 2026", link: "#" },
-    { title: "Neuro Radiology Fellowship", link: "/neuro-radiology-fellowship" },
-    { title: "Oncology Imaging Fellowship", link: "#" },
-    { title: "Fellowship in Musculoskeletal Imaging", link: "#" }
-  ]);
-
-  const [rightCourses, setRightCourses] = useState<any[]>([
-    { title: "Senior Registrar Vacancy Pathology", link: "https://www.dmhospital.org/cms/Media/file/Senior_Registrar_Vacancy_Pathology.pdf" },
-    { title: "Autism Coach Brochure", link: "https://www.dmhospital.org/cms/Media/file/Autism-Coach-Brochure-2025.pdf" },
-    { title: "Befriending Parkinsons Program", link: "https://www.dmhospital.org/cms/Media/file/befriending-parkinsons.pdf" },
-    { title: "Yoga Classes Schedule", link: "" },
-    { title: "Eye Donation form", link: "https://www.dmhospital.org/cms/Media/file/eye_donation_form.pdf" },
-    { title: "Garbha-Swasthya Helpline", link: "#" },
-    { title: "Organ Donation & Transplantation", link: "#" }
-  ]);
-
-  useEffect(() => {
-    getHomeCourses().then((data) => {
-      if (data) {
-        setLeftCourses(data.leftCourses);
-        setRightCourses(data.rightCourses);
-      }
-    }).catch(console.error);
-  }, []);
+  
+  const leftCourses = initialLeftCourses;
+  const rightCourses = initialRightCourses;
 
   return (
     <section className="relative w-full py-[20px] md:py-10 bg-white border-t border-slate-100 overflow-hidden z-20">

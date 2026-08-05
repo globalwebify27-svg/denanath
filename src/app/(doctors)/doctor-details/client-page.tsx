@@ -162,14 +162,14 @@ export default function DoctorDetailsPage() {
               </div>
 
               {/* Filters Section */}
-              <div className="bg-slate-50 rounded-2xl p-6 mb-8 border border-slate-200">
+              <div className="bg-slate-50 rounded-2xl py-4 px-6 sm:px-10 mb-8 border border-slate-200">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {/* Specialty Filter */}
                   <div>
                     <label className="block text-sm font-bold text-slate-700 mb-2">Filter By Specialty:</label>
                     <div className="relative">
                       <select 
-                        className="w-full appearance-none bg-white border border-slate-300 rounded-lg py-3 px-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-[#007a87] focus:border-transparent transition-shadow cursor-pointer"
+                        className="w-full appearance-none bg-white border border-slate-300 rounded-lg h-[46px] px-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-[#007a87] focus:border-transparent transition-shadow cursor-pointer"
                         value={selectedSpecialty}
                         onChange={(e) => setSelectedSpecialty(e.target.value)}
                       >
@@ -194,7 +194,7 @@ export default function DoctorDetailsPage() {
                       <input 
                         type="text" 
                         placeholder="Doctor Name" 
-                        className="w-full bg-white border border-slate-300 rounded-lg py-3 pl-11 pr-4 text-slate-700 font-medium placeholder:font-normal placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#007a87] focus:border-transparent transition-shadow"
+                        className="w-full bg-white border border-slate-300 rounded-lg h-[46px] pl-11 pr-4 text-slate-700 font-medium placeholder:font-normal placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#007a87] focus:border-transparent transition-shadow"
                         value={searchName}
                         onChange={(e) => setSearchName(e.target.value)}
                       />

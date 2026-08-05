@@ -211,7 +211,7 @@ export default function DoctorDetailsPage() {
               </div>
 
               {/* Filters Section */}
-              <div className="bg-slate-50 rounded-2xl p-6 mb-8 border border-slate-200">
+              <div className="bg-slate-50 rounded-2xl py-4 px-6 sm:px-10 mb-8 border border-slate-200">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {/* Specialty Filter */}
                   <div>
@@ -223,7 +223,7 @@ export default function DoctorDetailsPage() {
                         placeholder="--Select--"
                         value={selectedSpecialty === "--Select--" ? "" : selectedSpecialty}
                         onChange={(val: string) => setSelectedSpecialty(val || "--Select--")}
-                        className="!text-sm"
+                        className="!text-sm !h-[46px]"
                       />
                     </div>
                   </div>
@@ -239,7 +239,7 @@ export default function DoctorDetailsPage() {
                         suppressHydrationWarning={true}
                         type="text" 
                         placeholder="Doctor Name" 
-                        className="w-full bg-white border border-slate-300 rounded-lg py-3 pl-11 pr-4 text-slate-700 font-medium placeholder:font-normal placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#007a87] focus:border-transparent transition-shadow"
+                        className="w-full bg-white border border-slate-300 rounded-lg h-[46px] pl-11 pr-4 text-slate-700 font-medium placeholder:font-normal placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#007a87] focus:border-transparent transition-shadow"
                         value={searchName}
                         onChange={(e) => setSearchName(e.target.value)}
                       />

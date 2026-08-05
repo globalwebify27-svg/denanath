@@ -154,8 +154,8 @@ export default function ContactUsClientPage({ pageData }: { pageData: any }) {
                             9F2X
                           </div>
                           <div className="flex flex-col gap-1">
-                            <button type="button" className="leading-[28px] font-bold text-[#007a87] hover:underline text-left whitespace-nowrap" style={{ fontSize: '16px' }}>Change the CAPTCHA code</button>
-                            <button type="button" className="leading-[28px] font-bold text-[#007a87] hover:underline text-left whitespace-nowrap" style={{ fontSize: '16px' }}>Speak the CAPTCHA code</button>
+                            <button type="button" className="leading-[28px] font-bold text-[#007a87] hover:underline text-left whitespace-nowrap text-[16px]" style={{ fontSize: '16px' }}>Change the CAPTCHA code</button>
+                            <button type="button" className="leading-[28px] font-bold text-[#007a87] hover:underline text-left whitespace-nowrap text-[16px]" style={{ fontSize: '16px' }}>Speak the CAPTCHA code</button>
                           </div>
                         </div>
                         <input 
