@@ -6,8 +6,9 @@ import {
   Globe, FlaskConical, Heart, Home as HomeIcon, ShieldAlert, ChevronRight, ArrowRight, Microscope, Building2, GraduationCap, Users, BookOpen, Award 
 } from "lucide-react";
 
-import * as Icons from 'lucide-react';
-
+const iconMap: Record<string, React.ElementType> = {
+  Globe, FlaskConical, Heart, HomeIcon, ShieldAlert, ChevronRight, ArrowRight, Microscope, Building2, GraduationCap, Users, BookOpen, Award
+};
 export const defaultClinicalHubData = {
   tagline: "Clinical Excellence",
   title: 'Our Specialized <span class="font-semibold">Clinical Hub</span>',
@@ -276,7 +277,7 @@ export default function ClinicalHub({ data = defaultClinicalHubData }: { data?: 
   const hubDetails = data.hubDetails || defaultClinicalHubData.hubDetails;
 
   const currentHub = hubDetails[activeHub];
-  const ShowcaseIcon = (Icons as any)[currentHub.iconString] || Icons.Globe;
+  const ShowcaseIcon = iconMap[currentHub.iconString] || Globe;
   const theme = currentHub.colorTheme;
 
   return (
@@ -308,7 +309,7 @@ export default function ClinicalHub({ data = defaultClinicalHubData }: { data?: 
           {/* Left Navigation Tabs */}
           <div className="lg:col-span-4 flex flex-col gap-2 justify-center">
             {hubItems.map((hub: any, idx: number) => {
-              const HubIcon = (Icons as any)[hub.iconString] || Icons.Globe;
+              const HubIcon = iconMap[hub.iconString] || Globe;
               const isActive = activeHub === idx;
               const isHovered = hoveredHub === idx;
               const themeColor = hub.themeColor;
