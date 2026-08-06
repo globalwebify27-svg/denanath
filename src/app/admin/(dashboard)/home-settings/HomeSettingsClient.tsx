@@ -14,8 +14,41 @@ export default function HomeSettingsClient({
     home_hero: true // Default open the first one, others can be opened without closing this
   });
   
-  // Global state for all dynamic forms
-  const [formData, setFormData] = useState<Record<string, any>>(settingsData);
+  // Helper to remove HTML tags for non-rich fields
+  const deepCleanHtml = (obj: any, keyName = ""): any => {
+    if (typeof obj === "string") {
+      const isRich = ['overview', 'content', 'details'].includes(keyName.toLowerCase());
+      if (!isRich) {
+        let v = obj.trim();
+        v = v.replace(/<\/(p|div|h[1-6]|li)>\s*<(p|div|h[1-6]|li)\b[^>]*>/gi, '\n');
+        v = v.replace(/<br\s*\/?>/gi, '\n');
+        v = v.replace(/<\/?([a-z][a-z0-9]*)\b[^>]*>/gi, '');
+        v = v.replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&');
+        return v.trim();
+      }
+      return obj;
+    }
+    if (Array.isArray(obj)) {
+      return obj.map((item) => deepCleanHtml(item, keyName));
+    }
+    if (typeof obj === "object" && obj !== null) {
+      const newObj: any = {};
+      for (const k in obj) {
+        newObj[k] = deepCleanHtml(obj[k], k);
+      }
+      return newObj;
+    }
+    return obj;
+  };
+
+  // Global state for all dynamic forms, cleaned on load
+  const [formData, setFormData] = useState<Record<string, any>>(() => {
+    const cleaned: Record<string, any> = {};
+    for (const key in settingsData) {
+      cleaned[key] = deepCleanHtml(settingsData[key], key);
+    }
+    return cleaned;
+  });
   const [isSaving, setIsSaving] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
@@ -32,7 +65,7 @@ export default function HomeSettingsClient({
       .filter((s) => s.id !== "seo")
       .map((section) => ({
         key: section.id,
-        value: JSON.stringify(formData[section.id] || {})
+        value: JSON.stringify(deepCleanHtml(formData[section.id] || {}, section.id))
       }));
 
     try {

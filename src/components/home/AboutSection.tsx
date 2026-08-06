@@ -61,8 +61,9 @@ export default function AboutSection({ data = defaultAboutData }: { data?: any }
             </div>
             
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-light text-slate-900 tracking-tight leading-tight mb-6">
-              {data.title}<br/>
-              <span className="font-semibold text-[#002b5c]">{data.subtitle}</span>
+              <span dangerouslySetInnerHTML={{ __html: data.title || '' }} className="[&>p]:inline" />
+              <br/>
+              <span className="font-semibold text-[#002b5c] [&>p]:inline" dangerouslySetInnerHTML={{ __html: data.subtitle || '' }} />
             </h2>
             
             <div 

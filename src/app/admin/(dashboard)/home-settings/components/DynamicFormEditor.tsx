@@ -160,7 +160,7 @@ export default function DynamicFormEditor({
       const isIconStringField = isString && String(key).toLowerCase().includes('iconstring');
       // Use textarea if the string is long or contains HTML, but exclude title field
       const useTextArea = isString && !isTitleField && (value.length > 50 || value.includes("<"));
-      const isRichTextField = isString && ['description', 'overview', 'content', 'details', 'title', 'text'].includes(String(key).toLowerCase());
+      const isRichTextField = isString && ['overview', 'content', 'details'].includes(String(key).toLowerCase());
       const isColorField = isString && ['bgcolor', 'hovercolor', 'backgroundcolor', 'themecolor', 'color', 'theme', 'bgcolorfrom', 'bgcolorto'].includes(String(key).toLowerCase());
 
       const commonIcons = [

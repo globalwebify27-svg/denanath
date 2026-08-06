@@ -13,6 +13,9 @@ const nextConfig: NextConfig = {
     serverActions: {
       bodySizeLimit: '10mb',
     },
+    // Limit workers to prevent Prisma from spawning too many instances and causing OOM on 8GB machine
+    cpus: 1,
+    memoryBasedWorkersCount: true,
   },
   outputFileTracingExcludes: {
     '*': [
@@ -40,6 +43,12 @@ const withSerwist = withSerwistInit({
   swSrc: "src/app/sw.ts",
   swDest: "public/sw.js",
   disable: process.env.NODE_ENV === "development",
+  // Prevent memory exhaustion during build by excluding the massive public images/media from precache manifest
+  exclude: [
+    /\.(png|jpe?g|svg|gif|webp)$/i,
+    /\.mp4$/i,
+    /_next\/static\/media\//,
+  ],
 });
 
 export default withSerwist(nextConfig);

@@ -4,6 +4,14 @@ import { prisma } from '@/lib/prisma';
 export async function GET() {
   try {
     const pages = await prisma.dynamicPage.findMany({
+      select: {
+        id: true,
+        title: true,
+        slug: true,
+        navbarMenu: true,
+        status: true,
+        createdAt: true,
+      },
       orderBy: { createdAt: 'desc' },
     });
     return NextResponse.json(pages);
