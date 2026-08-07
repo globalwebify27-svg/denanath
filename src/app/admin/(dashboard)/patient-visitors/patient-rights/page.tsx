@@ -1,3 +1,4 @@
+import NavigationMenuToggle from "@/components/NavigationMenuToggle";
 import { Save, HeartPulse , Search } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
@@ -7,15 +8,14 @@ import PatientRightsClientForm from "./client-form";
 export const dynamic = "force-dynamic";
 
 export default async function AdminPatientRightsPage() {
-  const setting = await prisma.siteSetting.findUnique({ where: { key: 'page_patient_rights' } });
+const setting = await prisma.siteSetting.findUnique({ where: { key: 'page_patient_rights' } });
 
   let patientRightsData: any = {};
   try { if (setting) patientRightsData = JSON.parse(setting.value); } catch (e) {}
 
   async function savePatientRightsData(formData: FormData) {
     "use server";
-    
-    const rawJson = formData.get("patientRightsJson") as string;
+const rawJson = formData.get("patientRightsJson") as string;
     
     try {
       const parsed = JSON.parse(rawJson);
@@ -42,11 +42,12 @@ export default async function AdminPatientRightsPage() {
         <div className="absolute top-0 left-0 w-2 h-full bg-gradient-to-b from-[#002b5c] to-[#007a87]"></div>
         <div className="z-10 relative">
           <h1 className="text-[32px] md:text-[40px] font-black text-[#002b5c] tracking-tight leading-tight mb-2 flex items-center gap-3">
-            Patient Rights
+            Patient & Visitors: Patient Rights & Responsibilities
           </h1>
           <p className="text-[15px] font-medium text-slate-500 max-w-xl leading-relaxed">
             Manage the Patient Rights & Responsibilities document image.
           </p>
+            <NavigationMenuToggle href="/patient-rights" />
         </div>
         <div className="z-10 shrink-0 mt-4 lg:mt-0">
           <SubmitButton text="Save Changes" loadingText="Saving..." />

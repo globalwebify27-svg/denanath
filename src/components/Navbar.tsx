@@ -7,7 +7,7 @@ import Link from "next/link";
 import { applyOfflineTranslation } from "@/lib/offlineTranslate";
 import { baseNavLinks } from "@/lib/navConfig";
 
-export default function Navbar() {
+export default function Navbar({ topHeaderSettings, headerSettings }: { topHeaderSettings?: any, headerSettings?: any }) {
   const pathname = usePathname();
   const router = useRouter();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -156,17 +156,41 @@ export default function Navbar() {
 
   // baseNavLinks is now imported from @/lib/navConfig
 
-  const navLinks = baseNavLinks.map(link => {
-    const pagesForMenu = dynamicLinks.filter(p => p.navbarMenu === link.name);
-    if (pagesForMenu.length > 0) {
-      const newDropdown = link.dropdown ? [...link.dropdown] : [];
-      pagesForMenu.forEach(p => {
-        newDropdown.push({ name: p.title, href: `/${p.slug}` });
-      });
-      return { ...link, dropdown: newDropdown };
-    }
-    return link;
-  });
+  // Inject Main Header Menu Pages
+  let rawNavLinks = [...(headerSettings?.menus || baseNavLinks)];
+  const mainHeaderPages = dynamicLinks.filter((p: any) => p.navbarMenu === "Main Header" && p.status);
+  if (mainHeaderPages.length > 0) {
+    const injected = mainHeaderPages.map((p: any) => ({
+      name: p.title,
+      href: `/${p.slug}`,
+      isActive: true,
+      dropdown: []
+    }));
+    rawNavLinks = [...rawNavLinks, ...injected];
+  }
+
+  const navLinks = rawNavLinks
+    .filter((link: any) => link.isActive !== false)
+    .map((link: any) => {
+      const pagesForMenu = dynamicLinks.filter(p => p.navbarMenu === link.name && p.status);
+      const filteredDropdown = link.dropdown ? link.dropdown.filter((subLink: any) => subLink.isActive !== false) : [];
+      
+      let newDropdown = [...filteredDropdown];
+      if (pagesForMenu.length > 0) {
+        pagesForMenu.forEach(p => {
+          newDropdown.push({ name: p.title, href: `/${p.slug}`, isActive: true });
+        });
+      }
+      
+      let updatedHref = link.href;
+      // If this menu has a dropdown, ensure the parent href points to the first ACTIVE child.
+      // This prevents the parent link from redirecting to a 404 if the original first child is inactive.
+      if (newDropdown.length > 0) {
+         updatedHref = newDropdown[0].href;
+      }
+      
+      return { ...link, href: updatedHref, dropdown: newDropdown.length > 0 ? newDropdown : undefined };
+    });
 
   const toggleMobileDropdown = (name: string) => {
     if (expandedMobileMenu === name) {
@@ -187,36 +211,62 @@ export default function Navbar() {
       `}} />
       <div id="google_translate_element" style={{ position: 'absolute', opacity: 0, zIndex: -1, width: 0, height: 0, overflow: 'hidden' }}></div>
       {/* Tier 1: Teal Utility Bar */}
-      <div className="hidden xl:block w-full bg-[#007a87] text-white text-[8px] 2xl:text-[11px] py-1.5 px-1 2xl:px-4 font-medium border-b border-teal-600/30">
+      {topHeaderSettings?.isActive !== false && (
+        <div className="hidden xl:block w-full bg-[#007a87] text-white text-[8px] 2xl:text-[11px] py-1.5 px-1 2xl:px-4 font-medium border-b border-teal-600/30">
         <div className="max-w-full 2xl:max-w-[96%] mx-auto px-1 flex justify-between items-center">
           <div className="flex items-center gap-0.5 2xl:gap-4 text-white/90">
-            <Link href="/emergency" className="hover:text-red-300 transition-colors font-bold text-red-400">Emergency</Link>
-            <span className="opacity-30">|</span>
-            <Link href="/blood-bank" className="hover:text-white transition-colors">Blood&nbsp;&nbsp;Bank</Link>
-            <span className="opacity-30">|</span>
-            <Link href="/pharmacy" className="hover:text-white transition-colors">Pharmacy</Link>
-            <span className="opacity-30">|</span>
-            <Link href="/ambulance" className="hover:text-red-300 transition-colors font-bold text-red-400">Ambulance</Link>
+            {(() => {
+              let topHeaderMenus = [...(topHeaderSettings?.menus || [])];
+              const topHeaderPages = dynamicLinks.filter((p: any) => p.navbarMenu === "Top Header" && p.status);
+              if (topHeaderPages.length > 0) {
+                const injected = topHeaderPages.map((p: any) => ({
+                  name: p.title,
+                  href: `/${p.slug}`,
+                  isActive: true
+                }));
+                topHeaderMenus = [...topHeaderMenus, ...injected];
+              }
+              
+              return topHeaderMenus
+                 .filter((link: any) => link.isActive !== false)
+                 .map((link: any) => ({
+                   text: link.name,
+                   link: link.href || "#",
+                   cls: "hover:text-white transition-colors font-bold",
+                   textColor: link.textColor
+                 }));
+            })().filter((item: any) => item && item.text).map((item: any, idx: number, arr: any[]) => (
+              <React.Fragment key={idx}>
+                <Link 
+                  href={item.link} 
+                  className={item.cls}
+                  style={item.textColor ? { color: item.textColor } : {}}
+                >
+                  {item.text}
+                </Link>
+                {idx < arr.length - 1 && <span className="opacity-30">|</span>}
+              </React.Fragment>
+            ))}
           </div>
 
           <div className="flex items-center gap-0.5 2xl:gap-4 font-bold tracking-wide">
-            <a 
-              href="https://wa.me/912040151515" 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="flex items-center gap-1.5 hover:text-green-300 transition-colors"
-            >
-              <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
-                <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.73-1.455L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.965C16.59 1.977 14.113.953 11.487.953c-5.432 0-9.855 4.37-9.859 9.802-.001 1.77.475 3.5 1.378 5.011L2.01 21.84l6.163-1.603z"/>
-              </svg>
-              <span>WhatsApp Us (24/7)</span>
-            </a>
-            <span className="opacity-30">|</span>
-            <a href="tel:+912040151000" className="flex items-center gap-1 hover:text-teal-200 transition-colors">
-              <Phone className="w-3 h-3" />
-              <span>+91 20 4015 1000 (24/7)</span>
-            </a>
-            <span className="opacity-30">|</span>
+            {/* Phone Numbers */}
+            {(topHeaderSettings?.phoneNumbers || []).filter((ph: any) => ph.isActive !== false && ph.text).length > 0 && (
+              <div className="flex items-center gap-2">
+            {(topHeaderSettings?.phoneNumbers || [])
+              .filter((ph: any) => ph.isActive !== false && ph.text)
+              .map((ph: any, idx: number, arr: any[]) => (
+              <React.Fragment key={`extra-ph-${idx}`}>
+                <a href={ph.number ? `tel:${ph.number}` : "#"} className="flex items-center gap-1 hover:text-teal-200 transition-colors">
+                  <Phone className="w-3 h-3" />
+                  <span>{ph.text}</span>
+                </a>
+                {idx < arr.length - 1 && <span className="opacity-30">|</span>}
+              </React.Fragment>
+            ))}
+              </div>
+            )}
+
             <div 
               className="relative group flex items-center gap-1.5 cursor-pointer hover:text-white transition-colors py-1 px-2"
               onClick={(e) => { e.stopPropagation(); setIsLangOpen(!isLangOpen); }}
@@ -239,44 +289,57 @@ export default function Navbar() {
                 </div>
               </div>
             </div>
-            <span className="opacity-30">|</span>
-            <div className="flex items-center gap-1 2xl:gap-2">
-              <a 
-                href="https://play.google.com/store/apps/details?id=org.dmhospital.app&hl=en" 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="flex items-center gap-1 bg-black hover:bg-slate-900 border border-slate-700/50 px-1 py-0.5 rounded transition-all hover:scale-105"
-              >
-                <svg viewBox="0 0 1024 1024" className="w-3.5 h-3.5">
-                  <path fill="#00E676" d="M104.5 125.1v773.8c0 14.3 8.3 26.6 20.4 32.5l398.8-419.4L104.5 125.1z" />
-                  <path fill="#FF3D00" d="M523.7 512l153.9-161.8L160.7 53.6c-17.7-10.2-38.9-8-56.2 3.8l419.2 454.6z" />
-                  <path fill="#FFC107" d="M677.6 350.2l198.5 114.6c24 13.9 24 48.7 0 62.6L677.6 642l-153.9-130 153.9-161.8z" />
-                  <path fill="#00B0FF" d="M523.7 512L104.5 898.9c17.3 11.8 38.5 14 56.2 3.8L677.6 642 523.7 512z" />
-                </svg>
-                <div className="flex flex-col items-start leading-[1] text-left mt-0.5">
-                  <span className="text-[5px] text-slate-300 font-medium uppercase tracking-wider">Get it on</span>
-                  <span className="text-[10px] text-white font-semibold">Google Play</span>
-                </div>
-              </a>
 
-              <a 
-                href="https://apps.apple.com/in/app/deenanath-mangeshkar-hospital/id1187525263" 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="flex items-center gap-1 bg-black hover:bg-slate-900 border border-slate-700/50 px-1 py-0.5 rounded transition-all hover:scale-105"
-              >
-                <svg viewBox="0 0 384 512" className="w-3.5 h-3.5 fill-white">
-                  <path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"></path>
-                </svg>
-                <div className="flex flex-col items-start leading-[1] text-left mt-0.5">
-                  <span className="text-[5px] text-slate-300 font-medium">Download on the</span>
-                  <span className="text-[10px] text-white font-semibold">App Store</span>
-                </div>
-              </a>
+            {/* Buttons */}
+            <div className="flex items-center gap-1 2xl:gap-2">
+              {(topHeaderSettings?.buttons || [])
+                .filter((btn: any) => btn.isActive !== false && btn.text)
+                .map((btn: any, idx: number) => (
+                <a 
+                  key={`extra-btn-${idx}`}
+                  href={btn.link || "#"} 
+                  target={btn.icon ? "_blank" : undefined}
+                  rel={btn.icon ? "noopener noreferrer" : undefined}
+                  className={`flex items-center gap-1 border px-2.5 py-0.5 rounded transition-all shadow-sm ${
+                     btn.icon ? 'bg-black hover:bg-slate-900 border-slate-700/50 hover:scale-105' : 'bg-[#d9232d] hover:bg-red-700 text-white border-red-800/50 font-semibold uppercase tracking-wide ml-1'
+                  }`}
+                  style={!btn.icon ? { backgroundColor: btn.bgColor || "#d9232d" } : {}}
+                  onMouseOver={(e) => {
+                     if (!btn.icon && btn.hoverColor) e.currentTarget.style.backgroundColor = btn.hoverColor;
+                  }}
+                  onMouseOut={(e) => {
+                     if (!btn.icon) e.currentTarget.style.backgroundColor = btn.bgColor || "#d9232d";
+                  }}
+                >
+                  {btn.icon === "playstore" ? (
+                    <svg viewBox="0 0 1024 1024" className="w-3.5 h-3.5">
+                      <path fill="#00E676" d="M104.5 125.1v773.8c0 14.3 8.3 26.6 20.4 32.5l398.8-419.4L104.5 125.1z" />
+                      <path fill="#FF3D00" d="M523.7 512l153.9-161.8L160.7 53.6c-17.7-10.2-38.9-8-56.2 3.8l419.2 454.6z" />
+                      <path fill="#FFC107" d="M677.6 350.2l198.5 114.6c24 13.9 24 48.7 0 62.6L677.6 642l-153.9-130 153.9-161.8z" />
+                      <path fill="#00B0FF" d="M523.7 512L104.5 898.9c17.3 11.8 38.5 14 56.2 3.8L677.6 642 523.7 512z" />
+                    </svg>
+                  ) : btn.icon === "appstore" ? (
+                    <svg viewBox="0 0 1024 1024" className="w-3.5 h-3.5">
+                      <path fill="#fff" d="M789.2 642.4c-0.4 46 39.4 61.2 39.8 61.4-0.4 0.8-6.2 21.2-20.6 42.4-12.8 19-26.2 38-47.2 38.4-21 0.4-27.4-12.4-51.6-12.4s-31.4 12-51.2 12.8c-20.6 0.8-36.2-20.4-49.4-39.2-30.8-44.6-53.8-126-22.2-181 15.6-27.2 43.6-44.4 74-44.8 20.2-0.4 39.4 13.6 52 13.6 12.6 0 35.8-16.6 60.2-14.2 10.2 0.4 39 4.2 57.6 31.4-1.6 1-34.4 20-34.4 59.8zM651.8 221c11.6-14 19.4-33.6 17.2-53.2-16.6 0.6-37.4 11-49.4 25.2-9.6 11.2-18.8 31.2-16.2 50.4 18.6 1.4 36.8-8.4 48.4-22.4z" />
+                    </svg>
+                  ) : btn.icon ? (
+                    <img src={btn.icon} alt="" className="w-3.5 h-3.5 object-contain" />
+                  ) : null}
+                  {btn.icon ? (
+                    <div className="flex flex-col items-start leading-[1] text-left mt-0.5">
+                      <span className="text-[5px] text-slate-300 font-medium uppercase tracking-wider">{btn.icon === "playstore" ? "Get it on" : "Download on the"}</span>
+                      <span className="text-[10px] text-white font-semibold">{btn.text}</span>
+                    </div>
+                  ) : (
+                    btn.text
+                  )}
+                </a>
+              ))}
             </div>
           </div>
         </div>
       </div>
+      )}
 
       {/* Main White Header */}
       <nav
@@ -291,47 +354,53 @@ export default function Navbar() {
             <div className="flex items-center shrink-0">
               <Link href="/" className="flex items-center group focus:outline-none shrink-0">
                 <div className="relative flex items-center justify-start w-[180px] sm:w-[230px] xl:w-[280px] 2xl:w-[380px] h-[40px] sm:h-[55px] xl:h-[65px] shrink-0 transition-all">
-                  <img
-                    src="/images/Untitled design11.png"
-                    alt="DMH Logo"
-                    className="w-full h-full object-contain mix-blend-multiply"
-                  />
+                  {(headerSettings?.logo !== "") && (
+                    <img
+                      src={headerSettings?.logo || "/images/Untitled design11.png"}
+                      alt="DMH Logo"
+                      className="w-full h-full object-contain mix-blend-multiply"
+                    />
+                  )}
                 </div>
               </Link>
 
               {/* Desktop 25 Years Image (Snug, Equal Spacing) */}
-              <div className="hidden xl:flex items-center justify-center shrink-0 px-0.5 xl:px-1 2xl:px-1.5 -ml-1 xl:-ml-2 2xl:-ml-3 mr-0.5 xl:mr-1">
-                <div className="relative flex items-center justify-center w-[110px] 2xl:w-[150px] h-[45px] 2xl:h-[55px] shrink-0 transition-all">
-                  <img
-                    src="/images/ChatGPT Image Jul 27, 2026, 05_05_55 PM (1)_transparent.png"
-                    alt="25 Years Image"
-                    className="w-full h-full object-contain"
-                  />
+              {(headerSettings?.yearsImage !== "") && (
+                <div className="hidden xl:flex items-center justify-center shrink-0 px-0.5 xl:px-1 2xl:px-1.5 -ml-1 xl:-ml-2 2xl:-ml-3 mr-0.5 xl:mr-1">
+                  <div className="relative flex items-center justify-center w-[110px] 2xl:w-[150px] h-[45px] 2xl:h-[55px] shrink-0 transition-all">
+                    <img
+                      src={headerSettings?.yearsImage || "/images/ChatGPT Image Jul 27, 2026, 05_05_55 PM (1)_transparent.png"}
+                      alt="Years Image"
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
 
             {/* Mobile 25 Years Image (Centered between logo and triggers) */}
             <div className="flex xl:hidden flex-1 justify-center items-center px-2">
-              <div className="relative flex items-center justify-center w-[70px] sm:w-[100px] h-[30px] sm:h-[45px] shrink-0 transition-all">
-                <img
-                  src="/images/ChatGPT Image Jul 27, 2026, 05_05_55 PM (1)_transparent.png"
-                  alt="25 Years Image"
-                  className="w-full h-full object-contain"
-                />
-              </div>
+              {(headerSettings?.yearsImage !== "") && (
+                <div className="relative flex items-center justify-center w-[70px] sm:w-[100px] h-[30px] sm:h-[45px] shrink-0 transition-all">
+                  <img
+                    src={headerSettings?.yearsImage || "/images/ChatGPT Image Jul 27, 2026, 05_05_55 PM (1)_transparent.png"}
+                    alt="Years Image"
+                    className="w-full h-full object-contain"
+                  />
+                </div>
+              )}
             </div>
 
             {/* Desktop Navigation Links */}
             <div className="hidden xl:flex items-center justify-end flex-1 gap-1 xl:gap-1.5 2xl:gap-3 transition-all whitespace-nowrap">
-              {navLinks.map((link, idx) => (
+              {navLinks.map((link: any, idx: number) => (
                 <div key={idx} className="relative group py-2">
                   <Link 
-                    href={link.href} 
+                    href={link.href || "#"} 
                     className="text-[8.5px] xl:text-[9.5px] 2xl:text-[11.5px] leading-[18px] font-bold text-slate-700 hover:text-[#007a87] uppercase tracking-wider transition-colors flex items-center gap-0.5 whitespace-nowrap px-0.5 2xl:px-1"
                   >
-                    <span>{link.name}</span>
-                    {link.dropdown && <ChevronDown className="w-2.5 h-2.5 2xl:w-3 2xl:h-3 opacity-60 group-hover:rotate-180 transition-transform shrink-0" />}
+                    <span>{link.name || "Menu Item"}</span>
+                    {link.dropdown && link.dropdown.length > 0 && <ChevronDown className="w-2.5 h-2.5 2xl:w-3 2xl:h-3 opacity-60 group-hover:rotate-180 transition-transform shrink-0" />}
                   </Link>
 
                   {/* Dropdown Box */}
@@ -340,14 +409,15 @@ export default function Navbar() {
                       idx > 4 ? "right-0" : "left-0"
                     }`}>
                       <div className="bg-white rounded-lg shadow-xl border border-slate-100 py-1.5 overflow-hidden">
-                        {link.dropdown.map((subLink, sIdx) => (
-                          <Link
-                            key={sIdx}
-                            href={subLink.href}
+                        {link.dropdown.map((subLink: any, sIdx: number) => (
+                          <li key={sIdx} className="w-full list-none">
+                            <Link key={sIdx}
+                            href={subLink.href || "#"}
                             className="block px-4 py-2 text-[13px] 2xl:text-[14px] font-semibold text-slate-600 hover:bg-slate-50 hover:text-[#007a87] border-b border-slate-50 last:border-0 transition-colors whitespace-normal"
                           >
-                            {subLink.name}
+                            {subLink.name || "Sub Menu"}
                           </Link>
+                          </li>
                         ))}
                       </div>
                     </div>
@@ -452,9 +522,10 @@ export default function Navbar() {
             mobileMenuOpen ? "max-h-[85vh] opacity-100 py-4" : "max-h-0 opacity-0 py-0 pointer-events-none"
           }`}
         >
-          <div className="px-4 space-y-1">
-            {navLinks.map((link, idx) => (
-              <div key={idx} className="border-b border-slate-50 last:border-0 pb-1">
+          <div className="flex-grow overflow-y-auto bg-slate-50 py-4 pb-24 h-full relative" style={{ WebkitOverflowScrolling: 'touch' }}>
+            <div className="flex flex-col">
+              {navLinks.map((link: any, idx: number) => (
+                <div key={idx} className="flex flex-col border-b border-slate-200/60 last:border-0 relative">
                 {link.dropdown ? (
                   <>
                     <button
@@ -474,7 +545,7 @@ export default function Navbar() {
                         expandedMobileMenu === link.name ? "max-h-96 opacity-100 mt-1 mb-2" : "max-h-0 opacity-0"
                       }`}
                     >
-                      {link.dropdown.map((subLink, sIdx) => (
+                      {link.dropdown.map((subLink: any, sIdx: number) => (
                         <Link
                           key={sIdx}
                           href={subLink.href}
@@ -529,15 +600,16 @@ export default function Navbar() {
               </div>
 
               <a 
-                href="https://wa.me/912040151515" 
+                href={topHeaderSettings?.whatsappNumber ? `https://wa.me/${topHeaderSettings.whatsappNumber}` : "https://wa.me/912040151515"} 
                 target="_blank" 
                 rel="noopener noreferrer" 
                 className="flex items-center justify-center gap-2 py-2 px-4 rounded-lg bg-green-50 hover:bg-green-100 text-green-700 text-xs font-bold transition-colors"
               >
-                <span>WhatsApp Us (24/7)</span>
+                <span>{topHeaderSettings?.whatsappText || "WhatsApp Us (24/7)"}</span>
               </a>
               
             </div>
+          </div>
           </div>
         </div>
       </nav>

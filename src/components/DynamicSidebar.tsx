@@ -19,10 +19,22 @@ export default function DynamicSidebar({
   activeHref: string;
 }) {
   const [dynamicLinks, setDynamicLinks] = useState<{name: string, href: string}[]>([]);
+  const [layoutHeader, setLayoutHeader] = useState<any>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    fetch('/api/dynamic-pages')
+    // Fetch layout header settings
+    fetch('/api/settings?key=layout_header', { cache: 'no-store' })
+      .then(res => res.json())
+      .then(data => {
+        if (data && !data.error) {
+          setLayoutHeader(data);
+        }
+      })
+      .catch(err => console.error("Error fetching layout header:", err));
+
+    // Fetch dynamic pages
+    fetch('/api/dynamic-pages', { cache: 'no-store' })
       .then(res => res.json())
       .then(data => {
         if(Array.isArray(data)) {
@@ -34,15 +46,34 @@ export default function DynamicSidebar({
   }, [categoryName]);
 
   const baseCategory = baseNavLinks.find(link => link.name === categoryName);
-  const staticDropdown = baseCategory?.dropdown || [];
+  let staticDropdown = baseCategory?.dropdown || [];
+  let filteredDynamicLinks = [...dynamicLinks];
   
+  // If we have layout header settings, try to merge its isActive state
+  if (layoutHeader && layoutHeader.menus) {
+    const layoutMenu = layoutHeader.menus.find((m: any) => m.name === categoryName);
+    if (layoutMenu) {
+      if (layoutMenu.isActive === false) {
+        staticDropdown = [];
+        filteredDynamicLinks = [];
+      } else if (layoutMenu.dropdown) {
+        // Only keep static items that are NOT marked as isActive === false in the layout_header
+        staticDropdown = staticDropdown.filter((staticItem: any) => {
+           const match = layoutMenu.dropdown.find((lItem: any) => lItem.href === staticItem.href);
+           if (match && match.isActive === false) return false;
+           return true;
+        });
+      }
+    }
+  }
+
   const allOptions: SidebarOption[] = [
     ...staticDropdown.map(item => ({
       name: item.name,
       href: item.href,
       active: item.href === activeHref
     })),
-    ...dynamicLinks.map(item => ({
+    ...filteredDynamicLinks.map(item => ({
       name: item.name,
       href: item.href,
       active: item.href === activeHref

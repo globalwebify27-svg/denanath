@@ -1,3 +1,4 @@
+import NavigationMenuToggle from "@/components/NavigationMenuToggle";
 import { Save, HeartPulse , Search } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
@@ -7,7 +8,7 @@ import UniqueFeaturesClientForm from "./client-form";
 export const dynamic = "force-dynamic";
 
 export default async function AdminUniqueFeaturesPage() {
-  const setting = await prisma.siteSetting.findUnique({ where: { key: 'page_unique_features' } });
+const setting = await prisma.siteSetting.findUnique({ where: { key: 'page_unique_features' } });
 
   let featuresData: any[] = [];
   let fullData: any = null;
@@ -125,8 +126,7 @@ export default async function AdminUniqueFeaturesPage() {
 
   async function saveFeatures(formData: FormData) {
     "use server";
-    
-    const rawJson = formData.get("featuresJson") as string;
+const rawJson = formData.get("featuresJson") as string;
     
     try {
       const parsedArray = JSON.parse(rawJson);
@@ -161,11 +161,12 @@ export default async function AdminUniqueFeaturesPage() {
         <div className="absolute top-0 left-0 w-2 h-full bg-gradient-to-b from-[#002b5c] to-[#007a87]"></div>
         <div className="z-10 relative">
           <h1 className="text-[32px] md:text-[40px] font-black text-[#002b5c] tracking-tight leading-tight mb-2 flex items-center gap-3">
-            Unique Features
+            About Us: Unique features of DMH
           </h1>
           <p className="text-[15px] font-medium text-slate-500 max-w-xl leading-relaxed">
             Manage the hospital's unique features displayed on the About Us section.
           </p>
+            <NavigationMenuToggle href="/unique-features" />
         </div>
         <div className="z-10 shrink-0 mt-4 lg:mt-0">
           <SubmitButton text="Save Changes" loadingText="Saving..." />

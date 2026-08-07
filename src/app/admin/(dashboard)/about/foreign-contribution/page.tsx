@@ -1,3 +1,4 @@
+import NavigationMenuToggle from "@/components/NavigationMenuToggle";
 import { Save, HeartPulse , Search } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
@@ -7,7 +8,7 @@ import ForeignContributionClientForm from "./client-form";
 export const dynamic = "force-dynamic";
 
 export default async function AdminForeignContributionPage() {
-  const setting = await prisma.siteSetting.findUnique({ where: { key: 'page_foreign_contribution' } });
+const setting = await prisma.siteSetting.findUnique({ where: { key: 'page_foreign_contribution' } });
 
   let fcraData: any = { introduction: "Information regarding receipt of Foreign Contribution", quarters: [] };
   try { 
@@ -23,8 +24,7 @@ export default async function AdminForeignContributionPage() {
 
   async function saveFcra(formData: FormData) {
     "use server";
-    
-    const rawJson = formData.get("fcraJson") as string;
+const rawJson = formData.get("fcraJson") as string;
     
     try {
       const parsed = JSON.parse(rawJson);
@@ -51,11 +51,12 @@ export default async function AdminForeignContributionPage() {
         <div className="absolute top-0 left-0 w-2 h-full bg-gradient-to-b from-[#002b5c] to-[#007a87]"></div>
         <div className="z-10 relative">
           <h1 className="text-[32px] md:text-[40px] font-black text-[#002b5c] tracking-tight leading-tight mb-2 flex items-center gap-3">
-            Foreign Contribution
+            About Us: Foreign Contribution
           </h1>
           <p className="text-[15px] font-medium text-slate-500 max-w-xl leading-relaxed">
             Manage the quarterly FCRA donor records.
           </p>
+            <NavigationMenuToggle href="/foreign-contribution" />
         </div>
         <div className="z-10 shrink-0 mt-4 lg:mt-0">
           <SubmitButton text="Save Changes" loadingText="Saving..." />

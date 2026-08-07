@@ -1,3 +1,4 @@
+import NavigationMenuToggle from "@/components/NavigationMenuToggle";
 import { Save, HeartPulse , Search } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
@@ -7,7 +8,7 @@ import AcademicsInfoClientForm from "./client-form";
 export const dynamic = "force-dynamic";
 
 export default async function AdminAcademicsInfoPage() {
-  const setting = await prisma.siteSetting.findUnique({ where: { key: 'page_academics_info' } });
+const setting = await prisma.siteSetting.findUnique({ where: { key: 'page_academics_info' } });
 
   let pageData: any = { 
     introText: "Deenanath Mangeshkar Hospital and Research Center (DMHRC) is a multi speciality hospital managed by a Public Charitable Trust. It is accredited by National Board of Examinations in Medical Sciences, New Delhi for Post Graduate Training Programme (DNB, DrNB and FNB) across twenty five specialities. Academic Centre is situated on 14th floor Super Speciality Building.",
@@ -103,7 +104,7 @@ export default async function AdminAcademicsInfoPage() {
 
   async function saveData(formData: FormData) {
     "use server";
-    const rawJson = formData.get("pageJson") as string;
+const rawJson = formData.get("pageJson") as string;
     try {
       const parsed = JSON.parse(rawJson);
       parsed.seoMetaTitle = formData.get("seoMetaTitle") || "";
@@ -129,11 +130,12 @@ export default async function AdminAcademicsInfoPage() {
         <div className="absolute top-0 left-0 w-2 h-full bg-gradient-to-b from-[#002b5c] to-[#007a87]"></div>
         <div className="z-10 relative">
           <h1 className="text-[32px] md:text-[40px] font-black text-[#002b5c] tracking-tight leading-tight mb-2 flex items-center gap-3">
-            Academics Info
+            Academics: Academics
           </h1>
           <p className="text-[15px] font-medium text-slate-500 max-w-xl leading-relaxed">
             Manage academics information and courses.
           </p>
+            <NavigationMenuToggle href="/academics" />
         </div>
         <div className="z-10 shrink-0 mt-4 lg:mt-0">
           <SubmitButton text="Save Changes" loadingText="Saving..." />

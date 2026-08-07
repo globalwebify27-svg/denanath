@@ -34,6 +34,8 @@ export async function POST(request: Request) {
         seoKeywords: data.seoKeywords,
       },
     });
+    const { revalidatePath } = require("next/cache");
+    revalidatePath("/", "layout");
     return NextResponse.json(doctor);
   } catch (error) {
     return NextResponse.json({ error: "Failed to create doctor" }, { status: 500 });

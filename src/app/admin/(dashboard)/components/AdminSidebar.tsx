@@ -57,6 +57,11 @@ const MENU_ITEMS = [
     href: "/admin/submissions"
   },
   {
+    name: "Menu Pages",
+    icon: <FileText size={20} />,
+    href: "/admin/menu-pages"
+  },
+  {
     name: "Dynamic Pages",
     icon: <FileText size={20} />,
     href: "/admin/pages"
@@ -161,7 +166,7 @@ const MENU_ITEMS = [
 export default function AdminSidebar({ 
   dynamicPages = [] 
 }: { 
-  dynamicPages?: { id: string; title: string; slug: string; navbarMenu: string }[] 
+  dynamicPages?: { id: string; title: string; slug: string; navbarMenu: string; status?: boolean }[] 
 }) {
   const pathname = usePathname();
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({
@@ -176,7 +181,21 @@ export default function AdminSidebar({
     }));
   };
 
-  const finalMenuItems = MENU_ITEMS.map(section => {
+  // 1. Identify dynamically created top-level Menu Pages
+  const topLevelMenus = dynamicPages
+    .filter(p => ["Top Header", "Main Header", "Footer"].includes(p.navbarMenu))
+    .map(menuPage => ({
+      name: menuPage.title,
+      icon: <FileText size={20} />,
+      href: `/admin/menu-pages/${menuPage.id}`,
+      links: []
+    }));
+
+  // 2. Combine static MENU_ITEMS with the dynamically created menus
+  const allBaseMenus = [...MENU_ITEMS, ...topLevelMenus];
+
+  // 3. Populate sub-pages into their respective menu categories
+  const finalMenuItems = allBaseMenus.map(section => {
     const sectionPages = dynamicPages.filter(p => p.navbarMenu === section.name);
     if (sectionPages.length > 0) {
       return {

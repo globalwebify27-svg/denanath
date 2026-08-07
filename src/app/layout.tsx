@@ -59,6 +59,9 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   let latestEvent = null;
+  let layoutTopHeader = null;
+  let layoutHeader = null;
+  let layoutFooter = null;
   try {
     const setting = await prisma.siteSetting.findUnique({ where: { key: 'page_events' } });
     if (setting && setting.value) {
@@ -70,6 +73,20 @@ export default async function RootLayout({
     }
   } catch (error) {
     console.error("Error fetching latest event for footer:", error);
+  }
+
+  try {
+    const [topHeaderReq, headerReq, footerReq] = await Promise.all([
+      prisma.siteSetting.findUnique({ where: { key: 'layout_top_header' } }),
+      prisma.siteSetting.findUnique({ where: { key: 'layout_header' } }),
+      prisma.siteSetting.findUnique({ where: { key: 'layout_footer' } })
+    ]);
+
+    if (topHeaderReq && topHeaderReq.value) layoutTopHeader = JSON.parse(topHeaderReq.value);
+    if (headerReq && headerReq.value) layoutHeader = JSON.parse(headerReq.value);
+    if (footerReq && footerReq.value) layoutFooter = JSON.parse(footerReq.value);
+  } catch (error) {
+    console.error("Error fetching layout settings:", error);
   }
 
   return (
@@ -100,7 +117,12 @@ export default async function RootLayout({
         </Script>
         <HospitalProvider>
           <div className="flex flex-col min-h-screen w-full overflow-x-hidden relative">
-            <ClientLayoutWrapper latestEvent={latestEvent}>
+            <ClientLayoutWrapper 
+              latestEvent={latestEvent} 
+              topHeader={layoutTopHeader}
+              header={layoutHeader}
+              footer={layoutFooter}
+            >
               {children}
             </ClientLayoutWrapper>
           </div>

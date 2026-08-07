@@ -11,7 +11,7 @@ export default function HomeSettingsClient({
   settingsData: Record<string, any> 
 }) {
   const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({
-    home_hero: true // Default open the first one, others can be opened without closing this
+    layout_top_header: true // Default open the first one, others can be opened without closing this
   });
   
   // Helper to remove HTML tags for non-rich fields
@@ -49,6 +49,15 @@ export default function HomeSettingsClient({
     }
     return cleaned;
   });
+  
+  React.useEffect(() => {
+    const cleaned: Record<string, any> = {};
+    for (const key in settingsData) {
+      cleaned[key] = deepCleanHtml(settingsData[key], key);
+    }
+    setFormData(cleaned);
+  }, [settingsData]);
+  
   const [isSaving, setIsSaving] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
@@ -93,6 +102,8 @@ export default function HomeSettingsClient({
   };
 
   const sections = [
+    { id: "layout_top_header", label: "Top Header Configuration" },
+    { id: "layout_header", label: "Main Header Configuration" },
     { id: "home_hero", label: "Hero Section Configuration" },
     { id: "home_about", label: "About Us Configuration" },
     { id: "home_specialty_clinics", label: "Specialty Clinics Configuration" },
@@ -103,7 +114,7 @@ export default function HomeSettingsClient({
     { id: "home_courses_pricing", label: "Courses & Pricing Configuration" },
     { id: "home_quick_links", label: "Quick Links Configuration" },
     { id: "home_reviews", label: "Reviews Configuration" },
-    { id: "home_partners", label: "Partners Configuration" },
+    { id: "layout_footer", label: "Footer Configuration" },
   ];
 
   return (

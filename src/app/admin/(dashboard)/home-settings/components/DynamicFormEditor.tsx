@@ -91,7 +91,9 @@ export default function DynamicFormEditor({
 
     if (isString || isNumber) {
       const isImageField = isString && (
-        ['src', 'image', 'icon', 'photo', 'avatar', 'logo'].includes(String(key).toLowerCase()) ||
+        ['src', 'icon', 'photo', 'avatar'].includes(String(key).toLowerCase()) ||
+        String(key).toLowerCase().includes('image') ||
+        String(key).toLowerCase().includes('logo') ||
         (path.length >= 2 && (String(path[path.length - 2]).toLowerCase().includes('image') || String(path[path.length - 2]).toLowerCase().includes('logo')))
       );
       
@@ -161,7 +163,7 @@ export default function DynamicFormEditor({
       // Use textarea if the string is long or contains HTML, but exclude title field
       const useTextArea = isString && !isTitleField && (value.length > 50 || value.includes("<"));
       const isRichTextField = isString && ['overview', 'content', 'details'].includes(String(key).toLowerCase());
-      const isColorField = isString && ['bgcolor', 'hovercolor', 'backgroundcolor', 'themecolor', 'color', 'theme', 'bgcolorfrom', 'bgcolorto'].includes(String(key).toLowerCase());
+      const isColorField = isString && ['bgcolor', 'hovercolor', 'backgroundcolor', 'themecolor', 'color', 'theme', 'bgcolorfrom', 'bgcolorto', 'textcolor'].includes(String(key).toLowerCase());
 
       const commonIcons = [
         "Activity", "Ambulance", "ArrowRight", "Baby", "Bandage", "Bone", "Brain", "Cross", 
@@ -191,7 +193,7 @@ export default function DynamicFormEditor({
             <div className="flex items-center gap-3">
               <input
                 type="color"
-                value={value}
+                value={typeof value === 'string' && /^#[0-9A-Fa-f]{6}$/i.test(value) ? value : "#000000"}
                 onChange={(e) => updateField(path, e.target.value)}
                 className="w-10 h-10 rounded cursor-pointer border-0 p-0 bg-transparent"
               />
@@ -260,10 +262,25 @@ export default function DynamicFormEditor({
     }
 
     if (isArray) {
-      // Find template object by taking first element or creating empty one
-      const templateItem = value.length > 0 
+      // Find template object by taking first element or creating one based on key name
+      let templateItem = value.length > 0 
         ? JSON.parse(JSON.stringify(value[0]))
-        : {};
+        : null;
+        
+      if (!templateItem) {
+        const kLower = String(key).toLowerCase();
+        if (kLower.includes('link') || kLower.includes('nav') || kLower.includes('menu')) {
+          templateItem = { name: "", href: "", textColor: "", isActive: true };
+        } else if (kLower.includes('phone') || kLower.includes('contact')) {
+          templateItem = { text: "", number: "", isActive: true };
+        } else if (kLower.includes('button') || kLower.includes('cta')) {
+          templateItem = { text: "", link: "", icon: "", isPrimary: true, bgColor: "#0f172a", hoverColor: "#d9232d", isActive: true };
+        } else if (kLower.includes('image') || kLower.includes('photo') || kLower.includes('gallery')) {
+          templateItem = { src: "", alt: "", isActive: true };
+        } else {
+          templateItem = { title: "", description: "", isActive: true };
+        }
+      }
         
       // clear string/num fields in template
       const clearValues = (obj: any) => {
@@ -325,7 +342,11 @@ export default function DynamicFormEditor({
              </h4>
           )}
           <div className={`${typeof key === 'number' ? '' : 'pl-2'}`}>
-            {Object.keys(value).map((subKey) => {
+            {Object.keys(value).sort((a, b) => {
+              if (a === 'isActive' && b !== 'isActive') return 1;
+              if (b === 'isActive' && a !== 'isActive') return -1;
+              return 0;
+            }).map((subKey) => {
               if (subKey === 'pos') return null; // hide pos completely
               return renderField(subKey, value[subKey], [...path, subKey]);
             })}

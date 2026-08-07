@@ -36,6 +36,8 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
         seoKeywords: data.seoKeywords,
       },
     });
+    const { revalidatePath } = require("next/cache");
+    revalidatePath("/", "layout");
     return NextResponse.json(doctor);
   } catch (error) {
     return NextResponse.json({ error: "Failed to update doctor" }, { status: 500 });
@@ -48,6 +50,8 @@ export async function DELETE(request: Request, { params }: { params: Promise<{ i
     await prisma.doctor.delete({
       where: { id: resolvedParams.id },
     });
+    const { revalidatePath } = require("next/cache");
+    revalidatePath("/", "layout");
     return NextResponse.json({ success: true });
   } catch (error) {
     return NextResponse.json({ error: "Failed to delete doctor" }, { status: 500 });

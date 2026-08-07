@@ -123,6 +123,9 @@ export default function NewDepartmentPage() {
       newDepartment.id
     );
 
+    const { revalidatePath } = require("next/cache");
+    revalidatePath("/", "layout");
+
     redirect("/admin/departments");
   }
 

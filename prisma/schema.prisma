@@ -8,54 +8,54 @@ datasource db {
 }
 
 model Doctor {
-  id               String   @id @default(cuid())
-  dmhDoctorId      String?  @unique
-  dmhSpecialityId  String?
-  dmhServicePointId String?
-  dmhServiceCenterId String?
-  isAppAllowed     Boolean  @default(true)
-  name             String
-  image            String?  @db.LongText
-  qualifications   String?
-  specialty        String?
-  timings          String?  @db.LongText
-  education      String?  @db.LongText
-  training       String?  @db.LongText
+  id                 String   @id @default(cuid())
+  name               String
+  image              String?  @db.LongText
+  qualifications     String?
+  specialty          String?
+  timings            String?  @db.LongText
+  education          String?  @db.LongText
+  training           String?  @db.LongText
   experience         String?  @db.LongText
   publications       String?  @db.LongText
-  seoMetaTitle       String?
-  seoMetaDescription String?  @db.LongText
-  seoKeywords        String?  @db.LongText
   createdAt          DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  updatedAt          DateTime @updatedAt
+  seoKeywords        String?  @db.LongText
+  seoMetaDescription String?  @db.LongText
+  seoMetaTitle       String?
+  dmhDoctorId        String?  @unique
+  dmhSpecialityId    String?
+  dmhServiceCenterId String?
+  dmhServicePointId  String?
+  isAppAllowed       Boolean  @default(true)
 }
 
 model Department {
-  id               String   @id @default(cuid())
-  name             String
-  description      String?  @db.LongText
-  videoUrl         String?  @db.LongText
-  headOfDepartment String?
+  id                 String   @id @default(cuid())
+  name               String
+  description        String?  @db.LongText
+  headOfDepartment   String?
   icon               String?
   status             Boolean  @default(true)
-  seoMetaTitle       String?
-  seoMetaDescription String?  @db.LongText
-  seoKeywords        String?  @db.LongText
   createdAt          DateTime @default(now())
-  updatedAt        DateTime @updatedAt
+  updatedAt          DateTime @updatedAt
+  videoUrl           String?  @db.LongText
+  seoKeywords        String?  @db.LongText
+  seoMetaDescription String?  @db.LongText
+  seoMetaTitle       String?
 }
 
 model Service {
-  id        String   @id @default(cuid())
-  title     String
-  icon      String?
+  id                 String   @id @default(cuid())
+  title              String
+  icon               String?
   items              String   @default("[]")
   status             Boolean  @default(true)
-  seoMetaTitle       String?
-  seoMetaDescription String?  @db.LongText
-  seoKeywords        String?  @db.LongText
   createdAt          DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  updatedAt          DateTime @updatedAt
+  seoKeywords        String?  @db.LongText
+  seoMetaDescription String?  @db.LongText
+  seoMetaTitle       String?
 }
 
 model SiteSetting {
@@ -77,13 +77,13 @@ model DynamicPage {
   id                 String   @id @default(cuid())
   title              String
   slug               String   @unique
-  navbarMenu         String   // E.g., "About Us", "Patient & Visitors", etc.
+  navbarMenu         String
   content            String   @db.LongText
   status             Boolean  @default(true)
   seoMetaTitle       String?
   seoMetaDescription String?  @db.LongText
   seoKeywords        String?  @db.LongText
-  gallery            String?  @db.LongText
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt
+  gallery            String?  @db.LongText
 }

@@ -1,3 +1,4 @@
+import NavigationMenuToggle from "@/components/NavigationMenuToggle";
 import { Save, HeartPulse , Search } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
@@ -7,7 +8,7 @@ import CharityDetailsClientForm from "./client-form";
 export const dynamic = "force-dynamic";
 
 export default async function AdminCharityDetailsPage() {
-  const setting = await prisma.siteSetting.findUnique({ where: { key: 'page_charity_details' } });
+const setting = await prisma.siteSetting.findUnique({ where: { key: 'page_charity_details' } });
 
   let charityData: any = { 
     badgeText: "Our Commitment to Society",
@@ -28,8 +29,7 @@ export default async function AdminCharityDetailsPage() {
 
   async function saveCharityData(formData: FormData) {
     "use server";
-    
-    const rawJson = formData.get("charityJson") as string;
+const rawJson = formData.get("charityJson") as string;
     
     try {
       const parsed = JSON.parse(rawJson);
@@ -56,11 +56,12 @@ export default async function AdminCharityDetailsPage() {
         <div className="absolute top-0 left-0 w-2 h-full bg-gradient-to-b from-[#002b5c] to-[#007a87]"></div>
         <div className="z-10 relative">
           <h1 className="text-[32px] md:text-[40px] font-black text-[#002b5c] tracking-tight leading-tight mb-2 flex items-center gap-3">
-            Charity Details
+            About Us: Charity Details
           </h1>
           <p className="text-[15px] font-medium text-slate-500 max-w-xl leading-relaxed">
             Manage the hospital's monthly charity patient statistics.
           </p>
+            <NavigationMenuToggle href="/charity-details" />
         </div>
         <div className="z-10 shrink-0 mt-4 lg:mt-0">
           <SubmitButton text="Save Changes" loadingText="Saving..." />

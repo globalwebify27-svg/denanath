@@ -1,5 +1,7 @@
 "use client";
 
+import NavigationMenuToggle from "@/components/NavigationMenuToggle";
+
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Save, HeartPulse, Plus, Trash2 , Search} from "lucide-react";
@@ -114,6 +116,7 @@ export default function TrainingEventsClientForm({ initialData }: { initialData:
           <p className="text-[15px] font-medium text-slate-500 max-w-xl leading-relaxed">
             Manage the training and events list for the research module.
           </p>
+          <NavigationMenuToggle href="/training-events" />
         </div>
         <div className="z-10 shrink-0 mt-4 lg:mt-0">
           <button

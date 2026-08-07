@@ -1,3 +1,4 @@
+import NavigationMenuToggle from "@/components/NavigationMenuToggle";
 import { Save, HeartPulse , Search } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
@@ -7,15 +8,14 @@ import GalleryVideosClientForm from "./client-form";
 export const dynamic = "force-dynamic";
 
 export default async function AdminGalleryVideosPage() {
-  const setting = await prisma.siteSetting.findUnique({ where: { key: 'page_gallery_videos' } });
+const setting = await prisma.siteSetting.findUnique({ where: { key: 'page_gallery_videos' } });
 
   let galleryVideosData: any = {};
   try { if (setting) galleryVideosData = JSON.parse(setting.value); } catch (e) {}
 
   async function saveGalleryVideosData(formData: FormData) {
     "use server";
-    
-    const rawJson = formData.get("galleryVideosJson") as string;
+const rawJson = formData.get("galleryVideosJson") as string;
     
     try {
       const parsed = JSON.parse(rawJson);
@@ -42,11 +42,12 @@ export default async function AdminGalleryVideosPage() {
         <div className="absolute top-0 left-0 w-2 h-full bg-gradient-to-b from-[#002b5c] to-[#007a87]"></div>
         <div className="z-10 relative">
           <h1 className="text-[32px] md:text-[40px] font-black text-[#002b5c] tracking-tight leading-tight mb-2 flex items-center gap-3">
-            Video Gallery
+            Patient & Visitors: Videos
           </h1>
           <p className="text-[15px] font-medium text-slate-500 max-w-xl leading-relaxed">
             Manage categories and links for the hospital video gallery.
           </p>
+            <NavigationMenuToggle href="/gallery-videos" />
         </div>
         <div className="z-10 shrink-0 mt-4 lg:mt-0">
           <SubmitButton text="Save Changes" loadingText="Saving..." />

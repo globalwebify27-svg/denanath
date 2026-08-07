@@ -7,8 +7,7 @@ export default async function AdminLayout({
   children: React.ReactNode;
 }) {
   const dynamicPages = await prisma.dynamicPage.findMany({
-    where: { status: true },
-    select: { id: true, title: true, slug: true, navbarMenu: true }
+    select: { id: true, title: true, slug: true, navbarMenu: true, status: true }
   });
 
   return (

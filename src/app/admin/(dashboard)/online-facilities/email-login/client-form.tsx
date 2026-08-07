@@ -1,5 +1,6 @@
 "use client";
 
+import NavigationMenuToggle from "@/components/NavigationMenuToggle";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Save, HeartPulse, Plus, Trash2 } from "lucide-react";
@@ -59,6 +60,7 @@ export default function EMailLoginClientForm({ initialData }: { initialData: any
             
             <h3 class="text-xl font-bold text-[#002b5c] mb-2">${portal.title}</h3>
             <p class="text-sm text-slate-500 mb-8 px-4">${portal.description}</p>
+            <NavigationMenuToggle href="/email-login" />
             
             <div class="flex items-center justify-center gap-2 w-full py-3 bg-slate-50 text-[#002b5c] font-bold text-sm group-hover:bg-[#003360] group-hover:text-white transition-colors rounded-xl mt-auto">
               <span>${portal.buttonText}</span>
@@ -108,7 +110,7 @@ export default function EMailLoginClientForm({ initialData }: { initialData: any
         <div className="absolute top-0 left-0 w-2 h-full bg-[#007a87]"></div>
         <div className="z-10 relative">
           <h1 className="text-[32px] md:text-[40px] font-black text-[#002b5c] tracking-tight leading-tight mb-2 flex items-center gap-3">
-            E-Mail Login
+            Online Facilities: E-Mail Login (DMH Users)
           </h1>
           <p className="text-[15px] font-medium text-slate-500 max-w-xl leading-relaxed">
             Manage E-Mail Login (DMH Users) page content.
@@ -158,7 +160,7 @@ export default function EMailLoginClientForm({ initialData }: { initialData: any
           {(data.portals || []).map((portal: any, idx: number) => (
             <div key={idx} className="bg-white border border-slate-100 p-6 rounded-2xl shadow-sm relative group flex flex-col gap-4">
               <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="12" r="1"/><circle cx="9" cy="5" r="1"/><circle cx="9" cy="19" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="5" r="1"/><circle cx="15" cy="19" r="1"/></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="9" cy="12" r="1"/><circle cx="9" cy="5" r="1"/><circle cx="9" cy="19" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="5" r="1"/><circle cx="15" cy="19" r="1"/></svg>
               </div>
               <button 
                 onClick={() => handleRemovePortal(idx)}

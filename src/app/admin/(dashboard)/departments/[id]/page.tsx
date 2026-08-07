@@ -561,25 +561,21 @@ export default async function EditDepartmentPage({
                   <input type="hidden" name="custom_count" value={customSections.length} />
                 </div>
               )}
-            </div>
-
-            <div className="flex items-center gap-3 bg-gray-50 p-4 rounded-xl border border-gray-200">
-              <input
-                type="checkbox"
-                id="status"
-                name="status"
-                defaultChecked={department.status}
-                className="w-5 h-5 text-[#007a87] bg-white border-gray-300 rounded focus:ring-[#007a87]"
-              />
-              <label htmlFor="status" className="text-[14px] font-[700] text-gray-800 cursor-pointer">
-                Active Department (Visible on website)
-              </label>
-            </div>
-
           </div>
-
-
+          <div className="flex items-center gap-3 bg-gray-50 p-4 rounded-xl border border-gray-200 mt-6">
+            <input
+              type="checkbox"
+              id="status"
+              name="status"
+              defaultChecked={department.status}
+              className="w-5 h-5 text-[#007a87] bg-white border-gray-300 rounded focus:ring-[#007a87]"
+            />
+            <label htmlFor="status" className="text-[14px] font-[700] text-gray-800 cursor-pointer">
+              Active Department (Visible on website)
+            </label>
+          </div>
         </div>
+      </div>
       </form>
     </div>
   );

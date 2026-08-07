@@ -1,4 +1,5 @@
 "use client";
+import NavigationMenuToggle from "@/components/NavigationMenuToggle";
 import QuillEditor from "@/components/QuillEditor";
 
 
@@ -70,11 +71,12 @@ export default function SimulationCenterClientForm({ initialData }: { initialDat
         <div className="absolute top-0 left-0 w-2 h-full bg-gradient-to-b from-[#002b5c] to-[#007a87]"></div>
         <div className="z-10 relative">
           <h1 className="text-[32px] md:text-[40px] font-black text-[#002b5c] tracking-tight leading-tight mb-2 flex items-center gap-3">
-            Simulation Center
+            Academics: Simulation Center
           </h1>
           <p className="text-[15px] font-medium text-slate-500 max-w-xl leading-relaxed">
             Manage simulation center overview content.
           </p>
+            <NavigationMenuToggle href="/simulation-center" />
         </div>
         <div className="z-10 shrink-0 mt-4 lg:mt-0">
           <button

@@ -1196,7 +1196,7 @@ export default function PatientRegistrationFormPage({ pageData }: { pageData: an
                         <span className="text-red-500 mr-1">*</span>Security Verification
                       </label>
                       <div className="flex flex-row items-center justify-center gap-2 sm:gap-4 mb-5 bg-white p-3 sm:p-5 rounded-2xl border border-slate-200 shadow-sm">
-                        <div className="bg-slate-800 px-3 sm:px-6 py-2 sm:py-2.5 tracking-widest sm:tracking-[0.5em] font-serif text-lg text-white select-none font-bold rounded-lg shadow-inner border border-slate-700">
+                        <div className="bg-slate-800 px-3 sm:px-6 py-2 sm:py-2.5 tracking-widest sm:tracking-[0.5em] font-serif text-[16px] text-white select-none font-bold rounded-lg shadow-inner border border-slate-700">
                           {captchaCode}
                         </div>
                         <button type="button" onClick={generateCaptcha} className="text-blue-500 hover:text-blue-700 transition-colors bg-blue-50 hover:bg-blue-100 p-2 sm:p-2.5 rounded-lg border border-blue-100 shadow-sm shrink-0 text-[16px]">

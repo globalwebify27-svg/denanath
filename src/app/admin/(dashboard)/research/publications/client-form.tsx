@@ -1,5 +1,7 @@
 "use client";
 
+import NavigationMenuToggle from "@/components/NavigationMenuToggle";
+
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Save, HeartPulse, Plus, Trash2, Search, ArrowDown } from "lucide-react";
@@ -224,6 +226,7 @@ export default function PublicationsClientForm({ initialData }: { initialData: a
           <p className="text-[15px] font-medium text-slate-500 max-w-xl leading-relaxed">
             Manage publications and archive links.
           </p>
+          <NavigationMenuToggle href="/publications" />
         </div>
         <div className="z-10 shrink-0 mt-4 lg:mt-0">
           <button

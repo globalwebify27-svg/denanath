@@ -347,7 +347,7 @@ export default function CareersClient({ data }: { data: any }) {
                       </div>
                     </div>
                     <div>
-                      <label className="block text-xs font-semibold text-slate-700 mb-1">Middle Name <span className="text-red-500">*</span></label>
+                      <label className="block text-xs font-semibold text-slate-700 mb-1">Middle Name</label>
                       <div className="relative">
                         <input name="middleName" type="text" placeholder="Enter middle name" className="w-full bg-slate-50 border border-slate-200 rounded-lg py-1.5 pl-10 pr-3 text-xs text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all placeholder-slate-400" />
                         <User className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
@@ -506,7 +506,7 @@ export default function CareersClient({ data }: { data: any }) {
                     <label className="block text-sm font-bold text-slate-700 mb-2">Security Verification <span className="text-red-500">*</span></label>
                     <div className="flex flex-col gap-3">
                       <div className="flex items-center gap-3">
-                        <div className="flex-1 h-10 bg-slate-800 flex items-center justify-center rounded-lg border border-slate-700 font-mono text-lg font-bold tracking-[0.3em] text-white select-none shadow-inner">
+                        <div className="flex-1 h-10 bg-slate-800 flex items-center justify-center rounded-lg border border-slate-700 font-mono text-[16px] font-bold tracking-[0.3em] text-white select-none shadow-inner">
                           {captchaCode}
                         </div>
                         <button 

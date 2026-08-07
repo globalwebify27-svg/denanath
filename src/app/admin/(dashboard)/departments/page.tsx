@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Search, Plus, Edit, HeartPulse } from "lucide-react";
 import DepartmentSearch from "./DepartmentSearch";
 import InlineSeoForm from "@/app/admin/(dashboard)/components/InlineSeoForm";
+import NavigationMenuToggle from "@/components/NavigationMenuToggle";
 
 export const dynamic = "force-dynamic";
 
@@ -55,6 +56,7 @@ export default async function AdminDepartmentsPage({
           <p className="text-[15px] font-medium text-slate-500 max-w-xl leading-relaxed">
             Manage hospital departments and medical units.
           </p>
+          <NavigationMenuToggle href="/departments" />
         </div>
         <div className="z-10 shrink-0 mt-4 lg:mt-0">
           <Link

@@ -1,3 +1,4 @@
+import NavigationMenuToggle from "@/components/NavigationMenuToggle";
 import { Save, HeartPulse, Search } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
@@ -7,15 +8,14 @@ import FeedbacksClientForm from "./client-form";
 export const dynamic = "force-dynamic";
 
 export default async function AdminFeedbacksPage() {
-  const setting = await prisma.siteSetting.findUnique({ where: { key: 'page_feedbacks' } });
+const setting = await prisma.siteSetting.findUnique({ where: { key: 'page_feedbacks' } });
 
   let feedbacksData: any = {};
   try { if (setting) feedbacksData = JSON.parse(setting.value); } catch (e) {}
 
   async function saveFeedbacksData(formData: FormData) {
     "use server";
-    
-    const rawJson = formData.get("feedbacksJson") as string;
+const rawJson = formData.get("feedbacksJson") as string;
     
     try {
       const parsed = JSON.parse(rawJson); // validate
@@ -43,11 +43,12 @@ export default async function AdminFeedbacksPage() {
         <div className="absolute top-0 left-0 w-2 h-full bg-gradient-to-b from-[#002b5c] to-[#007a87]"></div>
         <div className="z-10 relative">
           <h1 className="text-[32px] md:text-[40px] font-black text-[#002b5c] tracking-tight leading-tight mb-2 flex items-center gap-3">
-            Patients Stories / Feedbacks
+            Patient & Visitors: Patients Stories / Feedbacks
           </h1>
           <p className="text-[15px] font-medium text-slate-500 max-w-xl leading-relaxed">
             Manage patient testimonials and feedback stories.
           </p>
+            <NavigationMenuToggle href="/feedbacks" />
         </div>
         <div className="z-10 shrink-0 mt-4 lg:mt-0">
           <SubmitButton text="Save Changes" loadingText="Saving..." />

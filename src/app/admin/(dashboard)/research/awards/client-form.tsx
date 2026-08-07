@@ -1,4 +1,6 @@
 "use client";
+
+import NavigationMenuToggle from "@/components/NavigationMenuToggle";
 import QuillEditor from "@/components/QuillEditor";
 
 
@@ -244,6 +246,7 @@ export default function AwardsClientForm({ initialData }: { initialData: any }) 
           <p className="text-[15px] font-medium text-slate-500 max-w-xl leading-relaxed">
             Manage awards, grants, and past grants.
           </p>
+          <NavigationMenuToggle href="/awards" />
         </div>
         <div className="z-10 shrink-0 mt-4 lg:mt-0">
           <button

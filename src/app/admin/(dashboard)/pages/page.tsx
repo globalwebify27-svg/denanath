@@ -27,7 +27,9 @@ export default function PagesList() {
       const response = await fetch("/api/dynamic-pages");
       const data = await response.json();
       if (Array.isArray(data)) {
-        setPages(data);
+        // Filter out menu pages
+        const filtered = data.filter(p => !["Top Header", "Main Header", "Footer"].includes(p.navbarMenu));
+        setPages(filtered);
       } else {
         setPages([]);
         console.error("API did not return an array:", data);
@@ -122,14 +124,14 @@ export default function PagesList() {
                 filteredPages.map((page) => (
                   <tr key={page.id} className="hover:bg-slate-50 transition-colors">
                     <td className="px-6 py-4">
-                      <div className="flex items-center gap-3">
+                      <Link href={`/admin/pages/${page.id}`} className="flex items-center gap-3 hover:opacity-80 transition-opacity">
                         <div className="w-10 h-10 rounded-lg bg-teal-50 text-teal-600 flex items-center justify-center shrink-0">
                           <FileText className="w-5 h-5" />
                         </div>
                         <div>
                           <p className="font-semibold text-slate-800">{page.title}</p>
                         </div>
-                      </div>
+                      </Link>
                     </td>
                     <td className="px-6 py-4">
                       <span className="bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-xs font-semibold">

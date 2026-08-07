@@ -1,5 +1,6 @@
 "use client";
 
+import NavigationMenuToggle from "@/components/NavigationMenuToggle";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Save, HeartPulse } from "lucide-react";
@@ -72,11 +73,12 @@ export default function DoctorDetailsClientForm({ initialData }: { initialData: 
         <div className="absolute top-0 left-0 w-2 h-full bg-gradient-to-b from-[#002b5c] to-[#007a87]"></div>
         <div className="z-10 relative">
           <h1 className="text-[32px] md:text-[40px] font-black text-[#002b5c] tracking-tight leading-tight mb-2 flex items-center gap-3">
-            Doctor Details
+            Doctors & Departments: Doctor Details
           </h1>
           <p className="text-[15px] font-medium text-slate-500 max-w-xl leading-relaxed">
             Manage content for Doctor Details
           </p>
+            <NavigationMenuToggle href="/doctor-details" />
         </div>
         <div className="z-10 shrink-0 mt-4 lg:mt-0">
           <button

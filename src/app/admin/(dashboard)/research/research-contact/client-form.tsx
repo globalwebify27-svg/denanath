@@ -1,5 +1,7 @@
 "use client";
 
+import NavigationMenuToggle from "@/components/NavigationMenuToggle";
+
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Save, HeartPulse, Plus, Trash2, X , Search} from "lucide-react";
@@ -183,6 +185,7 @@ export default function ResearchContactClientForm({ initialData }: { initialData
           <p className="text-[15px] font-medium text-slate-500 max-w-xl leading-relaxed">
             Manage contact information and key personnel.
           </p>
+          <NavigationMenuToggle href="/research-contact" />
         </div>
         <div className="z-10 shrink-0 mt-4 lg:mt-0">
           <button

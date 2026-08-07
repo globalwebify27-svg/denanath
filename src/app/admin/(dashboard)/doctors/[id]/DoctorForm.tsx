@@ -84,6 +84,7 @@ export default function DoctorForm({ doctor, id }: { doctor: any; id: string }) 
     seoMetaTitle: doctor?.seoMetaTitle || "",
     seoMetaDescription: doctor?.seoMetaDescription || "",
     seoKeywords: doctor?.seoKeywords || "",
+    isAppAllowed: doctor?.isAppAllowed ?? true,
   });
 
   const handleArrayChange = (field: string, index: number, value: string) => {
@@ -383,6 +384,22 @@ export default function DoctorForm({ doctor, id }: { doctor: any; id: string }) 
             )}
           </div>
         </div>
+      </div>
+
+      <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 mb-6 flex items-center justify-between">
+        <div>
+          <p className="text-[14px] font-[800] text-gray-800">Active Doctor</p>
+          <p className="text-[12px] font-[600] text-gray-500 mt-0.5">Visible to the public on the website.</p>
+        </div>
+        <label className="relative inline-flex items-center cursor-pointer">
+          <input 
+            type="checkbox" 
+            checked={formData.isAppAllowed} 
+            onChange={(e) => setFormData({ ...formData, isAppAllowed: e.target.checked })} 
+            className="sr-only peer" 
+          />
+          <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#003360]"></div>
+        </label>
       </div>
 
       <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 mb-6">

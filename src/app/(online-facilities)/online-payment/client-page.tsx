@@ -519,8 +519,7 @@ export default function OnlinePaymentClientPage({ pageData }: { pageData: any })
                   <div className="flex items-center justify-between gap-4 flex-wrap">
                     {/* Left group: captcha box + refresh + enter text */}
                     <div className="flex items-center gap-2">
-                      {/* Captcha code box */}
-                      <div className="bg-slate-800 text-white px-6 py-3 rounded-lg tracking-widest font-mono font-bold text-sm select-none shadow-inner border border-slate-700 text-center whitespace-nowrap">
+                      <div className="bg-slate-800 text-white px-6 py-3 rounded-lg tracking-widest font-mono font-bold text-[16px] select-none shadow-inner border border-slate-700 text-center whitespace-nowrap">
                         {captchaCode}
                       </div>
                       {/* Refresh button */}

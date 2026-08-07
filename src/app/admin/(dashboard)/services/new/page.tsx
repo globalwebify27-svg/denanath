@@ -34,6 +34,9 @@ export default function NewServicePage() {
       },
     });
 
+    const { revalidatePath } = require("next/cache");
+    revalidatePath("/", "layout");
+
     redirect("/admin/services");
   }
 

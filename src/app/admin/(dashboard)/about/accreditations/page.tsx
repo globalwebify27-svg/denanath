@@ -1,3 +1,4 @@
+import NavigationMenuToggle from "@/components/NavigationMenuToggle";
 import { Save, HeartPulse , Search } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
@@ -7,7 +8,7 @@ import AccreditationsClientForm from "./client-form";
 export const dynamic = "force-dynamic";
 
 export default async function AdminAccreditationsPage() {
-  const setting = await prisma.siteSetting.findUnique({ where: { key: 'page_accreditations' } });
+const setting = await prisma.siteSetting.findUnique({ where: { key: 'page_accreditations' } });
 
   let accreditationsData: any[] = [];
   let fullData: any = null;
@@ -54,8 +55,7 @@ export default async function AdminAccreditationsPage() {
 
   async function saveAccreditations(formData: FormData) {
     "use server";
-    
-    const rawJson = formData.get("accreditationsJson") as string;
+const rawJson = formData.get("accreditationsJson") as string;
     
     try {
       const parsedArray = JSON.parse(rawJson);
@@ -90,11 +90,12 @@ export default async function AdminAccreditationsPage() {
         <div className="absolute top-0 left-0 w-2 h-full bg-gradient-to-b from-[#002b5c] to-[#007a87]"></div>
         <div className="z-10 relative">
           <h1 className="text-[32px] md:text-[40px] font-black text-[#002b5c] tracking-tight leading-tight mb-2 flex items-center gap-3">
-            Accreditations
+            About Us: Accreditations
           </h1>
           <p className="text-[15px] font-medium text-slate-500 max-w-xl leading-relaxed">
             Manage the list of hospital accreditations and certificates.
           </p>
+            <NavigationMenuToggle href="/accreditations" />
         </div>
         <div className="z-10 shrink-0 mt-4 lg:mt-0">
           <SubmitButton text="Save Changes" loadingText="Saving..." />

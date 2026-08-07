@@ -54,6 +54,9 @@ export default async function EditServicePage({
       },
     });
 
+    const { revalidatePath } = require("next/cache");
+    revalidatePath("/", "layout");
+
     redirect("/admin/services");
   }
 

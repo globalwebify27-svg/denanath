@@ -12,6 +12,19 @@ export default async function AdminOutPatientPage() {
   let outPatientData: any = {};
   try { if (setting) outPatientData = JSON.parse(setting.value); } catch (e) {}
 
+  const headerSettingStr = await prisma.siteSetting.findUnique({ where: { key: 'layout_header' } });
+  let isPageActive = true;
+  if (headerSettingStr) {
+    try {
+      const hs = JSON.parse(headerSettingStr.value);
+      hs.menus?.forEach((link: any) => {
+        link.dropdown?.forEach((sub: any) => {
+          if (sub.href === "/out-patient" && sub.isActive === false) isPageActive = false;
+        });
+      });
+    } catch(e){}
+  }
+
   async function saveOutPatientData(formData: FormData) {
     "use server";
     
@@ -28,8 +41,30 @@ export default async function AdminOutPatientPage() {
         update: { value: finalJson },
         create: { key: 'page_out_patient', value: finalJson }
       });
+      
+      const hsStr = await prisma.siteSetting.findUnique({ where: { key: 'layout_header' } });
+      if (hsStr) {
+        let hs = JSON.parse(hsStr.value);
+        if (hs.menus) {
+          hs.menus.forEach((link: any) => {
+             if (link.dropdown) {
+                link.dropdown.forEach((sub: any) => {
+                   if (sub.href === "/out-patient") {
+                      sub.isActive = formData.get("isActive") === "on";
+                   }
+                });
+             }
+          });
+          await prisma.siteSetting.update({
+             where: { key: 'layout_header' },
+             data: { value: JSON.stringify(hs) }
+          });
+        }
+      }
+
       revalidatePath("/admin/patient-visitors/out-patient");
       revalidatePath("/out-patient");
+      revalidatePath("/");
     } catch (e) {
       console.error("Invalid JSON provided for out patient guide");
     }
@@ -42,11 +77,18 @@ export default async function AdminOutPatientPage() {
         <div className="absolute top-0 left-0 w-2 h-full bg-gradient-to-b from-[#002b5c] to-[#007a87]"></div>
         <div className="z-10 relative">
           <h1 className="text-[32px] md:text-[40px] font-black text-[#002b5c] tracking-tight leading-tight mb-2 flex items-center gap-3">
-            Out Patient Guide
+            Patient & Visitors: Out Patient Guide
           </h1>
           <p className="text-[15px] font-medium text-slate-500 max-w-xl leading-relaxed">
             Manage the information displayed on the Out Patient Guide page.
           </p>
+          <div className="mt-4 flex items-center gap-3">
+            <label className="text-sm font-semibold text-slate-700">Show in Navigation Menu:</label>
+            <label className="relative inline-flex items-center cursor-pointer">
+              <input type="checkbox" name="isActive" defaultChecked={isPageActive} className="sr-only peer" />
+              <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-teal-500"></div>
+            </label>
+          </div>
         </div>
         <div className="z-10 shrink-0 mt-4 lg:mt-0">
           <SubmitButton text="Save Changes" loadingText="Saving..." />

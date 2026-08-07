@@ -11,6 +11,20 @@ export default async function AdminAboutHospitalPage() {
 
   let aboutData: any = {};
   try { if (setting) aboutData = JSON.parse(setting.value); } catch (e) {}
+
+  const headerSettingStr = await prisma.siteSetting.findUnique({ where: { key: 'layout_header' } });
+  let isPageActive = true;
+  if (headerSettingStr) {
+    try {
+      const hs = JSON.parse(headerSettingStr.value);
+      hs.menus?.forEach((link: any) => {
+        link.dropdown?.forEach((sub: any) => {
+          if (sub.href === "/about-hospital" && sub.isActive === false) isPageActive = false;
+        });
+      });
+    } catch(e){}
+  }
+
   if (Object.keys(aboutData).length === 0) {
     aboutData = {
         introduction: `<strong>Deenanath Mangeshkar Hospital and Research Center</strong> is a charitable, multi-specialty hospital located in the heart of Pune, India. Founded in 2001, today it is one of the largest hospital in Pune, with 800 beds. Deenanath Mangeshkar Hospital and Research Center offers state-of-the-art diagnostic, therapeutic and intensive care facilities in a one-stop medical center.`,
@@ -76,14 +90,35 @@ Surgical facilities include one cardiac catheterization labs, 12 operating theat
       seoKeywords: formData.get("seoKeywords") || ""
     };
 
-    await prisma.siteSetting.upsert({
-      where: { key: 'page_about_hospital' },
-      update: { value: JSON.stringify(data) },
-      create: { key: 'page_about_hospital', value: JSON.stringify(data) }
-    });
+    const finalJson = JSON.stringify(data);
+      await prisma.siteSetting.upsert({
+        where: { key: 'page_about_hospital' },
+        update: { value: finalJson },
+        create: { key: 'page_about_hospital', value: finalJson }
+      });
+      const hsStr = await prisma.siteSetting.findUnique({ where: { key: 'layout_header' } });
+      if (hsStr) {
+        let hs = JSON.parse(hsStr.value);
+        if (hs.menus) {
+          hs.menus.forEach((link: any) => {
+             if (link.dropdown) {
+                link.dropdown.forEach((sub: any) => {
+                   if (sub.href === "/about-hospital") {
+                      sub.isActive = formData.get("isActive") === "on";
+                   }
+                });
+             }
+          });
+          await prisma.siteSetting.update({
+             where: { key: 'layout_header' },
+             data: { value: JSON.stringify(hs) }
+          });
+        }
+      }
 
     revalidatePath("/admin/about/about-hospital");
     revalidatePath("/about-hospital");
+    revalidatePath("/");
   }
 
   return (
@@ -94,11 +129,18 @@ Surgical facilities include one cardiac catheterization labs, 12 operating theat
           <div className="absolute top-0 left-0 w-2 h-full bg-gradient-to-b from-[#002b5c] to-[#007a87]"></div>
           <div className="z-10 relative">
             <h1 className="text-[32px] md:text-[40px] font-black text-[#002b5c] tracking-tight leading-tight mb-2 flex items-center gap-3">
-              About Hospital
+              About Us: About Hospital
             </h1>
             <p className="text-[15px] font-medium text-slate-500 max-w-xl leading-relaxed">
-              Manage and update the hospital's core information, mission statements, capabilities, and historical background to reflect the latest organizational goals.
+              Manage the general information and history of the hospital.
             </p>
+            <div className="mt-4 flex items-center gap-3">
+              <label className="text-sm font-semibold text-slate-700">Show in Navigation Menu:</label>
+              <label className="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" name="isActive" defaultChecked={isPageActive} className="sr-only peer" />
+                <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-teal-500"></div>
+              </label>
+            </div>
           </div>
           <div className="z-10 shrink-0">
                <SubmitButton text="Save Changes" loadingText="Saving..." />

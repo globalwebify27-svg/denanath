@@ -1,4 +1,6 @@
 "use client";
+
+import NavigationMenuToggle from "@/components/NavigationMenuToggle";
 import QuillEditor from "@/components/QuillEditor";
 
 
@@ -124,6 +126,7 @@ export default function ECApprovalClientForm({ initialData, saveAction }: { init
           <p className="text-[15px] font-medium text-slate-500 max-w-xl leading-relaxed">
             Manage the content, image gallery, useful links and SEO metadata for the EC Approval page.
           </p>
+          <NavigationMenuToggle href="/ec-approval" />
         </div>
         <div className="z-10 shrink-0 mt-4 lg:mt-0">
           <button

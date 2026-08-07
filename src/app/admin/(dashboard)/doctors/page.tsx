@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Search, Plus, Edit, HeartPulse } from "lucide-react";
 import InlineSeoForm from "@/app/admin/(dashboard)/components/InlineSeoForm";
 import SyncDoctorsButton from "@/app/admin/(dashboard)/components/SyncDoctorsButton";
+import NavigationMenuToggle from "@/components/NavigationMenuToggle";
 
 export const dynamic = "force-dynamic";
 
@@ -54,6 +55,7 @@ export default async function AdminDoctorsPage({
           <p className="text-[15px] font-medium text-slate-500 max-w-xl leading-relaxed">
             Manage hospital medical staff and physician profiles.
           </p>
+          <NavigationMenuToggle href="/doctor-details" />
         </div>
         <div className="z-10 shrink-0 mt-4 lg:mt-0 flex gap-4">
           <SyncDoctorsButton />
@@ -101,8 +103,8 @@ export default async function AdminDoctorsPage({
             <thead>
               <tr className="bg-gradient-to-r from-gray-50 to-white border-b border-gray-100">
                 <th className="p-5 font-[800] text-[12px] uppercase tracking-widest text-gray-400 w-[35%]">Physician Profile</th>
-                <th className="p-5 font-[800] text-[12px] uppercase tracking-widest text-gray-400 w-[25%]">Specialty</th>
-                <th className="p-5 font-[800] text-[12px] uppercase tracking-widest text-gray-400 w-[30%]">Qualifications</th>
+                <th className="p-5 font-[800] text-[12px] uppercase tracking-widest text-gray-400 w-[20%]">Specialty</th>
+                <th className="p-5 font-[800] text-[12px] uppercase tracking-widest text-gray-400 w-[35%]">Qualifications</th>
                 <th className="p-5 font-[800] text-[12px] uppercase tracking-widest text-gray-400 text-right w-[10%]">Actions</th>
               </tr>
             </thead>

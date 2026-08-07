@@ -233,7 +233,7 @@ export default function PatientPortalPage({ pageData }: { pageData: any }) {
                           </label>
                           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
                             <div className="flex items-center gap-3">
-                              <div className="bg-slate-800 text-white px-5 py-2.5 rounded-lg tracking-widest font-mono font-bold text-lg select-none shadow-inner border border-slate-700 w-32 text-center">
+                              <div className="bg-slate-800 text-white px-5 py-2.5 rounded-lg tracking-widest font-mono font-bold text-[16px] select-none shadow-inner border border-slate-700 w-32 text-center">
                                 {captchaCode}
                               </div>
                               <button type="button" onClick={generateCaptcha} className="text-blue-500 hover:text-blue-600 transition-colors bg-blue-50 p-2.5 rounded-lg hover:bg-blue-100">

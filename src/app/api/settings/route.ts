@@ -2,6 +2,28 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 
+export const dynamic = 'force-dynamic';
+
+export async function GET(req: Request) {
+  const { searchParams } = new URL(req.url);
+  const key = searchParams.get("key");
+
+  if (key) {
+    const setting = await prisma.siteSetting.findUnique({ where: { key } });
+    if (setting) {
+      try {
+        return NextResponse.json(JSON.parse(setting.value));
+      } catch (e) {
+        return NextResponse.json({ value: setting.value });
+      }
+    }
+    return NextResponse.json({ error: "Not found" }, { status: 404 });
+  }
+
+  // If no key, return empty object (backward compatibility)
+  return NextResponse.json({});
+}
+
 export async function POST(req: Request) {
   try {
     const body = await req.json();

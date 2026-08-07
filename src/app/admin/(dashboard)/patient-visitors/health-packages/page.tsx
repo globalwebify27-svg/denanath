@@ -1,3 +1,4 @@
+import NavigationMenuToggle from "@/components/NavigationMenuToggle";
 import { Save, HeartPulse , Search } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
@@ -7,15 +8,14 @@ import HealthPackagesClientForm from "./client-form";
 export const dynamic = "force-dynamic";
 
 export default async function AdminHealthPackagesPage() {
-  const setting = await prisma.siteSetting.findUnique({ where: { key: 'page_health_packages' } });
+const setting = await prisma.siteSetting.findUnique({ where: { key: 'page_health_packages' } });
 
   let healthPackagesData: any = {};
   try { if (setting) healthPackagesData = JSON.parse(setting.value); } catch (e) {}
 
   async function saveHealthPackagesData(formData: FormData) {
     "use server";
-    
-    const rawJson = formData.get("healthPackagesJson") as string;
+const rawJson = formData.get("healthPackagesJson") as string;
     
     try {
       const parsed = JSON.parse(rawJson);
@@ -42,11 +42,12 @@ export default async function AdminHealthPackagesPage() {
         <div className="absolute top-0 left-0 w-2 h-full bg-gradient-to-b from-[#002b5c] to-[#007a87]"></div>
         <div className="z-10 relative">
           <h1 className="text-[32px] md:text-[40px] font-black text-[#002b5c] tracking-tight leading-tight mb-2 flex items-center gap-3">
-            Health Packages
+            Patient & Visitors: Health Packages
           </h1>
           <p className="text-[15px] font-medium text-slate-500 max-w-xl leading-relaxed">
             Manage the hospital's preventive health packages, pricing, and inclusions.
           </p>
+            <NavigationMenuToggle href="/health-packages" />
         </div>
         <div className="z-10 shrink-0 mt-4 lg:mt-0">
           <SubmitButton text="Save Changes" loadingText="Saving..." />

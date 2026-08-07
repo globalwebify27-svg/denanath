@@ -11,25 +11,28 @@ import QuillEditor from "@/components/QuillEditor";
 
 interface PageFormProps {
   pageId?: string;
+  headerMenus: string[];
+  initialData?: any;
 }
 
-export default function PageForm({ pageId }: PageFormProps) {
+export default function PageForm({ pageId, headerMenus, initialData }: PageFormProps) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [initialLoading, setInitialLoading] = useState(!!pageId);
+  const isNewPage = !pageId || pageId === "new";
+  const [initialLoading, setInitialLoading] = useState(!isNewPage && !initialData);
   const [formData, setFormData] = useState({
-    title: "",
-    slug: "",
-    navbarMenu: "",
-    content: "",
-    status: true,
-    seoMetaTitle: "",
-    seoMetaDescription: "",
-    seoKeywords: "",
-    gallery: "[]",
+    title: initialData?.title || "",
+    slug: initialData?.slug || "",
+    navbarMenu: initialData?.navbarMenu || "",
+    content: initialData?.content || "",
+    status: initialData?.status ?? true,
+    seoMetaTitle: initialData?.seoMetaTitle || "",
+    seoMetaDescription: initialData?.seoMetaDescription || "",
+    seoKeywords: initialData?.seoKeywords || "",
+    gallery: initialData?.gallery || "[]",
   });
 
-  const menus = [
+  const menus = headerMenus.length > 0 ? headerMenus : [
     "About Us",
     "Patient & Visitors",
     "Doctors & Departments",
@@ -40,10 +43,12 @@ export default function PageForm({ pageId }: PageFormProps) {
 
 
   useEffect(() => {
-    if (pageId) {
+    if (!isNewPage && !initialData) {
       fetchPage();
+    } else {
+      setInitialLoading(false);
     }
-  }, [pageId]);
+  }, [pageId, isNewPage, initialData]);
 
   const fetchPage = async () => {
     try {
@@ -96,8 +101,8 @@ export default function PageForm({ pageId }: PageFormProps) {
 
     setLoading(true);
     try {
-      const url = pageId ? `/api/dynamic-pages/${pageId}` : "/api/dynamic-pages";
-      const method = pageId ? "PUT" : "POST";
+      const url = !isNewPage ? `/api/dynamic-pages/${pageId}` : "/api/dynamic-pages";
+      const method = !isNewPage ? "PUT" : "POST";
 
       const response = await fetch(url, {
         method,
@@ -108,7 +113,7 @@ export default function PageForm({ pageId }: PageFormProps) {
       const data = await response.json();
 
       if (response.ok) {
-        alert(pageId ? "Page updated successfully" : "Page created successfully");
+        alert(!isNewPage ? "Page updated successfully" : "Page created successfully");
         router.push("/admin/pages");
       } else {
         alert(data.error || "Something went wrong");
@@ -138,11 +143,26 @@ export default function PageForm({ pageId }: PageFormProps) {
           </Link>
           <div>
             <h1 className="text-[32px] md:text-[40px] font-black text-[#002b5c] tracking-tight leading-tight mb-2 flex items-center gap-3">
-              {pageId ? "Edit Custom Page" : "Create New Page"}
+              {formData.navbarMenu ? `${formData.navbarMenu}: ` : ""}{formData.title || (!isNewPage ? "Edit Custom Page" : "Create New Page")}
             </h1>
             <p className="text-[15px] font-medium text-slate-500 max-w-xl leading-relaxed mt-2">
-              {pageId ? "Update existing custom page settings and content." : "Add a new custom page to the website navigation."}
+              {!isNewPage ? "Update existing custom page settings and content." : "Add a new custom page to the website navigation."}
             </p>
+            {!isNewPage && (
+              <div className="mt-4 flex items-center gap-3">
+                <label className="text-sm font-semibold text-slate-700">Show in Navigation Menu:</label>
+                <label className="relative inline-flex items-center cursor-pointer">
+                  <input 
+                    suppressHydrationWarning={true}
+                    type="checkbox" 
+                    checked={formData.status}
+                    onChange={(e) => setFormData({ ...formData, status: e.target.checked })}
+                    className="sr-only peer" 
+                  />
+                  <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-teal-500"></div>
+                </label>
+              </div>
+            )}
           </div>
         </div>
         <div className="z-10 shrink-0 mt-4 lg:mt-0">
@@ -164,22 +184,7 @@ export default function PageForm({ pageId }: PageFormProps) {
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-8">
-        {/* Publishing Card */}
-        <div className="bg-white p-6 md:p-8 rounded-3xl shadow-sm border border-slate-100">
-          <h2 className="text-[18px] font-black text-[#002b5c] mb-6 tracking-tight">Publishing</h2>
-          <div>
-            <label className="flex items-center gap-3 cursor-pointer p-4 bg-slate-50 rounded-2xl border border-slate-100 hover:border-[#007a87]/30 transition-colors">
-              <input
-                suppressHydrationWarning={true}
-                type="checkbox"
-                checked={formData.status}
-                onChange={(e) => setFormData({ ...formData, status: e.target.checked })}
-                className="w-5 h-5 text-[#007a87] rounded border-slate-300 focus:ring-[#007a87]"
-              />
-              <span className="text-[15px] text-[#002b5c] font-bold">Active (Visible to public)</span>
-            </label>
-          </div>
-        </div>
+        {/* Publishing Card removed because it was moved to the header */}
 
         {/* Basic Information Card */}
         <div className="bg-white p-6 md:p-8 rounded-3xl shadow-sm border border-slate-100">

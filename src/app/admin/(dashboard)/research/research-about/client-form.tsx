@@ -1,5 +1,7 @@
 "use client";
 
+import NavigationMenuToggle from "@/components/NavigationMenuToggle";
+
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Save, HeartPulse, FileText, Plus, Trash2 , Search} from "lucide-react";
@@ -216,6 +218,7 @@ export default function ResearchAboutClientForm({ initialData }: { initialData: 
           <p className="text-[15px] font-medium text-slate-500 max-w-xl leading-relaxed">
             Manage the content for the Research About Us page.
           </p>
+          <NavigationMenuToggle href="/research-about" />
         </div>
         <div className="z-10 shrink-0 mt-4 lg:mt-0">
           <button

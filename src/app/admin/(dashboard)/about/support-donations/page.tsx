@@ -1,3 +1,4 @@
+import NavigationMenuToggle from "@/components/NavigationMenuToggle";
 import { Save, HeartPulse , Search } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
@@ -7,7 +8,7 @@ import SupportDonationsClientForm from "./client-form";
 export const dynamic = "force-dynamic";
 
 export default async function AdminSupportDonationsPage() {
-  const setting = await prisma.siteSetting.findUnique({ where: { key: 'page_support_donations' } });
+const setting = await prisma.siteSetting.findUnique({ where: { key: 'page_support_donations' } });
 
   let donationsData: any = {};
   try { if (setting) donationsData = JSON.parse(setting.value); } catch (e) {}
@@ -35,8 +36,7 @@ export default async function AdminSupportDonationsPage() {
 
   async function saveDonations(formData: FormData) {
     "use server";
-    
-    const rawJson = formData.get("donationsJson") as string;
+const rawJson = formData.get("donationsJson") as string;
     
     try {
       const parsed = JSON.parse(rawJson);
@@ -63,11 +63,12 @@ export default async function AdminSupportDonationsPage() {
         <div className="absolute top-0 left-0 w-2 h-full bg-gradient-to-b from-[#002b5c] to-[#007a87]"></div>
         <div className="z-10 relative">
           <h1 className="text-[32px] md:text-[40px] font-black text-[#002b5c] tracking-tight leading-tight mb-2 flex items-center gap-3">
-            Support & Donations
+            About Us: Support Hospital / Donations
           </h1>
           <p className="text-[15px] font-medium text-slate-500 max-w-xl leading-relaxed">
             Manage the lists of donors displayed on the Support Hospital page.
           </p>
+            <NavigationMenuToggle href="/supportHospitalDonations" />
         </div>
         <div className="z-10 shrink-0 mt-4 lg:mt-0">
           <SubmitButton text="Save Changes" loadingText="Saving..." />
