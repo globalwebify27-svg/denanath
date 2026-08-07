@@ -326,7 +326,7 @@ export default function SimulationCenterClient({ initialData, labsData }: { init
                       <div>
                         <label className="block text-[18px] leading-[26px] font-semibold text-slate-700 mb-2">Captcha <span className="text-red-500">*</span></label>
                         <div className="flex items-center gap-3 mb-2">
-                          <div className="bg-slate-200 px-4 py-2 rounded-lg tracking-widest font-mono font-bold text-lg text-slate-800 select-none">
+                          <div className="bg-slate-200 px-4 py-2 rounded-lg tracking-widest font-mono font-bold text-[16px] text-slate-800 select-none">
                             {captchaCode}
                           </div>
                           <button 
@@ -337,11 +337,11 @@ export default function SimulationCenterClient({ initialData, labsData }: { init
                             <RefreshCw className="w-5 h-5" />
                           </button>
                         </div>
-                        <input name="captcha" type="text" placeholder="Enter Captcha Text" className="w-full md:w-1/2 px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500/50 bg-slate-50 text-[18px] leading-[31px] font-normal text-slate-700" required />
+                        <input name="captcha" type="text" placeholder="Enter Captcha Text" className="w-full md:w-1/2 px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500/50 bg-slate-50 text-[16px] leading-[31px] font-normal text-slate-700" required />
                       </div>
 
                       <div className="pt-4 flex justify-center md:justify-start">
-                        <button type="submit" disabled={isSubmitting} className="w-full md:w-[200px] py-3 bg-[#003360] text-white text-[18px] leading-[28px] font-bold rounded-md hover:bg-[#002b5c] transition-colors shadow-sm disabled:opacity-70 disabled:cursor-not-allowed">
+                        <button type="submit" disabled={isSubmitting} className="w-full md:w-[160px] py-2 bg-[#003360] text-white text-[16px] leading-[28px] font-bold rounded-md hover:bg-[#002b5c] transition-colors shadow-sm disabled:opacity-70 disabled:cursor-not-allowed">
                           {isSubmitting ? "Submitting..." : "Submit"}
                         </button>
                       </div>

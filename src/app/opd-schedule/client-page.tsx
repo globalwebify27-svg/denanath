@@ -72,7 +72,7 @@ const DoctorScheduleCard = ({ doc, initialData, index }: { doc: any, initialData
           setTimings(parsedTimings);
         }
       } catch (err) {
-        console.error("Failed to fetch schedule for", doc.doctor_name, err);
+        console.error("Failed to fetch schedule for", doc.name || doc.doctor_name || "Unknown Doctor", err);
       } finally {
         if (isMounted) setLoading(false);
       }

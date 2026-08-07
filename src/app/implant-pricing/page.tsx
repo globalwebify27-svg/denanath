@@ -39,7 +39,7 @@ export default async function ImplantPricingPage() {
     <div className="min-h-screen bg-[#f8fafc]">
       
       {/* 1. Hero Section */}
-      <div className="relative bg-gradient-to-r from-[#002b5c] to-[#005f6b] py-16 overflow-hidden">
+      <div className="relative bg-gradient-to-r from-[#002b5c] to-[#005f6b] py-3 md:py-4 overflow-hidden">
         {data.bannerImage ? (
           <div className="absolute inset-0 z-0">
             <img src={data.bannerImage} alt="Banner" className="w-full h-full object-cover opacity-30" />
@@ -54,28 +54,28 @@ export default async function ImplantPricingPage() {
         
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           
-          <nav className="flex items-center gap-2 text-sm text-[#b2dfdb] mb-2">
+          <nav className="flex items-center gap-2 text-[10px] text-[#b2dfdb] mb-1.5">
             <Link href="/" className="hover:text-white transition-colors">Home</Link>
-            <ChevronRight className="w-4 h-4" />
+            <ChevronRight className="w-3.5 h-3.5" />
             <span className="text-white font-medium">{(data.pageTitle || data.title || "").replace(/<[^>]*>?/gm, '')}</span>
           </nav>
           
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div className="max-w-3xl">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 border border-white/20 text-white text-sm font-semibold mb-6 backdrop-blur-sm">
-                <Stethoscope className="w-4 h-4 text-[#a7ffeb]" />
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/10 border border-white/20 text-white text-[9px] font-semibold mb-2 backdrop-blur-sm">
+                <Stethoscope className="w-3 h-3 text-[#a7ffeb]" />
                 <span>Orthopedics Department</span>
               </div>
-              <h1 className="text-[48px] font-bold text-white leading-tight tracking-tight mb-4">
+              <h1 className="text-[40px] font-bold text-white leading-tight tracking-tight">
                 {data.pageTitle || data.title}
               </h1>
             </div>
             
             <Link 
               href="/" 
-              className="inline-flex items-center gap-2 px-6 py-3 bg-white text-[#002b5c] rounded-xl hover:bg-[#e0f2f1] hover:scale-105 transition-all duration-300 font-bold shadow-lg w-fit"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-white text-[#002b5c] rounded-lg hover:bg-[#e0f2f1] hover:scale-105 transition-all duration-300 font-bold shadow-md w-fit text-sm"
             >
-              <ArrowLeft className="w-5 h-5" />
+              <ArrowLeft className="w-4 h-4" />
               <span>Back to Home</span>
             </Link>
           </div>

@@ -7,6 +7,33 @@ import { useRouter } from "next/navigation";
 import { ChevronRight, ChevronLeft, Stethoscope, Search, UserRound, GraduationCap, ArrowRight, X, Calendar, Clock, BookOpen, Briefcase, Phone } from "lucide-react";
 import CustomDropdown from "@/components/CustomDropdown";
 
+const generatePagination = (currentPage: number, totalPages: number) => {
+  const delta = 1;
+  const range = [];
+  const rangeWithDots: (number | string)[] = [];
+  let l;
+
+  for (let i = 1; i <= totalPages; i++) {
+    if (i === 1 || i === totalPages || (i >= currentPage - delta && i <= currentPage + delta)) {
+      range.push(i);
+    }
+  }
+
+  for (let i of range) {
+    if (l) {
+      if (i - l === 2) {
+        rangeWithDots.push(l + 1);
+      } else if (i - l !== 1) {
+        rangeWithDots.push('...');
+      }
+    }
+    rangeWithDots.push(i);
+    l = i;
+  }
+
+  return rangeWithDots;
+};
+
 const DoctorImage = ({ doc, className, iconClassName }: { doc: any, className?: string, iconClassName?: string }) => {
   const [error, setError] = useState(false);
   
@@ -82,9 +109,8 @@ export default function DoctorDetailsPage() {
   // State for filters & infinite scroll
   const [selectedSpecialty, setSelectedSpecialty] = useState("--Select--");
   const [searchName, setSearchName] = useState("");
-  const [visibleCount, setVisibleCount] = useState(30);
-  const ITEMS_PER_LOAD = 30;
-  const sentinelRef = useRef<HTMLDivElement>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 30;
 
   // Auto-select doctor from URL query parameters (e.g. ?name=Dr.+GADRE+ANIKET or ?id=...)
   useEffect(() => {
@@ -117,9 +143,9 @@ export default function DoctorDetailsPage() {
     }
   }, [doctorsList, router]);
 
-  // Reset visible count when filters change
+  // Reset page when filters change
   useEffect(() => {
-    setVisibleCount(30);
+    setCurrentPage(1);
   }, [selectedSpecialty, searchName]);
 
   // Get unique specialties for dropdown
@@ -149,24 +175,8 @@ export default function DoctorDetailsPage() {
     });
   }, [doctorsList, selectedSpecialty, searchName]);
 
-  const visibleDoctors = filteredDoctors.slice(0, visibleCount);
-  const hasMore = visibleCount < filteredDoctors.length;
-
-  // Infinite scroll: IntersectionObserver on sentinel
-  useEffect(() => {
-    if (!hasMore) return;
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          setVisibleCount(prev => prev + ITEMS_PER_LOAD);
-        }
-      },
-      { rootMargin: '200px' }
-    );
-    const el = sentinelRef.current;
-    if (el) observer.observe(el);
-    return () => { if (el) observer.unobserve(el); };
-  }, [hasMore]);
+  const totalPages = Math.ceil(filteredDoctors.length / itemsPerPage);
+  const paginatedDoctors = filteredDoctors.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
   return (
     <div className="min-h-screen bg-[#f8fafc] font-sans selection:bg-teal-500/30">
@@ -253,10 +263,10 @@ export default function DoctorDetailsPage() {
                 <div className="py-12 text-center border-2 border-dashed border-slate-200 rounded-2xl bg-slate-50">
                   <h3 className="text-xl font-bold text-slate-700 mb-2">Loading Doctors...</h3>
                 </div>
-              ) : visibleDoctors.length > 0 ? (
+              ) : paginatedDoctors.length > 0 ? (
                 <>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {visibleDoctors.map((doc, idx) => (
+                  {paginatedDoctors.map((doc, idx) => (
                     <div key={`${doc.id || doc.doctor_id || 'doc'}_card_${idx}`} className="group bg-white border border-slate-200 hover:border-[#D9232D] rounded-2xl p-6 transition-all duration-300 hover:shadow-[0_8px_30px_rgba(217,35,45,0.15)] hover:-translate-y-1 flex flex-col h-full">
                       <div className="flex items-start gap-4 mb-4">
                         <div className="w-24 h-28 rounded-xl bg-teal-50 flex items-center justify-center shrink-0 border border-teal-100 overflow-hidden group-hover:bg-[#D9232D] group-hover:border-[#D9232D] transition-colors">
@@ -296,22 +306,60 @@ export default function DoctorDetailsPage() {
                   ))}
                 </div>
 
-                {/* Infinite scroll sentinel */}
-                {hasMore && (
-                  <div ref={sentinelRef} className="flex justify-center py-8">
-                    <div className="flex items-center gap-3 text-slate-400">
-                      <div className="w-5 h-5 border-2 border-[#007a87] border-t-transparent rounded-full animate-spin" />
-                      <span className="text-sm font-semibold">Loading more doctors...</span>
+                {/* Pagination */}
+                {filteredDoctors.length > 0 && (
+                  <div className="mt-10 pt-6 border-t border-slate-100 flex items-center justify-between">
+                    <span className="text-sm font-semibold text-slate-500">
+                      Showing <strong className="text-slate-800">{paginatedDoctors.length}</strong> of <strong className="text-slate-800">{filteredDoctors.length}</strong> Results
+                    </span>
+                    <div className="flex items-center gap-2">
+                      <button 
+                        onClick={() => {
+                          setCurrentPage(p => Math.max(1, p - 1));
+                          window.scrollTo({ top: 0, behavior: 'smooth' });
+                        }}
+                        disabled={currentPage === 1}
+                        className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors ${currentPage === 1 ? 'border border-slate-200 text-slate-400 cursor-not-allowed' : 'border border-slate-200 text-slate-600 hover:bg-slate-50'}`}
+                      >
+                        <ChevronLeft className="w-4 h-4" />
+                      </button>
+                      
+                      {generatePagination(currentPage, totalPages).map((page, idx) => (
+                        page === '...' ? (
+                          <span key={`dots-${idx}`} className="w-8 h-8 flex items-center justify-center text-slate-500 font-bold">
+                            ...
+                          </span>
+                        ) : (
+                          <button
+                            key={`page-${page}`}
+                            onClick={() => {
+                              setCurrentPage(page as number);
+                              window.scrollTo({ top: 0, behavior: 'smooth' });
+                            }}
+                            className={`w-8 h-8 flex items-center justify-center rounded-lg border font-bold transition-colors text-sm ${
+                              currentPage === page 
+                                ? "bg-[#007a87] border-[#007a87] text-white" 
+                                : "border-slate-200 text-slate-600 hover:bg-slate-50"
+                            }`}
+                          >
+                            {page}
+                          </button>
+                        )
+                      ))}
+
+                      <button 
+                        onClick={() => {
+                          setCurrentPage(p => Math.min(totalPages, p + 1));
+                          window.scrollTo({ top: 0, behavior: 'smooth' });
+                        }}
+                        disabled={currentPage === totalPages}
+                        className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors ${currentPage === totalPages ? 'border border-slate-200 text-slate-400 cursor-not-allowed' : 'border border-slate-200 text-slate-600 hover:bg-slate-50'}`}
+                      >
+                        <ChevronRight className="w-4 h-4" />
+                      </button>
                     </div>
                   </div>
                 )}
-
-                {/* Results count */}
-                <div className="mt-6 text-center">
-                  <span className="text-sm font-semibold text-slate-400">
-                    Showing {visibleDoctors.length} of {filteredDoctors.length} doctors
-                  </span>
-                </div>
                 </>
               ) : (
                 <div className="py-12 text-center border-2 border-dashed border-slate-200 rounded-2xl bg-slate-50">

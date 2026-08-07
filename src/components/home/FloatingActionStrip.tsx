@@ -44,7 +44,7 @@ export default function FloatingActionStrip({ setIsSearchOpen }: FloatingActionS
         {/* Center Call to Action Button */}
         <button 
           onClick={() => setIsSearchOpen(true)}
-          className="flex-1 w-full max-w-xl xl:max-w-[420px] bg-[#007a87] hover:bg-[#d9232d] text-white rounded-[1.5rem] py-4 px-4 sm:px-6 shadow-[0_8px_30px_rgba(0,122,135,0.2)] hover:shadow-[0_8px_30px_rgba(217,35,45,0.3)] transition-all duration-300 hover:-translate-y-1 flex items-center justify-between group flex-shrink-0"
+          className="cursor-pointer flex-1 w-full max-w-xl xl:max-w-[420px] bg-[#007a87] hover:bg-[#d9232d] text-white rounded-[1.5rem] py-4 px-4 sm:px-6 shadow-[0_8px_30px_rgba(0,122,135,0.2)] hover:shadow-[0_8px_30px_rgba(217,35,45,0.3)] transition-all duration-300 hover:-translate-y-1 flex items-center justify-between group flex-shrink-0"
         >
           <div className="flex items-start sm:items-center gap-3 text-left">
             <div className="w-9 h-9 sm:w-12 sm:h-12 bg-white/20 rounded-xl flex items-center justify-center group-hover:bg-white/30 transition-colors flex-shrink-0 notranslate" translate="no" data-no-translate="true" aria-hidden="true">

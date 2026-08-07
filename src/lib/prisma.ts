@@ -16,24 +16,24 @@ export const prisma =
         async findUnique({ model, operation, args, query }) {
           try {
             return await query(args);
-          } catch (e) {
-            console.error(`Database error on ${model}.${operation}:`, e);
+          } catch (e: any) {
+            console.warn(`Database warning on ${model}.${operation}: ${e.message || 'Connection failed'}`);
             return null;
           }
         },
         async findFirst({ model, operation, args, query }) {
           try {
             return await query(args);
-          } catch (e) {
-            console.error(`Database error on ${model}.${operation}:`, e);
+          } catch (e: any) {
+            console.warn(`Database warning on ${model}.${operation}: ${e.message || 'Connection failed'}`);
             return null;
           }
         },
         async findMany({ model, operation, args, query }) {
           try {
             return await query(args);
-          } catch (e) {
-            console.error(`Database error on ${model}.${operation}:`, e);
+          } catch (e: any) {
+            console.warn(`Database warning on ${model}.${operation}: ${e.message || 'Connection failed'}`);
             return [];
           }
         }

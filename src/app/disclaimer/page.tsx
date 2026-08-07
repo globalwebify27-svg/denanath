@@ -46,7 +46,7 @@ export default async function DisclaimerPage() {
   } catch (e) {}
 
   return (
-    <main className="bg-slate-50 min-h-screen pb-20">
+    <main className="bg-slate-50 min-h-screen pb-0">
       {/* Hero Section */}
       <div className="w-full bg-[#002b5c] relative overflow-hidden py-4">
         <div className="absolute inset-0 bg-[url(https://www.transparenttextures.com/patterns/cubes.png)] opacity-10 mix-blend-overlay pointer-events-none" />
@@ -72,16 +72,16 @@ export default async function DisclaimerPage() {
       </div>
 
       {/* Content Section */}
-      <div className="max-w-4xl mx-auto px-4 py-12 relative z-20">
-        <div className="bg-white rounded-3xl shadow-xl shadow-slate-200/50 p-8 md:p-12 border border-slate-100">
+      <div className="max-w-4xl mx-auto px-4 pt-4 pb-8 relative z-20">
+        <div className="bg-white rounded-3xl shadow-xl shadow-slate-200/50 px-8 pt-4 pb-5 md:px-12 md:pt-5 md:pb-5 border border-slate-100">
           <div 
-            className="prose prose-slate prose-lg max-w-none prose-headings:text-[#002b5c] prose-p:text-slate-600"
+            className="prose prose-slate prose-lg max-w-none prose-headings:text-[#002b5c] prose-p:text-slate-600 [&_h2:first-child]:!mt-0 [&_h2]:!mb-3 [&_h2]:!pb-2 [&_h2]:!mt-4 [&_p:last-child]:!mb-0"
             dangerouslySetInnerHTML={{ __html: data.content }}
           />
 
           {/* Gallery Section */}
           {data.gallery && data.gallery.length > 0 && (
-            <div className="mt-16 pt-12 border-t border-slate-100">
+            <div className="mt-8 pt-8 border-t border-slate-100">
               <h3 className="text-2xl font-bold text-[#002b5c] mb-8">Gallery</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                 {data.gallery.map((img: any, idx: number) => (
@@ -103,7 +103,7 @@ export default async function DisclaimerPage() {
 
           {/* Links / Publications Section */}
           {data.links && data.links.length > 0 && (
-            <div className="mt-16 pt-12 border-t border-slate-100">
+            <div className="mt-8 pt-8 border-t border-slate-100">
               <h3 className="text-2xl font-bold text-[#002b5c] mb-8">Publications & Links</h3>
               <div className="flex flex-col gap-3">
                 {data.links.map((link: any, idx: number) => (

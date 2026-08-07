@@ -73,12 +73,12 @@ export default function EventsClientPage({ events = [], pageData }: { events: an
       </div>
 
       {/* 2. Main Events List */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-24">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-16 space-y-16">
         {displayedEvents.map((event, index) => {
           const { title, date, overview, objectives, summary, organizers, gallery, agenda, overviewTitle, objectivesTitle, organizersTitle, agendaTitle, galleryTitle, features, featuresTitle } = event;
           
           return (
-            <div key={index} className="space-y-12 pb-24 border-b-2 border-slate-200 last:border-0 last:pb-0">
+            <div key={index} className="space-y-6 pb-16 border-b-2 border-slate-200 last:border-0 last:pb-0">
               
               {/* Event Header (Title & Date moved here) */}
               <div className="flex flex-col gap-4">
@@ -98,7 +98,7 @@ export default function EventsClientPage({ events = [], pageData }: { events: an
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
                 
                 {/* Left Column: Content */}
-                <div className="lg:col-span-2 space-y-12">
+                <div className="lg:col-span-2 space-y-6">
                   
                   {/* Event Overview */}
                   {overview && overview.length > 0 && overview[0] !== "" && (

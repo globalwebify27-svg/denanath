@@ -240,7 +240,7 @@ export default function PatientPortalPage({ pageData }: { pageData: any }) {
                                 <RefreshCw className="w-5 h-5" />
                               </button>
                             </div>
-                            <input type="text" name="captcha" placeholder="Enter text" className="w-full sm:w-40 px-4 py-1.5 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all font-medium placeholder-slate-400 text-sm" />
+                            <input type="text" name="captcha" placeholder="Enter text" className="w-full sm:w-40 px-4 py-1.5 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all font-medium placeholder-slate-400 text-[16px]" />
                           </div>
                         </div>
 
@@ -248,7 +248,7 @@ export default function PatientPortalPage({ pageData }: { pageData: any }) {
                           <button 
                               type="submit" 
                               disabled={isLoginSubmitting}
-                              className={`group w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-1.5 bg-[#003360] hover:bg-[#002b5c] text-white font-bold text-sm rounded-lg transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5 ${isLoginSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
+                              className={`group w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-1.5 bg-[#003360] hover:bg-[#002b5c] text-white font-bold text-[16px] rounded-lg transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5 ${isLoginSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
                             >
                               {isLoginSubmitting ? (
                                 <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>

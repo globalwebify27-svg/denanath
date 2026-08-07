@@ -527,13 +527,13 @@ export default function OnlinePaymentClientPage({ pageData }: { pageData: any })
                         <RefreshCw className="w-5 h-5" />
                       </button>
                       {/* Enter text input */}
-                      <input suppressHydrationWarning type="text" name="captcha" placeholder="Enter text" className="w-40 px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-slate-50 transition-all font-medium text-sm" />
+                      <input suppressHydrationWarning type="text" name="captcha" placeholder="Enter text" className="w-40 px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-slate-50 transition-all font-medium text-[16px]" />
                     </div>
                     {/* Proceed to Pay button */}
                     <button suppressHydrationWarning
                       type="submit"
                       disabled={isSubmitting}
-                      className={`group inline-flex items-center justify-center gap-2 px-9 py-3 bg-[#003360] hover:bg-[#002b5c] text-white font-bold text-sm whitespace-nowrap rounded-lg transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5 ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
+                      className={`group inline-flex items-center justify-center gap-2 px-9 py-3 bg-[#003360] hover:bg-[#002b5c] text-white font-bold text-[16px] whitespace-nowrap rounded-lg transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5 ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
                     >
                       {isSubmitting ? (
                         <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
