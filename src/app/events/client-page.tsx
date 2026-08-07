@@ -73,7 +73,7 @@ export default function EventsClientPage({ events = [], pageData }: { events: an
       </div>
 
       {/* 2. Main Events List */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-16 space-y-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-8 md:pb-12 space-y-16">
         {displayedEvents.map((event, index) => {
           const { title, date, overview, objectives, summary, organizers, gallery, agenda, overviewTitle, objectivesTitle, organizersTitle, agendaTitle, galleryTitle, features, featuresTitle } = event;
           

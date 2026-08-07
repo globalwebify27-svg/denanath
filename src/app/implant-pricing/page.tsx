@@ -83,7 +83,7 @@ export default async function ImplantPricingPage() {
       </div>
 
       {/* 2. Main Content */}
-      <div className="max-w-[95%] xl:max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 pt-8 relative z-20">
+      <div className="max-w-[95%] xl:max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8 md:pb-12 pt-8 relative z-20">
         
         {data.subtitle && (
           <div className="mb-6 bg-white rounded-2xl shadow-sm border border-slate-200 p-6 flex items-start gap-4">

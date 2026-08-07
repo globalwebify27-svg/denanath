@@ -853,7 +853,7 @@ export default async function DepartmentDetailsPage({
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 md:py-4">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-2 pb-8 md:pt-4 md:pb-12">
         <Link href="/departments" className="inline-flex items-center gap-2 text-[#007a87] hover:text-[#002b5c] font-bold mb-6 transition-colors">
           <ArrowLeft className="w-4 h-4" /> Back to Specialties
         </Link>
@@ -862,7 +862,7 @@ export default async function DepartmentDetailsPage({
           
           {/* Main Content */}
           <div className="w-full flex-1 min-w-0">
-            <div className="bg-white rounded-3xl shadow-[0_8px_40px_rgb(0,0,0,0.03)] border border-slate-100/60 p-6 sm:p-10">
+            <div className="bg-white rounded-3xl shadow-[0_8px_40px_rgb(0,0,0,0.03)] border border-slate-100/60 px-6 pt-3 pb-6 sm:px-10 sm:pt-5 sm:pb-10">
               
               <div className="mb-10 flex items-start justify-between flex-wrap gap-4">
                 <div>

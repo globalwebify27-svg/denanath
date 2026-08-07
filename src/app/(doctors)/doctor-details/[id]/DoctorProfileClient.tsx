@@ -24,6 +24,18 @@ const DoctorImage = ({ doc, className, iconClassName }: { doc: any, className?: 
   );
 };
 
+const renderListItem = (item: any) => {
+  if (typeof item === 'string') return item;
+  if (typeof item === 'object' && item !== null) {
+    if (item.degree || item.collegeName || item.year) {
+      return [item.degree, item.collegeName, item.year].filter(Boolean).join(' - ');
+    }
+    return Object.values(item).filter(Boolean).join(' - ');
+  }
+  return String(item || '');
+};
+
+
 export default function DoctorProfileClient({ initialDoctor }: { initialDoctor: any }) {
   const [doctor, setDoctor] = useState(initialDoctor);
   const [loadingSchedule, setLoadingSchedule] = useState(false);
@@ -175,10 +187,10 @@ export default function DoctorProfileClient({ initialDoctor }: { initialDoctor: 
                   <GraduationCap className="w-6 h-6 text-[#007a87]" /> Education
                 </h3>
                 <ul className="space-y-4">
-                  {doctor.education.map((item: string, i: number) => (
+                  {doctor.education.map((item: any, i: number) => (
                     <li key={i} className="flex gap-4 text-slate-600 font-medium text-base leading-relaxed">
                       <div className="w-2 h-2 rounded-full bg-teal-400 shrink-0 mt-2.5 shadow-sm shadow-teal-200"></div>
-                      {item}
+                      {renderListItem(item)}
                     </li>
                   ))}
                 </ul>
@@ -191,10 +203,10 @@ export default function DoctorProfileClient({ initialDoctor }: { initialDoctor: 
                   <BookOpen className="w-6 h-6 text-[#007a87]" /> Training
                 </h3>
                 <ul className="space-y-4">
-                  {doctor.training.map((item: string, i: number) => (
+                  {doctor.training.map((item: any, i: number) => (
                     <li key={i} className="flex gap-4 text-slate-600 font-medium text-base leading-relaxed">
                       <div className="w-2 h-2 rounded-full bg-amber-400 shrink-0 mt-2.5 shadow-sm shadow-amber-200"></div>
-                      {item}
+                      {renderListItem(item)}
                     </li>
                   ))}
                 </ul>
@@ -207,10 +219,10 @@ export default function DoctorProfileClient({ initialDoctor }: { initialDoctor: 
                   <Briefcase className="w-6 h-6 text-[#007a87]" /> Experience
                 </h3>
                 <ul className="space-y-4">
-                  {doctor.experience.map((item: string, i: number) => (
+                  {doctor.experience.map((item: any, i: number) => (
                     <li key={i} className="flex gap-4 text-slate-600 font-medium text-base leading-relaxed">
                       <div className="w-2 h-2 rounded-full bg-blue-400 shrink-0 mt-2.5 shadow-sm shadow-blue-200"></div>
-                      {item}
+                      {renderListItem(item)}
                     </li>
                   ))}
                 </ul>

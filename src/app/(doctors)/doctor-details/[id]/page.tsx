@@ -40,7 +40,7 @@ export default async function DoctorDedicatedPage({ params }: { params: Promise<
   };
 
   return (
-    <div className="min-h-screen bg-[#f8fafc] font-sans selection:bg-teal-500/30 pb-20">
+    <div className="min-h-screen bg-[#f8fafc] font-sans selection:bg-teal-500/30">
       {/* Premium Page Header */}
       <div className="w-full bg-[#002b5c] relative overflow-hidden">
         <div className="absolute inset-0 bg-[url(https://www.transparenttextures.com/patterns/cubes.png)] opacity-10 mix-blend-overlay pointer-events-none" />
@@ -60,7 +60,7 @@ export default async function DoctorDedicatedPage({ params }: { params: Promise<
         </div>
       </div>
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 md:py-6">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-8 md:pt-6 md:pb-12">
         <Link href="/doctor-details" className="inline-flex items-center gap-2 text-[#007a87] hover:text-[#002b5c] font-bold mb-8 transition-colors">
           <ArrowLeft className="w-4 h-4" /> Back to Doctors
         </Link>
