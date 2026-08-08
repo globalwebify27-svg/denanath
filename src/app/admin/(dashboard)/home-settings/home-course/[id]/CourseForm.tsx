@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, Save, FileText, Image as ImageIcon, Trash2, Plus, Calendar } from "lucide-react";
+import { ArrowLeft, Save, FileText, Image as ImageIcon, Trash2, Plus, Calendar, Search } from "lucide-react";
 import QuillEditor from "@/components/QuillEditor";
 
 export default function CourseForm({ initialData, saveAction, col }: { initialData: any, saveAction: (data: FormData) => Promise<void>, col: string }) {
@@ -20,6 +20,9 @@ export default function CourseForm({ initialData, saveAction, col }: { initialDa
     endDate: initialData.endDate || "",
     gallery: initialData.gallery || [],
     status: initialData.status !== false,
+    seoMetaTitle: initialData.seoMetaTitle || "",
+    seoMetaDescription: initialData.seoMetaDescription || "",
+    seoKeywords: initialData.seoKeywords || "",
   });
 
   const handleGalleryChange = (index: number, key: string, value: string) => {
@@ -83,6 +86,9 @@ export default function CourseForm({ initialData, saveAction, col }: { initialDa
       data.append("content", cleanedContent);
       data.append("status", formData.status.toString());
       data.append("gallery", JSON.stringify(formData.gallery.filter((g: any) => g.image || g.caption)));
+      data.append("seoMetaTitle", formData.seoMetaTitle);
+      data.append("seoMetaDescription", formData.seoMetaDescription);
+      data.append("seoKeywords", formData.seoKeywords);
 
       await saveAction(data);
       alert("Saved successfully!");
@@ -95,7 +101,7 @@ export default function CourseForm({ initialData, saveAction, col }: { initialDa
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-8">
+    <form onSubmit={handleSubmit} className="space-y-8 pb-28 md:pb-36">
       
       {/* Header */}
       <div className="mb-10 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 bg-white p-6 md:p-10 rounded-3xl shadow-sm border border-slate-100 relative overflow-hidden group">
@@ -358,6 +364,51 @@ export default function CourseForm({ initialData, saveAction, col }: { initialDa
                 <Trash2 size={20} />
               </button>
             </div>
+          </div>
+        </div>
+      </div>
+
+      {/* SEO Settings */}
+      <div className="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden group hover:shadow-md transition-shadow duration-300">
+        <div className="bg-slate-50/50 border-b border-slate-100 p-5 md:p-6 flex items-center gap-4">
+          <div className="bg-indigo-500/10 p-3 rounded-2xl text-indigo-600">
+            <Search size={24} strokeWidth={2.5} />
+          </div>
+          <div>
+            <h2 className="text-[20px] font-black text-[#002b5c]">SEO Settings</h2>
+            <p className="text-[13px] text-slate-500 font-medium">Manage search engine optimization meta tags for this {col === "right" ? "program" : "course"}.</p>
+          </div>
+        </div>
+        <div className="p-6 md:p-8 space-y-6">
+          <div>
+            <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Meta Title</label>
+            <input 
+              type="text" 
+              value={formData.seoMetaTitle}
+              onChange={(e) => setFormData({ ...formData, seoMetaTitle: e.target.value })}
+              className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 transition-all duration-200 text-slate-700 font-medium leading-relaxed" 
+              placeholder="Enter SEO Meta Title..." 
+            />
+          </div>
+          <div>
+            <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Meta Description</label>
+            <textarea 
+              value={formData.seoMetaDescription}
+              onChange={(e) => setFormData({ ...formData, seoMetaDescription: e.target.value })}
+              rows={3} 
+              className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 transition-all duration-200 text-slate-700 font-medium leading-relaxed resize-none" 
+              placeholder="Enter SEO Meta Description..." 
+            />
+          </div>
+          <div>
+            <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Keywords</label>
+            <textarea 
+              value={formData.seoKeywords}
+              onChange={(e) => setFormData({ ...formData, seoKeywords: e.target.value })}
+              rows={2} 
+              className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 transition-all duration-200 text-slate-700 font-medium leading-relaxed resize-none text-sm" 
+              placeholder="course, emergency medicine, hospital, pune..." 
+            />
           </div>
         </div>
       </div>

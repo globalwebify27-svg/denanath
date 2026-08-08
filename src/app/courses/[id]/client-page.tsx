@@ -47,15 +47,12 @@ export default function ClientPage({ data }: { data: any }) {
         </div>
 
         {/* Main Content */}
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-3 pb-8 md:pt-5 md:pb-12 space-y-12">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-2 pb-8 md:pt-3 md:pb-12 space-y-12">
           
-          <div className="bg-white rounded-3xl px-6 pt-3 pb-6 sm:px-10 sm:pt-4 sm:pb-10 md:px-12 md:pt-4 md:pb-8 shadow-sm border border-slate-100">
-            <h2 className="text-2xl font-bold text-[#002b5c] border-b border-slate-100 pb-3 mb-5">
-              Overview
-            </h2>
+          <div className="bg-white rounded-3xl px-6 pt-2.5 pb-6 sm:px-10 sm:pt-3 sm:pb-10 md:px-12 md:pt-3 md:pb-8 shadow-sm border border-slate-100">
             {data.content ? (
               <div 
-                className="prose prose-slate max-w-none prose-headings:text-[#002b5c] prose-a:text-[#007a87] prose-img:rounded-xl"
+                className="prose prose-slate max-w-none prose-headings:text-[#002b5c] prose-a:text-[#007a87] prose-img:rounded-xl [&_h1]:!mt-1 [&_h1]:!mb-0.5 [&_h2]:!mt-1 [&_h2]:!mb-0.5 [&_h3]:!mt-1 [&_h3]:!mb-0.5 [&_h4]:!mt-1 [&_h4]:!mb-0.5 [&_p]:!mt-0 [&_p]:!mb-0.5 [&_p:has(strong)]:!mt-1 [&_p:has(strong)]:!mb-0.5 [&_ul]:my-1 [&_ol]:my-1 leading-normal"
                 dangerouslySetInnerHTML={{ __html: data.content }}
               />
             ) : (

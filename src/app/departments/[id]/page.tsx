@@ -36,6 +36,8 @@ export default async function DepartmentDetailsPage({
     notFound();
   }
 
+  const currentDeptSlug = department.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+
   // Pre-process the HTML using Cheerio to fix the layout issues (like merged <br> tags)
   let processedHtml = "";
   let proceduresHtml = "";
@@ -724,7 +726,7 @@ export default async function DepartmentDetailsPage({
                 <ChevronRight className="w-3.5 h-3.5 shrink-0" />
                 <Link href="/departments" className="hover:text-white transition-colors whitespace-nowrap">Specialties</Link>
                 <ChevronRight className="w-3.5 h-3.5 shrink-0" />
-                <Link href={`/departments/${department.id}`} className="hover:text-white transition-colors whitespace-nowrap">{department.name}</Link>
+                <Link href={`/departments/${currentDeptSlug}`} className="hover:text-white transition-colors whitespace-nowrap">{department.name}</Link>
                 <ChevronRight className="w-3.5 h-3.5 shrink-0" />
                 <span className="text-white truncate">Procedures</span>
               </div>
@@ -735,7 +737,7 @@ export default async function DepartmentDetailsPage({
           </div>
           
           <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-             <Link href={`/departments/${department.id}`} className="inline-flex items-center gap-2 text-[#007a87] hover:text-[#002b5c] font-bold mb-8 transition-colors">
+             <Link href={`/departments/${currentDeptSlug}`} className="inline-flex items-center gap-2 text-[#007a87] hover:text-[#002b5c] font-bold mb-8 transition-colors">
                <ArrowLeft className="w-4 h-4" /> Back to {department.name}
              </Link>
           
@@ -766,7 +768,7 @@ export default async function DepartmentDetailsPage({
                 <ChevronRight className="w-3.5 h-3.5 shrink-0" />
                 <Link href="/departments" className="hover:text-white transition-colors whitespace-nowrap">Specialties</Link>
                 <ChevronRight className="w-3.5 h-3.5 shrink-0" />
-                <Link href={`/departments/${department.id}`} className="hover:text-white transition-colors whitespace-nowrap">{department.name}</Link>
+                <Link href={`/departments/${currentDeptSlug}`} className="hover:text-white transition-colors whitespace-nowrap">{department.name}</Link>
                 <ChevronRight className="w-3.5 h-3.5 shrink-0" />
                 <span className="text-white truncate">Photo Gallery</span>
               </div>
@@ -777,7 +779,7 @@ export default async function DepartmentDetailsPage({
           </div>
           
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-             <Link href={`/departments/${department.id}`} className="inline-flex items-center gap-2 text-[#007a87] hover:text-[#002b5c] font-bold mb-8 transition-colors">
+             <Link href={`/departments/${currentDeptSlug}`} className="inline-flex items-center gap-2 text-[#007a87] hover:text-[#002b5c] font-bold mb-8 transition-colors">
                <ArrowLeft className="w-4 h-4" /> Back to {department.name}
              </Link>
           
@@ -808,7 +810,7 @@ export default async function DepartmentDetailsPage({
                 <ChevronRight className="w-3.5 h-3.5 shrink-0" />
                 <Link href="/departments" className="hover:text-white transition-colors whitespace-nowrap">Specialties</Link>
                 <ChevronRight className="w-3.5 h-3.5 shrink-0" />
-                <Link href={`/departments/${department.id}`} className="hover:text-white transition-colors whitespace-nowrap">{department.name}</Link>
+                <Link href={`/departments/${currentDeptSlug}`} className="hover:text-white transition-colors whitespace-nowrap">{department.name}</Link>
                 <ChevronRight className="w-3.5 h-3.5 shrink-0" />
                 <span className="text-white truncate">FAQ&apos;s</span>
               </div>
@@ -819,7 +821,7 @@ export default async function DepartmentDetailsPage({
           </div>
           
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-             <Link href={`/departments/${department.id}`} className="inline-flex items-center gap-2 text-[#007a87] hover:text-[#002b5c] font-bold mb-8 transition-colors">
+             <Link href={`/departments/${currentDeptSlug}`} className="inline-flex items-center gap-2 text-[#007a87] hover:text-[#002b5c] font-bold mb-8 transition-colors">
                <ArrowLeft className="w-4 h-4" /> Back to {department.name}
              </Link>
           
@@ -939,11 +941,12 @@ export default async function DepartmentDetailsPage({
                   .slice()
                   .sort((a, b) => a.name.localeCompare(b.name))
                   .map((dept) => {
-                    const isActive = dept.id === department.id;
+                    const deptSlug = dept.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+                    const isActive = dept.id === department.id || deptSlug === resolvedParams.id.toLowerCase();
                     return (
                       <Link
                         key={dept.id}
-                        href={`/departments/${dept.id}`}
+                        href={`/departments/${deptSlug}`}
                         className={`group flex items-start gap-2 py-2 px-2.5 rounded-xl text-[10.5px] xl:text-[11.5px] font-semibold uppercase tracking-wider transition-all leading-tight ${
                           isActive
                             ? "bg-[#007a87] text-white shadow-sm font-bold"

@@ -3,12 +3,13 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Save, Plus, Trash2, ArrowLeft, HeartPulse, Search } from "lucide-react";
+import { Save, Plus, Trash2, ArrowLeft, HeartPulse, Search, Upload } from "lucide-react";
 
 
 export default function DoctorForm({ doctor, id }: { doctor: any; id: string }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [uploadingPubIndex, setUploadingPubIndex] = useState<number | null>(null);
   
   // Parse JSON strings to objects/arrays safely
   const safeParse = (str: any) => {
@@ -256,7 +257,7 @@ export default function DoctorForm({ doctor, id }: { doctor: any; id: string }) 
   );
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-6xl mx-auto pb-12">
+    <form onSubmit={handleSubmit} className="max-w-6xl mx-auto pb-28 md:pb-36">
       {/* Header Section with Save button */}
       <div className="mb-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 bg-white p-6 md:p-10 rounded-3xl shadow-sm border border-slate-100 relative overflow-hidden group">
         <div className="absolute top-0 left-0 w-2 h-full bg-gradient-to-b from-[#002b5c] to-[#007a87]"></div>
@@ -474,25 +475,61 @@ export default function DoctorForm({ doctor, id }: { doctor: any; id: string }) 
           </button>
         </div>
         {formData.publications.map((pub: any, index: number) => (
-          <div key={index} className="flex flex-col sm:flex-row gap-2 mb-3 bg-gray-50 p-3 rounded-lg border border-gray-200">
+          <div key={index} className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 mb-3 bg-gray-50 p-3 rounded-lg border border-gray-200">
             <input
               type="text"
               placeholder="Publication Title"
               value={pub.title}
               onChange={(e) => handlePublicationChange(index, "title", e.target.value)}
-              className="w-full sm:flex-[2] p-2 border border-gray-300 rounded-lg text-sm"
+              className="w-full sm:w-56 md:w-64 shrink-0 p-2 border border-gray-300 rounded-lg text-sm bg-white"
             />
-            <input
-              type="text"
-              placeholder="PDF Link (Optional)"
-              value={pub.link}
-              onChange={(e) => handlePublicationChange(index, "link", e.target.value)}
-              className="w-full sm:flex-1 p-2 border border-gray-300 rounded-lg text-sm"
-            />
+            <div className="w-full sm:flex-1 flex items-center gap-2">
+              <input
+                type="text"
+                placeholder="PDF Link (Optional)"
+                value={pub.link}
+                onChange={(e) => handlePublicationChange(index, "link", e.target.value)}
+                className="w-full p-2 border border-gray-300 rounded-lg text-sm bg-white"
+              />
+              <label className="cursor-pointer shrink-0 inline-flex items-center gap-1.5 px-3 py-2 bg-[#007a87] text-white hover:bg-[#005f69] rounded-lg text-xs font-bold transition-all shadow-sm">
+                <Upload size={14} />
+                <span>{uploadingPubIndex === index ? "Uploading..." : "Upload PDF"}</span>
+                <input
+                  type="file"
+                  accept=".pdf,application/pdf"
+                  className="hidden"
+                  onChange={async (e) => {
+                    const file = e.target.files?.[0];
+                    if (!file) return;
+                    setUploadingPubIndex(index);
+                    try {
+                      const uploadData = new FormData();
+                      uploadData.append("file", file);
+                      const res = await fetch("/api/upload", {
+                        method: "POST",
+                        body: uploadData,
+                      });
+                      const data = await res.json();
+                      if (data.url) {
+                        handlePublicationChange(index, "link", data.url);
+                      } else {
+                        alert("Failed to upload PDF");
+                      }
+                    } catch (err) {
+                      console.error("PDF Upload Error:", err);
+                      alert("Error uploading PDF");
+                    } finally {
+                      setUploadingPubIndex(null);
+                    }
+                  }}
+                />
+              </label>
+            </div>
             <button
               type="button"
               onClick={() => handlePublicationRemove(index)}
-              className="self-end sm:self-auto p-2 text-[#D9232D] hover:bg-red-50 rounded-lg"
+              className="self-end sm:self-auto p-2 text-[#D9232D] hover:bg-red-50 rounded-lg shrink-0"
+              title="Remove Publication"
             >
               <Trash2 size={20} color="#D9232D" />
             </button>

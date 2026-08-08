@@ -103,11 +103,11 @@ radiofellowship@gmail.com</p>
       {/* Content Section */}
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-3 pb-8 md:pt-5 md:pb-12 relative z-20">
         <div className="bg-white rounded-3xl shadow-xl shadow-slate-200/50 px-6 pt-3 pb-6 sm:px-10 sm:pt-4 sm:pb-10 md:px-12 md:pt-4 md:pb-8 border border-slate-100">
-          <h2 className="text-2xl font-bold text-[#002b5c] border-b border-slate-100 pb-3 mb-5">
+          <h2 className="text-2xl font-bold text-[#002b5c] border-b border-slate-100 pb-2 mb-3">
             Overview
           </h2>
           <div 
-            className="prose prose-slate prose-lg max-w-none prose-headings:text-[#002b5c] prose-p:text-slate-600 prose-li:text-slate-600 prose-strong:text-slate-800"
+            className="prose prose-slate prose-lg max-w-none prose-headings:text-[#002b5c] prose-p:text-slate-600 prose-li:text-slate-600 prose-strong:text-slate-800 [&_h2]:mt-4 [&_h2]:mb-2 [&_h3]:mt-4 [&_h3]:mb-2 [&_h4]:mt-3 [&_h4]:mb-1.5 [&_p]:mb-3 [&_ul]:my-2 [&_ol]:my-2"
             dangerouslySetInnerHTML={{ __html: overview }}
           />
 

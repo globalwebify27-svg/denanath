@@ -19,7 +19,13 @@ export default async function CourseDetailPage({ params }: { params: Promise<{ i
     ...(parsed.rightCourses || [])
   ];
 
-  const course = allCourses.find((c: any) => c.id === resolvedParams.id);
+  const targetSlug = resolvedParams.id.toLowerCase();
+
+  const course = allCourses.find((c: any) => {
+    if (!c) return false;
+    const titleSlug = (c.title || "").toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+    return c.id?.toLowerCase() === targetSlug || titleSlug === targetSlug;
+  });
 
   if (!course) {
     notFound();

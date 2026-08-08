@@ -303,10 +303,10 @@ export default function AdminSidebar({
                           key={link.name}
                           href={link.href}
                           onClick={() => setIsMobileOpen(false)}
-                          className={`block py-2.5 px-3 rounded-lg text-sm font-medium transition-colors ${
+                          className={`block py-2.5 px-3.5 rounded-xl text-sm font-semibold transition-all duration-200 break-words ${
                             isActive 
                               ? 'bg-[#007a87] text-white shadow-md' 
-                              : 'text-gray-400 hover:text-white hover:bg-white/5'
+                              : 'bg-white/5 hover:bg-white/10 text-gray-300 hover:text-white border border-white/5'
                           }`}
                         >
                           {link.name}

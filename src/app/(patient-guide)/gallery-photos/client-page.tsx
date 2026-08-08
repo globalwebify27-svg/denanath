@@ -82,7 +82,7 @@ export default function GalleryPhotosClientPage({ pageData }: { pageData: any })
                 {/* Categories Scrollable Row */}
                 <div 
                   ref={categoriesScrollRef}
-                  className="flex gap-2 overflow-x-auto pb-2 pt-1 mb-2 -mx-2 px-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+                  className="flex gap-2 overflow-x-auto pb-3 pt-1 mb-4 -mx-2 px-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
                 >
                   {displayCategories.map((cat: string, idx: number) => (
                     <button

@@ -1,181 +1,29 @@
-"use client";
+import { prisma } from "@/lib/prisma";
+import MenuPagesClient from "./client-page";
 
-import { useState, useEffect } from "react";
-import Link from "next/link";
-import { Plus, Edit, Trash2, Search, FileText } from "lucide-react";
+export const dynamic = "force-dynamic";
 
-interface DynamicPage {
-  id: string;
-  title: string;
-  slug: string;
-  navbarMenu: string;
-  status: boolean;
-  createdAt: string;
-}
+export default async function MenuPagesListPage() {
+  let initialPages: any[] = [];
 
-export default function MenuPagesList() {
-  const [pages, setPages] = useState<DynamicPage[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [search, setSearch] = useState("");
+  try {
+    const allPages = await prisma.dynamicPage.findMany({
+      orderBy: { createdAt: "desc" },
+    });
 
-  useEffect(() => {
-    fetchPages();
-  }, []);
+    initialPages = allPages
+      .filter(p => ["Top Header", "Main Header", "Footer"].includes(p.navbarMenu))
+      .map(p => ({
+        id: p.id,
+        title: p.title,
+        slug: p.slug,
+        navbarMenu: p.navbarMenu,
+        status: p.status,
+        createdAt: p.createdAt.toISOString(),
+      }));
+  } catch (error) {
+    console.error("Failed to fetch initial menu pages:", error);
+  }
 
-  const fetchPages = async () => {
-    try {
-      const response = await fetch("/api/dynamic-pages");
-      const data = await response.json();
-      if (Array.isArray(data)) {
-        // Only keep pages where navbarMenu is Top Header, Main Header, or Footer
-        const filtered = data.filter(p => ["Top Header", "Main Header", "Footer"].includes(p.navbarMenu));
-        setPages(filtered);
-      } else {
-        setPages([]);
-        console.error("API did not return an array:", data);
-      }
-    } catch (error) {
-      alert("Failed to load pages");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const deletePage = async (id: string) => {
-    if (!window.confirm("Are you sure you want to delete this menu page?")) return;
-
-    try {
-      const response = await fetch(`/api/dynamic-pages/${id}`, {
-        method: "DELETE",
-      });
-      if (response.ok) {
-        alert("Menu Page deleted successfully");
-        fetchPages();
-      } else {
-        alert("Failed to delete menu page");
-      }
-    } catch (error) {
-      alert("An error occurred");
-    }
-  };
-
-  const filteredPages = pages.filter((page) =>
-    page.title.toLowerCase().includes(search.toLowerCase()) || 
-    page.navbarMenu.toLowerCase().includes(search.toLowerCase())
-  );
-
-  return (
-    <div className="p-6">
-      <div className="flex justify-between items-center mb-6">
-        <div>
-          <h1 className="text-2xl font-bold text-slate-800">Top-Level Menu Pages</h1>
-          <p className="text-slate-500">Manage pages that appear directly in your headers and footer</p>
-        </div>
-        <Link
-          href="/admin/menu-pages/new"
-          className="bg-[#002b5c] text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-[#001a38] transition-colors"
-        >
-          <Plus className="w-5 h-5" />
-          Add New Menu Page
-        </Link>
-      </div>
-
-      <div className="bg-white rounded-xl shadow-sm border border-slate-200">
-        <div className="p-4 border-b border-slate-200 flex items-center justify-between bg-slate-50 rounded-t-xl">
-          <div className="relative w-64">
-            <Search className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
-            <input
-              suppressHydrationWarning={true}
-              type="text"
-              placeholder="Search menus..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
-            />
-          </div>
-        </div>
-
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead className="bg-slate-50 border-b border-slate-200">
-              <tr>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase">Page Info</th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase">Location</th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase">URL Slug</th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase">Status</th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase">Created Date</th>
-                <th className="px-6 py-4 text-right text-xs font-semibold text-slate-500 uppercase">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-200">
-              {loading ? (
-                <tr>
-                  <td colSpan={6} className="px-6 py-8 text-center text-slate-500">
-                    Loading pages...
-                  </td>
-                </tr>
-              ) : filteredPages.length === 0 ? (
-                <tr>
-                  <td colSpan={6} className="px-6 py-8 text-center text-slate-500">
-                    No top-level menu pages found
-                  </td>
-                </tr>
-              ) : (
-                filteredPages.map((page) => (
-                  <tr key={page.id} className="hover:bg-slate-50 transition-colors">
-                    <td className="px-6 py-4">
-                      <Link href={`/admin/menu-pages/${page.id}`} className="flex items-center gap-3 hover:opacity-80 transition-opacity">
-                        <div className="w-10 h-10 rounded-lg bg-teal-50 text-teal-600 flex items-center justify-center shrink-0">
-                          <FileText className="w-5 h-5" />
-                        </div>
-                        <div>
-                          <p className="font-semibold text-slate-800">{page.title}</p>
-                        </div>
-                      </Link>
-                    </td>
-                    <td className="px-6 py-4">
-                      <span className="bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-xs font-semibold">
-                        {page.navbarMenu}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4">
-                      <p className="text-slate-500 text-sm">/{page.slug}</p>
-                    </td>
-                    <td className="px-6 py-4">
-                      <span
-                        className={`px-3 py-1 rounded-full text-xs font-medium ${
-                          page.status ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"
-                        }`}
-                      >
-                        {page.status ? "Active" : "Inactive"}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 text-sm text-slate-500">
-                      {new Date(page.createdAt).toLocaleDateString()}
-                    </td>
-                    <td className="px-6 py-4 text-right">
-                      <div className="flex justify-end gap-2">
-                        <Link
-                          href={`/admin/menu-pages/${page.id}`}
-                          className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-                        >
-                          <Edit className="w-5 h-5" />
-                        </Link>
-                        <button
-                          onClick={() => deletePage(page.id)}
-                          className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                        >
-                          <Trash2 className="w-5 h-5" />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  );
+  return <MenuPagesClient initialPages={initialPages} />;
 }

@@ -94,7 +94,10 @@ export default async function EditCoursePage(props: { params: Promise<any>, sear
         link: formData.get("link"),
         linkText: formData.get("linkText"),
         status: formData.get("status") === "true",
-        gallery: JSON.parse(formData.get("gallery") as string || "[]")
+        gallery: JSON.parse(formData.get("gallery") as string || "[]"),
+        seoMetaTitle: formData.get("seoMetaTitle") || "",
+        seoMetaDescription: formData.get("seoMetaDescription") || "",
+        seoKeywords: formData.get("seoKeywords") || ""
       };
       
       await prisma.siteSetting.upsert({
