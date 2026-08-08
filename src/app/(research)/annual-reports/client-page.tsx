@@ -113,17 +113,18 @@ export default function AnnualReportsClientPage({ pageData }: { pageData: any })
             </div>
           )}
 
-          <div className="w-full flex-1">
-            <div className="bg-white rounded-3xl shadow-[0_8px_40px_rgb(0,0,0,0.03)] border border-slate-100/60 px-6 pt-2 pb-6 sm:px-10 sm:pt-3 sm:pb-10 md:px-14 md:pt-4 md:pb-14">
-              <div className="mb-10">
+          <div className="w-full flex-1 min-w-0">
+            <div className="bg-white rounded-3xl shadow-[0_8px_40px_rgb(0,0,0,0.03)] border border-slate-100/60 px-6 pt-3 pb-6 sm:px-10 sm:pt-4 sm:pb-10 md:px-14 md:pt-4 md:pb-8">
+              
+              <div className="mb-4">
                 <div style={{ fontSize: '10px' }} className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-teal-50 border border-teal-100 text-[#007a87] font-bold tracking-wider uppercase mb-4">
                   <Microscope className="w-4 h-4" />
                   <span>Research</span>
                 </div>
-                <h2 className="text-3xl md:text-4xl font-extrabold text-[#002b5c] mb-6 tracking-tight">
-                  {pageData.title || "Annual Reports"}
+                <h2 className="text-3xl md:text-4xl font-extrabold text-[#002b5c] mb-4 tracking-tight">
+                  Annual Reports
                 </h2>
-                <div className="w-20 h-1.5 bg-[#007a87] rounded-full mb-8"></div>
+                <div className="w-20 h-1.5 bg-[#007a87] rounded-full"></div>
               </div>
 
               {pageData.image && (

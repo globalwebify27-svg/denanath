@@ -39,19 +39,19 @@ export default function PatientRightsClientPage({ pageData }: { pageData: any })
 
           {/* Right Main Content */}
           <div className="w-full flex-1">
-            <div className="bg-white rounded-3xl shadow-[0_8px_40px_rgb(0,0,0,0.03)] border border-slate-100/60 p-4 sm:p-6 md:p-8">
+            <div className="bg-white rounded-3xl shadow-[0_8px_40px_rgb(0,0,0,0.03)] border border-slate-100/60 px-4 pt-3 pb-4 sm:px-6 sm:pt-4 sm:pb-6 md:px-8 md:pt-4 md:pb-8">
               
-              <div className="mb-10">
+              <div className="mb-4">
                 <div style={{ fontSize: '10px' }} className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-teal-50 border border-teal-100 text-[#007a87] font-bold tracking-wider uppercase mb-4">
                   <ShieldAlert className="w-4 h-4" />
                   <span>Patient Guide</span>
                 </div>
-                <h2 className="text-3xl md:text-4xl font-extrabold text-[#002b5c] mb-6 tracking-tight">
+                <h2 className="text-3xl md:text-4xl font-extrabold text-[#002b5c] mb-4 tracking-tight">
                   Patient Rights & Responsibilities
                 </h2>
-                
+                <div className="w-20 h-1.5 bg-[#007a87] rounded-full"></div>
               </div>
-              <div className="space-y-6 mt-8">
+              <div className="space-y-6">
                 <div 
                   className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm relative group cursor-pointer"
                   onClick={() => setIsZoomed(true)}

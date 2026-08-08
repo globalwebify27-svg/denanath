@@ -25,12 +25,12 @@ export default function HeroSection({ data = defaultHeroData }: { data?: any }) 
 
   const slides = data.slides;
 
-  // Auto-slide every 5 seconds, pauses when mouse is hovering on the hero
+  // Auto-slide every 3 seconds, pauses when mouse is hovering on the hero
   useEffect(() => {
     if (isPaused) return;
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slides.length);
-    }, 5000);
+    }, 3000);
     return () => clearInterval(timer);
   }, [slides.length, isPaused]);
 

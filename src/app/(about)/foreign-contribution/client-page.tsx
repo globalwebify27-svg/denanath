@@ -45,18 +45,19 @@ export default function ForeignContributionClientPage({ fcraData }: { fcraData: 
 
           {/* Right Main Content */}
           <div className="w-full flex-1">
-            <div className="bg-white rounded-3xl shadow-[0_8px_40px_rgb(0,0,0,0.03)] border border-slate-100/60 p-6 sm:p-10 md:p-12">
+            <div className="bg-white rounded-3xl shadow-[0_8px_40px_rgb(0,0,0,0.03)] border border-slate-100/60 px-6 pt-3 pb-6 sm:px-10 sm:pt-4 sm:pb-10 md:px-14 md:pt-4 md:pb-8">
               
-              <div className="mb-10">
+              <div className="mb-6">
                 <div style={{ fontSize: '10px' }} className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-teal-50 border border-teal-100 text-[#007a87] font-bold tracking-wider uppercase mb-4">
                   <Building2 className="w-4 h-4" />
                   <span>Foreign Contribution</span>
                 </div>
-                <h2 className="text-3xl md:text-4xl font-extrabold text-[#002b5c] mb-6 tracking-tight">
+                <h2 className="text-3xl md:text-4xl font-extrabold text-[#002b5c] mb-4 tracking-tight">
                   Foreign Contribution
                 </h2>
+                <div className="w-20 h-1.5 bg-[#007a87] rounded-full mb-4"></div>
                 
-                <div className="text-slate-600 leading-relaxed font-normal mb-8 mt-8 prose prose-slate max-w-none" dangerouslySetInnerHTML={{ __html: introduction || '' }} />
+                <div className="text-slate-600 leading-relaxed font-normal mb-8 prose prose-slate max-w-none" dangerouslySetInnerHTML={{ __html: introduction || '' }} />
               </div>
 
               {/* FCRA Data Blocks */}

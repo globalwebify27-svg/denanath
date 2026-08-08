@@ -847,7 +847,7 @@ export default async function DepartmentDetailsPage({
             <ChevronRight className="w-3.5 h-3.5 shrink-0" />
             <span className="text-white truncate">{department.name}</span>
           </div>
-          <h1 className="text-[36px] md:text-[48px] leading-tight font-extrabold text-white tracking-tight break-words" style={{ wordBreak: 'break-word' }}>
+          <h1 className="text-[40px] leading-tight font-extrabold text-white tracking-tight break-words" style={{ wordBreak: 'break-word' }}>
             {department.name}
           </h1>
         </div>
@@ -864,16 +864,16 @@ export default async function DepartmentDetailsPage({
           <div className="w-full flex-1 min-w-0">
             <div className="bg-white rounded-3xl shadow-[0_8px_40px_rgb(0,0,0,0.03)] border border-slate-100/60 px-6 pt-3 pb-6 sm:px-10 sm:pt-5 sm:pb-10">
               
-              <div className="mb-10 flex items-start justify-between flex-wrap gap-4">
+              <div className="mb-2 flex items-start justify-between flex-wrap gap-4">
                 <div>
                   <div style={{ fontSize: '10px' }} className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-teal-50 border border-teal-100 text-[#007a87] font-bold tracking-wider uppercase mb-4">
                     <Stethoscope className="w-4 h-4" />
                     <span>Specialty Details</span>
                   </div>
-                  <h2 className="text-[30px] md:text-[30px] leading-tight font-extrabold text-[#002b5c] mb-6 tracking-tight break-words" style={{ wordBreak: 'break-word' }}>
+                  <h2 className="text-3xl md:text-4xl font-extrabold text-[#002b5c] tracking-tight break-words" style={{ wordBreak: 'break-word' }}>
                     {department.name}
                   </h2>
-                  <div className="w-20 h-1.5 bg-[#007a87] rounded-full"></div>
+                  <div className="w-20 h-1.5 bg-[#007a87] rounded-full mt-3 mb-3"></div>
                 </div>
               </div>
 

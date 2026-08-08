@@ -97,7 +97,7 @@ export default function AcademicsClientPage({ pageData }: { pageData: any }) {
           <div className="w-full flex-1">
             <div className="bg-white rounded-3xl shadow-[0_8px_40px_rgb(0,0,0,0.03)] border border-slate-100/60 px-6 pt-2 pb-6 sm:px-10 sm:pt-3 sm:pb-10 md:px-14 md:pt-4 md:pb-14">
               
-              <div className="mb-10">
+              <div className="mb-5">
                 <div style={{ fontSize: '10px' }} className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-teal-50 border border-teal-100 text-[#007a87] font-bold tracking-wider uppercase mb-4">
                   <GraduationCap className="w-4 h-4" />
                   <span>Academics</span>
@@ -105,13 +105,13 @@ export default function AcademicsClientPage({ pageData }: { pageData: any }) {
                 <h2 className="text-3xl md:text-4xl font-extrabold text-[#002b5c] mb-6 tracking-tight">
                   {pageData?.pageTitle || "Academics"}
                 </h2>
-                <div className="w-20 h-1.5 bg-[#007a87] rounded-full mb-8"></div>
+                <div className="w-20 h-1.5 bg-[#007a87] rounded-full"></div>
               </div>
 
-              <div className="space-y-16">
+              <div className="space-y-8">
                 {/* About Us */}
                 <section>
-                  <h3 className="text-2xl font-bold text-[#002b5c] mb-4 flex items-center gap-3">
+                  <h3 className="text-2xl font-bold text-[#002b5c] mb-3 flex items-center gap-3">
                     <Building className="w-6 h-6 text-[#007a87]" />
                     Department of Academics
                   </h3>
@@ -124,7 +124,7 @@ export default function AcademicsClientPage({ pageData }: { pageData: any }) {
 
                 {/* PG Training Programmes */}
                 <section>
-                  <h3 className="text-2xl font-bold text-[#002b5c] mb-6 flex items-center gap-3">
+                  <h3 className="text-2xl font-bold text-[#002b5c] mb-3 flex items-center gap-3">
                     <BookOpen className="w-6 h-6 text-[#007a87]" />
                     Post Graduates Training Programmes
                   </h3>
@@ -178,7 +178,7 @@ export default function AcademicsClientPage({ pageData }: { pageData: any }) {
 
                 {/* In-house Short term Fellowship Programs */}
                 <section>
-                  <h3 className="text-2xl font-bold text-[#002b5c] mb-6 flex items-center gap-3">
+                  <h3 className="text-2xl font-bold text-[#002b5c] mb-3 flex items-center gap-3">
                     <BookMarked className="w-6 h-6 text-[#007a87]" />
                     In-house Short term Fellowship Programs
                   </h3>
@@ -200,7 +200,7 @@ export default function AcademicsClientPage({ pageData }: { pageData: any }) {
 
                 {/* Association with Other Teaching Institutions */}
                 <section>
-                  <h3 className="text-2xl font-bold text-[#002b5c] mb-6 flex items-center gap-3">
+                  <h3 className="text-2xl font-bold text-[#002b5c] mb-3 flex items-center gap-3">
                     <Users className="w-6 h-6 text-[#007a87]" />
                     Association with Other Teaching Institutions in Pune
                   </h3>
@@ -220,11 +220,11 @@ export default function AcademicsClientPage({ pageData }: { pageData: any }) {
 
                 {/* Accredited Specialities */}
                 <section>
-                  <h3 className="text-2xl font-bold text-[#002b5c] mb-6 flex items-center gap-3">
+                  <h3 className="text-2xl font-bold text-[#002b5c] mb-3 flex items-center gap-3">
                     <Award className="w-6 h-6 text-[#007a87]" />
                     Specialities Accredited to NBEMS
                   </h3>
-                  <div className="space-y-8">
+                  <div className="space-y-5">
                     {/* DNB */}
                     <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
                       <div className="bg-[#003360] px-6 py-4 border-b border-[#003360]">
@@ -310,7 +310,7 @@ export default function AcademicsClientPage({ pageData }: { pageData: any }) {
 
                 {/* Awards & Honour */}
                 <section>
-                  <h3 className="text-2xl font-bold text-[#002b5c] mb-6 flex items-center gap-3">
+                  <h3 className="text-2xl font-bold text-[#002b5c] mb-3 flex items-center gap-3">
                     <Award className="w-6 h-6 text-[#007a87]" />
                     Awards and Honour: NBE Gold Medals
                   </h3>
@@ -340,7 +340,7 @@ export default function AcademicsClientPage({ pageData }: { pageData: any }) {
 
                 {/* Statistics */}
                 <section>
-                  <h3 className="text-2xl font-bold text-[#002b5c] mb-6 flex items-center gap-3">
+                  <h3 className="text-2xl font-bold text-[#002b5c] mb-3 flex items-center gap-3">
                     <BarChart3 className="w-6 h-6 text-[#007a87]" />
                     Statistics from 2005 to 2023
                   </h3>

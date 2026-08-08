@@ -114,7 +114,7 @@ export default function CareersClient({ data }: { data: any }) {
             <h2 className="text-3xl md:text-4xl font-extrabold text-[#002b5c] mb-6 tracking-tight">
               {data.pageHeader || "Active Requirements at DMH"}
             </h2>
-            <div className="w-20 h-1.5 bg-[#007a87] rounded-full mb-8"></div>
+            <div className="w-20 h-1.5 bg-[#007a87] rounded-full"></div>
             
             <div className="bg-blue-50 border border-blue-100 rounded-2xl p-6 flex flex-col md:flex-row items-center gap-6 md:gap-8 justify-between">
               <div className="flex items-center gap-4">

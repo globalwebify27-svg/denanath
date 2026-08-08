@@ -110,17 +110,17 @@ export default function VirtualTourClientPage({ pageData }: { pageData?: any }) 
 
           {/* Right Main Content */}
           <div className="w-full flex-1">
-            <div className="bg-white rounded-3xl shadow-[0_8px_40px_rgb(0,0,0,0.03)] border border-slate-100/60 p-6 sm:p-10 md:p-10">
+            <div className="bg-white rounded-3xl shadow-[0_8px_40px_rgb(0,0,0,0.03)] border border-slate-100/60 px-6 pt-3 pb-6 sm:px-10 sm:pt-4 sm:pb-10 md:px-10 md:pt-4 md:pb-10">
               
-              <div className="mb-8">
+              <div className="mb-4">
                 <div style={{ fontSize: '10px' }} className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-teal-50 border border-teal-100 text-[#007a87] font-bold tracking-wider uppercase mb-4">
                   <MonitorPlay className="w-4 h-4" />
                   <span>Interactive Tour</span>
                 </div>
-                <h2 className="text-3xl md:text-4xl font-extrabold text-[#002b5c] tracking-tight">
+                <h2 className="text-3xl md:text-4xl font-extrabold text-[#002b5c] mb-4 tracking-tight">
                   Hospital Virtual Tour
                 </h2>
-                <div className="w-20 h-1.5 bg-[#007a87] rounded-full mt-6 mb-2"></div>
+                <div className="w-20 h-1.5 bg-[#007a87] rounded-full"></div>
               </div>
 
               {/* Main 360 Viewer */}

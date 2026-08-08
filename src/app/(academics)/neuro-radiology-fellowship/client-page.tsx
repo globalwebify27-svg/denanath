@@ -81,33 +81,29 @@ radiofellowship@gmail.com</p>
   return (
     <main className="bg-slate-50 min-h-screen pb-20">
       {/* Hero Section */}
-      <div className="w-full bg-[#002b5c] relative overflow-hidden pt-8 pb-4">
+      <div className="w-full bg-[#002b5c] relative overflow-hidden">
         <div className="absolute inset-0 bg-[url(https://www.transparenttextures.com/patterns/cubes.png)] opacity-10 mix-blend-overlay pointer-events-none" />
         <div className="absolute right-0 top-0 w-1/2 h-full bg-gradient-to-l from-teal-500/20 to-transparent pointer-events-none" />
         
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 md:py-4 relative z-10">
           
           {/* Breadcrumb */}
-          <nav className="flex items-center gap-2 text-sm text-[#b2dfdb] mb-2">
-            <Link href="/" className="hover:text-white transition-colors">Home</Link>
-            <ChevronRight className="w-4 h-4" />
-            <span className="text-white font-medium">{title}</span>
-          </nav>
-          
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-            <div className="max-w-3xl">
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight tracking-tight flex items-center gap-3">
-                {title}
-              </h1>
-            </div>
+          <div className="flex items-center gap-2 text-blue-200 text-[10px] font-medium tracking-wide mb-1 overflow-hidden whitespace-nowrap">
+            <Link href="/" className="hover:text-white transition-colors shrink-0">Home</Link>
+            <ChevronRight className="w-3.5 h-3.5 shrink-0" />
+            <span className="text-white truncate">{title}</span>
           </div>
+          
+          <h1 className="text-[24px] sm:text-[32px] md:text-[40px] leading-tight font-extrabold text-white tracking-tight truncate max-w-full">
+            {title}
+          </h1>
         </div>
       </div>
 
       {/* Content Section */}
-      <div className="max-w-4xl mx-auto px-4 py-12 relative z-20">
-        <div className="bg-white rounded-3xl shadow-xl shadow-slate-200/50 p-8 md:p-12 border border-slate-100">
-          <h2 className="text-2xl font-bold text-[#002b5c] border-b border-slate-100 pb-4 mb-6">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-3 pb-8 md:pt-5 md:pb-12 relative z-20">
+        <div className="bg-white rounded-3xl shadow-xl shadow-slate-200/50 px-6 pt-3 pb-6 sm:px-10 sm:pt-4 sm:pb-10 md:px-12 md:pt-4 md:pb-8 border border-slate-100">
+          <h2 className="text-2xl font-bold text-[#002b5c] border-b border-slate-100 pb-3 mb-5">
             Overview
           </h2>
           <div 

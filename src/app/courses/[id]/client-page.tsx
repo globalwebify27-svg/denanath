@@ -26,31 +26,31 @@ export default function ClientPage({ data }: { data: any }) {
     <main className="min-h-screen bg-slate-50 flex flex-col">
       <div className="flex-grow">
         {/* Hero Section */}
-        <div className="w-full bg-[#002b5c] relative overflow-hidden py-4">
-          <div className="absolute inset-0 bg-[url(https://www.transparenttextures.com/patterns/cubes.png)] opacity-10 mix-blend-overlay pointer-events-none"></div>
-          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-teal-500/20 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/3 pointer-events-none"></div>
+        <div className="w-full bg-[#002b5c] relative overflow-hidden">
+          <div className="absolute inset-0 bg-[url(https://www.transparenttextures.com/patterns/cubes.png)] opacity-10 mix-blend-overlay pointer-events-none" />
+          <div className="absolute right-0 top-0 w-1/2 h-full bg-gradient-to-l from-teal-500/20 to-transparent pointer-events-none" />
           
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 md:py-4 relative z-10">
             {/* Breadcrumb */}
-            <nav className="flex items-center gap-2 text-sm text-[#b2dfdb] mb-2">
-              <Link href="/" className="hover:text-white transition-colors">Home</Link>
-              <ChevronRight className="w-4 h-4" />
-              <Link href="/#courses" className="hover:text-white transition-colors">Courses</Link>
-              <ChevronRight className="w-4 h-4" />
-              <span className="text-white font-medium">{data.title}</span>
-            </nav>
+            <div className="flex items-center gap-2 text-blue-200 text-[10px] font-medium tracking-wide mb-1 overflow-hidden whitespace-nowrap">
+              <Link href="/" className="hover:text-white transition-colors shrink-0">Home</Link>
+              <ChevronRight className="w-3.5 h-3.5 shrink-0" />
+              <Link href="/#courses" className="hover:text-white transition-colors shrink-0">Courses</Link>
+              <ChevronRight className="w-3.5 h-3.5 shrink-0" />
+              <span className="text-white truncate">{data.title?.replace(/_/g, " - ")}</span>
+            </div>
 
-            <h1 className="text-3xl md:text-5xl font-black text-white tracking-tight max-w-4xl leading-tight">
-              {data.title}
+            <h1 className="text-[24px] sm:text-[32px] md:text-[40px] leading-tight font-extrabold text-white tracking-tight max-w-5xl">
+              {data.title?.replace(/_/g, " - ")}
             </h1>
           </div>
         </div>
 
         {/* Main Content */}
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 space-y-12">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-3 pb-8 md:pt-5 md:pb-12 space-y-12">
           
-          <div className="bg-white rounded-3xl p-8 sm:p-10 shadow-sm border border-slate-100">
-            <h2 className="text-2xl font-bold text-[#002b5c] border-b border-slate-100 pb-4 mb-6">
+          <div className="bg-white rounded-3xl px-6 pt-3 pb-6 sm:px-10 sm:pt-4 sm:pb-10 md:px-12 md:pt-4 md:pb-8 shadow-sm border border-slate-100">
+            <h2 className="text-2xl font-bold text-[#002b5c] border-b border-slate-100 pb-3 mb-5">
               Overview
             </h2>
             {data.content ? (

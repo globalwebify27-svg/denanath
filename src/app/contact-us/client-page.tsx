@@ -48,17 +48,17 @@ export default function ContactUsClientPage({ pageData }: { pageData: any }) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-3 pb-8 md:pt-5 md:pb-12">
         <div className="flex flex-col lg:flex-row gap-8 xl:gap-12 items-start">
 
-          <div className="w-full flex-1">
-            <div className="bg-white rounded-3xl shadow-[0_8px_40px_rgb(0,0,0,0.03)] border border-slate-100/60 px-6 pt-2 pb-6 sm:px-10 sm:pt-3 sm:pb-10 md:px-14 md:pt-4 md:pb-14">
-              <div className="mb-12 text-center max-w-2xl mx-auto">
+          <div className="w-full flex-1 min-w-0">
+            <div className="bg-white rounded-3xl shadow-[0_8px_40px_rgb(0,0,0,0.03)] border border-slate-100/60 px-6 pt-3 pb-6 sm:px-10 sm:pt-4 sm:pb-10 md:px-14 md:pt-4 md:pb-8">
+              <div className="mb-8 text-center max-w-2xl mx-auto">
                 <div style={{ fontSize: '10px' }} className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-teal-50 border border-teal-100 text-[#007a87] font-bold tracking-wider uppercase mb-4">
                   <Building2 className="w-4 h-4" />
                   <span>Get In Touch</span>
                 </div>
-                <h2 className="text-3xl md:text-4xl font-extrabold text-[#002b5c] mb-6 tracking-tight">
+                <h2 className="text-3xl md:text-4xl font-extrabold text-[#002b5c] mb-4 tracking-tight">
                   We Are Here To Help You
                 </h2>
-                <div className="w-20 h-1.5 bg-[#007a87] rounded-full mx-auto mb-6"></div>
+                <div className="w-20 h-1.5 bg-[#007a87] rounded-full mx-auto mb-4"></div>
                 <p className="text-slate-500 text-lg">
                   Whether you have a question about our services, need to reach a specific department, or want to provide feedback, our team is ready to assist you.
                 </p>

@@ -38,40 +38,36 @@ export default function LaryngologyFellowshipClientPage({ initialData }: { initi
     <div className="min-h-screen bg-[#f8fafc] font-sans selection:bg-teal-500/30">
       
       {/* 1. Hero Section */}
-      <div className="w-full bg-[#002b5c] relative overflow-hidden pt-8 pb-4">
+      <div className="w-full bg-[#002b5c] relative overflow-hidden">
         <div className="absolute inset-0 bg-[url(https://www.transparenttextures.com/patterns/cubes.png)] opacity-10 mix-blend-overlay pointer-events-none" />
         <div className="absolute right-0 top-0 w-1/2 h-full bg-gradient-to-l from-teal-500/20 to-transparent pointer-events-none" />
         
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 md:py-4 relative z-10">
           
           {/* Breadcrumb */}
-          <nav className="flex items-center gap-2 text-sm text-[#b2dfdb] mb-2">
-            <Link href="/" className="hover:text-white transition-colors">Home</Link>
-            <ChevronRight className="w-4 h-4" />
-            <Link href="/academics" className="hover:text-white transition-colors">Academics</Link>
-            <ChevronRight className="w-4 h-4" />
-            <span className="text-white font-medium">{data.heroBreadcrumb}</span>
-          </nav>
-          
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-            <div className="max-w-3xl">
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight tracking-tight">
-                {data.heroTitle}
-              </h1>
-            </div>
+          <div className="flex items-center gap-2 text-blue-200 text-[10px] font-medium tracking-wide mb-1 overflow-hidden whitespace-nowrap">
+            <Link href="/" className="hover:text-white transition-colors shrink-0">Home</Link>
+            <ChevronRight className="w-3.5 h-3.5 shrink-0" />
+            <Link href="/academics" className="hover:text-white transition-colors shrink-0">Academics</Link>
+            <ChevronRight className="w-3.5 h-3.5 shrink-0" />
+            <span className="text-white truncate">{data.heroBreadcrumb}</span>
           </div>
+          
+          <h1 className="text-[24px] sm:text-[32px] md:text-[40px] leading-tight font-extrabold text-white tracking-tight truncate max-w-full">
+            {data.heroTitle}
+          </h1>
         </div>
       </div>
 
       {/* 2. Main Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-3 pb-8 md:pt-5 md:pb-12">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
           
           {/* Left Column: Content */}
           <div className="lg:col-span-2 space-y-12">
             
             {/* Overview */}
-            <section className="bg-white rounded-3xl p-8 md:p-10 shadow-sm border border-slate-100 relative overflow-hidden group hover:shadow-md transition-shadow">
+            <section className="bg-white rounded-3xl px-6 pt-3 pb-6 sm:px-10 sm:pt-4 sm:pb-10 md:px-12 md:pt-4 md:pb-8 shadow-sm border border-slate-100 relative overflow-hidden group hover:shadow-md transition-shadow">
               <div className="absolute top-0 left-0 w-2 h-full bg-[#005f6b]" />
               <div className="flex items-center gap-4 mb-6">
                 <div className="w-12 h-12 rounded-xl bg-[#e0f2f1] flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">

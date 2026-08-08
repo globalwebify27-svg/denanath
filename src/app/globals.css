@@ -111,3 +111,8 @@ body {
 .dynamic-icon-input:placeholder-shown:not(:focus) + .dynamic-input-icon {
   opacity: 1 !important;
 }
+
+/* Ensure Photo Gallery Image Names have font-weight 600 instead of 700 */
+.prose section .grid > div.bg-slate-50 > p.font-bold {
+  font-weight: 600 !important;
+}

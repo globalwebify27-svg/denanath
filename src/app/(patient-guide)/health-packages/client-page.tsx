@@ -75,20 +75,20 @@ export default function HealthPackagesClientPage({ pageData }: { pageData: any }
 
           {/* Right Main Content */}
           <div className="w-full flex-1">
-            <div className="bg-white rounded-3xl shadow-[0_8px_40px_rgb(0,0,0,0.03)] border border-slate-100/60 px-6 pt-2 pb-6 sm:px-10 sm:pt-3 sm:pb-10 md:px-14 md:pt-4 md:pb-14">
+            <div className="bg-white rounded-3xl shadow-[0_8px_40px_rgb(0,0,0,0.03)] border border-slate-100/60 px-6 pt-3 pb-6 sm:px-10 sm:pt-4 sm:pb-10 md:px-14 md:pt-4 md:pb-8">
               
-              <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-10 gap-4">
+              <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
                 <div>
                   <div style={{ fontSize: '10px' }} className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-teal-50 border border-teal-100 text-[#007a87] font-bold tracking-wider uppercase mb-4">
                     <ActivitySquare className="w-4 h-4" />
                     <span>Patient Guide</span>
                   </div>
-                  <h2 className="text-3xl md:text-4xl font-extrabold text-[#002b5c] tracking-tight">
+                  <h2 className="text-3xl md:text-4xl font-extrabold text-[#002b5c] mb-4 tracking-tight">
                     Health Packages
                   </h2>
                 </div>
               </div>
-              <div className="w-20 h-1.5 bg-[#007a87] rounded-full mb-10"></div>
+              <div className="w-20 h-1.5 bg-[#007a87] rounded-full mb-4"></div>
 
               <div className="space-y-12 text-slate-700">
                 

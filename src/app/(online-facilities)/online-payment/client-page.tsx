@@ -123,25 +123,27 @@ export default function OnlinePaymentClientPage({ pageData }: { pageData: any })
           )}
 
           {/* Right Main Content */}
-          <div className="w-full flex-1">
-            <div className="bg-white rounded-3xl shadow-[0_8px_40px_rgb(0,0,0,0.03)] border border-slate-100/60 px-6 pt-2 pb-6 sm:px-10 sm:pt-3 sm:pb-10 md:px-14 md:pt-4 md:pb-14">
+          <div className="w-full flex-1 min-w-0">
+            <div className="bg-white rounded-3xl shadow-[0_8px_40px_rgb(0,0,0,0.03)] border border-slate-100/60 px-6 pt-3 pb-6 sm:px-10 sm:pt-4 sm:pb-10 md:px-14 md:pt-4 md:pb-8">
               
-              <div className="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
-                <div>
-                  <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-teal-50 border border-teal-100 text-[#007a87] text-xs font-bold tracking-wider uppercase mb-4">
-                    <Globe className="w-4 h-4" />
-                    <span>Online Facilities</span>
+              <div className="mb-4">
+                <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-4">
+                  <div>
+                    <div style={{ fontSize: '10px' }} className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-teal-50 border border-teal-100 text-[#007a87] font-bold tracking-wider uppercase mb-4">
+                      <Globe className="w-4 h-4" />
+                      <span>Online Facilities</span>
+                    </div>
+                    <h2 className="text-3xl md:text-4xl font-extrabold text-[#002b5c] tracking-tight">
+                      {pageData.title || "Online Payment"}
+                    </h2>
                   </div>
-                  <h2 className="text-3xl md:text-4xl font-extrabold text-[#002b5c] tracking-tight">
-                    {pageData.title || "Online Payment"}
-                  </h2>
+                  <div className="bg-red-50 border border-red-200 text-[#D9232D] px-4 py-2.5 rounded-xl font-medium text-sm flex items-center gap-2 self-start shadow-sm">
+                    <ShieldCheck className="w-5 h-5 text-[#D9232D]" />
+                    <span>{pageData.securityBadgeText || "256-bit Secure Encrypted Payment"}</span>
+                  </div>
                 </div>
-                <div className="bg-red-50 border border-red-200 text-[#D9232D] px-4 py-2.5 rounded-xl font-medium text-sm flex items-center gap-2 self-start shadow-sm">
-                  <ShieldCheck className="w-5 h-5 text-[#D9232D]" />
-                  <span>{pageData.securityBadgeText || "256-bit Secure Encrypted Payment"}</span>
-                </div>
+                <div className="w-20 h-1.5 bg-[#007a87] rounded-full"></div>
               </div>
-              <div className="w-20 h-1.5 bg-[#007a87] rounded-full mb-10"></div>
 
               <form 
                     ref={formRef}

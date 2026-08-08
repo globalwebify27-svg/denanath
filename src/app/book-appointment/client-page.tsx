@@ -526,7 +526,7 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
   };
 
   return (
-    <div className="min-h-screen bg-[#f8fafc] font-sans selection:bg-teal-500/30 pb-20">
+    <div className="bg-[#f8fafc] font-sans selection:bg-teal-500/30">
       {/* Header */}
       <div className="w-full bg-[#002b5c] relative overflow-hidden">
         <div className="absolute inset-0 bg-[url(https://www.transparenttextures.com/patterns/cubes.png)] opacity-10 mix-blend-overlay pointer-events-none" />
@@ -546,7 +546,7 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
         </div>
       </div>
 
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 mt-10">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-3 pb-8 md:pt-5 md:pb-12">
         
         {bookingSuccess && (
           <div className="bg-green-50 border border-green-200 text-green-800 rounded-2xl p-6 mb-8 flex flex-col items-center text-center">
@@ -566,7 +566,7 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
 
         {/* Step 1: Search Form */}
         {!bookingSuccess && step === "search" && (
-          <div className="bg-white rounded-3xl shadow-[0_8px_40px_rgb(0,0,0,0.04)] border border-slate-100 p-8 md:p-12 text-center">
+          <div className="bg-white rounded-3xl shadow-[0_8px_40px_rgb(0,0,0,0.04)] border border-slate-100/60 px-6 pt-8 pb-6 sm:px-10 sm:pt-10 sm:pb-10 md:px-14 md:pt-12 md:pb-8 text-center">
             <div className="max-w-2xl mx-auto space-y-6">
               
               <div className="relative">
