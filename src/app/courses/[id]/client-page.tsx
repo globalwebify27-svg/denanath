@@ -7,7 +7,9 @@ import { createPortal } from "react-dom";
 
 export default function ClientPage({ data }: { data: any }) {
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const [zoomImage, setZoomImage] = useState<string | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const contentRef = React.useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
@@ -21,6 +23,20 @@ export default function ClientPage({ data }: { data: any }) {
     }
     return () => clearInterval(interval);
   }, [isPlaying, lightboxIndex, data.gallery]);
+
+  useEffect(() => {
+    const el = contentRef.current;
+    if (!el) return;
+    const handleImgClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (target && target.tagName === "IMG") {
+        const src = (target as HTMLImageElement).src;
+        if (src) setZoomImage(src);
+      }
+    };
+    el.addEventListener("click", handleImgClick);
+    return () => el.removeEventListener("click", handleImgClick);
+  }, [data.content]);
 
   return (
     <main className="min-h-screen bg-slate-50 flex flex-col">
@@ -47,13 +63,16 @@ export default function ClientPage({ data }: { data: any }) {
         </div>
 
         {/* Main Content */}
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-2 pb-8 md:pt-3 md:pb-12 space-y-12">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-2 pb-6 md:pt-3 md:pb-8 space-y-6 sm:space-y-8">
           
-          <div className="bg-white rounded-3xl px-6 pt-2.5 pb-6 sm:px-10 sm:pt-3 sm:pb-10 md:px-12 md:pt-3 md:pb-8 shadow-sm border border-slate-100">
+          <div className={`bg-white rounded-3xl px-6 sm:px-10 md:px-12 shadow-sm border border-slate-100 ${data.title?.includes("Yoga") ? "pt-4 pb-3 sm:pt-5 sm:pb-4 md:pt-5 md:pb-4" : "pt-3 pb-6 sm:pt-4 sm:pb-8 md:pt-4 md:pb-6"}`}>
             {data.content ? (
               <div 
-                className="prose prose-slate max-w-none prose-headings:text-[#002b5c] prose-a:text-[#007a87] prose-img:rounded-xl [&_h1]:!mt-1 [&_h1]:!mb-0.5 [&_h2]:!mt-1 [&_h2]:!mb-0.5 [&_h3]:!mt-1 [&_h3]:!mb-0.5 [&_h4]:!mt-1 [&_h4]:!mb-0.5 [&_p]:!mt-0 [&_p]:!mb-0.5 [&_p:has(strong)]:!mt-1 [&_p:has(strong)]:!mb-0.5 [&_ul]:my-1 [&_ol]:my-1 leading-normal"
-                dangerouslySetInnerHTML={{ __html: data.content }}
+                ref={contentRef}
+                className="prose prose-slate max-w-none text-[18px] prose-headings:text-[#002b5c] prose-a:text-[#007a87] prose-img:rounded-2xl prose-img:cursor-pointer [&_img]:!cursor-pointer prose-img:w-full prose-img:h-auto prose-img:max-w-full prose-img:shadow-md prose-img:border prose-img:border-slate-200/80 hover:prose-img:shadow-2xl hover:prose-img:scale-[1.01] prose-img:transition-all prose-img:duration-300 [&_h1]:!text-[22px] [&_h1]:!mt-2 [&_h1]:!mb-1 [&_h1:first-child]:!mt-0 [&_h2]:!text-[22px] [&_h2]:!mt-2 [&_h2]:!mb-1 [&_h2:first-child]:!mt-0 [&_h3]:!text-[22px] [&_h3]:!mt-2 [&_h3]:!mb-1 [&_h3:first-child]:!mt-0 [&_h4]:!text-[22px] [&_h4]:!mt-1.5 [&_h4]:!mb-1 [&_h4:first-child]:!mt-0 [&_p]:!text-[18px] [&_p]:!mt-0 [&_p]:!mb-1 [&_p:first-child]:!mt-0 [&_li]:!text-[18px] [&_td]:!text-[18px] [&_th]:!text-[18px] [&_ul]:my-1.5 [&_ol]:my-1.5 leading-relaxed"
+                dangerouslySetInnerHTML={{ 
+                  __html: data.content.replace(/(?:<p>(?:<br\s*\/?>|\s|&nbsp;)*<\/p>\s*)+$/gi, "") 
+                }}
               />
             ) : (
               <p className="text-slate-500">Detailed information about this program is currently being updated. Please check back later.</p>
@@ -74,8 +93,8 @@ export default function ClientPage({ data }: { data: any }) {
           </div>
 
           {data.gallery && data.gallery.length > 0 && (
-            <div className="bg-white rounded-3xl p-8 sm:p-10 shadow-sm border border-slate-100">
-              <h3 className="text-2xl font-bold text-[#002b5c] border-b border-slate-100 pb-4 mb-8">
+            <div className="bg-white rounded-3xl px-6 py-5 sm:px-8 sm:py-6 md:px-10 md:py-6 shadow-sm border border-slate-100">
+              <h3 className="text-[22px] font-bold text-[#002b5c] border-b border-slate-100 pb-2 mb-4">
                 Gallery
               </h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
@@ -183,6 +202,38 @@ export default function ClientPage({ data }: { data: any }) {
             >
               <X className="w-6 h-6" />
             </button>
+          </div>
+        </div>,
+        document.body
+      )}
+
+      {zoomImage && typeof window !== "undefined" && createPortal(
+        <div 
+          className="fixed inset-0 z-[100] bg-black/90 backdrop-blur-sm flex flex-col items-center justify-center p-2 sm:p-6 animate-in fade-in duration-300 cursor-pointer"
+          onClick={() => setZoomImage(null)}
+        >
+          <div className="absolute top-4 right-4 sm:top-6 sm:right-6 flex items-center gap-3 z-50">
+            <span className="text-white/80 text-xs sm:text-sm font-medium bg-white/10 px-3.5 py-1.5 rounded-full backdrop-blur-md border border-white/10">
+              Click anywhere to close
+            </span>
+            <button
+              onClick={() => setZoomImage(null)}
+              className="text-white hover:text-red-400 bg-white/10 hover:bg-white/20 p-2.5 sm:p-3 rounded-full transition-colors shadow-lg border border-white/10 cursor-pointer"
+              title="Close Zoom"
+            >
+              <X className="w-6 h-6" />
+            </button>
+          </div>
+          <div 
+            className="relative w-full max-w-7xl max-h-[92vh] flex items-center justify-center p-1 cursor-default"
+            onClick={e => e.stopPropagation()}
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img 
+              src={zoomImage} 
+              alt="Zoomed Content Image"
+              className="max-w-full max-h-[90vh] w-auto h-auto object-contain rounded-2xl shadow-[0_0_60px_rgba(0,0,0,0.85)] border-2 sm:border-4 border-white bg-white"
+            />
           </div>
         </div>,
         document.body

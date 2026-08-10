@@ -117,7 +117,7 @@ export default function DoctorProfileClient({ initialDoctor }: { initialDoctor: 
           </div>
           <div className="flex-1 text-center md:text-left flex flex-col justify-center min-h-[240px] md:min-h-[300px]">
             <div>
-              <h2 className={`font-[900] text-[#002b5c] leading-tight mb-4 uppercase tracking-tight ${doctor?.name?.length > 22 ? 'text-2xl sm:text-3xl md:text-4xl' : 'text-3xl sm:text-4xl md:text-[42px]'}`}>{doctor.name}</h2>
+              <h2 className={`font-[900] text-[#002b5c] leading-tight mb-4 uppercase tracking-tight ${doctor?.name?.length > 20 ? 'text-xl sm:text-2xl md:text-3xl' : 'text-2xl sm:text-3xl md:text-[32px]'}`}>{doctor.name}</h2>
               <p className="text-lg leading-relaxed font-medium text-slate-500 mb-6">{doctor.qualifications}</p>
               <div className="inline-flex items-center gap-2 px-4 py-2 bg-teal-50 border border-teal-100 text-[#007a87] rounded-xl text-sm font-bold uppercase tracking-wider mb-8">
                 <Stethoscope className="w-4 h-4" />

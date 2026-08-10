@@ -137,7 +137,7 @@ export default function CoursesAndPricing({
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
           {/* Left Column Card */}
           <div className="bg-white rounded-3xl p-6 sm:p-10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 transition-shadow duration-300 hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)]">
-            <h3 className="text-lg font-bold text-slate-800 mb-0 flex items-center gap-3 border-b border-slate-100 pb-2">
+            <h3 className="text-[22px] font-bold text-slate-800 mb-0 flex items-center gap-3 border-b border-slate-100 pb-2">
               <div className="w-8 h-8 rounded-full bg-red-50 flex items-center justify-center shrink-0">
                 <div className="w-2.5 h-2.5 rounded-full bg-red-500"></div>
               </div>
@@ -155,7 +155,7 @@ export default function CoursesAndPricing({
                       <div className="mt-0.5 w-5 h-5 rounded-full bg-white border border-slate-200 flex items-center justify-center shrink-0 group-hover:border-[#D30039]/30 group-hover:bg-[#D30039]/5 transition-colors">
                         <ChevronRight className="w-3 h-3 text-slate-400 group-hover:text-[#D30039] transition-colors" />
                       </div>
-                      <span className="text-[16px] text-slate-600 group-hover:text-[#D30039] font-medium leading-relaxed transition-colors">
+                      <span className="text-[18px] text-slate-600 group-hover:text-[#D30039] font-medium leading-relaxed transition-colors">
                         {course.title}
                       </span>
                     </Link>
@@ -167,7 +167,7 @@ export default function CoursesAndPricing({
 
           {/* Right Column Card */}
           <div className="bg-white rounded-3xl p-6 sm:p-10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 transition-shadow duration-300 hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)]">
-            <h3 className="text-lg font-bold text-slate-800 mb-0 flex items-center gap-3 border-b border-slate-100 pb-2">
+            <h3 className="text-[22px] font-bold text-slate-800 mb-0 flex items-center gap-3 border-b border-slate-100 pb-2">
               <div className="w-8 h-8 rounded-full bg-teal-50 flex items-center justify-center shrink-0">
                 <div className="w-2.5 h-2.5 rounded-full bg-[#007a87]"></div>
               </div>
@@ -190,7 +190,7 @@ export default function CoursesAndPricing({
                       <div className="mt-0.5 w-5 h-5 rounded-full bg-white border border-slate-200 flex items-center justify-center shrink-0 group-hover:border-[#007a87]/30 group-hover:bg-[#007a87]/5 transition-colors">
                         <ChevronRight className="w-3 h-3 text-slate-400 group-hover:text-[#007a87] transition-colors" />
                       </div>
-                      <span className="text-[16px] text-slate-600 group-hover:text-[#007a87] font-medium leading-relaxed transition-colors">
+                      <span className="text-[18px] text-slate-600 group-hover:text-[#007a87] font-medium leading-relaxed transition-colors">
                         {course.title}
                       </span>
                     </Link>

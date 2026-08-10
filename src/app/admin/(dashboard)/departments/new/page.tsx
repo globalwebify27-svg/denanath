@@ -6,6 +6,8 @@ import { ArrowLeft, Save, HeartPulse, Search } from "lucide-react";
 import IconPicker from "@/components/IconPicker";
 import QuillEditor from "@/components/QuillEditor";
 import PhotoGalleryEditor from "@/components/PhotoGalleryEditor";
+import SectionHeaderClient from "../[id]/SectionHeaderClient";
+import PublicationLinkSectionClient from "../[id]/PublicationLinkSectionClient";
 
 export default function NewDepartmentPage() {
   async function createDepartment(formData: FormData) {
@@ -86,8 +88,17 @@ export default function NewDepartmentPage() {
       return styled;
     };
 
+    const publicationLink = (formData.get("publicationLink") as string || "").trim();
+    const publicationLinkText = (formData.get("publicationLinkText") as string || "View Details").trim();
+    
+    let publicationHtml = "";
+    if (publicationLink) {
+      publicationHtml = `<section><h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Publications / Link</h3><p><a href="${publicationLink}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-5 py-2.5 bg-[#007a87] text-white font-bold text-sm rounded-xl hover:bg-[#005f69] transition-colors">${publicationLinkText || 'View Details'}</a></p></section>`;
+    }
+
     const description = `
 <div class="space-y-8 text-slate-700">
+  ${publicationHtml}
   ${overview ? `<section><h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Overview</h3>${styleList(overview)}</section>` : ''}
   ${spectrum ? `<section><h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Spectrum and Services</h3>${styleList(spectrum)}</section>` : ''}
   ${paediatric ? `<section><h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Paediatric Liver Clinic</h3>${styleList(paediatric)}</section>` : ''}
@@ -190,62 +201,32 @@ export default function NewDepartmentPage() {
               <p className="text-[12px] font-[600] text-gray-500 mb-6">Fill in the dedicated sections below. These will be formatted automatically on the frontend.</p>
             </div>
 
-            <div className="space-y-2">
-              <label className="text-[12px] font-[800] text-gray-700 uppercase tracking-widest">Overview</label>
-              <QuillEditor name="overview" />
-            </div>
-
-            <div className="space-y-2">
-              <label className="text-[12px] font-[800] text-gray-700 uppercase tracking-widest">Spectrum and Services</label>
-              <QuillEditor name="spectrum" />
-            </div>
-
-            <div className="space-y-2">
-              <label className="text-[12px] font-[800] text-gray-700 uppercase tracking-widest">Paediatric Liver Clinic</label>
-              <QuillEditor name="paediatric" />
-            </div>
-
-            <div className="space-y-2">
-              <label className="text-[12px] font-[800] text-gray-700 uppercase tracking-widest">Facilities</label>
-              <QuillEditor name="facilities" />
-            </div>
-
-            <div className="space-y-2">
-              <label className="text-[12px] font-[800] text-gray-700 uppercase tracking-widest">Location of Department</label>
-              <QuillEditor name="location" />
-            </div>
-
-            <div className="space-y-2">
-              <label className="text-[12px] font-[800] text-gray-700 uppercase tracking-widest">Departmental Timetable</label>
-              <QuillEditor name="timetable" />
-            </div>
-
-            <div className="space-y-2">
-              <label className="text-[12px] font-[800] text-gray-700 uppercase tracking-widest">Departmental Workload</label>
-              <QuillEditor name="workload" />
-            </div>
-
-            <div className="space-y-2">
-              <label className="text-[12px] font-[800] text-gray-700 uppercase tracking-widest">Courses and Training</label>
-              <QuillEditor name="courses" />
-            </div>
-
-            <div className="space-y-2">
-              <label className="text-[12px] font-[800] text-gray-700 uppercase tracking-widest">Events</label>
-              <QuillEditor name="events" />
-            </div>
-
-            <div className="space-y-2">
-              <label className="text-[12px] font-[800] text-gray-700 uppercase tracking-widest">Contact Us</label>
-              <QuillEditor name="contactUs" />
+            <div className="space-y-6">
+              {[
+                { label: "Overview", name: "overview" },
+                { label: "Spectrum and Services", name: "spectrum" },
+                { label: "Paediatric Liver Clinic", name: "paediatric" },
+                { label: "Facilities", name: "facilities" },
+                { label: "Location of Department", name: "location" },
+                { label: "Departmental Timetable", name: "timetable" },
+                { label: "Departmental Workload", name: "workload" },
+                { label: "Courses and Training", name: "courses" },
+                { label: "Events", name: "events" },
+                { label: "Contact Us", name: "contactUs" },
+              ].map((sec) => (
+                <div key={sec.name} className="bg-slate-50/70 p-5 rounded-2xl border border-slate-200/80 space-y-4">
+                  <SectionHeaderClient title={sec.label} />
+                  <QuillEditor name={sec.name} />
+                </div>
+              ))}
             </div>
 
             <div className="space-y-2">
               <PhotoGalleryEditor name="gallery" />
             </div>
 
-            <div className="space-y-2">
-              <label className="text-[12px] font-[800] text-gray-700 uppercase tracking-widest">Consultant</label>
+            <div className="bg-slate-50/70 p-5 rounded-2xl border border-slate-200/80 space-y-4">
+              <SectionHeaderClient title="Consultant" />
               <QuillEditor name="consultant" />
             </div>
           </div>

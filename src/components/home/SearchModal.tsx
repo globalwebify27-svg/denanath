@@ -57,6 +57,22 @@ export default function SearchModal({ isOpen, onClose, doctors, departments }: S
         if (isMounted) setApiDepartments(mappedDepts);
         if (isMounted) setIsLoading(false);
 
+        // Helper to resolve real DMH doctor picture URL
+        const getRealDoctorImg = (docObj: any) => {
+          const img = docObj.image || docObj.doctorImage || docObj.photo;
+          if (img && typeof img === "string" && img.trim() !== "" && !img.includes("unsplash.com")) {
+            return img;
+          }
+          const idToUse = docObj.dmhDoctorId || docObj.doctorId || docObj.doctor_id || docObj.id;
+          if (idToUse) {
+            const numericPart = String(idToUse).replace(/[^0-9]/g, "");
+            if (numericPart) {
+              return `https://www.dmhospital.org/images/Hospital/Doctor/Small-DMH/${numericPart}_Pic.jpg`;
+            }
+          }
+          return "https://www.dmhospital.org/images/Hospital/Doctor/Small-DMH/default.jpg";
+        };
+
         // 1.5 Fetch doctors from local DB first to ensure all doctors are available
         try {
           const dbRes = await fetch('/api/doctors');
@@ -73,7 +89,7 @@ export default function SearchModal({ isOpen, onClose, doctors, departments }: S
                 rating: 4.8,
                 availableDays: ["Monday", "Wednesday", "Friday"],
                 timings: doc.timings || "10:00 AM - 02:00 PM",
-                image: doc.image || "https://images.unsplash.com/photo-1622253692010-333f2da6031d?q=80&w=300&auto=format&fit=crop",
+                image: getRealDoctorImg(doc),
                 fee: 1000,
                 bio: "Experienced specialist providing comprehensive clinical care and personalized treatment protocols."
               }));
@@ -90,8 +106,8 @@ export default function SearchModal({ isOpen, onClose, doctors, departments }: S
           console.warn("Failed to fetch doctors from local DB:", e);
         }
 
-        // 2. Fetch Doctors progressively from DMH API
-        mappedDepts.slice(0, 25).forEach(async (dept) => {
+        // 2. Fetch Doctors progressively from DMH API for all departments
+        mappedDepts.forEach(async (dept) => {
           try {
             const docRes = await fetch('/api/dmh', {
               method: 'POST',
@@ -112,7 +128,7 @@ export default function SearchModal({ isOpen, onClose, doctors, departments }: S
                 rating: 4.8,
                 availableDays: ["Monday", "Wednesday", "Friday"],
                 timings: "10:00 AM - 02:00 PM",
-                image: doc.doctorImage || doc.photo || "https://images.unsplash.com/photo-1622253692010-333f2da6031d?q=80&w=300&auto=format&fit=crop",
+                image: getRealDoctorImg(doc),
                 fee: 1000,
                 bio: "Experienced specialist providing comprehensive clinical care and personalized treatment protocols."
               }));
@@ -230,13 +246,23 @@ export default function SearchModal({ isOpen, onClose, doctors, departments }: S
                       <div className="py-8 text-center text-slate-400 text-sm font-light">Loading specialists from hospital database...</div>
                     ) : (
                       <div className="flex gap-4 overflow-x-auto pb-4 hide-scrollbar">
-                        {displayDoctors.slice(0, 10).map(doc => (
+                        {displayDoctors.map(doc => (
                           <div 
                             key={`trend-${doc.id}`} 
                             onClick={() => setSearchQuery(doc.name)}
                             className="min-w-[220px] sm:min-w-[240px] p-4 rounded-[1.25rem] sm:rounded-[1.5rem] bg-slate-50 border border-slate-100 flex items-center gap-3 sm:gap-4 cursor-pointer hover:bg-white hover:shadow-xl hover:shadow-[#007a87]/10 hover:-translate-y-1 transition-all group"
                           >
-                            <img src={doc.image} alt={doc.name} className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover shadow-sm group-hover:scale-105 transition-transform flex-shrink-0" />
+                            <img 
+                              src={doc.image} 
+                              alt={doc.name} 
+                              className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover shadow-sm group-hover:scale-105 transition-transform flex-shrink-0"
+                              onError={(e) => {
+                                const target = e.currentTarget;
+                                if (!target.src.includes('default.jpg')) {
+                                  target.src = "https://www.dmhospital.org/images/Hospital/Doctor/Small-DMH/default.jpg";
+                                }
+                              }}
+                            />
                             <div className="min-w-0 flex-1">
                               <h5 className="text-xs sm:text-sm font-bold text-slate-900 truncate">{doc.name}</h5>
                               <p className="text-[9px] sm:text-[10px] text-[#007a87] font-bold uppercase tracking-wider mt-0.5 truncate">{doc.specialtyName}</p>
@@ -257,7 +283,17 @@ export default function SearchModal({ isOpen, onClose, doctors, departments }: S
                           className="group p-4 sm:p-5 rounded-xl sm:rounded-2xl hover:bg-slate-50 border border-transparent hover:border-slate-100 transition-all flex items-center justify-between gap-4 cursor-pointer"
                         >
                           <div className="flex items-center gap-3 sm:gap-4 min-w-0 flex-1">
-                            <img src={doc.image} alt={doc.name} className="w-12 h-12 sm:w-14 sm:h-14 rounded-full object-cover shadow-sm group-hover:scale-105 transition-transform flex-shrink-0" />
+                            <img 
+                              src={doc.image} 
+                              alt={doc.name} 
+                              className="w-12 h-12 sm:w-14 sm:h-14 rounded-full object-cover shadow-sm group-hover:scale-105 transition-transform flex-shrink-0" 
+                              onError={(e) => {
+                                const target = e.currentTarget;
+                                if (!target.src.includes('default.jpg')) {
+                                  target.src = "https://www.dmhospital.org/images/Hospital/Doctor/Small-DMH/default.jpg";
+                                }
+                              }}
+                            />
                             <div className="min-w-0 flex-1">
                               <h4 className="font-semibold text-slate-900 text-sm sm:text-base truncate">{doc.name}</h4>
                               <p className="text-[10px] sm:text-xs text-[#007a87] font-semibold uppercase tracking-wider mt-0.5 truncate">{doc.specialtyName}</p>

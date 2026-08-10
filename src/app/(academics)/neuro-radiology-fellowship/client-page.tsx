@@ -103,18 +103,18 @@ radiofellowship@gmail.com</p>
       {/* Content Section */}
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-3 pb-8 md:pt-5 md:pb-12 relative z-20">
         <div className="bg-white rounded-3xl shadow-xl shadow-slate-200/50 px-6 pt-3 pb-6 sm:px-10 sm:pt-4 sm:pb-10 md:px-12 md:pt-4 md:pb-8 border border-slate-100">
-          <h2 className="text-2xl font-bold text-[#002b5c] border-b border-slate-100 pb-2 mb-3">
+          <h2 className="text-[22px] font-bold text-[#002b5c] border-b border-slate-100 pb-2 mb-3">
             Overview
           </h2>
           <div 
-            className="prose prose-slate prose-lg max-w-none prose-headings:text-[#002b5c] prose-p:text-slate-600 prose-li:text-slate-600 prose-strong:text-slate-800 [&_h2]:mt-4 [&_h2]:mb-2 [&_h3]:mt-4 [&_h3]:mb-2 [&_h4]:mt-3 [&_h4]:mb-1.5 [&_p]:mb-3 [&_ul]:my-2 [&_ol]:my-2"
+            className="prose prose-slate max-w-none text-[18px] prose-headings:text-[#002b5c] [&_h1]:!text-[22px] [&_h2]:!text-[22px] [&_h3]:!text-[22px] [&_h4]:!text-[22px] [&_p]:!text-[18px] [&_li]:!text-[18px] [&_td]:!text-[18px] [&_th]:!text-[18px] [&_h2]:mt-4 [&_h2]:mb-2 [&_h3]:mt-4 [&_h3]:mb-2 [&_h4]:mt-3 [&_h4]:mb-1.5 [&_p]:mb-1 [&_ul]:my-1.5 [&_ol]:my-1.5 leading-relaxed"
             dangerouslySetInnerHTML={{ __html: overview }}
           />
 
           {/* Gallery Section */}
           {courseData?.gallery && courseData.gallery.length > 0 && (
             <div className="mt-16 pt-12 border-t border-slate-100">
-              <h3 className="text-2xl font-bold text-[#002b5c] mb-8">Gallery</h3>
+              <h3 className="text-[22px] font-bold text-[#002b5c] mb-8">Gallery</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                 {courseData.gallery.map((img: any, idx: number) => (
                   <div key={idx} className="rounded-xl overflow-hidden shadow-sm border border-slate-100 bg-white">

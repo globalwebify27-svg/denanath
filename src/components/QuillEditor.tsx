@@ -49,6 +49,27 @@ export default function QuillEditor({ name, defaultValue, value, onChange }: { n
     enableDragAndDropFileToEditor: true,
     askBeforePasteFromWord: false,
     askBeforePasteHTML: false,
+    controls: {
+      fontsize: {
+        list: {
+          '8': '8px',
+          '9': '9px',
+          '10': '10px',
+          '11': '11px',
+          '12': '12px',
+          '14': '14px',
+          '16': '16px',
+          '18': '18px',
+          '20': '20px',
+          '22': '22px',
+          '24': '24px',
+          '30': '30px',
+          '32': '32px',
+          '36': '36px',
+          '48': '48px'
+        }
+      }
+    },
     buttons: [
       'source', '|',
       'bold', 'strikethrough', 'underline', 'italic', '|',
@@ -226,20 +247,33 @@ export default function QuillEditor({ name, defaultValue, value, onChange }: { n
   return (
     <div className="bg-white rounded-2xl overflow-hidden border border-slate-200 shadow-sm relative z-0">
       <style>{`
+        .jodit-wysiwyg {
+          font-size: 18px !important;
+          line-height: 1.65 !important;
+        }
+        .jodit-wysiwyg p {
+          font-size: 18px !important;
+          margin-top: 0 !important;
+          margin-bottom: 0.25rem !important;
+          line-height: 1.5 !important;
+        }
         .jodit-wysiwyg ul {
           list-style-type: disc !important;
           padding-left: 2rem !important;
           margin-top: 0.5rem !important;
           margin-bottom: 0.5rem !important;
+          font-size: 18px !important;
         }
         .jodit-wysiwyg ol {
           list-style-type: decimal !important;
           padding-left: 2rem !important;
           margin-top: 0.5rem !important;
           margin-bottom: 0.5rem !important;
+          font-size: 18px !important;
         }
         .jodit-wysiwyg li {
           display: list-item !important;
+          font-size: 18px !important;
         }
       `}</style>
       {name && <input type="hidden" name={name} defaultValue={value !== undefined ? value : (defaultValue || "")} ref={hiddenInputRef} />}

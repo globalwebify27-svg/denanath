@@ -11,6 +11,8 @@ export default function DoctorForm({ doctor, id }: { doctor: any; id: string }) 
   const [loading, setLoading] = useState(false);
   const [uploadingPubIndex, setUploadingPubIndex] = useState<number | null>(null);
   
+  const isDmhDoctor = id !== "new" || Boolean(doctor?.dmhDoctorId);
+  
   // Parse JSON strings to objects/arrays safely
   const safeParse = (str: any) => {
     if (!str) return [];
@@ -305,35 +307,57 @@ export default function DoctorForm({ doctor, id }: { doctor: any; id: string }) 
         </div>
       </div>
 
+      {isDmhDoctor && (
+        <div className="mb-6 p-4 bg-amber-50/80 border border-amber-200 rounded-2xl text-amber-900 text-xs sm:text-sm font-semibold flex items-center gap-3 shadow-2xs">
+          <div className="w-2.5 h-2.5 rounded-full bg-amber-500 shrink-0" />
+          <span>This doctor is synced from the DMH API system. Full Name, Specialty, Qualifications, and OPD Timings are automatically managed by the hospital backend and read-only.</span>
+        </div>
+      )}
+
       <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 mb-6 grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="md:col-span-2">
-          <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+          <div className="flex items-center justify-between mb-1">
+            <label className="block text-sm font-medium text-gray-700">Full Name</label>
+            {isDmhDoctor && <span className="text-[11px] font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded border border-amber-200">Synced from API</span>}
+          </div>
           <input
             required
             type="text"
+            readOnly={isDmhDoctor}
+            disabled={isDmhDoctor}
             value={formData.name}
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-            className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+            className={`w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 ${isDmhDoctor ? 'bg-gray-100 text-gray-500 cursor-not-allowed' : ''}`}
           />
         </div>
         
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Specialty</label>
+          <div className="flex items-center justify-between mb-1">
+            <label className="block text-sm font-medium text-gray-700">Specialty</label>
+            {isDmhDoctor && <span className="text-[11px] font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded border border-amber-200">Synced from API</span>}
+          </div>
           <input
             type="text"
+            readOnly={isDmhDoctor}
+            disabled={isDmhDoctor}
             value={formData.specialty}
             onChange={(e) => setFormData({ ...formData, specialty: e.target.value })}
-            className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+            className={`w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 ${isDmhDoctor ? 'bg-gray-100 text-gray-500 cursor-not-allowed' : ''}`}
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Qualifications</label>
+          <div className="flex items-center justify-between mb-1">
+            <label className="block text-sm font-medium text-gray-700">Qualifications</label>
+            {isDmhDoctor && <span className="text-[11px] font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded border border-amber-200">Synced from API</span>}
+          </div>
           <input
             type="text"
+            readOnly={isDmhDoctor}
+            disabled={isDmhDoctor}
             value={formData.qualifications}
             onChange={(e) => setFormData({ ...formData, qualifications: e.target.value })}
-            className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+            className={`w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 ${isDmhDoctor ? 'bg-gray-100 text-gray-500 cursor-not-allowed' : ''}`}
           />
         </div>
 
@@ -406,52 +430,62 @@ export default function DoctorForm({ doctor, id }: { doctor: any; id: string }) 
       <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 mb-6">
         <div className="flex items-center justify-between mb-4 gap-2">
           <h3 className="text-base sm:text-lg font-semibold text-gray-800 truncate min-w-0">OPD Timings</h3>
-          <button
-            type="button"
-            onClick={handleTimingAdd}
-            className="flex items-center gap-1.5 px-3 py-2 sm:px-4 sm:py-2.5 bg-[#003360] text-white hover:bg-[#002545] rounded-xl text-xs font-bold transition-all duration-300 shadow-sm hover:shadow shrink-0 whitespace-nowrap ml-auto"
-          >
-            <Plus size={14} /> Add Timing
-          </button>
+          {!isDmhDoctor && (
+            <button
+              type="button"
+              onClick={handleTimingAdd}
+              className="flex items-center gap-1.5 px-3 py-2 sm:px-4 sm:py-2.5 bg-[#003360] text-white hover:bg-[#002545] rounded-xl text-xs font-bold transition-all duration-300 shadow-sm hover:shadow shrink-0 whitespace-nowrap ml-auto"
+            >
+              <Plus size={14} /> Add Timing
+            </button>
+          )}
         </div>
         {formData.timings.length > 0 && (
           <div className="hidden sm:flex gap-2 mb-2 px-3 text-sm font-bold text-gray-700 border-b border-gray-200 pb-2">
             <div className="flex-1">Speciality</div>
             <div className="flex-1">Day</div>
             <div className="flex-1">Time</div>
-            <div className="w-[36px] text-center shrink-0">Action</div>
+            {!isDmhDoctor && <div className="w-[36px] text-center shrink-0">Action</div>}
           </div>
         )}
         {formData.timings.map((timing: any, index: number) => (
           <div key={index} className="flex flex-col sm:flex-row gap-2 mb-3 bg-gray-50 p-3 rounded-lg border border-gray-200">
             <input
               type="text"
+              readOnly={isDmhDoctor}
+              disabled={isDmhDoctor}
               placeholder="Speciality"
               value={timing.branch}
               onChange={(e) => handleTimingChange(index, "branch", e.target.value)}
-              className="w-full sm:flex-1 p-2 border border-gray-300 rounded-lg text-sm"
+              className={`w-full sm:flex-1 p-2 border border-gray-300 rounded-lg text-sm ${isDmhDoctor ? 'bg-gray-100 text-gray-500 cursor-not-allowed' : ''}`}
             />
             <input
               type="text"
+              readOnly={isDmhDoctor}
+              disabled={isDmhDoctor}
               placeholder="Day"
               value={timing.day}
               onChange={(e) => handleTimingChange(index, "day", e.target.value)}
-              className="w-full sm:flex-1 p-2 border border-gray-300 rounded-lg text-sm"
+              className={`w-full sm:flex-1 p-2 border border-gray-300 rounded-lg text-sm ${isDmhDoctor ? 'bg-gray-100 text-gray-500 cursor-not-allowed' : ''}`}
             />
             <input
               type="text"
+              readOnly={isDmhDoctor}
+              disabled={isDmhDoctor}
               placeholder="Time"
               value={timing.time}
               onChange={(e) => handleTimingChange(index, "time", e.target.value)}
-              className="w-full sm:flex-1 p-2 border border-gray-300 rounded-lg text-sm"
+              className={`w-full sm:flex-1 p-2 border border-gray-300 rounded-lg text-sm ${isDmhDoctor ? 'bg-gray-100 text-gray-500 cursor-not-allowed' : ''}`}
             />
-            <button
-              type="button"
-              onClick={() => handleTimingRemove(index)}
-              className="self-end sm:self-auto p-2 text-[#D9232D] hover:bg-red-50 rounded-lg"
-            >
-              <Trash2 size={20} color="#D9232D" />
-            </button>
+            {!isDmhDoctor && (
+              <button
+                type="button"
+                onClick={() => handleTimingRemove(index)}
+                className="p-2 text-[#D9232D] hover:bg-red-50 rounded-lg shrink-0 self-end sm:self-auto"
+              >
+                <Trash2 size={20} color="#D9232D" />
+              </button>
+            )}
           </div>
         ))}
         {formData.timings.length === 0 && (

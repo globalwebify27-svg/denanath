@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, Save, FileText, Image as ImageIcon, Trash2, Plus, Calendar, Search } from "lucide-react";
+import { ArrowLeft, Save, FileText, Image as ImageIcon, Trash2, Plus, Calendar } from "lucide-react";
 import QuillEditor from "@/components/QuillEditor";
 
 export default function CourseForm({ initialData, saveAction, col }: { initialData: any, saveAction: (data: FormData) => Promise<void>, col: string }) {
@@ -20,9 +20,6 @@ export default function CourseForm({ initialData, saveAction, col }: { initialDa
     endDate: initialData.endDate || "",
     gallery: initialData.gallery || [],
     status: initialData.status !== false,
-    seoMetaTitle: initialData.seoMetaTitle || "",
-    seoMetaDescription: initialData.seoMetaDescription || "",
-    seoKeywords: initialData.seoKeywords || "",
   });
 
   const handleGalleryChange = (index: number, key: string, value: string) => {
@@ -86,9 +83,6 @@ export default function CourseForm({ initialData, saveAction, col }: { initialDa
       data.append("content", cleanedContent);
       data.append("status", formData.status.toString());
       data.append("gallery", JSON.stringify(formData.gallery.filter((g: any) => g.image || g.caption)));
-      data.append("seoMetaTitle", formData.seoMetaTitle);
-      data.append("seoMetaDescription", formData.seoMetaDescription);
-      data.append("seoKeywords", formData.seoKeywords);
 
       await saveAction(data);
       alert("Saved successfully!");
@@ -194,26 +188,35 @@ export default function CourseForm({ initialData, saveAction, col }: { initialDa
 
       {/* Content Settings */}
       <div className="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden group hover:shadow-md transition-shadow duration-300">
-        <div className="bg-slate-50/50 border-b border-slate-100 p-5 md:p-6 flex items-center gap-4">
-          <div className="bg-emerald-500/10 p-3 rounded-2xl text-emerald-600">
-            <FileText size={24} strokeWidth={2.5} />
+        <div className="bg-slate-50/50 border-b border-slate-100 p-5 md:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="flex items-center gap-3 flex-1 min-w-0">
+            <div className="bg-emerald-500/10 p-3 rounded-2xl text-emerald-600 shrink-0">
+              <FileText size={24} strokeWidth={2.5} />
+            </div>
+            <div className="flex-1 max-w-sm sm:max-w-md">
+              <input 
+                type="text"
+                value={formData.title}
+                onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                className="w-full font-black text-[#002b5c] text-lg sm:text-xl border border-slate-300 focus:border-[#007a87] rounded-xl px-3.5 py-1.5 outline-none font-sans bg-white shadow-xs" 
+                placeholder="Section Title (e.g. Event Overview)" 
+              />
+            </div>
           </div>
-          <div>
-            <h2 className="text-[20px] font-black text-[#002b5c]">Page Content</h2>
-            <p className="text-[13px] text-slate-500 font-medium">Update the {col === "right" ? "program" : "course"} information text shown on the page.</p>
-          </div>
+          <button
+            type="button"
+            onClick={() => {
+              const editor = document.querySelector('.jodit-wysiwyg') as HTMLElement;
+              if (editor) {
+                editor.focus();
+              }
+            }}
+            className="inline-flex items-center gap-1.5 px-4 py-2.5 bg-[#002b5c] text-white hover:bg-[#001f42] rounded-xl text-xs font-bold transition-colors shrink-0 shadow-xs"
+          >
+            <Plus size={14} /> Add Paragraph
+          </button>
         </div>
         <div className="p-6 md:p-8 space-y-6">
-          <div>
-            <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">{col === "right" ? "Program" : "Course"} / Section Title</label>
-            <input 
-              type="text"
-              value={formData.title}
-              onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-              className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-emerald-500/30 focus:border-emerald-500 transition-all duration-200 text-slate-700 font-medium text-sm leading-relaxed" 
-              placeholder="e.g. Official Approval Information" 
-            />
-          </div>
           <div>
             <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Detailed Content (HTML Supported)</label>
             <QuillEditor name="content" defaultValue={formData.content} />
@@ -313,7 +316,7 @@ export default function CourseForm({ initialData, saveAction, col }: { initialDa
       <div className="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden group hover:shadow-md transition-shadow duration-300">
         <div className="bg-slate-50/50 border-b border-slate-100 p-5 md:p-6 flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <div className="bg-rose-500/10 p-3 rounded-2xl text-rose-600">
+            <div className="bg-rose-100 p-3 rounded-2xl text-rose-600">
               <FileText size={24} strokeWidth={2.5} />
             </div>
             <div>
@@ -324,91 +327,44 @@ export default function CourseForm({ initialData, saveAction, col }: { initialDa
         </div>
         
         <div className="p-6 md:p-8">
-          <div className="space-y-3">
-            <div className="flex items-center gap-3 bg-slate-50 p-3 rounded-xl border border-slate-200">
+          <div className="bg-slate-50/50 p-4 sm:p-5 rounded-2xl border border-slate-200/80">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
               <input
                 type="text"
                 value={formData.linkText}
                 onChange={(e) => setFormData({ ...formData, linkText: e.target.value })}
-                placeholder="e.g. View PDF Link"
-                className="flex-1 p-2.5 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-rose-500/30 focus:border-rose-500 transition-all duration-200 text-sm"
+                placeholder="View Details"
+                className="sm:w-56 md:w-64 shrink-0 p-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-[#007a87]/20 focus:border-[#007a87] transition-all duration-200 text-sm font-medium text-slate-700 outline-none"
               />
-              <div className="flex-[2] flex gap-2 items-center">
-                <input
-                  type="text"
-                  value={formData.link}
-                  onChange={(e) => setFormData({ ...formData, link: e.target.value })}
-                  placeholder="https://..."
-                  className="flex-1 p-2.5 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-rose-500/30 focus:border-rose-500 transition-all duration-200 text-sm"
+              <input
+                type="text"
+                value={formData.link}
+                onChange={(e) => setFormData({ ...formData, link: e.target.value })}
+                placeholder="https://..."
+                className="flex-1 p-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-[#007a87]/20 focus:border-[#007a87] transition-all duration-200 text-sm font-medium text-slate-700 outline-none"
+              />
+              <div className="relative shrink-0 flex items-center gap-3">
+                <input 
+                  type="file"
+                  accept=".pdf"
+                  onChange={handleFileUpload}
+                  disabled={uploadingLink}
+                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer disabled:cursor-not-allowed z-10"
+                  title="Upload File"
                 />
-                <div className="relative shrink-0">
-                  <input 
-                    type="file"
-                    accept=".pdf"
-                    onChange={handleFileUpload}
-                    disabled={uploadingLink}
-                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer disabled:cursor-not-allowed z-10"
-                    title="Upload File"
-                  />
-                  <button type="button" disabled={uploadingLink} className="px-3 py-2 bg-[#007a87] text-white text-xs font-bold rounded-lg hover:bg-[#005f69] transition-colors disabled:opacity-50 relative z-0">
-                    {uploadingLink ? "Uploading..." : "Upload"}
-                  </button>
-                </div>
+                <button type="button" disabled={uploadingLink} className="bg-[#007a87] text-white text-xs font-bold px-5 py-3 rounded-xl hover:bg-[#005f69] transition-colors disabled:opacity-50 relative z-0 shadow-sm">
+                  {uploadingLink ? "Uploading..." : "Upload"}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setFormData({ ...formData, link: "", linkText: "" })}
+                  className="p-2.5 text-[#D9232D] hover:bg-red-50 rounded-xl transition-colors shrink-0"
+                  title="Clear Link"
+                >
+                  <Trash2 size={20} />
+                </button>
               </div>
-              <button
-                type="button"
-                onClick={() => setFormData({ ...formData, link: "", linkText: "" })}
-                className="p-2.5 text-[#D9232D] hover:bg-red-100 rounded-lg transition-colors shrink-0"
-                title="Clear Link"
-              >
-                <Trash2 size={20} />
-              </button>
             </div>
-          </div>
-        </div>
-      </div>
-
-      {/* SEO Settings */}
-      <div className="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden group hover:shadow-md transition-shadow duration-300">
-        <div className="bg-slate-50/50 border-b border-slate-100 p-5 md:p-6 flex items-center gap-4">
-          <div className="bg-indigo-500/10 p-3 rounded-2xl text-indigo-600">
-            <Search size={24} strokeWidth={2.5} />
-          </div>
-          <div>
-            <h2 className="text-[20px] font-black text-[#002b5c]">SEO Settings</h2>
-            <p className="text-[13px] text-slate-500 font-medium">Manage search engine optimization meta tags for this {col === "right" ? "program" : "course"}.</p>
-          </div>
-        </div>
-        <div className="p-6 md:p-8 space-y-6">
-          <div>
-            <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Meta Title</label>
-            <input 
-              type="text" 
-              value={formData.seoMetaTitle}
-              onChange={(e) => setFormData({ ...formData, seoMetaTitle: e.target.value })}
-              className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 transition-all duration-200 text-slate-700 font-medium leading-relaxed" 
-              placeholder="Enter SEO Meta Title..." 
-            />
-          </div>
-          <div>
-            <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Meta Description</label>
-            <textarea 
-              value={formData.seoMetaDescription}
-              onChange={(e) => setFormData({ ...formData, seoMetaDescription: e.target.value })}
-              rows={3} 
-              className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 transition-all duration-200 text-slate-700 font-medium leading-relaxed resize-none" 
-              placeholder="Enter SEO Meta Description..." 
-            />
-          </div>
-          <div>
-            <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Keywords</label>
-            <textarea 
-              value={formData.seoKeywords}
-              onChange={(e) => setFormData({ ...formData, seoKeywords: e.target.value })}
-              rows={2} 
-              className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 transition-all duration-200 text-slate-700 font-medium leading-relaxed resize-none text-sm" 
-              placeholder="course, emergency medicine, hospital, pune..." 
-            />
           </div>
         </div>
       </div>

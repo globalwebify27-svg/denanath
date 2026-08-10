@@ -27,10 +27,14 @@ export default async function DepartmentDetailsPage({
     where: { status: true }
   });
 
-  const department = allDepartments.find(d => 
-    d.id === resolvedParams.id || 
-    d.name.toLowerCase().replace(/[^a-z0-9]+/g, '-') === resolvedParams.id.toLowerCase()
-  );
+  const targetSlug = resolvedParams.id.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+
+  const department = allDepartments.find(d => {
+    if (!d) return false;
+    const dSlug = d.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+    const dIdSlug = String(d.id).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+    return d.id === resolvedParams.id || dSlug === targetSlug || dIdSlug === targetSlug;
+  });
 
   if (!department) {
     notFound();
@@ -880,11 +884,11 @@ export default async function DepartmentDetailsPage({
               </div>
 
               {/* Department Description / Content */}
-              <div className={`text-slate-700 space-y-6 break-words [&_img]:max-w-full [&_img]:h-auto [&_img]:rounded-2xl [&_img]:shadow-md [&_img]:my-6 [&_img]:mx-auto [&_img]:block md:[&_img]:inline-block md:[&_img]:mx-0 ${department.name.toLowerCase().includes('rheumatology') ? 'md:[&_img]:mr-4 md:[&_img]:mb-4' : ''} [&_p:not(:last-child)]:mb-4 [&_section:not(:last-child)]:mb-10
-                [&_h3]:text-xl [&_h3]:font-bold [&_h3]:text-[#002b5c] [&_h3]:mb-4 [&_h3]:border-b [&_h3]:pb-2
-                [&_h4]:text-lg [&_h4]:font-semibold [&_h4]:text-[#007a87] [&_h4]:mt-6 [&_h4]:mb-3
-                [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:space-y-2 [&_ul]:mb-6
-                [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:space-y-2 [&_ol]:mb-6
+              <div className={`text-slate-700 space-y-4 break-words [&_img]:max-w-full [&_img]:h-auto [&_img]:rounded-2xl [&_img]:shadow-md [&_img]:my-4 [&_img]:mx-auto [&_img]:block md:[&_img]:inline-block md:[&_img]:mx-0 ${department.name.toLowerCase().includes('rheumatology') ? 'md:[&_img]:mr-4 md:[&_img]:mb-4' : ''} [&_p:not(:last-child)]:mb-2.5 [&_section:not(:last-child)]:mb-5
+                [&_h3]:text-xl [&_h3]:font-bold [&_h3]:text-[#002b5c] [&_h3]:mt-5 [&_h3]:mb-2.5 [&_h3]:border-b [&_h3]:pb-1.5 [&_h3:first-child]:!mt-0
+                [&_h4]:text-lg [&_h4]:font-semibold [&_h4]:text-[#007a87] [&_h4]:mt-4 [&_h4]:mb-2 [&_h4:first-child]:!mt-0
+                [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:space-y-1.5 [&_ul]:mb-4
+                [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:space-y-1.5 [&_ol]:mb-4
                 [&_table]:table [&_table]:w-full [&_table]:text-sm [&_table]:text-left [&_table]:border-collapse [&_table]:border [&_table]:border-slate-200
                 [&_td]:px-6 [&_td]:py-4 [&_td]:border [&_td]:border-slate-200 [&_td]:whitespace-nowrap
                 [&_tr:hover]:bg-slate-50

@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, Save, Trash2, HeartPulse, Search } from "lucide-react";
+import { ArrowLeft, Save, Trash2, HeartPulse, Search, FileText, Plus } from "lucide-react";
 import { notFound } from "next/navigation";
 
 import IconPicker from "@/components/IconPicker";
@@ -9,6 +9,8 @@ import SubmitButton from "@/app/admin/(dashboard)/components/SubmitButton";
 import QuillEditor from "@/components/QuillEditor";
 import PhotoGalleryEditor from "@/components/PhotoGalleryEditor";
 import FAQEditor from "@/components/FAQEditor";
+import SectionHeaderClient from "./SectionHeaderClient";
+import PublicationLinkSectionClient from "./PublicationLinkSectionClient";
 
 export const dynamic = "force-dynamic";
 
@@ -168,8 +170,17 @@ export default async function EditDepartmentPage({
       }
     }
 
+    const publicationLink = (formData.get("publicationLink") as string || "").trim();
+    const publicationLinkText = (formData.get("publicationLinkText") as string || "View Details").trim();
+    
+    let publicationHtml = "";
+    if (publicationLink) {
+      publicationHtml = `<section><h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Publications / Link</h3><p><a href="${publicationLink}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-5 py-2.5 bg-[#007a87] text-white font-bold text-sm rounded-xl hover:bg-[#005f69] transition-colors">${publicationLinkText || 'View Details'}</a></p></section>`;
+    }
+
     const description = `
 <div class="space-y-8 text-slate-700">
+  ${publicationHtml}
   ${overview ? `<section><h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Overview</h3>${overview}</section>` : ''}
   ${spectrum ? `<section><h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Spectrum and Services</h3>${spectrum}</section>` : ''}
   ${paediatric ? `<section><h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Paediatric Liver Clinic</h3>${paediatric}</section>` : ''}
@@ -242,6 +253,19 @@ export default async function EditDepartmentPage({
     });
     return content.trim();
   };
+
+  const publicationSectionHTML = extractAndRemoveSection(["Publications / Link", "Publications", "Publication Link", "Publications / Links"]);
+  let publicationLink = "";
+  let publicationLinkText = "View Details";
+  if (publicationSectionHTML) {
+     const cheerio = await import('cheerio');
+     const $pub = cheerio.load(publicationSectionHTML, null, false);
+     const a = $pub('a').first();
+     if (a.length > 0) {
+        publicationLink = a.attr('href') || "";
+        publicationLinkText = a.text().trim() || "View Details";
+     }
+  }
 
   const overview = extractAndRemoveSection(["Overview", "About Us"]);
   const spectrum = extractAndRemoveSection(["Spectrum and Services"]);
@@ -377,7 +401,7 @@ export default async function EditDepartmentPage({
 
   return (
     <div className="p-4 md:p-8 max-w-6xl mx-auto pb-32">
-      <form action={updateDepartment}>
+      <form action={updateDepartment} className="space-y-8 pb-32 md:pb-44">
         {/* Header Section */}
         <div className="mb-10 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 bg-white p-6 md:p-10 rounded-3xl shadow-sm border border-slate-100 relative overflow-hidden group">
           <div className="absolute top-0 left-0 w-2 h-full bg-gradient-to-b from-[#002b5c] to-[#007a87]"></div>
@@ -470,66 +494,46 @@ export default async function EditDepartmentPage({
                 <p className="text-[12px] font-[600] text-gray-500 mb-6">Fill in the dedicated sections below. These will be formatted automatically on the frontend.</p>
               </div>
 
-              <div className="space-y-2">
-                <label className="text-[12px] font-[800] text-gray-700 uppercase tracking-widest">Overview</label>
-                <QuillEditor name="overview" defaultValue={overview} />
-              </div>
-
-              <div className="space-y-2">
-                <label className="text-[12px] font-[800] text-gray-700 uppercase tracking-widest">Spectrum and Services</label>
-                <QuillEditor name="spectrum" defaultValue={spectrum} />
-              </div>
-
-              <div className="space-y-2">
-                <label className="text-[12px] font-[800] text-gray-700 uppercase tracking-widest">Paediatric Liver Clinic</label>
-                <QuillEditor name="paediatric" defaultValue={paediatric} />
-              </div>
-
-              <div className="space-y-2">
-                <label className="text-[12px] font-[800] text-gray-700 uppercase tracking-widest">Facilities</label>
-                <QuillEditor name="facilities" defaultValue={facilities} />
+              <div className="space-y-6">
+                {[
+                  { label: "Overview", name: "overview", value: overview },
+                  { label: "Spectrum and Services", name: "spectrum", value: spectrum },
+                  { label: "Paediatric Liver Clinic", name: "paediatric", value: paediatric },
+                  { label: "Facilities", name: "facilities", value: facilities },
+                ].map((sec) => (
+                  <div key={sec.name} className="bg-slate-50/70 p-5 rounded-2xl border border-slate-200/80 space-y-4">
+                    <SectionHeaderClient title={sec.label} />
+                    <QuillEditor name={sec.name} defaultValue={sec.value} />
+                  </div>
+                ))}
               </div>
               
               <div className="space-y-2">
                 <PhotoGalleryEditor name="facilitiesImages" defaultItems={facilitiesImageItems} title="Facilities Images" />
               </div>
 
-              <div className="space-y-2">
-                <label className="text-[12px] font-[800] text-gray-700 uppercase tracking-widest">Location of Department</label>
-                <QuillEditor name="location" defaultValue={location} />
-              </div>
-
-              <div className="space-y-2">
-                <label className="text-[12px] font-[800] text-gray-700 uppercase tracking-widest">Departmental Timetable</label>
-                <QuillEditor name="timetable" defaultValue={timetable} />
-              </div>
-
-              <div className="space-y-2">
-                <label className="text-[12px] font-[800] text-gray-700 uppercase tracking-widest">Departmental Workload</label>
-                <QuillEditor name="workload" defaultValue={workload} />
-              </div>
-
-              <div className="space-y-2">
-                <label className="text-[12px] font-[800] text-gray-700 uppercase tracking-widest">Courses and Training</label>
-                <QuillEditor name="courses" defaultValue={courses} />
-              </div>
-
-              <div className="space-y-2">
-                <label className="text-[12px] font-[800] text-gray-700 uppercase tracking-widest">Events</label>
-                <QuillEditor name="events" defaultValue={events} />
-              </div>
-
-              <div className="space-y-2">
-                <label className="text-[12px] font-[800] text-gray-700 uppercase tracking-widest">Contact Us</label>
-                <QuillEditor name="contactUs" defaultValue={contactUs} />
+              <div className="space-y-6">
+                {[
+                  { label: "Location of Department", name: "location", value: location },
+                  { label: "Departmental Timetable", name: "timetable", value: timetable },
+                  { label: "Departmental Workload", name: "workload", value: workload },
+                  { label: "Courses and Training", name: "courses", value: courses },
+                  { label: "Events", name: "events", value: events },
+                  { label: "Contact Us", name: "contactUs", value: contactUs },
+                ].map((sec) => (
+                  <div key={sec.name} className="bg-slate-50/70 p-5 rounded-2xl border border-slate-200/80 space-y-4">
+                    <SectionHeaderClient title={sec.label} />
+                    <QuillEditor name={sec.name} defaultValue={sec.value} />
+                  </div>
+                ))}
               </div>
 
               <div className="space-y-2">
                 <PhotoGalleryEditor name="gallery" defaultItems={galleryItems} />
               </div>
 
-              <div className="space-y-2">
-                <label className="text-[12px] font-[800] text-gray-700 uppercase tracking-widest">Consultant</label>
+              <div className="bg-slate-50/70 p-5 rounded-2xl border border-slate-200/80 space-y-4">
+                <SectionHeaderClient title="Consultant" />
                 <QuillEditor name="consultant" defaultValue={consultant} />
               </div>
 
