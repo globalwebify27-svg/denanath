@@ -159,7 +159,7 @@ export default function Footer({ latestEvent, footerSettings }: { latestEvent?: 
           </div>
 
           {/* Quick Channels Column 2 */}
-          <div className="space-y-6 mt-[-34px] sm:mt-0">
+          <div className="space-y-6 mt-0 sm:mt-0">
             <h4 className="hidden sm:block text-white font-bold text-xs uppercase tracking-[0.2em] relative select-none opacity-0">
               Quick Channels
             </h4>

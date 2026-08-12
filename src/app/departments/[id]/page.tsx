@@ -90,8 +90,9 @@ export default async function DepartmentDetailsPage({
             const circlesHtml = apiDocs.map((doc: any) => {
               const dName = doc.doctor_name || `${doc.first_name || ''} ${doc.last_name || ''}`.trim();
               const cleanName = dName.replace(/\s*\(.*?\)\s*/g, '').trim();
+              const displayName = cleanName.toLowerCase().startsWith('dr.') || cleanName.toLowerCase().startsWith('dr ') ? cleanName : `Dr. ${cleanName}`;
               const qual = doc.qualification || 'Consultant';
-              const words = cleanName.split(' ').filter(Boolean);
+              const words = cleanName.replace(/^dr\.?\s*/i, '').split(' ').filter(Boolean);
               let initials = 'DM';
               if (words.length >= 2) {
                 initials = (words[0][0] + words[1][0]).toUpperCase();
@@ -100,14 +101,14 @@ export default async function DepartmentDetailsPage({
               }
 
               return `
-                <div class="p-5 bg-white border border-slate-200 rounded-2xl flex items-center justify-between gap-4 shadow-sm hover:shadow-md transition-shadow">
-                  <a href="/doctor-details/${doc.doctor_id || doc.id || ''}" class="flex items-center gap-4 cursor-pointer flex-1">
-                    <div class="w-14 h-14 rounded-2xl bg-teal-50 border border-teal-100 flex items-center justify-center text-[#007a87] font-extrabold text-base shrink-0">
+                <div class="p-3.5 sm:p-5 bg-white border border-slate-200 rounded-2xl flex items-center justify-between gap-2.5 sm:gap-4 shadow-sm hover:shadow-md transition-shadow overflow-hidden">
+                  <a href="/doctor-details/${doc.doctor_id || doc.id || ''}" class="flex items-center gap-2.5 sm:gap-4 cursor-pointer flex-1 min-w-0 pr-1">
+                    <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-teal-50 border border-teal-100 flex items-center justify-center text-[#007a87] font-extrabold text-sm sm:text-base shrink-0">
                       ${doc.doctorImage ? `<img src="${doc.doctorImage}" alt="${cleanName}" class="w-full h-full object-cover rounded-2xl" />` : initials}
                     </div>
-                    <div class="text-lg font-bold text-[#002b5c] m-0 leading-snug hover:text-[#007a87] transition-colors">Dr. ${cleanName}</div>
+                    <div class="text-sm sm:text-lg font-bold text-[#002b5c] m-0 leading-snug hover:text-[#007a87] transition-colors min-w-0 break-words flex-1">${displayName}</div>
                   </a>
-                  <a href="/doctor-details/${doc.doctor_id || doc.id || ''}" class="px-4 py-2 bg-teal-50 hover:bg-teal-100 text-[#007a87] rounded-xl text-xs font-bold transition-colors shrink-0 whitespace-nowrap">
+                  <a href="/doctor-details/${doc.doctor_id || doc.id || ''}" class="px-2.5 py-1.5 sm:px-4 sm:py-2 bg-teal-50 hover:bg-teal-100 text-[#007a87] rounded-xl text-[11px] sm:text-xs font-bold transition-colors shrink-0 whitespace-nowrap">
                     View Profile
                   </a>
                 </div>
@@ -587,14 +588,14 @@ export default async function DepartmentDetailsPage({
                const doctorImage = matchedApiDoc?.doctorImage || '';
 
                docCards.push(`
-                <div class="p-5 bg-white border border-slate-200 rounded-2xl flex items-center justify-between gap-4 shadow-sm hover:shadow-md transition-shadow">
-                  <a href="${doctorProfileUrl}" class="flex items-center gap-4 cursor-pointer flex-1">
-                    <div class="w-14 h-14 rounded-2xl bg-teal-50 border border-teal-100 flex items-center justify-center text-[#007a87] font-extrabold text-base shrink-0">
+                <div class="p-3.5 sm:p-5 bg-white border border-slate-200 rounded-2xl flex items-center justify-between gap-2.5 sm:gap-4 shadow-sm hover:shadow-md transition-shadow overflow-hidden">
+                  <a href="${doctorProfileUrl}" class="flex items-center gap-2.5 sm:gap-4 cursor-pointer flex-1 min-w-0 pr-1">
+                    <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-teal-50 border border-teal-100 flex items-center justify-center text-[#007a87] font-extrabold text-sm sm:text-base shrink-0">
                       ${doctorImage ? `<img src="${doctorImage}" alt="${cleanName}" class="w-full h-full object-cover rounded-2xl" />` : initials}
                     </div>
-                    <div class="text-lg font-bold text-[#002b5c] m-0 leading-snug hover:text-[#007a87] transition-colors">${name}</div>
+                    <div class="text-sm sm:text-lg font-bold text-[#002b5c] m-0 leading-snug hover:text-[#007a87] transition-colors min-w-0 break-words flex-1">${name}</div>
                   </a>
-                  <a href="${doctorProfileUrl}" class="px-4 py-2 bg-teal-50 hover:bg-teal-100 text-[#007a87] rounded-xl text-xs font-bold transition-colors shrink-0 whitespace-nowrap">
+                  <a href="${doctorProfileUrl}" class="px-2.5 py-1.5 sm:px-4 sm:py-2 bg-teal-50 hover:bg-teal-100 text-[#007a87] rounded-xl text-[11px] sm:text-xs font-bold transition-colors shrink-0 whitespace-nowrap">
                     View Profile
                   </a>
                 </div>
