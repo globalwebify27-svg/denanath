@@ -79,7 +79,7 @@ radiofellowship@gmail.com</p>
   const overview = courseData?.content || courseData?.overview || defaultHtml;
 
   return (
-    <main className="bg-slate-50 min-h-screen pb-20">
+    <main className="bg-slate-50 min-h-screen">
       {/* Hero Section */}
       <div className="w-full bg-[#002b5c] relative overflow-hidden">
         <div className="absolute inset-0 bg-[url(https://www.transparenttextures.com/patterns/cubes.png)] opacity-10 mix-blend-overlay pointer-events-none" />

@@ -63,7 +63,7 @@ export default function ClientPage({ data }: { data: any }) {
         </div>
 
         {/* Main Content */}
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-2 pb-6 md:pt-3 md:pb-8 space-y-6 sm:space-y-8">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-2 pb-8 md:pt-3 md:pb-12 space-y-6 sm:space-y-8">
           
           <div className={`bg-white rounded-3xl px-6 sm:px-10 md:px-12 shadow-sm border border-slate-100 ${data.title?.includes("Yoga") ? "pt-4 pb-3 sm:pt-5 sm:pb-4 md:pt-5 md:pb-4" : "pt-3 pb-6 sm:pt-4 sm:pb-8 md:pt-4 md:pb-6"}`}>
             {data.content ? (

@@ -189,8 +189,8 @@ export default function AcademicsClientPage({ pageData }: { pageData: any }) {
                       const wrapperProps = isNeuro ? { href: "/neuro-radiology-fellowship" } as any : {};
                       
                       return (
-                        <Wrapper key={idx} {...wrapperProps} className={`group flex items-start gap-3 p-4 rounded-xl shadow-sm hover:shadow-[0_8px_30px_rgba(217,35,45,0.15)] hover:border-[#D9232D] hover:-translate-y-1 transition-all duration-300 bg-white border border-slate-200 ${isNeuro ? 'cursor-pointer' : ''}`}>
-                          <CheckCircle2 className={`w-5 h-5 shrink-0 mt-0.5 transition-colors group-hover:text-[#D9232D] ${isNeuro ? 'text-[#007a87]' : 'text-teal-500'}`} />
+                        <Wrapper key={idx} {...wrapperProps} className={`group flex items-center gap-3 p-4 rounded-xl shadow-sm hover:shadow-[0_8px_30px_rgba(217,35,45,0.15)] hover:border-[#D9232D] hover:-translate-y-1 transition-all duration-300 bg-white border border-slate-200 ${isNeuro ? 'cursor-pointer' : ''}`}>
+                          <CheckCircle2 className={`w-5 h-5 shrink-0 transition-colors group-hover:text-[#D9232D] ${isNeuro ? 'text-[#007a87]' : 'text-teal-500'}`} />
                           <span style={{ fontSize: '18px' }} className={`leading-[31px] whitespace-pre-line ${isNeuro ? 'text-[#007a87] font-bold' : 'text-slate-700 font-normal'}`}>{program}</span>
                         </Wrapper>
                       );

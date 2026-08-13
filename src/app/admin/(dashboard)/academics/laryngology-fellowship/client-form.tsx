@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Plus, Trash2, ChevronDown, ChevronRight } from "lucide-react";
+import { Plus, Trash2, ChevronDown, ChevronRight, Upload } from "lucide-react";
 import QuillEditor from "@/components/QuillEditor";
 
 export default function LaryngologyFellowshipClientForm({ initialData }: { initialData: any }) {
@@ -253,14 +253,46 @@ export default function LaryngologyFellowshipClientForm({ initialData }: { initi
                           />
                         </div>
                         <div className="w-full sm:flex-[1.5]">
-                          <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">URL / Link</label>
-                          <input
-                            type="text"
-                            value={ref.url || ""}
-                            onChange={e => handleRefChange(idx, "url", e.target.value)}
-                            placeholder="https://..."
-                            className="w-full p-2.5 bg-white border border-slate-200 rounded-xl text-xs font-medium focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none"
-                          />
+                          <label className="block text-[10px] font-bold text-slate-500 uppercase mb-1">URL / Link / PDF</label>
+                          <div className="flex gap-2">
+                            <input
+                              type="text"
+                              value={ref.url || ""}
+                              onChange={e => handleRefChange(idx, "url", e.target.value)}
+                              placeholder="https://..."
+                              className="w-full p-2.5 bg-white border border-slate-200 rounded-xl text-xs font-medium focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 outline-none"
+                            />
+                            <label className="cursor-pointer shrink-0 px-3 py-2.5 bg-slate-100 border border-slate-200 hover:bg-slate-200 text-slate-600 rounded-xl text-xs font-bold transition-colors flex items-center justify-center gap-1.5" title="Upload PDF">
+                              <Upload size={14} />
+                              <input 
+                                type="file" 
+                                accept=".pdf,application/pdf"
+                                className="hidden"
+                                onChange={async (e) => {
+                                  const file = e.target.files?.[0];
+                                  if (file) {
+                                    try {
+                                      const formData = new FormData();
+                                      formData.append('file', file);
+                                      const res = await fetch('/api/upload', {
+                                        method: 'POST',
+                                        body: formData
+                                      });
+                                      const data = await res.json();
+                                      if (data.url) {
+                                        handleRefChange(idx, "url", data.url);
+                                      } else {
+                                        alert("Upload failed");
+                                      }
+                                    } catch (err) {
+                                      console.error("Upload error:", err);
+                                      alert("Error uploading file");
+                                    }
+                                  }
+                                }}
+                              />
+                            </label>
+                          </div>
                         </div>
                         <button
                           type="button"

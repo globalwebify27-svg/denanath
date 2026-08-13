@@ -802,9 +802,9 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
               const qual = doc.qualification || 'MBBS';
 
               return (
-                <div key={idx} className="bg-white rounded-3xl p-6 sm:p-8 shadow-[0_8px_30px_rgb(0,0,0,0.05)] border border-slate-100 hover:border-teal-500/30 transition-all duration-300 flex flex-col lg:flex-row gap-6 items-start justify-between">
-                  <div className="flex-1 w-full">
-                    <div className="flex items-start gap-4 mb-4">
+                <div key={idx} className="bg-white rounded-3xl p-6 sm:p-8 shadow-[0_8px_30px_rgb(0,0,0,0.05)] border border-slate-100 hover:border-teal-500/30 transition-all duration-300 flex flex-col gap-6">
+                  <div className="flex flex-col lg:flex-row gap-6 items-start justify-between w-full">
+                    <div className="flex-1 w-full flex items-start gap-4">
                       <div className="w-16 h-16 rounded-2xl bg-teal-50 flex items-center justify-center text-[#007a87] shrink-0 border border-teal-100 shadow-sm overflow-hidden p-1">
                         {doc.doctorImage ? (
                           <img src={doc.doctorImage} alt={docName} className="w-full h-full object-cover rounded-xl" />
@@ -821,9 +821,46 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
                       </div>
                     </div>
 
-                    {/* OPD Timetable Grid */}
+                    {/* Booking or Toll Free Phone Button Column */}
+                    <div className="shrink-0 w-full lg:w-auto flex flex-col items-stretch lg:items-end justify-center self-center pt-4 lg:pt-0 border-t lg:border-t-0 border-slate-100">
+                      {doc.isApp ? (
+                        <button
+                          onClick={async () => {
+                            setSelectedDoctor(doc.doctor_id);
+                            setSelectedSpeciality(doc.speciality_id);
+                            setStep("calendar");
+                            setIsLoadingCalendar(true);
+                            const datesRes = await fetchApi("check_date", {
+                              service_point_id: doc.service_point_id || "0",
+                              speciality_id: doc.speciality_id
+                            });
+                            let dateArr: any[] = [];
+                            if (datesRes && !datesRes.error) {
+                              if (Array.isArray(datesRes)) dateArr = datesRes;
+                              else dateArr = Object.values(datesRes).find(v => Array.isArray(v)) as any[] || [];
+                            }
+                            setAvailableDates(dateArr.map((d: any) => typeof d === 'string' ? d : (d.date || d.appointment_date || Object.values(d)[0])));
+                            setIsLoadingCalendar(false);
+                          }}
+                          className="w-full lg:w-auto bg-[#007a87] hover:bg-[#005f69] text-white px-8 py-3.5 rounded-xl font-extrabold text-sm tracking-wider uppercase shadow-md hover:shadow-lg transition-all duration-300 text-center"
+                        >
+                          Book Appointment
+                        </button>
+                      ) : (
+                        <div className="text-center lg:text-right w-full">
+                          <p className="text-xs text-slate-500 font-bold mb-2">Please call for appointment:</p>
+                          <a href="tel:02049153347" className="inline-flex items-center justify-center w-full lg:w-auto bg-[#d9232d] hover:bg-[#b81d24] text-white px-6 py-3 rounded-xl font-black text-sm shadow-md hover:shadow-lg transition-all duration-300">
+                            020 4915 3347
+                          </a>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* OPD Timetable Grid */}
+                  <div className="w-full">
                     {doc.schedule && doc.schedule.length > 0 ? (
-                      <div className="mt-6 overflow-x-auto rounded-2xl border border-slate-200 bg-slate-50/60 p-1">
+                      <div className="overflow-x-auto rounded-2xl border border-slate-200 bg-slate-50/60 p-1">
                         <table className="w-full text-xs text-center border-collapse">
                           <thead>
                             <tr className="bg-[#002b5c] text-white font-bold uppercase tracking-wider rounded-xl">
@@ -839,56 +876,21 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
                           <tbody>
                             {doc.schedule.map((s: any, sIdx: number) => (
                               <tr key={sIdx} className="font-semibold text-slate-700 hover:bg-slate-100/60 transition-colors">
-                                <td className="py-3 px-2 border-r border-slate-200/60">{s.Mon || '-'}</td>
-                                <td className="py-3 px-2 border-r border-slate-200/60">{s.Tue || '-'}</td>
-                                <td className="py-3 px-2 border-r border-slate-200/60">{s.Wed || '-'}</td>
-                                <td className="py-3 px-2 border-r border-slate-200/60">{s.Thu || '-'}</td>
-                                <td className="py-3 px-2 border-r border-slate-200/60">{s.Fri || '-'}</td>
-                                <td className="py-3 px-2 border-r border-slate-200/60">{s.Sat || '-'}</td>
-                                <td className="py-3 px-2">{s.Sun || '-'}</td>
+                                <td className="py-3 px-2 border-r border-slate-200/60" dangerouslySetInnerHTML={{ __html: s.Mon || '-' }} />
+                                <td className="py-3 px-2 border-r border-slate-200/60" dangerouslySetInnerHTML={{ __html: s.Tue || '-' }} />
+                                <td className="py-3 px-2 border-r border-slate-200/60" dangerouslySetInnerHTML={{ __html: s.Wed || '-' }} />
+                                <td className="py-3 px-2 border-r border-slate-200/60" dangerouslySetInnerHTML={{ __html: s.Thu || '-' }} />
+                                <td className="py-3 px-2 border-r border-slate-200/60" dangerouslySetInnerHTML={{ __html: s.Fri || '-' }} />
+                                <td className="py-3 px-2 border-r border-slate-200/60" dangerouslySetInnerHTML={{ __html: s.Sat || '-' }} />
+                                <td className="py-3 px-2" dangerouslySetInnerHTML={{ __html: s.Sun || '-' }} />
                               </tr>
                             ))}
                           </tbody>
                         </table>
                       </div>
                     ) : (
-                      <div className="mt-4 text-xs font-semibold text-slate-500 bg-slate-50 p-3 rounded-xl border border-slate-100">
+                      <div className="text-xs font-semibold text-slate-500 bg-slate-50 p-3 rounded-xl border border-slate-100">
                         OPD Schedule available via consultation query.
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Booking or Toll Free Phone Button Column */}
-                  <div className="shrink-0 w-full lg:w-auto flex flex-col items-stretch lg:items-end justify-center self-center gap-3 pt-4 lg:pt-0 border-t lg:border-t-0 border-slate-100">
-                    {doc.isApp ? (
-                      <button
-                        onClick={async () => {
-                          setSelectedDoctor(doc.doctor_id);
-                          setSelectedSpeciality(doc.speciality_id);
-                          setStep("calendar");
-                          setIsLoadingCalendar(true);
-                          const datesRes = await fetchApi("check_date", {
-                            service_point_id: doc.service_point_id || "0",
-                            speciality_id: doc.speciality_id
-                          });
-                          let dateArr: any[] = [];
-                          if (datesRes && !datesRes.error) {
-                            if (Array.isArray(datesRes)) dateArr = datesRes;
-                            else dateArr = Object.values(datesRes).find(v => Array.isArray(v)) as any[] || [];
-                          }
-                          setAvailableDates(dateArr.map((d: any) => typeof d === 'string' ? d : (d.date || d.appointment_date || Object.values(d)[0])));
-                          setIsLoadingCalendar(false);
-                        }}
-                        className="w-full lg:w-auto bg-[#007a87] hover:bg-[#005f69] text-white px-8 py-3.5 rounded-xl font-extrabold text-sm tracking-wider uppercase shadow-md hover:shadow-lg transition-all duration-300 text-center"
-                      >
-                        Book Appointment
-                      </button>
-                    ) : (
-                      <div className="text-center lg:text-right w-full">
-                        <p className="text-xs text-slate-500 font-bold mb-2">Please call for appointment:</p>
-                        <a href="tel:02049153347" className="inline-flex items-center justify-center w-full lg:w-auto bg-[#d9232d] hover:bg-[#b81d24] text-white px-6 py-3 rounded-xl font-black text-sm shadow-md hover:shadow-lg transition-all duration-300">
-                          020 4915 3347
-                        </a>
                       </div>
                     )}
                   </div>
@@ -901,8 +903,8 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
         {/* Step 2: Calendar View */}
         {!bookingSuccess && step === "calendar" && (
           <div className="bg-white rounded-2xl shadow-xl border border-slate-100 overflow-hidden mt-6">
-            <div className="bg-[#007a87] text-white text-center py-5 px-6 relative flex flex-col items-center justify-center gap-1">
-              <button onClick={() => setStep("search")} className="absolute left-4 sm:left-6 top-1/2 -translate-y-1/2 text-xs sm:text-sm font-semibold hover:underline text-teal-100 bg-white/10 px-3 py-1.5 rounded-full backdrop-blur-sm transition-colors">
+            <div className="bg-[#007a87] text-white text-center py-4 px-5 sm:py-5 sm:px-28 relative flex flex-col items-center justify-center gap-1">
+              <button onClick={() => setStep("search")} className="self-start text-sm font-semibold hover:underline text-teal-100 bg-white/10 px-4 py-2 rounded-full backdrop-blur-sm transition-colors mb-2 sm:mb-0 sm:absolute sm:left-6 sm:bottom-4 sm:text-sm sm:px-3 sm:py-1.5">
                 ← Back To Search
               </button>
               {(() => {
