@@ -11,15 +11,28 @@ export default function AdminLogin() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     
-    // Simulate authentication
-    setTimeout(() => {
-      document.cookie = "adminAuth=true; path=/; max-age=86400";
-      router.push("/admin");
-    }, 800);
+    try {
+      const res = await fetch("/api/admin/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password })
+      });
+      const data = await res.json();
+      
+      if (res.ok && data.success) {
+        router.push("/admin");
+      } else {
+        alert(data.message || "Invalid credentials");
+        setLoading(false);
+      }
+    } catch (e) {
+      alert("Error logging in");
+      setLoading(false);
+    }
   };
 
   return (

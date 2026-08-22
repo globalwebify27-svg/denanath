@@ -232,7 +232,7 @@ export default function PageForm({ pageId, headerMenus, initialData }: PageFormP
                       value={formData.navbarMenu}
                       onChange={(val: string) => setFormData({ ...formData, navbarMenu: val })}
                       required
-                      className="p-4 bg-slate-50 rounded-2xl text-[15px]"
+                      className="w-full !py-4 !pr-4 bg-slate-50 border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-[15px]"
                     />
                   </div>
                   <p className="text-[13px] font-medium text-slate-500 mt-2">Select which primary menu this page will appear under (Careers is omitted per settings).</p>

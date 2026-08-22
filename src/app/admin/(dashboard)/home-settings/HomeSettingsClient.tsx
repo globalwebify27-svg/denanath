@@ -181,8 +181,21 @@ export default function HomeSettingsClient({
                 className="w-full flex items-center justify-between p-6 bg-white hover:bg-slate-50 transition-colors"
               >
                 <h2 className="text-xl font-bold text-[#002b5c]">{section.label}</h2>
-                <div className={`p-2 rounded-full ${isExpanded ? 'bg-teal-50 text-teal-700' : 'bg-slate-100 text-slate-500'}`}>
-                  {isExpanded ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+                <div className="flex items-center gap-6">
+                  <label className="relative inline-flex items-center cursor-pointer" onClick={e => e.stopPropagation()}>
+                    <input 
+                      type="checkbox" 
+                      className="sr-only peer" 
+                      checked={formData[section.id]?.isActive !== false} 
+                      onChange={(e) => setFormData(prev => ({ ...prev, [section.id]: { ...(prev[section.id] || {}), isActive: e.target.checked } }))}
+                    />
+                    <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-[#007a87]/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#007a87]"></div>
+                    <span className="ml-3 text-sm font-bold text-slate-700">{formData[section.id]?.isActive !== false ? "Active" : "Inactive"}</span>
+                  </label>
+
+                  <div className={`p-2 rounded-full ${isExpanded ? 'bg-teal-50 text-teal-700' : 'bg-slate-100 text-slate-500'}`}>
+                    {isExpanded ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+                  </div>
                 </div>
               </button>
               

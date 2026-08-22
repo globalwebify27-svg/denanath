@@ -99,7 +99,7 @@ export default function Footer({ latestEvent, footerSettings }: { latestEvent?: 
               <span className="absolute -bottom-2 left-0 w-8 h-[2px] bg-[#a7ffeb] rounded-full" />
             </h4>
             <div className="pt-2">
-              <Link href="/events" className="group flex flex-col gap-2.5 max-w-[140px]">
+              <Link href={latestEvent ? `/eventsdetails/${latestEvent.slug || latestEvent.id || latestEvent.title?.replace(/[^a-zA-Z0-9-]/g, '')}` : '/eventsdetails/RCScourse17'} className="group flex flex-col gap-2.5 max-w-[140px]">
                 <div className="w-full h-14 rounded-lg overflow-hidden border border-white/20 bg-black/20 shrink-0">
                   <img 
                     src={latestEvent && latestEvent.gallery && latestEvent.gallery.length > 0 ? latestEvent.gallery[0] : "/images/unnamed (7).webp"} 
@@ -132,7 +132,8 @@ export default function Footer({ latestEvent, footerSettings }: { latestEvent?: 
                   { label: "Book Appointment", href: "/book-appointment" },
                   { label: "Testimonials", href: "/#testimonials" },
                   { label: "Photo Gallery", href: "/gallery-photos" },
-                  { label: "Video Gallery", href: "/gallery-videos" }
+                  { label: "Video Gallery", href: "/gallery-videos" },
+                  { label: "Emergency", href: "/emergency" }
                 ];
                 
                 // Inject Footer Menu Pages
@@ -165,12 +166,12 @@ export default function Footer({ latestEvent, footerSettings }: { latestEvent?: 
             </h4>
             <ul className="space-y-3.5 text-xs pt-0 sm:pt-2">
               {(footerSettings?.quickChannels2 || [
-                { label: "Emergency", href: "/emergency" },
                 { label: "Pharmacy", href: "/pharmacy" },
                 { label: "Ambulance", href: "/ambulance" },
                 { label: "Blood Bank", href: "/blood-bank" },
                 { label: "Careers", href: "/careers" },
                 { label: "Contact Us", href: "/contact-us" },
+                { label: "Event/News", href: "/events" },
                 { label: "OPD Schedule", href: "/opd-schedule" },
                 { label: "EC Approval", href: "/ec-approval" },
                 { label: "Site Map", href: "/site-map" },

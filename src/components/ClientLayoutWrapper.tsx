@@ -66,7 +66,7 @@ export default function ClientLayoutWrapper({
   if (isInactive) {
     return (
       <>
-        <Navbar topHeaderSettings={topHeader} headerSettings={header} />
+        {header?.isActive !== false && <Navbar topHeaderSettings={topHeader?.isActive !== false ? topHeader : null} headerSettings={header} />}
         <main className="flex-grow flex flex-col min-h-[60vh] items-center justify-center bg-slate-50 px-4">
           <div className="text-center max-w-md">
             <h1 className="text-5xl font-extrabold text-[#002b5c] tracking-tight mb-4">404</h1>
@@ -82,7 +82,7 @@ export default function ClientLayoutWrapper({
             </a>
           </div>
         </main>
-        <Footer latestEvent={latestEvent} footerSettings={footer} />
+        {footer?.isActive !== false && <Footer latestEvent={latestEvent} footerSettings={footer} />}
       </>
     );
   }
@@ -90,9 +90,9 @@ export default function ClientLayoutWrapper({
   return (
     <>
       <QuickAccessWidget />
-      <Navbar topHeaderSettings={topHeader} headerSettings={header} />
+      {header?.isActive !== false && <Navbar topHeaderSettings={topHeader?.isActive !== false ? topHeader : null} headerSettings={header} />}
       <main className="flex-grow flex flex-col">{children}</main>
-      <Footer latestEvent={latestEvent} footerSettings={footer} />
+      {footer?.isActive !== false && <Footer latestEvent={latestEvent} footerSettings={footer} />}
     </>
   );
 }

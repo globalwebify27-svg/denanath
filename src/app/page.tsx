@@ -58,34 +58,36 @@ export default async function Home() {
       <FloatingEmergencyTab />
 
       {/* 2. HERO IMAGE STAGE */}
-      <HeroSection data={parsedSettings['home_hero']} />
+      {parsedSettings['home_hero']?.isActive !== false && <HeroSection data={parsedSettings['home_hero']} />}
 
       {/* 3 & 4. FLOATING ACTION STRIP & SEARCH MODAL */}
       <HomeSearchWrapper />
 
       {/* 5. ABOUT SECTION */}
-      <AboutSection data={parsedSettings['home_about']} />
+      {parsedSettings['home_about']?.isActive !== false && <AboutSection data={parsedSettings['home_about']} />}
 
       {/* 6. SPECIALTY CARE CLINICS SECTION */}
-      <SpecialtyClinics data={parsedSettings['home_specialty_clinics']} />
-      <ClinicalHub data={parsedSettings['home_clinical_hub']} />
-      <Trust_Credibility data={parsedSettings['home_trust']} />
-      <DoctorsSection data={parsedSettings['home_doctors']} />
-      <PatientJourney data={parsedSettings['home_patient_journey']} />
+      {parsedSettings['home_specialty_clinics']?.isActive !== false && <SpecialtyClinics data={parsedSettings['home_specialty_clinics']} />}
+      {parsedSettings['home_clinical_hub']?.isActive !== false && <ClinicalHub data={parsedSettings['home_clinical_hub']} />}
+      {parsedSettings['home_trust']?.isActive !== false && <Trust_Credibility data={parsedSettings['home_trust']} />}
+      {parsedSettings['home_doctors']?.isActive !== false && <DoctorsSection data={parsedSettings['home_doctors']} />}
+      {parsedSettings['home_patient_journey']?.isActive !== false && <PatientJourney data={parsedSettings['home_patient_journey']} />}
 
       {/* 7. CLINICAL HUB SECTION (Courses) */}
-      <CoursesAndPricing 
-        data={parsedSettings['home_courses_pricing']} 
-        initialLeftCourses={leftCourses} 
-        initialRightCourses={rightCourses} 
-      />
-      <QuickLinksCTA data={parsedSettings['home_quick_links']} />
+      {parsedSettings['home_courses_pricing']?.isActive !== false && (
+        <CoursesAndPricing 
+          data={parsedSettings['home_courses_pricing']} 
+          initialLeftCourses={leftCourses} 
+          initialRightCourses={rightCourses} 
+        />
+      )}
+      {parsedSettings['home_quick_links']?.isActive !== false && <QuickLinksCTA data={parsedSettings['home_quick_links']} />}
 
       {/* 8. PATIENT REVIEWS & STORIES */}
-      <PatientReviews data={parsedSettings['home_reviews']} />
+      {parsedSettings['home_reviews']?.isActive !== false && <PatientReviews data={parsedSettings['home_reviews']} />}
       
       {/* 9. PARTNERS & ACCREDITATION SECTION */}
-      <PartnersAccreditation data={parsedSettings['home_partners']} />
+      {parsedSettings['home_partners']?.isActive !== false && <PartnersAccreditation data={parsedSettings['home_partners']} />}
     </div>
   );
 }

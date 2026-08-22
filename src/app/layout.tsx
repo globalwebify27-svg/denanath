@@ -68,7 +68,7 @@ export default async function RootLayout({
       const parsedData = JSON.parse(setting.value);
       const eventsList = parsedData.events || [];
       if (eventsList && eventsList.length > 0) {
-        latestEvent = eventsList[eventsList.length - 1];
+        latestEvent = eventsList[0];
       }
     }
   } catch (error) {

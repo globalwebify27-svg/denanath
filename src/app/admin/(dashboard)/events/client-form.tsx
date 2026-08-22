@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 import { Plus, Trash2, GripVertical, Image as ImageIcon, Upload, Loader2, Calendar } from "lucide-react";
 
 export default function EventsClientForm({ initialEvents }: { initialEvents: any[] }) {
-  const [uploadingIdx, setUploadingIdx] = useState<number | null>(null);
+  const [uploadingIdx, setUploadingIdx] = useState<string | null>(null);
 
   
   const [events, setEvents] = useState<any[]>(initialEvents?.length > 0 ? initialEvents : [
@@ -22,6 +22,10 @@ export default function EventsClientForm({ initialEvents }: { initialEvents: any
       agenda: []
     }
   ]);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const eventsPerPage = 10;
+  const totalPages = Math.ceil((events.length || 1) / eventsPerPage);
   
   const [selectedIndex, setSelectedIndex] = useState(0);
 
@@ -167,14 +171,11 @@ export default function EventsClientForm({ initialEvents }: { initialEvents: any
     });
   };
 
-  const handleUpload = async (idx: number, e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleUpload = async (eventIndex: number, idx: number, e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // Capture the current selectedIndex so the upload targets the correct event even if the user switches tabs
-    const currentEventIdx = selectedIndex;
-
-    setUploadingIdx(idx);
+    setUploadingIdx(`${eventIndex}-${idx}`);
     const formData = new FormData();
     formData.append("file", file);
 
@@ -186,7 +187,7 @@ export default function EventsClientForm({ initialEvents }: { initialEvents: any
 
       if (res.ok) {
         const { url } = await res.json();
-        updateArrayItem(currentEventIdx, 'gallery', idx, url);
+        updateArrayItem(eventIndex, 'gallery', idx, url);
       } else {
         alert("Upload failed");
       }
@@ -222,12 +223,9 @@ export default function EventsClientForm({ initialEvents }: { initialEvents: any
         </div>
       </div>
 
-      {events.length > 0 && events.map((data, selectedIndex) => {
-        const now = Date.now();
-        const THIRTY_DAYS = 30 * 24 * 60 * 60 * 1000;
-        const eventDate = new Date(data.date);
-        const isOld = !isNaN(eventDate.getTime()) && (now - eventDate.getTime() > THIRTY_DAYS);
-        if (isOld && selectedIndex !== events.length - 1) return null;
+      <div id="admin-events-top">
+      {events.length > 0 && events.slice((currentPage - 1) * eventsPerPage, currentPage * eventsPerPage).map((data, idx) => {
+        const selectedIndex = (currentPage - 1) * eventsPerPage + idx;
         return (
         <div key={data.id || selectedIndex} className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500 mt-12">
           <div className="flex items-center justify-between border-b pb-4">
@@ -284,7 +282,7 @@ export default function EventsClientForm({ initialEvents }: { initialEvents: any
                 <Plus size={16} /> Add Paragraph
               </button>
             </div>
-            <div className="space-y-4">
+            <div className="space-y-2">
               {(data.overview || []).map((p: string, idx: number) => (
                 <div key={idx} className="flex gap-4 items-start">
                   <div className="mt-2 text-slate-400 cursor-move"><GripVertical size={20} /></div>
@@ -305,7 +303,7 @@ export default function EventsClientForm({ initialEvents }: { initialEvents: any
                 <Plus size={16} /> Add Objective
               </button>
             </div>
-            <div className="space-y-4">
+            <div className="space-y-2">
               {(data.objectives || []).map((obj: string, idx: number) => (
                 <div key={idx} className="flex gap-4 items-center">
                   <div className="text-slate-400 cursor-move"><GripVertical size={20} /></div>
@@ -326,7 +324,7 @@ export default function EventsClientForm({ initialEvents }: { initialEvents: any
                 <Plus size={16} /> Add Feature
               </button>
             </div>
-            <div className="space-y-4">
+            <div className="space-y-2">
               {(data.features || []).map((feat: string, idx: number) => (
                 <div key={idx} className="flex gap-4 items-center">
                   <div className="text-slate-400 cursor-move"><GripVertical size={20} /></div>
@@ -402,10 +400,10 @@ export default function EventsClientForm({ initialEvents }: { initialEvents: any
                   )}
                   <input type="text" value={img || ""} onChange={e => updateArrayItem(selectedIndex, 'gallery', idx, e.target.value)} className="flex-1 p-2 bg-white border border-slate-200 rounded-lg text-sm" placeholder="Image URL or upload ->" />
                   <div className="relative overflow-hidden group shrink-0">
-                    <input type="file" accept="image/*" onChange={(e) => handleUpload(idx, e)} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" />
+                    <input type="file" accept="image/*" onChange={(e) => handleUpload(selectedIndex, idx, e)} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" />
                     <button type="button" className="px-4 py-2 bg-white border border-slate-200 text-[#007a87] rounded-lg text-sm font-bold flex items-center gap-2 group-hover:bg-[#007a87] group-hover:text-white transition-colors">
-                      {uploadingIdx === idx ? <Loader2 size={16} className="animate-spin" /> : <Upload size={16} />}
-                      <span>{uploadingIdx === idx ? 'Uploading...' : 'Upload'}</span>
+                      {uploadingIdx === `${selectedIndex}-${idx}` ? <Loader2 size={16} className="animate-spin" /> : <Upload size={16} />}
+                      <span>{uploadingIdx === `${selectedIndex}-${idx}` ? 'Uploading...' : 'Upload'}</span>
                     </button>
                   </div>
                   <button type="button" onClick={() => removeArrayItem(selectedIndex, 'gallery', idx)} className="p-2 text-red-500 hover:bg-red-50 rounded-lg shrink-0">
@@ -419,6 +417,40 @@ export default function EventsClientForm({ initialEvents }: { initialEvents: any
                 </div>
         );
       })}
+      </div>
+
+      {/* Admin Pagination Controls */}
+      {totalPages > 1 && (
+        <div className="flex flex-col sm:flex-row justify-between items-center bg-white p-6 rounded-3xl shadow-sm border border-slate-100 gap-4 mt-8">
+          <div className="text-slate-500 text-sm">
+            Showing <span className="font-extrabold text-[#002b5c]">{Math.min(currentPage * eventsPerPage, events.length)}</span> of <span className="font-extrabold text-[#002b5c]">{events.length}</span> Results
+          </div>
+          <div className="flex items-center gap-6">
+            <div className="font-extrabold text-[#002b5c] text-sm">
+              Page: {currentPage} of {totalPages}
+            </div>
+            <div className="flex items-center gap-3">
+              <button 
+                type="button"
+                onClick={(e) => { e.preventDefault(); e.currentTarget.blur(); setCurrentPage(p => Math.max(1, p - 1)); document.getElementById("admin-events-top")?.scrollIntoView({ behavior: "smooth" }); }}
+                disabled={currentPage === 1}
+                className="w-10 h-10 flex items-center justify-center bg-white border border-slate-200 text-slate-400 rounded-full hover:border-slate-300 hover:text-slate-600 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+              >
+                <svg className="w-5 h-5 rotate-180" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+              </button>
+              <button 
+                type="button"
+                onClick={(e) => { e.preventDefault(); e.currentTarget.blur(); setCurrentPage(p => Math.min(totalPages, p + 1)); document.getElementById("admin-events-top")?.scrollIntoView({ behavior: "smooth" }); }}
+                disabled={currentPage === totalPages}
+                className="w-10 h-10 flex items-center justify-center bg-[#005f6b] text-white rounded-full hover:bg-[#004a55] disabled:opacity-60 disabled:cursor-not-allowed transition-all shadow-sm"
+              >
+                <svg className="w-5 h-5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }

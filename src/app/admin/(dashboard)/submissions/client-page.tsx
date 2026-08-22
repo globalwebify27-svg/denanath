@@ -1,5 +1,6 @@
 "use client";
 import QuillEditor from "@/components/QuillEditor";
+import CustomDropdown from "@/components/CustomDropdown";
 
 
 import React, { useState, useTransition } from "react";
@@ -262,21 +263,14 @@ export default function SubmissionsClientPage({
         
         {/* Filter Selection Dropdown (Non-Linear) */}
         <div className="relative w-full sm:w-64">
-          <select
-            value={selectedFormType}
-            onChange={(e) => setSelectedFormType(e.target.value)}
-            className="w-full bg-slate-50 border border-slate-200 rounded-xl py-2.5 pl-3.5 pr-10 text-xs md:text-sm text-slate-700 font-bold focus:outline-none focus:ring-2 focus:ring-[#007a87]/50 focus:border-[#007a87] appearance-none cursor-pointer transition-all shadow-sm"
-          >
-            <option value="All">All Form Pages</option>
-            <option value="Book Appointment">Book Appointment</option>
-            <option value="Job Application">Job Application</option>
-            <option value="Patient Registration">Patient Registration</option>
-            <option value="Online Payment">Online Payment</option>
-            <option value="Contact Us">Contact Us</option>
-          </select>
-          <div className="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">
-            <ChevronDown size={16} />
-          </div>
+          <CustomDropdown
+            name="formType"
+            placeholder="All Form Pages"
+            options={["All Form Pages", "Book Appointment", "Job Application", "Patient Registration", "Online Payment", "Contact Us"]}
+            value={selectedFormType === "All" ? "All Form Pages" : selectedFormType}
+            onChange={(val: string) => setSelectedFormType(val === "All Form Pages" ? "All" : val || "All")}
+            className="w-full bg-slate-50 border-slate-200 rounded-xl !py-[10px] text-xs md:text-sm text-slate-700 font-bold focus:ring-2 focus:ring-[#007a87]/50 focus:border-[#007a87]"
+          />
         </div>
 
         {/* Search Field */}

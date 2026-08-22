@@ -1,11 +1,12 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { ChevronRight, Stethoscope, ArrowRight, Activity } from "lucide-react";
 import { iconMap } from "@/components/IconPicker";
 
 export default function ServicesClientPage({ pageData, services }: { pageData: any, services?: any[] }) {
+  const [activeTab, setActiveTab] = useState("Speciality Service");
   const options = [
     {
         "name": "Doctor Details",
@@ -113,38 +114,83 @@ export default function ServicesClientPage({ pageData, services }: { pageData: a
               )}
 
               {/* Dynamic Services List */}
-              {services && services.length > 0 && (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
-                  {services.map((service, idx) => {
-                    let parsedItems: string[] = [];
-                    try { parsedItems = JSON.parse(service.items || "[]"); } catch (e) {}
+              {services && services.length > 0 && (() => {
+                const specialityList = [
+                  "Cardiology", "Cardiac Surgery", "Nephrology", "Urology", "Medical Oncology", 
+                  "Surgical Oncology", "Ophthalmology", "Gastroenterology", "Pediatrics", 
+                  "Dentistry", "Neurology", "Neurosurgery", "Plastic Surgery", "Haematology"
+                ];
+                const supportList = [
+                  "Pharmacy", "Blood Bank", "Rehabilitation", "Optometry", "Nursing College", 
+                  "Emergency Medical Services", "Food Service", "Spine Clinic", 
+                  "Conference Auditorium"
+                ];
+                const therapeuticList = [
+                  "Medicine", "Surgery", "Gynaecology & Obstetrics", "Orthopaedics", "ENT", 
+                  "Joint Replacement Surgery", "Psychiatry", "Dermatology", "Ayurveda", "Homeopathy"
+                ];
 
-                    const IconComponent = (service.icon && iconMap[service.icon]) ? iconMap[service.icon] : Activity;
+                let activeList: string[] = [];
+                if (activeTab === "Speciality Service") activeList = specialityList;
+                else if (activeTab === "Support Service") activeList = supportList;
+                else if (activeTab === "Therapeutic Services") activeList = therapeuticList;
 
-                    return (
-                      <div key={idx} className="bg-white border border-slate-100 rounded-[1.25rem] p-6 sm:p-8 hover:border-[#d9232d] hover:shadow-[0_8px_30px_rgb(217,35,45,0.08)] transition-all duration-300 group flex flex-col h-full">
-                        <div className="flex items-center gap-5 mb-8">
-                          <div className="w-[52px] h-[52px] rounded-2xl flex items-center justify-center shrink-0 bg-slate-50 text-[#002b5c] border border-slate-100 group-hover:bg-[#d9232d] group-hover:text-white group-hover:border-[#d9232d] transition-all duration-300">
-                            <IconComponent className="w-7 h-7" />
-                          </div>
-                          <h3 className="text-[22px] font-[900] text-[#002b5c] group-hover:text-[#d9232d] tracking-tight leading-tight transition-colors duration-300">{service.title}</h3>
-                        </div>
-                        <div className="mt-auto border-t border-slate-100/80 pt-6 space-y-3">
-                          {parsedItems.map((item, i) => (
-                            <div key={i} className="flex items-start gap-3 text-[#007a87] text-[15px] font-[600] group/item">
-                              <ArrowRight className="w-[18px] h-[18px] shrink-0 mt-[2px] transition-transform group-hover/item:translate-x-1" />
-                              <span style={{ fontSize: '18px' }} className="text-slate-600 group-hover/item:text-[#002b5c] transition-colors">{item}</span>
+                const categoryServices = activeList.map(name => {
+                  return services?.find(s => s.title === name) || { title: name, items: "[]", icon: "" };
+                });
+
+                return (
+                  <div className="mt-8">
+                    <div className="flex flex-col sm:flex-row w-full items-stretch sm:items-center gap-4 mb-8">
+                      {["Speciality Service", "Support Service", "Therapeutic Services"].map((tab) => (
+                        <button
+                          key={tab}
+                          onClick={() => setActiveTab(tab)}
+                          className={`flex-1 text-center px-4 py-3 sm:py-3.5 rounded-xl font-bold text-[18px] leading-[30px] transition-all duration-300 ${
+                            activeTab === tab 
+                              ? "bg-[#002b5c] text-white shadow-md scale-[1.02]"
+                              : "bg-slate-100/80 text-slate-600 hover:bg-slate-200"
+                          }`}
+                        >
+                          {tab}
+                        </button>
+                      ))}
+                    </div>
+
+                    <div className="grid grid-cols-[repeat(auto-fill,minmax(340px,1fr))] gap-6">
+                      {categoryServices.map((service, idx) => {
+                        let parsedItems: string[] = [];
+                        try { parsedItems = JSON.parse(service.items || "[]"); } catch (e) {}
+                        const IconComponent = (service.icon && iconMap[service.icon]) ? iconMap[service.icon] : Activity;
+
+                        return (
+                          <div key={idx} className="bg-white border border-slate-100 rounded-[1.25rem] p-6 sm:p-8 hover:border-[#d9232d] hover:shadow-[0_8px_30px_rgb(217,35,45,0.08)] transition-all duration-300 group flex flex-col h-full animate-in fade-in zoom-in-95 duration-300">
+                            <div className="flex items-center gap-5 mb-6">
+                              <div className="w-[52px] h-[52px] rounded-2xl flex items-center justify-center shrink-0 bg-slate-50 text-[#002b5c] border border-slate-100 group-hover:bg-[#d9232d] group-hover:text-white group-hover:border-[#d9232d] transition-all duration-300">
+                                <IconComponent className="w-7 h-7" />
+                              </div>
+                              <h3 className="flex-1 text-xl font-[900] text-[#002b5c] group-hover:text-[#d9232d] tracking-tight leading-tight transition-colors duration-300">
+                                {service.title}
+                              </h3>
                             </div>
-                          ))}
-                          {parsedItems.length === 0 && (
-                            <div className="text-slate-400 text-sm italic">No specific items listed</div>
-                          )}
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              )}
+                            <div className="mt-auto border-t border-slate-100/80 pt-5 space-y-3">
+                              {parsedItems.map((item, i) => (
+                                <div key={i} className="flex items-start gap-3 text-[#007a87] text-[15px] font-[600] group/item">
+                                  <ArrowRight className="w-[18px] h-[18px] shrink-0 mt-[2px] transition-transform group-hover/item:translate-x-1" />
+                                  <span style={{ fontSize: '16px' }} className="text-slate-600 group-hover/item:text-[#002b5c] transition-colors leading-snug">{item}</span>
+                                </div>
+                              ))}
+                              {parsedItems.length === 0 && (
+                                <div className="text-slate-400 text-sm italic">No specific items listed</div>
+                              )}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                );
+              })()}
 
             </div>
           </div>

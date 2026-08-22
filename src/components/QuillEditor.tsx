@@ -49,6 +49,7 @@ export default function QuillEditor({ name, defaultValue, value, onChange }: { n
     enableDragAndDropFileToEditor: true,
     askBeforePasteFromWord: false,
     askBeforePasteHTML: false,
+    defaultActionOnPaste: 'insert_only_text',
     controls: {
       fontsize: {
         list: {
@@ -250,12 +251,21 @@ export default function QuillEditor({ name, defaultValue, value, onChange }: { n
         .jodit-wysiwyg {
           font-size: 18px !important;
           line-height: 1.65 !important;
+          color: #334155 !important;
+        }
+        .jodit-wysiwyg, .jodit-wysiwyg * {
+          font-family: inherit !important;
         }
         .jodit-wysiwyg p {
           font-size: 18px !important;
           margin-top: 0 !important;
           margin-bottom: 0.25rem !important;
           line-height: 1.5 !important;
+          color: inherit !important;
+          font-weight: normal !important;
+        }
+        .jodit-wysiwyg strong, .jodit-wysiwyg b {
+          font-weight: bold !important;
         }
         .jodit-wysiwyg ul {
           list-style-type: disc !important;

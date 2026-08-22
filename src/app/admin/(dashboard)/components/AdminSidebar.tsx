@@ -22,16 +22,23 @@ import {
   Calendar,
   Activity,
   FileText
+
 } from "lucide-react";
 
 const MENU_ITEMS = [
   {
-    name: "Overview",
-    icon: <LayoutDashboard size={20} />,
-    href: "/admin"
+    name: "Overview", icon: <LayoutDashboard size={20} />, href: "/admin", permission: "any"
   },
   {
-    name: "Home Settings",
+    name: "User Management", permission: "manage_users",
+    icon: <Users size={20} />,
+    links: [
+      { name: "Roles & Permissions", href: "/admin/roles" },
+      { name: "Users", href: "/admin/users" }
+    ]
+  },
+  {
+    name: "Home Settings", permission: "manage_home",
     icon: <Globe size={20} />,
     links: [
       { name: "Home Page Settings", href: "/admin/home-settings" },
@@ -39,12 +46,12 @@ const MENU_ITEMS = [
     ]
   },
   {
-    name: "News & Events",
+    name: "News & Events", permission: "manage_events",
     icon: <Calendar size={20} />,
     href: "/admin/events"
   },
   {
-    name: "Pricing",
+    name: "Pricing", permission: "manage_pricing",
     icon: <Activity size={20} />,
     links: [
       { name: "Implant Pricing", href: "/admin/pricing/implant" },
@@ -52,22 +59,22 @@ const MENU_ITEMS = [
     ]
   },
   {
-    name: "Form Submissions",
+    name: "Form Submissions", permission: "manage_submissions",
     icon: <Inbox size={20} />,
     href: "/admin/submissions"
   },
   {
-    name: "Menu Pages",
+    name: "Menu Pages", permission: "manage_menu_pages",
     icon: <FileText size={20} />,
     href: "/admin/menu-pages"
   },
   {
-    name: "Dynamic Pages",
+    name: "Dynamic Pages", permission: "manage_pages",
     icon: <FileText size={20} />,
     href: "/admin/pages"
   },
   {
-    name: "About Us",
+    name: "About Us", permission: "manage_about",
     icon: <Building2 size={20} />,
     links: [
       { name: "About Hospital", href: "/admin/about/about-hospital" },
@@ -81,7 +88,7 @@ const MENU_ITEMS = [
     ]
   },
   {
-    name: "Patient & Visitors",
+    name: "Patient & Visitors", permission: "manage_patient",
     icon: <HeartHandshake size={20} />,
     links: [
       { name: "Out Patient Guide", href: "/admin/patient-visitors/out-patient" },
@@ -97,16 +104,16 @@ const MENU_ITEMS = [
     ]
   },
   {
-    name: "Doctors & Departments",
+    name: "Doctors & Departments", permission: "manage_doctors",
     icon: <Stethoscope size={20} />,
     links: [
       { name: "Doctors Directory", href: "/admin/doctors" },
-      { name: "Departments", href: "/admin/departments" },
-      { name: "Services", href: "/admin/services" },
+      { name: "Departments", permission: "manage_specialties", href: "/admin/departments" },
+      { name: "Services", permission: "manage_services", href: "/admin/services" },
     ]
   },
   {
-    name: "Research",
+    name: "Research", permission: "manage_research",
     icon: <Microscope size={20} />,
     links: [
       { name: "About Us", href: "/admin/research/about" },
@@ -116,12 +123,12 @@ const MENU_ITEMS = [
       { name: "Publications", href: "/admin/research/publications" },
       { name: "Annual Reports", href: "/admin/research/annual-reports" },
       { name: "Sponsors & CROs", href: "/admin/research/sponsors-cros" },
-      { name: "Contact Us", href: "/admin/research/research-contact" },
+      { name: "Contact Us", permission: "manage_contact", href: "/admin/research/research-contact" },
       { name: "EC Approval", href: "/admin/research/ec-approval" },
     ]
   },
   {
-    name: "Academics",
+    name: "Academics", permission: "manage_academics",
     icon: <GraduationCap size={20} />,
     links: [
       { name: "Academics Info", href: "/admin/academics/info" },
@@ -138,7 +145,7 @@ const MENU_ITEMS = [
     ]
   },
   {
-    name: "Online Facilities",
+    name: "Online Facilities", permission: "manage_online_facilities",
     icon: <Globe size={20} />,
     links: [
       { name: "E-Mail Login", href: "/admin/online-facilities/email-login" },
@@ -148,26 +155,30 @@ const MENU_ITEMS = [
     ]
   },
   {
-    name: "Job & Vacancy",
+    name: "Job & Vacancy", permission: "manage_careers",
     icon: <Briefcase size={20} />,
     links: [
       { name: "Job Postings", href: "/admin/careers" },
     ]
   },
   {
-    name: "Contact",
+    name: "Contact Us", permission: "manage_contact",
     icon: <Phone size={20} />,
     links: [
       { name: "Contact Submissions", href: "/admin/contact" },
+    ]
+  },
+  {
+    name: "Settings", permission: "manage_settings",
+    icon: <Globe size={20} />,
+    links: [
+      { name: "Mail Configuration", href: "/admin/mail-config" }
     ]
   }
 ];
 
 export default function AdminSidebar({ 
-  dynamicPages = [] 
-}: { 
-  dynamicPages?: { id: string; title: string; slug: string; navbarMenu: string; status?: boolean }[] 
-}) {
+  dynamicPages = [], permissions = ["*"] }: { dynamicPages?: any[], permissions?: string[] }) {
   const pathname = usePathname();
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({
     "Doctors & Departments": true // Keep the primary one open by default
@@ -195,7 +206,7 @@ export default function AdminSidebar({
   const allBaseMenus = [...MENU_ITEMS, ...topLevelMenus];
 
   // 3. Populate sub-pages into their respective menu categories
-  const finalMenuItems = allBaseMenus.map(section => {
+  const finalMenuItems = allBaseMenus.filter((section: any) => permissions.includes("*") || section.permission === "any" || permissions.includes(section.permission)).map((section: any) => {
     const sectionPages = dynamicPages.filter(p => p.navbarMenu === section.name);
     if (sectionPages.length > 0) {
       return {
@@ -321,21 +332,21 @@ export default function AdminSidebar({
         </nav>
 
         {/* Interactions Section (Logout) */}
-        <div className="p-4 shrink-0 mt-auto">
-          <div className="text-[10px] font-bold text-gray-600 uppercase tracking-widest mb-3 px-2">
-            Interactions
+          <div className="p-4 shrink-0 mt-auto">
+            <div className="text-[10px] font-bold text-gray-600 uppercase tracking-widest mb-3 px-2">
+              Interactions
+            </div>
+            <button
+              onClick={async () => {
+                await fetch('/api/admin/auth/logout', { method: 'POST' });
+                window.location.href = '/admin/login';
+              }}
+              className="w-full flex items-center gap-3 p-3 text-sm font-semibold text-[#ff4444] bg-[#ff4444]/10 hover:bg-[#ff4444]/20 rounded-lg transition-colors"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+              Logout
+            </button>
           </div>
-          <Link
-            href="/admin/login"
-            onClick={() => {
-              document.cookie = "adminAuth=; path=/; max-age=0";
-            }}
-            className="flex items-center gap-3 p-3 text-sm font-semibold text-[#ff4444] bg-[#ff4444]/10 hover:bg-[#ff4444]/20 rounded-lg transition-colors"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
-            Logout
-          </Link>
-        </div>
       </aside>
       
       {/* Mobile Overlay */}
