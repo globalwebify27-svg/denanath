@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { ChevronRight, Calendar as CalendarIcon, User, X, Search, Clock, ChevronDown } from "lucide-react";
+import CustomDropdown from "@/components/CustomDropdown";
 
 export default function BookAppointmentClientPage({ pageData }: { pageData: any }) {
   // --- State ---
@@ -1055,12 +1056,16 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
                     </div>
                     <div>
                       <label className="block text-xs font-bold text-slate-700 mb-1"><span className="text-red-500">*</span> Gender</label>
-                      <select required value={formData.gender} onChange={e => setFormData({...formData, gender: e.target.value})} className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:border-[#4bc2b0] focus:ring-1 focus:ring-[#4bc2b0] outline-none">
-                        <option value="">---Select---</option>
-                        <option value="Male">Male</option>
-                        <option value="Female">Female</option>
-                        <option value="Other">Other</option>
-                      </select>
+                      <CustomDropdown
+                        name="gender"
+                        placeholder="-- Select --"
+                        icon={User}
+                        required
+                        options={["Male", "Female", "Other"]}
+                        value={formData.gender}
+                        onChange={(val: string) => setFormData({...formData, gender: val})}
+                        className="w-full !py-2 !px-3 border-slate-300 rounded-lg text-sm focus-within:border-[#4bc2b0] focus-within:ring-1 focus-within:ring-[#4bc2b0]"
+                      />
                     </div>
                   </>
                 ) : (

@@ -21,6 +21,7 @@ import {
   Inbox,
   Calendar,
   Activity,
+  Wallet,
   FileText
 
 } from "lucide-react";
@@ -35,6 +36,14 @@ const MENU_ITEMS = [
     links: [
       { name: "Roles & Permissions", href: "/admin/roles" },
       { name: "Users", href: "/admin/users" }
+    ]
+  },
+  {
+    name: "Online Payments", permission: "manage_payments",
+    icon: <Wallet size={20} />,
+    links: [
+      { name: "Payment Category List", href: "/admin/online-payments/categories" },
+      { name: "Conference List", href: "/admin/online-payments/conferences" }
     ]
   },
   {
