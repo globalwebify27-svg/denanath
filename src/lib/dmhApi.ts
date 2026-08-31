@@ -8,6 +8,7 @@ export const DMH_API_CONFIG = {
   endpoints: {
     speciality: 'doctorList.php',
     doctor: 'doctorList.php',
+    drAhis: 'doctorList.php',
     speciality_doctor: 'doctorList.php',
     opd_day_time: 'opdDayTime.php',
     check_date: 'checkDate.php',
@@ -25,6 +26,10 @@ export type DMHAction = keyof typeof DMH_API_CONFIG.endpoints;
 
 // Request builder helper payloads
 export const createDMHPayload = {
+  getAhisDoctors: () => ({
+    action: 'drAhis',
+  }),
+
   getSpecialities: () => ({
     action: 'speciality',
   }),

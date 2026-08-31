@@ -28,6 +28,9 @@ model Doctor {
   dmhServiceCenterId String?
   dmhServicePointId  String?
   isAppAllowed       Boolean  @default(true)
+  gender             String?
+  consultantType     String?
+  hasOpdSchedule     Boolean  @default(false)
 }
 
 model Department {

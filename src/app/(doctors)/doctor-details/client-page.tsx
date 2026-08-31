@@ -37,7 +37,17 @@ const DoctorImage = ({ doc, className, iconClassName }: { doc: any, className?: 
   const [error, setError] = useState(false);
   
   if (!doc.image || error) {
-    return <UserRound className={iconClassName} />;
+    const isFemale = doc.gender?.toLowerCase() === 'female';
+    const bg = isFemale ? 'fdf2f8' : 'f0f9ff';
+    const color = isFemale ? 'be185d' : '0369a1';
+    const defaultPhoto = `https://ui-avatars.com/api/?name=${encodeURIComponent(doc.name || 'Doctor')}&background=${bg}&color=${color}&size=128&rounded=true&font-size=0.33`;
+    return (
+      <img 
+        src={defaultPhoto} 
+        alt={doc.name} 
+        className={className}
+      />
+    );
   }
 
   return (
@@ -75,6 +85,9 @@ export default function DoctorDetailsPage() {
           isAppAllowed: doc.isAppAllowed !== false,
           qualifications: doc.qualifications || '',
           image: doc.image || '',
+          gender: doc.gender || '',
+          consultantType: doc.consultantType || '',
+          hasOpdSchedule: doc.hasOpdSchedule || false,
           timings: doc.timings ? (typeof doc.timings === 'string' ? JSON.parse(doc.timings) : doc.timings) : [],
           education: doc.education ? (typeof doc.education === 'string' ? JSON.parse(doc.education) : doc.education) : [],
           training: doc.training ? (typeof doc.training === 'string' ? JSON.parse(doc.training) : doc.training) : [],
@@ -259,10 +272,16 @@ export default function DoctorDetailsPage() {
                       </div>
                       
                       <div className="flex-1 mb-6">
-                        <div className="flex items-start gap-2 text-sm font-medium text-slate-600">
+                        <div className="flex items-start gap-2 text-sm font-medium text-slate-600 mb-2">
                           <GraduationCap className="w-4 h-4 text-slate-400 shrink-0 mt-0.5" />
                           <span className="leading-relaxed">{doc.qualifications}</span>
                         </div>
+                        {doc.consultantType && (
+                          <div className="flex items-start gap-2 text-sm font-medium text-slate-600">
+                            <Briefcase className="w-4 h-4 text-slate-400 shrink-0 mt-0.5" />
+                            <span className="leading-relaxed">{doc.consultantType}</span>
+                          </div>
+                        )}
                       </div>
 
                       <div className="mt-auto pt-4 border-t border-slate-100">
@@ -410,7 +429,7 @@ export default function DoctorDetailsPage() {
                     </div>
                   </div>
 
-                  {selectedDoctor.timings && selectedDoctor.timings.length > 0 && (
+                  {selectedDoctor.timings && selectedDoctor.timings.length > 0 ? (
                     <div className="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm">
                       <h3 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-4 flex items-center gap-2 leading-[31px]">
                         <Calendar className="w-4 h-4" /> OPD Timings
@@ -437,6 +456,24 @@ export default function DoctorDetailsPage() {
                           </a>
                         </div>
                       </div>
+                    </div>
+                  ) : selectedDoctor.hasOpdSchedule ? (
+                    <div className="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm">
+                      <h3 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-4 flex items-center gap-2 leading-[31px]">
+                        <Calendar className="w-4 h-4" /> OPD Timings
+                      </h3>
+                      <p className="text-[14px] text-slate-600 font-medium mb-4">
+                        This doctor is available for OPD. Please book an appointment to see available slots.
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="bg-white rounded-2xl p-5 border border-slate-100 shadow-sm bg-slate-50 border-dashed">
+                      <h3 className="text-sm font-bold text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-2 leading-[31px]">
+                        <Calendar className="w-4 h-4" /> OPD Timings
+                      </h3>
+                      <p className="text-[14px] text-slate-500 italic font-medium">
+                        Schedule Not Available
+                      </p>
                     </div>
                   )}
                 </div>
