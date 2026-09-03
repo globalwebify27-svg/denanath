@@ -1,1 +1,0 @@
-﻿const { PrismaClient } = require('@prisma/client'); const prisma = new PrismaClient(); prisma.doctor.findMany().then(docs => console.log(docs.map(d => ({id: d.id, dmhDoctorId: d.dmhDoctorId, name: d.name}))));
