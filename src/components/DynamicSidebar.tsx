@@ -31,7 +31,7 @@ export default function DynamicSidebar({
           setLayoutHeader(data);
         }
       })
-      .catch(err => console.error("Error fetching layout header:", err));
+      .catch(err => console.warn("Could not fetch layout header", err));
 
     // Fetch dynamic pages
     fetch('/api/dynamic-pages', { cache: 'no-store' })
@@ -42,7 +42,7 @@ export default function DynamicSidebar({
            setDynamicLinks(pages.map((p: any) => ({ name: p.title, href: `/${p.slug}` })));
         }
       })
-      .catch(err => console.error("Error fetching dynamic pages:", err));
+      .catch(err => console.warn("Could not fetch dynamic pages", err));
   }, [categoryName]);
 
   const baseCategory = baseNavLinks.find(link => link.name === categoryName);
@@ -67,7 +67,7 @@ export default function DynamicSidebar({
     }
   }
 
-  const allOptions: SidebarOption[] = [
+  let allOptions: SidebarOption[] = [
     ...staticDropdown.map(item => ({
       name: item.name,
       href: item.href,
@@ -79,6 +79,16 @@ export default function DynamicSidebar({
       active: item.href === activeHref
     }))
   ];
+
+  // Deduplicate by name to prevent static and dynamic links showing up twice
+  const seenNames = new Set<string>();
+  allOptions = allOptions.filter(item => {
+    if (seenNames.has(item.name.toLowerCase().trim())) {
+      return false;
+    }
+    seenNames.add(item.name.toLowerCase().trim());
+    return true;
+  });
 
   useEffect(() => {
     if (window.innerWidth < 1024 && scrollContainerRef.current) {

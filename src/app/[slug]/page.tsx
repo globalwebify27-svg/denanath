@@ -34,7 +34,7 @@ export default async function DynamicPageRoute({ params }: { params: Promise<{ s
     notFound();
   }
 
-  const isMenuPage = ["Top Header", "Main Header", "Footer"].includes(page.navbarMenu);
+  const isMenuPage = ["Top Header", "Header", "Footer", "Footer Column 2"].includes(page.navbarMenu);
 
   return (
     <div className="min-h-screen bg-[#f8fafc] font-sans selection:bg-teal-500/30">

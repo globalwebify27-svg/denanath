@@ -63,9 +63,9 @@ export const baseNavLinks = [
     href: "/email-login",
     dropdown: [
       { name: "E-Mail Login (DMH Users)", href: "/email-login" },
-      { name: "Online Payment", href: "/online-payment" },
-      { name: "Patient Portal", href: "/patient-portal" },
-      { name: "Patient Registration Form", href: "/patient-registration" },
+      { name: "Online Payment", href: "https://www.dmhospital.org/pay/index.php" },
+      { name: "Patient Portal", href: "https://phr.dmhospital.org/PatientPortal/login" },
+      { name: "Patient Registration Form", href: "https://mapp.dmhospital.org/amrita_login/patient_registration/index.php" },
     ],
   },
   {

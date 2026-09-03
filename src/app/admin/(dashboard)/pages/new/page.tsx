@@ -15,7 +15,7 @@ export default async function NewPage() {
     }
     
     const menuPages = await prisma.dynamicPage.findMany({
-      where: { navbarMenu: 'Main Header', status: true },
+      where: { navbarMenu: 'Header', status: true },
       select: { title: true }
     });
     

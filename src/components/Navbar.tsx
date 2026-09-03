@@ -158,15 +158,33 @@ export default function Navbar({ topHeaderSettings, headerSettings }: { topHeade
 
   // Inject Main Header Menu Pages
   let rawNavLinks = [...(headerSettings?.menus || baseNavLinks)];
-  const mainHeaderPages = dynamicLinks.filter((p: any) => p.navbarMenu === "Main Header" && p.status);
+  const mainHeaderPages = dynamicLinks.filter((p: any) => p.navbarMenu === "Header" && p.status);
   if (mainHeaderPages.length > 0) {
-    const injected = mainHeaderPages.map((p: any) => ({
-      name: p.title,
-      href: `/${p.slug}`,
-      isActive: true,
-      dropdown: []
-    }));
-    rawNavLinks = [...rawNavLinks, ...injected];
+    const injectedMap = new Map();
+    mainHeaderPages.forEach((p: any) => {
+      injectedMap.set(p.title.toLowerCase(), {
+        name: p.title,
+        href: `/${p.slug}`,
+        isActive: true,
+        dropdown: []
+      });
+    });
+
+    // Replace existing links with dynamic ones to preserve order, and remove them from map
+    rawNavLinks = rawNavLinks.map((link: any) => {
+      const key = link.name.toLowerCase();
+      if (injectedMap.has(key)) {
+        const replacement = injectedMap.get(key);
+        replacement.dropdown = link.dropdown; // Preserve sub-dropdowns from base
+        replacement.href = link.href; // Preserve the original built-in link
+        injectedMap.delete(key);
+        return replacement;
+      }
+      return link;
+    });
+
+    // Append any completely new dynamic menus at the end
+    rawNavLinks = [...rawNavLinks, ...Array.from(injectedMap.values())];
   }
 
   const navLinks = rawNavLinks
@@ -177,9 +195,23 @@ export default function Navbar({ topHeaderSettings, headerSettings }: { topHeade
       
       let newDropdown = [...filteredDropdown];
       if (pagesForMenu.length > 0) {
+        const injectedMap = new Map();
         pagesForMenu.forEach(p => {
-          newDropdown.push({ name: p.title, href: `/${p.slug}`, isActive: true });
+          injectedMap.set(p.title.toLowerCase(), { name: p.title, href: `/${p.slug}`, isActive: true });
         });
+        
+        newDropdown = newDropdown.map((subLink: any) => {
+          const key = subLink.name.toLowerCase();
+          if (injectedMap.has(key)) {
+            const rep = injectedMap.get(key);
+            injectedMap.delete(key);
+            rep.href = subLink.href; // Preserve the original built-in link
+            return rep;
+          }
+          return subLink;
+        });
+        
+        newDropdown = [...newDropdown, ...Array.from(injectedMap.values())];
       }
       
       let updatedHref = link.href;
@@ -212,20 +244,39 @@ export default function Navbar({ topHeaderSettings, headerSettings }: { topHeade
       <div id="google_translate_element" style={{ position: 'absolute', opacity: 0, zIndex: -1, width: 0, height: 0, overflow: 'hidden' }}></div>
       {/* Tier 1: Teal Utility Bar */}
       {topHeaderSettings?.isActive !== false && (
-        <div className="hidden xl:block w-full bg-[#007a87] text-white text-[8px] 2xl:text-[11px] py-1.5 px-1 2xl:px-4 font-medium border-b border-teal-600/30">
-        <div className="max-w-full 2xl:max-w-[96%] mx-auto px-1 flex justify-between items-center">
-          <div className="flex items-center gap-0.5 2xl:gap-4 text-white/90">
-            {(() => {
-              let topHeaderMenus = [...(topHeaderSettings?.menus || [])];
-              const topHeaderPages = dynamicLinks.filter((p: any) => p.navbarMenu === "Top Header" && p.status);
-              if (topHeaderPages.length > 0) {
-                const injected = topHeaderPages.map((p: any) => ({
-                  name: p.title,
-                  href: `/${p.slug}`,
-                  isActive: true
-                }));
-                topHeaderMenus = [...topHeaderMenus, ...injected];
-              }
+        <div className="block w-full bg-[#007a87] text-white text-[10px] md:text-[8px] 2xl:text-[11px] py-1.5 px-2 md:px-1 2xl:px-4 font-medium border-b border-teal-600/30">
+        <div className="max-w-full 2xl:max-w-[96%] mx-auto px-1 flex justify-between items-center flex-wrap gap-1 md:gap-4 xl:gap-0">
+          <div className="flex items-center gap-1.5 md:gap-0.5 2xl:gap-4 text-white/90">
+              {(() => {
+                let topHeaderMenus = [...(topHeaderSettings?.menus || [
+                  { name: "Emergency", href: "/emergency", textColor: "#f87171" },
+                  { name: "Blood Bank", href: "/blood-bank" },
+                  { name: "Pharmacy", href: "/pharmacy" },
+                  { name: "Ambulance", href: "/ambulance", textColor: "#f87171" }
+                ])];
+                const topHeaderPages = dynamicLinks.filter((p: any) => p.navbarMenu === "Top Header" && p.status);
+                if (topHeaderPages.length > 0) {
+                  const injectedMap = new Map();
+                  topHeaderPages.forEach((p: any) => {
+                    injectedMap.set(p.title.toLowerCase(), {
+                      name: p.title,
+                      href: `/${p.slug}`,
+                      isActive: true
+                    });
+                  });
+                  topHeaderMenus = topHeaderMenus.map((link: any) => {
+                    const key = link.name.toLowerCase();
+                    if (injectedMap.has(key)) {
+                      const rep = injectedMap.get(key);
+                      injectedMap.delete(key);
+                      rep.href = link.href; // Preserve the original built-in link
+                      if (link.textColor) rep.textColor = link.textColor; // Preserve original color
+                      return rep;
+                    }
+                    return link;
+                  });
+                  topHeaderMenus = [...topHeaderMenus, ...Array.from(injectedMap.values())];
+                }
               
               return topHeaderMenus
                  .filter((link: any) => link.isActive !== false)
@@ -252,27 +303,36 @@ export default function Navbar({ topHeaderSettings, headerSettings }: { topHeade
           <div className="flex items-center gap-0.5 2xl:gap-4 font-bold tracking-wide">
             {/* Phone Numbers */}
             {(topHeaderSettings?.phoneNumbers || []).filter((ph: any) => ph.isActive !== false && ph.text).length > 0 && (
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2">
             {(topHeaderSettings?.phoneNumbers || [])
               .filter((ph: any) => ph.isActive !== false && ph.text)
-              .map((ph: any, idx: number, arr: any[]) => (
-              <React.Fragment key={`extra-ph-${idx}`}>
-                <a href={ph.number ? `tel:${ph.number}` : "#"} className="flex items-center gap-1 hover:text-teal-200 transition-colors">
-                  <Phone className="w-3 h-3" />
-                  <span>{ph.text}</span>
-                </a>
-                {idx < arr.length - 1 && <span className="opacity-30">|</span>}
-              </React.Fragment>
-            ))}
+              .map((ph: any, idx: number, arr: any[]) => {
+                const isFirst = idx === 0;
+                return (
+                  <React.Fragment key={`extra-ph-${idx}`}>
+                    <a 
+                      href={ph.number ? `tel:${ph.number}` : "#"} 
+                      className={`${isFirst ? "hidden md:flex" : "flex"} items-center gap-1 hover:text-teal-200 transition-colors`}
+                    >
+                      <Phone className="w-3 h-3" />
+                      <span className="hidden md:inline">{ph.text}</span>
+                      <span className="md:hidden">
+                        {ph.text}
+                      </span>
+                    </a>
+                    {idx < arr.length - 1 && <span className={`${isFirst ? "hidden md:inline" : "inline"} opacity-30`}>|</span>}
+                  </React.Fragment>
+                );
+              })}
               </div>
             )}
 
             <div 
-              className="relative group flex items-center gap-1.5 cursor-pointer hover:text-white transition-colors py-1 px-2"
+              className="relative group hidden md:flex items-center gap-1.5 cursor-pointer hover:text-white transition-colors py-1 px-2"
               onClick={(e) => { e.stopPropagation(); setIsLangOpen(!isLangOpen); }}
             >
               <Globe className="w-4 h-4" />
-              <span>Select Language</span>
+              <span className="hidden md:inline">Select Language</span>
               <div 
                 className={`absolute top-full right-0 ${isLangOpen ? 'block' : 'hidden'} group-hover:block w-32 bg-white rounded-lg shadow-xl border border-slate-100 overflow-hidden text-slate-700 z-50 notranslate`}
                 onClick={(e) => e.stopPropagation()}
@@ -291,7 +351,7 @@ export default function Navbar({ topHeaderSettings, headerSettings }: { topHeade
             </div>
 
             {/* Buttons */}
-            <div className="flex items-center gap-1 2xl:gap-2">
+            <div className="hidden md:flex items-center gap-1 2xl:gap-2">
               {(topHeaderSettings?.buttons || [])
                 .filter((btn: any) => btn.isActive !== false && btn.text)
                 .map((btn: any, idx: number) => (

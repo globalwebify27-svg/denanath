@@ -73,8 +73,6 @@ export default function CareersClientPage({ pageData }: { pageData: any }) {
           <div className="flex items-center gap-2 text-blue-200 text-[10px] font-medium tracking-wide mb-1">
             <Link href="/" className="hover:text-white transition-colors">Home</Link>
             <ChevronRight className="w-3.5 h-3.5" />
-            <span className="hover:text-white transition-colors cursor-pointer">Hospital</span>
-            <ChevronRight className="w-3.5 h-3.5" />
             <span className="text-white">Careers</span>
           </div>
           <h1 className="text-[40px] leading-tight font-extrabold text-white tracking-tight flex items-center gap-4">
@@ -454,4 +452,5 @@ export default function CareersClientPage({ pageData }: { pageData: any }) {
     </div>
   );
 }
+
 

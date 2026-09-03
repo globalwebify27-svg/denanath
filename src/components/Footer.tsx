@@ -139,12 +139,25 @@ export default function Footer({ latestEvent, footerSettings }: { latestEvent?: 
                 // Inject Footer Menu Pages
                 const footerPages = dynamicLinks.filter((p: any) => p.navbarMenu === "Footer" && p.status);
                 if (footerPages.length > 0) {
-                  const injected = footerPages.map((p: any) => ({
-                    label: p.title,
-                    href: `/${p.slug}`,
-                    isActive: true
-                  }));
-                  quick1 = [...quick1, ...injected];
+                  const injectedMap = new Map();
+                  footerPages.forEach((p: any) => {
+                    injectedMap.set(p.title.toLowerCase(), {
+                      label: p.title,
+                      href: `/${p.slug}`,
+                      isActive: true
+                    });
+                  });
+                  quick1 = quick1.map((item: any) => {
+                    const key = item.label.toLowerCase();
+                    if (injectedMap.has(key)) {
+                      const rep = injectedMap.get(key);
+                      injectedMap.delete(key);
+                      rep.href = item.href; // Preserve the original built-in link
+                      return rep;
+                    }
+                    return item;
+                  });
+                  quick1 = [...quick1, ...Array.from(injectedMap.values())];
                 }
                 
                 return quick1;
@@ -165,18 +178,44 @@ export default function Footer({ latestEvent, footerSettings }: { latestEvent?: 
               Quick Channels
             </h4>
             <ul className="space-y-3.5 text-xs pt-0 sm:pt-2">
-              {(footerSettings?.quickChannels2 || [
-                { label: "Pharmacy", href: "/pharmacy" },
-                { label: "Ambulance", href: "/ambulance" },
-                { label: "Blood Bank", href: "/blood-bank" },
-                { label: "Careers", href: "/careers" },
-                { label: "Contact Us", href: "/contact-us" },
-                { label: "Event/News", href: "/events" },
-                { label: "OPD Schedule", href: "/opd-schedule" },
-                { label: "EC Approval", href: "/ec-approval" },
-                { label: "Site Map", href: "/site-map" },
-                { label: "Disclaimer", href: "/disclaimer" }
-              ]).filter((item: any) => item.isActive !== false).map((item: any, idx: number) => (
+              {(() => {
+                let quick2 = footerSettings?.quickChannels2 || [
+                  { label: "Pharmacy", href: "/pharmacy" },
+                  { label: "Ambulance", href: "/ambulance" },
+                  { label: "Blood Bank", href: "/blood-bank" },
+                  { label: "Careers", href: "/careers" },
+                  { label: "Contact Us", href: "/contact-us" },
+                  { label: "Event/News", href: "/events" },
+                  { label: "OPD Schedule", href: "/opd-schedule" },
+                  { label: "EC Approval", href: "/ec-approval" },
+                  { label: "Site Map", href: "/site-map" },
+                  { label: "Disclaimer", href: "/disclaimer" }
+                ];
+                
+                const footerCol2Pages = dynamicLinks.filter((p: any) => p.navbarMenu === "Footer Column 2" && p.status);
+                if (footerCol2Pages.length > 0) {
+                  const injectedMap = new Map();
+                  footerCol2Pages.forEach((p: any) => {
+                    injectedMap.set(p.title.toLowerCase(), {
+                      label: p.title,
+                      href: `/${p.slug}`,
+                      isActive: true
+                    });
+                  });
+                  quick2 = quick2.map((item: any) => {
+                    const key = item.label.toLowerCase();
+                    if (injectedMap.has(key)) {
+                      const rep = injectedMap.get(key);
+                      injectedMap.delete(key);
+                      rep.href = item.href; // Preserve the original built-in link
+                      return rep;
+                    }
+                    return item;
+                  });
+                  quick2 = [...quick2, ...Array.from(injectedMap.values())];
+                }
+                return quick2;
+              })().filter((item: any) => item.isActive !== false).map((item: any, idx: number) => (
                 <li key={idx} className="group flex items-center gap-2">
                   <ArrowRight className="w-3.5 h-3.5 text-[#a7ffeb] opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all duration-300 shrink-0" />
                   <Link href={item.href} className="text-[#b2dfdb] hover:text-white transition-colors leading-normal font-light">

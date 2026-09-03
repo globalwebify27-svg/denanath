@@ -23,7 +23,7 @@ export default function MenuPagesClient({ initialPages = [] }: { initialPages?: 
       const response = await fetch("/api/dynamic-pages");
       const data = await response.json();
       if (Array.isArray(data)) {
-        const filtered = data.filter(p => ["Top Header", "Main Header", "Footer"].includes(p.navbarMenu));
+        const filtered = data.filter((p: any) => ["Top Header", "Header", "Footer", "Footer Column 2"].includes(p.navbarMenu));
         setPages(filtered);
       } else {
         setPages([]);
@@ -52,10 +52,85 @@ export default function MenuPagesClient({ initialPages = [] }: { initialPages?: 
     }
   };
 
-  const filteredPages = pages.filter((page) =>
-    page.title.toLowerCase().includes(search.toLowerCase()) || 
-    page.navbarMenu.toLowerCase().includes(search.toLowerCase())
-  );
+  const orderMap: Record<string, number> = {
+    "Top Header": 1,
+    "Header": 2,
+    "Footer": 3,
+    "Footer Column 2": 4
+  };
+
+  const topHeaderOrder: Record<string, number> = {
+    "emergency": 1,
+    "blood bank": 2,
+    "pharmacy": 3,
+    "ambulance": 4
+  };
+
+  const headerOrder: Record<string, number> = {
+    "about us": 1,
+    "patient & visitors": 2,
+    "doctors & departments": 3,
+    "research": 4,
+    "academics": 5,
+    "online facilities": 6,
+    "careers": 7,
+    "contact us": 8
+  };
+
+  const footerOrder: Record<string, number> = {
+    "book appointment": 1,
+    "testimonials": 2,
+    "photo gallery": 3,
+    "video gallery": 4
+  };
+
+  const footer2Order: Record<string, number> = {
+    "event/news": 1,
+    "opd schedule": 2,
+    "ec approval": 3,
+    "site map": 4,
+    "disclaimer": 5
+  };
+
+  const filteredPages = pages
+    .filter((page) =>
+      page.title.toLowerCase().includes(search.toLowerCase()) || 
+      page.navbarMenu.toLowerCase().includes(search.toLowerCase())
+    )
+    .sort((a, b) => {
+      const orderA = orderMap[a.navbarMenu] || 99;
+      const orderB = orderMap[b.navbarMenu] || 99;
+      
+      if (orderA !== orderB) {
+        return orderA - orderB;
+      }
+
+      if (a.navbarMenu === "Top Header" && b.navbarMenu === "Top Header") {
+        const titleA = topHeaderOrder[a.title.toLowerCase()] || 99;
+        const titleB = topHeaderOrder[b.title.toLowerCase()] || 99;
+        return titleA - titleB;
+      }
+
+      if (a.navbarMenu === "Header" && b.navbarMenu === "Header") {
+        const titleA = headerOrder[a.title.toLowerCase()] || 99;
+        const titleB = headerOrder[b.title.toLowerCase()] || 99;
+        return titleA - titleB;
+      }
+
+      if (a.navbarMenu === "Footer" && b.navbarMenu === "Footer") {
+        const titleA = footerOrder[a.title.toLowerCase()] || 99;
+        const titleB = footerOrder[b.title.toLowerCase()] || 99;
+        return titleA - titleB;
+      }
+
+      if (a.navbarMenu === "Footer Column 2" && b.navbarMenu === "Footer Column 2") {
+        const titleA = footer2Order[a.title.toLowerCase()] || 99;
+        const titleB = footer2Order[b.title.toLowerCase()] || 99;
+        return titleA - titleB;
+      }
+      
+      return 0;
+    });
 
   return (
     <div className="p-6">

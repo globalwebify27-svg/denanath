@@ -164,7 +164,7 @@ const MENU_ITEMS = [
     ]
   },
   {
-    name: "Job & Vacancy", permission: "manage_careers",
+    name: "Careers", permission: "manage_careers",
     icon: <Briefcase size={20} />,
     links: [
       { name: "Job Postings", href: "/admin/careers" },
@@ -201,36 +201,53 @@ export default function AdminSidebar({
     }));
   };
 
-  // 1. Identify dynamically created top-level Menu Pages
-  const topLevelMenus = dynamicPages
-    .filter(p => ["Top Header", "Main Header", "Footer"].includes(p.navbarMenu))
-    .map(menuPage => ({
-      name: menuPage.title,
+  // 1. Build a set of all statically defined names to prevent duplicates
+  const staticNames = new Set<string>();
+  MENU_ITEMS.forEach(item => {
+    staticNames.add(item.name.toLowerCase());
+    if (item.links) {
+      item.links.forEach(link => staticNames.add(link.name.toLowerCase()));
+    }
+  });
+
+  // 2. Group dynamic pages by their location, only if they aren't already a static module
+  const dynamicMenuGroups = new Map<string, any[]>();
+  dynamicPages
+    .filter(p => ["Top Header", "Header", "Footer", "Footer Column 2"].includes(p.navbarMenu))
+    .filter(p => !staticNames.has(p.title.toLowerCase())) // MUST NOT be in static modules!
+    .forEach(p => {
+      if (!dynamicMenuGroups.has(p.navbarMenu)) {
+        dynamicMenuGroups.set(p.navbarMenu, []);
+      }
+      dynamicMenuGroups.get(p.navbarMenu)!.push({
+        name: p.title,
+        href: `/admin/menu-pages/${p.id}`
+      });
+    });
+
+  // 3. Create sidebar sections for these locations in specific order
+  const locationOrder = ["Top Header", "Header"];
+  const dynamicSections = locationOrder
+    .filter(loc => dynamicMenuGroups.has(loc))
+    .map(loc => ({
+      name: loc,
       icon: <FileText size={20} />,
-      href: `/admin/menu-pages/${menuPage.id}`,
-      links: []
+      permission: "manage_menu_pages",
+      links: dynamicMenuGroups.get(loc)!
     }));
 
-  // 2. Combine static MENU_ITEMS with the dynamically created menus
-  const allBaseMenus = [...MENU_ITEMS, ...topLevelMenus];
+  let allBaseMenus: any[] = [...MENU_ITEMS, ...dynamicSections];
+  const seenSections = new Set();
+  allBaseMenus = allBaseMenus.filter(section => {
+    if (seenSections.has(section.name)) {
+      return false;
+    }
+    seenSections.add(section.name);
+    return true;
+  });
 
   // 3. Populate sub-pages into their respective menu categories
-  const finalMenuItems = allBaseMenus.filter((section: any) => permissions.includes("*") || section.permission === "any" || permissions.includes(section.permission)).map((section: any) => {
-    const sectionPages = dynamicPages.filter(p => p.navbarMenu === section.name);
-    if (sectionPages.length > 0) {
-      return {
-        ...section,
-        links: [
-          ...(section.links || []),
-          ...sectionPages.map(page => ({
-            name: page.title,
-            href: `/admin/pages/${page.id}`
-          }))
-        ]
-      };
-    }
-    return section;
-  });
+  const finalMenuItems = allBaseMenus.filter((section: any) => permissions.includes("*") || section.permission === "any" || permissions.includes(section.permission));
 
   return (
     <>

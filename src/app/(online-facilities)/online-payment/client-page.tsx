@@ -22,17 +22,17 @@ export default function OnlinePaymentClientPage({ pageData }: { pageData: any })
     },
     {
         "name": "Online Payment",
-        "href": "/online-payment",
+        "href": "https://www.dmhospital.org/pay/index.php",
         "active": true
     },
     {
         "name": "Patient Portal",
-        "href": "/patient-portal",
+        "href": "https://phr.dmhospital.org/PatientPortal/login",
         "active": false
     },
     {
         "name": "Patient Registration Form",
-        "href": "/patient-registration",
+        "href": "https://mapp.dmhospital.org/amrita_login/patient_registration/index.php",
         "active": false
     }
 ];
@@ -559,3 +559,5 @@ export default function OnlinePaymentClientPage({ pageData }: { pageData: any })
     </div>
   );
 }
+
+

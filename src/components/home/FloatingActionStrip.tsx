@@ -10,7 +10,7 @@ interface FloatingActionStripProps {
 
 export default function FloatingActionStrip({ setIsSearchOpen }: FloatingActionStripProps) {
   return (
-    <section className="w-full relative z-40 -mt-16 px-4 sm:px-6">
+    <section className="w-full relative z-40 mt-4 md:-mt-16 px-4 sm:px-6">
       <div className="max-w-7xl mx-auto bg-white/95 backdrop-blur-2xl rounded-[2rem] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.1)] border border-white p-3 sm:p-5 xl:px-10 flex flex-col xl:flex-row items-center justify-between gap-6 xl:gap-8">
         
         {/* Left Icons */}

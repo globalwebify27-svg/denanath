@@ -30,7 +30,7 @@ export default function PageForm({ pageId, initialData }: PageFormProps) {
     gallery: initialData?.gallery || "[]",
   });
 
-  const menus = ["Top Header", "Main Header", "Footer"];
+  const menus = ["Top Header", "Header", "Footer", "Footer Column 2"];
 
 
   useEffect(() => {

@@ -133,7 +133,7 @@ export default function TrainingAndEventsClientPage({ pageData }: { pageData: an
               )}
               
               {pageData.content ? (
-                <div className="text-slate-600 text-[18px] leading-[31px] font-normal [&_p]:mb-4 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:mb-4 [&_li]:mb-2 [&_*]:!text-[18px] [&_*]:!leading-[31px] [&_*]:!font-normal" dangerouslySetInnerHTML={{ __html: pageData.content }} />
+                <div className="text-slate-600 text-[18px] leading-[31px] font-normal [&_p]:mb-1 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:mb-2 [&_li]:mb-1 [&_.bg-teal-50]:!text-[14px] [&_.bg-teal-50]:!px-4 [&_.bg-teal-50]:!py-2" dangerouslySetInnerHTML={{ __html: pageData.content }} />
               ) : (
                 <div className="py-16 text-center border-2 border-dashed border-slate-200 rounded-2xl bg-slate-50">
                   <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-teal-100 mb-4">

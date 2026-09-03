@@ -491,38 +491,58 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
   const getFirstDayOfMonth = (date: Date) => new Date(date.getFullYear(), date.getMonth(), 1).getDay();
   
   const renderCalendar = () => {
-    const daysInMonth = getDaysInMonth(currentMonth);
-    let firstDay = getFirstDayOfMonth(currentMonth);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // start of today
+
+    let firstDay = today.getDay();
     firstDay = firstDay === 0 ? 6 : firstDay - 1; // Adjust for Monday start
     
     const days = [];
-    const monthStr = (currentMonth.getMonth() + 1).toString().padStart(2, '0');
-    const yearStr = currentMonth.getFullYear();
-
+    
+    // Empty cells for the first row to align with the correct weekday
     for (let i = 0; i < firstDay; i++) {
       days.push(<div key={`empty-${i}`} className="p-4 border-b border-r border-slate-100 bg-slate-50/50"></div>);
     }
 
-    for (let d = 1; d <= daysInMonth; d++) {
-      const dayStr = d.toString().padStart(2, '0');
+    // Next 30 days
+    for (let d = 0; d < 30; d++) {
+      const current = new Date(today);
+      current.setDate(today.getDate() + d);
+      
+      const dayStr = current.getDate().toString().padStart(2, '0');
+      const monthStr = (current.getMonth() + 1).toString().padStart(2, '0');
+      const yearStr = current.getFullYear();
       const dateStr = `${yearStr}-${monthStr}-${dayStr}`;
+      
       const isAvailable = availableDates.includes(dateStr);
       
       days.push(
         <div 
-          key={d} 
+          key={dateStr} 
           onClick={() => handleDateClick(dateStr)}
-          className={`p-4 border-b border-r border-slate-100 flex flex-col items-center justify-center min-h-[80px] transition-colors
-            ${isAvailable ? 'cursor-pointer hover:bg-teal-50 bg-white' : 'bg-slate-50/30 text-slate-400 cursor-not-allowed'}
+          className={`p-4 border-b border-r border-slate-100 flex flex-col items-center justify-center min-h-[80px] transition-all duration-300 group
+            ${isAvailable ? 'cursor-pointer hover:bg-teal-600 bg-white hover:shadow-md' : 'bg-slate-50/30 text-slate-400 cursor-not-allowed'}
           `}
         >
-          <span className={`text-lg font-medium ${isAvailable ? 'text-[#002b5c]' : ''}`}>
+          <span className={`text-lg transition-colors ${isAvailable ? 'text-[#002b5c] font-bold group-hover:text-white' : 'font-medium'}`}>
             {dayStr}
           </span>
-          <span className="text-xs mt-1 uppercase tracking-wider">{currentMonth.toLocaleString('default', { month: 'short' })}</span>
+          <span className={`text-xs mt-1 uppercase tracking-wider transition-colors ${isAvailable ? 'font-medium text-slate-600 group-hover:text-teal-50' : ''}`}>
+            {current.toLocaleString('default', { month: 'short' })}
+          </span>
         </div>
       );
     }
+    
+    // Fill the remaining cells in the last row to complete the grid
+    const totalCells = firstDay + 30;
+    const remainder = totalCells % 7;
+    if (remainder !== 0) {
+      for (let i = 0; i < 7 - remainder; i++) {
+        days.push(<div key={`empty-end-${i}`} className="p-4 border-b border-r border-slate-100 bg-slate-50/50"></div>);
+      }
+    }
+
     return days;
   };
 
@@ -536,8 +556,6 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 md:py-4 relative z-10">
           <div className="flex items-center gap-2 text-blue-200 text-[10px] font-medium tracking-wide mb-1">
             <Link href="/" className="hover:text-white transition-colors">Home</Link>
-            <ChevronRight className="w-3.5 h-3.5" />
-            <span className="hover:text-white transition-colors cursor-pointer">Hospital</span>
             <ChevronRight className="w-3.5 h-3.5" />
             <span className="text-white">Book Appointment</span>
           </div>
@@ -1187,3 +1205,4 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
     </div>
   );
 }
+

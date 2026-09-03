@@ -22,6 +22,28 @@ export default async function AdminOpdSchedulePage() {
     if (setting) data = JSON.parse(setting.value);
   } catch(e) {}
 
+  let apiSpecialities: string[] = [];
+  try {
+    const { callDMHApi } = await import("@/lib/dmhApi");
+    const specRes = await callDMHApi('speciality');
+    
+    const list = specRes?.specialityJSON || (Array.isArray(specRes) ? specRes : []);
+    if (Array.isArray(list)) {
+      apiSpecialities = list
+        .map((s: any) => String(s.speciality_name || s.name || s.speciality || '').trim().toUpperCase())
+        .filter(Boolean);
+    }
+  } catch (error) {
+    console.error("Error fetching specialities from DMH API:", error);
+  }
+
+  if (apiSpecialities.length === 0) {
+    const departments = await prisma.department.findMany({ select: { name: true } });
+    apiSpecialities = departments.map((d: any) => d.name.toUpperCase());
+  }
+
+  apiSpecialities = Array.from(new Set(apiSpecialities)).sort((a, b) => a.localeCompare(b));
+
   async function saveData(formData: FormData) {
     "use server";
     
@@ -135,7 +157,7 @@ export default async function AdminOpdSchedulePage() {
       </form>
 
       {/* OPD Timings & Doctor Details CRUD placed exactly after Main Content & Filters */}
-      <ScheduleCrud />
+      <ScheduleCrud departments={apiSpecialities} />
 
       {/* SEO Settings */}
       <div className="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden group hover:shadow-md transition-shadow duration-300">

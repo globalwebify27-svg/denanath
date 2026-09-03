@@ -37,7 +37,7 @@ export default function AboutSection({ data = defaultAboutData }: { data?: any }
               <img 
                 src={data.image} 
                 alt="Deenanath Mangeshkar Hospital and Research Center Facility" 
-                className="w-full h-auto object-cover aspect-[4/3] hover:scale-105 transition-transform duration-700 ease-out"
+                className="w-full h-auto object-cover aspect-auto md:aspect-[4/3] hover:scale-105 transition-transform duration-700 ease-out"
               />
               
               {/* Floating Badge on Image */}

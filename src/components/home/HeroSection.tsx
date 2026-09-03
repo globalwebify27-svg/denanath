@@ -56,11 +56,16 @@ export default function HeroSection({ data = defaultHeroData }: { data?: any }) 
   return (
     <section
       ref={sectionRef}
-      className="relative w-full min-h-[70vh] md:min-h-[80vh] flex flex-col justify-center overflow-hidden bg-slate-950 border-b border-slate-200 cursor-pointer"
+      className="relative w-full md:min-h-[80vh] flex flex-col justify-center overflow-hidden bg-slate-950 border-b border-slate-200 cursor-pointer"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
       onClick={handleClick}
     >
+      {/* Invisible relative image to set exact container height precisely on mobile to avoid black bars and cropping */}
+      {slides.length > 0 && (
+        <img src={slides[0].src} className="relative w-full h-auto opacity-0 pointer-events-none md:hidden block" alt="" />
+      )}
+
       {/* Image Slider Background */}
       <div className="absolute inset-0 w-full h-full overflow-hidden z-0 bg-slate-950">
         {slides.map(({ src, alt, pos }: { src: string; alt: string; pos: string }, i: number) => (
@@ -68,7 +73,7 @@ export default function HeroSection({ data = defaultHeroData }: { data?: any }) 
             key={src}
             src={src}
             alt={alt}
-            className={`absolute inset-0 w-full h-full object-cover ${pos} md:object-center transition-opacity duration-700 ease-in-out ${
+            className={`absolute inset-0 w-full h-full object-contain md:object-cover ${pos} md:object-center transition-opacity duration-700 ease-in-out ${
               i === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"
             }`}
           />
@@ -81,21 +86,6 @@ export default function HeroSection({ data = defaultHeroData }: { data?: any }) 
       {/* Gradient */}
       <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-slate-950/10 to-transparent z-10 pointer-events-none" />
 
-      {/* Dots Indicator — hover on a dot to switch to that slide */}
-      <div data-dots className="absolute bottom-6 md:bottom-10 left-1/2 -translate-x-1/2 z-20 flex gap-2">
-        {slides.map((_: any, i: number) => (
-          <button
-            key={i}
-            onMouseEnter={() => setCurrentSlide(i)}
-            onClick={(e) => { e.stopPropagation(); setCurrentSlide(i); }}
-            className={`w-2.5 h-2.5 md:w-3 md:h-3 rounded-full transition-all cursor-pointer ${
-              i === currentSlide ? "bg-white scale-125" : "bg-white/40 hover:bg-white/80"
-            }`}
-            aria-label={`Go to slide ${i + 1}`}
-          />
-        ))}
-      </div>
     </section>
   );
 }
-

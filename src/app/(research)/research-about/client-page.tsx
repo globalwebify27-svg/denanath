@@ -133,7 +133,7 @@ export default function AboutUsClientPage({ pageData }: { pageData: any }) {
               )}
               
               {pageData.content ? (
-                <div dangerouslySetInnerHTML={{ __html: pageData.content }} />
+                <div className="[&_.space-y-6]:!space-y-3" dangerouslySetInnerHTML={{ __html: pageData.content }} />
               ) : (
                 <div className="py-16 text-center border-2 border-dashed border-slate-200 rounded-2xl bg-slate-50">
                   <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-teal-100 mb-4">

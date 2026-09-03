@@ -91,9 +91,7 @@ export default function DynamicFormEditor({
 
     if (isString || isNumber) {
       const isImageField = isString && (
-        ['src', 'icon', 'photo', 'avatar'].includes(String(key).toLowerCase()) ||
-        String(key).toLowerCase().includes('image') ||
-        String(key).toLowerCase().includes('logo') ||
+        ['src', 'image', 'icon', 'photo', 'avatar', 'logo', 'yearsimage'].includes(String(key).toLowerCase()) ||
         (path.length >= 2 && (String(path[path.length - 2]).toLowerCase().includes('image') || String(path[path.length - 2]).toLowerCase().includes('logo')))
       );
       

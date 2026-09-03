@@ -19,10 +19,8 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default async function OnlinePaymentPage() {
-  const setting = await prisma.siteSetting.findUnique({ where: { key: 'page_online-facilities_online_payment' } });
-  let pageData: any = { title: "Online Payment", content: "", image: "" };
-  try { if (setting) pageData = JSON.parse(setting.value); } catch (e) {}
+import { redirect } from "next/navigation";
 
-  return <ClientPage pageData={pageData} />;
+export default async function OnlinePaymentPage() {
+  redirect("https://www.dmhospital.org/pay/index.php");
 }

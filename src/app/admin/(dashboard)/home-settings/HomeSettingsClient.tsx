@@ -81,7 +81,10 @@ export default function HomeSettingsClient({
       const res = await fetch("/api/settings", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ settings: settingsToSave }),
+        body: JSON.stringify({ 
+          settings: settingsToSave,
+          pathsToRevalidate: ['/', '/admin/home-settings']
+        }),
       });
       if (!res.ok) throw new Error();
     } catch (e) {

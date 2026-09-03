@@ -13,17 +13,17 @@ export default function EMailLoginClientPage({ pageData }: { pageData: any }) {
     },
     {
         "name": "Online Payment",
-        "href": "/online-payment",
+        "href": "https://www.dmhospital.org/pay/index.php",
         "active": false
     },
     {
         "name": "Patient Portal",
-        "href": "/patient-portal",
+        "href": "https://phr.dmhospital.org/PatientPortal/login",
         "active": false
     },
     {
         "name": "Patient Registration",
-        "href": "/patient-registration",
+        "href": "https://mapp.dmhospital.org/amrita_login/patient_registration/index.php",
         "active": false
     }
 ];
@@ -133,3 +133,5 @@ export default function EMailLoginClientPage({ pageData }: { pageData: any }) {
     </div>
   );
 }
+
+

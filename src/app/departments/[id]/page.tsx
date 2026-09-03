@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from "react";
 import Link from "next/link";
 import { ChevronRight, ArrowLeft, Stethoscope, HeartPulse } from "lucide-react";

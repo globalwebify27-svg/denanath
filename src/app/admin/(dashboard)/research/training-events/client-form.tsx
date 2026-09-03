@@ -49,7 +49,7 @@ export default function TrainingEventsClientForm({ initialData }: { initialData:
         <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-3">
           <h3 class="text-[16px] md:text-[18px] font-bold text-[#002b5c] group-hover:text-[#007a87] transition-colors duration-300 flex-1 leading-snug">${event.topic}</h3>
           <div class="shrink-0">
-            <span class="inline-block px-3 py-1.5 rounded-lg bg-teal-50 text-[#007a87] text-xs font-bold whitespace-nowrap">
+            <span class="inline-block px-4 py-2 rounded-lg bg-teal-50 text-[#007a87] text-[14px] font-bold whitespace-nowrap">
               ${event.date}
             </span>
           </div>

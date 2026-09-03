@@ -406,6 +406,20 @@ export default function ClinicalHub({ data = defaultClinicalHubData }: { data?: 
                       ))}
                     </ul>
                   </div>
+                  
+                  {/* Action Button */}
+                  {currentHub.title !== "DMH Diagnostics" && currentHub.title !== "Unique Clinics" && currentHub.ctaText && currentHub.ctaLink && (
+                    <div className="pt-6 mt-auto">
+                      <Link 
+                        href={currentHub.ctaLink}
+                        className="inline-flex w-full sm:w-auto items-center justify-center px-6 py-3 text-sm font-semibold text-white rounded-lg transition-all duration-300 transform-gpu hover:-translate-y-0.5 hover:shadow-lg"
+                        style={currentHub.themeColor ? { backgroundColor: currentHub.themeColor, boxShadow: `0 10px 15px -3px ${currentHub.themeColor}30` } : {}}
+                      >
+                        {currentHub.ctaText}
+                        <ArrowRight className="w-4 h-4 ml-2 flex-shrink-0" />
+                      </Link>
+                    </div>
+                  )}
                 </div>
 
               </div>

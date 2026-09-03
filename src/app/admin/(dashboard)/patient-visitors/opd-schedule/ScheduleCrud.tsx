@@ -2,8 +2,9 @@
 
 import React, { useState, useEffect } from "react";
 import { Clock, Plus, Trash2, Edit2, Save, X, Search, Check, AlertCircle } from "lucide-react";
+import CustomDropdown from "@/components/CustomDropdown";
 
-export default function ScheduleCrud() {
+export default function ScheduleCrud({ departments = [] }: { departments?: string[] }) {
   const [doctors, setDoctors] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
@@ -240,13 +241,16 @@ export default function ScheduleCrud() {
                             </div>
                             <div>
                               <label className="block text-[10px] font-extrabold text-slate-500 uppercase mb-1">Specialty / Department</label>
-                              <input
-                                type="text"
-                                value={editSpecialty}
-                                onChange={(e) => setEditSpecialty(e.target.value)}
-                                placeholder="e.g. ABDOMINAL TRANSPLANT..."
-                                className="w-full p-2 bg-white border border-slate-200 rounded-lg text-xs font-medium focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none"
-                              />
+                              <div className="relative">
+                                <CustomDropdown
+                                  name="editSpecialty"
+                                  placeholder="Select Specialty"
+                                  options={departments}
+                                  value={editSpecialty}
+                                  onChange={(val: string) => setEditSpecialty(val)}
+                                  className="w-full !p-2 bg-white border border-slate-200 rounded-lg text-xs font-medium focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none"
+                                />
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -269,13 +273,16 @@ export default function ScheduleCrud() {
 
                         {editTimings.map((timing, idx) => (
                           <div key={idx} className="flex flex-col sm:flex-row gap-2 bg-white p-3 rounded-xl border border-slate-200 shadow-2xs">
-                            <input
-                              type="text"
-                              placeholder="Branch / Specialty label (Optional)"
-                              value={timing.branch || ""}
-                              onChange={(e) => handleTimingChange(idx, "branch", e.target.value)}
-                              className="w-full sm:flex-1 p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium"
-                            />
+                            <div className="w-full sm:flex-1 relative">
+                              <CustomDropdown
+                                name={`timing-branch-${idx}`}
+                                placeholder="Select Specialty (Optional)"
+                                options={departments}
+                                value={timing.branch || ""}
+                                onChange={(val: string) => handleTimingChange(idx, "branch", val)}
+                                className="w-full !p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium"
+                              />
+                            </div>
                             <input
                               type="text"
                               placeholder="Days (e.g. Mon, Wed, Fri or Mon to Sat)"

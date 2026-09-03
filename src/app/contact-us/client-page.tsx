@@ -35,8 +35,6 @@ export default function ContactUsClientPage({ pageData }: { pageData: any }) {
           <div className="flex items-center gap-2 text-blue-200 text-[10px] font-medium tracking-wide mb-1">
             <Link href="/" className="hover:text-white transition-colors">Home</Link>
             <ChevronRight className="w-3.5 h-3.5" />
-            <span className="hover:text-white transition-colors cursor-pointer">Hospital</span>
-            <ChevronRight className="w-3.5 h-3.5" />
             <span className="text-white">Contact Us</span>
           </div>
           <h1 className="text-[40px] leading-tight font-extrabold text-white tracking-tight flex items-center gap-4">
@@ -79,8 +77,8 @@ export default function ContactUsClientPage({ pageData }: { pageData: any }) {
                           <ShieldAlert className="w-8 h-8 text-[#008f68]" />
                         </div>
                         <h3 className="text-2xl font-extrabold text-[#006e51] mb-3">Message Sent Successfully!</h3>
-                        <p className="text-[#008f68] font-bold mb-8 max-w-sm">
-                          Thank you for reaching out. Our team will get back to you shortly.
+                        <p className="text-[#008f68] font-bold mb-8 max-w-lg">
+                          Thank you for using this facility. We have received your request. You will receive call or sms or email within one working day once your request is confirmed.
                         </p>
                         <button 
                           type="button"
@@ -325,3 +323,4 @@ export default function ContactUsClientPage({ pageData }: { pageData: any }) {
     </div>
   );
 }
+

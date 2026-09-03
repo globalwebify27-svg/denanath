@@ -19,10 +19,8 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default async function PatientPortalPage() {
-  const setting = await prisma.siteSetting.findUnique({ where: { key: 'page_online-facilities_patient_portal' } });
-  let pageData: any = { title: "Patient Portal", content: "", image: "" };
-  try { if (setting) pageData = JSON.parse(setting.value); } catch (e) {}
+import { redirect } from "next/navigation";
 
-  return <ClientPage pageData={pageData} />;
+export default async function PatientPortalPage() {
+  redirect("https://phr.dmhospital.org/PatientPortal/login");
 }
