@@ -29,24 +29,14 @@ export async function POST(req: NextRequest) {
 
       if (value instanceof File) {
         if (value.size > 0 && value.name) {
-          // It's an actual file
+          // Convert to base64 instead of saving to read-only filesystem (Vercel)
           const bytes = await value.arrayBuffer();
           const buffer = Buffer.from(bytes);
+          const mimeType = value.type || 'application/octet-stream';
+          const base64DataUri = `data:${mimeType};base64,${buffer.toString('base64')}`;
           
-          // Generate unique filename
-          const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
-          const ext = value.name.split(".").pop() || "bin";
-          const filename = `${key}-${uniqueSuffix}.${ext}`;
-          
-          // Save file
-          const filepath = join(uploadDir, filename);
-          await writeFile(filepath, buffer);
-          
-          // Store relative path for frontend access
-          filesArray.push(`/uploads/submissions/${filename}`);
-          
-          // Also put a reference in the data object
-          data[key] = `/uploads/submissions/${filename}`;
+          filesArray.push(base64DataUri);
+          data[key] = base64DataUri;
         }
       } else {
         // It's a regular text field
@@ -62,6 +52,69 @@ export async function POST(req: NextRequest) {
         files: JSON.stringify(filesArray),
       },
     });
+
+    // Send Email Notification
+    try {
+      const nodemailer = require("nodemailer");
+      const mailSetting = await prisma.siteSetting.findUnique({ where: { key: "mail_config" } });
+      if (mailSetting && mailSetting.value) {
+        const config = JSON.parse(mailSetting.value);
+        if (config.smtpHost && config.smtpPort && config.smtpUser && config.smtpPass && config.fromEmail) {
+          const secure = config.encryption === 'ssl';
+          const transporter = nodemailer.createTransport({
+            host: config.smtpHost,
+            port: parseInt(config.smtpPort),
+            secure: secure,
+            auth: {
+              user: config.smtpUser,
+              pass: config.smtpPass,
+            },
+            tls: config.encryption === 'tls' ? {
+              ciphers: 'SSLv3',
+              rejectUnauthorized: false
+            } : undefined
+          });
+
+          let htmlContent = `
+          <!DOCTYPE html>
+          <html>
+          <body style="font-family: sans-serif; background: #f4f7f6; padding: 20px;">
+            <div style="background: white; padding: 20px; border-radius: 8px;">
+              <h2 style="color: #002b5c;">New ${formType}</h2>
+              <table width="100%" cellpadding="10" border="1" style="border-collapse: collapse; border-color: #eee;">
+          `;
+          const attachments: any[] = [];
+          for (const k in data) {
+             const val = data[k];
+             const formattedKey = k.replace(/[-_]/g, ' ').replace(/^./, str => str.toUpperCase());
+             if (typeof val === 'string' && val.startsWith('data:')) {
+                htmlContent += `<tr><td width="30%"><b>${formattedKey}</b></td><td>File attached to this email</td></tr>`;
+                const mime = val.split(';')[0].split(':')[1];
+                const base64 = val.split(',')[1];
+                let ext = 'bin';
+                if (mime.includes('pdf')) ext = 'pdf';
+                else if (mime.includes('jpeg') || mime.includes('jpg')) ext = 'jpg';
+                else if (mime.includes('png')) ext = 'png';
+                attachments.push({ filename: `${k}.${ext}`, content: Buffer.from(base64, 'base64'), contentType: mime });
+             } else {
+                htmlContent += `<tr><td width="30%"><b>${formattedKey}</b></td><td>${val}</td></tr>`;
+             }
+          }
+          htmlContent += `</table></div></body></html>`;
+
+          await transporter.sendMail({
+            from: `"${config.fromName || 'Website Form'}" <${config.fromEmail}>`,
+            to: config.fromEmail,
+            replyTo: data.email || undefined,
+            subject: `New Submission: ${formType}`,
+            html: htmlContent,
+            attachments
+          });
+        }
+      }
+    } catch (e) {
+      console.error("Email error:", e);
+    }
 
     return NextResponse.json({ success: true, id: submission.id });
     

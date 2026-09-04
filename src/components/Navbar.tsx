@@ -176,7 +176,6 @@ export default function Navbar({ topHeaderSettings, headerSettings }: { topHeade
       if (injectedMap.has(key)) {
         const replacement = injectedMap.get(key);
         replacement.dropdown = link.dropdown; // Preserve sub-dropdowns from base
-        replacement.href = link.href; // Preserve the original built-in link
         injectedMap.delete(key);
         return replacement;
       }
@@ -205,7 +204,6 @@ export default function Navbar({ topHeaderSettings, headerSettings }: { topHeade
           if (injectedMap.has(key)) {
             const rep = injectedMap.get(key);
             injectedMap.delete(key);
-            rep.href = subLink.href; // Preserve the original built-in link
             return rep;
           }
           return subLink;
@@ -266,13 +264,12 @@ export default function Navbar({ topHeaderSettings, headerSettings }: { topHeade
                   });
                   topHeaderMenus = topHeaderMenus.map((link: any) => {
                     const key = link.name.toLowerCase();
-                    if (injectedMap.has(key)) {
-                      const rep = injectedMap.get(key);
-                      injectedMap.delete(key);
-                      rep.href = link.href; // Preserve the original built-in link
-                      if (link.textColor) rep.textColor = link.textColor; // Preserve original color
-                      return rep;
-                    }
+                      if (injectedMap.has(key)) {
+                        const rep = injectedMap.get(key);
+                        injectedMap.delete(key);
+                        if (link.textColor) rep.textColor = link.textColor; // Preserve original color
+                        return rep;
+                      }
                     return link;
                   });
                   topHeaderMenus = [...topHeaderMenus, ...Array.from(injectedMap.values())];

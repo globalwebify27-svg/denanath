@@ -284,7 +284,7 @@ export default function DynamicFormEditor({
       const clearValues = (obj: any) => {
         if (typeof obj === 'string') return '';
         if (typeof obj === 'number') return 0;
-        if (typeof obj === 'boolean') return false;
+        if (typeof obj === 'boolean') return obj;
         if (Array.isArray(obj)) return obj.map(clearValues);
         if (typeof obj === 'object' && obj !== null) {
           const newObj: any = {};

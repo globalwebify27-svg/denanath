@@ -40,7 +40,7 @@ export async function POST(req: Request) {
       await prisma.$transaction(upsertQueries);
 
       if (body.pathsToRevalidate && Array.isArray(body.pathsToRevalidate)) {
-        body.pathsToRevalidate.forEach((path: string) => revalidatePath(path));
+        body.pathsToRevalidate.forEach((path: string) => revalidatePath(path, 'layout'));
       }
       return NextResponse.json({ success: true });
     }
@@ -59,7 +59,7 @@ export async function POST(req: Request) {
     });
 
     if (pathsToRevalidate && Array.isArray(pathsToRevalidate)) {
-      pathsToRevalidate.forEach((path: string) => revalidatePath(path));
+      pathsToRevalidate.forEach((path: string) => revalidatePath(path, 'layout'));
     }
 
     return NextResponse.json({ success: true });

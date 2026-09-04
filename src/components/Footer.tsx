@@ -152,7 +152,7 @@ export default function Footer({ latestEvent, footerSettings }: { latestEvent?: 
                     if (injectedMap.has(key)) {
                       const rep = injectedMap.get(key);
                       injectedMap.delete(key);
-                      rep.href = item.href; // Preserve the original built-in link
+                      
                       return rep;
                     }
                     return item;
@@ -207,7 +207,7 @@ export default function Footer({ latestEvent, footerSettings }: { latestEvent?: 
                     if (injectedMap.has(key)) {
                       const rep = injectedMap.get(key);
                       injectedMap.delete(key);
-                      rep.href = item.href; // Preserve the original built-in link
+                      
                       return rep;
                     }
                     return item;

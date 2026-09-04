@@ -11,6 +11,20 @@ export default function ContactUsClientPage({ pageData }: { pageData: any }) {
   const formRef = useRef<HTMLFormElement>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  
+  const generateCaptcha = () => {
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // removed confusing chars like 0,O,1,I
+    let result = '';
+    for (let i = 0; i < 4; i++) {
+      result += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return result;
+  };
+  const [captchaValue, setCaptchaValue] = useState("");
+
+  useEffect(() => {
+    setCaptchaValue(generateCaptcha());
+  }, []);
 
   useEffect(() => {
     if (window.innerWidth < 1024 && scrollContainerRef.current) {
@@ -93,11 +107,17 @@ export default function ContactUsClientPage({ pageData }: { pageData: any }) {
                         ref={formRef}
                         className="space-y-6 [&_label]:!text-[18px] [&_input]:!text-[18px] [&_textarea]:!text-[18px] [&_.text-sm]:!text-[18px] [&_.text-xs]:!text-[18px]" 
                         action={async (formData) => { 
+                          if (formData.get('captcha')?.toString().toUpperCase() !== captchaValue) {
+                            alert("Incorrect CAPTCHA code. Please try again.");
+                            setCaptchaValue(generateCaptcha());
+                            return;
+                          }
                           setIsSubmitting(true);
                           const res = await submitFormAction("Contact Us", formData); 
                           if (res.success) {
                             setIsSuccess(true); 
                             formRef.current?.reset();
+                            setCaptchaValue(generateCaptcha());
                           } else {
                             alert("Failed to submit form.");
                           }
@@ -149,11 +169,11 @@ export default function ContactUsClientPage({ pageData }: { pageData: any }) {
                         <label className="block font-semibold text-slate-700 mb-3 !text-[16px]" style={{ fontSize: '16px' }}>Verification Code: <span className="text-red-500">*</span></label>
                         <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
                           <div className="w-32 h-12 bg-slate-100 flex items-center justify-center rounded-lg border border-slate-300 font-mono text-xl font-bold tracking-widest text-slate-600 select-none">
-                            9F2X
+                            {captchaValue || "...."}
                           </div>
                           <div className="flex flex-col gap-1">
-                            <button type="button" className="leading-[28px] font-bold text-[#007a87] hover:underline text-left whitespace-nowrap text-[16px]" style={{ fontSize: '16px' }}>Change the CAPTCHA code</button>
-                            <button type="button" className="leading-[28px] font-bold text-[#007a87] hover:underline text-left whitespace-nowrap text-[16px]" style={{ fontSize: '16px' }}>Speak the CAPTCHA code</button>
+                            <button type="button" onClick={() => setCaptchaValue(generateCaptcha())} className="leading-[28px] font-bold text-[#007a87] hover:underline text-left whitespace-nowrap text-[16px]" style={{ fontSize: '16px' }}>Change the CAPTCHA code</button>
+                            <button type="button" onClick={() => { const utterance = new SpeechSynthesisUtterance(captchaValue.split('').join(' ')); window.speechSynthesis.speak(utterance); }} className="leading-[28px] font-bold text-[#007a87] hover:underline text-left whitespace-nowrap text-[16px]" style={{ fontSize: '16px' }}>Speak the CAPTCHA code</button>
                           </div>
                         </div>
                         <input 

@@ -72,11 +72,7 @@ const MENU_ITEMS = [
     icon: <Inbox size={20} />,
     href: "/admin/submissions"
   },
-  {
-    name: "Menu Pages", permission: "manage_menu_pages",
-    icon: <FileText size={20} />,
-    href: "/admin/menu-pages"
-  },
+
   {
     name: "Dynamic Pages", permission: "manage_pages",
     icon: <FileText size={20} />,
@@ -170,6 +166,7 @@ const MENU_ITEMS = [
       { name: "Job Postings", href: "/admin/careers" },
     ]
   },
+
   {
     name: "Contact Us", permission: "manage_contact",
     icon: <Phone size={20} />,
@@ -226,7 +223,7 @@ export default function AdminSidebar({
     });
 
   // 3. Create sidebar sections for these locations in specific order
-  const locationOrder = ["Top Header", "Header"];
+  const locationOrder: string[] = [];
   const dynamicSections = locationOrder
     .filter(loc => dynamicMenuGroups.has(loc))
     .map(loc => ({

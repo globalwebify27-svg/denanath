@@ -70,8 +70,8 @@ export default function SubmissionsClientPage({
   const formatValue = (key: string, val: any) => {
     if (val === null || val === undefined) return "N/A";
     if (typeof val === "boolean") return val ? "Yes" : "No";
-    if (typeof val === "string" && val.startsWith("/uploads/")) {
-      const isImage = /\.(jpg|jpeg|png|gif|webp)$/i.test(val);
+    if (typeof val === "string" && (val.startsWith("/uploads/") || val.startsWith("data:"))) {
+      const isImage = /\.(jpg|jpeg|png|gif|webp)$/i.test(val) || val.startsWith("data:image/");
       if (isImage) {
         return (
           <a href={val} target="_blank" rel="noopener noreferrer" className="block max-w-max">
@@ -84,6 +84,7 @@ export default function SubmissionsClientPage({
           href={val} 
           target="_blank" 
           rel="noopener noreferrer" 
+          download={val.startsWith("data:") ? `${key}-attachment` : undefined}
           className="inline-flex items-center gap-1.5 text-[#007a87] hover:text-[#005c66] font-bold transition-colors hover:underline"
         >
           <FileText size={16} /> View/Download File

@@ -26,8 +26,8 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
     const data = await request.json();
     const { title, slug, navbarMenu, content, status, seoMetaTitle, seoMetaDescription, seoKeywords, gallery } = data;
 
-    if (!title || !slug || !content || !navbarMenu) {
-      return NextResponse.json({ error: 'Title, slug, navbarMenu, and content are required' }, { status: 400 });
+    if (!title || !slug || !content) {
+      return NextResponse.json({ error: 'Title, slug, and content are required' }, { status: 400 });
     }
 
     // Check if slug exists for other pages
@@ -47,7 +47,7 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
       data: {
         title,
         slug,
-        navbarMenu,
+        navbarMenu: navbarMenu || "",
         content,
         status: status ?? true,
         seoMetaTitle,

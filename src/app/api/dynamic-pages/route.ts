@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET() {
   try {
     const pages = await prisma.dynamicPage.findMany({
@@ -27,8 +29,8 @@ export async function POST(request: Request) {
     const data = await request.json();
     const { title, slug, navbarMenu, content, status, seoMetaTitle, seoMetaDescription, seoKeywords, gallery } = data;
 
-    if (!title || !slug || !content || !navbarMenu) {
-      return NextResponse.json({ error: 'Title, slug, navbarMenu, and content are required' }, { status: 400 });
+    if (!title || !slug || !content) {
+      return NextResponse.json({ error: 'Title, slug, and content are required' }, { status: 400 });
     }
 
     // Check if slug exists
@@ -44,7 +46,7 @@ export async function POST(request: Request) {
       data: {
         title,
         slug,
-        navbarMenu,
+        navbarMenu: navbarMenu || "",
         content,
         status: status ?? true,
         seoMetaTitle,

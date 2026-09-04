@@ -11,6 +11,8 @@ export default function EventsListClientPage({ events = [], pageData }: { events
   const totalPages = Math.ceil(events.length / eventsPerPage);
 
 
+  const [selectedDateObj, setSelectedDateObj] = useState<Date | null>(new Date(2026, 7, 21)); // Start with 21 Aug 2026 selected by default
+
   const monthNames = ["January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"
   ];
@@ -34,11 +36,13 @@ export default function EventsListClientPage({ events = [], pageData }: { events
     paddingDays.unshift(daysInPrevMonth - i);
   }
 
-  // Today marker (assuming hardcoded 'today' for demo as 21 Aug 2026)
-  const isToday = (day: number) => {
-    return day === 21 && currentDate.getMonth() === 7 && currentDate.getFullYear() === 2026;
+  // Selected date marker
+  const isSelected = (day: number) => {
+    return selectedDateObj !== null &&
+           day === selectedDateObj.getDate() && 
+           currentDate.getMonth() === selectedDateObj.getMonth() && 
+           currentDate.getFullYear() === selectedDateObj.getFullYear();
   };
-
 
   return (
     <div className="min-h-screen bg-[#f8fafc]">
@@ -75,7 +79,11 @@ export default function EventsListClientPage({ events = [], pageData }: { events
                     <div key={`prev-${i}`} className="p-2.5 text-slate-300">{day}</div>
                   ))}
                   {Array.from({length: daysInMonth}, (_, i) => i + 1).map(day => (
-                    <div key={day} className={`p-2.5 rounded-xl cursor-pointer transition-all duration-200 ${isToday(day) ? 'bg-[#002b5c] text-white font-bold shadow-md transform hover:scale-105' : 'text-slate-600 hover:bg-slate-100'}`}>
+                    <div 
+                      key={day} 
+                      onClick={() => setSelectedDateObj(new Date(currentDate.getFullYear(), currentDate.getMonth(), day))}
+                      className={`p-2.5 rounded-xl cursor-pointer transition-all duration-200 ${isSelected(day) ? 'bg-[#002b5c] text-white font-bold shadow-md transform hover:scale-105' : 'text-slate-600 hover:bg-slate-100'}`}
+                    >
                       {day}
                     </div>
                   ))}

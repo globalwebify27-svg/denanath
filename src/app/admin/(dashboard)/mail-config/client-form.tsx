@@ -82,7 +82,7 @@ export default function MailConfigClientForm({ initialData }: { initialData: any
           <p className="text-[15px] font-medium text-slate-500 max-w-xl leading-relaxed">
             Configure your SMTP server settings for sending emails.
           </p>
-          {success && <p className="text-emerald-600 mt-2 font-medium flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" /> Settings saved successfully</p>}
+          {success && <div className="text-emerald-600 mt-2 font-medium flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" /> Settings saved successfully</div>}
         </div>
         <div className="z-10 shrink-0 mt-4 lg:mt-0">
           <button

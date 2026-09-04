@@ -12,7 +12,6 @@ export default async function PagesListPage() {
     });
 
     initialPages = allPages
-      .filter(p => !["Top Header", "Header", "Footer", "Footer Column 2"].includes(p.navbarMenu))
       .map(p => ({
         id: p.id,
         title: p.title,

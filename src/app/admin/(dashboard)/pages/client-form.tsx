@@ -94,8 +94,8 @@ export default function PageForm({ pageId, headerMenus, initialData }: PageFormP
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!formData.title || !formData.slug || !formData.navbarMenu || !formData.content) {
-      alert("Title, Slug, Menu, and Content are required");
+    if (!formData.title || !formData.slug || !formData.content) {
+      alert("Title, Slug, and Content are required");
       return;
     }
 
@@ -222,7 +222,7 @@ export default function PageForm({ pageId, headerMenus, initialData }: PageFormP
                 </div>
 
                 <div>
-                  <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Navbar Menu *</label>
+                  <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Navbar Menu</label>
                   <div className="relative">
                     <CustomDropdown
                       name="navbarMenu"
@@ -231,7 +231,6 @@ export default function PageForm({ pageId, headerMenus, initialData }: PageFormP
                       options={menus}
                       value={formData.navbarMenu}
                       onChange={(val: string) => setFormData({ ...formData, navbarMenu: val })}
-                      required
                       className="w-full !py-4 !pr-4 bg-slate-50 border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-[15px]"
                     />
                   </div>

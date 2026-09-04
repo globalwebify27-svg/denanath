@@ -23,8 +23,7 @@ export default function DynamicPagesClient({ initialPages = [] }: { initialPages
       const response = await fetch("/api/dynamic-pages");
       const data = await response.json();
       if (Array.isArray(data)) {
-        const filtered = data.filter(p => !["Top Header", "Header", "Footer", "Footer Column 2"].includes(p.navbarMenu));
-        setPages(filtered);
+        setPages(data);
       } else {
         setPages([]);
       }
