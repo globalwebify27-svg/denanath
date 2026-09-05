@@ -4,14 +4,24 @@ import Link from 'next/link';
 import { Calendar, ChevronRight, ArrowLeft } from 'lucide-react';
 
 export default function EventsListClientPage({ events = [], pageData }: { events: any[], pageData?: any }) {
-  const [currentDate, setCurrentDate] = useState(new Date(2026, 7, 1)); // Start at August 2026
+  const [currentDate, setCurrentDate] = useState(new Date()); // Start at current date
   
   const [currentPage, setCurrentPage] = useState(1);
   const eventsPerPage = 10;
-  const totalPages = Math.ceil(events.length / eventsPerPage);
+  
+  const [selectedDateObj, setSelectedDateObj] = useState<Date | null>(null); // Start with null to show ALL events by default
 
+  const filteredEvents = selectedDateObj
+    ? events.filter(e => {
+        const d = new Date(e.date);
+        return !isNaN(d.getTime()) && 
+               d.getDate() === selectedDateObj.getDate() && 
+               d.getMonth() === selectedDateObj.getMonth() && 
+               d.getFullYear() === selectedDateObj.getFullYear();
+      })
+    : events;
 
-  const [selectedDateObj, setSelectedDateObj] = useState<Date | null>(new Date(2026, 7, 21)); // Start with 21 Aug 2026 selected by default
+  const totalPages = Math.ceil(filteredEvents.length / eventsPerPage);
 
   const monthNames = ["January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"
@@ -44,6 +54,20 @@ export default function EventsListClientPage({ events = [], pageData }: { events
            currentDate.getFullYear() === selectedDateObj.getFullYear();
   };
 
+  // Today marker
+  const isToday = (day: number) => {
+    const today = new Date();
+    return day === today.getDate() && 
+           currentDate.getMonth() === today.getMonth() && 
+           currentDate.getFullYear() === today.getFullYear();
+  };
+
+  const getDayClass = (day: number) => {
+    if (isSelected(day)) return 'bg-[#d9232d] text-white font-bold shadow-md transform hover:scale-105';
+    if (isToday(day)) return 'bg-[#002b5c] text-white font-bold shadow-md';
+    return 'text-slate-600 hover:bg-slate-100';
+  };
+
   return (
     <div className="min-h-screen bg-[#f8fafc]">
       <div className="w-full bg-[#002b5c] relative overflow-hidden py-4">
@@ -54,39 +78,56 @@ export default function EventsListClientPage({ events = [], pageData }: { events
               <ChevronRight className="w-3 h-3" />
               <span className="text-white">Events/News</span>
             </nav>
-            <h1 className="text-[40px] leading-tight font-extrabold text-white tracking-tight">Events / News</h1>
+            <h1 className="text-3xl sm:text-4xl font-extrabold text-white mb-2">Events / News</h1>
           </div>
         </div>
       </div>
 
       <div id="events-list-top" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="flex flex-col lg:flex-row gap-8">
+        <div className="flex flex-col lg:flex-row gap-8 items-start">
           
           {/* Calendar Sidebar */}
-          <div className="lg:w-1/3">
-            <div className="bg-white rounded-2xl shadow-md border border-slate-200 overflow-hidden sticky top-24">
-              <div className="bg-[#f8fafc] border-b border-slate-200 p-6 flex justify-between items-center">
-                <button onClick={handlePrevMonth} className="text-slate-400 hover:text-[#d9232d] hover:bg-slate-200 p-1.5 rounded-lg transition-colors"><ChevronRight className="w-5 h-5 rotate-180" /></button>
-                <h3 className="font-extrabold text-[#002b5c] text-lg tracking-tight">{monthNames[currentDate.getMonth()]} {currentDate.getFullYear()}</h3>
-                <button onClick={handleNextMonth} className="text-slate-400 hover:text-[#d9232d] hover:bg-slate-200 p-1.5 rounded-lg transition-colors"><ChevronRight className="w-5 h-5" /></button>
-              </div>
-              <div className="p-6">
-                <div className="grid grid-cols-7 gap-1 text-center text-sm mb-4 font-bold text-slate-400 uppercase tracking-wider">
-                  <div>S</div><div>M</div><div>T</div><div>W</div><div>T</div><div>F</div><div>S</div>
+          <div className="w-full lg:w-1/3 shrink-0">
+            <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden sticky top-6">
+              <div className="p-6 border-b border-slate-100">
+                <div className="flex justify-between items-center mb-6">
+                  <button onClick={handlePrevMonth} className="p-2 hover:bg-slate-100 rounded-lg text-slate-500 transition-colors">
+                    <ArrowLeft className="w-5 h-5" />
+                  </button>
+                  <h2 className="text-lg font-bold text-[#002b5c]">
+                    {monthNames[currentDate.getMonth()]} {currentDate.getFullYear()}
+                  </h2>
+                  <button onClick={handleNextMonth} className="p-2 hover:bg-slate-100 rounded-lg text-slate-500 transition-colors">
+                    <ChevronRight className="w-5 h-5" />
+                  </button>
                 </div>
-                <div className="grid grid-cols-7 gap-1 text-center text-sm font-medium">
-                  {paddingDays.map((day, i) => (
-                    <div key={`prev-${i}`} className="p-2.5 text-slate-300">{day}</div>
-                  ))}
-                  {Array.from({length: daysInMonth}, (_, i) => i + 1).map(day => (
-                    <div 
-                      key={day} 
-                      onClick={() => setSelectedDateObj(new Date(currentDate.getFullYear(), currentDate.getMonth(), day))}
-                      className={`p-2.5 rounded-xl cursor-pointer transition-all duration-200 ${isSelected(day) ? 'bg-[#002b5c] text-white font-bold shadow-md transform hover:scale-105' : 'text-slate-600 hover:bg-slate-100'}`}
-                    >
-                      {day}
-                    </div>
-                  ))}
+
+                <div className="mb-2">
+                  <div className="grid grid-cols-7 gap-1 text-center mb-2">
+                    {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((day, idx) => (
+                      <div key={idx} className="text-xs font-semibold text-slate-400 py-2">{day}</div>
+                    ))}
+                  </div>
+                  <div className="grid grid-cols-7 gap-1 text-center text-sm">
+                    {paddingDays.map(day => (
+                      <div key={`prev-${day}`} className="p-2 text-slate-300">{day}</div>
+                    ))}
+                    {Array.from({length: daysInMonth}, (_, i) => i + 1).map(day => (
+                      <div 
+                        key={day} 
+                        onClick={() => {
+                          if (isSelected(day)) {
+                            setSelectedDateObj(null); // Deselect to show all
+                          } else {
+                            setSelectedDateObj(new Date(currentDate.getFullYear(), currentDate.getMonth(), day));
+                          }
+                        }}
+                        className={`p-2.5 rounded-xl cursor-pointer transition-all duration-200 ${getDayClass(day)}`}
+                      >
+                        {day}
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
@@ -95,9 +136,14 @@ export default function EventsListClientPage({ events = [], pageData }: { events
           {/* Events List */}
           <div className="lg:w-2/3 space-y-6 flex flex-col">
             <div className="space-y-6 flex-1">
-            {events.slice((currentPage - 1) * eventsPerPage, currentPage * eventsPerPage).map((event, idx) => {
-              const eSlug = event.slug || event.id || event.title?.replace(/[^a-zA-Z0-9-]/g, '');
-              const eventDate = new Date(event.date);
+            {filteredEvents.length === 0 ? (
+                <div className="bg-white rounded-2xl p-8 text-center text-slate-500 border border-slate-200">
+                  No events found for the selected date.
+                </div>
+              ) : (
+                filteredEvents.slice((currentPage - 1) * eventsPerPage, currentPage * eventsPerPage).map((event, idx) => {
+                  const eSlug = event.slug || event.id || event.title?.replace(/[^a-zA-Z0-9-]/g, '');
+                  const eventDate = new Date(event.date);
               const formattedDate = isNaN(eventDate.getTime()) ? event.date : eventDate.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
               
               return (
@@ -125,8 +171,8 @@ export default function EventsListClientPage({ events = [], pageData }: { events
                     </div>
                   </div>
                 </div>
-              )
-            })}
+                )
+              }))}
             </div>
             
             {/* Real Pagination */}

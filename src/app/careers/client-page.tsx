@@ -282,14 +282,22 @@ export default function CareersClientPage({ pageData }: { pageData: any }) {
                     <div>
                       <label className="block text-sm font-semibold text-slate-700 mb-1.5">Date of Birth <span className="text-red-500">*</span></label>
                       <div className="relative">
-                        <input 
-                          name="dob" 
-                          type="date" 
+                        <input
+                          ref={(el) => { if (el) (el as any)._dobRef = true; el && ((window as any).__dobInput = el); }}
+                          name="dob"
+                          type="date"
+                          id="dobInputStandalone"
                           max={new Date().toISOString().split('T')[0]}
-                          className="w-full bg-white border border-slate-200 rounded-lg py-1.5 pl-11 pr-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-teal-500 shadow-sm transition-all" 
-                          required 
+                          className="w-full bg-white border border-slate-200 rounded-lg py-1.5 pl-11 pr-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-teal-500 shadow-sm transition-all cursor-pointer"
+                          required
                         />
-                        <Calendar className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
+                        <Calendar
+                          className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 cursor-pointer hover:text-teal-500 transition-colors"
+                          onClick={() => {
+                            const input = document.getElementById('dobInputStandalone') as HTMLInputElement;
+                            if (input) { input.focus(); try { input.showPicker(); } catch (_) {} }
+                          }}
+                        />
                       </div>
                     </div>
                     <div>

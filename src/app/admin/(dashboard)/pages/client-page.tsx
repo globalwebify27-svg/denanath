@@ -142,8 +142,8 @@ export default function DynamicPagesClient({ initialPages = [] }: { initialPages
                         {page.status ? "Active" : "Inactive"}
                       </span>
                     </td>
-                    <td className="px-6 py-4 text-sm text-slate-500">
-                      {page.createdAt ? new Date(page.createdAt).toLocaleDateString() : "-"}
+                    <td className="px-6 py-4 text-sm text-slate-500" suppressHydrationWarning>
+                      {page.createdAt ? new Date(page.createdAt).toLocaleDateString('en-GB') : "-"}
                     </td>
                     <td className="px-6 py-4 text-right">
                       <div className="flex justify-end gap-2">

@@ -135,17 +135,18 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ action, ...payload })
       });
+      
       if (!res.ok) {
         const errData = await res.json().catch(() => ({}));
         console.error(`[Frontend] API Error for ${action}:`, errData);
-        throw new Error("API Error");
+        return { error: true, message: "API Error", ...errData };
       }
       const data = await res.json();
       console.log(`[Frontend] Response for ${action}:`, data);
       return data;
-    } catch (err) {
-      console.error(err);
-      return null;
+    } catch (error: any) {
+      console.error(`[Frontend] Catch error in fetchApi for ${action}:`, error);
+      return { error: true, message: error.message };
     }
   };
 
@@ -178,27 +179,37 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
           setStep("calendar");
           setIsLoadingCalendar(true);
 
-          // Fetch doctor details to display doctor name in header
-          if (urlSpecId) {
-            const docData = await fetchApi("speciality_doctor", { speciality_id: urlSpecId });
-            const docs = docData?.doctorJSON || (Array.isArray(docData) ? docData : []);
-            if (Array.isArray(docs)) setDoctors(docs);
-          }
+          try {
+            // Fetch doctor details to display doctor name in header
+            if (urlSpecId) {
+              try {
+                const docData = await fetchApi("speciality_doctor", { speciality_id: urlSpecId });
+                const docs = docData?.doctorJSON || (Array.isArray(docData) ? docData : []);
+                if (Array.isArray(docs)) setDoctors(docs);
+              } catch (e) {
+                console.warn("Could not fetch speciality_doctor:", e);
+              }
+            }
 
-          const datesRes = await fetchApi("check_date", {
-            service_point_id: urlServicePointId || "0",
-            speciality_id: urlSpecId || ""
-          });
+            const datesRes = await fetchApi("check_date", {
+              service_point_id: urlServicePointId || "0",
+              speciality_id: urlSpecId || ""
+            });
 
-          let dateArr: any[] = [];
-          if (datesRes && !datesRes.error) {
-            if (Array.isArray(datesRes)) dateArr = datesRes;
-            else dateArr = Object.values(datesRes).find(v => Array.isArray(v)) as any[] || [];
-          }
+            let dateArr: any[] = [];
+            if (datesRes && !datesRes.error) {
+              if (Array.isArray(datesRes)) dateArr = datesRes;
+              else dateArr = Object.values(datesRes).find(v => Array.isArray(v)) as any[] || [];
+            }
 
-          if (dateArr.length > 0) {
-            setAvailableDates(dateArr.map((d: any) => typeof d === 'string' ? d : (d.date || d.appointment_date || d.availableDate || Object.values(d)[0])));
-          } else {
+
+            if (dateArr.length > 0) {
+              setAvailableDates(dateArr.map((d: any) => typeof d === 'string' ? d : (d.date || d.appointment_date || d.availableDate || Object.values(d)[0])));
+            } else {
+              setAvailableDates([]);
+            }
+          } catch (e) {
+            console.error("Error loading direct calendar:", e);
             setAvailableDates([]);
           }
 
