@@ -117,6 +117,7 @@ export default function HomeSettingsClient({
     { id: "home_courses_pricing", label: "Courses & Pricing Configuration" },
     { id: "home_quick_links", label: "Quick Links Configuration" },
     { id: "home_reviews", label: "Reviews Configuration" },
+    { id: "home_partners", label: "Partners & Accreditation Configuration" },
     { id: "layout_footer", label: "Footer Configuration" },
   ];
 

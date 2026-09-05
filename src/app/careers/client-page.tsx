@@ -282,8 +282,14 @@ export default function CareersClientPage({ pageData }: { pageData: any }) {
                     <div>
                       <label className="block text-sm font-semibold text-slate-700 mb-1.5">Date of Birth <span className="text-red-500">*</span></label>
                       <div className="relative">
-                        <input name="dob" type="text" placeholder="dd-mm-yyyy" onFocus={(e) => e.target.type = 'date'} onBlur={(e) => { if (!e.target.value) e.target.type = 'text'; }} className="peer w-full bg-slate-50 border border-slate-200 rounded-lg py-1.5 pl-11 pr-4 focus:!pl-4 [&:not(:placeholder-shown)]:!pl-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all" required />
-                        <Calendar className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none transition-opacity duration-200 peer-focus:opacity-0 peer-[&:not(:placeholder-shown)]:opacity-0" />
+                        <input 
+                          name="dob" 
+                          type="date" 
+                          max={new Date().toISOString().split('T')[0]}
+                          className="w-full bg-white border border-slate-200 rounded-lg py-1.5 pl-11 pr-4 text-slate-700 font-medium focus:outline-none focus:ring-2 focus:ring-teal-500 shadow-sm transition-all" 
+                          required 
+                        />
+                        <Calendar className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none" />
                       </div>
                     </div>
                     <div>

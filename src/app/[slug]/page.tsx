@@ -34,7 +34,13 @@ export default async function DynamicPageRoute({ params }: { params: Promise<{ s
     notFound();
   }
 
+  // isMenuPage: Top-level nav items, footer links, top header links — NO sidebar, centered content
+  // isStandalone: Pages with no navbarMenu assigned — render full-width with no sidebar (like Careers)
+  // Sub-menu pages (About Us, Patient & Visitors, etc.) get the sidebar
   const isMenuPage = ["Top Header", "Header", "Footer", "Footer Column 2"].includes(page.navbarMenu);
+  const isStandalone = !page.navbarMenu || page.navbarMenu.trim() === "";
+  const showSidebar = !isMenuPage && !isStandalone;
+  const centerContent = isMenuPage || isStandalone;
 
   return (
     <div className="min-h-screen bg-[#f8fafc] font-sans selection:bg-teal-500/30">
@@ -55,8 +61,8 @@ export default async function DynamicPageRoute({ params }: { params: Promise<{ s
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-3 pb-8 md:pt-5 md:pb-12">
         <div className="flex flex-col lg:flex-row gap-8 xl:gap-12 items-start">
-          {/* Dynamic Sidebar - Only show for sub-menu pages */}
-          {!isMenuPage && (
+          {/* Dynamic Sidebar - Only for pages that belong to a nav dropdown category */}
+          {showSidebar && (
             <DynamicSidebar categoryName={page.navbarMenu} activeHref={`/${page.slug}`} />
           )}
 
@@ -64,7 +70,7 @@ export default async function DynamicPageRoute({ params }: { params: Promise<{ s
           <div className="w-full flex-1 min-w-0">
             <div className="bg-white rounded-3xl shadow-[0_8px_40px_rgb(0,0,0,0.03)] border border-slate-100/60 px-6 pt-2 pb-6 sm:px-10 sm:pt-3 sm:pb-10 md:px-14 md:pt-4 md:pb-14">
               
-              <div className={`mb-8 ${isMenuPage ? 'text-center' : ''}`}>
+              <div className={`mb-8 ${centerContent ? 'text-center' : ''}`}>
                 <div style={{ fontSize: '10px' }} className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-teal-50 border border-teal-100 text-[#007a87] font-bold tracking-wider uppercase mb-4">
                   <FileText className="w-4 h-4" />
                   <span>{page.title}</span>
@@ -72,7 +78,7 @@ export default async function DynamicPageRoute({ params }: { params: Promise<{ s
                 <h2 className="text-3xl md:text-4xl font-extrabold text-[#002b5c] tracking-tight">
                   {page.title}
                 </h2>
-                <div className={`w-16 h-1 bg-[#007a87] rounded-full mt-4 ${isMenuPage ? 'mx-auto' : ''}`}></div>
+                <div className={`w-16 h-1 bg-[#007a87] rounded-full mt-4 ${centerContent ? 'mx-auto' : ''}`}></div>
               </div>
 
               <div 

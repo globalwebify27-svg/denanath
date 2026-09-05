@@ -26,13 +26,13 @@ export default function QuickAccessWidget() {
     {
       label: "WhatsApp Us",
       icon: MessageCircle,
-      href: "https://wa.me/919999999999",
+      href: "https://wa.me/912040151000",
       color: "bg-green-600 hover:bg-green-700",
     },
     {
       label: "Call Us",
       icon: PhoneCall,
-      href: "tel:+911234567890",
+      href: "tel:+912040151000",
       color: "bg-red-600 hover:bg-red-700",
     },
     {

@@ -94,12 +94,12 @@ export default function MenuPagesClient({ initialPages = [] }: { initialPages?: 
 
   const filteredPages = pages
     .filter((page) =>
-      page.title.toLowerCase().includes(search.toLowerCase()) || 
-      page.navbarMenu.toLowerCase().includes(search.toLowerCase())
+      (page.title || "").toLowerCase().includes(search.toLowerCase()) || 
+      (page.navbarMenu || "N/A").toLowerCase().includes(search.toLowerCase())
     )
     .sort((a, b) => {
-      const orderA = orderMap[a.navbarMenu] || 99;
-      const orderB = orderMap[b.navbarMenu] || 99;
+      const orderA = orderMap[a.navbarMenu || "N/A"] || 99;
+      const orderB = orderMap[b.navbarMenu || "N/A"] || 99;
       
       if (orderA !== orderB) {
         return orderA - orderB;
@@ -203,7 +203,7 @@ export default function MenuPagesClient({ initialPages = [] }: { initialPages?: 
                     </td>
                     <td className="px-6 py-4">
                       <span className="bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-xs font-semibold">
-                        {page.navbarMenu}
+                        {page.navbarMenu || "N/A"}
                       </span>
                     </td>
                     <td className="px-6 py-4">
