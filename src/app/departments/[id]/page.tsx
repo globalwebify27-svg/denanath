@@ -28,6 +28,8 @@ export default async function DepartmentDetailsPage({
     where: { status: true }
   });
 
+  const localDoctors = await prisma.doctor.findMany();
+
   const targetSlug = resolvedParams.id.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
 
   const department = allDepartments.find(d => {
@@ -585,8 +587,28 @@ export default async function DepartmentDetailsPage({
                  const hardcodedName = cleanName.toLowerCase().trim();
                  return apiName === hardcodedName || apiName.includes(hardcodedName) || hardcodedName.includes(apiName);
                });
-               const doctorProfileUrl = matchedApiDoc ? `/doctor-details/${matchedApiDoc.doctor_id || matchedApiDoc.id || ''}` : `/doctors`;
-               const doctorImage = matchedApiDoc?.doctorImage || '';
+               
+               // Fallback: match against local DB doctors if API fails or omits them
+               const matchedLocalDoc = localDoctors.find((localDoc) => {
+                 const localName = (localDoc.name || '').toLowerCase().replace(/^dr\.?\s*/i, '').replace(/\s*\(.*?\)\s*/g, '').trim();
+                 const hardcodedName = cleanName.toLowerCase().trim();
+                 return localName === hardcodedName || localName.includes(hardcodedName) || hardcodedName.includes(localName);
+               });
+               
+               let finalDoctorId = '';
+               let finalDoctorImage = '';
+               
+               if (matchedApiDoc) {
+                  finalDoctorId = matchedApiDoc.doctor_id || matchedApiDoc.id || '';
+                  finalDoctorImage = matchedApiDoc.doctorImage || '';
+               } else if (matchedLocalDoc) {
+                  // Always prefer dmhDoctorId so we don't break DMH API integrations on profile page
+                  finalDoctorId = matchedLocalDoc.dmhDoctorId || matchedLocalDoc.id || '';
+                  finalDoctorImage = matchedLocalDoc.image || '';
+               }
+               
+               const doctorProfileUrl = finalDoctorId ? `/doctor-details/${finalDoctorId}` : `/doctors`;
+               const doctorImage = finalDoctorImage;
 
                docCards.push(`
                 <div class="p-3.5 sm:p-5 bg-white border border-slate-200 rounded-2xl flex items-center justify-between gap-2.5 sm:gap-4 shadow-sm hover:shadow-md transition-shadow overflow-hidden">

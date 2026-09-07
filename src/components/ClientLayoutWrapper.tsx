@@ -6,6 +6,7 @@ import Navbar from "./Navbar";
 import Footer from "./Footer";
 import QuickAccessWidget from "./home/QuickAccessWidget";
 import { applyOfflineTranslation } from "@/lib/offlineTranslate";
+import Chatbot from "./Chatbot";
 
 export default function ClientLayoutWrapper({
   children,
@@ -93,6 +94,7 @@ export default function ClientLayoutWrapper({
       {header?.isActive !== false && <Navbar topHeaderSettings={topHeader?.isActive !== false ? topHeader : null} headerSettings={header} />}
       <main className="flex-grow flex flex-col">{children}</main>
       {footer?.isActive !== false && <Footer latestEvent={latestEvent} footerSettings={footer} />}
+      {pathname === "/" && <Chatbot />}
     </>
   );
 }

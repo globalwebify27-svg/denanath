@@ -116,3 +116,11 @@ body {
 .prose section .grid > div.bg-slate-50 > p.font-bold {
   font-weight: 600 !important;
 }
+
+/* ElevenLabs Chatbot Positioning Fix */
+elevenlabs-convai {
+  position: fixed !important;
+  bottom: 24px !important;
+  right: 24px !important;
+  z-index: 998 !important;
+}
