@@ -180,19 +180,29 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
           setIsLoadingCalendar(true);
 
           try {
-            // Fetch doctor details to display doctor name in header
+            // 1. Fetch doctors first — we need service_point_id from the doctor object
+            let resolvedServicePointId = urlServicePointId || "";
             if (urlSpecId) {
               try {
                 const docData = await fetchApi("speciality_doctor", { speciality_id: urlSpecId });
                 const docs = docData?.doctorJSON || (Array.isArray(docData) ? docData : []);
-                if (Array.isArray(docs)) setDoctors(docs);
+                if (Array.isArray(docs)) {
+                  setDoctors(docs);
+                  // Find the exact doctor and grab their service_point_id
+                  const matchedDoc = docs.find((d: any) => String(d.doctor_id) === String(urlDocId));
+                  if (matchedDoc?.service_point_id) {
+                    resolvedServicePointId = String(matchedDoc.service_point_id);
+                    console.log("[BookAppt] Resolved service_point_id from doctor:", resolvedServicePointId);
+                  }
+                }
               } catch (e) {
                 console.warn("Could not fetch speciality_doctor:", e);
               }
             }
 
+            // 2. Now call check_date with the correct service_point_id
             const datesRes = await fetchApi("check_date", {
-              service_point_id: urlServicePointId || "0",
+              service_point_id: resolvedServicePointId || "0",
               speciality_id: urlSpecId || ""
             });
 
