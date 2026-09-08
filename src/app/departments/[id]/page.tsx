@@ -103,15 +103,36 @@ export default async function DepartmentDetailsPage({
                 initials = words[0].substring(0, 2).toUpperCase();
               }
 
+              // Determine the best profile URL: use API doctor_id first, then fall back to local DB
+              let profileDoctorId = doc.doctor_id || doc.id || '';
+              let profileDoctorImage = doc.doctorImage || '';
+              
+              if (!profileDoctorId) {
+                // Fallback: match against local DB doctors if API doesn't return an ID
+                const nameForMatch = cleanName.toLowerCase().replace(/^dr\.?\s*/i, '').trim();
+                const matchedLocalDoc = localDoctors.find((localDoc) => {
+                  const localName = (localDoc.name || '').toLowerCase().replace(/^dr\.?\s*/i, '').replace(/\s*\(.*?\)\s*/g, '').trim();
+                  return localName === nameForMatch || localName.includes(nameForMatch) || nameForMatch.includes(localName);
+                });
+                if (matchedLocalDoc) {
+                  profileDoctorId = matchedLocalDoc.dmhDoctorId || matchedLocalDoc.id || '';
+                  if (!profileDoctorImage) {
+                    profileDoctorImage = matchedLocalDoc.image || '';
+                  }
+                }
+              }
+              
+              const doctorProfileUrl = profileDoctorId ? `/doctor-details/${profileDoctorId}` : `/doctors`;
+
               return `
                 <div class="p-3.5 sm:p-5 bg-white border border-slate-200 rounded-2xl flex items-center justify-between gap-2.5 sm:gap-4 shadow-sm hover:shadow-md transition-shadow overflow-hidden">
-                  <a href="/doctor-details/${doc.doctor_id || doc.id || ''}" class="flex items-center gap-2.5 sm:gap-4 cursor-pointer flex-1 min-w-0 pr-1">
+                  <a href="${doctorProfileUrl}" class="flex items-center gap-2.5 sm:gap-4 cursor-pointer flex-1 min-w-0 pr-1">
                     <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-teal-50 border border-teal-100 flex items-center justify-center text-[#007a87] font-extrabold text-sm sm:text-base shrink-0">
-                      ${doc.doctorImage ? `<img src="${doc.doctorImage}" alt="${cleanName}" class="w-full h-full object-cover rounded-2xl" />` : initials}
+                      ${profileDoctorImage ? `<img src="${profileDoctorImage}" alt="${cleanName}" class="w-full h-full object-cover rounded-2xl" />` : initials}
                     </div>
                     <div class="text-sm sm:text-lg font-bold text-[#002b5c] m-0 leading-snug hover:text-[#007a87] transition-colors min-w-0 break-words flex-1">${displayName}</div>
                   </a>
-                  <a href="/doctor-details/${doc.doctor_id || doc.id || ''}" class="px-2.5 py-1.5 sm:px-4 sm:py-2 bg-teal-50 hover:bg-teal-100 text-[#007a87] rounded-xl text-[11px] sm:text-xs font-bold transition-colors shrink-0 whitespace-nowrap">
+                  <a href="${doctorProfileUrl}" class="px-2.5 py-1.5 sm:px-4 sm:py-2 bg-teal-50 hover:bg-teal-100 text-[#007a87] rounded-xl text-[11px] sm:text-xs font-bold transition-colors shrink-0 whitespace-nowrap">
                     View Profile
                   </a>
                 </div>
