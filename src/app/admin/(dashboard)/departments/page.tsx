@@ -29,7 +29,8 @@ export default async function AdminDepartmentsPage({
     },
   });
 
-  const totalPages = Math.ceil(totalCount / itemsPerPage);
+  const isSearching = query.trim().length > 0;
+  const totalPages = isSearching ? 1 : Math.ceil(totalCount / itemsPerPage);
 
   const departments = await prisma.department.findMany({
     where: {
@@ -40,8 +41,10 @@ export default async function AdminDepartmentsPage({
     orderBy: {
       name: "asc",
     },
-    skip: (page - 1) * itemsPerPage,
-    take: itemsPerPage,
+    ...(isSearching ? {} : {
+      skip: (page - 1) * itemsPerPage,
+      take: itemsPerPage,
+    })
   });
 
   return (

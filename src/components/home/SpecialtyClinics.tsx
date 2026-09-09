@@ -10,6 +10,7 @@ export const defaultSpecialtyClinicsData = {
   tagline: "Specialized Medical Care",
   title: 'Our Specialty <span class="font-bold text-emerald-700">Care Clinics</span>',
   description: "Highly focused clinical programs and centers of excellence addressing specialized therapeutic and medical disciplines.",
+  button: { text: "View All Specialty Clinics", link: "/departments", isActive: true },
   staticClinics: [
     { id: "01", name: "Voice Clinic", iconString: "Mic", color: "text-teal-600 bg-teal-50", href: "/departments/voice-clinic" },
     { id: "02", name: "IVF (In Vitro Fertilisation)", iconString: "Baby", color: "text-blue-600 bg-blue-50", href: "https://www.ivfinpune.com/" }
@@ -186,20 +187,24 @@ export default function SpecialtyClinics({ data = defaultSpecialtyClinicsData }:
         </div>
 
         {/* Universal View All Button */}
-        <div className="mt-4 md:mt-10 flex justify-center border-t border-emerald-200/60 pt-4 md:pt-8">
-          <Link href="/departments" className="
-            group flex items-center gap-3 rounded-full bg-emerald-700 
-            px-7 py-3.5 sm:px-8 sm:py-4 text-sm sm:text-base font-semibold text-white 
-            shadow-[0_10px_30px_rgba(4,120,87,0.3)] hover:bg-emerald-800 
-            hover:shadow-[0_15px_40px_rgba(4,120,87,0.4)] hover:-translate-y-1 transition-all duration-300
-          ">
-            <Stethoscope className="w-5 h-5 group-hover:animate-pulse" />
-            View All Specialty Clinics
-            <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-          </Link>
-        </div>
+        {(data.button ? data.button.isActive !== false : data.showViewAllButton !== false) && (
+          <div className="mt-4 md:mt-10 flex justify-center border-t border-emerald-200/60 pt-4 md:pt-8">
+            <Link href={data.button?.link || "/departments"} className="
+              group flex items-center gap-3 rounded-full bg-emerald-700 
+              px-7 py-3.5 sm:px-8 sm:py-4 text-sm sm:text-base font-semibold text-white 
+              shadow-[0_10px_30px_rgba(4,120,87,0.3)] hover:bg-emerald-800 
+              hover:shadow-[0_15px_40px_rgba(4,120,87,0.4)] hover:-translate-y-1 transition-all duration-300
+            ">
+              <Stethoscope className="w-5 h-5 group-hover:animate-pulse" />
+              {data.button?.text || "View All Specialty Clinics"}
+              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+            </Link>
+          </div>
+        )}
 
       </div>
     </section>
   );
 }
+
+

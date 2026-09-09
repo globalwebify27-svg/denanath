@@ -221,6 +221,28 @@ export default async function AdminHomeSettingsPage() {
            isActive: existing.isActive !== undefined ? existing.isActive : true
        };
     }
+
+    if (key === 'home_specialty_clinics') {
+       const existing = settingsData[key] || {};
+       let button = existing.button || existing.buttonText || existing.viewAllButton;
+       
+       if (!button) {
+         button = {
+           text: "View All Specialty Clinics",
+           link: "/departments",
+           isActive: existing.showViewAllButton !== undefined ? existing.showViewAllButton : true
+         };
+       }
+
+       settingsData[key] = {
+           ...existing,
+           button
+       };
+       // clean up old keys
+       delete settingsData[key].showViewAllButton;
+       delete settingsData[key].viewAllButton;
+       delete settingsData[key].buttonText;
+    }
   }
 
   return (

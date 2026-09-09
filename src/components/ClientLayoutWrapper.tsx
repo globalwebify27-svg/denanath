@@ -24,6 +24,9 @@ export default function ClientLayoutWrapper({
   const pathname = usePathname();
 
   useEffect(() => {
+    // Reset scroll position to top on every route change
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+
     try {
       const match = document.cookie.match(/googtrans=\/en\/([a-z]{2,3})/);
       if (match && match[1] && match[1] !== 'en') {

@@ -42,11 +42,7 @@ export default function DepartmentsClientPage({ departments }: { departments: an
     dept.name?.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const totalPages = Math.max(1, Math.ceil(filteredDepartments.length / itemsPerPage));
-  const currentDepartments = filteredDepartments.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
+  const currentDepartments = filteredDepartments;
 
   return (
     <>
@@ -99,37 +95,6 @@ export default function DepartmentsClientPage({ departments }: { departments: an
           </div>
         )}
       </div>
-
-      {/* Pagination */}
-      {totalPages > 1 && (
-        <div className="mt-12 flex items-center justify-between border-t border-slate-200 pt-6">
-          <div className="text-sm text-slate-500">
-            Showing <span className="font-[800] text-[#002b5c]">{currentDepartments.length}</span> of{" "}
-            <span className="font-[800] text-[#002b5c]">{filteredDepartments.length}</span> Results
-          </div>
-          <div className="flex items-center gap-4">
-            <div className="text-sm font-[800] text-[#002b5c]">
-              Page: {currentPage} of {totalPages}
-            </div>
-            <div className="flex items-center gap-3">
-              <button
-                onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-                disabled={currentPage === 1}
-                className="flex items-center justify-center w-10 h-10 bg-white border border-slate-200 rounded-full text-slate-400 hover:text-[#007a87] hover:border-[#007a87] disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-              >
-                <ChevronLeft className="w-5 h-5" />
-              </button>
-              <button
-                onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
-                disabled={currentPage === totalPages}
-                className="flex items-center justify-center w-10 h-10 bg-[#007a87] rounded-full text-white hover:bg-[#005e69] disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-sm"
-              >
-                <ChevronRight className="w-5 h-5" />
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </>
   );
 }
