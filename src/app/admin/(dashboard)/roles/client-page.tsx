@@ -191,25 +191,25 @@ export default function RolesClientPage({ initialRoles }: { initialRoles: any[] 
       )}
 
       <div className="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden">
-        <table className="w-full text-left border-collapse">
+        <table className="break-words w-full text-left border-collapse">
           <thead>
             <tr className="bg-slate-50 border-b border-slate-100">
-              <th className="p-4 font-bold text-slate-700">Role Name</th>
-              <th className="p-4 font-bold text-slate-700">Users</th>
-              <th className="p-4 font-bold text-slate-700 text-right">Actions</th>
+              <th className="p-2 font-bold text-slate-700">Role Name</th>
+              <th className="p-2 font-bold text-slate-700">Users</th>
+              <th className="p-2 font-bold text-slate-700 text-right">Actions</th>
             </tr>
           </thead>
           <tbody>
             {roles.map((role) => (
               <tr key={role.id} className="border-b border-slate-100 hover:bg-slate-50/50">
-                <td className="p-4">
+                <td className="p-2">
                   <div className="font-bold text-slate-800">{role.name}</div>
                   <div className="text-xs text-slate-500 mt-1 truncate max-w-md">
                     {role.permissions.includes('*') ? 'All Access' : JSON.parse(role.permissions || '[]').join(', ')}
                   </div>
                 </td>
-                <td className="p-4 font-medium text-slate-600">{role._count?.users || 0}</td>
-                <td className="p-4 text-right">
+                <td className="p-2 font-medium text-slate-600">{role._count?.users || 0}</td>
+                <td className="p-2 text-right">
                   <button onClick={() => handleEdit(role)} className="p-2 text-[#007a87] hover:bg-[#007a87]/10 rounded-lg mr-2"><Edit2 size={18} /></button>
                   <button onClick={() => handleDelete(role.id, role._count?.users || 0)} className="p-2 text-red-600 hover:bg-red-50 rounded-lg"><Trash2 size={18} /></button>
                 </td>

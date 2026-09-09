@@ -262,7 +262,7 @@ export default function DoctorDetailsPage() {
                           />
                         </div>
                         <div>
-                          <h3 className="text-lg font-extrabold text-[#002b5c] group-hover:text-[#D9232D] transition-colors line-clamp-2">
+                          <h3 className="text-base font-extrabold text-[#002b5c] group-hover:text-[#D9232D] transition-colors line-clamp-2">
                             {doc.name}
                           </h3>
                           <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-amber-50 border border-amber-100 text-amber-700 text-[10px] font-bold tracking-wider uppercase mt-2">
@@ -483,7 +483,7 @@ export default function DoctorDetailsPage() {
                   
                   {selectedDoctor.education && selectedDoctor.education.length > 0 && (
                     <div className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-100 shadow-sm">
-                      <h3 className="text-lg font-extrabold text-[#002b5c] mb-6 flex items-center gap-3 leading-[31px]">
+                      <h3 className="text-base font-extrabold text-[#002b5c] mb-6 flex items-center gap-3 leading-[31px]">
                         <GraduationCap className="w-6 h-6 text-[#007a87]" /> Education
                       </h3>
                       <ul className="space-y-4">
@@ -499,7 +499,7 @@ export default function DoctorDetailsPage() {
 
                   {selectedDoctor.training && selectedDoctor.training.length > 0 && (
                     <div className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-100 shadow-sm">
-                      <h3 className="text-lg font-extrabold text-[#002b5c] mb-6 flex items-center gap-3 leading-[31px]">
+                      <h3 className="text-base font-extrabold text-[#002b5c] mb-6 flex items-center gap-3 leading-[31px]">
                         <BookOpen className="w-6 h-6 text-[#007a87]" /> Training
                       </h3>
                       <ul className="space-y-4">
@@ -515,7 +515,7 @@ export default function DoctorDetailsPage() {
 
                   {selectedDoctor.experience && selectedDoctor.experience.length > 0 && (
                     <div className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-100 shadow-sm">
-                      <h3 className="text-lg font-extrabold text-[#002b5c] mb-6 flex items-center gap-3 leading-[31px]">
+                      <h3 className="text-base font-extrabold text-[#002b5c] mb-6 flex items-center gap-3 leading-[31px]">
                         <Briefcase className="w-6 h-6 text-[#007a87]" /> Experience
                       </h3>
                       <ul className="space-y-4">
@@ -531,7 +531,7 @@ export default function DoctorDetailsPage() {
 
                   {selectedDoctor.publications && selectedDoctor.publications.length > 0 && (
                     <div className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-100 shadow-sm">
-                      <h3 className="text-lg font-extrabold text-[#002b5c] mb-6 flex items-center gap-3 leading-[31px]">
+                      <h3 className="text-base font-extrabold text-[#002b5c] mb-6 flex items-center gap-3 leading-[31px]">
                         <BookOpen className="w-6 h-6 text-[#007a87]" /> Publications
                       </h3>
                       <ul className="space-y-4">

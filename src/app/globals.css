@@ -13,11 +13,33 @@ html {
 @theme {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --font-sans: var(--font-plus-jakarta), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-plus-jakarta), ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+  
+  /* Adjusted font scale to reduce overall size, ensuring clean and balanced appearance */
+  --text-xs: 0.75rem;     /* 12px */
+  --text-sm: 0.875rem;    /* 14px */
+  --text-base: 1rem;      /* 16px - Global Body Standard */
+  --text-lg: 1.125rem;    /* 18px - Small headings / important text */
+  --text-xl: 1.25rem;     /* 20px - Subheadings */
+  --text-2xl: 1.4rem;     /* 22.4px (was 24px) - Section headings */
+  --text-3xl: 1.65rem;    /* 26.4px (was 30px) - Page titles */
+  --text-4xl: 2rem;       /* 32px (was 36px) - Large hero headings */
+  --text-5xl: 2.5rem;     /* 40px (was 48px) - Very large text */
+  --text-6xl: 3rem;       /* 48px (was 60px) */
+  --text-7xl: 3.5rem;     /* 56px (was 72px) */
 }
 
 body {
   background-color: var(--background);
   color: var(--foreground);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-sans);
 }
 
 /* Custom Micro-Animations for a Premium Feel */

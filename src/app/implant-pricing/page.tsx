@@ -92,14 +92,14 @@ export default async function ImplantPricingPage() {
             </div>
             <div>
               <h2 className="text-xl font-bold text-[#002b5c] mb-2">{(data.pageTitle || data.title || "").replace(/<[^>]*>?/gm, '')}</h2>
-              <p className="text-[17px] text-slate-700 font-medium leading-relaxed">
+              <p className="text-base text-slate-700 font-medium leading-relaxed">
                 {data.subtitle}
               </p>
             </div>
           </div>
         )}
 
-        <div className="bg-white rounded-3xl shadow-xl border border-slate-100 overflow-hidden [&_td]:!text-[18px] [&_th]:!text-[18px] [&_.text-sm]:!text-[18px] [&_.text-xs]:!text-[18px]">
+        <div className="bg-white rounded-3xl shadow-xl border border-slate-100 overflow-hidden [&_td]:!text-base [&_th]:!text-base [&_.text-sm]:!text-base [&_.text-xs]:!text-base">
           
           {/* Note Banner */}
           <div className="bg-amber-50 border-b border-amber-100 px-8 py-4 flex items-center gap-3">
@@ -108,7 +108,7 @@ export default async function ImplantPricingPage() {
           </div>
 
           <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse min-w-[1200px]">
+            <table className="break-words w-full text-left border-collapse ">
               <thead>
                 <tr>
                   <th colSpan={4} className="bg-slate-50 border-b border-r border-slate-200 py-4 px-6 text-center">
@@ -134,7 +134,7 @@ export default async function ImplantPricingPage() {
                   <th className="py-4 px-4 font-bold text-[#0369a1] text-sm bg-[#f8fafc] border-r border-slate-200 text-center">Maxx</th>
                   <th className="py-4 px-4 font-bold text-[#0369a1] text-sm bg-[#f8fafc] border-r border-slate-200 text-center">Depuy</th>
                   <th className="py-4 px-4 font-bold text-[#0369a1] text-sm bg-[#f8fafc] border-r border-[#bae6fd] text-center">Smith & Nephew</th>
-                  <th className="py-4 px-6 font-bold text-emerald-700 text-base bg-emerald-50/50 text-right">Rate (₹)</th>
+                  <th className="py-4 px-6 font-bold text-emerald-700 text-sm bg-emerald-50/50 text-right">Rate (₹)</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
@@ -150,7 +150,7 @@ export default async function ImplantPricingPage() {
                     <td className="py-4 px-4 text-slate-600 text-sm border-r border-slate-100 text-center">{row.depuy !== 'NA' ? row.depuy : <span className="text-slate-300">-</span>}</td>
                     <td className="py-4 px-4 text-slate-600 text-sm border-r border-slate-200 text-center">{row.sn !== 'NA' ? row.sn : <span className="text-slate-300">-</span>}</td>
                     
-                    <td className="py-4 px-6 text-emerald-600 font-bold text-right text-lg whitespace-nowrap bg-emerald-50/10 group-hover:bg-emerald-50/30 transition-colors">
+                    <td className="py-4 px-6 text-emerald-600 font-bold text-right text-base  bg-emerald-50/10 group-hover:bg-emerald-50/30 transition-colors">
                       ₹ {row.rate}
                     </td>
                   </tr>

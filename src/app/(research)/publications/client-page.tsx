@@ -121,7 +121,7 @@ export default function PublicationsClientPage({ pageData }: { pageData: any }) 
       if (hasVisiblePublications) {
         const btnText = btn.textContent ? btn.textContent.trim() : '';
         const h4 = document.createElement('h4');
-        h4.className = 'text-base md:text-lg font-bold text-[#002b5c] mb-6 mt-12 border-t border-slate-100 pt-8 dynamic-year-header';
+        h4.className = 'text-base md:text-base font-bold text-[#002b5c] mb-6 mt-12 border-t border-slate-100 pt-8 dynamic-year-header';
         h4.textContent = `Publications: ${btnText}`;
         pubContainer.insertBefore(h4, pubContainer.firstChild);
       }
@@ -174,7 +174,7 @@ export default function PublicationsClientPage({ pageData }: { pageData: any }) 
                     key={idx}
                     href={option.href}
                     data-active={option.active}
-                    className={"snap-start shrink-0 group flex items-center justify-between px-6 py-4 lg:py-4 text-sm font-bold transition-all duration-300 lg:border-l-4 lg:border-b-0 border-b-4 whitespace-nowrap lg:whitespace-normal " + (
+                    className={"snap-start shrink-0 group flex items-center justify-between px-6 py-4 lg:py-4 text-sm font-bold transition-all duration-300 lg:border-l-4 lg:border-b-0 border-b-4  lg:whitespace-normal " + (
                       option.active
                         ? "border-[#007a87] bg-teal-50/40 text-[#007a87]"
                         : "border-transparent text-slate-600 hover:bg-slate-50 hover:text-[#002b5c] lg:hover:border-slate-200 hover:border-slate-200"

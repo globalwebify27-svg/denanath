@@ -198,7 +198,7 @@ export default function CourseForm({ initialData, saveAction, col }: { initialDa
                 type="text"
                 value={formData.title}
                 onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                className="w-full font-black text-[#002b5c] text-lg sm:text-xl border border-slate-300 focus:border-[#007a87] rounded-xl px-3.5 py-1.5 outline-none font-sans bg-white shadow-xs" 
+                className="w-full font-black text-[#002b5c] text-base sm:text-xl border border-slate-300 focus:border-[#007a87] rounded-xl px-3.5 py-1.5 outline-none font-sans bg-white shadow-xs" 
                 placeholder="Section Title (e.g. Event Overview)" 
               />
             </div>

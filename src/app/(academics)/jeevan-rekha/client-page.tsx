@@ -60,7 +60,7 @@ export default function JeevanRekhaClient({ initialData }: { initialData: any })
                     key={idx}
                     href={option.href}
                     data-active={option.active}
-                    className={"snap-start shrink-0 group flex items-center justify-between px-6 py-4 lg:py-4 text-sm font-bold transition-all duration-300 lg:border-l-4 lg:border-b-0 border-b-4 whitespace-nowrap lg:whitespace-normal " + (
+                    className={"snap-start shrink-0 group flex items-center justify-between px-6 py-4 lg:py-4 text-sm font-bold transition-all duration-300 lg:border-l-4 lg:border-b-0 border-b-4  lg:whitespace-normal " + (
                       option.active
                         ? "border-[#007a87] bg-teal-50/40 text-[#007a87]"
                         : "border-transparent text-slate-600 hover:bg-slate-50 hover:text-[#002b5c] lg:hover:border-slate-200 hover:border-slate-200"
@@ -106,7 +106,7 @@ export default function JeevanRekhaClient({ initialData }: { initialData: any })
                   <h3 className="text-xl font-bold text-red-700 m-0">{initialData.highlightText}</h3>
                 </div>
 
-                <p className="text-lg whitespace-pre-wrap">
+                <p className="text-base whitespace-pre-wrap">
                   {initialData.introText1}
                 </p>
 
@@ -118,7 +118,7 @@ export default function JeevanRekhaClient({ initialData }: { initialData: any })
                 </div>
 
                 <div className="bg-slate-50 border border-slate-200 rounded-2xl p-8 space-y-6">
-                  <h4 className="text-lg font-bold text-[#002b5c] m-0 border-b border-slate-200 pb-4">Contact Information</h4>
+                  <h4 className="text-base font-bold text-[#002b5c] m-0 border-b border-slate-200 pb-4">Contact Information</h4>
                   <div className="space-y-4">
                     <div className="flex items-start gap-4">
                       <MapPin className="w-5 h-5 text-teal-500 shrink-0 mt-1" />
@@ -144,7 +144,7 @@ export default function JeevanRekhaClient({ initialData }: { initialData: any })
                         <Mail className="w-5 h-5 text-teal-500 shrink-0" />
                         <div className="flex flex-col gap-1">
                           {initialData.contactInfo.emails.map((email: string, idx: number) => (
-                            <a key={idx} href={`mailto:${email}`} className="text-[#007a87] text-[18px] leading-[31px] font-bold hover:underline">
+                            <a key={idx} href={`mailto:${email}`} className="text-[#007a87] text-base leading-[31px] font-bold hover:underline">
                               {email}
                             </a>
                           ))}
@@ -155,7 +155,7 @@ export default function JeevanRekhaClient({ initialData }: { initialData: any })
                 </div>
 
                 <div className="pt-8">
-                  <h4 className="text-lg font-bold text-slate-800 mb-4">Announced Training Program:</h4>
+                  <h4 className="text-base font-bold text-slate-800 mb-4">Announced Training Program:</h4>
                   {initialData.announcedPrograms && initialData.announcedPrograms.length > 0 ? (
                     <ul className="space-y-3 p-6 bg-slate-50 border border-slate-200 rounded-2xl">
                       {initialData.announcedPrograms.map((prog: string, idx: number) => (

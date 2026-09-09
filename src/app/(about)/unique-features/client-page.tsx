@@ -45,7 +45,7 @@ export default function UniqueFeaturesClientPage({ featuresData }: { featuresDat
                   Unique features of DMH
                 </h2>
                 <div className="w-20 h-1.5 bg-[#007a87] rounded-full mb-4"></div>
-                <p className="text-slate-600 leading-relaxed font-light text-lg">
+                <p className="text-slate-600 leading-relaxed font-light text-base">
                   We are committed to providing world-class medical care with a patient-centric approach. Our hospital is equipped with cutting-edge technology and staffed by renowned specialists to ensure the highest quality of treatment and recovery.
                 </p>
               </div>
@@ -67,12 +67,12 @@ export default function UniqueFeaturesClientPage({ featuresData }: { featuresDat
                       </div>
                       
                       <div className="flex-1 min-w-0">
-                        <h3 className="text-base sm:text-lg md:text-xl font-extrabold text-[#002b5c] mb-2 md:mb-3 uppercase tracking-wider flex items-start gap-1.5 md:gap-2">
+                        <h3 className="text-base sm:text-base md:text-xl font-extrabold text-[#002b5c] mb-2 md:mb-3 uppercase tracking-wider flex items-start gap-1.5 md:gap-2">
                           <span className="text-teal-500 font-black shrink-0">{idx + 1}.</span> 
                           <span className="leading-tight">{item.title}</span>
                         </h3>
                         
-                        <div className={`text-slate-600 mb-2 md:mb-3 last:mb-0 prose prose-slate max-w-none ${[0, 6].includes(idx) ? 'leading-[31px] font-medium text-[18px]' : 'leading-relaxed text-[13px] sm:text-[14px] md:text-[15px] font-medium'}`} dangerouslySetInnerHTML={{ __html: item.description || '' }} />
+                        <div className={`text-slate-600 mb-2 md:mb-3 last:mb-0 prose prose-slate max-w-none ${[0, 6].includes(idx) ? 'leading-[31px] font-medium text-base' : 'leading-relaxed text-[13px] sm:text-[14px] md:text-[15px] font-medium'}`} dangerouslySetInnerHTML={{ __html: item.description || '' }} />
                         
                         {item.bullets && item.bullets.length > 0 && (
                           <ul className="mt-3 md:mt-4 space-y-2 md:space-y-3">
@@ -81,7 +81,7 @@ export default function UniqueFeaturesClientPage({ featuresData }: { featuresDat
                               return (
                                 <li key={bIdx} className="flex items-start gap-2 md:gap-3">
                                   <div className="w-1.5 h-1.5 rounded-full bg-teal-500 shrink-0 mt-1.5 md:mt-2"></div>
-                                  <p className={`text-slate-600 ${[0, 1, 4, 5, 6].includes(idx) ? 'leading-[31px] font-normal text-[18px]' : 'leading-relaxed text-[13px] sm:text-[14px] md:text-[14.5px]'}`}>
+                                  <p className={`text-slate-600 ${[0, 1, 4, 5, 6].includes(idx) ? 'leading-[31px] font-normal text-base' : 'leading-relaxed text-[13px] sm:text-[14px] md:text-[14.5px]'}`}>
                                     {parts.length > 1 ? (
                                       <>
                                         <strong className="text-slate-800 font-bold">{parts[0]}</strong> - {parts.slice(1).join(' - ')}

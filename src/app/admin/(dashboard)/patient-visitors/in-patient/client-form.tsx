@@ -268,7 +268,7 @@ export default function InPatientClientForm({ initialData }: { initialData: any 
 
         {/* Admission Details */}
         <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200">
-          <h3 className="text-lg text-[20px] font-black text-[#002b5c] mb-6 flex items-center gap-2">
+          <h3 className="text-base text-[20px] font-black text-[#002b5c] mb-6 flex items-center gap-2">
             <CheckCircle2 className="w-5 h-5 text-[#007a87]" />
             Admission Details
           </h3>
@@ -294,7 +294,7 @@ export default function InPatientClientForm({ initialData }: { initialData: any 
 
         {/* Important Phone Numbers */}
         <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200">
-          <h3 className="text-lg text-[20px] font-black text-[#002b5c] mb-6 flex items-center gap-2">
+          <h3 className="text-base text-[20px] font-black text-[#002b5c] mb-6 flex items-center gap-2">
             <Phone className="w-5 h-5 text-[#007a87]" />
             Important Phone Numbers
           </h3>
@@ -302,7 +302,7 @@ export default function InPatientClientForm({ initialData }: { initialData: any 
             <div>
               <div className="flex justify-between items-center mb-4 gap-4">
                 <h4 className="font-bold text-slate-700 min-w-0">Main Building</h4>
-                <button type="button" onClick={() => addPhone('mainBuildingPhones')} className="text-xs font-bold text-white bg-[#003360] px-3 py-1.5 rounded-lg hover:bg-[#002b5c] shrink-0 whitespace-nowrap">Add Phone</button>
+                <button type="button" onClick={() => addPhone('mainBuildingPhones')} className="text-xs font-bold text-white bg-[#003360] px-3 py-1.5 rounded-lg hover:bg-[#002b5c] shrink-0 ">Add Phone</button>
               </div>
               <div className="space-y-3">
                 {data.mainBuildingPhones.map((p: any) => (
@@ -317,7 +317,7 @@ export default function InPatientClientForm({ initialData }: { initialData: any 
             <div>
               <div className="flex justify-between items-center mb-4 gap-4">
                 <h4 className="font-bold text-slate-700 min-w-0">Super Speciality Building</h4>
-                <button type="button" onClick={() => addPhone('superSpecialityPhones')} className="text-xs font-bold text-white bg-[#003360] px-3 py-1.5 rounded-lg hover:bg-[#002b5c] shrink-0 whitespace-nowrap">Add Phone</button>
+                <button type="button" onClick={() => addPhone('superSpecialityPhones')} className="text-xs font-bold text-white bg-[#003360] px-3 py-1.5 rounded-lg hover:bg-[#002b5c] shrink-0 ">Add Phone</button>
               </div>
               <div className="space-y-3">
                 {data.superSpecialityPhones.map((p: any) => (
@@ -334,7 +334,7 @@ export default function InPatientClientForm({ initialData }: { initialData: any 
         
         {/* Guidelines */}
         <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200">
-          <h3 className="text-lg text-[20px] font-black text-[#002b5c] mb-4 flex items-center gap-2">
+          <h3 className="text-base text-[20px] font-black text-[#002b5c] mb-4 flex items-center gap-2">
             <CheckCircle2 className="w-5 h-5 text-[#007a87]" />
             Important Guidelines
           </h3>
@@ -344,7 +344,7 @@ export default function InPatientClientForm({ initialData }: { initialData: any 
 
         {/* Room Details */}
         <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200">
-          <h3 className="text-lg text-[20px] font-black text-[#002b5c] mb-6 flex items-center gap-2">
+          <h3 className="text-base text-[20px] font-black text-[#002b5c] mb-6 flex items-center gap-2">
             <Bed className="w-5 h-5 text-[#007a87]" />
             Room Details & Tariffs
           </h3>
@@ -354,7 +354,7 @@ export default function InPatientClientForm({ initialData }: { initialData: any 
             <div>
               <div className="flex justify-between items-center mb-4 gap-4">
                 <h4 className="font-bold text-slate-700 min-w-0">Main Building Rooms</h4>
-                <button type="button" onClick={addMainRoom} className="text-xs font-bold text-white bg-[#003360] px-3 py-1.5 rounded-lg hover:bg-[#002b5c] shrink-0 whitespace-nowrap">Add Room</button>
+                <button type="button" onClick={addMainRoom} className="text-xs font-bold text-white bg-[#003360] px-3 py-1.5 rounded-lg hover:bg-[#002b5c] shrink-0 ">Add Room</button>
               </div>
               <div className="space-y-3">
                 {data.mainBuildingRooms.map((r: any) => (
@@ -427,7 +427,7 @@ export default function InPatientClientForm({ initialData }: { initialData: any 
             <div>
               <div className="flex justify-between items-center mb-4 gap-4">
                 <h4 className="font-bold text-slate-700 min-w-0">Super Speciality Building Rooms</h4>
-                <button type="button" onClick={addSuperRoom} className="text-xs font-bold text-white bg-[#003360] px-3 py-1.5 rounded-lg hover:bg-[#002b5c] shrink-0 whitespace-nowrap">Add Room</button>
+                <button type="button" onClick={addSuperRoom} className="text-xs font-bold text-white bg-[#003360] px-3 py-1.5 rounded-lg hover:bg-[#002b5c] shrink-0 ">Add Room</button>
               </div>
               <div className="space-y-3">
                 {data.superSpecialityRooms.map((r: any) => (
@@ -500,7 +500,7 @@ export default function InPatientClientForm({ initialData }: { initialData: any 
 
         {/* Intensive Care Units */}
         <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200">
-          <h3 className="text-lg text-[20px] font-black text-[#002b5c] mb-6 flex items-center gap-2">
+          <h3 className="text-base text-[20px] font-black text-[#002b5c] mb-6 flex items-center gap-2">
             <Bed className="w-5 h-5 text-[#007a87]" />
             Intensive Care Units
           </h3>
@@ -522,7 +522,7 @@ export default function InPatientClientForm({ initialData }: { initialData: any 
 
         {/* Meal Timings & Notes */}
         <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200">
-          <h3 className="text-lg text-[20px] font-black text-[#002b5c] mb-6 flex items-center gap-2">
+          <h3 className="text-base text-[20px] font-black text-[#002b5c] mb-6 flex items-center gap-2">
             <List className="w-5 h-5 text-[#007a87]" />
             Meal Timings
           </h3>
@@ -544,7 +544,7 @@ export default function InPatientClientForm({ initialData }: { initialData: any 
 
         {/* Admission Procedure */}
         <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200">
-          <h3 className="text-lg text-[20px] font-black text-[#002b5c] mb-4 flex items-center gap-2">
+          <h3 className="text-base text-[20px] font-black text-[#002b5c] mb-4 flex items-center gap-2">
             <CheckCircle2 className="w-5 h-5 text-[#007a87]" />
             Admission Procedure
           </h3>
@@ -554,7 +554,7 @@ export default function InPatientClientForm({ initialData }: { initialData: any 
 
         {/* Cashless Hospitalization */}
         <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200">
-          <h3 className="text-lg text-[20px] font-black text-[#002b5c] mb-4 flex items-center gap-2">
+          <h3 className="text-base text-[20px] font-black text-[#002b5c] mb-4 flex items-center gap-2">
             <ShieldCheck className="w-5 h-5 text-[#007a87]" />
             Cashless Hospitalization
           </h3>
@@ -586,7 +586,7 @@ export default function InPatientClientForm({ initialData }: { initialData: any 
 
         {/* Pre-Authorization Details */}
         <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200">
-          <h3 className="text-lg text-[20px] font-black text-[#002b5c] mb-4 flex items-center gap-2">
+          <h3 className="text-base text-[20px] font-black text-[#002b5c] mb-4 flex items-center gap-2">
             <ShieldCheck className="w-5 h-5 text-[#007a87]" />
             Timing & Requirements for Pre-authorization
           </h3>
@@ -604,7 +604,7 @@ export default function InPatientClientForm({ initialData }: { initialData: any 
 
         {/* TPA and Corporate Lists */}
         <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200">
-          <h3 className="text-lg text-[20px] font-black text-[#002b5c] mb-4 flex items-center gap-2">
+          <h3 className="text-base text-[20px] font-black text-[#002b5c] mb-4 flex items-center gap-2">
             <ShieldCheck className="w-5 h-5 text-[#007a87]" />
             TPA & Corporate Empanelments
           </h3>

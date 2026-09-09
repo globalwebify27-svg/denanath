@@ -93,7 +93,7 @@ export default function ContactUsClientPage({ pageData }: { pageData: any }) {
                     key={idx}
                     href={option.href}
                     data-active={option.active}
-                    className={"snap-start shrink-0 group flex items-center justify-between px-6 py-4 lg:py-4 text-sm font-bold transition-all duration-300 lg:border-l-4 lg:border-b-0 border-b-4 whitespace-nowrap lg:whitespace-normal " + (
+                    className={"snap-start shrink-0 group flex items-center justify-between px-6 py-4 lg:py-4 text-sm font-bold transition-all duration-300 lg:border-l-4 lg:border-b-0 border-b-4  lg:whitespace-normal " + (
                       option.active
                         ? "border-[#007a87] bg-teal-50/40 text-[#007a87]"
                         : "border-transparent text-slate-600 hover:bg-slate-50 hover:text-[#002b5c] lg:hover:border-slate-200 hover:border-slate-200"
@@ -134,7 +134,7 @@ export default function ContactUsClientPage({ pageData }: { pageData: any }) {
               
               {pageData.content ? (
                 <div 
-                  className="text-slate-600 [&_*]:!text-[18px] [&_*]:!leading-[31px] [&_*]:!font-medium [&_a]:!font-bold [&_a_*]:!font-bold [&_a[href*='pethev']]:!text-[#3C99A3] [&_a[href*='pethev']_*]:!text-[#3C99A3] [&_.fa-envelope]:!text-[#3C99A3] [&_svg]:!text-[#3C99A3]" 
+                  className="text-slate-600 [&_*]:!text-base [&_*]:!leading-[31px] [&_*]:!font-medium [&_a]:!font-bold [&_a_*]:!font-bold [&_a[href*='pethev']]:!text-[#3C99A3] [&_a[href*='pethev']_*]:!text-[#3C99A3] [&_.fa-envelope]:!text-[#3C99A3] [&_svg]:!text-[#3C99A3]" 
                   dangerouslySetInnerHTML={{ __html: pageData.content }}
                   onClick={(e) => {
                     const target = e.target as HTMLElement;

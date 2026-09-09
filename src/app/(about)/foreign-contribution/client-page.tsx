@@ -72,7 +72,7 @@ export default function ForeignContributionClientPage({ fcraData }: { fcraData: 
                     <div className="bg-white p-6">
                       {quarterData.donations && quarterData.donations.length > 0 ? (
                         <div className="overflow-x-auto custom-scrollbar">
-                          <table className="w-full text-left border-collapse min-w-[800px]">
+                          <table className="break-words w-full text-left border-collapse ">
                             <thead>
                               <tr className="border-b-2 border-slate-200 bg-slate-50">
                                 <th style={{ fontSize: '18px' }} className="py-4 px-4 font-bold text-slate-700 leading-[31px] w-16 text-center">Sr. No.</th>

@@ -121,12 +121,12 @@ export default function EventsClientPage({ events = [], pageData }: { events: an
                         </div>
                         <h2 className="text-2xl font-bold text-slate-800">{overviewTitle || "Overview"}</h2>
                       </div>
-                      <div className="space-y-2 text-slate-600 font-normal leading-[31px] text-[18px]">
+                      <div className="space-y-2 text-slate-600 font-normal leading-[31px] text-base">
                         {overview.map((p: string, idx: number) => (
                           idx === overview.length - 1 && overview.length > 1 ? (
                             <div key={idx} className="bg-amber-50 rounded-2xl p-6 mt-6 border border-amber-100 flex items-start gap-4">
                               <Award className="w-8 h-8 text-amber-500 shrink-0 mt-1" />
-                              <div className="text-amber-900 text-[18px] leading-[31px] font-normal" dangerouslySetInnerHTML={{ __html: p }} />
+                              <div className="text-amber-900 text-base leading-[31px] font-normal" dangerouslySetInnerHTML={{ __html: p }} />
                             </div>
                           ) : (
                             <div key={idx} dangerouslySetInnerHTML={{ __html: p }} />
@@ -149,7 +149,7 @@ export default function EventsClientPage({ events = [], pageData }: { events: an
                         {objectives.map((objective: string, idx: number) => (
                           <li key={idx} className="flex items-start gap-4 p-4 rounded-2xl hover:bg-slate-50 transition-colors">
                             <CheckCircle2 className="w-6 h-6 text-[#00a69c] shrink-0 mt-0.5" />
-                            <div className="text-slate-700 text-[18px] leading-[31px] font-normal" dangerouslySetInnerHTML={{ __html: objective }} />
+                            <div className="text-slate-700 text-base leading-[31px] font-normal" dangerouslySetInnerHTML={{ __html: objective }} />
                           </li>
                         ))}
                       </ul>
@@ -169,7 +169,7 @@ export default function EventsClientPage({ events = [], pageData }: { events: an
                         {features.map((feature: string, idx: number) => (
                           <li key={idx} className="flex items-start gap-4 p-4 rounded-2xl hover:bg-slate-50 transition-colors">
                             <CheckCircle2 className="w-6 h-6 text-[#00a69c] shrink-0 mt-0.5" />
-                            <div className="text-slate-700 text-[18px] leading-[31px] font-normal" dangerouslySetInnerHTML={{ __html: feature }} />
+                            <div className="text-slate-700 text-base leading-[31px] font-normal" dangerouslySetInnerHTML={{ __html: feature }} />
                           </li>
                         ))}
                       </ul>
@@ -182,7 +182,7 @@ export default function EventsClientPage({ events = [], pageData }: { events: an
                       <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full blur-[50px] -z-0" />
                       <div className="relative z-10">
                         <h2 className="text-2xl font-bold mb-6 text-[#e0f2f1]">Summary</h2>
-                        <div className="text-[#b2dfdb] text-[18px] leading-[31px] font-normal" dangerouslySetInnerHTML={{ __html: summary }} />
+                        <div className="text-[#b2dfdb] text-base leading-[31px] font-normal" dangerouslySetInnerHTML={{ __html: summary }} />
                       </div>
                     </section>
                   )}
@@ -204,7 +204,7 @@ export default function EventsClientPage({ events = [], pageData }: { events: an
                       <div className="space-y-6">
                         {organizers.map((org: any, idx: number) => (
                           <div key={idx} className="border-l-2 border-[#00a69c] pl-4">
-                            <p className="font-bold text-slate-800 text-lg">{org.name}</p>
+                            <p className="font-bold text-slate-800 text-base">{org.name}</p>
                             <p className="text-sm text-slate-500 font-medium">{org.role}</p>
                           </div>
                         ))}
@@ -255,7 +255,7 @@ export default function EventsClientPage({ events = [], pageData }: { events: an
                   
                   <div className="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-sm">
                     <div className="overflow-x-auto">
-                      <table className="w-full text-left border-collapse">
+                      <table className="break-words w-full text-left border-collapse">
                         <thead>
                           <tr className="bg-slate-50 border-b border-slate-200">
                             <th className="py-5 px-6 font-bold text-slate-700 text-sm uppercase tracking-wider w-1/3">Topic</th>
@@ -267,13 +267,13 @@ export default function EventsClientPage({ events = [], pageData }: { events: an
                           
                           {agenda.map((row: any, idx: number) => (
                             <tr key={idx} className="hover:bg-slate-50 transition-colors group">
-                              <td className="py-6 px-6 text-slate-800 text-[18px] leading-[31px] font-semibold group-hover:text-[#005f6b] transition-colors">
+                              <td className="py-6 px-6 text-slate-800 text-base leading-[31px] font-semibold group-hover:text-[#005f6b] transition-colors">
                                 {row.topic}
                               </td>
-                              <td className="py-6 px-6 text-slate-700 text-[18px] leading-[31px] font-normal">
+                              <td className="py-6 px-6 text-slate-700 text-base leading-[31px] font-normal">
                                 {row.speaker}
                               </td>
-                              <td className="py-6 px-6 text-slate-500 text-[18px] leading-[31px] font-normal">
+                              <td className="py-6 px-6 text-slate-500 text-base leading-[31px] font-normal">
                                 {row.role}
                               </td>
                             </tr>

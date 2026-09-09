@@ -124,7 +124,7 @@ export default function ConferenceForm({ conferenceId, initialData, categories }
                 <Info className="w-5 h-5" />
               </div>
               <div>
-                <h2 className="text-lg font-black text-[#002b5c]">General Information</h2>
+                <h2 className="text-base font-black text-[#002b5c]">General Information</h2>
                 <p className="text-sm font-medium text-slate-500 mt-0.5">Core details and descriptive texts for the conference.</p>
               </div>
             </div>
@@ -202,7 +202,7 @@ export default function ConferenceForm({ conferenceId, initialData, categories }
                 <Info className="w-5 h-5" />
               </div>
               <div>
-                <h2 className="text-lg font-black text-[#002b5c]">Email Notification Settings</h2>
+                <h2 className="text-base font-black text-[#002b5c]">Email Notification Settings</h2>
                 <p className="text-sm font-medium text-slate-500 mt-0.5">Configure automated emails sent to attendees.</p>
               </div>
             </div>
@@ -249,7 +249,7 @@ export default function ConferenceForm({ conferenceId, initialData, categories }
                 <Info className="w-5 h-5" />
               </div>
               <div>
-                <h2 className="text-lg font-black text-[#002b5c]">SEO Settings</h2>
+                <h2 className="text-base font-black text-[#002b5c]">SEO Settings</h2>
                 <p className="text-sm font-medium text-slate-500 mt-0.5">Optimize how this conference appears in search engines.</p>
               </div>
             </div>
@@ -299,7 +299,7 @@ export default function ConferenceForm({ conferenceId, initialData, categories }
                 <Info className="w-5 h-5" />
               </div>
               <div>
-                <h2 className="text-lg font-black text-[#002b5c]">Configuration</h2>
+                <h2 className="text-base font-black text-[#002b5c]">Configuration</h2>
                 <p className="text-sm font-medium text-slate-500 mt-0.5">Control pricing and dates.</p>
               </div>
             </div>

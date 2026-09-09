@@ -152,7 +152,7 @@ export default function SpecialtyClinics({ data = defaultSpecialtyClinicsData }:
             </h2>
           </div>
           <div 
-            className="text-slate-600 text-base sm:text-lg font-normal max-w-md leading-[31px] mx-auto md:mx-0 prose prose-sm prose-p:leading-[31px] prose-p:m-0"
+            className="text-slate-600 text-base sm:text-base font-normal max-w-md leading-[31px] mx-auto md:mx-0 prose prose-sm prose-p:leading-[31px] prose-p:m-0"
             dangerouslySetInnerHTML={{__html: data.description}}
           />
         </div>

@@ -177,7 +177,7 @@ export default function PageForm({ pageId, initialData }: PageFormProps) {
       <form onSubmit={handleSubmit} className="space-y-8">
         {/* Basic Information Card */}
         <div className="bg-white p-6 md:p-8 rounded-3xl shadow-sm border border-slate-100">
-          <h2 className="text-[18px] font-black text-[#002b5c] mb-6 tracking-tight">Basic Information</h2>
+          <h2 className="text-base font-black text-[#002b5c] mb-6 tracking-tight">Basic Information</h2>
               <div className="space-y-6">
                 <div>
                   <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Menu Name (Page Title) *</label>
@@ -255,7 +255,7 @@ export default function PageForm({ pageId, initialData }: PageFormProps) {
             </div>
 
             <div className="bg-white p-6 md:p-8 rounded-3xl shadow-sm border border-slate-100">
-              <h2 className="text-[18px] font-black text-[#002b5c] mb-6 tracking-tight">SEO Settings</h2>
+              <h2 className="text-base font-black text-[#002b5c] mb-6 tracking-tight">SEO Settings</h2>
               <div className="space-y-6">
                 <div>
                   <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Meta Title</label>

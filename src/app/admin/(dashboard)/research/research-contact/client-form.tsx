@@ -203,7 +203,7 @@ export default function ResearchContactClientForm({ initialData }: { initialData
       </div>
 
       <div className="space-y-6">
-        <h2 className="text-[18px] font-black text-[#002b5c]">Department Address</h2>
+        <h2 className="text-base font-black text-[#002b5c]">Department Address</h2>
         <textarea
           value={data.address || ""}
           onChange={handleAddressChange}
@@ -215,7 +215,7 @@ export default function ResearchContactClientForm({ initialData }: { initialData
 
       <div className="space-y-6 pt-8">
         <div className="flex justify-between items-end mb-4">
-          <h2 className="text-[18px] font-black text-[#002b5c]">Contact Emails</h2>
+          <h2 className="text-base font-black text-[#002b5c]">Contact Emails</h2>
           <button 
             onClick={handleAddEmail}
             className="flex items-center gap-2 px-4 py-2 bg-[#002b5c] text-white text-xs font-bold rounded-lg hover:bg-[#001a38] transition-colors shadow-sm"
@@ -247,7 +247,7 @@ export default function ResearchContactClientForm({ initialData }: { initialData
 
       <div className="space-y-6 pt-10 border-t border-slate-100">
         <div className="flex justify-between items-end mb-6">
-          <h2 className="text-[18px] font-black text-[#002b5c]">Key Personnel</h2>
+          <h2 className="text-base font-black text-[#002b5c]">Key Personnel</h2>
           <button 
             onClick={handleAddPerson}
             className="flex items-center gap-2 px-4 py-2 bg-[#007a87] text-white text-xs font-bold rounded-lg hover:bg-[#005f69] transition-colors shadow-sm"

@@ -139,7 +139,7 @@ export default function HomeSettingsClient({
           <button
             onClick={handleSaveAll}
             disabled={isSaving}
-            className="flex items-center gap-2 bg-[#007a87] text-white px-8 py-3.5 rounded-xl font-bold hover:bg-[#005f6b] shadow-lg shadow-teal-900/20 transition-all disabled:opacity-50 active:scale-95 text-lg"
+            className="flex items-center gap-2 bg-[#007a87] text-white px-8 py-3.5 rounded-xl font-bold hover:bg-[#005f6b] shadow-lg shadow-teal-900/20 transition-all disabled:opacity-50 active:scale-95 text-base"
           >
             <Save size={22} />
             {isSaving ? "Saving..." : "Save All Changes"}

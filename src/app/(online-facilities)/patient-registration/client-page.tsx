@@ -127,7 +127,7 @@ export default function PatientRegistrationFormPage({ pageData }: { pageData: an
                     key={idx}
                     href={option.href}
                     data-active={option.active}
-                    className={"snap-start shrink-0 group flex items-center justify-between px-6 py-4 lg:py-4 text-sm font-bold transition-all duration-300 lg:border-l-4 lg:border-b-0 border-b-4 whitespace-nowrap lg:whitespace-normal " + (
+                    className={"snap-start shrink-0 group flex items-center justify-between px-6 py-4 lg:py-4 text-sm font-bold transition-all duration-300 lg:border-l-4 lg:border-b-0 border-b-4  lg:whitespace-normal " + (
                       option.active
                         ? "border-[#007a87] bg-teal-50/40 text-[#007a87]"
                         : "border-transparent text-slate-600 hover:bg-slate-50 hover:text-[#002b5c] lg:hover:border-slate-200 hover:border-slate-200"
@@ -170,7 +170,7 @@ export default function PatientRegistrationFormPage({ pageData }: { pageData: an
 
                 <form 
                   ref={formRef}
-                  className="space-y-12 [&_label]:!text-[18px]" 
+                  className="space-y-12 [&_label]:!text-base" 
                   action={async (formData) => { 
                     setIsSubmitting(true);
                     const res = await submitFormAction("Patient Registration", formData); 
@@ -350,7 +350,7 @@ export default function PatientRegistrationFormPage({ pageData }: { pageData: an
                       </div>
 
                       <div>
-                        <label className="block text-sm font-semibold text-slate-700 mb-2 whitespace-nowrap">Monthly Income Rs. (Approx)</label>
+                        <label className="block text-sm font-semibold text-slate-700 mb-2 ">Monthly Income Rs. (Approx)</label>
                           <div className="relative flex items-center">
                             <input type="number" name="monthlyIncome" placeholder="Income Amount" className="w-full px-4 py-1.5 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all text-slate-700 font-medium placeholder-slate-400 dynamic-icon-input" />
                             <span className="absolute left-4 font-bold text-slate-400 text-sm pointer-events-none transition-opacity duration-200 dynamic-input-icon">₹</span>

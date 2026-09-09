@@ -179,27 +179,27 @@ export default function UsersClientPage({ initialUsers, roles }: { initialUsers:
       )}
 
       <div className="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden">
-        <table className="w-full text-left border-collapse">
+        <table className="break-words w-full text-left border-collapse">
           <thead>
             <tr className="bg-slate-50 border-b border-slate-100">
-              <th className="p-4 font-bold text-slate-700">Username</th>
-              <th className="p-4 font-bold text-slate-700">Role</th>
-              <th className="p-4 font-bold text-slate-700 text-right">Actions</th>
+              <th className="p-2 font-bold text-slate-700">Username</th>
+              <th className="p-2 font-bold text-slate-700">Role</th>
+              <th className="p-2 font-bold text-slate-700 text-right">Actions</th>
             </tr>
           </thead>
           <tbody>
             {users.map((user) => (
               <tr key={user.id} className="border-b border-slate-100 hover:bg-slate-50/50">
-                <td className="p-4">
+                <td className="p-2">
                   <div className="font-bold text-slate-800">{user.username}</div>
                   <div className="text-xs text-slate-500">{user.email}</div>
                 </td>
-                <td className="p-4">
+                <td className="p-2">
                   <span className="px-3 py-1 bg-slate-100 text-slate-700 font-medium rounded-full text-sm">
                     {user.role?.name}
                   </span>
                 </td>
-                <td className="p-4 text-right">
+                <td className="p-2 text-right">
                   <button onClick={() => handleEdit(user)} className="p-2 text-[#007a87] hover:bg-[#007a87]/10 rounded-lg mr-2"><Edit2 size={18} /></button>
                   <button onClick={() => handleDelete(user.id, user.username)} className="p-2 text-red-600 hover:bg-red-50 rounded-lg"><Trash2 size={18} /></button>
                 </td>

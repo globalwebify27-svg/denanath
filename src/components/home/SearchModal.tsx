@@ -204,7 +204,7 @@ export default function SearchModal({ isOpen, onClose, doctors, departments }: S
           </h2>
           
           {/* Minimalist Tabs */}
-          <div className="flex gap-5 sm:gap-8 border-b border-slate-100 mb-6 overflow-x-auto whitespace-nowrap hide-scrollbar">
+          <div className="flex gap-5 sm:gap-8 border-b border-slate-100 mb-6 overflow-x-auto  hide-scrollbar">
             {(["doctor", "specialty"] as const).map((tab) => (
               <button
                 key={tab}
@@ -250,7 +250,7 @@ export default function SearchModal({ isOpen, onClose, doctors, departments }: S
                           <div 
                             key={`trend-${doc.id}`} 
                             onClick={() => setSearchQuery(doc.name)}
-                            className="min-w-[220px] sm:min-w-[240px] p-4 rounded-[1.25rem] sm:rounded-[1.5rem] bg-slate-50 border border-slate-100 flex items-center gap-3 sm:gap-4 cursor-pointer hover:bg-white hover:shadow-xl hover:shadow-[#007a87]/10 hover:-translate-y-1 transition-all group"
+                            className="sm: p-4 rounded-[1.25rem] sm:rounded-[1.5rem] bg-slate-50 border border-slate-100 flex items-center gap-3 sm:gap-4 cursor-pointer hover:bg-white hover:shadow-xl hover:shadow-[#007a87]/10 hover:-translate-y-1 transition-all group"
                           >
                             <img 
                               src={doc.image} 

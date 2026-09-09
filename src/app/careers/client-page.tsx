@@ -99,11 +99,11 @@ export default function CareersClientPage({ pageData }: { pageData: any }) {
                 <Mail className="w-5 h-5 text-[#007a87]" />
               </div>
               <div>
-                <h3 className="text-base md:text-lg font-[900] text-[#002b5c] mb-1">How to Apply</h3>
+                <h3 className="text-base md:text-base font-[900] text-[#002b5c] mb-1">How to Apply</h3>
                 <p className="text-slate-600 font-[500] text-sm md:text-base">{pageData?.applyInstruction || "Please send an email with your CV mentioning the Job Title in the subject line."}</p>
               </div>
             </div>
-            <a href={`mailto:${pageData?.applyEmail || "jobs@dmhospital.org"}`} className="inline-flex items-center justify-center gap-2 bg-[#002b5c] hover:bg-[#001f44] text-white px-6 py-3.5 rounded-xl font-bold transition-colors whitespace-nowrap shrink-0 shadow-sm text-sm">
+            <a href={`mailto:${pageData?.applyEmail || "jobs@dmhospital.org"}`} className="inline-flex items-center justify-center gap-2 bg-[#002b5c] hover:bg-[#001f44] text-white px-6 py-3.5 rounded-xl font-bold transition-colors  shrink-0 shadow-sm text-sm">
               <Send className="w-4 h-4" />{pageData?.applyEmail || "jobs@dmhospital.org"}</a>
           </div>
 
@@ -120,7 +120,7 @@ export default function CareersClientPage({ pageData }: { pageData: any }) {
                   </h3>
                 </div>
 
-                <div className="px-6 md:px-8 pb-6 md:pb-8 flex-1 flex flex-col pt-2 [&_.text-sm]:!text-[18px]">
+                <div className="px-6 md:px-8 pb-6 md:pb-8 flex-1 flex flex-col pt-2 [&_.text-sm]:!text-base">
                   <div className="space-y-6 flex-1 mb-8">
                   {job.qualification && (
                     <div className="flex items-start gap-3.5">
@@ -229,14 +229,14 @@ export default function CareersClientPage({ pageData }: { pageData: any }) {
                   </button>
                 </div>
               ) : (
-              <form className="p-6 sm:p-8 space-y-6 [&_label]:!text-[18px]" onSubmit={handleJobSubmit}>
+              <form className="p-6 sm:p-8 space-y-6 [&_label]:!text-base" onSubmit={handleJobSubmit}>
                 
                 {/* All Form Fields - Single Box */}
                 <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm relative overflow-visible group hover:shadow-md transition-shadow z-40">
                   <div className="absolute top-0 left-0 w-1.5 h-full bg-[#007a87] rounded-l-2xl"></div>
                   
                   {/* Personal Information */}
-                  <h3 className="text-lg font-bold text-[#002b5c] mb-5 flex items-center gap-2">
+                  <h3 className="text-base font-bold text-[#002b5c] mb-5 flex items-center gap-2">
                     <User className="w-5 h-5 text-teal-600" />
                     Personal Information
                   </h3>
@@ -335,7 +335,7 @@ export default function CareersClientPage({ pageData }: { pageData: any }) {
                   <div className="border-t border-slate-100 my-6"></div>
 
                   {/* Professional Details */}
-                  <h3 className="text-lg font-bold text-[#002b5c] mb-5 flex items-center gap-2">
+                  <h3 className="text-base font-bold text-[#002b5c] mb-5 flex items-center gap-2">
                     <Briefcase className="w-5 h-5 text-teal-600" />
                     Professional Details
                   </h3>

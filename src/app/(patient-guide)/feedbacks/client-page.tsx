@@ -60,7 +60,7 @@ export default function FeedbacksClientPage({ pageData }: { pageData: any }) {
                         "{story.title}"
                       </h3>
                       
-                      <p className="text-slate-600 leading-relaxed mb-6 italic text-lg">
+                      <p className="text-slate-600 leading-relaxed mb-6 italic text-base">
                         {story.content}
                       </p>
                       

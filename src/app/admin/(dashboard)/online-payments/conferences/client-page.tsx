@@ -70,36 +70,36 @@ export default function ConferencesClientPage({ initialConferences }: { initialC
 
       <div className="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse">
+          <table className="break-words w-full text-left border-collapse">
             <thead>
               <tr className="bg-slate-50/80 border-b border-slate-100">
-                <th className="p-4 md:p-5 text-sm font-extrabold text-slate-700 uppercase tracking-wider">Title</th>
-                <th className="p-4 md:p-5 text-sm font-extrabold text-slate-700 uppercase tracking-wider">Category</th>
-                <th className="p-4 md:p-5 text-sm font-extrabold text-slate-700 uppercase tracking-wider">Fees</th>
-                <th className="p-4 md:p-5 text-sm font-extrabold text-slate-700 uppercase tracking-wider w-32">Status</th>
-                <th className="p-4 md:p-5 text-sm font-extrabold text-slate-700 uppercase tracking-wider w-24 text-center">Actions</th>
+                <th className="p-2 md:p-2 text-sm font-extrabold text-slate-700 uppercase tracking-wider">Title</th>
+                <th className="p-2 md:p-2 text-sm font-extrabold text-slate-700 uppercase tracking-wider">Category</th>
+                <th className="p-2 md:p-2 text-sm font-extrabold text-slate-700 uppercase tracking-wider">Fees</th>
+                <th className="p-2 md:p-2 text-sm font-extrabold text-slate-700 uppercase tracking-wider w-32">Status</th>
+                <th className="p-2 md:p-2 text-sm font-extrabold text-slate-700 uppercase tracking-wider w-24 text-center">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
               {filteredConferences.map((conf) => (
                 <tr key={conf.id} className="hover:bg-slate-50/50 transition-colors group">
-                  <td className="p-4 md:p-5 font-semibold text-slate-800">
+                  <td className="p-2 md:p-2 font-semibold text-slate-800">
                     {conf.conferenceTitle}
                   </td>
-                  <td className="p-4 md:p-5 font-medium text-slate-600">
+                  <td className="p-2 md:p-2 font-medium text-slate-600">
                     {conf.category.categoryName}
                   </td>
-                  <td className="p-4 md:p-5 font-semibold text-slate-700">
+                  <td className="p-2 md:p-2 font-semibold text-slate-700">
                     ₹{Number(conf.conferenceFee).toFixed(2)}
                   </td>
-                  <td className="p-4 md:p-5">
+                  <td className="p-2 md:p-2">
                     <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold ${
                       conf.status === 'Active' ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700'
                     }`}>
                       {conf.status}
                     </span>
                   </td>
-                  <td className="p-4 md:p-5 text-center">
+                  <td className="p-2 md:p-2 text-center">
                     <div className="flex items-center justify-center gap-2">
                       <Link 
                         href={`/admin/online-payments/conferences/${conf.id}`}

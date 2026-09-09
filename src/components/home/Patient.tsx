@@ -117,7 +117,7 @@ export default function PatientJourney({ data = defaultPatientJourneyData }: { d
             </p>
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-slate-900 leading-tight" dangerouslySetInnerHTML={{__html: (data.title || "").replace(/\\n/g, '<br/>')}}>
             </h2>
-            <p className="mt-4 text-[18px] font-normal leading-[31px] text-slate-600">
+            <p className="mt-4 text-base font-normal leading-[31px] text-slate-600">
               {data.description}
             </p>
 

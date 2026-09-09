@@ -88,7 +88,7 @@ export default function GalleryPhotosClientPage({ pageData }: { pageData: any })
                     <button
                       key={idx}
                       onClick={() => setActiveCategory(cat)}
-                      className={"whitespace-nowrap px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 " + (
+                      className={" px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 " + (
                         activeCategory === cat 
                           ? "bg-[#002b5c] text-white shadow-md transform scale-105" 
                           : "bg-slate-100 text-slate-600 hover:bg-slate-200"
@@ -175,7 +175,7 @@ export default function GalleryPhotosClientPage({ pageData }: { pageData: any })
             className="mt-4 bg-white/95 px-4 py-2 rounded flex items-center justify-between w-full max-w-4xl shadow-lg"
             onClick={e => e.stopPropagation()}
           >
-            <div className="text-sm font-bold text-slate-700 min-w-[50px]">
+            <div className="text-sm font-bold text-slate-700 ">
               {lightboxIndex + 1} / {filteredPhotos.length}
             </div>
 

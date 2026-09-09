@@ -46,7 +46,7 @@ export default async function DoctorsDepartmentsPage() {
                   Our Departments
                 </h2>
                 <div className="w-20 h-1.5 bg-[#007a87] rounded-full"></div>
-                <p className="text-gray-600 text-lg max-w-3xl leading-relaxed">
+                <p className="text-gray-600 text-base max-w-3xl leading-relaxed">
                   Explore our specialized medical departments. Our team of expert doctors and state-of-the-art facilities are dedicated to providing world-class healthcare across a wide range of medical specialties.
                 </p>
               </div>

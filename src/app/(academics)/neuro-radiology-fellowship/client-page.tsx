@@ -88,7 +88,7 @@ radiofellowship@gmail.com</p>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 md:py-4 relative z-10">
           
           {/* Breadcrumb */}
-          <div className="flex items-center gap-2 text-blue-200 text-[10px] font-medium tracking-wide mb-1 overflow-hidden whitespace-nowrap">
+          <div className="flex items-center gap-2 text-blue-200 text-[10px] font-medium tracking-wide mb-1 overflow-hidden ">
             <Link href="/" className="hover:text-white transition-colors shrink-0">Home</Link>
             <ChevronRight className="w-3.5 h-3.5 shrink-0" />
             <span className="text-white truncate">{title}</span>
@@ -107,7 +107,7 @@ radiofellowship@gmail.com</p>
             Overview
           </h2>
           <div 
-            className="prose prose-slate max-w-none text-[18px] prose-headings:text-[#002b5c] [&_h1]:!text-[22px] [&_h2]:!text-[22px] [&_h3]:!text-[22px] [&_h4]:!text-[22px] [&_p]:!text-[18px] [&_li]:!text-[18px] [&_td]:!text-[18px] [&_th]:!text-[18px] [&_h2]:mt-4 [&_h2]:mb-2 [&_h3]:mt-4 [&_h3]:mb-2 [&_h4]:mt-3 [&_h4]:mb-1.5 [&_p]:mb-1 [&_ul]:my-1.5 [&_ol]:my-1.5 leading-relaxed"
+            className="prose prose-slate max-w-none text-base prose-headings:text-[#002b5c] [&_h1]:!text-[22px] [&_h2]:!text-[22px] [&_h3]:!text-[22px] [&_h4]:!text-[22px] [&_p]:!text-base [&_li]:!text-base [&_td]:!text-base [&_th]:!text-base [&_h2]:mt-4 [&_h2]:mb-2 [&_h3]:mt-4 [&_h3]:mb-2 [&_h4]:mt-3 [&_h4]:mb-1.5 [&_p]:mb-1 [&_ul]:my-1.5 [&_ol]:my-1.5 leading-relaxed"
             dangerouslySetInnerHTML={{ __html: overview }}
           />
 

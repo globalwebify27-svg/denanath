@@ -129,7 +129,7 @@ export default function VirtualTourClientForm({ initialData }: { initialData: an
 
       <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
         <div className="p-6 border-b border-gray-200">
-          <h2 className="text-lg font-bold text-gray-800">Locations</h2>
+          <h2 className="text-base font-bold text-gray-800">Locations</h2>
           <p className="text-sm text-gray-500 mt-1">Manage the locations shown in the virtual tour.</p>
         </div>
         <div className="p-6 space-y-4">
@@ -237,7 +237,7 @@ export default function VirtualTourClientForm({ initialData }: { initialData: an
 
       <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
         <div className="p-6 border-b border-gray-200">
-          <h2 className="text-lg font-bold text-gray-800">SEO Settings</h2>
+          <h2 className="text-base font-bold text-gray-800">SEO Settings</h2>
           <p className="text-sm text-gray-500 mt-1">Manage search engine optimization meta tags.</p>
         </div>
         <div className="p-6 space-y-4">

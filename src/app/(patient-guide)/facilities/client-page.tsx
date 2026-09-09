@@ -142,18 +142,18 @@ export default function FacilitiesClientPage({ pageData }: { pageData: any }) {
                   <div className="grid lg:grid-cols-2 gap-8">
                     {/* IPD Billing */}
                     <div className="bg-slate-50 p-6 rounded-2xl border border-slate-100 shadow-sm">
-                      <h4 className="font-bold text-lg text-[#007a87] mb-4 border-b border-slate-200 pb-2">IPD Billing</h4>
+                      <h4 className="font-bold text-base text-[#007a87] mb-4 border-b border-slate-200 pb-2">IPD Billing</h4>
                       
                       <div className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm mb-6">
-                        <table className="w-full text-left text-sm">
+                        <table className="break-words w-full text-left text-sm">
                           <thead className="bg-slate-100 text-slate-700 font-semibold">
-                            <tr><th className="px-4 py-3">Building & Floor</th><th className="px-4 py-3">Timing</th></tr>
+                            <tr><th className="p-2">Building & Floor</th><th className="p-2">Timing</th></tr>
                           </thead>
                           <tbody className="divide-y divide-slate-100">
                             {ipdBillingTimings.map((item: any, idx: number) => (
                               <tr key={idx} className="hover:bg-slate-50">
-                                <td className="px-4 py-2">{item.building}</td>
-                                <td className={`px-4 py-2 ${item.timing.toLowerCase().includes('24x7') ? 'font-medium text-teal-600' : ''}`}>
+                                <td className="p-2">{item.building}</td>
+                                <td className={`p-2 ${item.timing.toLowerCase().includes('24x7') ? 'font-medium text-teal-600' : ''}`}>
                                   {item.timing}
                                 </td>
                               </tr>
@@ -171,7 +171,7 @@ export default function FacilitiesClientPage({ pageData }: { pageData: any }) {
 
                     {/* OPD Billing */}
                     <div className="bg-teal-50/50 p-6 rounded-2xl border border-teal-100 shadow-sm flex flex-col">
-                      <h4 className="font-bold text-lg text-[#007a87] mb-4 border-b border-teal-200/50 pb-2">OPD Billing</h4>
+                      <h4 className="font-bold text-base text-[#007a87] mb-4 border-b border-teal-200/50 pb-2">OPD Billing</h4>
                       <ul className="space-y-4 text-sm flex-1">
                         {opdBillingRules.map((rule: string, i: number) => (
                           <li key={i} className="flex items-start gap-3">

@@ -130,9 +130,9 @@ export default async function DepartmentDetailsPage({
                     <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-teal-50 border border-teal-100 flex items-center justify-center text-[#007a87] font-extrabold text-sm sm:text-base shrink-0">
                       ${profileDoctorImage ? `<img src="${profileDoctorImage}" alt="${cleanName}" class="w-full h-full object-cover rounded-2xl" />` : initials}
                     </div>
-                    <div class="text-sm sm:text-lg font-bold text-[#002b5c] m-0 leading-snug hover:text-[#007a87] transition-colors min-w-0 break-words flex-1">${displayName}</div>
+                    <div class="text-sm sm:text-base font-bold text-[#002b5c] m-0 leading-snug hover:text-[#007a87] transition-colors min-w-0 break-words flex-1">${displayName}</div>
                   </a>
-                  <a href="${doctorProfileUrl}" class="px-2.5 py-1.5 sm:px-4 sm:py-2 bg-teal-50 hover:bg-teal-100 text-[#007a87] rounded-xl text-[11px] sm:text-xs font-bold transition-colors shrink-0 whitespace-nowrap">
+                  <a href="${doctorProfileUrl}" class="px-2.5 py-1.5 sm:px-4 sm:py-2 bg-teal-50 hover:bg-teal-100 text-[#007a87] rounded-xl text-[11px] sm:text-xs font-bold transition-colors shrink-0 ">
                     View Profile
                   </a>
                 </div>
@@ -289,7 +289,7 @@ export default async function DepartmentDetailsPage({
                          <div class="text-4xl text-[#007a87] font-bold">${text.charAt(0)}</div>
                       </div>
                     `}
-                    <h4 class="text-[15px] md:text-[17px] font-medium text-[#007a87] transition-colors leading-snug px-2">${text}</h4>
+                    <h4 class="text-[15px] md:text-base font-medium text-[#007a87] transition-colors leading-snug px-2">${text}</h4>
                  </div>
                `;
                gridContainer.append(itemHtml);
@@ -340,7 +340,7 @@ export default async function DepartmentDetailsPage({
               const newHtml = `
                 <details class="faq-item group cursor-pointer p-3 rounded-xl hover:bg-white hover:shadow-md transition-all duration-300 border border-transparent hover:border-slate-100 [&_summary::-webkit-details-marker]:hidden">
                   <summary class="flex items-start gap-3 list-none outline-none">
-                    <h4 class="text-lg font-bold text-slate-800 !m-0 group-hover:text-black transition-colors">${question}</h4>
+                    <h4 class="text-base font-bold text-slate-800 !m-0 group-hover:text-black transition-colors">${question}</h4>
                   </summary>
                   <div class="text-slate-600 mt-3 border-t border-slate-100 pt-3">
                     ${answerHtml.startsWith('<p') ? answerHtml : `<p class="!mb-0 mt-3 first:mt-0">${answerHtml}</p>`}
@@ -371,7 +371,7 @@ export default async function DepartmentDetailsPage({
               const newHtml = `
                 <details class="faq-item group cursor-pointer p-5 bg-white rounded-xl shadow-sm border border-slate-100 hover:shadow-md transition-all duration-300 [&_summary::-webkit-details-marker]:hidden">
                   <summary class="flex items-start justify-between gap-3 list-none outline-none">
-                    <h4 class="text-lg font-bold text-[#002b5c] !m-0 group-hover:text-[#007a87] transition-colors">${question}</h4>
+                    <h4 class="text-base font-bold text-[#002b5c] !m-0 group-hover:text-[#007a87] transition-colors">${question}</h4>
                     <span class="text-[#007a87] group-open:rotate-180 transition-transform duration-300">
                       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
                     </span>
@@ -477,7 +477,7 @@ export default async function DepartmentDetailsPage({
                const newHtml = `
                  <details class="faq-item group cursor-pointer p-3 rounded-xl hover:bg-white hover:shadow-md transition-all duration-300 border border-transparent hover:border-slate-100 [&_summary::-webkit-details-marker]:hidden">
                    <summary class="flex items-start gap-3 list-none outline-none">
-                     <h4 class="text-lg font-bold text-slate-800 m-0 group-hover:text-black transition-colors">${question}</h4>
+                     <h4 class="text-base font-bold text-slate-800 m-0 group-hover:text-black transition-colors">${question}</h4>
                    </summary>
                    <div class="text-slate-600 mt-3 border-t border-slate-100 pt-3">
                      ${answerHtml.startsWith('<p') ? answerHtml : `<p class="!mb-0 mt-3 first:mt-0">${answerHtml}</p>`}
@@ -637,9 +637,9 @@ export default async function DepartmentDetailsPage({
                     <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-teal-50 border border-teal-100 flex items-center justify-center text-[#007a87] font-extrabold text-sm sm:text-base shrink-0">
                       ${doctorImage ? `<img src="${doctorImage}" alt="${cleanName}" class="w-full h-full object-cover rounded-2xl" />` : initials}
                     </div>
-                    <div class="text-sm sm:text-lg font-bold text-[#002b5c] m-0 leading-snug hover:text-[#007a87] transition-colors min-w-0 break-words flex-1">${name}</div>
+                    <div class="text-sm sm:text-base font-bold text-[#002b5c] m-0 leading-snug hover:text-[#007a87] transition-colors min-w-0 break-words flex-1">${name}</div>
                   </a>
-                  <a href="${doctorProfileUrl}" class="px-2.5 py-1.5 sm:px-4 sm:py-2 bg-teal-50 hover:bg-teal-100 text-[#007a87] rounded-xl text-[11px] sm:text-xs font-bold transition-colors shrink-0 whitespace-nowrap">
+                  <a href="${doctorProfileUrl}" class="px-2.5 py-1.5 sm:px-4 sm:py-2 bg-teal-50 hover:bg-teal-100 text-[#007a87] rounded-xl text-[11px] sm:text-xs font-bold transition-colors shrink-0 ">
                     View Profile
                   </a>
                 </div>
@@ -771,11 +771,11 @@ export default async function DepartmentDetailsPage({
             
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 md:py-4 relative z-10">
               <div className="flex items-center gap-2 text-blue-200 text-[10px] font-medium tracking-wide mb-1 flex-wrap">
-                <Link href="/" className="hover:text-white transition-colors whitespace-nowrap">Home</Link>
+                <Link href="/" className="hover:text-white transition-colors ">Home</Link>
                 <ChevronRight className="w-3.5 h-3.5 shrink-0" />
-                <Link href="/departments" className="hover:text-white transition-colors whitespace-nowrap">Specialties</Link>
+                <Link href="/departments" className="hover:text-white transition-colors ">Specialties</Link>
                 <ChevronRight className="w-3.5 h-3.5 shrink-0" />
-                <Link href={`/departments/${currentDeptSlug}`} className="hover:text-white transition-colors whitespace-nowrap">{department.name}</Link>
+                <Link href={`/departments/${currentDeptSlug}`} className="hover:text-white transition-colors ">{department.name}</Link>
                 <ChevronRight className="w-3.5 h-3.5 shrink-0" />
                 <span className="text-white truncate">Procedures</span>
               </div>
@@ -813,11 +813,11 @@ export default async function DepartmentDetailsPage({
             
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 md:py-4 relative z-10">
               <div className="flex items-center gap-2 text-blue-200 text-[10px] font-medium tracking-wide mb-1 flex-wrap">
-                <Link href="/" className="hover:text-white transition-colors whitespace-nowrap">Home</Link>
+                <Link href="/" className="hover:text-white transition-colors ">Home</Link>
                 <ChevronRight className="w-3.5 h-3.5 shrink-0" />
-                <Link href="/departments" className="hover:text-white transition-colors whitespace-nowrap">Specialties</Link>
+                <Link href="/departments" className="hover:text-white transition-colors ">Specialties</Link>
                 <ChevronRight className="w-3.5 h-3.5 shrink-0" />
-                <Link href={`/departments/${currentDeptSlug}`} className="hover:text-white transition-colors whitespace-nowrap">{department.name}</Link>
+                <Link href={`/departments/${currentDeptSlug}`} className="hover:text-white transition-colors ">{department.name}</Link>
                 <ChevronRight className="w-3.5 h-3.5 shrink-0" />
                 <span className="text-white truncate">Photo Gallery</span>
               </div>
@@ -855,11 +855,11 @@ export default async function DepartmentDetailsPage({
             
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 md:py-4 relative z-10">
               <div className="flex items-center gap-2 text-blue-200 text-[10px] font-medium tracking-wide mb-1 flex-wrap">
-                <Link href="/" className="hover:text-white transition-colors whitespace-nowrap">Home</Link>
+                <Link href="/" className="hover:text-white transition-colors ">Home</Link>
                 <ChevronRight className="w-3.5 h-3.5 shrink-0" />
-                <Link href="/departments" className="hover:text-white transition-colors whitespace-nowrap">Specialties</Link>
+                <Link href="/departments" className="hover:text-white transition-colors ">Specialties</Link>
                 <ChevronRight className="w-3.5 h-3.5 shrink-0" />
-                <Link href={`/departments/${currentDeptSlug}`} className="hover:text-white transition-colors whitespace-nowrap">{department.name}</Link>
+                <Link href={`/departments/${currentDeptSlug}`} className="hover:text-white transition-colors ">{department.name}</Link>
                 <ChevronRight className="w-3.5 h-3.5 shrink-0" />
                 <span className="text-white truncate">FAQ&apos;s</span>
               </div>
@@ -892,9 +892,9 @@ export default async function DepartmentDetailsPage({
         
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 md:py-4 relative z-10">
           <div className="flex items-center gap-2 text-blue-200 text-[10px] font-medium tracking-wide mb-1 flex-wrap">
-            <Link href="/" className="hover:text-white transition-colors whitespace-nowrap">Home</Link>
+            <Link href="/" className="hover:text-white transition-colors ">Home</Link>
             <ChevronRight className="w-3.5 h-3.5 shrink-0" />
-            <Link href="/departments" className="hover:text-white transition-colors whitespace-nowrap">Specialties</Link>
+            <Link href="/departments" className="hover:text-white transition-colors ">Specialties</Link>
             <ChevronRight className="w-3.5 h-3.5 shrink-0" />
             <span className="text-white truncate">{department.name}</span>
           </div>
@@ -931,13 +931,13 @@ export default async function DepartmentDetailsPage({
               {/* Department Description / Content */}
               <div className={`text-slate-700 space-y-4 break-words [&_img]:max-w-full [&_img]:h-auto [&_img]:rounded-2xl [&_img]:shadow-md [&_img]:my-4 [&_img]:mx-auto [&_img]:block md:[&_img]:inline-block md:[&_img]:mx-0 ${department.name.toLowerCase().includes('rheumatology') ? 'md:[&_img]:mr-4 md:[&_img]:mb-4' : ''} [&_p:not(:last-child)]:mb-2.5 [&_section:not(:last-child)]:mb-5
                 [&_h3]:text-xl [&_h3]:font-bold [&_h3]:text-[#002b5c] [&_h3]:mt-5 [&_h3]:mb-2.5 [&_h3]:border-b [&_h3]:pb-1.5 [&_h3:first-child]:!mt-0
-                [&_h4]:text-lg [&_h4]:font-semibold [&_h4]:text-[#007a87] [&_h4]:mt-4 [&_h4]:mb-2 [&_h4:first-child]:!mt-0
+                [&_h4]:text-base [&_h4]:font-semibold [&_h4]:text-[#007a87] [&_h4]:mt-4 [&_h4]:mb-2 [&_h4:first-child]:!mt-0
                 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:space-y-1.5 [&_ul]:mb-4
                 [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:space-y-1.5 [&_ol]:mb-4
                 [&_table]:table [&_table]:w-full [&_table]:text-sm [&_table]:text-left [&_table]:border-collapse [&_table]:border [&_table]:border-slate-200
-                [&_td]:px-6 [&_td]:py-4 [&_td]:border [&_td]:border-slate-200 [&_td]:whitespace-nowrap
+                [&_td]:px-6 [&_td]:py-4 [&_td]:border [&_td]:border-slate-200 [&_td]:
                 [&_tr:hover]:bg-slate-50
-                [&_thead>tr]:!bg-[#002b5c] [&_thead>tr>th]:!text-white [&_thead>tr>th]:font-bold [&_thead>tr>th]:uppercase [&_thead>tr>th]:text-sm [&_thead>tr:first-child>th]:!border-b [&_thead>tr:first-child>th]:!border-white [&_thead>tr>th]:whitespace-nowrap [&_thead>tr>th]:text-center
+                [&_thead>tr]:!bg-[#002b5c] [&_thead>tr>th]:!text-white [&_thead>tr>th]:font-bold [&_thead>tr>th]:uppercase [&_thead>tr>th]:text-sm [&_thead>tr:first-child>th]:!border-b [&_thead>tr:first-child>th]:!border-white [&_thead>tr>th]: [&_thead>tr>th]:text-center
                 [&_thead>tr>td]:!text-white [&_thead>tr>td]:font-bold [&_thead>tr>td]:uppercase [&_thead>tr>td]:text-sm [&_thead>tr>td]:text-center
                 [&_table>tr:first-child]:!bg-[#002b5c] [&_table>tr:first-child>td]:!text-white [&_table>tr:first-child>td]:font-bold [&_table>tr:first-child>td]:uppercase [&_table>tr:first-child>td]:text-sm [&_table>tr:first-child>td]:text-center
                 [&_tbody:first-child>tr:first-child]:!bg-[#002b5c] [&_tbody:first-child>tr:first-child>td]:!text-white [&_tbody:first-child>tr:first-child>td]:font-bold [&_tbody:first-child>tr:first-child>td]:uppercase [&_tbody:first-child>tr:first-child>td]:text-sm [&_tbody:first-child>tr:first-child>td]:text-center
@@ -969,7 +969,7 @@ export default async function DepartmentDetailsPage({
                 ) : (
                   <div className="py-12 text-center bg-slate-50 border-2 border-dashed border-slate-200 rounded-2xl">
                     <HeartPulse className="w-12 h-12 text-slate-300 mx-auto mb-4" />
-                    <h3 className="text-lg font-bold text-slate-700 mb-2">No details available</h3>
+                    <h3 className="text-base font-bold text-slate-700 mb-2">No details available</h3>
                     <p className="text-slate-500">More information about this department will be updated soon.</p>
                   </div>
                 )}

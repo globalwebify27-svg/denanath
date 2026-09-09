@@ -545,7 +545,7 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
             ${isAvailable ? 'cursor-pointer hover:bg-teal-600 bg-white hover:shadow-md' : 'bg-slate-50/30 text-slate-400 cursor-not-allowed'}
           `}
         >
-          <span className={`text-lg transition-colors ${isAvailable ? 'text-[#002b5c] font-bold group-hover:text-white' : 'font-medium'}`}>
+          <span className={`text-base transition-colors ${isAvailable ? 'text-[#002b5c] font-bold group-hover:text-white' : 'font-medium'}`}>
             {dayStr}
           </span>
           <span className={`text-xs mt-1 uppercase tracking-wider transition-colors ${isAvailable ? 'font-medium text-slate-600 group-hover:text-teal-50' : ''}`}>
@@ -611,7 +611,7 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
               
               <div className="relative">
                 <div 
-                  className={`w-full ${selectedSpeciality ? 'bg-teal-50/90 border-teal-500 text-teal-900 shadow-sm' : 'bg-slate-50/70 border-teal-500/30 text-slate-700 hover:bg-teal-50/50 hover:border-teal-500/60'} border-2 text-lg rounded-full py-4 px-6 cursor-pointer flex items-center justify-between font-medium transition-all relative z-10`}
+                  className={`w-full ${selectedSpeciality ? 'bg-teal-50/90 border-teal-500 text-teal-900 shadow-sm' : 'bg-slate-50/70 border-teal-500/30 text-slate-700 hover:bg-teal-50/50 hover:border-teal-500/60'} border-2 text-base rounded-full py-4 px-6 cursor-pointer flex items-center justify-between font-medium transition-all relative z-10`}
                   onClick={() => { setIsSpecOpen(!isSpecOpen); setIsDocOpen(false); setSpecQuery(""); }}
                 >
                   <span className="flex-1 text-center truncate font-semibold">
@@ -683,7 +683,7 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
               
               <div className="relative">
                 <div 
-                  className={`w-full ${selectedDoctor ? 'bg-teal-50/90 border-teal-500 text-teal-900 shadow-sm' : 'bg-slate-50/70 border-teal-500/30 text-slate-700 hover:bg-teal-50/50 hover:border-teal-500/60'} border-2 text-lg rounded-full py-4 px-6 cursor-pointer flex items-center justify-between font-medium transition-all relative z-10`}
+                  className={`w-full ${selectedDoctor ? 'bg-teal-50/90 border-teal-500 text-teal-900 shadow-sm' : 'bg-slate-50/70 border-teal-500/30 text-slate-700 hover:bg-teal-50/50 hover:border-teal-500/60'} border-2 text-base rounded-full py-4 px-6 cursor-pointer flex items-center justify-between font-medium transition-all relative z-10`}
                   onClick={() => { setIsDocOpen(!isDocOpen); setIsSpecOpen(false); setDocQuery(""); }}
                 >
                   <span className="flex-1 text-center truncate font-semibold">
@@ -798,7 +798,7 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
                 <button 
                   onClick={handleSearch}
                   disabled={isSearching}
-                  className="bg-[#4bc2b0] hover:bg-[#3ba897] text-white px-10 py-3 rounded-full font-bold uppercase tracking-wider transition-colors shadow-md min-w-[140px]"
+                  className="bg-[#4bc2b0] hover:bg-[#3ba897] text-white px-10 py-3 rounded-full font-bold uppercase tracking-wider transition-colors shadow-md "
                 >
                   {isSearching ? "Searching..." : "Search"}
                 </button>
@@ -901,7 +901,7 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
                   <div className="w-full">
                     {doc.schedule && doc.schedule.length > 0 ? (
                       <div className="overflow-x-auto rounded-2xl border border-slate-200 bg-slate-50/60 p-1">
-                        <table className="w-full text-xs text-center border-collapse">
+                        <table className="break-words w-full text-xs text-center border-collapse">
                           <thead>
                             <tr className="bg-[#002b5c] text-white font-bold uppercase tracking-wider rounded-xl">
                               <th className="py-2.5 px-3 rounded-l-xl">MON</th>
@@ -991,7 +991,7 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-sm">
           <div className="bg-white rounded-2xl shadow-2xl w-full max-w-3xl max-h-[80vh] flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-200">
             <div className="flex justify-between items-center p-6 border-b border-slate-100">
-              <h3 className="text-lg font-bold text-[#002b5c]">Available Appointments on {new Date(selectedDate).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).replace(/ /g, '-')}</h3>
+              <h3 className="text-base font-bold text-[#002b5c]">Available Appointments on {new Date(selectedDate).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).replace(/ /g, '-')}</h3>
               <button onClick={() => setSelectedDate(null)} className="p-2 hover:bg-slate-100 rounded-full transition-colors">
                 <X className="w-5 h-5 text-slate-500" />
               </button>
@@ -1210,7 +1210,7 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
                 </div>
 
                 <div className="pt-4 flex gap-3">
-                  <button type="submit" disabled={isSubmitting} className="bg-[#4bc2b0] hover:bg-[#3ba897] text-white px-6 py-2 rounded-full font-bold text-sm transition-colors min-w-[140px]">
+                  <button type="submit" disabled={isSubmitting} className="bg-[#4bc2b0] hover:bg-[#3ba897] text-white px-6 py-2 rounded-full font-bold text-sm transition-colors ">
                     {isSubmitting ? "Saving..." : "Save Appointment"}
                   </button>
                   <button type="button" onClick={() => setSelectedSlot(null)} className="bg-[#477085] hover:bg-[#3a5d6f] text-white px-6 py-2 rounded-full font-bold text-sm transition-colors">

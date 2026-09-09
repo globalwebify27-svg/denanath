@@ -167,7 +167,7 @@ export default function HealthPackagesClientPage({ pageData }: { pageData: any }
                             <Phone className="w-5 h-5 text-teal-400 shrink-0 mt-1" />
                             <div>
                               {appointmentPhones.map((phone: string, idx: number) => (
-                                <p key={idx} className="font-semibold text-lg">{phone}</p>
+                                <p key={idx} className="font-semibold text-base">{phone}</p>
                               ))}
                               {appointmentTimings && (
                                 <p className="text-blue-200 text-sm mt-1 whitespace-pre-line">{appointmentTimings}</p>

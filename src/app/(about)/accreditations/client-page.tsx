@@ -51,7 +51,7 @@ export default function AccreditationsClient({ data }: { data: any[] }) {
               {/* Introduction Text */}
               <div className="text-center mb-14 bg-slate-50/50 p-8 rounded-2xl border border-slate-100">
                 <ShieldCheck className="w-12 h-12 text-[#007a87] mx-auto mb-4 opacity-80" />
-                <p className="text-lg md:text-xl text-[#002b5c] leading-relaxed font-semibold">
+                <p className="text-base md:text-xl text-[#002b5c] leading-relaxed font-semibold">
                   Deenanath Mangeshkar Hospital and Research Center is accredited by
                 </p>
                 <div className="mt-4 space-y-2 text-slate-600 font-normal">

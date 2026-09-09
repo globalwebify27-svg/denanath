@@ -63,7 +63,7 @@ export default function EmergencyCTA() {
             {/* Subtext Description */}
             <p className="
               mt-5 max-w-xl
-              text-[18px] font-normal
+              text-base font-normal
               leading-[31px] text-slate-600
             ">
               Rapid ambulance service, emergency specialists, trauma care, and ICU response teams available 24/7 for urgent medical situations.
@@ -143,7 +143,7 @@ export default function EmergencyCTA() {
                   </div>
 
                   <div>
-                    <h3 className="font-bold text-lg text-white tracking-wide">
+                    <h3 className="font-bold text-base text-white tracking-wide">
                       Call Ambulance
                     </h3>
                     <p className="text-xs sm:text-sm text-red-100/80 mt-0.5 font-medium">
@@ -193,7 +193,7 @@ export default function EmergencyCTA() {
                   </div>
 
                   <div>
-                    <h3 className="font-bold text-lg text-white tracking-wide">
+                    <h3 className="font-bold text-base text-white tracking-wide">
                       Emergency Care
                     </h3>
                     <p className="text-xs sm:text-sm text-rose-100/80 mt-0.5 font-medium">
@@ -243,7 +243,7 @@ export default function EmergencyCTA() {
                   </div>
 
                   <div>
-                    <h3 className="font-bold text-lg text-white tracking-wide">
+                    <h3 className="font-bold text-base text-white tracking-wide">
                       OPD Appointment
                     </h3>
                     <p className="text-xs sm:text-sm text-red-100/80 mt-0.5 font-medium">

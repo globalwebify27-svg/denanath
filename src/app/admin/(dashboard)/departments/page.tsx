@@ -88,13 +88,13 @@ export default async function AdminDepartmentsPage({
       {/* Premium Data Table */}
       <div className="bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100/80 overflow-hidden relative z-10">
         <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse table-fixed min-w-[800px] md:min-w-full">
+          <table className="break-words w-full text-left border-collapse table-fixed  ">
             <thead>
               <tr className="bg-gradient-to-r from-gray-50 to-white border-b border-gray-100">
-                <th className="p-5 font-[800] text-[12px] uppercase tracking-widest text-gray-400 w-[30%]">Department Name</th>
-                <th className="p-5 font-[800] text-[12px] uppercase tracking-widest text-gray-400 w-[20%]">Status</th>
-                <th className="p-5 font-[800] text-[12px] uppercase tracking-widest text-gray-400 w-[40%]">Description</th>
-                <th className="p-5 font-[800] text-[12px] uppercase tracking-widest text-gray-400 text-right w-[10%]">Actions</th>
+                <th className="p-2 font-[800] text-[12px] uppercase tracking-widest text-gray-400 w-[30%]">Department Name</th>
+                <th className="p-2 font-[800] text-[12px] uppercase tracking-widest text-gray-400 w-[20%]">Status</th>
+                <th className="p-2 font-[800] text-[12px] uppercase tracking-widest text-gray-400 w-[40%]">Description</th>
+                <th className="p-2 font-[800] text-[12px] uppercase tracking-widest text-gray-400 text-right w-[10%]">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100/80">
@@ -102,7 +102,7 @@ export default async function AdminDepartmentsPage({
                 const initials = department.name.substring(0, 2).toUpperCase();
                 return (
                   <tr key={department.id} className="hover:bg-gray-50/60 transition-colors group">
-                    <td className="p-5 break-words">
+                    <td className="p-2 break-words">
                       <div className="flex items-center gap-4">
                         <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#002b5c]/10 to-[#007a87]/10 border border-[#007a87]/20 flex items-center justify-center shrink-0 shadow-sm group-hover:scale-105 transition-transform">
                           <span className="text-[12px] font-[800] text-[#002b5c] tracking-wider">{initials}</span>
@@ -115,14 +115,14 @@ export default async function AdminDepartmentsPage({
                         </div>
                       </div>
                     </td>
-                    <td className="p-5">
+                    <td className="p-2">
                       <div className="flex flex-wrap gap-1">
                         <span className={`inline-flex items-center px-3 py-1 rounded-lg border text-[11px] font-[800] uppercase tracking-widest whitespace-normal break-words ${department.status ? 'bg-emerald-50 border-emerald-200 text-emerald-600' : 'bg-rose-50 border-rose-200 text-rose-600'}`}>
                           {department.status ? 'Active' : 'Inactive'}
                         </span>
                       </div>
                     </td>
-                    <td className="p-5 break-words">
+                    <td className="p-2 break-words">
                       <p className="text-[13px] font-[600] text-gray-600 leading-relaxed whitespace-normal line-clamp-2">
                         {department.description ? (
                           department.description.replace(/<[^>]*>?/gm, '')
@@ -131,7 +131,7 @@ export default async function AdminDepartmentsPage({
                         )}
                       </p>
                     </td>
-                    <td className="p-5 text-right">
+                    <td className="p-2 text-right">
                       <Link
                         href={`/admin/departments/${department.id}`}
                         className="inline-flex items-center justify-center p-2 rounded-xl bg-gray-50 text-gray-400 hover:bg-red-600 hover:text-white hover:shadow-md transition-all duration-300 [&>svg]:hover:stroke-[3]"
@@ -161,19 +161,19 @@ export default async function AdminDepartmentsPage({
         </div>
         {totalPages > 1 && (
           <div className="px-4 sm:px-6 py-4 border-t border-gray-100 flex flex-wrap items-center justify-between gap-x-3 gap-y-2 bg-gray-50/50">
-            <span className="text-[13px] font-[600] text-gray-500 whitespace-nowrap shrink-0">
+            <span className="text-[13px] font-[600] text-gray-500  shrink-0">
               Page <span className="text-gray-800 font-[800]">{page}</span> of <span className="text-gray-800 font-[800]">{totalPages}</span>
             </span>
             <div className="flex gap-2 shrink-0">
               <Link
                 href={`/admin/departments?q=${query}&page=${Math.max(1, page - 1)}`}
-                className={`px-4 py-2 text-[12px] font-[700] rounded-lg border transition-all whitespace-nowrap ${page === 1 ? 'border-gray-200 text-gray-400 pointer-events-none bg-gray-50' : 'border-gray-300 text-[#002b5c] bg-white hover:border-[#007a87] hover:text-[#007a87] hover:shadow-sm'}`}
+                className={`px-4 py-2 text-[12px] font-[700] rounded-lg border transition-all  ${page === 1 ? 'border-gray-200 text-gray-400 pointer-events-none bg-gray-50' : 'border-gray-300 text-[#002b5c] bg-white hover:border-[#007a87] hover:text-[#007a87] hover:shadow-sm'}`}
               >
                 PREVIOUS
               </Link>
               <Link
                 href={`/admin/departments?q=${query}&page=${Math.min(totalPages, page + 1)}`}
-                className={`px-4 py-2 text-[12px] font-[700] rounded-lg border transition-all whitespace-nowrap ${page === totalPages ? 'border-gray-200 text-gray-400 pointer-events-none bg-gray-50' : 'border-[#003360] text-white bg-[#003360] hover:bg-[#002347] hover:shadow-sm'}`}
+                className={`px-4 py-2 text-[12px] font-[700] rounded-lg border transition-all  ${page === totalPages ? 'border-gray-200 text-gray-400 pointer-events-none bg-gray-50' : 'border-[#003360] text-white bg-[#003360] hover:bg-[#002347] hover:shadow-sm'}`}
               >
                 NEXT
               </Link>

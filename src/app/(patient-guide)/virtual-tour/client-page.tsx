@@ -180,7 +180,7 @@ export default function VirtualTourClientPage({ pageData }: { pageData?: any }) 
                 </div>
 
                 {/* Decorative UI elements representing 360 view controls */}
-                <div className="absolute bottom-2 right-2 md:bottom-4 md:right-auto md:left-1/2 md:-translate-x-1/2 flex items-center gap-0.5 md:gap-2 bg-white/20 backdrop-blur-md rounded-full px-1.5 md:px-4 py-1 md:py-2 border border-white/30 shadow-lg transition-opacity duration-300 opacity-70 group-hover:opacity-100 whitespace-nowrap z-10">
+                <div className="absolute bottom-2 right-2 md:bottom-4 md:right-auto md:left-1/2 md:-translate-x-1/2 flex items-center gap-0.5 md:gap-2 bg-white/20 backdrop-blur-md rounded-full px-1.5 md:px-4 py-1 md:py-2 border border-white/30 shadow-lg transition-opacity duration-300 opacity-70 group-hover:opacity-100  z-10">
                    <div onClick={() => handlePan(-10, 0)} className="w-5 h-5 md:w-8 md:h-8 rounded-full bg-white/40 flex items-center justify-center hover:bg-white cursor-pointer transition-colors shrink-0"><ChevronRight className="w-3 h-3 md:w-5 md:h-5 text-slate-800 rotate-180" /></div>
                    <div onClick={() => handlePan(0, -10)} className="w-5 h-5 md:w-8 md:h-8 rounded-full bg-white/40 flex items-center justify-center hover:bg-white cursor-pointer transition-colors shrink-0"><ChevronRight className="w-3 h-3 md:w-5 md:h-5 text-slate-800 -rotate-90" /></div>
                    <div onClick={() => handlePan(0, 10)} className="w-5 h-5 md:w-8 md:h-8 rounded-full bg-white/40 flex items-center justify-center hover:bg-white cursor-pointer transition-colors shrink-0"><ChevronRight className="w-3 h-3 md:w-5 md:h-5 text-slate-800 rotate-90" /></div>

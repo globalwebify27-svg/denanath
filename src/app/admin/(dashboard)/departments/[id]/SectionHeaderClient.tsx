@@ -10,7 +10,7 @@ export default function SectionHeaderClient({ title }: { title: string }) {
         <input
           type="text"
           defaultValue={title}
-          className="w-full font-black text-[#002b5c] text-base sm:text-lg border border-slate-300 focus:border-[#007a87] rounded-xl px-3.5 py-1.5 outline-none font-sans bg-white shadow-2xs"
+          className="w-full font-black text-[#002b5c] text-base sm:text-base border border-slate-300 focus:border-[#007a87] rounded-xl px-3.5 py-1.5 outline-none font-sans bg-white shadow-2xs"
         />
       </div>
       <button

@@ -88,7 +88,7 @@ export default function GalleryVideosClientForm({ initialData }: { initialData: 
         
         {/* Categories */}
         <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200">
-          <h3 className="text-lg text-[20px] font-black text-[#002b5c] mb-4 flex items-center gap-2">
+          <h3 className="text-base text-[20px] font-black text-[#002b5c] mb-4 flex items-center gap-2">
             <Folder className="w-5 h-5 text-[#007a87]" />
             Video Categories
           </h3>
@@ -99,7 +99,7 @@ export default function GalleryVideosClientForm({ initialData }: { initialData: 
         {/* Videos List */}
         <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200">
           <div className="flex flex-col gap-3 mb-6">
-            <h3 className="text-lg text-[20px] font-black text-[#002b5c] flex items-center gap-2">
+            <h3 className="text-base text-[20px] font-black text-[#002b5c] flex items-center gap-2">
               <Video className="w-5 h-5 text-[#007a87]" />
               Hospital Videos
             </h3>
@@ -115,7 +115,7 @@ export default function GalleryVideosClientForm({ initialData }: { initialData: 
               <button 
                 type="button"
                 onClick={addVideo}
-                className="text-xs font-bold text-white bg-[#003360] px-3 py-1.5 rounded-lg hover:bg-[#002b5c] flex items-center gap-1 transition-colors shrink-0 whitespace-nowrap"
+                className="text-xs font-bold text-white bg-[#003360] px-3 py-1.5 rounded-lg hover:bg-[#002b5c] flex items-center gap-1 transition-colors shrink-0 "
               >
                 <Plus size={14} /> Add Video
               </button>

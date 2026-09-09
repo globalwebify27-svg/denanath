@@ -298,15 +298,15 @@ export default function SubmissionsClientPage({
       {/* Submissions List Grid/Table */}
       <div className="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse">
+          <table className="break-words w-full text-left border-collapse">
             <thead>
               <tr className="bg-slate-50 border-b border-slate-100">
-                <th className="p-5 text-xs font-black text-slate-400 uppercase tracking-wider">Form Type</th>
-                <th className="p-5 text-xs font-black text-slate-400 uppercase tracking-wider">Source</th>
-                <th className="p-5 text-xs font-black text-slate-400 uppercase tracking-wider">Submitted By</th>
-                <th className="p-5 text-xs font-black text-slate-400 uppercase tracking-wider">Contact Info</th>
-                <th className="p-5 text-xs font-black text-slate-400 uppercase tracking-wider">Date & Time</th>
-                <th className="p-5 text-xs font-black text-slate-400 uppercase tracking-wider text-right">Actions</th>
+                <th className="p-2 text-xs font-black text-slate-400 uppercase tracking-wider">Form Type</th>
+                <th className="p-2 text-xs font-black text-slate-400 uppercase tracking-wider">Source</th>
+                <th className="p-2 text-xs font-black text-slate-400 uppercase tracking-wider">Submitted By</th>
+                <th className="p-2 text-xs font-black text-slate-400 uppercase tracking-wider">Contact Info</th>
+                <th className="p-2 text-xs font-black text-slate-400 uppercase tracking-wider">Date & Time</th>
+                <th className="p-2 text-xs font-black text-slate-400 uppercase tracking-wider text-right">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
@@ -331,7 +331,7 @@ export default function SubmissionsClientPage({
                     }}
                   >
                     {/* Form Type Badge */}
-                    <td className="p-5">
+                    <td className="p-2">
                       <span className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border text-xs font-bold leading-none ${badgeColor}`}>
                         {submission.formType}
                         {hasFiles && <span className="w-1.5 h-1.5 bg-red-500 rounded-full animate-pulse" title="Has attachment" />}
@@ -339,17 +339,17 @@ export default function SubmissionsClientPage({
                     </td>
                     
                     {/* Source Page */}
-                    <td className="p-5 text-sm text-slate-600 font-semibold max-w-[180px] truncate">
+                    <td className="p-2 text-sm text-slate-600 font-semibold max-w-[180px] truncate">
                       {getSource(submission, parsedData)}
                     </td>
                     
                     {/* Name */}
-                    <td className="p-5 font-bold text-[#002b5c] max-w-[200px] truncate">
+                    <td className="p-2 font-bold text-[#002b5c] max-w-[200px] truncate">
                       {summary.name}
                     </td>
                     
                     {/* Email/Phone */}
-                    <td className="p-5">
+                    <td className="p-2">
                       <div className="flex flex-col gap-1 text-xs">
                         <div className="flex items-center gap-1.5 text-slate-600">
                           <Mail size={12} className="text-slate-400" />
@@ -365,12 +365,12 @@ export default function SubmissionsClientPage({
                     </td>
                     
                     {/* Date */}
-                    <td className="p-5 text-sm text-slate-500 font-medium" suppressHydrationWarning>
+                    <td className="p-2 text-sm text-slate-500 font-medium" suppressHydrationWarning>
                       {new Date(submission.createdAt).toLocaleString()}
                     </td>
                     
                     {/* Action Buttons */}
-                    <td className="p-5 text-right">
+                    <td className="p-2 text-right">
                       <div className="flex items-center justify-end gap-2" onClick={(e) => e.stopPropagation()}>
                         <button
                           onClick={() => {
@@ -412,7 +412,7 @@ export default function SubmissionsClientPage({
                 <tr>
                   <td colSpan={6} className="py-20 text-center">
                     <Inbox className="w-12 h-12 text-slate-300 mx-auto mb-4" />
-                    <h3 className="font-bold text-slate-700 text-lg">No Submissions Found</h3>
+                    <h3 className="font-bold text-slate-700 text-base">No Submissions Found</h3>
                     <p className="text-slate-400 text-sm mt-1 max-w-sm mx-auto">We couldn't find any submissions matching your filter or search query.</p>
                   </td>
                 </tr>
@@ -567,7 +567,7 @@ export default function SubmissionsClientPage({
                             setEditFormType(selectedSubmission.formType);
                             setEditData(parseData(selectedSubmission));
                           }}
-                          className="text-[11px] sm:text-xs font-bold text-[#007a87] hover:text-[#005c66] flex items-center gap-1 hover:underline shrink-0 whitespace-nowrap"
+                          className="text-[11px] sm:text-xs font-bold text-[#007a87] hover:text-[#005c66] flex items-center gap-1 hover:underline shrink-0 "
                         >
                           <Pencil size={12} /> Edit Fields
                         </button>

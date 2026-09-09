@@ -82,8 +82,8 @@ export default function NewDepartmentPage() {
       let styled = html.replace(/<table/g, '<div class="overflow-x-auto"><table class="w-full text-sm text-left border-collapse border border-slate-200"');
       styled = styled.replace(/<\/table>/g, '</table></div>');
       styled = styled.replace(/<thead/g, '<thead class="text-xs text-white uppercase bg-[#002b5c]"');
-      styled = styled.replace(/<th/g, '<th class="px-6 py-3 border border-slate-300"');
-      styled = styled.replace(/<td/g, '<td class="px-6 py-4 border border-slate-200"');
+      styled = styled.replace(/<th/g, '<th class="p-2 border border-slate-300"');
+      styled = styled.replace(/<td/g, '<td class="p-2 border border-slate-200"');
       styled = styled.replace(/<tr/g, '<tr class="bg-white hover:bg-slate-50"');
       return styled;
     };
@@ -274,13 +274,13 @@ export default function NewDepartmentPage() {
           <div className="pt-6 border-t border-gray-100 flex flex-wrap justify-end gap-3">
             <Link
               href="/admin/departments"
-              className="whitespace-nowrap w-full sm:w-auto text-center px-6 py-3 rounded-xl font-[700] text-[13px] text-gray-500 bg-gray-100 hover:bg-gray-200 transition-colors"
+              className="w-full sm:w-auto text-center px-6 py-3 rounded-xl font-[700] text-[13px] text-gray-500 bg-gray-100 hover:bg-gray-200 transition-colors"
             >
               Cancel
             </Link>
             <button
               type="submit"
-              className="whitespace-nowrap w-full sm:w-auto flex items-center justify-center gap-2 bg-[#007a87] text-white px-6 py-3 rounded-xl hover:bg-[#005c66] hover:shadow-lg transition-all duration-300 font-[700] text-[13px] tracking-wide hover:shadow-[0_8px_20px_rgba(0,122,135,0.3)]"
+              className="w-full sm:w-auto flex items-center justify-center gap-2 bg-[#007a87] text-white px-6 py-3 rounded-xl hover:bg-[#005c66] hover:shadow-lg transition-all duration-300 font-[700] text-[13px] tracking-wide hover:shadow-[0_8px_20px_rgba(0,122,135,0.3)]"
             >
               <Save size={18} />
               Save Department

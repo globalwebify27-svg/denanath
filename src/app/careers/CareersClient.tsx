@@ -122,11 +122,11 @@ export default function CareersClient({ data }: { data: any }) {
                   <Mail className="w-6 h-6" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold text-[#002b5c] mb-1">How to Apply</h3>
+                  <h3 className="text-base font-bold text-[#002b5c] mb-1">How to Apply</h3>
                   <p className="text-slate-600 font-medium">{data.applyInstruction || "Please send an email with your CV, mentioning the Job Title in the subject line."}</p>
                 </div>
               </div>
-              <a href={`mailto:${data.applyEmail || "jobs@dmhospital.org"}`} className="w-full md:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 bg-[#003360] hover:bg-[#003360] text-white font-bold rounded-xl transition-all shadow-md hover:shadow-lg whitespace-nowrap">
+              <a href={`mailto:${data.applyEmail || "jobs@dmhospital.org"}`} className="w-full md:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 bg-[#003360] hover:bg-[#003360] text-white font-bold rounded-xl transition-all shadow-md hover:shadow-lg ">
                 <Send className="w-5 h-5" />
                 {data.applyEmail || "jobs@dmhospital.org"}
               </a>
@@ -156,7 +156,7 @@ export default function CareersClient({ data }: { data: any }) {
                       <Briefcase className="w-5 h-5 text-slate-400 shrink-0 mt-0.5" />
                       <div>
                         <span className="text-xs font-bold text-slate-400 uppercase block mb-0.5">Designation</span>
-                        <span className="text-sm font-bold text-slate-800">{job.designation}</span>
+                        <span className="text-[16px] font-bold text-slate-800">{job.designation}</span>
                       </div>
                     </div>
                   )}
@@ -165,7 +165,7 @@ export default function CareersClient({ data }: { data: any }) {
                     <GraduationCap className="w-5 h-5 text-teal-600 shrink-0 mt-0.5" />
                     <div>
                       <span className="text-xs font-bold text-slate-400 uppercase block mb-0.5">Qualification</span>
-                      <span className="text-sm font-bold text-slate-800">{job.qualification}</span>
+                      <span className="text-[16px] font-bold text-slate-800">{job.qualification}</span>
                     </div>
                   </div>
 
@@ -174,7 +174,7 @@ export default function CareersClient({ data }: { data: any }) {
                       <Briefcase className="w-5 h-5 text-blue-600 shrink-0 mt-0.5" />
                       <div>
                         <span className="text-xs font-bold text-slate-400 uppercase block mb-0.5">Experience</span>
-                        <span className="text-sm font-medium text-slate-700">{job.experience}</span>
+                        <span className="text-[16px] font-medium text-slate-700">{job.experience}</span>
                       </div>
                     </div>
                   )}
@@ -184,7 +184,7 @@ export default function CareersClient({ data }: { data: any }) {
                       <AlertCircle className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
                       <div>
                         <span className="text-xs font-bold text-slate-400 uppercase block mb-0.5">Requirement</span>
-                        <span className="text-sm font-bold text-red-600">{job.requirement}</span>
+                        <span className="text-[16px] font-bold text-red-600">{job.requirement}</span>
                       </div>
                     </div>
                   )}
@@ -194,7 +194,7 @@ export default function CareersClient({ data }: { data: any }) {
                       <FileText className="w-5 h-5 text-pink-500 shrink-0 mt-0.5" />
                       <div>
                         <span className="text-xs font-bold text-slate-400 uppercase block mb-0.5">Preference</span>
-                        <span className="text-sm font-medium text-slate-700">{job.preference}</span>
+                        <span className="text-[16px] font-medium text-slate-700">{job.preference}</span>
                       </div>
                     </div>
                   )}
@@ -204,7 +204,7 @@ export default function CareersClient({ data }: { data: any }) {
                       <FileText className="w-5 h-5 text-slate-400 shrink-0 mt-0.5" />
                       <div>
                         <span className="text-xs font-bold text-slate-400 uppercase block mb-0.5">Job Description</span>
-                        <span className="text-sm font-medium text-slate-600 leading-relaxed">{job.description}</span>
+                        <span className="text-[16px] font-medium text-slate-600 leading-relaxed">{job.description}</span>
                       </div>
                     </div>
                   )}
@@ -559,3 +559,4 @@ export default function CareersClient({ data }: { data: any }) {
     </div>
   );
 }
+

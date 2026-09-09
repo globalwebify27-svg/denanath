@@ -82,14 +82,14 @@ export default function OutPatientClientPage({ pageData }: { pageData: any }) {
                 <section>
                   <h3 className="text-2xl font-bold text-[#002b5c] mb-6">Guidelines for OPD Patients :</h3>
                   <div className="bg-slate-50 border border-slate-100 rounded-2xl p-4 sm:p-6 md:p-8">
-                    <p className="text-[#002b5c] font-semibold text-lg mb-4">Out Patient Department (OPD) works as follows :</p>
+                    <p className="text-[#002b5c] font-semibold text-base mb-4">Out Patient Department (OPD) works as follows :</p>
                     
                     <div className="mb-6">
                       <h4 className="font-bold text-[#007a87] mb-4">1. Registration.</h4>
                       <p className="text-slate-700 font-medium mb-4">Information About Patient Registration</p>
                       <ul className="list-none space-y-3 pl-2 md:pl-4">
                         {instructions.map((inst: string, i: number) => (
-                          <li key={i} className="flex items-start gap-3 text-slate-600 leading-[31px] font-normal text-[18px]">
+                          <li key={i} className="flex items-start gap-3 text-slate-600 leading-[31px] font-normal text-base">
                             <ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" />
                             <span>{inst}</span>
                           </li>
@@ -110,7 +110,7 @@ export default function OutPatientClientPage({ pageData }: { pageData: any }) {
                         const textClass = isRed ? "font-semibold" : "";
                         
                         return (
-                          <li key={i} className={`flex items-start gap-3 text-slate-600 leading-[31px] font-normal text-[18px] ${textClass}`}>
+                          <li key={i} className={`flex items-start gap-3 text-slate-600 leading-[31px] font-normal text-base ${textClass}`}>
                             <div className={`w-1.5 h-1.5 rounded-full ${bgClass} shrink-0 mt-2.5`} />
                             {info.includes("020-40151100") ? (
                               <span>
@@ -137,15 +137,15 @@ export default function OutPatientClientPage({ pageData }: { pageData: any }) {
                     className="w-full h-auto object-cover rounded-2xl shadow-md border border-slate-200 mb-8"
                   />
                   
-                  <p className="text-[#002b5c] font-semibold text-lg mb-6">Following are General OPDs and Superspeciality OPDs :</p>
+                  <p className="text-[#002b5c] font-semibold text-base mb-6">Following are General OPDs and Superspeciality OPDs :</p>
                   
                   <div className="grid grid-cols-1 xl:grid-cols-2 gap-8 items-stretch">
                     {/* General OPDs */}
                     <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm h-full">
-                      <h4 className="text-lg font-bold text-[#002b5c] mb-4 pb-4 border-b border-slate-100">General OPDs: Main Building :</h4>
+                      <h4 className="text-base font-bold text-[#002b5c] mb-4 pb-4 border-b border-slate-100">General OPDs: Main Building :</h4>
                       <ul className="grid grid-cols-1 sm:grid-cols-2 gap-y-3 gap-x-6">
                         {generalOpds.map((opd: string, i: number) => (
-                          <li key={i} className="flex items-center gap-2 text-[18px] leading-[31px] font-normal text-slate-600">
+                          <li key={i} className="flex items-center gap-2 text-base leading-[31px] font-normal text-slate-600">
                             <ChevronRight className="w-4 h-4 text-teal-600 shrink-0" />
                             <span>{opd}</span>
                           </li>
@@ -155,10 +155,10 @@ export default function OutPatientClientPage({ pageData }: { pageData: any }) {
 
                     {/* Superspeciality OPDs */}
                     <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm h-full">
-                      <h4 className="text-lg font-bold text-[#002b5c] mb-4 pb-4 border-b border-slate-100">Superspeciality OPDs : SS Building / Annexe Building :</h4>
+                      <h4 className="text-base font-bold text-[#002b5c] mb-4 pb-4 border-b border-slate-100">Superspeciality OPDs : SS Building / Annexe Building :</h4>
                       <ul className="grid grid-cols-1 sm:grid-cols-2 gap-y-3 gap-x-6">
                         {superOpds.map((opd: string, i: number) => (
-                          <li key={i} className="flex items-center gap-2 text-[18px] leading-[31px] font-normal text-slate-600">
+                          <li key={i} className="flex items-center gap-2 text-base leading-[31px] font-normal text-slate-600">
                             <ChevronRight className="w-4 h-4 text-teal-600 shrink-0" />
                             <span>{opd}</span>
                           </li>
@@ -171,28 +171,28 @@ export default function OutPatientClientPage({ pageData }: { pageData: any }) {
                 {/* Charges Table */}
                 <section>
                   <div className="overflow-x-auto rounded-xl border border-slate-200 shadow-sm mb-8">
-                    <table className="w-full text-left border-collapse min-w-[900px]">
+                    <table className="break-words w-full text-left border-collapse">
                       <thead>
-                        <tr className="bg-[#1eb2a6] text-white text-[18px] leading-[31px] font-medium">
-                          <th className="p-4 whitespace-nowrap font-semibold">Charges</th>
-                          <th className="p-4 whitespace-nowrap font-semibold border-l border-white/20">1st Visit (Rs)</th>
-                          <th className="p-4 whitespace-nowrap font-semibold border-l border-white/20">Continuum Visit (Rs)</th>
-                          <th className="p-4 whitespace-nowrap font-semibold border-l border-white/20">Senior citizen 1st Visit (Rs)</th>
-                          <th className="p-4 whitespace-nowrap font-semibold border-l border-white/20">Senior citizen Continuum Visit (Rs)</th>
-                          <th className="p-4 whitespace-nowrap font-semibold border-l border-white/20">Cross reference (Rs)</th>
-                          <th className="p-4 whitespace-nowrap font-semibold border-l border-white/20">Cross reference Senior citizen (Rs)</th>
+                        <tr className="bg-[#1eb2a6] text-white text-sm leading-snug font-medium">
+                          <th className="p-2 font-semibold">Charges</th>
+                          <th className="p-2 font-semibold border-l border-white/20">1st Visit (Rs)</th>
+                          <th className="p-2 font-semibold border-l border-white/20">Continuum Visit (Rs)</th>
+                          <th className="p-2 font-semibold border-l border-white/20">Senior citizen<br/>1st Visit (Rs)</th>
+                          <th className="p-2 font-semibold border-l border-white/20">Senior citizen<br/>Continuum Visit (Rs)</th>
+                          <th className="p-2 font-semibold border-l border-white/20">Cross reference (Rs)</th>
+                          <th className="p-2 font-semibold border-l border-white/20">Cross reference<br/>Senior citizen (Rs)</th>
                         </tr>
                       </thead>
                       <tbody className="text-sm text-slate-600 bg-white">
                         {chargesTable.map((row: any, i: number) => (
                           <tr key={i} className="border-t border-slate-100 hover:bg-slate-50 transition-colors">
-                            <td className="p-4 font-medium text-slate-700">{row.label}</td>
-                            <td className="p-4 border-l border-slate-100">{row.v1}</td>
-                            <td className="p-4 border-l border-slate-100">{row.v2}</td>
-                            <td className="p-4 border-l border-slate-100">{row.v3}</td>
-                            <td className="p-4 border-l border-slate-100">{row.v4}</td>
-                            <td className="p-4 border-l border-slate-100">{row.v5}</td>
-                            <td className="p-4 border-l border-slate-100">{row.v6}</td>
+                            <td className="p-2 font-medium text-slate-700">{row.label}</td>
+                            <td className="p-2 border-l border-slate-100">{row.v1}</td>
+                            <td className="p-2 border-l border-slate-100">{row.v2}</td>
+                            <td className="p-2 border-l border-slate-100">{row.v3}</td>
+                            <td className="p-2 border-l border-slate-100">{row.v4}</td>
+                            <td className="p-2 border-l border-slate-100">{row.v5}</td>
+                            <td className="p-2 border-l border-slate-100">{row.v6}</td>
                           </tr>
                         ))}
                       </tbody>
@@ -201,8 +201,8 @@ export default function OutPatientClientPage({ pageData }: { pageData: any }) {
 
                   <div className="space-y-6">
                     <div>
-                      <h4 className="text-lg font-bold text-[#002b5c] mb-3">Some General Rules:</h4>
-                      <ul className="list-disc list-inside space-y-2 text-[18px] leading-[31px] font-normal text-slate-600">
+                      <h4 className="text-base font-bold text-[#002b5c] mb-3">Some General Rules:</h4>
+                      <ul className="list-disc list-inside space-y-2 text-base leading-[31px] font-normal text-slate-600">
                         {rules.map((rule: string, i: number) => (
                           <li key={i}>{rule}</li>
                         ))}
@@ -210,15 +210,15 @@ export default function OutPatientClientPage({ pageData }: { pageData: any }) {
                     </div>
 
                     <div>
-                      <h4 className="text-lg font-bold text-[#002b5c] mb-3">Private OPD:</h4>
-                      <p className="text-[18px] leading-[31px] font-normal text-slate-600 max-w-4xl">
+                      <h4 className="text-base font-bold text-[#002b5c] mb-3">Private OPD:</h4>
+                      <p className="text-base leading-[31px] font-normal text-slate-600 max-w-4xl">
                         {privateOpdText}
                       </p>
                     </div>
 
                     <div>
-                      <h4 className="text-lg font-bold text-[#002b5c] mb-3">Exceptional OPD consultation charges:</h4>
-                      <p className="text-[18px] leading-[31px] font-normal text-slate-600">
+                      <h4 className="text-base font-bold text-[#002b5c] mb-3">Exceptional OPD consultation charges:</h4>
+                      <p className="text-base leading-[31px] font-normal text-slate-600">
                         {exceptionalOpdText}
                       </p>
                     </div>

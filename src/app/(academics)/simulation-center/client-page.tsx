@@ -126,8 +126,8 @@ export default function SimulationCenterClient({ initialData, labsData }: { init
                   <div className="bg-white border border-slate-200 rounded-3xl p-6 md:p-10 shadow-sm relative overflow-hidden group">
                     <div className="absolute top-0 left-0 w-2 h-full bg-[#007a87]"></div>
                     <div className="prose max-w-none text-slate-700 space-y-6">
-                      {initialData?.introText1 && <p className="text-lg leading-relaxed">{initialData.introText1}</p>}
-                      {initialData?.introText2 && <p className="text-lg leading-relaxed">{initialData.introText2}</p>}
+                      {initialData?.introText1 && <p className="text-base leading-relaxed">{initialData.introText1}</p>}
+                      {initialData?.introText2 && <p className="text-base leading-relaxed">{initialData.introText2}</p>}
                     </div>
                     {initialData?.image && (
                       <div className="mt-8 rounded-2xl overflow-hidden border border-slate-100 shadow-sm">
@@ -170,7 +170,7 @@ export default function SimulationCenterClient({ initialData, labsData }: { init
                                 <div className={`w-12 h-12 rounded-full flex items-center justify-center transition-colors ${isExpanded ? 'bg-[#007a87] text-white' : 'bg-teal-100 text-[#007a87]'}`}>
                                   {card.icon}
                                 </div>
-                                <h4 className={`text-lg font-bold transition-colors ${isExpanded ? 'text-[#002b5c]' : 'text-slate-800'}`}>
+                                <h4 className={`text-base font-bold transition-colors ${isExpanded ? 'text-[#002b5c]' : 'text-slate-800'}`}>
                                   {card.title}
                                 </h4>
                               </div>
@@ -182,7 +182,7 @@ export default function SimulationCenterClient({ initialData, labsData }: { init
                             {isExpanded && (
                               <div className="p-6 md:p-8 border-t border-slate-100 animate-in slide-in-from-top-2 fade-in duration-300 bg-white">
                                 {labInfo?.content ? (
-                                  <div style={{ fontSize: '18px' }} className="mb-8 prose prose-slate max-w-none break-words whitespace-normal overflow-hidden [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:my-4 [&_ol]:list-decimal [&_ol]:pl-6 [&_ol]:my-4 [&_li]:mb-2 [&_li]:text-[18px] [&_li]:!text-[#314158] [&_p]:text-[18px] [&_p]:!text-[#314158] [&_strong]:!text-[#314158] [&_b]:!text-[#314158] [&_span]:!text-[#314158] [&_div]:!text-[#314158] prose-p:leading-relaxed prose-headings:!text-[#002b5c] !text-[#314158]" dangerouslySetInnerHTML={{ __html: labInfo.content.replace(/&nbsp;/g, ' ') }} />
+                                  <div style={{ fontSize: '18px' }} className="mb-8 prose prose-slate max-w-none break-words whitespace-normal overflow-hidden [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:my-4 [&_ol]:list-decimal [&_ol]:pl-6 [&_ol]:my-4 [&_li]:mb-2 [&_li]:text-base [&_li]:!text-[#314158] [&_p]:text-base [&_p]:!text-[#314158] [&_strong]:!text-[#314158] [&_b]:!text-[#314158] [&_span]:!text-[#314158] [&_div]:!text-[#314158] prose-p:leading-relaxed prose-headings:!text-[#002b5c] !text-[#314158]" dangerouslySetInnerHTML={{ __html: labInfo.content.replace(/&nbsp;/g, ' ') }} />
                                 ) : (
                                   <p className="mb-8 text-slate-500 italic">Content for this section will be updated soon.</p>
                                 )}
@@ -228,7 +228,7 @@ export default function SimulationCenterClient({ initialData, labsData }: { init
                     <form className="space-y-6" onSubmit={handleSub}>
                       {/* Row 1 */}
                       <div>
-                        <label className="block text-[18px] leading-[26px] font-semibold text-slate-700 mb-1">Purpose of Payment <span className="text-red-500">*</span></label>
+                        <label className="block text-base leading-[26px] font-semibold text-slate-700 mb-1">Purpose of Payment <span className="text-red-500">*</span></label>
                         <div className="relative">
                           <CustomDropdown
                             name="purposeOfPayment"
@@ -245,36 +245,36 @@ export default function SimulationCenterClient({ initialData, labsData }: { init
                       {/* Row 2 */}
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                          <label className="block text-[18px] leading-[26px] font-semibold text-slate-700 mb-1">Name Of Payer <span className="text-red-500">*</span></label>
-                          <input type="text" name="nameOfPayer" placeholder="Name Of Payer" className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500/50 bg-slate-50 text-[18px] leading-[31px] font-normal text-slate-700" required />
+                          <label className="block text-base leading-[26px] font-semibold text-slate-700 mb-1">Name Of Payer <span className="text-red-500">*</span></label>
+                          <input type="text" name="nameOfPayer" placeholder="Name Of Payer" className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500/50 bg-slate-50 text-base leading-[31px] font-normal text-slate-700" required />
                         </div>
                         <div>
-                          <label className="block text-[18px] leading-[26px] font-semibold text-slate-700 mb-1">Contact Number <span className="text-red-500">*</span></label>
-                          <input type="text" name="contactNumber" placeholder="Contact Number" className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500/50 bg-slate-50 text-[18px] leading-[31px] font-normal text-slate-700" pattern="[0-9]{10}" maxLength={10} minLength={10} title="Please enter a valid 10-digit mobile number" onInput={(e) => { e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/g, "").slice(0, 10); }} required />
+                          <label className="block text-base leading-[26px] font-semibold text-slate-700 mb-1">Contact Number <span className="text-red-500">*</span></label>
+                          <input type="text" name="contactNumber" placeholder="Contact Number" className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500/50 bg-slate-50 text-base leading-[31px] font-normal text-slate-700" pattern="[0-9]{10}" maxLength={10} minLength={10} title="Please enter a valid 10-digit mobile number" onInput={(e) => { e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/g, "").slice(0, 10); }} required />
                         </div>
                       </div>
 
                       {/* Row 3 */}
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                          <label className="block text-[18px] leading-[26px] font-semibold text-slate-700 mb-1">Email Id <span className="text-red-500">*</span></label>
-                          <input type="email" name="email" placeholder="Email ID" className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500/50 bg-slate-50 text-[18px] leading-[31px] font-normal text-slate-700" required />
+                          <label className="block text-base leading-[26px] font-semibold text-slate-700 mb-1">Email Id <span className="text-red-500">*</span></label>
+                          <input type="email" name="email" placeholder="Email ID" className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500/50 bg-slate-50 text-base leading-[31px] font-normal text-slate-700" required />
                         </div>
                         <div>
-                          <label className="block text-[18px] leading-[26px] font-semibold text-slate-700 mb-1">Amount <span className="text-red-500">*</span></label>
-                          <input type="text" name="amount" placeholder="Amount" className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500/50 bg-slate-50 text-[18px] leading-[31px] font-normal text-slate-700" required />
+                          <label className="block text-base leading-[26px] font-semibold text-slate-700 mb-1">Amount <span className="text-red-500">*</span></label>
+                          <input type="text" name="amount" placeholder="Amount" className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500/50 bg-slate-50 text-base leading-[31px] font-normal text-slate-700" required />
                         </div>
                       </div>
 
                       {/* Row 4 */}
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                          <label className="block text-[18px] leading-[26px] font-semibold text-slate-700 mb-1">Address <span className="text-red-500">*</span></label>
-                          <textarea name="address" rows={4} placeholder="Enter ..." className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500/50 bg-slate-50 resize-none text-[18px] leading-[31px] font-normal text-slate-700" required></textarea>
+                          <label className="block text-base leading-[26px] font-semibold text-slate-700 mb-1">Address <span className="text-red-500">*</span></label>
+                          <textarea name="address" rows={4} placeholder="Enter ..." className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500/50 bg-slate-50 resize-none text-base leading-[31px] font-normal text-slate-700" required></textarea>
                         </div>
                         <div className="space-y-6">
                           <div>
-                            <label className="block text-[18px] leading-[26px] font-semibold text-slate-700 mb-1">Country <span className="text-red-500">*</span></label>
+                            <label className="block text-base leading-[26px] font-semibold text-slate-700 mb-1">Country <span className="text-red-500">*</span></label>
                             <div className="relative">
                               <CustomDropdown
                                 name="country"
@@ -287,7 +287,7 @@ export default function SimulationCenterClient({ initialData, labsData }: { init
                             </div>
                           </div>
                           <div>
-                            <label className="block text-[18px] leading-[26px] font-semibold text-slate-700 mb-1">State <span className="text-red-500">*</span></label>
+                            <label className="block text-base leading-[26px] font-semibold text-slate-700 mb-1">State <span className="text-red-500">*</span></label>
                             <div className="relative">
                               <CustomDropdown
                                 name="state"
@@ -304,7 +304,7 @@ export default function SimulationCenterClient({ initialData, labsData }: { init
 
                       {/* Row 5 */}
                       <div>
-                        <label className="block text-[18px] leading-[26px] font-semibold text-slate-700 mb-1">City <span className="text-red-500">*</span></label>
+                        <label className="block text-base leading-[26px] font-semibold text-slate-700 mb-1">City <span className="text-red-500">*</span></label>
                         <div className="relative w-full md:w-1/2">
                           <CustomDropdown
                             name="city"
@@ -319,12 +319,12 @@ export default function SimulationCenterClient({ initialData, labsData }: { init
 
                       {/* Row 6 */}
                       <div>
-                        <label className="block text-[18px] leading-[26px] font-semibold text-slate-700 mb-1">Comments</label>
-                        <textarea name="comments" rows={2} placeholder="Enter ..." className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500/50 bg-slate-50 resize-none text-[18px] leading-[31px] font-normal text-slate-700"></textarea>
+                        <label className="block text-base leading-[26px] font-semibold text-slate-700 mb-1">Comments</label>
+                        <textarea name="comments" rows={2} placeholder="Enter ..." className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500/50 bg-slate-50 resize-none text-base leading-[31px] font-normal text-slate-700"></textarea>
                       </div>
 
                       <div>
-                        <label className="block text-[18px] leading-[26px] font-semibold text-slate-700 mb-2">Captcha <span className="text-red-500">*</span></label>
+                        <label className="block text-base leading-[26px] font-semibold text-slate-700 mb-2">Captcha <span className="text-red-500">*</span></label>
                         <div className="flex items-center gap-3 mb-2">
                           <div className="bg-slate-200 px-4 py-2 rounded-lg tracking-widest font-mono font-bold text-[16px] text-slate-800 select-none">
                             {captchaCode}
@@ -363,7 +363,7 @@ export default function SimulationCenterClient({ initialData, labsData }: { init
                         <div className="w-12 h-12 rounded-full bg-teal-100 flex items-center justify-center mb-4 group-hover/card:scale-110 transition-transform">
                           <BookOpen className="w-6 h-6 text-[#007a87] group-hover/card:text-[#D9232D] transition-colors" />
                         </div>
-                        <h4 className="text-lg font-bold text-slate-800 mb-2 group-hover/card:text-[#002b5c] transition-colors pr-6">
+                        <h4 className="text-base font-bold text-slate-800 mb-2 group-hover/card:text-[#002b5c] transition-colors pr-6">
                           National Board of Examinations in Medical Sciences (NBEMS)
                         </h4>
                         <div className="absolute bottom-6 right-6 opacity-0 group-hover/card:opacity-100 transform translate-x-4 group-hover/card:translate-x-0 transition-all duration-300">
@@ -375,7 +375,7 @@ export default function SimulationCenterClient({ initialData, labsData }: { init
                         <div className="w-12 h-12 rounded-full bg-teal-100 flex items-center justify-center mb-4 group-hover/card:scale-110 transition-transform">
                           <Activity className="w-6 h-6 text-[#007a87] group-hover/card:text-[#D9232D] transition-colors" />
                         </div>
-                        <h4 className="text-lg font-bold text-slate-800 mb-2 group-hover/card:text-[#002b5c] transition-colors">
+                        <h4 className="text-base font-bold text-slate-800 mb-2 group-hover/card:text-[#002b5c] transition-colors">
                           Jeevan Rekha
                         </h4>
                         <p className="text-sm text-slate-500 font-medium">

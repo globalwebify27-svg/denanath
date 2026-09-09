@@ -26,7 +26,7 @@ export default function PatientRightsClientForm({ initialData }: { initialData: 
         
         {/* Image Upload */}
         <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200">
-          <h3 className="text-lg text-[20px] font-black text-[#002b5c] mb-6 flex items-center gap-2">
+          <h3 className="text-base text-[20px] font-black text-[#002b5c] mb-6 flex items-center gap-2">
             <ShieldAlert className="w-5 h-5 text-[#007a87]" />
             Patient Rights &amp; Responsibilities Image
           </h3>

@@ -174,7 +174,7 @@ export default function PartnersAccreditation({ data = defaultPartnersData }: { 
 
               <div className="space-y-1">
                 <div 
-                  className="text-lg sm:text-xl font-extrabold text-[#002b5c] tracking-tight leading-snug prose prose-sm prose-p:leading-snug prose-p:m-0 prose-p:font-extrabold"
+                  className="text-base sm:text-xl font-extrabold text-[#002b5c] tracking-tight leading-snug prose prose-sm prose-p:leading-snug prose-p:m-0 prose-p:font-extrabold"
                   dangerouslySetInnerHTML={{__html: banner.title}}
                 />
                 <div 

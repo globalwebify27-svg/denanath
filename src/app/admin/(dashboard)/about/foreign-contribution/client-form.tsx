@@ -102,10 +102,10 @@ export default function ForeignContributionClientForm({ initialData }: { initial
           <div key={q.id} className="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden group hover:shadow-md transition-shadow duration-300 relative p-6 md:p-8 shadow-sm">
             <div className="bg-slate-50/50 border-b border-slate-100 p-5 md:p-6 flex items-center justify-between gap-3 -mx-6 md:-mx-8 -mt-6 md:-mt-8 mb-6">
               <div className="flex items-center gap-4">
-                <div className="w-10 h-10 rounded-2xl bg-[#007a87]/10 text-[#007a87] flex items-center justify-center font-black text-lg shrink-0">
+                <div className="w-10 h-10 rounded-2xl bg-[#007a87]/10 text-[#007a87] flex items-center justify-center font-black text-base shrink-0">
                   <Calendar size={16} />
                 </div>
-                <h3 className="text-[18px] sm:text-[20px] font-black text-[#002b5c]">Quarter Report {qIndex + 1}</h3>
+                <h3 className="text-base sm:text-[20px] font-black text-[#002b5c]">Quarter Report {qIndex + 1}</h3>
               </div>
               <button 
                 type="button" 
@@ -150,7 +150,7 @@ export default function ForeignContributionClientForm({ initialData }: { initial
                 <button 
                   type="button"
                   onClick={() => addDonation(q.id)}
-                  className="text-xs font-bold text-white bg-[#D9232D] px-3 py-2 rounded-lg hover:bg-red-700 flex items-center justify-center gap-1 transition-colors w-full sm:w-auto whitespace-nowrap"
+                  className="text-xs font-bold text-white bg-[#D9232D] px-3 py-2 rounded-lg hover:bg-red-700 flex items-center justify-center gap-1 transition-colors w-full sm:w-auto "
                 >
                   <Plus size={13} /> Add Donation
                 </button>

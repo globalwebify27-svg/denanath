@@ -73,7 +73,7 @@ export default function AcademicsClientPage({ pageData }: { pageData: any }) {
                     key={idx}
                     href={option.href}
                     data-active={option.active}
-                    className={"snap-start shrink-0 group flex items-center justify-between px-6 py-4 lg:py-4 text-sm font-bold transition-all duration-300 lg:border-l-4 lg:border-b-0 border-b-4 whitespace-nowrap lg:whitespace-normal " + (
+                    className={"snap-start shrink-0 group flex items-center justify-between px-6 py-4 lg:py-4 text-sm font-bold transition-all duration-300 lg:border-l-4 lg:border-b-0 border-b-4  lg:whitespace-normal " + (
                       option.active
                         ? "border-[#007a87] bg-teal-50/40 text-[#007a87]"
                         : "border-transparent text-slate-600 hover:bg-slate-50 hover:text-[#002b5c] lg:hover:border-slate-200 hover:border-slate-200"
@@ -131,7 +131,7 @@ export default function AcademicsClientPage({ pageData }: { pageData: any }) {
                   <div className="bg-white border border-slate-200 rounded-2xl p-6 md:p-8 shadow-sm space-y-6">
                     {pageData?.pgProgrammes?.map((prog: any, idx: number) => (
                       <div key={idx}>
-                        <h4 className="font-bold text-lg text-slate-800 mb-2 flex items-start gap-2">
+                        <h4 className="font-bold text-base text-slate-800 mb-2 flex items-start gap-2">
                           <span className="text-[#007a87] shrink-0 mt-0.5">{idx + 1}.</span> 
                           <span className="whitespace-pre-line">
                             {prog.title === "Laryngology Fellowship" ? (
@@ -228,23 +228,23 @@ export default function AcademicsClientPage({ pageData }: { pageData: any }) {
                     {/* DNB */}
                     <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
                       <div className="bg-[#003360] px-6 py-4 border-b border-[#003360]">
-                        <h4 className="font-bold text-lg text-white">DNB Broad Speciality</h4>
+                        <h4 className="font-bold text-base text-white">DNB Broad Speciality</h4>
                       </div>
                       <div className="overflow-x-auto">
-                        <table className="w-full text-left border-collapse">
+                        <table className="break-words w-full text-left border-collapse">
                           <thead>
                             <tr className="bg-slate-50/50">
-                              <th className="px-6 py-3 text-sm font-semibold text-slate-600 border-b border-slate-200 w-24">Sr.No</th>
-                              <th className="px-6 py-3 text-sm font-semibold text-slate-600 border-b border-slate-200">Speciality</th>
-                              <th className="px-6 py-3 text-sm font-semibold text-slate-600 border-b border-slate-200">Accredited from</th>
+                              <th className="p-2 text-sm font-semibold text-slate-600 border-b border-slate-200 w-24">Sr.No</th>
+                              <th className="p-2 text-sm font-semibold text-slate-600 border-b border-slate-200">Speciality</th>
+                              <th className="p-2 text-sm font-semibold text-slate-600 border-b border-slate-200">Accredited from</th>
                             </tr>
                           </thead>
                           <tbody className="divide-y divide-slate-100">
                             {pageData?.dnbSpecialities?.map((row: any, idx: number) => (
                               <tr key={idx} className="hover:bg-slate-50">
-                                <td className="px-6 py-3 text-sm text-slate-500">{row.srNo}</td>
-                                <td className="px-6 py-3 text-sm font-medium text-slate-700">{row.speciality}</td>
-                                <td className="px-6 py-3 text-sm text-slate-500">{row.accreditedFrom}</td>
+                                <td className="p-2 text-sm text-slate-500">{row.srNo}</td>
+                                <td className="p-2 text-sm font-medium text-slate-700">{row.speciality}</td>
+                                <td className="p-2 text-sm text-slate-500">{row.accreditedFrom}</td>
                               </tr>
                             ))}
                           </tbody>
@@ -255,23 +255,23 @@ export default function AcademicsClientPage({ pageData }: { pageData: any }) {
                     {/* DrNB */}
                     <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
                       <div className="bg-[#003360] px-6 py-4 border-b border-[#003360]">
-                        <h4 className="font-bold text-lg text-white">DrNB Superspeciality</h4>
+                        <h4 className="font-bold text-base text-white">DrNB Superspeciality</h4>
                       </div>
                       <div className="overflow-x-auto">
-                        <table className="w-full text-left border-collapse">
+                        <table className="break-words w-full text-left border-collapse">
                           <thead>
                             <tr className="bg-slate-50/50">
-                              <th className="px-6 py-3 text-sm font-semibold text-slate-600 border-b border-slate-200 w-24">Sr.No</th>
-                              <th className="px-6 py-3 text-sm font-semibold text-slate-600 border-b border-slate-200">Speciality</th>
-                              <th className="px-6 py-3 text-sm font-semibold text-slate-600 border-b border-slate-200">Accredited from</th>
+                              <th className="p-2 text-sm font-semibold text-slate-600 border-b border-slate-200 w-24">Sr.No</th>
+                              <th className="p-2 text-sm font-semibold text-slate-600 border-b border-slate-200">Speciality</th>
+                              <th className="p-2 text-sm font-semibold text-slate-600 border-b border-slate-200">Accredited from</th>
                             </tr>
                           </thead>
                           <tbody className="divide-y divide-slate-100">
                             {pageData?.drnbSpecialities?.map((row: any, idx: number) => (
                               <tr key={idx} className="hover:bg-slate-50">
-                                <td className="px-6 py-3 text-sm text-slate-500">{row.srNo}</td>
-                                <td className="px-6 py-3 text-sm font-medium text-slate-700">{row.speciality}</td>
-                                <td className="px-6 py-3 text-sm text-slate-500">{row.accreditedFrom}</td>
+                                <td className="p-2 text-sm text-slate-500">{row.srNo}</td>
+                                <td className="p-2 text-sm font-medium text-slate-700">{row.speciality}</td>
+                                <td className="p-2 text-sm text-slate-500">{row.accreditedFrom}</td>
                               </tr>
                             ))}
                           </tbody>
@@ -282,23 +282,23 @@ export default function AcademicsClientPage({ pageData }: { pageData: any }) {
                     {/* FNB */}
                     <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
                       <div className="bg-[#003360] px-6 py-4 border-b border-[#003360]">
-                        <h4 className="font-bold text-lg text-white">FNB Fellowship</h4>
+                        <h4 className="font-bold text-base text-white">FNB Fellowship</h4>
                       </div>
                       <div className="overflow-x-auto">
-                        <table className="w-full text-left border-collapse">
+                        <table className="break-words w-full text-left border-collapse">
                           <thead>
                             <tr className="bg-slate-50/50">
-                              <th className="px-6 py-3 text-sm font-semibold text-slate-600 border-b border-slate-200 w-24">Sr.No</th>
-                              <th className="px-6 py-3 text-sm font-semibold text-slate-600 border-b border-slate-200">Speciality</th>
-                              <th className="px-6 py-3 text-sm font-semibold text-slate-600 border-b border-slate-200">Accredited from</th>
+                              <th className="p-2 text-sm font-semibold text-slate-600 border-b border-slate-200 w-24">Sr.No</th>
+                              <th className="p-2 text-sm font-semibold text-slate-600 border-b border-slate-200">Speciality</th>
+                              <th className="p-2 text-sm font-semibold text-slate-600 border-b border-slate-200">Accredited from</th>
                             </tr>
                           </thead>
                           <tbody className="divide-y divide-slate-100">
                             {pageData?.fnbSpecialities?.map((row: any, idx: number) => (
                               <tr key={idx} className="hover:bg-slate-50">
-                                <td className="px-6 py-3 text-sm text-slate-500">{row.srNo}</td>
-                                <td className="px-6 py-3 text-sm font-medium text-slate-700">{row.speciality}</td>
-                                <td className="px-6 py-3 text-sm text-slate-500">{row.accreditedFrom}</td>
+                                <td className="p-2 text-sm text-slate-500">{row.srNo}</td>
+                                <td className="p-2 text-sm font-medium text-slate-700">{row.speciality}</td>
+                                <td className="p-2 text-sm text-slate-500">{row.accreditedFrom}</td>
                               </tr>
                             ))}
                           </tbody>
@@ -316,20 +316,20 @@ export default function AcademicsClientPage({ pageData }: { pageData: any }) {
                   </h3>
                   <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
                     <div className="overflow-x-auto">
-                      <table className="w-full text-left border-collapse">
+                      <table className="break-words w-full text-left border-collapse">
                         <thead>
                           <tr className="bg-[#003360] text-white">
-                            <th className="px-6 py-4 text-sm font-bold">Department</th>
-                            <th className="px-6 py-4 text-sm font-bold">Year</th>
-                            <th className="px-6 py-4 text-sm font-bold">Student Name</th>
+                            <th className="p-2 text-sm font-bold">Department</th>
+                            <th className="p-2 text-sm font-bold">Year</th>
+                            <th className="p-2 text-sm font-bold">Student Name</th>
                           </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-100">
                           {pageData?.awards?.map((row: any, idx: number) => (
                             <tr key={idx} className="hover:bg-slate-50">
-                              <td className="px-6 py-3 text-sm font-medium text-slate-700">{row.department}</td>
-                              <td className="px-6 py-3 text-sm text-slate-500">{row.year}</td>
-                              <td className="px-6 py-3 text-sm text-slate-700">{row.studentName}</td>
+                              <td className="p-2 text-sm font-medium text-slate-700">{row.department}</td>
+                              <td className="p-2 text-sm text-slate-500">{row.year}</td>
+                              <td className="p-2 text-sm text-slate-700">{row.studentName}</td>
                             </tr>
                           ))}
                         </tbody>

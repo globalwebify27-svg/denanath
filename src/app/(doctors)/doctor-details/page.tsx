@@ -277,7 +277,7 @@ export default function DoctorDetailsPage() {
                           />
                         </div>
                         <div>
-                          <h3 className="text-lg font-extrabold text-[#002b5c] group-hover:text-[#D9232D] transition-colors line-clamp-2">
+                          <h3 className="text-base font-extrabold text-[#002b5c] group-hover:text-[#D9232D] transition-colors line-clamp-2">
                             {doc.name}
                           </h3>
                           <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-amber-50 border border-amber-100 text-amber-700 text-[10px] font-bold tracking-wider uppercase mt-2">

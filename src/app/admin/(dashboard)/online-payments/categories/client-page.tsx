@@ -99,34 +99,34 @@ export default function CategoriesClientPage({ initialCategories }: { initialCat
 
       <div className="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse">
+          <table className="break-words w-full text-left border-collapse">
             <thead>
               <tr className="bg-slate-50/80 border-b border-slate-100">
-                <th className="p-4 md:p-5 text-sm font-extrabold text-slate-700 uppercase tracking-wider">Payment Category</th>
-                <th className="p-4 md:p-5 text-sm font-extrabold text-slate-700 uppercase tracking-wider w-32">Sort Order</th>
-                <th className="p-4 md:p-5 text-sm font-extrabold text-slate-700 uppercase tracking-wider w-32">Status</th>
-                <th className="p-4 md:p-5 text-sm font-extrabold text-slate-700 uppercase tracking-wider w-24 text-center">Actions</th>
+                <th className="p-2 md:p-2 text-sm font-extrabold text-slate-700 uppercase tracking-wider">Payment Category</th>
+                <th className="p-2 md:p-2 text-sm font-extrabold text-slate-700 uppercase tracking-wider w-32">Sort Order</th>
+                <th className="p-2 md:p-2 text-sm font-extrabold text-slate-700 uppercase tracking-wider w-32">Status</th>
+                <th className="p-2 md:p-2 text-sm font-extrabold text-slate-700 uppercase tracking-wider w-24 text-center">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
               {categories.map((category) => (
                 <tr key={category.id} className="hover:bg-slate-50/50 transition-colors group">
-                  <td className="p-4 md:p-5 font-semibold text-slate-800">
+                  <td className="p-2 md:p-2 font-semibold text-slate-800">
                     {category.categoryName}
                   </td>
-                  <td className="p-4 md:p-5">
+                  <td className="p-2 md:p-2">
                     <span className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-slate-100 text-slate-600 font-bold text-sm">
                       {category.sortOrder}
                     </span>
                   </td>
-                  <td className="p-4 md:p-5">
+                  <td className="p-2 md:p-2">
                     <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-bold ${
                       category.status === 'Active' ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700'
                     }`}>
                       {category.status}
                     </span>
                   </td>
-                  <td className="p-4 md:p-5 text-center">
+                  <td className="p-2 md:p-2 text-center">
                     <div className="flex items-center justify-center gap-2">
                       <button 
                         onClick={() => handleEdit(category)}

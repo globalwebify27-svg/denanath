@@ -454,12 +454,12 @@ export default function Navbar({ topHeaderSettings, headerSettings }: { topHeade
             </div>
 
             {/* Desktop Navigation Links */}
-            <div className="hidden xl:flex items-center justify-end flex-1 gap-1 xl:gap-1.5 2xl:gap-3 transition-all whitespace-nowrap">
+            <div className="hidden xl:flex items-center justify-end flex-1 gap-1 xl:gap-1.5 2xl:gap-3 transition-all ">
               {navLinks.map((link: any, idx: number) => (
                 <div key={idx} className="relative group py-2">
                   <Link 
                     href={link.href || "#"} 
-                    className="text-[8.5px] xl:text-[9.5px] 2xl:text-[11.5px] leading-[18px] font-bold text-slate-700 hover:text-[#007a87] uppercase tracking-wider transition-colors flex items-center gap-0.5 whitespace-nowrap px-0.5 2xl:px-1"
+                    className="text-[8.5px] xl:text-[9.5px] 2xl:text-[11.5px] leading-[18px] font-bold text-slate-700 hover:text-[#007a87] uppercase tracking-wider transition-colors flex items-center gap-0.5 px-0.5 2xl:px-1 whitespace-nowrap"
                   >
                     <span>{link.name || "Menu Item"}</span>
                     {link.dropdown && link.dropdown.length > 0 && <ChevronDown className="w-2.5 h-2.5 2xl:w-3 2xl:h-3 opacity-60 group-hover:rotate-180 transition-transform shrink-0" />}

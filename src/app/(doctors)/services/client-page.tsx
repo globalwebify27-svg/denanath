@@ -70,7 +70,7 @@ export default function ServicesClientPage({ pageData, services }: { pageData: a
                     key={idx}
                     href={option.href}
                     data-active={option.active}
-                    className={"snap-start shrink-0 group flex items-center justify-between px-6 py-4 lg:py-4 text-sm font-bold transition-all duration-300 lg:border-l-4 lg:border-b-0 border-b-4 whitespace-nowrap lg:whitespace-normal " + (
+                    className={"snap-start shrink-0 group flex items-center justify-between px-6 py-4 lg:py-4 text-sm font-bold transition-all duration-300 lg:border-l-4 lg:border-b-0 border-b-4  lg:whitespace-normal " + (
                       option.active
                         ? "border-[#007a87] bg-teal-50/40 text-[#007a87]"
                         : "border-transparent text-slate-600 hover:bg-slate-50 hover:text-[#002b5c] lg:hover:border-slate-200 hover:border-slate-200"
@@ -146,7 +146,7 @@ export default function ServicesClientPage({ pageData, services }: { pageData: a
                         <button
                           key={tab}
                           onClick={() => setActiveTab(tab)}
-                          className={`flex-1 text-center px-4 py-3 sm:py-3.5 rounded-xl font-bold text-[18px] leading-[30px] transition-all duration-300 ${
+                          className={`flex-1 text-center px-4 py-3 sm:py-3.5 rounded-xl font-bold text-base leading-[30px] transition-all duration-300 ${
                             activeTab === tab 
                               ? "bg-[#002b5c] text-white shadow-md scale-[1.02]"
                               : "bg-slate-100/80 text-slate-600 hover:bg-slate-200"

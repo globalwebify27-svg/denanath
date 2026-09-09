@@ -110,7 +110,7 @@ export default function FacilitiesClientForm({ initialData }: { initialData: any
         
         {/* Billing Rules */}
         <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200">
-          <h3 className="text-lg text-[20px] font-black text-[#002b5c] mb-6 flex items-center gap-2">
+          <h3 className="text-base text-[20px] font-black text-[#002b5c] mb-6 flex items-center gap-2">
             <CreditCard className="w-5 h-5 text-[#007a87]" />
             Billing Guidelines
           </h3>
@@ -131,7 +131,7 @@ export default function FacilitiesClientForm({ initialData }: { initialData: any
               <button 
                 type="button"
                 onClick={addIpdTiming}
-                className="text-xs font-bold text-white bg-[#003360] px-3 py-1.5 rounded-lg hover:bg-[#002b5c] flex items-center gap-1 transition-colors shrink-0 whitespace-nowrap self-start sm:self-auto"
+                className="text-xs font-bold text-white bg-[#003360] px-3 py-1.5 rounded-lg hover:bg-[#002b5c] flex items-center gap-1 transition-colors shrink-0  self-start sm:self-auto"
               >
                 <Plus size={14} /> Add Row
               </button>
@@ -159,14 +159,14 @@ export default function FacilitiesClientForm({ initialData }: { initialData: any
         {/* Facilities List */}
         <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6">
-            <h3 className="text-lg text-[20px] font-black text-[#002b5c] flex items-center gap-2">
+            <h3 className="text-base text-[20px] font-black text-[#002b5c] flex items-center gap-2">
               <Building className="w-5 h-5 text-[#007a87]" />
               Other Key Facilities
             </h3>
             <button 
               type="button"
               onClick={addFacility}
-              className="text-xs font-bold text-white bg-[#003360] px-3 py-1.5 rounded-lg hover:bg-[#002b5c] flex items-center gap-1 transition-colors shrink-0 whitespace-nowrap self-start sm:self-auto"
+              className="text-xs font-bold text-white bg-[#003360] px-3 py-1.5 rounded-lg hover:bg-[#002b5c] flex items-center gap-1 transition-colors shrink-0  self-start sm:self-auto"
             >
               <Plus size={14} /> Add Facility
             </button>

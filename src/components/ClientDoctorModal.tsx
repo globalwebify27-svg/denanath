@@ -155,7 +155,7 @@ export default function ClientDoctorModal({ apiDocs = [] }: { apiDocs: any[] }) 
             </div>
             <div className="flex-1 min-w-0 flex flex-col justify-between h-[150px] sm:h-[280px] py-1 sm:py-2">
               <div>
-                <h2 className="text-lg sm:text-2xl md:text-[28px] font-[900] text-[#002b5c] leading-tight mb-1 sm:mb-2 uppercase break-words hyphens-auto">{selectedDoctor.name}</h2>
+                <h2 className="text-base sm:text-2xl md:text-[28px] font-[900] text-[#002b5c] leading-tight mb-1 sm:mb-2 uppercase break-words hyphens-auto">{selectedDoctor.name}</h2>
                 <p className="text-[13px] sm:text-[16px] leading-snug sm:leading-[31px] font-normal text-slate-500 line-clamp-3 sm:line-clamp-none">{selectedDoctor.qualifications}</p>
               </div>
               
@@ -163,7 +163,7 @@ export default function ClientDoctorModal({ apiDocs = [] }: { apiDocs: any[] }) 
                 {loadingSchedule ? (
                   <div className="text-xs font-semibold text-slate-400 mt-2 sm:mt-0">Checking appointment availability...</div>
                 ) : isAppAllowed !== false ? (
-                  <Link href={`/book-appointment?doctor_id=${selectedDoctor.doctor_id || selectedDoctor.id || ''}&speciality_id=${selectedDoctor.speciality_id || ''}&service_point_id=${selectedDoctor.service_point_id || ''}`} className="inline-flex items-center justify-center px-3 py-1.5 sm:px-6 sm:py-2.5 bg-[#007a87] hover:bg-[#005f69] text-white font-bold sm:font-extrabold text-[11px] sm:text-sm transition-colors rounded-md sm:rounded-lg w-fit mt-2 sm:mt-6 whitespace-nowrap">
+                  <Link href={`/book-appointment?doctor_id=${selectedDoctor.doctor_id || selectedDoctor.id || ''}&speciality_id=${selectedDoctor.speciality_id || ''}&service_point_id=${selectedDoctor.service_point_id || ''}`} className="inline-flex items-center justify-center px-3 py-1.5 sm:px-6 sm:py-2.5 bg-[#007a87] hover:bg-[#005f69] text-white font-bold sm:font-extrabold text-[11px] sm:text-sm transition-colors rounded-md sm:rounded-lg w-fit mt-2 sm:mt-6 ">
                     Book Appointment
                   </Link>
                 ) : null}
@@ -229,7 +229,7 @@ export default function ClientDoctorModal({ apiDocs = [] }: { apiDocs: any[] }) 
               
               {selectedDoctor.education && selectedDoctor.education.length > 0 && (
                 <div className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-100 shadow-sm">
-                  <h3 className="text-lg font-extrabold text-[#002b5c] mb-6 flex items-center gap-3 leading-[31px]">
+                  <h3 className="text-base font-extrabold text-[#002b5c] mb-6 flex items-center gap-3 leading-[31px]">
                     <GraduationCap className="w-6 h-6 text-[#007a87]" /> Education
                   </h3>
                   <ul className="space-y-4">
@@ -245,7 +245,7 @@ export default function ClientDoctorModal({ apiDocs = [] }: { apiDocs: any[] }) 
 
               {selectedDoctor.training && selectedDoctor.training.length > 0 && (
                 <div className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-100 shadow-sm">
-                  <h3 className="text-lg font-extrabold text-[#002b5c] mb-6 flex items-center gap-3 leading-[31px]">
+                  <h3 className="text-base font-extrabold text-[#002b5c] mb-6 flex items-center gap-3 leading-[31px]">
                     <BookOpen className="w-6 h-6 text-[#007a87]" /> Training
                   </h3>
                   <ul className="space-y-4">
@@ -261,7 +261,7 @@ export default function ClientDoctorModal({ apiDocs = [] }: { apiDocs: any[] }) 
 
               {selectedDoctor.experience && selectedDoctor.experience.length > 0 && (
                 <div className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-100 shadow-sm">
-                  <h3 className="text-lg font-extrabold text-[#002b5c] mb-6 flex items-center gap-3 leading-[31px]">
+                  <h3 className="text-base font-extrabold text-[#002b5c] mb-6 flex items-center gap-3 leading-[31px]">
                     <Briefcase className="w-6 h-6 text-[#007a87]" /> Experience
                   </h3>
                   <ul className="space-y-4">
@@ -277,7 +277,7 @@ export default function ClientDoctorModal({ apiDocs = [] }: { apiDocs: any[] }) 
 
               {selectedDoctor.publications && selectedDoctor.publications.length > 0 && (
                 <div className="bg-white rounded-2xl p-6 sm:p-8 border border-slate-100 shadow-sm">
-                  <h3 className="text-lg font-extrabold text-[#002b5c] mb-6 flex items-center gap-3 leading-[31px]">
+                  <h3 className="text-base font-extrabold text-[#002b5c] mb-6 flex items-center gap-3 leading-[31px]">
                     <BookOpen className="w-6 h-6 text-[#007a87]" /> Publications
                   </h3>
                   <ul className="space-y-4">

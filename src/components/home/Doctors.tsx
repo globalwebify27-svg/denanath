@@ -99,7 +99,7 @@ export default function DoctorsSection({ data = defaultDoctorsData }: { data?: a
             </h2>
           </div>
 
-          <p className="max-w-xl text-[18px] text-slate-600 leading-[31px]">
+          <p className="max-w-xl text-base text-slate-600 leading-[31px]">
             {data.description}
           </p>
         </div>
@@ -136,7 +136,7 @@ export default function DoctorsSection({ data = defaultDoctorsData }: { data?: a
 
                 <div className="p-4 sm:p-6 flex flex-col flex-1">
                   <Link href={`/doctor-details/${doctor.id}`} className="hover:text-[#007a87] transition-colors">
-                    <h3 className="text-lg sm:text-xl font-bold text-slate-900">
+                    <h3 className="text-base sm:text-xl font-bold text-slate-900">
                       {doctor.name}
                     </h3>
                   </Link>

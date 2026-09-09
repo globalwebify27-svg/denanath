@@ -83,7 +83,7 @@ export default function QuickAccessWidget() {
               className="group relative flex items-center"
             >
               {/* Hover Tooltip */}
-              <span className="absolute right-14 md:right-16 whitespace-nowrap rounded-lg bg-gray-900 px-2 py-1 md:px-3 md:py-1.5 text-xs md:text-sm font-medium text-white opacity-0 shadow-md transition-opacity duration-300 group-hover:opacity-100 pointer-events-none">
+              <span className="absolute right-14 md:right-16  rounded-lg bg-gray-900 px-2 py-1 md:px-3 md:py-1.5 text-xs md:text-sm font-medium text-white opacity-0 shadow-md transition-opacity duration-300 group-hover:opacity-100 pointer-events-none">
                 {item.label}
               </span>
 

@@ -299,7 +299,7 @@ export default function ClinicalHub({ data = defaultClinicalHubData }: { data?: 
             {data.tagline}
           </span>
           <h2 className="text-3xl sm:text-4xl font-light text-[#002b5c] tracking-tight mt-6" dangerouslySetInnerHTML={{__html: data.title}}></h2>
-          <p className="text-slate-600 text-base sm:text-lg font-normal leading-[31px] mt-4">{data.description}</p>
+          <p className="text-slate-600 text-base sm:text-base font-normal leading-[31px] mt-4">{data.description}</p>
         </div>
 
         {/* Interactive Grid */}
@@ -352,7 +352,7 @@ export default function ClinicalHub({ data = defaultClinicalHubData }: { data?: 
                       {hub.id}
                     </span>
                     <HubIcon className="w-5 h-5 flex-shrink-0" />
-                    <span className="text-lg font-bold tracking-tight">
+                    <span className="text-base font-bold tracking-tight">
                       {hub.title}
                     </span>
                   </div>
@@ -381,12 +381,12 @@ export default function ClinicalHub({ data = defaultClinicalHubData }: { data?: 
                     </div>
                     <div>
                       <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Selected Department</span>
-                      <h3 className="text-lg font-bold text-[#002b5c] tracking-tight">{currentHub.title}</h3>
+                      <h3 className="text-base font-bold text-[#002b5c] tracking-tight">{currentHub.title}</h3>
                     </div>
                   </div>
 
                   <div 
-                    className="text-slate-600 text-base sm:text-lg font-normal leading-[31px] prose prose-slate prose-p:leading-[31px] max-w-none"
+                    className="text-slate-600 text-base sm:text-base font-normal leading-[31px] prose prose-slate prose-p:leading-[31px] max-w-none"
                     dangerouslySetInnerHTML={{ __html: currentHub.description }}
                   />
 
@@ -396,7 +396,7 @@ export default function ClinicalHub({ data = defaultClinicalHubData }: { data?: 
                     </h4>
                     <ul className="space-y-2">
                       {currentHub.features.map((feature: string, fIdx: number) => (
-                        <li key={fIdx} className="flex items-start gap-2.5 text-slate-600 text-base sm:text-lg font-normal leading-[31px]">
+                        <li key={fIdx} className="flex items-start gap-2.5 text-slate-600 text-base sm:text-base font-normal leading-[31px]">
                           <span 
                             className={`w-1.5 h-1.5 rounded-full mt-2.5 flex-shrink-0 ${currentHub.themeColor ? '' : theme?.bullet}`} 
                             style={currentHub.themeColor ? { backgroundColor: currentHub.themeColor } : {}}

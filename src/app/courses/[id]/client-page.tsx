@@ -48,7 +48,7 @@ export default function ClientPage({ data }: { data: any }) {
           
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 md:py-4 relative z-10">
             {/* Breadcrumb */}
-            <div className="flex items-center gap-2 text-blue-200 text-[10px] font-medium tracking-wide mb-1 overflow-hidden whitespace-nowrap">
+            <div className="flex items-center gap-2 text-blue-200 text-[10px] font-medium tracking-wide mb-1 overflow-hidden ">
               <Link href="/" className="hover:text-white transition-colors shrink-0">Home</Link>
               <ChevronRight className="w-3.5 h-3.5 shrink-0" />
               <Link href="/#courses" className="hover:text-white transition-colors shrink-0">Courses</Link>
@@ -69,7 +69,7 @@ export default function ClientPage({ data }: { data: any }) {
             {data.content ? (
               <div 
                 ref={contentRef}
-                className="prose prose-slate max-w-none text-[18px] prose-headings:text-[#002b5c] prose-a:text-[#007a87] prose-img:rounded-2xl prose-img:cursor-pointer [&_img]:!cursor-pointer prose-img:w-full prose-img:h-auto prose-img:max-w-full prose-img:shadow-md prose-img:border prose-img:border-slate-200/80 hover:prose-img:shadow-2xl hover:prose-img:scale-[1.01] prose-img:transition-all prose-img:duration-300 [&_h1]:!text-[22px] [&_h1]:!mt-2 [&_h1]:!mb-1 [&_h1:first-child]:!mt-0 [&_h2]:!text-[22px] [&_h2]:!mt-2 [&_h2]:!mb-1 [&_h2:first-child]:!mt-0 [&_h3]:!text-[22px] [&_h3]:!mt-2 [&_h3]:!mb-1 [&_h3:first-child]:!mt-0 [&_h4]:!text-[22px] [&_h4]:!mt-1.5 [&_h4]:!mb-1 [&_h4:first-child]:!mt-0 [&_p]:!text-[18px] [&_p]:!mt-0 [&_p]:!mb-1 [&_p:first-child]:!mt-0 [&_li]:!text-[18px] [&_td]:!text-[18px] [&_th]:!text-[18px] [&_ul]:my-1.5 [&_ol]:my-1.5 leading-relaxed"
+                className="prose prose-slate max-w-none text-base prose-headings:text-[#002b5c] prose-a:text-[#007a87] prose-img:rounded-2xl prose-img:cursor-pointer [&_img]:!cursor-pointer prose-img:w-full prose-img:h-auto prose-img:max-w-full prose-img:shadow-md prose-img:border prose-img:border-slate-200/80 hover:prose-img:shadow-2xl hover:prose-img:scale-[1.01] prose-img:transition-all prose-img:duration-300 [&_h1]:!text-[22px] [&_h1]:!mt-2 [&_h1]:!mb-1 [&_h1:first-child]:!mt-0 [&_h2]:!text-[22px] [&_h2]:!mt-2 [&_h2]:!mb-1 [&_h2:first-child]:!mt-0 [&_h3]:!text-[22px] [&_h3]:!mt-2 [&_h3]:!mb-1 [&_h3:first-child]:!mt-0 [&_h4]:!text-[22px] [&_h4]:!mt-1.5 [&_h4]:!mb-1 [&_h4:first-child]:!mt-0 [&_p]:!text-base [&_p]:!mt-0 [&_p]:!mb-1 [&_p:first-child]:!mt-0 [&_li]:!text-base [&_td]:!text-base [&_th]:!text-base [&_ul]:my-1.5 [&_ol]:my-1.5 leading-relaxed"
                 dangerouslySetInnerHTML={{ 
                   __html: data.content.replace(/(?:<p>(?:<br\s*\/?>|\s|&nbsp;)*<\/p>\s*)+$/gi, "") 
                 }}
@@ -158,7 +158,7 @@ export default function ClientPage({ data }: { data: any }) {
             className="mt-4 bg-white/95 px-4 py-2 rounded flex items-center justify-between w-full max-w-4xl shadow-lg"
             onClick={e => e.stopPropagation()}
           >
-            <div className="text-sm font-bold text-slate-700 min-w-[50px]">
+            <div className="text-sm font-bold text-slate-700 ">
               {lightboxIndex + 1} / {data.gallery.length}
             </div>
 

@@ -57,7 +57,7 @@ export default function JsonSettingsEditor({
   return (
     <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
       <div className="flex items-center justify-between">
-        <h3 className="text-lg font-bold text-slate-800">{label}</h3>
+        <h3 className="text-base font-bold text-slate-800">{label}</h3>
         <button
           onClick={handleSave}
           disabled={isSaving}

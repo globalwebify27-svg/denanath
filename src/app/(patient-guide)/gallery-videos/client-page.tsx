@@ -90,7 +90,7 @@ export default function GalleryVideosClientPage({ pageData }: { pageData: any })
                     <button
                       key={idx}
                       onClick={() => setActiveCategory(cat)}
-                      className={"whitespace-nowrap px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 " + (
+                      className={" px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 " + (
                         activeCategory === cat 
                           ? "bg-[#002b5c] text-white shadow-md transform scale-105" 
                           : "bg-slate-100 text-slate-600 hover:bg-slate-200"

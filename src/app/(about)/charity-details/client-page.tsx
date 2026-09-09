@@ -72,7 +72,7 @@ export default function CharityDetailsClientPage({ charityData }: { charityData:
                     {heading}
                   </h3>
                   
-                  <div className="text-slate-600 text-[18px] leading-[31px] font-normal max-w-3xl prose prose-slate max-w-none" dangerouslySetInnerHTML={{ __html: introduction || '' }} />
+                  <div className="text-slate-600 text-base leading-[31px] font-normal max-w-3xl prose prose-slate max-w-none" dangerouslySetInnerHTML={{ __html: introduction || '' }} />
                 </div>
 
                 {/* Impact Metric Cards (Dashboard look) */}
@@ -109,16 +109,16 @@ export default function CharityDetailsClientPage({ charityData }: { charityData:
 
                   {/* Responsive Table Wrapper */}
                   <div className="w-full overflow-x-auto custom-scrollbar">
-                    <table className="w-full min-w-[700px] text-left border-collapse">
+                    <table className="break-words w-full  text-left border-collapse">
                       <thead>
                         <tr className="bg-[#1eb7a6] text-white">
-                          <th className="py-4 px-6 font-semibold text-[18px] leading-[31px] tracking-wide border-r border-teal-600/30 whitespace-nowrap w-[180px]">
+                          <th className="py-4 px-6 font-semibold text-sm leading-[31px] tracking-wide border-r border-teal-600/30  w-[180px]">
                             Month
                           </th>
-                          <th className="py-4 px-6 font-semibold text-[18px] leading-[31px] tracking-wide border-r border-teal-600/30">
+                          <th className="py-4 px-6 font-semibold text-sm leading-[31px] tracking-wide border-r border-teal-600/30">
                             Total number of Indigent patients (निर्धन) to whom treatment is provided
                           </th>
-                          <th className="py-4 px-6 font-semibold text-[18px] leading-[31px] tracking-wide">
+                          <th className="py-4 px-6 font-semibold text-sm leading-[31px] tracking-wide">
                             Total number of Weaker section (दुर्बल) patients to whom treatment is provided
                           </th>
                         </tr>
@@ -126,7 +126,7 @@ export default function CharityDetailsClientPage({ charityData }: { charityData:
                       <tbody>
                         {records.map((row: any, idx: number) => (
                           <tr key={idx} className="border-b border-slate-100 hover:bg-slate-50 transition-colors last:border-0 group">
-                            <td className="py-4 px-6 text-[14px] font-bold text-[#002b5c] border-r border-slate-100 whitespace-nowrap group-hover:text-teal-600 transition-colors">
+                            <td className="py-4 px-6 text-[14px] font-bold text-[#002b5c] border-r border-slate-100  group-hover:text-teal-600 transition-colors">
                               {row.month}
                             </td>
                             <td className="py-4 px-6 border-r border-slate-100">

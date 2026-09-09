@@ -129,7 +129,7 @@ export default function ContactClientForm({ initialData }: { initialData: any })
         <div className="bg-white p-8 rounded-2xl border border-slate-100 shadow-sm">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 border-b pb-4">
             <h2 className="text-xl font-bold text-[#002b5c]">Department Contacts</h2>
-            <button type="button" onClick={addDept} className="flex items-center gap-1.5 bg-[#007a87] text-white px-3 py-1.5 sm:px-4 sm:py-2 rounded-xl text-xs sm:text-sm font-bold self-start sm:self-auto whitespace-nowrap">
+            <button type="button" onClick={addDept} className="flex items-center gap-1.5 bg-[#007a87] text-white px-3 py-1.5 sm:px-4 sm:py-2 rounded-xl text-xs sm:text-sm font-bold self-start sm:self-auto ">
               <Plus size={14} /> <span>Add Department</span>
             </button>
           </div>

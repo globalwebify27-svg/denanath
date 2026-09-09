@@ -65,7 +65,7 @@ export default function VasantNirmalaOswalCentreClientPage({ initialData }: { in
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 md:py-4 relative z-10">
           
           {/* Breadcrumb */}
-          <div className="flex items-center gap-2 text-blue-200 text-[10px] font-medium tracking-wide mb-1 overflow-hidden whitespace-nowrap">
+          <div className="flex items-center gap-2 text-blue-200 text-[10px] font-medium tracking-wide mb-1 overflow-hidden ">
             <Link href="/" className="hover:text-white transition-colors shrink-0">Home</Link>
             <ChevronRight className="w-3.5 h-3.5 shrink-0" />
             <Link href="/academics" className="hover:text-white transition-colors shrink-0">Academics</Link>
@@ -96,7 +96,7 @@ export default function VasantNirmalaOswalCentreClientPage({ initialData }: { in
             <h2 className="text-2xl font-bold text-slate-800">{data.overviewTitle}</h2>
           </div>
           <div 
-            className="text-slate-600 font-normal leading-[31px] text-[18px] prose max-w-none"
+            className="text-slate-600 font-normal leading-[31px] text-base prose max-w-none"
             dangerouslySetInnerHTML={{ __html: data.overviewContent }}
           />
         </section>

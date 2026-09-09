@@ -47,7 +47,7 @@ export default function SupportDonationsClientForm({ initialData }: { initialDat
         
         {/* Static Content Section */}
         <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200">
-          <h3 className="text-lg text-[20px] font-black text-[#002b5c] mb-4 flex items-center gap-2">
+          <h3 className="text-base text-[20px] font-black text-[#002b5c] mb-4 flex items-center gap-2">
             <Users className="w-5 h-5 text-[#007a87]" />
             Page Static Content
           </h3>
@@ -94,7 +94,7 @@ export default function SupportDonationsClientForm({ initialData }: { initialDat
         </div>
 
         <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200">
-          <h3 className="text-lg text-[20px] font-black text-[#002b5c] mb-4 flex items-center gap-2">
+          <h3 className="text-base text-[20px] font-black text-[#002b5c] mb-4 flex items-center gap-2">
             <Users className="w-5 h-5 text-[#007a87]" />
             Corporate & Kind Donations
           </h3>
@@ -113,7 +113,7 @@ export default function SupportDonationsClientForm({ initialData }: { initialDat
         </div>
 
         <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200">
-          <h3 className="text-lg text-[20px] font-black text-[#002b5c] mb-4 flex items-center gap-2">
+          <h3 className="text-base text-[20px] font-black text-[#002b5c] mb-4 flex items-center gap-2">
             <Users className="w-5 h-5 text-[#007a87]" />
             Individual Donors
           </h3>

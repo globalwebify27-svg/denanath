@@ -91,14 +91,14 @@ export default async function CathlabPricingPage() {
             </div>
             <div>
               <h2 className="text-xl font-bold text-[#002b5c] mb-2">{(data.pageTitle || data.title || "").replace(/<[^>]*>?/gm, '')}</h2>
-              <p className="text-[17px] text-slate-700 font-medium leading-relaxed">
+              <p className="text-base text-slate-700 font-medium leading-relaxed">
                 {data.subtitle}
               </p>
             </div>
           </div>
         )}
 
-        <div className="bg-white rounded-3xl shadow-xl border border-slate-100 overflow-hidden [&_td]:!text-[18px] [&_th]:!text-[18px] [&_.text-sm]:!text-[18px] [&_.text-xs]:!text-[18px]">
+        <div className="bg-white rounded-3xl shadow-xl border border-slate-100 overflow-hidden [&_td]:!text-base [&_th]:!text-base [&_.text-sm]:!text-base [&_.text-xs]:!text-base">
           
           {/* Note Banner */}
           <div className="bg-amber-50 border-b border-amber-100 px-8 py-4 flex items-center gap-3">
@@ -107,7 +107,7 @@ export default async function CathlabPricingPage() {
           </div>
 
           <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse min-w-[900px]">
+            <table className="break-words w-full text-left border-collapse ">
               <thead>
                 <tr className="bg-slate-50 border-b-2 border-slate-200">
                   <th className="py-5 px-6 font-bold text-slate-700 text-sm w-20 text-center border-r border-slate-100 uppercase tracking-wider">Sr.No.</th>
@@ -136,7 +136,7 @@ export default async function CathlabPricingPage() {
                       </span>
                     </td>
                     <td className="py-5 px-6 text-slate-700 text-[14px] border-r border-slate-100">{row.manufacturer}</td>
-                    <td className="py-5 px-8 text-emerald-600 font-bold text-right text-lg whitespace-nowrap bg-emerald-50/10 group-hover:bg-emerald-50/30 transition-colors">
+                    <td className="py-5 px-8 text-emerald-600 font-bold text-right text-base  bg-emerald-50/10 group-hover:bg-emerald-50/30 transition-colors">
                       ₹ {row.mrp}
                     </td>
                   </tr>

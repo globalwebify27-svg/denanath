@@ -67,7 +67,7 @@ export default async function ECApprovalPage() {
                   {data.title || "Official Approval Information"}
                 </h2>
 
-                <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200 font-mono text-slate-700 break-words shadow-inner text-lg whitespace-pre-wrap">
+                <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200 font-mono text-slate-700 break-words shadow-inner text-base whitespace-pre-wrap">
                   {data.content}
                 </div>
               </>

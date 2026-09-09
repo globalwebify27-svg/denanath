@@ -102,7 +102,7 @@ export default function OnlinePaymentClientPage({ pageData }: { pageData: any })
                     key={idx}
                     href={option.href}
                     data-active={option.active}
-                    className={"snap-start shrink-0 group flex items-center justify-between px-6 py-4 lg:py-4 text-sm font-bold transition-all duration-300 lg:border-l-4 lg:border-b-0 border-b-4 whitespace-nowrap lg:whitespace-normal " + (
+                    className={"snap-start shrink-0 group flex items-center justify-between px-6 py-4 lg:py-4 text-sm font-bold transition-all duration-300 lg:border-l-4 lg:border-b-0 border-b-4  lg:whitespace-normal " + (
                       option.active
                         ? "border-[#007a87] bg-teal-50/40 text-[#007a87]"
                         : "border-transparent text-slate-600 hover:bg-slate-50 hover:text-[#002b5c] lg:hover:border-slate-200 hover:border-slate-200"
@@ -521,7 +521,7 @@ export default function OnlinePaymentClientPage({ pageData }: { pageData: any })
                   <div className="flex items-center justify-between gap-4 flex-wrap">
                     {/* Left group: captcha box + refresh + enter text */}
                     <div className="flex items-center gap-2">
-                      <div className="bg-slate-800 text-white px-6 py-3 rounded-lg tracking-widest font-mono font-bold text-[16px] select-none shadow-inner border border-slate-700 text-center whitespace-nowrap">
+                      <div className="bg-slate-800 text-white px-6 py-3 rounded-lg tracking-widest font-mono font-bold text-[16px] select-none shadow-inner border border-slate-700 text-center ">
                         {captchaCode}
                       </div>
                       {/* Refresh button */}
@@ -535,7 +535,7 @@ export default function OnlinePaymentClientPage({ pageData }: { pageData: any })
                     <button suppressHydrationWarning
                       type="submit"
                       disabled={isSubmitting}
-                      className={`group inline-flex items-center justify-center gap-2 px-9 py-3 bg-[#003360] hover:bg-[#002b5c] text-white font-bold text-[16px] whitespace-nowrap rounded-lg transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5 ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
+                      className={`group inline-flex items-center justify-center gap-2 px-9 py-3 bg-[#003360] hover:bg-[#002b5c] text-white font-bold text-[16px]  rounded-lg transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5 ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
                     >
                       {isSubmitting ? (
                         <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>

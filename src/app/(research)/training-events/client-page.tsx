@@ -93,7 +93,7 @@ export default function TrainingAndEventsClientPage({ pageData }: { pageData: an
                     key={idx}
                     href={option.href}
                     data-active={option.active}
-                    className={"snap-start shrink-0 group flex items-center justify-between px-6 py-4 lg:py-4 text-sm font-bold transition-all duration-300 lg:border-l-4 lg:border-b-0 border-b-4 whitespace-nowrap lg:whitespace-normal " + (
+                    className={"snap-start shrink-0 group flex items-center justify-between px-6 py-4 lg:py-4 text-sm font-bold transition-all duration-300 lg:border-l-4 lg:border-b-0 border-b-4  lg:whitespace-normal " + (
                       option.active
                         ? "border-[#007a87] bg-teal-50/40 text-[#007a87]"
                         : "border-transparent text-slate-600 hover:bg-slate-50 hover:text-[#002b5c] lg:hover:border-slate-200 hover:border-slate-200"
@@ -133,7 +133,7 @@ export default function TrainingAndEventsClientPage({ pageData }: { pageData: an
               )}
               
               {pageData.content ? (
-                <div className="text-slate-600 text-[18px] leading-[31px] font-normal [&_p]:mb-1 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:mb-2 [&_li]:mb-1 [&_.bg-teal-50]:!text-[14px] [&_.bg-teal-50]:!px-4 [&_.bg-teal-50]:!py-2" dangerouslySetInnerHTML={{ __html: pageData.content }} />
+                <div className="text-slate-600 text-base leading-[31px] font-normal [&_p]:mb-1 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:mb-2 [&_li]:mb-1 [&_.bg-teal-50]:!text-[14px] [&_.bg-teal-50]:!px-4 [&_.bg-teal-50]:!py-2" dangerouslySetInnerHTML={{ __html: pageData.content }} />
               ) : (
                 <div className="py-16 text-center border-2 border-dashed border-slate-200 rounded-2xl bg-slate-50">
                   <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-teal-100 mb-4">

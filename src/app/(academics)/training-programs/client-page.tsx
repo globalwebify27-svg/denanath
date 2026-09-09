@@ -62,7 +62,7 @@ export default function TrainingProgramsClient({ initialData }: { initialData: a
                     key={idx}
                     href={option.href}
                     data-active={option.active}
-                    className={"snap-start shrink-0 group flex items-center justify-between px-6 py-4 lg:py-4 text-sm font-bold transition-all duration-300 lg:border-l-4 lg:border-b-0 border-b-4 whitespace-nowrap lg:whitespace-normal " + (
+                    className={"snap-start shrink-0 group flex items-center justify-between px-6 py-4 lg:py-4 text-sm font-bold transition-all duration-300 lg:border-l-4 lg:border-b-0 border-b-4  lg:whitespace-normal " + (
                       option.active
                         ? "border-[#007a87] bg-teal-50/40 text-[#007a87]"
                         : "border-transparent text-slate-600 hover:bg-slate-50 hover:text-[#002b5c] lg:hover:border-slate-200 hover:border-slate-200"
@@ -118,7 +118,7 @@ export default function TrainingProgramsClient({ initialData }: { initialData: a
                       <div className="w-8 h-8 rounded-full bg-white border border-slate-200 flex items-center justify-center shrink-0 text-[#002b5c] font-bold group-hover/btn:border-[#D9232D] group-hover/btn:text-[#D9232D]">
                         {idx + 1}
                       </div>
-                      <span className="text-[18px] leading-[31px] font-normal text-slate-700 group-hover/btn:text-[#002b5c] flex-1">
+                      <span className="text-base leading-[31px] font-normal text-slate-700 group-hover/btn:text-[#002b5c] flex-1">
                         {programName}
                       </span>
                       <ChevronRight className="w-5 h-5 text-slate-300 group-hover/btn:text-[#D9232D] group-hover/btn:translate-x-1 transition-all" />

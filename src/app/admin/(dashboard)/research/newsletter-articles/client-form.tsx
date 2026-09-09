@@ -103,7 +103,7 @@ export default function NewsletterArticlesClientForm({ initialData }: { initialD
             <div class="w-12 h-12 rounded-xl bg-teal-100 text-[#007a87] flex items-center justify-center mb-4 group-hover:bg-[#D9232D] group-hover:text-white transition-colors">
               ${fileTextSvg}
             </div>
-            <h3 class="text-lg font-bold text-[#002b5c] mb-2 group-hover:text-[#007a87] transition-colors leading-snug">
+            <h3 class="text-base font-bold text-[#002b5c] mb-2 group-hover:text-[#007a87] transition-colors leading-snug">
               ${item.title || 'Untitled'}
             </h3>
             <p class="text-sm text-slate-500 font-medium mb-6">

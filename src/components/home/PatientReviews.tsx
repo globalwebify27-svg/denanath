@@ -128,7 +128,7 @@ export default function PatientReviews({ data = defaultPatientReviewsData }: { d
             </span>
             <h2 className="text-3xl sm:text-4xl font-light text-[#002b5c] tracking-tight mt-5" dangerouslySetInnerHTML={{__html: data.title}}>
             </h2>
-            <p className="text-slate-600 text-[18px] font-normal leading-[31px] mt-4">
+            <p className="text-slate-600 text-base font-normal leading-[31px] mt-4">
               {data.description}
             </p>
 
@@ -163,7 +163,7 @@ export default function PatientReviews({ data = defaultPatientReviewsData }: { d
                   </div>
 
                   <blockquote 
-                    className="text-base sm:text-lg lg:text-xl text-[#002b5c] font-light leading-relaxed tracking-tight italic min-h-[120px] prose prose-sm prose-p:leading-relaxed max-w-none"
+                    className="text-base sm:text-base lg:text-xl text-[#002b5c] font-light leading-relaxed tracking-tight italic min-h-[120px] prose prose-sm prose-p:leading-relaxed max-w-none"
                     dangerouslySetInnerHTML={{__html: reviews[activeIndex].text}}
                   />
                 </div>

@@ -115,7 +115,7 @@ export default function PublicationsClientForm({ initialData }: { initialData: a
     let pubHtml = '';
     for (const pub of (publications || [])) {
       if (pub.isHeader) {
-        pubHtml += `\n<h4 class="text-base md:text-lg font-bold text-[#002b5c] mb-6 mt-12 border-t border-slate-100 pt-8">${pub.title}</h4>\n`;
+        pubHtml += `\n<h4 class="text-base md:text-base font-bold text-[#002b5c] mb-6 mt-12 border-t border-slate-100 pt-8">${pub.title}</h4>\n`;
       } else {
         let doiHtml = '';
         if (pub.doi) {

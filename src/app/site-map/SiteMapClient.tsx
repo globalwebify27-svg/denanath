@@ -177,7 +177,7 @@ export default function SiteMapClient({ dynamicPages = [] }: { dynamicPages?: Dy
                   onClick={() => toggleSection(section.title)}
                   className="flex items-center text-slate-700 group text-left focus:outline-none py-1 mt-1"
                 >
-                  <span className="font-bold text-lg tracking-tight group-hover:text-[#007a87] transition-colors">
+                  <span className="font-bold text-base tracking-tight group-hover:text-[#007a87] transition-colors">
                     {section.title}
                   </span>
                   {openSections[section.title] ? (

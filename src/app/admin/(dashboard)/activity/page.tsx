@@ -79,7 +79,7 @@ export default async function ActivityLogPage() {
                       <p className="text-[14px] font-[500] text-gray-500 mt-1">{log.desc}</p>
                     </div>
                     
-                    <span className="text-[10px] font-[800] text-white uppercase tracking-widest bg-[#003360] px-3 py-1.5 rounded-lg border border-[#003360] shadow-sm whitespace-nowrap shrink-0 group-hover:bg-[#002240] group-hover:border-[#002240] transition-colors">
+                    <span className="text-[10px] font-[800] text-white uppercase tracking-widest bg-[#003360] px-3 py-1.5 rounded-lg border border-[#003360] shadow-sm  shrink-0 group-hover:bg-[#002240] group-hover:border-[#002240] transition-colors">
                       {getTimeAgo(log.date)}
                     </span>
                   </div>

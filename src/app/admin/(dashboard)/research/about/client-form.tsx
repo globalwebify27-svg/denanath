@@ -76,17 +76,17 @@ export default function ResearchAboutClientForm({ initialData }: { initialData: 
       const isEven = i % 2 !== 0;
       return `
         <tr class="hover:bg-teal-50 transition-colors ${isEven ? 'bg-slate-50/50' : ''} ${i !== 3 ? 'border-b border-slate-100' : ''}">
-          <td class="p-4 font-semibold text-slate-800">${row.label}</td>
-          <td class="p-4 text-center font-medium ${row.label === 'Research Awards' ? 'text-[#007a87]' : ''}">${row.col1}</td>
-          <td class="p-4 text-center font-medium ${row.label === 'Research Awards' ? 'text-[#007a87]' : ''}">${row.col2}</td>
-          <td class="p-4 text-center font-medium ${row.label === 'Research Awards' ? 'text-[#007a87]' : ''}">${row.col3}</td>
+          <td class="p-2 font-semibold text-slate-800">${row.label}</td>
+          <td class="p-2 text-center font-medium ${row.label === 'Research Awards' ? 'text-[#007a87]' : ''}">${row.col1}</td>
+          <td class="p-2 text-center font-medium ${row.label === 'Research Awards' ? 'text-[#007a87]' : ''}">${row.col2}</td>
+          <td class="p-2 text-center font-medium ${row.label === 'Research Awards' ? 'text-[#007a87]' : ''}">${row.col3}</td>
         </tr>
       `;
     }).join('');
 
     return `
       <div class="space-y-6 text-slate-600 mb-12">
-        ${(currentData.introduction || []).map((p: string) => `<p class="leading-relaxed text-lg">${p}</p>`).join('')}
+        ${(currentData.introduction || []).map((p: string) => `<p class="leading-relaxed text-base">${p}</p>`).join('')}
       </div>
 
       <div class="mb-12">
@@ -122,11 +122,11 @@ export default function ResearchAboutClientForm({ initialData }: { initialData: 
       <div class="overflow-x-auto mb-12">
         <table class="w-full text-left border-collapse rounded-xl overflow-hidden shadow-sm">
           <thead>
-            <tr class="bg-[#002b5c] text-white whitespace-nowrap">
-              <th class="p-4 font-bold border-r border-[#001a38]/30">Category</th>
-              <th class="p-4 font-bold border-r border-[#001a38]/30 text-center">Apr 2015 - Mar 2016</th>
-              <th class="p-4 font-bold border-r border-[#001a38]/30 text-center">Apr 2014 - Mar 2015</th>
-              <th class="p-4 font-bold text-center">April 2013 - Mar 2014</th>
+            <tr class="bg-[#002b5c] text-white ">
+              <th class="p-2 font-bold border-r border-[#001a38]/30">Category</th>
+              <th class="p-2 font-bold border-r border-[#001a38]/30 text-center">Apr 2015 - Mar 2016</th>
+              <th class="p-2 font-bold border-r border-[#001a38]/30 text-center">Apr 2014 - Mar 2015</th>
+              <th class="p-2 font-bold text-center">April 2013 - Mar 2014</th>
             </tr>
           </thead>
           <tbody class="bg-white text-slate-700">
@@ -137,7 +137,7 @@ export default function ResearchAboutClientForm({ initialData }: { initialData: 
 
       <div class="mb-10">
         <h3 class="text-2xl font-bold text-[#002b5c] mb-2">Research Review committees</h3>
-        <p class="text-lg font-semibold text-[#007a87] mb-6">Scientific Advisory Committee (SAC) and Institutional Ethics Committee (IEC)</p>
+        <p class="text-base font-semibold text-[#007a87] mb-6">Scientific Advisory Committee (SAC) and Institutional Ethics Committee (IEC)</p>
         
         <p class="text-slate-600 leading-relaxed mb-4">
           ${currentData.researchReviewCommittees || ""}
@@ -153,7 +153,7 @@ export default function ResearchAboutClientForm({ initialData }: { initialData: 
             As per the regulatory requirements, the Institutional Ethics Committee of DMHRC has been registered with DCGI, under the Central Drugs Standard Control Organization (CDSCO), New Delhi
           </p>
           <div class="inline-block bg-white border border-blue-200 rounded-lg px-4 py-2 mb-4">
-            <p class="text-blue-800 font-extrabold text-lg">
+            <p class="text-blue-800 font-extrabold text-base">
               DCGI Registration No – ECR/15/Inst/Maha/2013
             </p>
           </div>

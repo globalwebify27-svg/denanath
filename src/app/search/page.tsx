@@ -58,7 +58,7 @@ export default async function SearchPage({
                       href={`/departments/${dept.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')}`}
                       className="block p-5 bg-white rounded-xl shadow-sm border border-slate-100 hover:shadow-md transition-shadow group"
                     >
-                      <h3 className="text-lg font-bold text-[#002b5c] group-hover:text-[#007a87] transition-colors">
+                      <h3 className="text-base font-bold text-[#002b5c] group-hover:text-[#007a87] transition-colors">
                         {dept.name}
                       </h3>
                       {dept.intro && (

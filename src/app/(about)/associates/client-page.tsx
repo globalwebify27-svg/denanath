@@ -44,7 +44,7 @@ export default function AssociatesClientPage({ associates }: { associates: any[]
                   Associates
                 </h2>
                 <div className="w-20 h-1.5 bg-[#007a87] rounded-full mb-4"></div>
-                <p className="text-lg text-slate-500 font-normal leading-relaxed max-w-3xl">
+                <p className="text-base text-slate-500 font-normal leading-relaxed max-w-3xl">
                   Collaborating with dedicated institutions and foundations to expand the reach of quality healthcare and charitable services across the region.
                 </p>
               </div>

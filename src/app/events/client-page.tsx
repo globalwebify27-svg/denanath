@@ -94,7 +94,7 @@ export default function EventsListClientPage({ events = [], pageData }: { events
                   <button onClick={handlePrevMonth} className="p-2 hover:bg-slate-100 rounded-lg text-slate-500 transition-colors">
                     <ArrowLeft className="w-5 h-5" />
                   </button>
-                  <h2 className="text-lg font-bold text-[#002b5c]">
+                  <h2 className="text-base font-bold text-[#002b5c]">
                     {monthNames[currentDate.getMonth()]} {currentDate.getFullYear()}
                   </h2>
                   <button onClick={handleNextMonth} className="p-2 hover:bg-slate-100 rounded-lg text-slate-500 transition-colors">
@@ -155,7 +155,7 @@ export default function EventsListClientPage({ events = [], pageData }: { events
                         <Link href={`/eventsdetails/` + eSlug}>
                           <h2 className="text-2xl font-extrabold text-[#002b5c] group-hover:text-[#d9232d] transition-colors line-clamp-2">{event.title}</h2>
                         </Link>
-                        <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#005f6b] bg-[#e0f2f1] px-4 py-1.5 rounded-full whitespace-nowrap shrink-0 border border-[#b2dfdb]">
+                        <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#005f6b] bg-[#e0f2f1] px-4 py-1.5 rounded-full  shrink-0 border border-[#b2dfdb]">
                           <Calendar className="w-4 h-4" />
                           {formattedDate}
                         </span>

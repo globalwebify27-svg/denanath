@@ -87,7 +87,7 @@ export default async function AdminDoctorsPage({
               className="w-full pl-11 pr-4 py-3 bg-gray-50/50 hover:bg-gray-50 border border-gray-100 focus:border-[#007a87]/30 rounded-xl focus:outline-none focus:ring-4 focus:ring-[#007a87]/10 transition-all font-[500] text-gray-700 text-[14px]"
             />
           </div>
-          <button type="submit" className="bg-white text-gray-600 border border-gray-200 px-6 py-3 rounded-xl font-[700] text-[14px] tracking-wide hover:bg-gray-50 hover:text-gray-900 hover:shadow-sm transition-all duration-300 whitespace-nowrap">
+          <button type="submit" className="bg-white text-gray-600 border border-gray-200 px-6 py-3 rounded-xl font-[700] text-[14px] tracking-wide hover:bg-gray-50 hover:text-gray-900 hover:shadow-sm transition-all duration-300 ">
             Search
           </button>
         </form>
@@ -99,13 +99,13 @@ export default async function AdminDoctorsPage({
       {/* Premium Data Table */}
       <div className="bg-white rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100/80 overflow-hidden relative z-10">
         <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse table-fixed min-w-[800px] md:min-w-full">
+          <table className="break-words w-full text-left border-collapse table-fixed  ">
             <thead>
               <tr className="bg-gradient-to-r from-gray-50 to-white border-b border-gray-100">
-                <th className="p-5 font-[800] text-[12px] uppercase tracking-widest text-gray-400 w-[35%]">Physician Profile</th>
-                <th className="p-5 font-[800] text-[12px] uppercase tracking-widest text-gray-400 w-[20%]">Specialty</th>
-                <th className="p-5 font-[800] text-[12px] uppercase tracking-widest text-gray-400 w-[35%]">Qualifications</th>
-                <th className="p-5 font-[800] text-[12px] uppercase tracking-widest text-gray-400 text-right w-[10%]">Actions</th>
+                <th className="p-2 font-[800] text-[12px] uppercase tracking-widest text-gray-400 w-[35%]">Physician Profile</th>
+                <th className="p-2 font-[800] text-[12px] uppercase tracking-widest text-gray-400 w-[20%]">Specialty</th>
+                <th className="p-2 font-[800] text-[12px] uppercase tracking-widest text-gray-400 w-[35%]">Qualifications</th>
+                <th className="p-2 font-[800] text-[12px] uppercase tracking-widest text-gray-400 text-right w-[10%]">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100/80">
@@ -114,7 +114,7 @@ export default async function AdminDoctorsPage({
                 const initials = doctor.name.replace("Dr. ", "").substring(0, 2).toUpperCase();
                 return (
                   <tr key={doctor.id} className="hover:bg-gray-50/60 transition-colors group">
-                    <td className="p-5 break-words">
+                    <td className="p-2 break-words">
                       <div className="flex items-center gap-4">
                         <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#002b5c]/10 to-[#007a87]/10 border border-[#007a87]/20 flex items-center justify-center shrink-0 shadow-sm group-hover:scale-105 transition-transform">
                           <span className="text-[12px] font-[800] text-[#002b5c] tracking-wider">{initials}</span>
@@ -125,7 +125,7 @@ export default async function AdminDoctorsPage({
                         </div>
                       </div>
                     </td>
-                    <td className="p-5">
+                    <td className="p-2">
                       {doctor.specialty ? (
                         <div className="flex flex-wrap gap-1">
                           <span className="inline-flex items-center px-3 py-1 rounded-lg bg-[#007a87]/10 border border-[#007a87]/20 text-[#007a87] text-[11px] font-[800] uppercase tracking-widest whitespace-normal break-words">
@@ -136,12 +136,12 @@ export default async function AdminDoctorsPage({
                         <span className="text-gray-300 text-[13px] font-[500] italic">-</span>
                       )}
                     </td>
-                    <td className="p-5 break-words">
+                    <td className="p-2 break-words">
                       <p className="text-[13px] font-[600] text-gray-600 leading-relaxed whitespace-normal">
                         {doctor.qualifications || <span className="text-gray-300 italic">-</span>}
                       </p>
                     </td>
-                    <td className="p-5 text-right">
+                    <td className="p-2 text-right">
                       <Link
                         href={`/admin/doctors/${doctor.id}`}
                         className="inline-flex items-center justify-center p-2 rounded-xl bg-gray-50 text-gray-400 hover:bg-red-600 hover:text-white hover:shadow-md transition-all duration-300 [&>svg]:hover:stroke-[3]"
@@ -171,19 +171,19 @@ export default async function AdminDoctorsPage({
         </div>
         {totalPages > 1 && (
           <div className="px-4 sm:px-6 py-4 border-t border-gray-100 flex flex-wrap items-center justify-between gap-x-3 gap-y-2 bg-gray-50/50">
-            <span className="text-[13px] font-[600] text-gray-500 whitespace-nowrap shrink-0">
+            <span className="text-[13px] font-[600] text-gray-500  shrink-0">
               Page <span className="text-gray-800 font-[800]">{page}</span> of <span className="text-gray-800 font-[800]">{totalPages}</span>
             </span>
             <div className="flex gap-2 shrink-0">
               <Link
                 href={`/admin/doctors?q=${query}&page=${Math.max(1, page - 1)}`}
-                className={`px-4 py-2 text-[12px] font-[700] rounded-lg border transition-all whitespace-nowrap ${page === 1 ? 'border-gray-200 text-gray-400 pointer-events-none bg-gray-50' : 'border-gray-300 text-[#002b5c] bg-white hover:border-[#007a87] hover:text-[#007a87] hover:shadow-sm'}`}
+                className={`px-4 py-2 text-[12px] font-[700] rounded-lg border transition-all  ${page === 1 ? 'border-gray-200 text-gray-400 pointer-events-none bg-gray-50' : 'border-gray-300 text-[#002b5c] bg-white hover:border-[#007a87] hover:text-[#007a87] hover:shadow-sm'}`}
               >
                 PREVIOUS
               </Link>
               <Link
                 href={`/admin/doctors?q=${query}&page=${Math.min(totalPages, page + 1)}`}
-                className={`px-4 py-2 text-[12px] font-[700] rounded-lg border transition-all whitespace-nowrap ${page === totalPages ? 'border-gray-200 text-gray-400 pointer-events-none bg-gray-50' : 'border-[#003360] text-white bg-[#003360] hover:bg-[#002347] hover:shadow-sm'}`}
+                className={`px-4 py-2 text-[12px] font-[700] rounded-lg border transition-all  ${page === totalPages ? 'border-gray-200 text-gray-400 pointer-events-none bg-gray-50' : 'border-[#003360] text-white bg-[#003360] hover:bg-[#002347] hover:shadow-sm'}`}
               >
                 NEXT
               </Link>

@@ -80,7 +80,7 @@ export default function AccreditationsClientForm({ initialData }: { initialData:
             </div>
             
             <div className="bg-slate-50/50 border-b border-slate-100 p-5 md:p-6 flex items-center gap-4 -mx-6 md:-mx-8 -mt-6 md:-mt-8 mb-6">
-              <div className="w-10 h-10 rounded-2xl bg-[#007a87]/10 text-[#007a87] flex items-center justify-center font-black text-lg">
+              <div className="w-10 h-10 rounded-2xl bg-[#007a87]/10 text-[#007a87] flex items-center justify-center font-black text-base">
                 {index + 1}
               </div>
               <h3 className="text-[20px] font-black text-[#002b5c]">Accreditation Certificate</h3>

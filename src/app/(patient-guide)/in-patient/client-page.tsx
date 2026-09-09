@@ -145,7 +145,7 @@ export default function InPatientClientPage({ pageData }: { pageData: any }) {
                   </h3>
                   <div className="grid md:grid-cols-2 gap-6">
                     <div className="bg-slate-50 p-6 rounded-2xl border border-slate-100 hover:shadow-md transition-shadow">
-                      <h4 className="font-bold text-[#007a87] text-lg mb-4 border-b border-slate-200 pb-2">GS / Old Building</h4>
+                      <h4 className="font-bold text-[#007a87] text-base mb-4 border-b border-slate-200 pb-2">GS / Old Building</h4>
                       <ul className="space-y-3">
                         {admissionDetails.gsBuilding?.location && (
                           <li className="flex items-start gap-3">
@@ -168,7 +168,7 @@ export default function InPatientClientPage({ pageData }: { pageData: any }) {
                       </ul>
                     </div>
                     <div className="bg-slate-50 p-6 rounded-2xl border border-slate-100 hover:shadow-md transition-shadow">
-                      <h4 className="font-bold text-[#007a87] text-lg mb-4 border-b border-slate-200 pb-2">SS / New Building</h4>
+                      <h4 className="font-bold text-[#007a87] text-base mb-4 border-b border-slate-200 pb-2">SS / New Building</h4>
                       <ul className="space-y-3">
                         {admissionDetails.ssBuilding?.location && (
                           <li className="flex items-start gap-3">
@@ -201,7 +201,7 @@ export default function InPatientClientPage({ pageData }: { pageData: any }) {
                   </h3>
                   <div className="grid md:grid-cols-2 gap-8">
                     <div>
-                      <h4 className="font-bold text-slate-800 text-lg mb-4">Main Building</h4>
+                      <h4 className="font-bold text-slate-800 text-base mb-4">Main Building</h4>
                       <ul className="space-y-3 text-sm">
                         {mainBuildingPhones.map((p: any, i: number) => (
                           <li key={i} className="flex items-center justify-between border-b border-slate-100 pb-2">
@@ -212,7 +212,7 @@ export default function InPatientClientPage({ pageData }: { pageData: any }) {
                       </ul>
                     </div>
                     <div>
-                      <h4 className="font-bold text-slate-800 text-lg mb-4">Super Speciality Building</h4>
+                      <h4 className="font-bold text-slate-800 text-base mb-4">Super Speciality Building</h4>
                       <ul className="space-y-3 text-sm">
                         {superSpecialityPhones.map((p: any, i: number) => (
                           <li key={i} className="flex items-center justify-between border-b border-slate-100 pb-2">
@@ -268,7 +268,7 @@ export default function InPatientClientPage({ pageData }: { pageData: any }) {
                               )}
                             </div>
                             <div className="p-5 flex flex-col flex-1">
-                              <h5 className="font-bold text-lg text-[#002b5c] group-hover:text-[#D9232D] transition-colors mb-3 leading-tight">{room.name}</h5>
+                              <h5 className="font-bold text-base text-[#002b5c] group-hover:text-[#D9232D] transition-colors mb-3 leading-tight">{room.name}</h5>
                               {room.fac && room.fac !== "-" && <p className="text-sm text-slate-600 leading-relaxed flex-1">{room.fac}</p>}
                             </div>
                           </div>
@@ -293,7 +293,7 @@ export default function InPatientClientPage({ pageData }: { pageData: any }) {
                               )}
                             </div>
                             <div className="p-5 flex flex-col flex-1">
-                              <h5 className="font-bold text-lg text-[#002b5c] group-hover:text-[#D9232D] transition-colors mb-3 leading-tight">{room.name}</h5>
+                              <h5 className="font-bold text-base text-[#002b5c] group-hover:text-[#D9232D] transition-colors mb-3 leading-tight">{room.name}</h5>
                               {room.fac && room.fac !== "-" && <p className="text-sm text-slate-600 leading-relaxed flex-1">{room.fac}</p>}
                             </div>
                           </div>
@@ -340,12 +340,12 @@ export default function InPatientClientPage({ pageData }: { pageData: any }) {
                       Meal Timings
                     </h3>
                     <div className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
-                      <table className="w-full text-left">
+                      <table className="break-words w-full text-left">
                         <tbody className="divide-y divide-slate-100">
                           {mealTimings.map((m: any, i: number) => (
                             <tr key={i} className="group hover:bg-[#003360] transition-colors">
-                              <th className="px-4 py-3 text-slate-800 group-hover:text-white transition-colors">{m.name}</th>
-                              <td className="px-4 py-3 text-slate-600 group-hover:text-blue-100 transition-colors">{m.time}</td>
+                              <th className="p-2 text-slate-800 group-hover:text-white transition-colors">{m.name}</th>
+                              <td className="p-2 text-slate-600 group-hover:text-blue-100 transition-colors">{m.time}</td>
                             </tr>
                           ))}
                         </tbody>
@@ -489,7 +489,7 @@ export default function InPatientClientPage({ pageData }: { pageData: any }) {
                   
                   <div className="grid md:grid-cols-3 gap-8 mt-6">
                     <div>
-                      <h4 className="font-bold text-slate-800 text-lg mb-4 bg-teal-50 p-3 rounded-lg border border-teal-100">Insurance Companies</h4>
+                      <h4 className="font-bold text-slate-800 text-base mb-4 bg-teal-50 p-3 rounded-lg border border-teal-100">Insurance Companies</h4>
                       <div className="h-[400px] overflow-y-auto pr-4 space-y-3 custom-scrollbar">
                         {insuranceCompanies.map((company: string, i: number) => (
                           <div key={i} className="flex items-start gap-2 border-b border-slate-100 pb-2">
@@ -500,7 +500,7 @@ export default function InPatientClientPage({ pageData }: { pageData: any }) {
                       </div>
                     </div>
                     <div>
-                      <h4 className="font-bold text-slate-800 text-lg mb-4 bg-teal-50 p-3 rounded-lg border border-teal-100">TPAs</h4>
+                      <h4 className="font-bold text-slate-800 text-base mb-4 bg-teal-50 p-3 rounded-lg border border-teal-100">TPAs</h4>
                       <div className="h-[400px] overflow-y-auto pr-4 space-y-3 custom-scrollbar">
                         {tpaCompanies.map((company: string, i: number) => (
                           <div key={i} className="flex items-start gap-2 border-b border-slate-100 pb-2">
@@ -512,7 +512,7 @@ export default function InPatientClientPage({ pageData }: { pageData: any }) {
                     </div>
                     
                     <div>
-                      <h4 className="font-bold text-slate-800 text-lg mb-4 bg-blue-50 p-3 rounded-lg border border-blue-100">Corporate Companies</h4>
+                      <h4 className="font-bold text-slate-800 text-base mb-4 bg-blue-50 p-3 rounded-lg border border-blue-100">Corporate Companies</h4>
                       <div className="h-[400px] overflow-y-auto pr-4 space-y-3 custom-scrollbar">
                         {corporateCompanies.map((company: string, i: number) => (
                           <div key={i} className="flex items-start gap-2 border-b border-slate-100 pb-2">

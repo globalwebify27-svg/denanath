@@ -71,7 +71,7 @@ export default function ContactUsClientPage({ pageData }: { pageData: any }) {
                   We Are Here To Help You
                 </h2>
                 <div className="w-20 h-1.5 bg-[#007a87] rounded-full mx-auto mb-4"></div>
-                <p className="text-slate-500 text-lg">
+                <p className="text-slate-500 text-base">
                   Whether you have a question about our services, need to reach a specific department, or want to provide feedback, our team is ready to assist you.
                 </p>
               </div>
@@ -105,7 +105,7 @@ export default function ContactUsClientPage({ pageData }: { pageData: any }) {
                     ) : (
                       <form 
                         ref={formRef}
-                        className="space-y-6 [&_label]:!text-[18px] [&_input]:!text-[18px] [&_textarea]:!text-[18px] [&_.text-sm]:!text-[18px] [&_.text-xs]:!text-[18px]" 
+                        className="space-y-6 [&_label]:!text-base [&_input]:!text-base [&_textarea]:!text-base [&_.text-sm]:!text-base [&_.text-xs]:!text-base" 
                         action={async (formData) => { 
                           if (formData.get('captcha')?.toString().toUpperCase() !== captchaValue) {
                             alert("Incorrect CAPTCHA code. Please try again.");
@@ -172,8 +172,8 @@ export default function ContactUsClientPage({ pageData }: { pageData: any }) {
                             {captchaValue || "...."}
                           </div>
                           <div className="flex flex-col gap-1">
-                            <button type="button" onClick={() => setCaptchaValue(generateCaptcha())} className="leading-[28px] font-bold text-[#007a87] hover:underline text-left whitespace-nowrap text-[16px]" style={{ fontSize: '16px' }}>Change the CAPTCHA code</button>
-                            <button type="button" onClick={() => { const utterance = new SpeechSynthesisUtterance(captchaValue.split('').join(' ')); window.speechSynthesis.speak(utterance); }} className="leading-[28px] font-bold text-[#007a87] hover:underline text-left whitespace-nowrap text-[16px]" style={{ fontSize: '16px' }}>Speak the CAPTCHA code</button>
+                            <button type="button" onClick={() => setCaptchaValue(generateCaptcha())} className="leading-[28px] font-bold text-[#007a87] hover:underline text-left  text-[16px]" style={{ fontSize: '16px' }}>Change the CAPTCHA code</button>
+                            <button type="button" onClick={() => { const utterance = new SpeechSynthesisUtterance(captchaValue.split('').join(' ')); window.speechSynthesis.speak(utterance); }} className="leading-[28px] font-bold text-[#007a87] hover:underline text-left  text-[16px]" style={{ fontSize: '16px' }}>Speak the CAPTCHA code</button>
                           </div>
                         </div>
                         <input 
@@ -189,7 +189,7 @@ export default function ContactUsClientPage({ pageData }: { pageData: any }) {
                       <button 
                         type="submit"
                         disabled={isSubmitting}
-                        className={`w-full bg-[#002b5c] hover:bg-[#001a38] text-white py-4 rounded-xl text-[18px] leading-[28px] font-bold tracking-wider uppercase transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 group ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
+                        className={`w-full bg-[#002b5c] hover:bg-[#001a38] text-white py-4 rounded-xl text-base leading-[28px] font-bold tracking-wider uppercase transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 group ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
                       >
                         {isSubmitting ? (
                           <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
@@ -249,7 +249,7 @@ export default function ContactUsClientPage({ pageData }: { pageData: any }) {
                   <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
                     <div className="bg-slate-50 border-b border-slate-200 py-4 px-6 flex items-center gap-3">
                       <Phone className="w-5 h-5 text-[#002b5c]" />
-                      <h4 className="text-lg font-bold text-[#002b5c]">Important Members</h4>
+                      <h4 className="text-base font-bold text-[#002b5c]">Important Members</h4>
                     </div>
                     
                     <div className="divide-y divide-slate-100 [&_span]:!text-[16px] [&_p]:!text-[16px] [&_a]:!text-[16px] [&_a]:!font-bold [&_.text-sm]:!text-[16px] [&_.text-xs]:!text-[16px]">

@@ -164,15 +164,15 @@ export default function MenuPagesClient({ initialPages = [] }: { initialPages?: 
         </div>
 
         <div className="overflow-x-auto">
-          <table className="w-full">
+          <table className="break-words w-full">
             <thead className="bg-slate-50 border-b border-slate-200">
               <tr>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase">Page Info</th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase">Location</th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase">URL Slug</th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase">Status</th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase">Created Date</th>
-                <th className="px-6 py-4 text-right text-xs font-semibold text-slate-500 uppercase">Actions</th>
+                <th className="p-2 text-left text-xs font-semibold text-slate-500 uppercase">Page Info</th>
+                <th className="p-2 text-left text-xs font-semibold text-slate-500 uppercase">Location</th>
+                <th className="p-2 text-left text-xs font-semibold text-slate-500 uppercase">URL Slug</th>
+                <th className="p-2 text-left text-xs font-semibold text-slate-500 uppercase">Status</th>
+                <th className="p-2 text-left text-xs font-semibold text-slate-500 uppercase">Created Date</th>
+                <th className="p-2 text-right text-xs font-semibold text-slate-500 uppercase">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-200">
@@ -191,7 +191,7 @@ export default function MenuPagesClient({ initialPages = [] }: { initialPages?: 
               ) : (
                 filteredPages.map((page) => (
                   <tr key={page.id} className="hover:bg-slate-50 transition-colors">
-                    <td className="px-6 py-4">
+                    <td className="p-2">
                       <Link href={`/admin/menu-pages/${page.id}`} className="flex items-center gap-3 hover:opacity-80 transition-opacity">
                         <div className="w-10 h-10 rounded-lg bg-teal-50 text-teal-600 flex items-center justify-center shrink-0">
                           <FileText className="w-5 h-5" />
@@ -201,15 +201,15 @@ export default function MenuPagesClient({ initialPages = [] }: { initialPages?: 
                         </div>
                       </Link>
                     </td>
-                    <td className="px-6 py-4">
+                    <td className="p-2">
                       <span className="bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-xs font-semibold">
                         {page.navbarMenu || "N/A"}
                       </span>
                     </td>
-                    <td className="px-6 py-4">
+                    <td className="p-2">
                       <p className="text-slate-500 text-sm">/{page.slug}</p>
                     </td>
-                    <td className="px-6 py-4">
+                    <td className="p-2">
                       <span
                         className={`px-3 py-1 rounded-full text-xs font-medium ${
                           page.status ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"
@@ -218,10 +218,10 @@ export default function MenuPagesClient({ initialPages = [] }: { initialPages?: 
                         {page.status ? "Active" : "Inactive"}
                       </span>
                     </td>
-                    <td className="px-6 py-4 text-sm text-slate-500" suppressHydrationWarning>
+                    <td className="p-2 text-sm text-slate-500" suppressHydrationWarning>
                       {page.createdAt ? new Date(page.createdAt).toLocaleDateString('en-GB') : "-"}
                     </td>
-                    <td className="px-6 py-4 text-right">
+                    <td className="p-2 text-right">
                       <div className="flex justify-end gap-2">
                         <Link
                           href={`/admin/menu-pages/${page.id}`}

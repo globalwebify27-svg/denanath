@@ -150,7 +150,7 @@ export default function AboutHospitalClient({ data }: { data: any }) {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   {/* Complete Diagnostic Imaging */}
                   <div className="bg-slate-50 p-6 md:p-8 rounded-2xl border border-slate-100">
-                    <h4 className="text-lg font-bold text-[#002b5c] mb-5 pb-3 border-b border-slate-200">
+                    <h4 className="text-base font-bold text-[#002b5c] mb-5 pb-3 border-b border-slate-200">
                       Complete Diagnostic Imaging
                     </h4>
                     <ul className="space-y-3">
@@ -165,7 +165,7 @@ export default function AboutHospitalClient({ data }: { data: any }) {
 
                   {/* Radiation Therapy */}
                   <div className="bg-slate-50 p-6 md:p-8 rounded-2xl border border-slate-100">
-                    <h4 className="text-lg font-bold text-[#002b5c] mb-5 pb-3 border-b border-slate-200">
+                    <h4 className="text-base font-bold text-[#002b5c] mb-5 pb-3 border-b border-slate-200">
                       Radiation Therapy
                     </h4>
                     <ul className="space-y-3">

@@ -213,7 +213,7 @@ export default function DoctorForm({ doctor, id, departments = [] }: { doctor: a
   const renderObjectArrayField = (label: string, field: string, columns: { key: string, placeholder: string }[], template: any) => (
     <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 mb-6">
       <div className="flex justify-between items-center mb-4">
-        <h3 className="text-lg font-semibold text-gray-800">{label}</h3>
+        <h3 className="text-base font-semibold text-gray-800">{label}</h3>
         <button
           type="button"
           onClick={() => handleObjectArrayAdd(field, template)}
@@ -439,11 +439,11 @@ export default function DoctorForm({ doctor, id, departments = [] }: { doctor: a
 
       <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 mb-6">
         <div className="flex items-center justify-between mb-4 gap-2">
-          <h3 className="text-base sm:text-lg font-semibold text-gray-800 truncate min-w-0">OPD Timings</h3>
+          <h3 className="text-base sm:text-base font-semibold text-gray-800 truncate min-w-0">OPD Timings</h3>
           <button
             type="button"
             onClick={handleTimingAdd}
-            className="flex items-center gap-1.5 px-3 py-2 sm:px-4 sm:py-2.5 bg-[#003360] text-white hover:bg-[#002545] rounded-xl text-xs font-bold transition-all duration-300 shadow-sm hover:shadow shrink-0 whitespace-nowrap ml-auto"
+            className="flex items-center gap-1.5 px-3 py-2 sm:px-4 sm:py-2.5 bg-[#003360] text-white hover:bg-[#002545] rounded-xl text-xs font-bold transition-all duration-300 shadow-sm hover:shadow shrink-0  ml-auto"
           >
             <Plus size={14} /> Add Timing
           </button>
@@ -502,11 +502,11 @@ export default function DoctorForm({ doctor, id, departments = [] }: { doctor: a
 
       <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 mb-6">
         <div className="flex items-center justify-between mb-4 gap-2">
-          <h3 className="text-base sm:text-lg font-semibold text-gray-800 truncate min-w-0">Publications</h3>
+          <h3 className="text-base sm:text-base font-semibold text-gray-800 truncate min-w-0">Publications</h3>
           <button
             type="button"
             onClick={handlePublicationAdd}
-            className="flex items-center gap-1.5 px-3 py-2 sm:px-4 sm:py-2.5 bg-[#003360] text-white hover:bg-[#002545] rounded-xl text-xs font-bold transition-all duration-300 shadow-sm hover:shadow shrink-0 whitespace-nowrap ml-auto"
+            className="flex items-center gap-1.5 px-3 py-2 sm:px-4 sm:py-2.5 bg-[#003360] text-white hover:bg-[#002545] rounded-xl text-xs font-bold transition-all duration-300 shadow-sm hover:shadow shrink-0  ml-auto"
           >
             <Plus size={14} /> Add Publication
           </button>

@@ -84,14 +84,14 @@ export default function HealthPackagesClientForm({ initialData }: { initialData:
         {/* Packages List */}
         <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200">
           <div className="flex items-center justify-between mb-6">
-            <h3 className="text-lg text-[20px] font-black text-[#002b5c] flex items-center gap-2">
+            <h3 className="text-base text-[20px] font-black text-[#002b5c] flex items-center gap-2">
               <CheckCircle2 className="w-5 h-5 text-[#007a87]" />
               Health Packages
             </h3>
             <button 
               type="button"
               onClick={addPackage}
-              className="text-xs font-bold text-white bg-[#D9232D] px-3 py-1.5 rounded-lg hover:bg-red-700 flex items-center gap-1 transition-colors shrink-0 whitespace-nowrap"
+              className="text-xs font-bold text-white bg-[#D9232D] px-3 py-1.5 rounded-lg hover:bg-red-700 flex items-center gap-1 transition-colors shrink-0 "
             >
               <Plus size={14} /> Add Package
             </button>
@@ -136,7 +136,7 @@ export default function HealthPackagesClientForm({ initialData }: { initialData:
         {/* Instructions and Companies */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200">
-            <h3 className="text-lg text-[20px] font-black text-[#002b5c] mb-4 flex items-center gap-2">
+            <h3 className="text-base text-[20px] font-black text-[#002b5c] mb-4 flex items-center gap-2">
               <FileText className="w-5 h-5 text-[#007a87]" />
               Important Instructions
             </h3>
@@ -149,7 +149,7 @@ export default function HealthPackagesClientForm({ initialData }: { initialData:
 
           <div className="space-y-6">
             <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200">
-              <h3 className="text-lg text-[20px] font-black text-[#002b5c] mb-4 flex items-center gap-2">
+              <h3 className="text-base text-[20px] font-black text-[#002b5c] mb-4 flex items-center gap-2">
                 <FileText className="w-5 h-5 text-[#007a87]" />
                 Book Appointment Details
               </h3>
@@ -185,7 +185,7 @@ export default function HealthPackagesClientForm({ initialData }: { initialData:
             </div>
 
             <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200">
-              <h3 className="text-lg text-[20px] font-black text-[#002b5c] mb-4 flex items-center gap-2">
+              <h3 className="text-base text-[20px] font-black text-[#002b5c] mb-4 flex items-center gap-2">
                 <Building2 className="w-5 h-5 text-[#007a87]" />
                 Corporate Company List
               </h3>

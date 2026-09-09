@@ -69,7 +69,7 @@ export default function OutPatientClientForm({ initialData }: { initialData: any
         
         {/* Guidelines */}
         <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200">
-          <h3 className="text-lg text-[20px] font-black text-[#002b5c] mb-4 flex items-center gap-2">
+          <h3 className="text-base text-[20px] font-black text-[#002b5c] mb-4 flex items-center gap-2">
             <List className="w-5 h-5 text-[#007a87]" />
             1. Registration Instructions
           </h3>
@@ -133,7 +133,7 @@ export default function OutPatientClientForm({ initialData }: { initialData: any
 
         {/* OPD Lists */}
         <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200">
-          <h3 className="text-lg text-[20px] font-black text-[#002b5c] mb-4 flex items-center gap-2">
+          <h3 className="text-base text-[20px] font-black text-[#002b5c] mb-4 flex items-center gap-2">
             <Activity className="w-5 h-5 text-[#007a87]" />
             OPD Categories
           </h3>
@@ -152,31 +152,31 @@ export default function OutPatientClientForm({ initialData }: { initialData: any
         {/* Charges Table */}
         <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200 overflow-hidden">
           <div className="flex justify-between items-center gap-4 mb-6">
-            <h3 className="text-lg text-[20px] font-black text-[#002b5c] flex items-center gap-2 min-w-0">
+            <h3 className="text-base text-[20px] font-black text-[#002b5c] flex items-center gap-2 min-w-0">
               <Settings className="w-5 h-5 text-[#007a87] shrink-0" />
               <span>Charges Table</span>
             </h3>
             <button 
               type="button"
               onClick={addTableRow}
-              className="text-xs font-bold text-white bg-[#D9232D] px-3 py-1.5 rounded-lg hover:bg-red-700 flex items-center gap-1 transition-colors shrink-0 whitespace-nowrap"
+              className="text-xs font-bold text-white bg-[#D9232D] px-3 py-1.5 rounded-lg hover:bg-red-700 flex items-center gap-1 transition-colors shrink-0 "
             >
               <Plus size={14} /> Add Row
             </button>
           </div>
           
           <div className="overflow-x-auto">
-            <table className="w-full text-left min-w-[900px]">
+            <table className="break-words w-full text-left ">
               <thead>
                 <tr className="bg-slate-200 text-slate-700 text-[11px] font-bold uppercase tracking-wider">
-                  <th className="p-3 whitespace-nowrap">Category</th>
-                  <th className="p-3 whitespace-nowrap">1st Visit</th>
-                  <th className="p-3 whitespace-nowrap">Continuum</th>
-                  <th className="p-3 whitespace-nowrap">Sr Citizen 1st</th>
-                  <th className="p-3 whitespace-nowrap">Sr Cit Continuum</th>
-                  <th className="p-3 whitespace-nowrap">Cross Ref</th>
-                  <th className="p-3 whitespace-nowrap">Cross Ref Sr Cit</th>
-                  <th className="p-3 text-center whitespace-nowrap">Action</th>
+                  <th className="p-2 ">Category</th>
+                  <th className="p-2 ">1st Visit</th>
+                  <th className="p-2 ">Continuum</th>
+                  <th className="p-2 ">Sr Citizen 1st</th>
+                  <th className="p-2 ">Sr Cit Continuum</th>
+                  <th className="p-2 ">Cross Ref</th>
+                  <th className="p-2 ">Cross Ref Sr Cit</th>
+                  <th className="p-2 text-center ">Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -217,7 +217,7 @@ export default function OutPatientClientForm({ initialData }: { initialData: any
 
         {/* Other Information */}
         <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200">
-          <h3 className="text-lg text-[20px] font-black text-[#002b5c] mb-4 flex items-center gap-2">
+          <h3 className="text-base text-[20px] font-black text-[#002b5c] mb-4 flex items-center gap-2">
             <Info className="w-5 h-5 text-[#007a87]" />
             Additional Information
           </h3>
