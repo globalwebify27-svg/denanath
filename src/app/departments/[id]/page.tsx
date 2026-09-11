@@ -77,20 +77,36 @@ export default async function DepartmentDetailsPage({
                           });
 
       if (matchedSpec) {
-        const docRes = await fetch(`${DMH_API_CONFIG.baseUrl}${DMH_API_CONFIG.endpoints.speciality_doctor}`, {
+        // NOTE: The external speciality_doctor API returns empty — it's not supported by the client's server.
+        // We use our internal /api/dmh proxy which has the drAhis workaround.
+        // For server components, we call drAhis directly and filter here (same as what the proxy does).
+        const drAhisRes = await fetch(`${DMH_API_CONFIG.baseUrl}doctorList.php`, {
           method: 'POST',
           headers: DMH_API_CONFIG.headers,
-          body: JSON.stringify({ action: 'speciality_doctor', speciality_id: String(matchedSpec.id) }),
-          next: { revalidate: 3600 }
+          body: JSON.stringify({ action: 'drAhis' }),
+          next: { revalidate: 300 } // Cache for 5 minutes
         });
 
-        if (docRes.ok) {
-          const docData = await docRes.json();
-          const apiDocs = docData?.doctorJSON || (Array.isArray(docData) ? docData : []);
+        if (drAhisRes.ok) {
+          const drAhisData = await drAhisRes.json();
+          const allDrAhisDocs: any[] = drAhisData?.drAhisJSON || [];
+          const specId = String(matchedSpec.id || matchedSpec.speciality_id || '');
+
+          // Filter by speciality_id and normalize fields
+          const filteredDocs = allDrAhisDocs
+            .filter((d: any) => String(d.speciality_id) === specId)
+            .map((d: any) => ({
+              ...d,
+              doctor_id: d.doctor_id || d.doctor_code || '',
+              isApp: d.OpdScheduleYN === 'Yes' ? 'Y' : 'N',
+            }));
+
+          const apiDocs = filteredDocs;
           allApiDocs = apiDocs;
 
           if (Array.isArray(apiDocs) && apiDocs.length > 0) {
             const circlesHtml = apiDocs.map((doc: any) => {
+
               const dName = doc.doctor_name || `${doc.first_name || ''} ${doc.last_name || ''}`.trim();
               const cleanName = dName.replace(/\s*\(.*?\)\s*/g, '').trim();
               const displayName = cleanName.toLowerCase().startsWith('dr.') || cleanName.toLowerCase().startsWith('dr ') ? cleanName : `Dr. ${cleanName}`;

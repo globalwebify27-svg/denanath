@@ -39,12 +39,16 @@ const renderListItem = (item: any) => {
 export default function DoctorProfileClient({ initialDoctor }: { initialDoctor: any }) {
   const [doctor, setDoctor] = useState(initialDoctor);
   const [loadingSchedule, setLoadingSchedule] = useState(false);
-  const [isAppAllowed, setIsAppAllowed] = useState<boolean | null>(initialDoctor.isAppAllowed ?? null);
+  // Book button is determined solely by DB's isAppAllowed (synced from OpdScheduleYN + service_point_id).
+  // No need to call opd_day_time for this — that API is only used for displaying timings.
+  const isAppAllowed = initialDoctor.isAppAllowed ?? false;
 
   useEffect(() => {
     if (!doctor?.dmhDoctorId || !doctor?.dmhSpecialityId) return;
     
-    const checkDoctorSchedule = async () => {
+    // Only fetch opd_day_time to display OPD timings on the page.
+    // Book button visibility is NOT determined here.
+    const fetchTimings = async () => {
       setLoadingSchedule(true);
       try {
         const res = await fetch('/api/dmh', {
@@ -61,10 +65,6 @@ export default function DoctorProfileClient({ initialDoctor }: { initialDoctor: 
           const data = await res.json();
           const list = data?.opdDayTimeJSON || (Array.isArray(data) ? data : []);
           if (Array.isArray(list) && list.length > 0) {
-            const firstSlot = list[0];
-            const isApp = firstSlot?.isApp === 'Y' || firstSlot?.isApp === 'true' || firstSlot?.isApp === true || data?.isApp === 'Y' || data?.isApp === true;
-            setIsAppAllowed(isApp);
-
             const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
             const dayNames: Record<string, string> = {
               Mon: 'Monday', Tue: 'Tuesday', Wed: 'Wednesday', Thu: 'Thursday', Fri: 'Friday', Sat: 'Saturday', Sun: 'Sunday'
@@ -87,19 +87,16 @@ export default function DoctorProfileClient({ initialDoctor }: { initialDoctor: 
             if (parsedTimings.length > 0) {
               setDoctor((prev: any) => ({ ...prev, timings: parsedTimings }));
             }
-          } else {
-            setIsAppAllowed(doctor.isAppAllowed ?? false);
           }
-        } else {
-          setIsAppAllowed(doctor.isAppAllowed ?? false);
+          // If opd_day_time returns empty — do nothing. Timings may already be in DB.
         }
       } catch (err) {
-        setIsAppAllowed(doctor.isAppAllowed ?? false);
+        // Silently ignore — timings from DB will be shown if available
       } finally {
         setLoadingSchedule(false);
       }
     };
-    checkDoctorSchedule();
+    fetchTimings();
   }, [doctor?.dmhDoctorId, doctor?.dmhSpecialityId]);
 
   return (
@@ -125,61 +122,70 @@ export default function DoctorProfileClient({ initialDoctor }: { initialDoctor: 
               </div>
             </div>
             
-            <div className="mt-auto flex flex-wrap items-center justify-center md:justify-start gap-4">
+            <div className="mt-auto flex flex-col gap-5">
+              {/* OPD Timings Table — shown above action buttons */}
               {loadingSchedule ? (
-                <div className="flex items-center gap-3 text-slate-400">
-                  <div className="w-5 h-5 border-2 border-[#007a87] border-t-transparent rounded-full animate-spin" />
-                  <span className="text-sm font-semibold">Checking availability...</span>
+                <div className="flex items-center gap-2 text-slate-400 text-sm font-medium">
+                  <div className="w-4 h-4 border-2 border-[#007a87] border-t-transparent rounded-full animate-spin shrink-0" />
+                  Loading OPD timings...
                 </div>
-              ) : (
-                <>
-                  {isAppAllowed === true && (
-                    <Link href={`/book-appointment?doctor_id=${doctor.dmhDoctorId || doctor.id || ''}&speciality_id=${doctor.dmhSpecialityId || ''}&service_point_id=${doctor.dmhServicePointId || ''}`} className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-[#007a87] hover:bg-[#005f69] text-white font-extrabold text-sm transition-all duration-300 rounded-xl hover:shadow-lg hover:-translate-y-0.5">
-                      Book Appointment
-                    </Link>
-                  )}
-                  <a href="tel:02040151100" className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-[#d9232d] hover:bg-[#b81d24] text-white font-extrabold text-sm transition-all duration-300 rounded-xl hover:shadow-lg hover:-translate-y-0.5">
-                    <Phone className="w-4 h-4" />
-                    020 4015 1100
-                  </a>
-                </>
-              )}
+              ) : doctor.timings && doctor.timings.length > 0 ? (
+                <div className="max-w-lg">
+                  <div className="flex items-center gap-2 mb-2.5">
+                    <Calendar className="w-4 h-4 text-[#007a87]" />
+                    <span className="text-xs font-black text-[#002b5c] uppercase tracking-widest">OPD Timings</span>
+                  </div>
+                  <div className="overflow-hidden rounded-xl border border-slate-200 shadow-sm">
+                    <table className="w-full text-xs">
+                      <colgroup>
+                        <col className="w-[30%]" />
+                        <col className="w-[25%]" />
+                        <col className="w-[45%]" />
+                      </colgroup>
+                      <thead>
+                        <tr className="bg-[#002b5c] text-white">
+                          <th className="text-left py-2.5 px-4 font-bold uppercase tracking-wider">Department</th>
+                          <th className="text-left py-2.5 px-4 font-bold uppercase tracking-wider">Day</th>
+                          <th className="text-left py-2.5 px-4 font-bold uppercase tracking-wider">Time</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-slate-100">
+                        {doctor.timings.map((t: any, i: number) => (
+                          <tr key={i} className="hover:bg-teal-50/50 transition-colors">
+                            <td className="py-2.5 px-4 font-bold text-[#007a87] uppercase tracking-wide">{t.branch}</td>
+                            <td className="py-2.5 px-4 font-semibold text-slate-700">{t.day}</td>
+                            <td className="py-2.5 px-4 text-slate-600 font-medium whitespace-pre-line">{t.time}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              ) : null}
+
+              {/* Action Buttons */}
+              <div className="flex flex-wrap items-center justify-center md:justify-start gap-4">
+                {isAppAllowed === true && (
+                  <Link href={`/book-appointment?doctor_id=${doctor.dmhDoctorId || doctor.id || ''}&speciality_id=${doctor.dmhSpecialityId || ''}&service_point_id=${doctor.dmhServicePointId || ''}`} className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-[#007a87] hover:bg-[#005f69] text-white font-extrabold text-sm transition-all duration-300 rounded-xl hover:shadow-lg hover:-translate-y-0.5">
+                    Book Appointment
+                  </Link>
+                )}
+                <a href="tel:02040151100" className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-[#d9232d] hover:bg-[#b81d24] text-white font-extrabold text-sm transition-all duration-300 rounded-xl hover:shadow-lg hover:-translate-y-0.5">
+                  <Phone className="w-4 h-4" />
+                  020 4015 1100
+                </a>
+              </div>
             </div>
+
           </div>
         </div>
       </div>
 
       {/* Body Details Section */}
       <div className="p-6 sm:p-10 bg-slate-50/30">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 xl:gap-10">
-          
-          {/* Left Column: Schedule */}
-          <div className="lg:col-span-1 space-y-8">
-            {doctor.timings && doctor.timings.length > 0 && (
-              <div className="bg-white rounded-3xl p-6 xl:p-8 border border-slate-100 shadow-[0_4px_20px_rgb(0,0,0,0.02)]">
-                <h3 className="text-sm font-black text-[#002b5c] uppercase tracking-widest mb-6 flex items-center gap-3">
-                  <Calendar className="w-5 h-5 text-[#007a87]" /> OPD Timings
-                </h3>
-                <div className="space-y-4">
-                  {doctor.timings.map((t: any, i: number) => (
-                    <div key={i} className="bg-slate-50 rounded-2xl p-4 border border-slate-100 hover:border-slate-200 transition-colors">
-                      <div className="flex flex-col gap-1.5 mb-3">
-                        <span className="text-sm font-bold text-[#007a87] uppercase tracking-wide">{t.branch}</span>
-                        <span className="text-base font-semibold text-slate-700">{t.day}</span>
-                      </div>
-                      <div className="flex items-start gap-2.5 text-[15px] leading-relaxed text-slate-600 font-medium">
-                        <Clock className="w-4 h-4 text-slate-400 shrink-0 mt-1" />
-                        <span className="whitespace-pre-line">{t.time}</span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* Right Column: Detailed Info */}
-          <div className="lg:col-span-2 space-y-8">
+        <div className="space-y-8">
+          {/* Full-width details — OPD timings now shown in header above */}
+          <div className="space-y-8">
             
             {doctor.education && doctor.education.length > 0 && (
               <div className="bg-white rounded-3xl p-6 sm:p-10 border border-slate-100 shadow-[0_4px_20px_rgb(0,0,0,0.02)]">

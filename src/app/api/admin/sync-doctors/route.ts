@@ -15,6 +15,7 @@ export async function POST(req: Request) {
     let synced = 0;
     let errors = 0;
     const processedDoctorIds = new Set<string>();
+    const validDmhDoctorIds = new Set<string>();
 
     // 2. Iterate and process each doctor
     for (const doc of docs) {
@@ -33,6 +34,8 @@ export async function POST(req: Request) {
         continue;
       }
 
+      validDmhDoctorIds.add(dmhDoctorId);
+
       // Key on dmhDoctorId + specId to avoid duplicate processing in single run
       const docSpecKey = `${dmhDoctorId}_${specId}`;
       if (processedDoctorIds.has(docSpecKey)) continue;
@@ -46,7 +49,7 @@ export async function POST(req: Request) {
             w.charAt(0).toUpperCase() + w.substring(1).toLowerCase()
           );
 
-      const isAppAllowed = doc.isApp === 'Y' || doc.is_app === 'Y' || doc.isAppAllowed === true || true;
+      const isAppAllowed = (doc.OpdScheduleYN === 'Yes' || doc.isApp === 'Y' || doc.is_app === 'Y' || doc.isAppAllowed === true) && !!doc.service_point_id;
 
       try {
         await prisma.doctor.upsert({
@@ -81,13 +84,30 @@ export async function POST(req: Request) {
       }
     }
 
+    // 3. Remove stale doctors that no longer exist in the API
+    const validIdsArray = Array.from(validDmhDoctorIds);
+    let deletedCount = 0;
+    if (validIdsArray.length > 0) {
+      const deleteResult = await prisma.doctor.deleteMany({
+        where: {
+          dmhDoctorId: {
+            notIn: validIdsArray,
+            not: null // Only delete if they were synced from the API
+          }
+        }
+      });
+      deletedCount = deleteResult.count;
+      console.log(`Deleted ${deletedCount} stale doctors.`);
+    }
+
     const { revalidatePath } = require("next/cache");
     revalidatePath("/", "layout");
 
     return NextResponse.json({
       success: true,
-      message: `Successfully synced ${synced} doctors from DMH API. ${errors} errors.`,
+      message: `Successfully synced ${synced} doctors. Removed ${deletedCount} stale doctors. ${errors} errors.`,
       synced,
+      deleted: deletedCount,
       errors
     });
 
