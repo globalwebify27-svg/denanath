@@ -818,7 +818,7 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
         )}
 
         {/* Doctor Search Results List with Timetable */}
-        {!bookingSuccess && searchResults.length > 0 && (
+        {!bookingSuccess && step === "search" && searchResults.length > 0 && (
           <div className="mt-10 space-y-6">
             <div className="flex items-center justify-between border-b border-slate-200 pb-4">
               <h2 className="text-2xl font-extrabold text-[#002b5c] tracking-tight">

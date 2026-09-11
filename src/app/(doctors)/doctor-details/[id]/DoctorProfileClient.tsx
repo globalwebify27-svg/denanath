@@ -38,65 +38,103 @@ const renderListItem = (item: any) => {
 
 export default function DoctorProfileClient({ initialDoctor }: { initialDoctor: any }) {
   const [doctor, setDoctor] = useState(initialDoctor);
-  const [loadingSchedule, setLoadingSchedule] = useState(false);
-  // Book button is determined solely by DB's isAppAllowed (synced from OpdScheduleYN + service_point_id).
-  // No need to call opd_day_time for this — that API is only used for displaying timings.
-  const isAppAllowed = initialDoctor.isAppAllowed ?? false;
+  const [dynamicTimings, setDynamicTimings] = useState<any[]>([]);
+  const [isLoadingTimings, setIsLoadingTimings] = useState(true);
 
   useEffect(() => {
-    if (!doctor?.dmhDoctorId || !doctor?.dmhSpecialityId) return;
+    if (!doctor?.dmhDoctorId || !doctor?.dmhSpecialityId) {
+      setIsLoadingTimings(false);
+      return;
+    }
     
-    // Only fetch opd_day_time to display OPD timings on the page.
-    // Book button visibility is NOT determined here.
-    const fetchTimings = async () => {
-      setLoadingSchedule(true);
+    const fetchAppStatus = async () => {
+      setIsLoadingTimings(true);
       try {
-        const res = await fetch('/api/dmh', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ 
-            action: 'opd_day_time', 
-            doctor_id: String(doctor.dmhDoctorId),
-            speciality_id: String(doctor.dmhSpecialityId)
-          }),
-        });
+        const specNames = doctor.specialty ? String(doctor.specialty).split(',').map(s => s.trim()) : [];
+        const specIds = doctor.dmhSpecialityId ? String(doctor.dmhSpecialityId).split(',').map(s => s.trim()) : [];
         
-        if (res.ok) {
-          const data = await res.json();
-          const list = data?.opdDayTimeJSON || (Array.isArray(data) ? data : []);
-          if (Array.isArray(list) && list.length > 0) {
-            const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-            const dayNames: Record<string, string> = {
-              Mon: 'Monday', Tue: 'Tuesday', Wed: 'Wednesday', Thu: 'Thursday', Fri: 'Friday', Sat: 'Saturday', Sun: 'Sunday'
-            };
+        const branchAppStatus: Record<string, { isApp: boolean, speciality_id: string }> = {};
 
-            const parsedTimings: any[] = [];
-            list.forEach((slot: any) => {
-              days.forEach(d => {
-                if (slot[d] && slot[d] !== '-') {
-                  const cleanTime = String(slot[d]).replace(/<br\s*\/?>/gi, '\n').replace(/<[^>]*>/g, '').trim();
-                  parsedTimings.push({
-                    branch: doctor.specialty || slot.opd_type || 'General OPD',
-                    day: dayNames[d] || d,
-                    time: cleanTime,
-                  });
-                }
-              });
-            });
-
-            if (parsedTimings.length > 0) {
-              setDoctor((prev: any) => ({ ...prev, timings: parsedTimings }));
+        const promises = specIds.map(async (specId, index) => {
+          const specName = specNames[index] || '';
+          if (!specId) return;
+          
+          const res = await fetch('/api/dmh', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+              action: 'opd_day_time', 
+              doctor_id: String(doctor.dmhDoctorId),
+              speciality_id: specId
+            }),
+          });
+          if (res.ok) {
+            const data = await res.json();
+            const list = data?.opdDayTimeJSON || (Array.isArray(data) ? data : []);
+            let isApp = false;
+            if (Array.isArray(list) && list.length > 0) {
+              isApp = list.some((slot: any) => slot.isApp === 'Y' || slot.isApp === 'true' || slot.isApp === true);
             }
+            if (specName) {
+              branchAppStatus[specName.toUpperCase()] = { isApp, speciality_id: specId };
+            }
+            branchAppStatus[specId] = { isApp, speciality_id: specId };
           }
-          // If opd_day_time returns empty — do nothing. Timings may already be in DB.
-        }
+        });
+
+        await Promise.all(promises);
+        
+        const enhancedTimings = (doctor.timings || []).map((t: any) => {
+           const branchKey = (t.branch || '').toUpperCase();
+           const specId = t.speciality_id || '';
+           
+           let isApp = false;
+           let mappedSpecId = specId;
+           
+           // If we have an exact match by speciality_id from the DB
+           if (specId && branchAppStatus[specId]) {
+             isApp = branchAppStatus[specId].isApp;
+           } else {
+             // Fallback for older database formats
+             let status = branchAppStatus[branchKey];
+             if (status) {
+               isApp = status.isApp;
+               mappedSpecId = status.speciality_id;
+             } else if (specIds.length === 1) {
+               status = branchAppStatus[specIds[0]];
+               if (status) {
+                 isApp = status.isApp;
+                 mappedSpecId = status.speciality_id;
+               }
+             } else {
+               for (let i = 0; i < specNames.length; i++) {
+                 if (branchKey.includes(specNames[i].toUpperCase()) || specNames[i].toUpperCase().includes(branchKey)) {
+                   status = branchAppStatus[specIds[i]];
+                   if (status) {
+                     isApp = status.isApp;
+                     mappedSpecId = status.speciality_id;
+                     break;
+                   }
+                 }
+               }
+             }
+           }
+
+           return {
+             ...t,
+             isApp: isApp ? 'Y' : 'N',
+             _speciality_id: mappedSpecId
+           };
+        });
+
+        setDynamicTimings(enhancedTimings.length > 0 ? enhancedTimings : doctor.timings || []);
       } catch (err) {
-        // Silently ignore — timings from DB will be shown if available
+        console.error('Failed to fetch opd_day_time', err);
       } finally {
-        setLoadingSchedule(false);
+        setIsLoadingTimings(false);
       }
     };
-    fetchTimings();
+    fetchAppStatus();
   }, [doctor?.dmhDoctorId, doctor?.dmhSpecialityId]);
 
   return (
@@ -123,58 +161,106 @@ export default function DoctorProfileClient({ initialDoctor }: { initialDoctor: 
             </div>
             
             <div className="mt-auto flex flex-col gap-5">
-              {/* OPD Timings Table — shown above action buttons */}
-              {loadingSchedule ? (
-                <div className="flex items-center gap-2 text-slate-400 text-sm font-medium">
-                  <div className="w-4 h-4 border-2 border-[#007a87] border-t-transparent rounded-full animate-spin shrink-0" />
-                  Loading OPD timings...
+              {/* Timings Table */}
+              {isLoadingTimings ? (
+                <div className="w-full max-w-2xl p-6 border border-dashed border-slate-300 rounded-xl bg-slate-50 text-slate-500 font-medium text-sm flex flex-col items-center justify-center gap-3">
+                   <div className="w-6 h-6 border-2 border-teal-500 border-t-transparent rounded-full animate-spin"></div>
+                   Loading OPD Schedule...
                 </div>
-              ) : doctor.timings && doctor.timings.length > 0 ? (
-                <div className="max-w-lg">
+              ) : dynamicTimings.length > 0 ? (
+                <div className="w-full max-w-2xl">
                   <div className="flex items-center gap-2 mb-2.5">
                     <Calendar className="w-4 h-4 text-[#007a87]" />
                     <span className="text-xs font-black text-[#002b5c] uppercase tracking-widest">OPD Timings</span>
                   </div>
-                  <div className="overflow-hidden rounded-xl border border-slate-200 shadow-sm">
-                    <table className="w-full text-xs">
+                  <div className="overflow-x-auto rounded-xl border border-slate-200 shadow-sm">
+                    <table className="w-full text-xs min-w-[500px]">
                       <colgroup>
-                        <col className="w-[30%]" />
                         <col className="w-[25%]" />
-                        <col className="w-[45%]" />
+                        <col className="w-[25%]" />
+                        <col className="w-[35%]" />
+                        <col className="w-[15%]" />
                       </colgroup>
                       <thead>
                         <tr className="bg-[#002b5c] text-white">
-                          <th className="text-left py-2.5 px-4 font-bold uppercase tracking-wider">Department</th>
-                          <th className="text-left py-2.5 px-4 font-bold uppercase tracking-wider">Day</th>
-                          <th className="text-left py-2.5 px-4 font-bold uppercase tracking-wider">Time</th>
+                          <th className="text-left py-3 px-4 font-bold uppercase tracking-wider">Branch</th>
+                          <th className="text-left py-3 px-4 font-bold uppercase tracking-wider">Day</th>
+                          <th className="text-left py-3 px-4 font-bold uppercase tracking-wider">Time</th>
+                          <th className="text-center py-3 px-4 font-bold uppercase tracking-wider">Action</th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-slate-100">
-                        {doctor.timings.map((t: any, i: number) => (
+                      <tbody className="divide-y divide-slate-100 bg-white">
+                        {dynamicTimings.map((t: any, i: number) => (
                           <tr key={i} className="hover:bg-teal-50/50 transition-colors">
-                            <td className="py-2.5 px-4 font-bold text-[#007a87] uppercase tracking-wide">{t.branch}</td>
-                            <td className="py-2.5 px-4 font-semibold text-slate-700">{t.day}</td>
-                            <td className="py-2.5 px-4 text-slate-600 font-medium whitespace-pre-line">{t.time}</td>
+                            <td className="py-3 px-4 font-bold text-slate-600 uppercase tracking-wide">{t.branch}</td>
+                            <td className="py-3 px-4 font-semibold text-slate-700">{t.day}</td>
+                            <td className="py-3 px-4 text-slate-600 font-medium whitespace-pre-line">{t.time}</td>
+                            <td className="py-3 px-4 text-center">
+                              {t.isApp === 'Y' && (
+                                <Link 
+                                  href={`/book-appointment?doctor_id=${doctor.dmhDoctorId || doctor.id || ''}&speciality_id=${t._speciality_id || doctor.dmhSpecialityId || ''}&service_point_id=${doctor.dmhServicePointId || ''}`} 
+                                  className="inline-flex items-center justify-center px-4 py-2 bg-[#007a87] hover:bg-[#005f69] text-white font-extrabold text-[11px] uppercase tracking-wider transition-all duration-300 rounded hover:shadow-md"
+                                >
+                                  Book
+                                </Link>
+                              )}
+                            </td>
                           </tr>
                         ))}
                       </tbody>
                     </table>
                   </div>
+                  <div className="mt-0 rounded-b-xl border border-t-0 border-slate-200 bg-slate-50 py-2.5">
+                    <p className="text-[#d9232d] text-xs font-bold text-center flex items-center justify-center gap-1.5">
+                      <Phone className="w-3.5 h-3.5" />
+                      For Appointment, please call <a href="tel:02040151100" className="hover:underline">020 4015 1100</a>
+                    </p>
+                  </div>
                 </div>
-              ) : null}
-
-              {/* Action Buttons */}
-              <div className="flex flex-wrap items-center justify-center md:justify-start gap-4">
-                {isAppAllowed === true && (
-                  <Link href={`/book-appointment?doctor_id=${doctor.dmhDoctorId || doctor.id || ''}&speciality_id=${doctor.dmhSpecialityId || ''}&service_point_id=${doctor.dmhServicePointId || ''}`} className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-[#007a87] hover:bg-[#005f69] text-white font-extrabold text-sm transition-all duration-300 rounded-xl hover:shadow-lg hover:-translate-y-0.5">
-                    Book Appointment
-                  </Link>
-                )}
-                <a href="tel:02040151100" className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-[#d9232d] hover:bg-[#b81d24] text-white font-extrabold text-sm transition-all duration-300 rounded-xl hover:shadow-lg hover:-translate-y-0.5">
-                  <Phone className="w-4 h-4" />
-                  020 4015 1100
-                </a>
-              </div>
+              ) : doctor.timings && doctor.timings.length > 0 ? (
+                <div className="w-full max-w-2xl">
+                  <div className="flex items-center gap-2 mb-2.5">
+                    <Calendar className="w-4 h-4 text-[#007a87]" />
+                    <span className="text-xs font-black text-[#002b5c] uppercase tracking-widest">OPD Timings</span>
+                  </div>
+                  <div className="overflow-x-auto rounded-xl border border-slate-200 shadow-sm">
+                    <table className="w-full text-xs min-w-[400px]">
+                      <colgroup>
+                        <col className="w-[30%]" />
+                        <col className="w-[30%]" />
+                        <col className="w-[40%]" />
+                      </colgroup>
+                      <thead>
+                        <tr className="bg-[#002b5c] text-white">
+                          <th className="text-left py-3 px-4 font-bold uppercase tracking-wider">Branch</th>
+                          <th className="text-left py-3 px-4 font-bold uppercase tracking-wider">Day</th>
+                          <th className="text-left py-3 px-4 font-bold uppercase tracking-wider">Time</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-slate-100 bg-white">
+                        {doctor.timings.map((t: any, i: number) => (
+                          <tr key={i} className="hover:bg-teal-50/50 transition-colors">
+                            <td className="py-3 px-4 font-bold text-slate-600 uppercase tracking-wide">{t.branch}</td>
+                            <td className="py-3 px-4 font-semibold text-slate-700">{t.day}</td>
+                            <td className="py-3 px-4 text-slate-600 font-medium whitespace-pre-line">{t.time}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                  <div className="mt-0 rounded-b-xl border border-t-0 border-slate-200 bg-slate-50 py-2.5">
+                    <p className="text-[#d9232d] text-xs font-bold text-center flex items-center justify-center gap-1.5">
+                      <Phone className="w-3.5 h-3.5" />
+                      For Appointment, please call <a href="tel:02040151100" className="hover:underline">020 4015 1100</a>
+                    </p>
+                  </div>
+                </div>
+              ) : (
+                <div className="w-full max-w-2xl p-4 border border-dashed border-slate-300 rounded-xl bg-slate-50 text-slate-500 font-medium text-sm flex flex-col items-center justify-center gap-2">
+                   <Calendar className="w-5 h-5 text-slate-400" />
+                   No OPD schedule available
+                </div>
+              )}
             </div>
 
           </div>
