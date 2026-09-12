@@ -24,11 +24,14 @@ export default async function EditDoctorPage({
     }
   }
 
+  // Fetch DB Departments
+  const dbDepartmentsData = await prisma.department.findMany({ select: { name: true } });
+  const dbDepartments = dbDepartmentsData.map((d: any) => d.name).sort((a: string, b: string) => a.localeCompare(b));
+
   let apiSpecialities: string[] = [];
   try {
     const { callDMHApi } = await import("@/lib/dmhApi");
     const specRes = await callDMHApi('speciality');
-    
     const list = specRes?.specialityJSON || (Array.isArray(specRes) ? specRes : []);
     if (Array.isArray(list)) {
       apiSpecialities = list
@@ -39,16 +42,15 @@ export default async function EditDoctorPage({
     console.error("Error fetching specialities from DMH API:", error);
   }
 
-  if (apiSpecialities.length === 0) {
-    const departments = await prisma.department.findMany({ select: { name: true } });
-    apiSpecialities = departments.map((d: any) => d.name.toUpperCase());
-  }
-
   apiSpecialities = Array.from(new Set(apiSpecialities)).sort((a, b) => a.localeCompare(b));
+
+  if (apiSpecialities.length === 0) {
+    apiSpecialities = [...dbDepartments];
+  }
 
   return (
     <div className="p-4 md:p-8 max-w-6xl mx-auto pb-32">
-      <DoctorForm doctor={doctor || {}} id={id} departments={apiSpecialities} />
+      <DoctorForm doctor={doctor || {}} id={id} departments={dbDepartments} apiSpecialities={apiSpecialities} />
     </div>
   );
 }

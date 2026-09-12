@@ -142,21 +142,21 @@ export default function DoctorProfileClient({ initialDoctor }: { initialDoctor: 
       
       {/* Header Profile Section */}
       <div className="relative p-6 sm:p-10 border-b border-slate-100 bg-white">
-        <div className="flex flex-col md:flex-row items-center md:items-start gap-8 md:gap-12">
-          <div className="w-[180px] h-[240px] md:w-[240px] md:h-[300px] rounded-2xl bg-slate-50 flex items-center justify-center shrink-0 border border-slate-100 shadow-sm overflow-hidden text-slate-400">
+        <div className="flex flex-col md:flex-row items-center md:items-start gap-8 md:gap-12 w-full">
+          <div className="w-[180px] h-[240px] md:w-[240px] md:h-[300px] rounded-2xl bg-slate-50 flex items-center justify-center shrink-0 border border-slate-100 shadow-sm overflow-hidden text-slate-400 mx-auto md:mx-0">
             <DoctorImage 
               doc={doctor}
               className="w-full h-full object-cover bg-white"
               iconClassName="w-20 h-20 text-slate-300"
             />
           </div>
-          <div className="flex-1 text-center md:text-left flex flex-col justify-center min-h-[240px] md:min-h-[300px]">
-            <div>
+          <div className="flex-1 w-full text-center md:text-left flex flex-col justify-center min-h-[240px] md:min-h-[300px]">
+            <div className="w-full">
               <h2 className={`font-[900] text-[#002b5c] leading-tight mb-4 uppercase tracking-tight ${doctor?.name?.length > 20 ? 'text-xl sm:text-2xl md:text-3xl' : 'text-2xl sm:text-3xl md:text-[32px]'}`}>{doctor.name}</h2>
               <p className="text-base leading-relaxed font-medium text-slate-500 mb-6">{doctor.qualifications}</p>
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-teal-50 border border-teal-100 text-[#007a87] rounded-xl text-sm font-bold uppercase tracking-wider mb-8">
-                <Stethoscope className="w-4 h-4" />
-                {doctor.specialty}
+              <div className="inline-flex items-center justify-center md:justify-start flex-wrap gap-2 px-4 py-2 bg-teal-50 border border-teal-100 text-[#007a87] rounded-xl text-sm font-bold uppercase tracking-wider mb-8 w-full md:w-auto h-auto text-center md:text-left">
+                <Stethoscope className="w-4 h-4 shrink-0" />
+                <span>{doctor.specialty}</span>
               </div>
             </div>
             
@@ -173,33 +173,33 @@ export default function DoctorProfileClient({ initialDoctor }: { initialDoctor: 
                     <Calendar className="w-4 h-4 text-[#007a87]" />
                     <span className="text-xs font-black text-[#002b5c] uppercase tracking-widest">OPD Timings</span>
                   </div>
-                  <div className="overflow-x-auto rounded-xl border border-slate-200 shadow-sm">
-                    <table className="w-full text-xs min-w-[500px]">
+                  <div className="overflow-hidden rounded-2xl border border-slate-200 shadow-sm w-full max-w-full">
+                    <table className="w-full text-[11px] sm:text-sm">
                       <colgroup>
-                        <col className="w-[25%]" />
-                        <col className="w-[25%]" />
-                        <col className="w-[35%]" />
-                        <col className="w-[15%]" />
+                        <col className="w-[28%]" />
+                        <col className="w-[20%]" />
+                        <col className="w-[32%]" />
+                        <col className="w-[20%]" />
                       </colgroup>
                       <thead>
                         <tr className="bg-[#002b5c] text-white">
-                          <th className="text-left py-3 px-4 font-bold uppercase tracking-wider">Branch</th>
-                          <th className="text-left py-3 px-4 font-bold uppercase tracking-wider">Day</th>
-                          <th className="text-left py-3 px-4 font-bold uppercase tracking-wider">Time</th>
-                          <th className="text-center py-3 px-4 font-bold uppercase tracking-wider">Action</th>
+                          <th className="text-left py-2.5 px-3 sm:py-4 sm:px-5 font-bold uppercase tracking-wider text-[9px] sm:text-xs">Branch</th>
+                          <th className="text-center py-2.5 px-2 sm:py-4 sm:px-5 font-bold uppercase tracking-wider text-[9px] sm:text-xs">Day</th>
+                          <th className="text-center py-2.5 px-2 sm:py-4 sm:px-5 font-bold uppercase tracking-wider text-[9px] sm:text-xs">Time</th>
+                          <th className="text-center py-2.5 px-2 sm:py-4 sm:px-5 font-bold uppercase tracking-wider text-[9px] sm:text-xs">Action</th>
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-slate-100 bg-white">
                         {dynamicTimings.map((t: any, i: number) => (
-                          <tr key={i} className="hover:bg-teal-50/50 transition-colors">
-                            <td className="py-3 px-4 font-bold text-slate-600 uppercase tracking-wide">{t.branch}</td>
-                            <td className="py-3 px-4 font-semibold text-slate-700">{t.day}</td>
-                            <td className="py-3 px-4 text-slate-600 font-medium whitespace-pre-line">{t.time}</td>
-                            <td className="py-3 px-4 text-center">
+                          <tr key={i} className="hover:bg-teal-50/30 transition-colors even:bg-slate-50/50">
+                            <td className="py-3 px-2 sm:py-4 sm:px-4 font-bold text-slate-700 uppercase tracking-wide break-words leading-snug">{t.branch}</td>
+                            <td className="py-3 px-1 sm:py-4 sm:px-4 font-medium text-slate-600 text-center">{t.day}</td>
+                            <td className="py-3 px-1 sm:py-4 sm:px-4 text-slate-600 font-medium whitespace-pre-line text-center leading-snug">{t.time}</td>
+                            <td className="py-3 px-2 sm:py-4 sm:px-5 text-center align-middle">
                               {t.isApp === 'Y' && (
                                 <Link 
                                   href={`/book-appointment?doctor_id=${doctor.dmhDoctorId || doctor.id || ''}&speciality_id=${t._speciality_id || doctor.dmhSpecialityId || ''}&service_point_id=${doctor.dmhServicePointId || ''}`} 
-                                  className="inline-flex items-center justify-center px-4 py-2 bg-[#007a87] hover:bg-[#005f69] text-white font-extrabold text-[11px] uppercase tracking-wider transition-all duration-300 rounded hover:shadow-md"
+                                  className="inline-flex items-center justify-center px-3 py-1.5 sm:px-5 sm:py-2.5 bg-gradient-to-r from-[#007a87] to-[#006a75] hover:from-[#005f69] hover:to-[#004f58] text-white font-extrabold text-[10px] sm:text-xs uppercase tracking-wider transition-all duration-300 rounded-lg shadow-sm hover:shadow-md whitespace-nowrap"
                                 >
                                   Book
                                 </Link>
@@ -223,26 +223,26 @@ export default function DoctorProfileClient({ initialDoctor }: { initialDoctor: 
                     <Calendar className="w-4 h-4 text-[#007a87]" />
                     <span className="text-xs font-black text-[#002b5c] uppercase tracking-widest">OPD Timings</span>
                   </div>
-                  <div className="overflow-x-auto rounded-xl border border-slate-200 shadow-sm">
-                    <table className="w-full text-xs min-w-[400px]">
+                  <div className="overflow-hidden rounded-2xl border border-slate-200 shadow-sm w-full max-w-full">
+                    <table className="w-full text-[11px] sm:text-sm">
                       <colgroup>
-                        <col className="w-[30%]" />
-                        <col className="w-[30%]" />
+                        <col className="w-[35%]" />
+                        <col className="w-[25%]" />
                         <col className="w-[40%]" />
                       </colgroup>
                       <thead>
                         <tr className="bg-[#002b5c] text-white">
-                          <th className="text-left py-3 px-4 font-bold uppercase tracking-wider">Branch</th>
-                          <th className="text-left py-3 px-4 font-bold uppercase tracking-wider">Day</th>
-                          <th className="text-left py-3 px-4 font-bold uppercase tracking-wider">Time</th>
+                          <th className="text-left py-2.5 px-3 sm:py-4 sm:px-5 font-bold uppercase tracking-wider text-[9px] sm:text-xs">Branch</th>
+                          <th className="text-center py-2.5 px-3 sm:py-4 sm:px-5 font-bold uppercase tracking-wider text-[9px] sm:text-xs">Day</th>
+                          <th className="text-center py-2.5 px-3 sm:py-4 sm:px-5 font-bold uppercase tracking-wider text-[9px] sm:text-xs">Time</th>
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-slate-100 bg-white">
                         {doctor.timings.map((t: any, i: number) => (
-                          <tr key={i} className="hover:bg-teal-50/50 transition-colors">
-                            <td className="py-3 px-4 font-bold text-slate-600 uppercase tracking-wide">{t.branch}</td>
-                            <td className="py-3 px-4 font-semibold text-slate-700">{t.day}</td>
-                            <td className="py-3 px-4 text-slate-600 font-medium whitespace-pre-line">{t.time}</td>
+                          <tr key={i} className="hover:bg-teal-50/30 transition-colors even:bg-slate-50/50">
+                            <td className="py-3 px-2 sm:py-4 sm:px-4 font-bold text-slate-700 uppercase tracking-wide break-words leading-snug">{t.branch}</td>
+                            <td className="py-3 px-1 sm:py-4 sm:px-4 font-medium text-slate-600 text-center">{t.day}</td>
+                            <td className="py-3 px-1 sm:py-4 sm:px-4 text-slate-600 font-medium whitespace-pre-line text-center leading-snug">{t.time}</td>
                           </tr>
                         ))}
                       </tbody>

@@ -900,33 +900,56 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
                   {/* OPD Timetable Grid */}
                   <div className="w-full">
                     {doc.schedule && doc.schedule.length > 0 ? (
-                      <div className="overflow-x-auto rounded-2xl border border-slate-200 bg-slate-50/60 p-1">
-                        <table className="break-words w-full text-xs text-center border-collapse">
-                          <thead>
-                            <tr className="bg-[#002b5c] text-white font-bold uppercase tracking-wider rounded-xl">
-                              <th className="py-2.5 px-3 rounded-l-xl">MON</th>
-                              <th className="py-2.5 px-3">TUE</th>
-                              <th className="py-2.5 px-3">WED</th>
-                              <th className="py-2.5 px-3">THU</th>
-                              <th className="py-2.5 px-3">FRI</th>
-                              <th className="py-2.5 px-3">SAT</th>
-                              <th className="py-2.5 px-3 rounded-r-xl">SUN</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {doc.schedule.map((s: any, sIdx: number) => (
-                              <tr key={sIdx} className="font-semibold text-slate-700 hover:bg-slate-100/60 transition-colors">
-                                <td className="py-3 px-2 border-r border-slate-200/60" dangerouslySetInnerHTML={{ __html: s.Mon || '-' }} />
-                                <td className="py-3 px-2 border-r border-slate-200/60" dangerouslySetInnerHTML={{ __html: s.Tue || '-' }} />
-                                <td className="py-3 px-2 border-r border-slate-200/60" dangerouslySetInnerHTML={{ __html: s.Wed || '-' }} />
-                                <td className="py-3 px-2 border-r border-slate-200/60" dangerouslySetInnerHTML={{ __html: s.Thu || '-' }} />
-                                <td className="py-3 px-2 border-r border-slate-200/60" dangerouslySetInnerHTML={{ __html: s.Fri || '-' }} />
-                                <td className="py-3 px-2 border-r border-slate-200/60" dangerouslySetInnerHTML={{ __html: s.Sat || '-' }} />
-                                <td className="py-3 px-2" dangerouslySetInnerHTML={{ __html: s.Sun || '-' }} />
+                      <div className="w-full">
+                        {/* Mobile View: Vertical Cards */}
+                        <div className="sm:hidden flex flex-col gap-3">
+                          {doc.schedule.map((s: any, sIdx: number) => (
+                            <div key={sIdx} className="bg-white rounded-xl border border-slate-200 shadow-sm p-3">
+                              <div className="grid grid-cols-2 gap-3 text-[11px]">
+                                {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day) => {
+                                  const val = s[day];
+                                  if (!val || val === '-') return null;
+                                  return (
+                                    <div key={day} className="flex flex-col gap-0.5 bg-slate-50 p-2 rounded-lg border border-slate-100">
+                                      <span className="font-extrabold text-[#002b5c] uppercase tracking-wider">{day}</span>
+                                      <span className="text-slate-600 font-medium whitespace-pre-line" dangerouslySetInnerHTML={{ __html: val }} />
+                                    </div>
+                                  );
+                                })}
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+
+                        {/* Desktop View: Table */}
+                        <div className="hidden sm:block overflow-x-auto rounded-2xl border border-slate-200 bg-slate-50/60 p-1 w-full max-w-full">
+                          <table className="break-words w-full text-xs text-center border-collapse min-w-[600px]">
+                            <thead>
+                              <tr className="bg-[#002b5c] text-white font-bold uppercase tracking-wider rounded-xl">
+                                <th className="py-2.5 px-3 rounded-l-xl w-[14.2%]">MON</th>
+                                <th className="py-2.5 px-3 w-[14.2%]">TUE</th>
+                                <th className="py-2.5 px-3 w-[14.2%]">WED</th>
+                                <th className="py-2.5 px-3 w-[14.2%]">THU</th>
+                                <th className="py-2.5 px-3 w-[14.2%]">FRI</th>
+                                <th className="py-2.5 px-3 w-[14.2%]">SAT</th>
+                                <th className="py-2.5 px-3 rounded-r-xl w-[14.2%]">SUN</th>
                               </tr>
-                            ))}
-                          </tbody>
-                        </table>
+                            </thead>
+                            <tbody>
+                              {doc.schedule.map((s: any, sIdx: number) => (
+                                <tr key={sIdx} className="font-semibold text-slate-700 hover:bg-slate-100/60 transition-colors">
+                                  <td className="py-3 px-2 border-r border-slate-200/60" dangerouslySetInnerHTML={{ __html: s.Mon || '-' }} />
+                                  <td className="py-3 px-2 border-r border-slate-200/60" dangerouslySetInnerHTML={{ __html: s.Tue || '-' }} />
+                                  <td className="py-3 px-2 border-r border-slate-200/60" dangerouslySetInnerHTML={{ __html: s.Wed || '-' }} />
+                                  <td className="py-3 px-2 border-r border-slate-200/60" dangerouslySetInnerHTML={{ __html: s.Thu || '-' }} />
+                                  <td className="py-3 px-2 border-r border-slate-200/60" dangerouslySetInnerHTML={{ __html: s.Fri || '-' }} />
+                                  <td className="py-3 px-2 border-r border-slate-200/60" dangerouslySetInnerHTML={{ __html: s.Sat || '-' }} />
+                                  <td className="py-3 px-2" dangerouslySetInnerHTML={{ __html: s.Sun || '-' }} />
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
                       </div>
                     ) : (
                       <div className="text-xs font-semibold text-slate-500 bg-slate-50 p-3 rounded-xl border border-slate-100">

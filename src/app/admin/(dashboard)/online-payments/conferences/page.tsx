@@ -1,4 +1,4 @@
-﻿import ConferencesClientPage from "./client-page";
+import ConferencesClientPage from "./client-page";
 import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
@@ -8,6 +8,7 @@ export default async function ConferencesPage() {
     orderBy: { sort: 'asc' },
     include: { category: true }
   });
+  const safeConferences = JSON.parse(JSON.stringify(conferences));
 
-  return <ConferencesClientPage initialConferences={conferences} />;
+  return <ConferencesClientPage initialConferences={safeConferences} />;
 }

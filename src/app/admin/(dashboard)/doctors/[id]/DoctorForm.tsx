@@ -7,7 +7,7 @@ import { Save, Plus, Trash2, ArrowLeft, HeartPulse, Search, Upload } from "lucid
 import CustomDropdown from "@/components/CustomDropdown";
 
 
-export default function DoctorForm({ doctor, id, departments = [] }: { doctor: any; id: string; departments?: string[] }) {
+export default function DoctorForm({ doctor, id, departments = [], apiSpecialities = [] }: { doctor: any; id: string; departments?: string[], apiSpecialities?: string[] }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [uploadingPubIndex, setUploadingPubIndex] = useState<number | null>(null);
@@ -462,7 +462,7 @@ export default function DoctorForm({ doctor, id, departments = [] }: { doctor: a
               <CustomDropdown
                 name={`timing-branch-${index}`}
                 placeholder="Select Speciality"
-                options={departments}
+                options={apiSpecialities.length > 0 ? apiSpecialities : departments}
                 value={timing.branch}
                 onChange={(val: string) => handleTimingChange(index, "branch", val)}
                 className="w-full !p-2 bg-white border border-gray-300 rounded-lg text-sm"
