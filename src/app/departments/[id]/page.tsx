@@ -677,9 +677,9 @@ export default async function DepartmentDetailsPage({
       }
     });
 
-    // Wrap tables in responsive container
+    // Wrap tables in responsive container (but force them to fit container width instead of overflowing)
     $('table').each((_, table) => {
-      $(table).wrap('<div class="w-full overflow-x-auto pb-4 mb-4"></div>');
+      $(table).wrap('<div class="w-full pb-4 mb-4"></div>');
     });
 
     // Replace video embeds with actual video tags and move them to float correctly
@@ -950,13 +950,13 @@ export default async function DepartmentDetailsPage({
                 [&_h4]:text-base [&_h4]:font-semibold [&_h4]:text-[#007a87] [&_h4]:mt-4 [&_h4]:mb-2 [&_h4:first-child]:!mt-0
                 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:space-y-1.5 [&_ul]:mb-4
                 [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:space-y-1.5 [&_ol]:mb-4
-                [&_table]:table [&_table]:w-full [&_table]:text-sm [&_table]:text-left [&_table]:border-collapse [&_table]:border [&_table]:border-slate-200
-                [&_td]:px-6 [&_td]:py-4 [&_td]:border [&_td]:border-slate-200 [&_td]:
+                [&_table]:table [&_table]:w-full [&_table]:table-fixed [&_table]:break-words [&_table]:text-xs md:[&_table]:text-sm [&_table]:text-left [&_table]:border-collapse [&_table]:border [&_table]:border-slate-200
+                [&_td]:px-2 md:[&_td]:px-4 [&_td]:py-3 [&_td]:border [&_td]:border-slate-200 [&_td]:break-words [&_td]:whitespace-normal [&_td]:align-top
                 [&_tr:hover]:bg-slate-50
-                [&_thead>tr]:!bg-[#002b5c] [&_thead>tr>th]:!text-white [&_thead>tr>th]:font-bold [&_thead>tr>th]:uppercase [&_thead>tr>th]:text-sm [&_thead>tr:first-child>th]:!border-b [&_thead>tr:first-child>th]:!border-white [&_thead>tr>th]: [&_thead>tr>th]:text-center
-                [&_thead>tr>td]:!text-white [&_thead>tr>td]:font-bold [&_thead>tr>td]:uppercase [&_thead>tr>td]:text-sm [&_thead>tr>td]:text-center
-                [&_table>tr:first-child]:!bg-[#002b5c] [&_table>tr:first-child>td]:!text-white [&_table>tr:first-child>td]:font-bold [&_table>tr:first-child>td]:uppercase [&_table>tr:first-child>td]:text-sm [&_table>tr:first-child>td]:text-center
-                [&_tbody:first-child>tr:first-child]:!bg-[#002b5c] [&_tbody:first-child>tr:first-child>td]:!text-white [&_tbody:first-child>tr:first-child>td]:font-bold [&_tbody:first-child>tr:first-child>td]:uppercase [&_tbody:first-child>tr:first-child>td]:text-sm [&_tbody:first-child>tr:first-child>td]:text-center
+                [&_thead>tr]:!bg-[#002b5c] [&_thead>tr>th]:!text-white [&_thead>tr>th]:font-bold [&_thead>tr>th]:uppercase [&_thead>tr>th]:text-[10px] md:[&_thead>tr>th]:text-sm [&_thead>tr:first-child>th]:!border-b [&_thead>tr:first-child>th]:!border-white [&_thead>tr>th]:text-center [&_thead>tr>th]:px-1 md:[&_thead>tr>th]:px-3 [&_thead>tr>th]:py-3 [&_thead>tr>th]:break-words [&_thead>tr>th]:whitespace-normal [&_thead>tr>th]:align-top
+                [&_thead>tr>td]:!text-white [&_thead>tr>td]:font-bold [&_thead>tr>td]:uppercase [&_thead>tr>td]:text-xs md:[&_thead>tr>td]:text-sm [&_thead>tr>td]:text-center [&_thead>tr>td]:break-words [&_thead>tr>td]:whitespace-normal
+                [&_table>tr:first-child]:!bg-[#002b5c] [&_table>tr:first-child>td]:!text-white [&_table>tr:first-child>td]:font-bold [&_table>tr:first-child>td]:uppercase [&_table>tr:first-child>td]:text-[10px] md:[&_table>tr:first-child>td]:text-sm [&_table>tr:first-child>td]:text-center [&_table>tr:first-child>td]:break-words [&_table>tr:first-child>td]:whitespace-normal [&_table>tr:first-child>td]:px-1 md:[&_table>tr:first-child>td]:px-3 [&_table>tr:first-child>td]:py-3 [&_table>tr:first-child>td]:align-top
+                [&_tbody:first-child>tr:first-child]:!bg-[#002b5c] [&_tbody:first-child>tr:first-child>td]:!text-white [&_tbody:first-child>tr:first-child>td]:font-bold [&_tbody:first-child>tr:first-child>td]:uppercase [&_tbody:first-child>tr:first-child>td]:text-[10px] md:[&_tbody:first-child>tr:first-child>td]:text-sm [&_tbody:first-child>tr:first-child>td]:text-center [&_tbody:first-child>tr:first-child>td]:break-words [&_tbody:first-child>tr:first-child>td]:whitespace-normal [&_tbody:first-child>tr:first-child>td]:px-1 md:[&_tbody:first-child>tr:first-child>td]:px-3 [&_tbody:first-child>tr:first-child>td]:py-3 [&_tbody:first-child>tr:first-child>td]:align-top
                 [&_.department-facilities-section]:grid [&_.department-facilities-section]:grid-cols-1 [&_.department-facilities-section]:md:grid-cols-2 [&_.department-facilities-section]:lg:grid-cols-3 [&_.department-facilities-section]:gap-4
                 [&_.department-facilities-section_h3]:col-span-full [&_.department-facilities-section_h4]:col-span-full
                 [&_.department-facilities-section_p]:bg-teal-50 [&_.department-facilities-section_p]:p-4 [&_.department-facilities-section_p]:rounded-xl [&_.department-facilities-section_p]:text-center [&_.department-facilities-section_p]:font-semibold [&_.department-facilities-section_p]:text-[#007a87] [&_.department-facilities-section_p]:shadow-sm [&_.department-facilities-section_p]:mb-0
