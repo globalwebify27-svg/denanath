@@ -289,7 +289,7 @@ export default function DoctorDetailsPage() {
                       <div className="flex-1 mb-6">
                         <div className="flex items-start gap-2 text-slate-600">
                           <GraduationCap className="w-4 h-4 text-slate-400 shrink-0 mt-[7px]" />
-                          <span className="text-[16px] leading-[31px] font-normal">{doc.qualifications}</span>
+                          <span className=" leading-[31px] font-normal">{doc.qualifications}</span>
                         </div>
                       </div>
 

@@ -419,14 +419,14 @@ export default function CareersClientPage({ pageData }: { pageData: any }) {
                 <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm relative overflow-visible flex flex-col items-center text-center z-10">
                   <div className="flex items-center gap-2 mb-4 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-100">
                     <ShieldCheck className="w-4 h-4 text-emerald-600" />
-                    <span className="text-[16px] font-bold text-emerald-800">Secure Application</span>
+                    <span className=" font-bold text-emerald-800">Secure Application</span>
                   </div>
                   
                   <div className="w-full max-w-sm">
                     <label className="block text-sm font-bold text-slate-700 mb-3">Security Verification <span className="text-red-500">*</span></label>
                     <div className="flex flex-col gap-3">
                       <div className="flex items-center gap-3">
-                        <div className="flex-1 h-10 bg-slate-800 flex items-center justify-center rounded-lg border border-slate-700 font-mono text-[16px] font-bold tracking-[0.3em] text-white select-none shadow-inner">
+                        <div className="flex-1 h-10 bg-slate-800 flex items-center justify-center rounded-lg border border-slate-700 font-mono  font-bold tracking-[0.3em] text-white select-none shadow-inner">
                           {captchaCode}
                         </div>
                         <button 
@@ -441,7 +441,7 @@ export default function CareersClientPage({ pageData }: { pageData: any }) {
                         name="captcha"
                         type="text" 
                         placeholder="Enter the code above"
-                        className="peer w-full bg-slate-50 border border-slate-200 rounded-lg py-2 px-3 text-center text-[16px] text-slate-700 font-bold tracking-wide focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all"
+                        className="peer w-full bg-slate-50 border border-slate-200 rounded-lg py-2 px-3 text-center  text-slate-700 font-bold tracking-wide focus:outline-none focus:ring-2 focus:ring-teal-500 bg-white shadow-sm transition-all"
                         required
                       />
                     </div>
@@ -449,7 +449,7 @@ export default function CareersClientPage({ pageData }: { pageData: any }) {
                     <button 
                       type="submit"
                       disabled={isSubmitting}
-                      className="group w-full mt-6 bg-[#003360] hover:bg-[#002b5c] text-white py-2.5 rounded-lg font-bold text-[15px] transition-all shadow-[0_4px_10px_rgba(0,51,96,0.3)] hover:-translate-y-0.5 hover:shadow-[0_6px_15px_rgba(0,51,96,0.4)] flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none text-[16px]"
+                      className="group w-full mt-6 bg-[#003360] hover:bg-[#002b5c] text-white py-2.5 rounded-lg font-bold text-[15px] transition-all shadow-[0_4px_10px_rgba(0,51,96,0.3)] hover:-translate-y-0.5 hover:shadow-[0_6px_15px_rgba(0,51,96,0.4)] flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none "
                     >
                       {isSubmitting ? "Submitting..." : "Submit Application"}
                       {!isSubmitting && <ArrowRight className="w-5 h-5 text-teal-300 group-hover:translate-x-1 transition-transform" />}

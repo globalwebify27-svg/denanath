@@ -156,7 +156,7 @@ export default function ClientDoctorModal({ apiDocs = [] }: { apiDocs: any[] }) 
             <div className="flex-1 min-w-0 flex flex-col justify-between h-[150px] sm:h-[280px] py-1 sm:py-2">
               <div>
                 <h2 className="text-base sm:text-2xl md:text-[28px] font-[900] text-[#002b5c] leading-tight mb-1 sm:mb-2 uppercase break-words hyphens-auto">{selectedDoctor.name}</h2>
-                <p className="text-[13px] sm:text-[16px] leading-snug sm:leading-[31px] font-normal text-slate-500 line-clamp-3 sm:line-clamp-none">{selectedDoctor.qualifications}</p>
+                <p className="text-[13px] sm: leading-snug sm:leading-[31px] font-normal text-slate-500 line-clamp-3 sm:line-clamp-none">{selectedDoctor.qualifications}</p>
               </div>
               
               <div className="mt-auto flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4">
@@ -202,10 +202,10 @@ export default function ClientDoctorModal({ apiDocs = [] }: { apiDocs: any[] }) 
                     {selectedDoctor.timings.map((t: any, i: number) => (
                       <div key={i} className="bg-slate-50 rounded-xl p-3 border border-slate-100">
                         <div className="flex flex-col gap-1 mb-3">
-                          <span className="text-[16px] leading-[31px] font-normal text-[#007a87] uppercase">{t.branch}</span>
-                          <span className="text-[16px] leading-[31px] font-normal text-slate-600">{t.day}</span>
+                          <span className=" leading-[31px] font-normal text-[#007a87] uppercase">{t.branch}</span>
+                          <span className=" leading-[31px] font-normal text-slate-600">{t.day}</span>
                         </div>
-                        <div className="flex items-start gap-2 text-[16px] leading-[31px] text-slate-700 font-normal">
+                        <div className="flex items-start gap-2  leading-[31px] text-slate-700 font-normal">
                           <Clock className="w-4 h-4 text-slate-400 shrink-0 mt-2" />
                           <span className="whitespace-pre-line">{t.time}</span>
                         </div>
@@ -234,7 +234,7 @@ export default function ClientDoctorModal({ apiDocs = [] }: { apiDocs: any[] }) 
                   </h3>
                   <ul className="space-y-4">
                     {selectedDoctor.education.map((item: string, i: number) => (
-                      <li key={i} className="flex gap-3 text-slate-600 font-normal text-[16px] leading-[31px]">
+                      <li key={i} className="flex gap-3 text-slate-600 font-normal  leading-[31px]">
                         <div className="w-1.5 h-1.5 rounded-full bg-teal-400 shrink-0 mt-2.5"></div>
                         {item}
                       </li>
@@ -250,7 +250,7 @@ export default function ClientDoctorModal({ apiDocs = [] }: { apiDocs: any[] }) 
                   </h3>
                   <ul className="space-y-4">
                     {selectedDoctor.training.map((item: string, i: number) => (
-                      <li key={i} className="flex gap-3 text-slate-600 font-normal text-[16px] leading-[31px]">
+                      <li key={i} className="flex gap-3 text-slate-600 font-normal  leading-[31px]">
                         <div className="w-1.5 h-1.5 rounded-full bg-amber-400 shrink-0 mt-2.5"></div>
                         {item}
                       </li>
@@ -266,7 +266,7 @@ export default function ClientDoctorModal({ apiDocs = [] }: { apiDocs: any[] }) 
                   </h3>
                   <ul className="space-y-4">
                     {selectedDoctor.experience.map((item: string, i: number) => (
-                      <li key={i} className="flex gap-3 text-slate-600 font-normal text-[16px] leading-[31px]">
+                      <li key={i} className="flex gap-3 text-slate-600 font-normal  leading-[31px]">
                         <div className="w-1.5 h-1.5 rounded-full bg-blue-400 shrink-0 mt-2.5"></div>
                         {item}
                       </li>
@@ -293,7 +293,7 @@ export default function ClientDoctorModal({ apiDocs = [] }: { apiDocs: any[] }) 
                       }
 
                       return (
-                        <li key={i} className="flex gap-3 text-slate-600 font-normal text-[16px] leading-[31px]">
+                        <li key={i} className="flex gap-3 text-slate-600 font-normal  leading-[31px]">
                           <div className="w-1.5 h-1.5 rounded-full bg-purple-400 shrink-0 mt-2.5"></div>
                           <div className="flex-1">
                             {title.includes('[PDF]') ? (

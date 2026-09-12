@@ -521,21 +521,21 @@ export default function OnlinePaymentClientPage({ pageData }: { pageData: any })
                   <div className="flex items-center justify-between gap-4 flex-wrap">
                     {/* Left group: captcha box + refresh + enter text */}
                     <div className="flex items-center gap-2">
-                      <div className="bg-slate-800 text-white px-6 py-3 rounded-lg tracking-widest font-mono font-bold text-[16px] select-none shadow-inner border border-slate-700 text-center ">
+                      <div className="bg-slate-800 text-white px-6 py-3 rounded-lg tracking-widest font-mono font-bold  select-none shadow-inner border border-slate-700 text-center ">
                         {captchaCode}
                       </div>
                       {/* Refresh button */}
-                      <button suppressHydrationWarning type="button" onClick={generateCaptcha} className="text-blue-500 hover:text-blue-600 transition-colors bg-blue-50 p-2.5 rounded-lg hover:bg-blue-100 text-[16px]">
+                      <button suppressHydrationWarning type="button" onClick={generateCaptcha} className="text-blue-500 hover:text-blue-600 transition-colors bg-blue-50 p-2.5 rounded-lg hover:bg-blue-100 ">
                         <RefreshCw className="w-5 h-5" />
                       </button>
                       {/* Enter text input */}
-                      <input suppressHydrationWarning type="text" name="captcha" placeholder="Enter text" className="w-40 px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-slate-50 transition-all font-medium text-[16px]" />
+                      <input suppressHydrationWarning type="text" name="captcha" placeholder="Enter text" className="w-40 px-4 py-3 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-slate-50 transition-all font-medium " />
                     </div>
                     {/* Proceed to Pay button */}
                     <button suppressHydrationWarning
                       type="submit"
                       disabled={isSubmitting}
-                      className={`group inline-flex items-center justify-center gap-2 px-9 py-3 bg-[#003360] hover:bg-[#002b5c] text-white font-bold text-[16px]  rounded-lg transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5 ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
+                      className={`group inline-flex items-center justify-center gap-2 px-9 py-3 bg-[#003360] hover:bg-[#002b5c] text-white font-bold   rounded-lg transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5 ${isSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
                     >
                       {isSubmitting ? (
                         <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>

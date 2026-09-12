@@ -116,7 +116,7 @@ export default function VasantNirmalaOswalCentreClientPage({ initialData }: { in
                 {data.coursesAccredited.map((course: string, idx: number) => (
                   <li key={idx} className="flex items-start gap-4 p-4 rounded-xl bg-slate-50 border border-slate-100 hover:border-[#005f6b] hover:bg-[#e0f2f1]/30 transition-all">
                     <div className="w-2 h-2 rounded-full bg-[#005f6b] shrink-0 mt-2.5" />
-                    <span className="text-slate-700 font-medium text-[16px]">{course}</span>
+                    <span className="text-slate-700 font-medium ">{course}</span>
                   </li>
                 ))}
               </ul>

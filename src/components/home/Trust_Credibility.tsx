@@ -71,7 +71,7 @@ export default function TrustSection({ data = defaultTrustData }: { data?: any }
           </h2>
 
           <div 
-            className="mx-auto mt-5 max-w-2xl text-[16px] font-normal leading-[31px] text-slate-600 prose prose-sm prose-p:leading-[31px] prose-p:m-0"
+            className="mx-auto mt-5 max-w-2xl  font-normal leading-[31px] text-slate-600 prose prose-sm prose-p:leading-[31px] prose-p:m-0"
             dangerouslySetInnerHTML={{__html: data.description}}
           />
         </motion.div>

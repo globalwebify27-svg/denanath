@@ -67,7 +67,7 @@ export default function AboutSection({ data = defaultAboutData }: { data?: any }
             </h2>
             
             <div 
-              className="text-slate-600 text-[16px] font-normal leading-[31px] mb-8"
+              className="text-slate-600 font-normal leading-[31px] mb-8"
               dangerouslySetInnerHTML={{ __html: data.description }}
             />
             

@@ -159,7 +159,7 @@ export default async function AdminDoctorsPage({
                     <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-50 mb-4 border border-gray-100">
                       <Search className="w-8 h-8 text-gray-300" />
                     </div>
-                    <p className="text-[16px] font-[800] text-gray-800 tracking-tight">No physicians found</p>
+                    <p className=" font-[800] text-gray-800 tracking-tight">No physicians found</p>
                     <p className="text-[13px] font-[500] text-gray-400 mt-1 max-w-sm mx-auto">
                       We couldn't find any doctors matching your search query. Try adjusting your filters or adding a new doctor.
                     </p>

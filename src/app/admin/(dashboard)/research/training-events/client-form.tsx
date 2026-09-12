@@ -47,7 +47,7 @@ export default function TrainingEventsClientForm({ initialData }: { initialData:
     const cardsHtml = (eventsList || []).map(event => `
       <div class="group bg-white border border-slate-200 rounded-xl p-5 md:p-6 mb-4 shadow-sm hover:border-red-400 hover:shadow-[0_4px_20px_rgba(248,113,113,0.3)] hover:-translate-y-1 transition-all duration-300">
         <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-3">
-          <h3 class="text-[16px] md:text-base font-bold text-[#002b5c] group-hover:text-[#007a87] transition-colors duration-300 flex-1 leading-snug">${event.topic}</h3>
+          <h3 class=" md:text-base font-bold text-[#002b5c] group-hover:text-[#007a87] transition-colors duration-300 flex-1 leading-snug">${event.topic}</h3>
           <div class="shrink-0">
             <span class="inline-block px-4 py-2 rounded-lg bg-teal-50 text-[#007a87] text-[14px] font-bold ">
               ${event.date}

@@ -438,10 +438,10 @@ export default function DoctorDetailsPage() {
                         {selectedDoctor.timings.map((t: any, i: number) => (
                           <div key={i} className="bg-slate-50 rounded-xl p-3 border border-slate-100">
                             <div className="flex flex-col gap-1 mb-3">
-                              <span className="text-[16px] font-bold text-[#007a87] uppercase">{t.branch}</span>
-                              <span className="text-[16px] font-bold text-slate-600">{t.day}</span>
+                              <span className=" font-bold text-[#007a87] uppercase">{t.branch}</span>
+                              <span className=" font-bold text-slate-600">{t.day}</span>
                             </div>
-                            <div className="flex items-start gap-2 text-[16px] text-slate-700 font-medium">
+                            <div className="flex items-start gap-2  text-slate-700 font-medium">
                               <Clock className="w-4 h-4 text-slate-400 shrink-0 mt-0.5" />
                               <span>{t.time}</span>
                             </div>

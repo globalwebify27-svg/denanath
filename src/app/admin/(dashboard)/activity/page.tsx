@@ -75,7 +75,7 @@ export default async function ActivityLogPage() {
                   
                   <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 mb-2">
                     <div>
-                      <p className="text-[16px] font-[800] text-gray-800 tracking-tight leading-snug">{log.action}</p>
+                      <p className=" font-[800] text-gray-800 tracking-tight leading-snug">{log.action}</p>
                       <p className="text-[14px] font-[500] text-gray-500 mt-1">{log.desc}</p>
                     </div>
                     

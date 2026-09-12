@@ -168,7 +168,7 @@ const DoctorScheduleCard = ({ doc, initialData, index }: { doc: any, initialData
                   {availability[day].length > 0 ? (
                     <div className="space-y-2">
                       {availability[day].map((time, i) => (
-                        <div key={i} className="text-slate-700 text-[16px] leading-[31px] font-[400]">
+                        <div key={i} className="text-slate-700  leading-[31px] font-[400]">
                           {time}
                         </div>
                       ))}

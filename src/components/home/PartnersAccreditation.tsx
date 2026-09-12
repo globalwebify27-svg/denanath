@@ -84,7 +84,7 @@ export default function PartnersAccreditation({ data = defaultPartnersData }: { 
               <h3 className="text-xl sm:text-2xl font-extrabold text-[#002b5c] tracking-tight">
                 {card1.title}
               </h3>
-              <p className="text-slate-500 text-[16px] font-normal leading-[31px]" dangerouslySetInnerHTML={{__html: card1.description}}>
+              <p className="text-slate-500  font-normal leading-[31px]" dangerouslySetInnerHTML={{__html: card1.description}}>
               </p>
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 border-t border-slate-50">
@@ -123,7 +123,7 @@ export default function PartnersAccreditation({ data = defaultPartnersData }: { 
               <h3 className="text-xl sm:text-2xl font-extrabold text-[#002b5c] tracking-tight">
                 {card2.title}
               </h3>
-              <p className="text-slate-500 text-[16px] font-normal leading-[31px]" dangerouslySetInnerHTML={{__html: card2.description}}>
+              <p className="text-slate-500  font-normal leading-[31px]" dangerouslySetInnerHTML={{__html: card2.description}}>
               </p>
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 border-t border-slate-50">
@@ -178,7 +178,7 @@ export default function PartnersAccreditation({ data = defaultPartnersData }: { 
                   dangerouslySetInnerHTML={{__html: banner.title}}
                 />
                 <div 
-                  className="text-slate-500 text-[16px] font-normal leading-[31px] max-w-xl prose prose-sm prose-p:leading-[31px] prose-p:m-0"
+                  className="text-slate-500  font-normal leading-[31px] max-w-xl prose prose-sm prose-p:leading-[31px] prose-p:m-0"
                   dangerouslySetInnerHTML={{__html: banner.description}}
                 />
               </div>

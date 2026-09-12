@@ -106,7 +106,7 @@ export default async function AdminDashboardOverview() {
             <h1 className="text-[36px] font-[800] leading-[40px] text-[#002b5c] tracking-tight mb-2">
               Overview
             </h1>
-            <p className="text-[16px] font-[700] leading-[24px] text-[#002b5c] max-w-xl">
+            <p className=" font-[700] leading-[24px] text-[#002b5c] max-w-xl">
               Welcome back to the DMH Management Portal.
             </p>
           </div>
@@ -200,7 +200,7 @@ export default async function AdminDashboardOverview() {
                   
                   <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 mb-2">
                     <div>
-                      <p className="text-[16px] font-[800] text-gray-800 tracking-tight leading-snug">{log.action}</p>
+                      <p className=" font-[800] text-gray-800 tracking-tight leading-snug">{log.action}</p>
                       <p className="text-[14px] font-[500] text-gray-500 mt-1">{log.desc}</p>
                     </div>
                     

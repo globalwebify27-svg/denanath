@@ -115,7 +115,7 @@ export default function LaryngologyFellowshipClientPage({ initialData }: { initi
                 </div>
                 <h3 className="text-xl font-bold text-slate-800">{data.rcsRefTitle}</h3>
               </div>
-              <p className="text-slate-500 italic mb-6 text-[16px] leading-[26px] font-normal">
+              <p className="text-slate-500 italic mb-6  leading-[26px] font-normal">
                 {data.rcsRefDesc}
               </p>
               <div className="space-y-4">

@@ -156,7 +156,7 @@ export default function CareersClient({ data }: { data: any }) {
                       <Briefcase className="w-5 h-5 text-slate-400 shrink-0 mt-0.5" />
                       <div>
                         <span className="text-xs font-bold text-slate-400 uppercase block mb-0.5">Designation</span>
-                        <span className="text-[16px] font-bold text-slate-800">{job.designation}</span>
+                        <span className=" font-bold text-slate-800">{job.designation}</span>
                       </div>
                     </div>
                   )}
@@ -165,7 +165,7 @@ export default function CareersClient({ data }: { data: any }) {
                     <GraduationCap className="w-5 h-5 text-teal-600 shrink-0 mt-0.5" />
                     <div>
                       <span className="text-xs font-bold text-slate-400 uppercase block mb-0.5">Qualification</span>
-                      <span className="text-[16px] font-bold text-slate-800">{job.qualification}</span>
+                      <span className=" font-bold text-slate-800">{job.qualification}</span>
                     </div>
                   </div>
 
@@ -174,7 +174,7 @@ export default function CareersClient({ data }: { data: any }) {
                       <Briefcase className="w-5 h-5 text-blue-600 shrink-0 mt-0.5" />
                       <div>
                         <span className="text-xs font-bold text-slate-400 uppercase block mb-0.5">Experience</span>
-                        <span className="text-[16px] font-medium text-slate-700">{job.experience}</span>
+                        <span className=" font-medium text-slate-700">{job.experience}</span>
                       </div>
                     </div>
                   )}
@@ -184,7 +184,7 @@ export default function CareersClient({ data }: { data: any }) {
                       <AlertCircle className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
                       <div>
                         <span className="text-xs font-bold text-slate-400 uppercase block mb-0.5">Requirement</span>
-                        <span className="text-[16px] font-bold text-red-600">{job.requirement}</span>
+                        <span className=" font-bold text-red-600">{job.requirement}</span>
                       </div>
                     </div>
                   )}
@@ -194,7 +194,7 @@ export default function CareersClient({ data }: { data: any }) {
                       <FileText className="w-5 h-5 text-pink-500 shrink-0 mt-0.5" />
                       <div>
                         <span className="text-xs font-bold text-slate-400 uppercase block mb-0.5">Preference</span>
-                        <span className="text-[16px] font-medium text-slate-700">{job.preference}</span>
+                        <span className=" font-medium text-slate-700">{job.preference}</span>
                       </div>
                     </div>
                   )}
@@ -204,7 +204,7 @@ export default function CareersClient({ data }: { data: any }) {
                       <FileText className="w-5 h-5 text-slate-400 shrink-0 mt-0.5" />
                       <div>
                         <span className="text-xs font-bold text-slate-400 uppercase block mb-0.5">Job Description</span>
-                        <span className="text-[16px] font-medium text-slate-600 leading-relaxed">{job.description}</span>
+                        <span className=" font-medium text-slate-600 leading-relaxed">{job.description}</span>
                       </div>
                     </div>
                   )}
@@ -519,7 +519,7 @@ export default function CareersClient({ data }: { data: any }) {
                     <label className="block text-sm font-bold text-slate-700 mb-2">Security Verification <span className="text-red-500">*</span></label>
                     <div className="flex flex-col gap-3">
                       <div className="flex items-center gap-3">
-                        <div className="flex-1 h-10 bg-slate-800 flex items-center justify-center rounded-lg border border-slate-700 font-mono text-[16px] font-bold tracking-[0.3em] text-white select-none shadow-inner">
+                        <div className="flex-1 h-10 bg-slate-800 flex items-center justify-center rounded-lg border border-slate-700 font-mono  font-bold tracking-[0.3em] text-white select-none shadow-inner">
                           {captchaCode}
                         </div>
                         <button 

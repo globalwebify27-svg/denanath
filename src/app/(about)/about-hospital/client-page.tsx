@@ -48,8 +48,8 @@ export default function AboutHospitalClient({ data }: { data: any }) {
 
               {/* Introduction */}
               <div className="prose prose-slate max-w-none">
-                <div className="text-[16px] text-slate-700 leading-[31px] font-normal mb-2" dangerouslySetInnerHTML={{ __html: data?.introduction || '' }} />
-                <div className="text-[16px] text-slate-700 leading-[29px] font-normal mb-8" dangerouslySetInnerHTML={{ __html: data?.description || '' }} />
+                <div className=" text-slate-700 leading-[31px] font-normal mb-2" dangerouslySetInnerHTML={{ __html: data?.introduction || '' }} />
+                <div className=" text-slate-700 leading-[29px] font-normal mb-8" dangerouslySetInnerHTML={{ __html: data?.description || '' }} />
               </div>
 
               {/* Vision & Mission Grid */}
@@ -93,7 +93,7 @@ export default function AboutHospitalClient({ data }: { data: any }) {
                       <div className="bg-teal-100/50 rounded-full p-1 text-teal-600 group-hover:text-[#D9232D] shrink-0 transition-colors">
                         <CheckCircle2 className="w-5 h-5" />
                       </div>
-                      <span className="font-normal text-slate-700 text-[16px] leading-[31px]">{value}</span>
+                      <span className="font-normal text-slate-700  leading-[31px]">{value}</span>
                     </div>
                   ))}
                 </div>
@@ -111,7 +111,7 @@ export default function AboutHospitalClient({ data }: { data: any }) {
                       <ShieldCheck className="w-5 h-5" />
                       Quality Policy
                     </h3>
-                    <div className="text-blue-50 text-[16px] leading-[29px] font-normal" dangerouslySetInnerHTML={{ __html: data?.qualityPolicy || '' }} />
+                    <div className="text-blue-50  leading-[29px] font-normal" dangerouslySetInnerHTML={{ __html: data?.qualityPolicy || '' }} />
                   </div>
                   
                   <div className="h-px w-full bg-blue-800/50" />
@@ -121,7 +121,7 @@ export default function AboutHospitalClient({ data }: { data: any }) {
                       <Award className="w-5 h-5" />
                       Quality Objective
                     </h3>
-                    <div className="text-blue-50 text-[16px] leading-[29px] font-normal" dangerouslySetInnerHTML={{ __html: data?.qualityObjective || '' }} />
+                    <div className="text-blue-50  leading-[29px] font-normal" dangerouslySetInnerHTML={{ __html: data?.qualityObjective || '' }} />
                   </div>
                 </div>
               </div>
@@ -155,7 +155,7 @@ export default function AboutHospitalClient({ data }: { data: any }) {
                     </h4>
                     <ul className="space-y-3">
                       {(data?.capabilities?.imaging || []).map((item: string, idx: number) => (
-                        <li key={idx} className="flex items-start gap-3 text-[16px] font-normal text-slate-600 leading-[29px]">
+                        <li key={idx} className="flex items-start gap-3  font-normal text-slate-600 leading-[29px]">
                           <ChevronRight className="w-4 h-4 text-[#007a87] shrink-0 mt-0.5" />
                           <span>{item}</span>
                         </li>
@@ -170,7 +170,7 @@ export default function AboutHospitalClient({ data }: { data: any }) {
                     </h4>
                     <ul className="space-y-3">
                       {(data?.capabilities?.radiation || []).map((item: string, idx: number) => (
-                        <li key={idx} className="flex items-start gap-3 text-[16px] font-normal text-slate-600 leading-[29px]">
+                        <li key={idx} className="flex items-start gap-3  font-normal text-slate-600 leading-[29px]">
                           <ChevronRight className="w-4 h-4 text-[#007a87] shrink-0 mt-0.5" />
                           <span>{item}</span>
                         </li>

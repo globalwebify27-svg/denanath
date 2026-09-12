@@ -233,14 +233,14 @@ export default function PatientPortalPage({ pageData }: { pageData: any }) {
                           </label>
                           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
                             <div className="flex items-center gap-3">
-                              <div className="bg-slate-800 text-white px-5 py-2.5 rounded-lg tracking-widest font-mono font-bold text-[16px] select-none shadow-inner border border-slate-700 w-32 text-center">
+                              <div className="bg-slate-800 text-white px-5 py-2.5 rounded-lg tracking-widest font-mono font-bold  select-none shadow-inner border border-slate-700 w-32 text-center">
                                 {captchaCode}
                               </div>
                               <button type="button" onClick={generateCaptcha} className="text-blue-500 hover:text-blue-600 transition-colors bg-blue-50 p-2.5 rounded-lg hover:bg-blue-100">
                                 <RefreshCw className="w-5 h-5" />
                               </button>
                             </div>
-                            <input type="text" name="captcha" placeholder="Enter text" className="w-full sm:w-40 px-4 py-1.5 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all font-medium placeholder-slate-400 text-[16px]" />
+                            <input type="text" name="captcha" placeholder="Enter text" className="w-full sm:w-40 px-4 py-1.5 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 bg-white shadow-sm transition-all font-medium placeholder-slate-400 " />
                           </div>
                         </div>
 
@@ -248,7 +248,7 @@ export default function PatientPortalPage({ pageData }: { pageData: any }) {
                           <button 
                               type="submit" 
                               disabled={isLoginSubmitting}
-                              className={`group w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-1.5 bg-[#003360] hover:bg-[#002b5c] text-white font-bold text-[16px] rounded-lg transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5 ${isLoginSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
+                              className={`group w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-1.5 bg-[#003360] hover:bg-[#002b5c] text-white font-bold  rounded-lg transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5 ${isLoginSubmitting ? 'opacity-70 cursor-not-allowed' : ''}`}
                             >
                               {isLoginSubmitting ? (
                                 <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
@@ -272,7 +272,7 @@ export default function PatientPortalPage({ pageData }: { pageData: any }) {
                           <Shield className="w-5 h-5 text-teal-500" />
                           Portal Features
                         </p>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-3 gap-x-6 text-[16px] text-slate-600 font-medium">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-3 gap-x-6  text-slate-600 font-medium">
                           {(pageData.features || [
                             "View Pathology & Radiology Reports",
                             "View Discharge Summary",
@@ -393,7 +393,7 @@ export default function PatientPortalPage({ pageData }: { pageData: any }) {
                               )}
                             </button>
                           
-                          <div className="text-[16px] text-slate-500 font-medium leading-relaxed text-center max-w-md">
+                          <div className=" text-slate-500 font-medium leading-relaxed text-center max-w-md">
                             By registering, your details will be verified with the hospital records. If they match, you will receive an activation email to login to the portal.
                           </div>
                         </div>

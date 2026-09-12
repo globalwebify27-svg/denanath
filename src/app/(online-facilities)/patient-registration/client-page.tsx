@@ -1186,7 +1186,7 @@ export default function PatientRegistrationFormPage({ pageData }: { pageData: an
                     
                     <div className="flex items-center justify-center gap-2 mb-6">
                       <ShieldCheck className="w-6 h-6 text-emerald-600" />
-                      <span className="text-emerald-800 font-bold bg-emerald-50 px-4 py-1.5 rounded-full border border-emerald-200 text-[16px]">
+                      <span className="text-emerald-800 font-bold bg-emerald-50 px-4 py-1.5 rounded-full border border-emerald-200 ">
                         Secure Submission
                       </span>
                     </div>
@@ -1196,16 +1196,16 @@ export default function PatientRegistrationFormPage({ pageData }: { pageData: an
                         <span className="text-red-500 mr-1">*</span>Security Verification
                       </label>
                       <div className="flex flex-row items-center justify-center gap-2 sm:gap-4 mb-5 bg-white p-3 sm:p-5 rounded-2xl border border-slate-200 shadow-sm">
-                        <div className="bg-slate-800 px-3 sm:px-6 py-2 sm:py-2.5 tracking-widest sm:tracking-[0.5em] font-serif text-[16px] text-white select-none font-bold rounded-lg shadow-inner border border-slate-700">
+                        <div className="bg-slate-800 px-3 sm:px-6 py-2 sm:py-2.5 tracking-widest sm:tracking-[0.5em] font-serif  text-white select-none font-bold rounded-lg shadow-inner border border-slate-700">
                           {captchaCode}
                         </div>
-                        <button type="button" onClick={generateCaptcha} className="text-blue-500 hover:text-blue-700 transition-colors bg-blue-50 hover:bg-blue-100 p-2 sm:p-2.5 rounded-lg border border-blue-100 shadow-sm shrink-0 text-[16px]">
+                        <button type="button" onClick={generateCaptcha} className="text-blue-500 hover:text-blue-700 transition-colors bg-blue-50 hover:bg-blue-100 p-2 sm:p-2.5 rounded-lg border border-blue-100 shadow-sm shrink-0 ">
                           <RefreshCw className="w-5 h-5" />
                         </button>
                       </div>
-                      <input type="text" placeholder="Enter Captcha Text" className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-[#007a87] text-center text-[16px] font-medium shadow-sm transition-all mb-6" />
+                      <input type="text" placeholder="Enter Captcha Text" className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-[#007a87] text-center  font-medium shadow-sm transition-all mb-6" />
                       
-                      <button type="submit" disabled={isSubmitting} className="group w-full py-2.5 bg-[#003360] text-white font-bold text-[15px] rounded-lg hover:bg-[#002b5c] transition-all shadow-[0_4px_10px_rgba(0,51,96,0.3)] hover:-translate-y-0.5 hover:shadow-[0_6px_15px_rgba(0,51,96,0.4)] flex justify-center items-center gap-2 disabled:opacity-70 disabled:pointer-events-none text-[16px]">
+                      <button type="submit" disabled={isSubmitting} className="group w-full py-2.5 bg-[#003360] text-white font-bold text-[15px] rounded-lg hover:bg-[#002b5c] transition-all shadow-[0_4px_10px_rgba(0,51,96,0.3)] hover:-translate-y-0.5 hover:shadow-[0_6px_15px_rgba(0,51,96,0.4)] flex justify-center items-center gap-2 disabled:opacity-70 disabled:pointer-events-none ">
                         {isSubmitting ? (
                           <>
                             <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
