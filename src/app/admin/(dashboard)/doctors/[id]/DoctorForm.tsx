@@ -201,7 +201,14 @@ export default function DoctorForm({ doctor, id, departments = [], apiSpecialiti
 
       if (!response.ok) throw new Error("Failed to save");
       
-      router.push("/admin/doctors");
+      alert("Doctor saved successfully!");
+      
+      // Go back to the previous page in history (keeps table pagination state)
+      router.back();
+      
+      // We also trigger a router.refresh to ensure the previous page fetches fresh data from server
+      router.refresh();
+      
     } catch (error) {
       console.error(error);
       alert("Failed to save doctor");
@@ -265,9 +272,9 @@ export default function DoctorForm({ doctor, id, departments = [], apiSpecialiti
       <div className="mb-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 bg-white p-6 md:p-10 rounded-3xl shadow-sm border border-slate-100 relative overflow-hidden group">
         <div className="absolute top-0 left-0 w-2 h-full bg-gradient-to-b from-[#002b5c] to-[#007a87]"></div>
         <div className="z-10 relative">
-          <Link href="/admin/doctors" className="inline-flex items-center gap-2 text-sm font-bold text-[#007a87] hover:text-[#005c66] transition-colors mb-3">
+          <button type="button" onClick={() => router.back()} className="inline-flex items-center gap-2 text-sm font-bold text-[#007a87] hover:text-[#005c66] transition-colors mb-3">
             <ArrowLeft size={16} /> Back to Directory
-          </Link>
+          </button>
           <h1 className="text-[32px] md:text-[40px] font-black text-[#002b5c] tracking-tight leading-tight mb-2">
             {id === "new" ? "Add New Doctor" : "Edit Doctor Profile"}
           </h1>
