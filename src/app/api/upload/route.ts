@@ -1,8 +1,4 @@
 import { NextResponse } from "next/server";
-import { writeFile, mkdir } from "fs/promises";
-import path from "path";
-import crypto from "crypto";
-import fs from "fs";
 
 export async function POST(req: Request) {
   try {
@@ -16,21 +12,13 @@ export async function POST(req: Request) {
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
-    // Generate unique filename
-    const uniqueSuffix = crypto.randomBytes(8).toString('hex');
-    const extension = path.extname(file.name) || '.png';
-    const filename = `${uniqueSuffix}${extension}`;
-    
-    // Ensure uploads directory exists
-    const uploadDir = path.join(process.cwd(), "public/uploads");
-    if (!fs.existsSync(uploadDir)) {
-      await mkdir(uploadDir, { recursive: true });
-    }
-
-    const filepath = path.join(uploadDir, filename);
-    await writeFile(filepath, buffer);
-
-    const fileUrl = `/uploads/${filename}`;
+    // Vercel serverless functions do not allow writing to the local file system.
+    // As a workaround that doesn't require setting up Cloud Storage (like AWS S3 or Vercel Blob),
+    // we convert the image directly to a Base64 string. 
+    // This string can be saved in the database and used directly as an image URL.
+    const mimeType = file.type || "image/png";
+    const base64Data = buffer.toString("base64");
+    const fileUrl = `data:${mimeType};base64,${base64Data}`;
 
     return NextResponse.json({ url: fileUrl });
   } catch (error) {
