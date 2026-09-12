@@ -127,31 +127,45 @@ export async function POST(req: Request) {
       }
 
       try {
-        await prisma.doctor.upsert({
-          where: { dmhDoctorId },
-          update: {
-            name: formattedName,
-            specialty: combinedSpecs,
-            qualifications: combinedQuals,
-            dmhSpecialityId: combinedSpecIds,
-            gender: group.gender || null,
-            consultantType: group.consultantType || null,
-            hasOpdSchedule: group.hasOpdSchedule,
-            timings: finalTimings,
+        const dataToSet = {
+          dmhDoctorId,
+          name: formattedName,
+          specialty: combinedSpecs,
+          qualifications: combinedQuals,
+          dmhSpecialityId: combinedSpecIds,
+          gender: group.gender || null,
+          consultantType: group.consultantType || null,
+          hasOpdSchedule: group.hasOpdSchedule,
+          timings: finalTimings,
+        };
+
+        // Check if a record exists with either the API ID as dmhDoctorId or as the primary key id
+        const existingDoc = await prisma.doctor.findFirst({
+          where: {
+            OR: [
+              { dmhDoctorId: dmhDoctorId },
+              { id: dmhDoctorId }
+            ]
           },
-          create: {
-            id: dmhDoctorId,
-            dmhDoctorId,
-            name: formattedName,
-            specialty: combinedSpecs,
-            qualifications: combinedQuals,
-            dmhSpecialityId: combinedSpecIds,
-            gender: group.gender || null,
-            consultantType: group.consultantType || null,
-            hasOpdSchedule: group.hasOpdSchedule,
-            timings: finalTimings,
-          },
+          // If duplicates exist, prefer the one that already has a dmhDoctorId correctly set
+          orderBy: { dmhDoctorId: 'desc' }
         });
+
+        if (existingDoc) {
+          // Safely update the found record
+          await prisma.doctor.update({
+            where: { id: existingDoc.id },
+            data: dataToSet,
+          });
+        } else {
+          // If no record exists, strictly create with id = API ID
+          await prisma.doctor.create({
+            data: {
+              id: dmhDoctorId,
+              ...dataToSet,
+            },
+          });
+        }
         synced++;
       } catch (err) {
         console.error(`Failed to upsert doctor ${formattedName}`, err);
