@@ -24,6 +24,7 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
   // Calendar State
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [availableDates, setAvailableDates] = useState<string[]>([]); // e.g., ["2026-07-01", "2026-07-04"]
+  const [holidays, setHolidays] = useState<any[]>([]); // Array of {holiday_date, holiday_desc}
   const [isLoadingCalendar, setIsLoadingCalendar] = useState(false);
   
   // Slots Modal State
@@ -231,6 +232,21 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
         setSelectedSpeciality(urlSpecId);
       }
     }
+  }, []);
+
+  // Fetch holidays globally
+  useEffect(() => {
+    const fetchHolidays = async () => {
+      try {
+        const res = await fetchApi("holidays_list", {});
+        if (res && res.holidayDate && Array.isArray(res.holidayDate)) {
+          setHolidays(res.holidayDate);
+        }
+      } catch (err) {
+        console.warn("Failed to fetch holidays:", err);
+      }
+    };
+    fetchHolidays();
   }, []);
 
   // Fetch doctors dynamically and automatically load schedule when speciality changes
@@ -536,21 +552,31 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
       const dateStr = `${yearStr}-${monthStr}-${dayStr}`;
       
       const isAvailable = availableDates.includes(dateStr);
+      const holidayObj = holidays.find(h => h.holiday_date === dateStr);
+      const isHoliday = !!holidayObj;
       
       days.push(
         <div 
           key={dateStr} 
-          onClick={() => handleDateClick(dateStr)}
+          onClick={() => {
+            if (!isHoliday && isAvailable) handleDateClick(dateStr);
+          }}
           className={`p-4 border-b border-r border-slate-100 flex flex-col items-center justify-center min-h-[80px] transition-all duration-300 group
-            ${isAvailable ? 'cursor-pointer hover:bg-teal-600 bg-white hover:shadow-md' : 'bg-slate-50/30 text-slate-400 cursor-not-allowed'}
+            ${isHoliday ? 'bg-red-50/50 text-red-400 cursor-not-allowed' :
+              isAvailable ? 'cursor-pointer hover:bg-teal-600 bg-white hover:shadow-md' : 'bg-slate-50/30 text-slate-400 cursor-not-allowed'}
           `}
         >
-          <span className={`text-base transition-colors ${isAvailable ? 'text-[#002b5c] font-bold group-hover:text-white' : 'font-medium'}`}>
+          <span className={`text-base transition-colors ${isHoliday ? 'font-medium text-red-500' : isAvailable ? 'text-[#002b5c] font-bold group-hover:text-white' : 'font-medium'}`}>
             {dayStr}
           </span>
-          <span className={`text-xs mt-1 uppercase tracking-wider transition-colors ${isAvailable ? 'font-medium text-slate-600 group-hover:text-teal-50' : ''}`}>
+          <span className={`text-xs mt-1 uppercase tracking-wider transition-colors ${isHoliday ? 'font-medium text-red-400' : isAvailable ? 'font-medium text-slate-600 group-hover:text-teal-50' : ''}`}>
             {current.toLocaleString('default', { month: 'short' })}
           </span>
+          {isHoliday && (
+            <span className="text-[9px] text-red-500 font-bold uppercase mt-1 leading-tight text-center px-1">
+              {holidayObj.holiday_desc || "Holiday"}
+            </span>
+          )}
         </div>
       );
     }
