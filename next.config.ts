@@ -17,11 +17,7 @@ const nextConfig: NextConfig = {
     cpus: 1,
     memoryBasedWorkersCount: true,
   },
-  outputFileTracingExcludes: {
-    '*': [
-      './public/uploads/**/*'
-    ]
-  },
+
   // @ts-ignore: typescript config is valid but missing in strict NextConfig type
   typescript: {
     ignoreBuildErrors: true,
