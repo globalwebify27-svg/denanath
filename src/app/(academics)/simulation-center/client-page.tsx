@@ -108,7 +108,7 @@ export default function SimulationCenterClient({ initialData, labsData }: { init
                   <button
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id)}
-                    style={{ fontSize: '20px' }}
+                    style={{ fontSize: '14px' }}
                     className={`flex items-center gap-2 px-6 py-3 rounded-full font-bold transition-all duration-300 cursor-pointer ${
                       activeTab === tab.id 
                         ? "bg-[#002b5c] text-white shadow-md" 
@@ -182,7 +182,7 @@ export default function SimulationCenterClient({ initialData, labsData }: { init
                             {isExpanded && (
                               <div className="p-6 md:p-8 border-t border-slate-100 animate-in slide-in-from-top-2 fade-in duration-300 bg-white">
                                 {labInfo?.content ? (
-                                  <div style={{ fontSize: '18px' }} className="mb-8 prose prose-slate max-w-none break-words whitespace-normal overflow-hidden [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:my-4 [&_ol]:list-decimal [&_ol]:pl-6 [&_ol]:my-4 [&_li]:mb-2 [&_li]:text-base [&_li]:!text-[#314158] [&_p]:text-base [&_p]:!text-[#314158] [&_strong]:!text-[#314158] [&_b]:!text-[#314158] [&_span]:!text-[#314158] [&_div]:!text-[#314158] prose-p:leading-relaxed prose-headings:!text-[#002b5c] !text-[#314158]" dangerouslySetInnerHTML={{ __html: labInfo.content.replace(/&nbsp;/g, ' ') }} />
+                                  <div style={{ fontSize: '14px' }} className="mb-8 prose prose-slate max-w-none break-words whitespace-normal overflow-hidden [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:my-4 [&_ol]:list-decimal [&_ol]:pl-6 [&_ol]:my-4 [&_li]:mb-2 [&_li]:text-base [&_li]:!text-[#314158] [&_p]:text-base [&_p]:!text-[#314158] [&_strong]:!text-[#314158] [&_b]:!text-[#314158] [&_span]:!text-[#314158] [&_div]:!text-[#314158] prose-p:leading-relaxed prose-headings:!text-[#002b5c] !text-[#314158]" dangerouslySetInnerHTML={{ __html: labInfo.content.replace(/&nbsp;/g, ' ') }} />
                                 ) : (
                                   <p className="mb-8 text-slate-500 italic">Content for this section will be updated soon.</p>
                                 )}

@@ -166,14 +166,14 @@ export default function ContactUsClientPage({ pageData }: { pageData: any }) {
 
                       {/* CAPTCHA Placeholder */}
                       <div className="bg-white p-4 rounded-xl border border-slate-200">
-                        <label className="block font-semibold text-slate-700 mb-3 " style={{ fontSize: '16px' }}>Verification Code: <span className="text-red-500">*</span></label>
+                        <label className="block font-semibold text-slate-700 mb-3 " style={{ fontSize: '14px' }}>Verification Code: <span className="text-red-500">*</span></label>
                         <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
                           <div className="w-32 h-12 bg-slate-100 flex items-center justify-center rounded-lg border border-slate-300 font-mono text-xl font-bold tracking-widest text-slate-600 select-none">
                             {captchaValue || "...."}
                           </div>
                           <div className="flex flex-col gap-1">
-                            <button type="button" onClick={() => setCaptchaValue(generateCaptcha())} className="leading-[28px] font-bold text-[#007a87] hover:underline text-left  " style={{ fontSize: '16px' }}>Change the CAPTCHA code</button>
-                            <button type="button" onClick={() => { const utterance = new SpeechSynthesisUtterance(captchaValue.split('').join(' ')); window.speechSynthesis.speak(utterance); }} className="leading-[28px] font-bold text-[#007a87] hover:underline text-left  " style={{ fontSize: '16px' }}>Speak the CAPTCHA code</button>
+                            <button type="button" onClick={() => setCaptchaValue(generateCaptcha())} className="leading-[28px] font-bold text-[#007a87] hover:underline text-left  " style={{ fontSize: '14px' }}>Change the CAPTCHA code</button>
+                            <button type="button" onClick={() => { const utterance = new SpeechSynthesisUtterance(captchaValue.split('').join(' ')); window.speechSynthesis.speak(utterance); }} className="leading-[28px] font-bold text-[#007a87] hover:underline text-left  " style={{ fontSize: '14px' }}>Speak the CAPTCHA code</button>
                           </div>
                         </div>
                         <input 
@@ -181,7 +181,7 @@ export default function ContactUsClientPage({ pageData }: { pageData: any }) {
                           name="captcha"
                           placeholder="Enter code here"
                           className="mt-3 w-full sm:w-48 bg-white border border-slate-300 rounded-lg py-2 px-3 text-slate-700 font-medium  placeholder: focus:outline-none focus:ring-2 focus:ring-[#007a87] focus:border-transparent transition-shadow uppercase"
-                          style={{ fontSize: '16px' }}
+                          style={{ fontSize: '14px' }}
                           required
                         />
                       </div>

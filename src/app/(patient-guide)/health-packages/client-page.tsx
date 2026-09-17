@@ -103,7 +103,7 @@ export default function HealthPackagesClientPage({ pageData }: { pageData: any }
                             {pkg.tests && parseHtmlLines(pkg.tests).map((test: string, testIdx: number) => (
                               <li key={testIdx} className="flex items-start gap-2 text-slate-600">
                                 <CheckCircle2 className="w-4 h-4 text-teal-500 shrink-0 mt-2" />
-                                <div style={{ fontSize: '18px', lineHeight: '31px' }} className="health-package-rich-text font-normal prose prose-sm max-w-none prose-p:my-0 prose-ul:my-0 prose-ol:my-0 prose-li:my-0" dangerouslySetInnerHTML={{ __html: test }}></div>
+                                <div style={{ fontSize: '14px', lineHeight: '24px' }} className="health-package-rich-text font-normal prose prose-sm max-w-none prose-p:my-0 prose-ul:my-0 prose-ol:my-0 prose-li:my-0" dangerouslySetInnerHTML={{ __html: test }}></div>
                               </li>
                             ))}
                           </ul>
@@ -135,18 +135,18 @@ export default function HealthPackagesClientPage({ pageData }: { pageData: any }
                         {parseHtmlLines(instructions).map((instruction: string, idx: number) => (
                           <li key={idx} className="flex items-start gap-3">
                             <ChevronRight className="w-5 h-5 text-blue-600 shrink-0 mt-1.5" />
-                            <div style={{ fontSize: '18px', lineHeight: '31px' }} className="health-package-rich-text text-slate-700 font-normal prose prose-sm max-w-none prose-p:my-0 prose-ul:my-0 prose-ol:my-0 prose-li:my-0" dangerouslySetInnerHTML={{ __html: instruction }}></div>
+                            <div style={{ fontSize: '14px', lineHeight: '24px' }} className="health-package-rich-text text-slate-700 font-normal prose prose-sm max-w-none prose-p:my-0 prose-ul:my-0 prose-ol:my-0 prose-li:my-0" dangerouslySetInnerHTML={{ __html: instruction }}></div>
                           </li>
                         ))}
                       </ul>
                       
                       {womenNote && (
                         <div className="mt-6 pt-6 border-t border-blue-100">
-                          <h4 style={{ fontSize: '18px', lineHeight: '31px' }} className="font-bold text-slate-800 mb-3 flex items-center gap-2">
+                          <h4 style={{ fontSize: '14px', lineHeight: '24px' }} className="font-bold text-slate-800 mb-3 flex items-center gap-2">
                             <AlertCircle className="w-5 h-5 text-amber-500" />
                             For Women
                           </h4>
-                          <div style={{ fontSize: '18px', lineHeight: '31px' }} className="health-package-rich-text text-slate-600 font-normal whitespace-pre-line prose prose-sm max-w-none prose-p:my-0 prose-ul:my-0 prose-ol:my-0 prose-li:my-0" dangerouslySetInnerHTML={{ __html: womenNote }}>
+                          <div style={{ fontSize: '14px', lineHeight: '24px' }} className="health-package-rich-text text-slate-600 font-normal whitespace-pre-line prose prose-sm max-w-none prose-p:my-0 prose-ul:my-0 prose-ol:my-0 prose-li:my-0" dangerouslySetInnerHTML={{ __html: womenNote }}>
                           </div>
                         </div>
                       )}
@@ -195,7 +195,7 @@ export default function HealthPackagesClientPage({ pageData }: { pageData: any }
                           {parseHtmlLines(companyList).map((company: string, idx: number) => (
                             <li key={idx} className="flex items-start gap-2 border-b border-slate-50 pb-2 last:border-0 last:pb-0">
                               <CheckCircle2 className="w-4 h-4 text-teal-500 shrink-0 mt-2" />
-                              <div style={{ fontSize: '18px', lineHeight: '31px' }} className="health-package-rich-text text-slate-600 font-normal prose prose-sm max-w-none prose-p:my-0 prose-ul:my-0 prose-ol:my-0 prose-li:my-0" dangerouslySetInnerHTML={{ __html: company }}></div>
+                              <div style={{ fontSize: '14px', lineHeight: '24px' }} className="health-package-rich-text text-slate-600 font-normal prose prose-sm max-w-none prose-p:my-0 prose-ul:my-0 prose-ol:my-0 prose-li:my-0" dangerouslySetInnerHTML={{ __html: company }}></div>
                             </li>
                           ))}
                         </ul>

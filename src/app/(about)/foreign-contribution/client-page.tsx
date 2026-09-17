@@ -65,7 +65,7 @@ export default function ForeignContributionClientPage({ fcraData }: { fcraData: 
                 {quarters.map((quarterData: any, qIdx: number) => (
                   <div key={qIdx} className="overflow-hidden rounded-2xl border border-slate-200 shadow-sm">
                     {/* Quarter Header */}
-                    <div style={{ fontSize: '18px' }} className="bg-[#1eb7a6] text-white py-4 px-6 font-bold">
+                    <div style={{ fontSize: '14px' }} className="bg-[#1eb7a6] text-white py-4 px-6 font-bold">
                       {quarterData.quarter}
                     </div>
                     
@@ -75,22 +75,22 @@ export default function ForeignContributionClientPage({ fcraData }: { fcraData: 
                           <table className="break-words w-full text-left border-collapse ">
                             <thead>
                               <tr className="border-b-2 border-slate-200 bg-slate-50">
-                                <th style={{ fontSize: '18px' }} className="py-4 px-4 font-bold text-slate-700 leading-[31px] w-16 text-center">Sr. No.</th>
-                                <th style={{ fontSize: '18px' }} className="py-4 px-4 font-bold text-slate-700 leading-[31px]">Name and address of donors</th>
-                                <th style={{ fontSize: '18px' }} className="py-4 px-4 font-bold text-slate-700 leading-[31px] w-40">Amount received (in INR)</th>
-                                <th style={{ fontSize: '18px' }} className="py-4 px-4 font-bold text-slate-700 leading-[31px] w-32">Date of receipt</th>
-                                <th style={{ fontSize: '18px' }} className="py-4 px-4 font-bold text-slate-700 leading-[31px] w-32">Purpose (Social / Medical)</th>
+                                <th style={{ fontSize: '14px' }} className="py-4 px-4 font-bold text-slate-700 leading-[31px] w-16 text-center">Sr. No.</th>
+                                <th style={{ fontSize: '14px' }} className="py-4 px-4 font-bold text-slate-700 leading-[31px]">Name and address of donors</th>
+                                <th style={{ fontSize: '14px' }} className="py-4 px-4 font-bold text-slate-700 leading-[31px] w-40">Amount received (in INR)</th>
+                                <th style={{ fontSize: '14px' }} className="py-4 px-4 font-bold text-slate-700 leading-[31px] w-32">Date of receipt</th>
+                                <th style={{ fontSize: '14px' }} className="py-4 px-4 font-bold text-slate-700 leading-[31px] w-32">Purpose (Social / Medical)</th>
                               </tr>
                             </thead>
                             <tbody>
                               {quarterData.donations.map((donation: any, dIdx: number) => (
                                 <tr key={dIdx} className="border-b border-slate-100 hover:bg-slate-50 transition-colors">
-                                  <td style={{ fontSize: '16px' }} className="py-4 px-4 text-slate-500 font-medium text-center">{dIdx + 1}</td>
-                                  <td style={{ fontSize: '16px' }} className="py-4 px-4 text-slate-700 font-medium">{donation.name}</td>
-                                  <td style={{ fontSize: '16px' }} className="py-4 px-4 text-slate-600 font-semibold">{donation.inr}</td>
-                                  <td style={{ fontSize: '16px' }} className="py-4 px-4 text-slate-500">{formatDate(donation.date)}</td>
+                                  <td style={{ fontSize: '14px' }} className="py-4 px-4 text-slate-500 font-medium text-center">{dIdx + 1}</td>
+                                  <td style={{ fontSize: '14px' }} className="py-4 px-4 text-slate-700 font-medium">{donation.name}</td>
+                                  <td style={{ fontSize: '14px' }} className="py-4 px-4 text-slate-600 font-semibold">{donation.inr}</td>
+                                  <td style={{ fontSize: '14px' }} className="py-4 px-4 text-slate-500">{formatDate(donation.date)}</td>
                                   <td className="py-4 px-4">
-                                    <span style={{ fontSize: '16px' }} className={`inline-flex items-center justify-center px-3 py-1 rounded-full font-bold ${
+                                    <span style={{ fontSize: '14px' }} className={`inline-flex items-center justify-center px-3 py-1 rounded-full font-bold ${
                                       donation.purpose.toLowerCase() === 'medical' 
                                         ? 'bg-blue-50 text-blue-600 border border-blue-100' 
                                         : 'bg-emerald-50 text-emerald-600 border border-emerald-100'

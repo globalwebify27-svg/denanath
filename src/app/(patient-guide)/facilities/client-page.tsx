@@ -91,26 +91,26 @@ export default function FacilitiesClientPage({ pageData }: { pageData: any }) {
                           <div className="w-12 h-12 rounded-xl bg-teal-50 text-[#007a87] flex items-center justify-center shrink-0 group-hover:bg-[#D9232D] group-hover:text-white transition-all duration-300 group-hover:shadow-[0_4px_12px_rgba(217,35,45,0.3)]">
                             {renderIcon(facility.iconName, facility.title)}
                           </div>
-                          <h4 style={{ fontSize: '18px' }} className="font-bold text-[#002b5c] leading-tight group-hover:text-[#D9232D] transition-colors">{facility.title}</h4>
+                          <h4 style={{ fontSize: '14px' }} className="font-bold text-[#002b5c] leading-tight group-hover:text-[#D9232D] transition-colors">{facility.title}</h4>
                         </div>
                         
                         <div className="space-y-3 mb-4 flex-1">
                           {facility.time && facility.time !== "-" && (
                             <div className="flex items-start gap-2">
                               <Clock className="w-4 h-4 text-slate-400 shrink-0 mt-0.5" />
-                              <span style={{ fontSize: '16px' }} className="font-medium text-teal-600">{facility.time}</span>
+                              <span style={{ fontSize: '14px' }} className="font-medium text-teal-600">{facility.time}</span>
                             </div>
                           )}
                           {facility.location && facility.location !== "-" && (
                             <div className="flex items-start gap-2">
                               <MapPin className="w-4 h-4 text-slate-400 shrink-0 mt-0.5" />
-                              <span style={{ fontSize: '16px' }} className="text-slate-600">{facility.location}</span>
+                              <span style={{ fontSize: '14px' }} className="text-slate-600">{facility.location}</span>
                             </div>
                           )}
                           {facility.phone && facility.phone !== "-" && (
                             <div className="flex items-start gap-2">
                               <Phone className="w-4 h-4 text-slate-400 shrink-0 mt-0.5" />
-                              <span style={{ fontSize: '16px' }} className="text-slate-600">{facility.phone}</span>
+                              <span style={{ fontSize: '14px' }} className="text-slate-600">{facility.phone}</span>
                             </div>
                           )}
                         </div>
@@ -121,7 +121,7 @@ export default function FacilitiesClientPage({ pageData }: { pageData: any }) {
                               {facility.details.map((detail: string, dIdx: number) => (
                                 <li key={dIdx} className="flex items-start gap-2 text-slate-500">
                                   <ChevronRight className="w-3 h-3 text-teal-400 shrink-0 mt-0.5" />
-                                  <span style={{ fontSize: '16px' }} className="leading-tight">{detail}</span>
+                                  <span style={{ fontSize: '14px' }} className="leading-tight" dangerouslySetInnerHTML={{ __html: detail }} />
                                 </li>
                               ))}
                             </ul>
@@ -164,7 +164,7 @@ export default function FacilitiesClientPage({ pageData }: { pageData: any }) {
                       
                       <ul className="space-y-3 text-sm">
                         {ipdBillingRules.map((rule: string, i: number) => (
-                          <li key={i} className="flex items-start gap-2"><CheckCircle2 className="w-4 h-4 text-teal-500 shrink-0 mt-0.5" /> <span>{rule}</span></li>
+                          <li key={i} className="flex items-start gap-2"><CheckCircle2 className="w-4 h-4 text-teal-500 shrink-0 mt-0.5" /> <span dangerouslySetInnerHTML={{ __html: rule }} /></li>
                         ))}
                       </ul>
                     </div>
@@ -176,7 +176,7 @@ export default function FacilitiesClientPage({ pageData }: { pageData: any }) {
                         {opdBillingRules.map((rule: string, i: number) => (
                           <li key={i} className="flex items-start gap-3">
                             <span className="font-bold text-teal-600 bg-teal-100 rounded-full w-5 h-5 flex items-center justify-center shrink-0 mt-0.5 text-xs">{i+1}</span>
-                            <span>{rule}</span>
+                            <span dangerouslySetInnerHTML={{ __html: rule }} />
                           </li>
                         ))}
                       </ul>
@@ -198,26 +198,26 @@ export default function FacilitiesClientPage({ pageData }: { pageData: any }) {
                           <div className="w-12 h-12 rounded-xl bg-teal-50 text-[#007a87] flex items-center justify-center shrink-0 group-hover:bg-[#D9232D] group-hover:text-white transition-all duration-300 group-hover:shadow-[0_4px_12px_rgba(217,35,45,0.3)]">
                             {renderIcon(facility.iconName, facility.title)}
                           </div>
-                          <h4 style={{ fontSize: '18px' }} className="font-bold text-[#002b5c] leading-tight group-hover:text-[#D9232D] transition-colors">{facility.title}</h4>
+                          <h4 style={{ fontSize: '14px' }} className="font-bold text-[#002b5c] leading-tight group-hover:text-[#D9232D] transition-colors">{facility.title}</h4>
                         </div>
                         
                         <div className="space-y-3 mb-4 flex-1">
                           {facility.time && facility.time !== "-" && (
                             <div className="flex items-start gap-2">
                               <Clock className="w-4 h-4 text-slate-400 shrink-0 mt-0.5" />
-                              <span style={{ fontSize: '16px' }} className="font-medium text-teal-600">{facility.time}</span>
+                              <span style={{ fontSize: '14px' }} className="font-medium text-teal-600">{facility.time}</span>
                             </div>
                           )}
                           {facility.location && facility.location !== "-" && (
                             <div className="flex items-start gap-2">
                               <MapPin className="w-4 h-4 text-slate-400 shrink-0 mt-0.5" />
-                              <span style={{ fontSize: '16px' }} className="text-slate-600">{facility.location}</span>
+                              <span style={{ fontSize: '14px' }} className="text-slate-600">{facility.location}</span>
                             </div>
                           )}
                           {facility.phone && facility.phone !== "-" && (
                             <div className="flex items-start gap-2">
                               <Phone className="w-4 h-4 text-slate-400 shrink-0 mt-0.5" />
-                              <span style={{ fontSize: '16px' }} className="text-slate-600">{facility.phone}</span>
+                              <span style={{ fontSize: '14px' }} className="text-slate-600">{facility.phone}</span>
                             </div>
                           )}
                         </div>
@@ -228,7 +228,7 @@ export default function FacilitiesClientPage({ pageData }: { pageData: any }) {
                               {facility.details.map((detail: string, dIdx: number) => (
                                 <li key={dIdx} className="flex items-start gap-2 text-slate-500">
                                   <ChevronRight className="w-3 h-3 text-teal-400 shrink-0 mt-0.5" />
-                                  <span style={{ fontSize: '16px' }} className="leading-tight">{detail}</span>
+                                  <span style={{ fontSize: '14px' }} className="leading-tight" dangerouslySetInnerHTML={{ __html: detail }} />
                                 </li>
                               ))}
                             </ul>

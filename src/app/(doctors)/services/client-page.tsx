@@ -177,7 +177,7 @@ export default function ServicesClientPage({ pageData, services }: { pageData: a
                               {parsedItems.map((item, i) => (
                                 <div key={i} className="flex items-start gap-3 text-[#007a87] text-[15px] font-[600] group/item">
                                   <ArrowRight className="w-[18px] h-[18px] shrink-0 mt-[2px] transition-transform group-hover/item:translate-x-1" />
-                                  <span style={{ fontSize: '16px' }} className="text-slate-600 group-hover/item:text-[#002b5c] transition-colors leading-snug">{item}</span>
+                                  <span style={{ fontSize: '14px' }} className="text-slate-600 group-hover/item:text-[#002b5c] transition-colors leading-snug">{item}</span>
                                 </div>
                               ))}
                               {parsedItems.length === 0 && (
