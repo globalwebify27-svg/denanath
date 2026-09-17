@@ -677,9 +677,31 @@ export default async function DepartmentDetailsPage({
       }
     });
 
-    // Wrap tables in responsive container (but force them to fit container width instead of overflowing)
+    // Wrap tables in responsive container and apply beautiful Tailwind styling
     $('table').each((_, table) => {
-      $(table).wrap('<div class="w-full pb-4 mb-4"></div>');
+      $(table).wrap('<div class="w-full pb-4 mb-6 overflow-x-auto custom-scrollbar rounded-xl border border-slate-200 shadow-sm"></div>');
+      
+      // Basic table classes
+      $(table).addClass('w-full text-left border-collapse min-w-max m-0');
+      
+      // Clean up inline styles that might conflict
+      $(table).find('th, td').each((_, cell) => {
+         const $cell = $(cell);
+         // Keep width if explicitly set, otherwise remove inline styles to let Tailwind handle it
+         const style = $cell.attr('style') || '';
+         if (!style.includes('width')) {
+            $cell.removeAttr('style'); 
+         }
+      });
+
+      // Style headers
+      $(table).find('thead th, th').addClass('bg-[#002b5c] text-white p-4 font-bold border-b border-slate-200 whitespace-nowrap text-sm tracking-wide min-w-[120px]');
+      
+      // Style cells
+      $(table).find('tbody td, td').addClass('p-4 border-b border-slate-100 text-slate-700 align-top text-sm leading-relaxed whitespace-nowrap min-w-max');
+      
+      // Zebra striping and hover effect
+      $(table).find('tbody tr').addClass('hover:bg-slate-50 transition-colors even:bg-slate-50/50');
     });
 
     // Replace video embeds with actual video tags and move them to float correctly

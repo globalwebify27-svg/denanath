@@ -252,7 +252,11 @@ export default function DoctorDetailsPage() {
               ) : paginatedDoctors.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {paginatedDoctors.map((doc, idx) => (
-                    <div key={`${doc.id || doc.doctor_id || 'doc'}_card_${idx}`} className="group bg-white border border-slate-200 hover:border-[#D9232D] rounded-2xl p-6 transition-all duration-300 hover:shadow-[0_8px_30px_rgba(217,35,45,0.15)] hover:-translate-y-1 flex flex-col h-full">
+                    <div 
+                      key={`${doc.id || doc.doctor_id || 'doc'}_card_${idx}`} 
+                      onClick={() => setSelectedDoctor(doc)}
+                      className="group bg-white border border-slate-200 hover:border-[#D9232D] rounded-2xl p-6 transition-all duration-300 hover:shadow-[0_8px_30px_rgba(217,35,45,0.15)] hover:-translate-y-1 flex flex-col h-full cursor-pointer text-left"
+                    >
                       <div className="flex items-start gap-4 mb-4">
                         <div className="w-16 h-16 rounded-xl bg-teal-50 flex items-center justify-center shrink-0 border border-teal-100 overflow-hidden group-hover:bg-[#D9232D] group-hover:border-[#D9232D] transition-colors">
                           <DoctorImage 
@@ -285,13 +289,10 @@ export default function DoctorDetailsPage() {
                       </div>
 
                       <div className="mt-auto pt-4 border-t border-slate-100">
-                        <button 
-                          onClick={() => setSelectedDoctor(doc)}
-                          className="flex items-center gap-2 text-sm font-bold text-[#007a87] group-hover:text-teal-600 transition-colors"
-                        >
+                        <span className="flex items-center gap-2 text-sm font-bold text-[#007a87] group-hover:text-[#D9232D] transition-colors">
                           View Profile
                           <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                        </button>
+                        </span>
                       </div>
                     </div>
                   ))}

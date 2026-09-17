@@ -84,7 +84,7 @@ export default function FacilitiesClientPage({ pageData }: { pageData: any }) {
                     Reception Facilities
                   </h3>
                   
-                  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  <div className="grid md:grid-cols-2 gap-6">
                     {facilities.slice(0, 2).map((facility: any, idx: number) => (
                       <div key={idx} className="bg-white rounded-2xl border border-slate-200 p-6 hover:shadow-[0_8px_30px_rgba(217,35,45,0.12)] hover:border-[#D9232D]/30 transition-all duration-300 group flex flex-col">
                         <div className="flex items-center gap-4 mb-4">

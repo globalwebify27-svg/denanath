@@ -1,11 +1,17 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import DynamicSidebar from "@/components/DynamicSidebar";
 import Link from "next/link";
 import { ChevronRight, Phone, Heart, ArrowRight, Building2 } from "lucide-react";
 
 export default function SupportDonationsClientPage({ donationsData }: { donationsData: any }) {
+  const [activeTab, setActiveTab] = useState('institutional');
+  const tabs = [
+    { id: 'institutional', label: 'Institutional Donors' },
+    { id: 'kind', label: 'Donation in Kind' },
+    { id: 'individual', label: 'Individual Donors' }
+  ];
   const {
     contactPhone = "+912040151000",
     contactDisplayPhone = "(+91) 20 4015 1000",
@@ -115,121 +121,139 @@ export default function SupportDonationsClientPage({ donationsData }: { donation
                 </h2>
               </div>
 
-              {/* Donor Tables Grid */}
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
-                
-                {/* Institutional Donors */}
-                <div className="border border-slate-200 bg-white flex flex-col h-[600px]">
-                  <div className="bg-[#1eb7a6] text-white shrink-0">
-                    <div className="py-2.5 px-4 text-center font-bold text-base tracking-wide">
-                      Institutional Donors
-                    </div>
-                    <div className="flex border-t border-white/20 text-base font-semibold">
-                      <div className="w-16 py-2 text-center border-r border-white/20 shrink-0">Sr.No</div>
-                      <div className="flex-1 py-2 px-4">Donor Name</div>
-                    </div>
-                  </div>
-                  <div className="overflow-y-auto flex-1 custom-scrollbar">
-                    {institutionalDonors.map((donor: string, idx: number) => (
-                      <div key={idx} className="flex border-b border-slate-100 text-base leading-[31px] font-normal hover:bg-slate-50 transition-colors">
-                        <div className="w-16 py-3 border-r border-slate-100 text-center text-slate-400 shrink-0">{idx + 1}</div>
-                        <div className="flex-1 py-3 px-4 text-slate-600">{donor}</div>
+              {/* Donor Tabs */}
+              <div className="flex flex-wrap gap-2 mb-6 border-b border-slate-200 pb-4">
+                {tabs.map((tab) => (
+                  <button
+                    key={tab.id}
+                    onClick={() => setActiveTab(tab.id)}
+                    className={`px-5 py-2.5 text-sm font-semibold rounded-lg transition-colors ${
+                      activeTab === tab.id
+                        ? 'bg-[#007a87] text-white shadow-md'
+                        : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                    }`}
+                  >
+                    {tab.label}
+                  </button>
+                ))}
+              </div>
+
+              {/* Active Tab Content */}
+              <div className="border border-slate-200 bg-white flex flex-col h-[600px] rounded-xl overflow-hidden shadow-sm">
+                {activeTab === 'institutional' && (
+                  <>
+                    <div className="bg-[#1eb7a6] text-white shrink-0">
+                      <div className="py-2.5 px-4 text-center font-bold text-base tracking-wide">
+                        Institutional Donors
                       </div>
-                    ))}
-                    {institutionalDonors.length === 0 && (
-                      <div className="p-4 text-center text-slate-400 text-base">No data available</div>
-                    )}
-                  </div>
-                </div>
-
-                {/* Donation in Kind */}
-                <div className="border border-slate-200 bg-white flex flex-col h-[600px]">
-                  <div className="bg-[#1eb7a6] text-white shrink-0">
-                    <div className="py-2.5 px-4 text-center font-bold text-base tracking-wide">
-                      Donation in Kind
-                    </div>
-                    <div className="flex border-t border-white/20 text-base font-semibold">
-                      <div className="w-16 py-2 text-center border-r border-white/20 shrink-0">Sr.No</div>
-                      <div className="flex-1 py-2 px-4">Donor Name</div>
-                    </div>
-                  </div>
-                  <div className="overflow-y-auto flex-1 custom-scrollbar">
-                    {donationInKind.map((donor: string, idx: number) => (
-                      <div key={idx} className="flex border-b border-slate-100 text-base leading-[31px] font-normal hover:bg-slate-50 transition-colors">
-                        <div className="w-16 py-3 border-r border-slate-100 text-center text-slate-400 shrink-0">{idx + 1}</div>
-                        <div className="flex-1 py-3 px-4 text-slate-600">{donor}</div>
+                      <div className="flex border-t border-white/20 text-base font-semibold">
+                        <div className="w-16 py-2 text-center border-r border-white/20 shrink-0">Sr.No</div>
+                        <div className="flex-1 py-2 px-4">Donor Name</div>
                       </div>
-                    ))}
-                    {donationInKind.length === 0 && (
-                      <div className="p-4 text-center text-slate-400 text-base">No data available</div>
-                    )}
-                  </div>
-                </div>
-
-                {/* Individual Donors */}
-                <div className="border border-slate-200 bg-white flex flex-col h-[600px]">
-                  <div className="bg-[#1eb7a6] text-white shrink-0">
-                    <div className="py-2.5 px-4 text-center font-bold text-base tracking-wide">
-                      Individual Donors
                     </div>
-                    <div className="flex border-t border-white/20 text-base font-semibold">
-                      <div className="w-16 py-2 text-center border-r border-white/20 shrink-0">Sr.No</div>
-                      <div className="flex-1 py-2 px-4">Donor Name</div>
+                    <div className="overflow-y-auto flex-1 custom-scrollbar">
+                      {institutionalDonors.map((donor: string, idx: number) => (
+                        <div key={idx} className="flex border-b border-slate-100 text-base leading-[31px] font-normal hover:bg-slate-50 transition-colors">
+                          <div className="w-16 py-3 border-r border-slate-100 text-center text-slate-400 shrink-0">{idx + 1}</div>
+                          <div className="flex-1 py-3 px-4 text-slate-600">{donor}</div>
+                        </div>
+                      ))}
+                      {institutionalDonors.length === 0 && (
+                        <div className="p-4 text-center text-slate-400 text-base">No data available</div>
+                      )}
                     </div>
-                  </div>
-                  
-                  <div className="overflow-y-auto flex-1 custom-scrollbar relative">
-                    {/* Category 0 */}
-                    {individualDonorsMoreThan1Cr.length > 0 && (
-                      <>
-                        <div className="bg-slate-50 text-slate-500 font-semibold py-3 px-4 text-base text-center border-b border-slate-200 sticky top-0 z-20 shadow-sm">
-                          Donation More than Rs. 1 Crore
-                        </div>
-                        {individualDonorsMoreThan1Cr.map((donor: string, idx: number) => (
-                          <div key={idx} className="flex border-b border-slate-100 text-base leading-[31px] font-normal hover:bg-slate-50 transition-colors">
-                            <div className="w-16 py-3 border-r border-slate-100 text-center text-slate-400 shrink-0">{idx + 1}</div>
-                            <div className="flex-1 py-3 px-4 text-slate-600">{donor}</div>
-                          </div>
-                        ))}
-                      </>
-                    )}
+                  </>
+                )}
 
-                    {/* Category 1 */}
-                    {individualDonors50to1Cr.length > 0 && (
-                      <>
-                        <div className={`bg-slate-50 text-slate-500 font-semibold py-3 px-4 text-base text-center border-slate-200 sticky top-0 z-20 shadow-sm ${individualDonorsMoreThan1Cr.length > 0 ? 'border-y' : 'border-b'}`}>
-                          Donation Rs. 50 Lakh to 1 crore
+                {activeTab === 'kind' && (
+                  <>
+                    <div className="bg-[#1eb7a6] text-white shrink-0">
+                      <div className="py-2.5 px-4 text-center font-bold text-base tracking-wide">
+                        Donation in Kind
+                      </div>
+                      <div className="flex border-t border-white/20 text-base font-semibold">
+                        <div className="w-16 py-2 text-center border-r border-white/20 shrink-0">Sr.No</div>
+                        <div className="flex-1 py-2 px-4">Donor Name</div>
+                      </div>
+                    </div>
+                    <div className="overflow-y-auto flex-1 custom-scrollbar">
+                      {donationInKind.map((donor: string, idx: number) => (
+                        <div key={idx} className="flex border-b border-slate-100 text-base leading-[31px] font-normal hover:bg-slate-50 transition-colors">
+                          <div className="w-16 py-3 border-r border-slate-100 text-center text-slate-400 shrink-0">{idx + 1}</div>
+                          <div className="flex-1 py-3 px-4 text-slate-600">{donor}</div>
                         </div>
-                        {individualDonors50to1Cr.map((donor: string, idx: number) => (
-                          <div key={idx} className="flex border-b border-slate-100 text-base leading-[31px] font-normal hover:bg-slate-50 transition-colors">
-                            <div className="w-16 py-3 border-r border-slate-100 text-center text-slate-400 shrink-0">{idx + 1}</div>
-                            <div className="flex-1 py-3 px-4 text-slate-600">{donor}</div>
-                          </div>
-                        ))}
-                      </>
-                    )}
+                      ))}
+                      {donationInKind.length === 0 && (
+                        <div className="p-4 text-center text-slate-400 text-base">No data available</div>
+                      )}
+                    </div>
+                  </>
+                )}
 
-                    {/* Category 4 */}
-                    {individualDonorsUpto1.length > 0 && (
-                      <>
-                        <div className="bg-slate-50 text-slate-500 font-semibold py-3 px-4 text-base text-center border-y border-slate-200 sticky top-0 z-20 shadow-sm">
-                          Donation upto Rs.1 Lakh
-                        </div>
-                        {individualDonorsUpto1.map((donor: string, idx: number) => (
-                          <div key={idx} className="flex border-b border-slate-100 text-base leading-[31px] font-normal hover:bg-slate-50 transition-colors">
-                            <div className="w-16 py-3 border-r border-slate-100 text-center text-slate-400 shrink-0">{idx + 1}</div>
-                            <div className="flex-1 py-3 px-4 text-slate-600">{donor}</div>
-                          </div>
-                        ))}
-                      </>
-                    )}
+                {activeTab === 'individual' && (
+                  <>
+                    <div className="bg-[#1eb7a6] text-white shrink-0">
+                      <div className="py-2.5 px-4 text-center font-bold text-base tracking-wide">
+                        Individual Donors
+                      </div>
+                      <div className="flex border-t border-white/20 text-base font-semibold">
+                        <div className="w-16 py-2 text-center border-r border-white/20 shrink-0">Sr.No</div>
+                        <div className="flex-1 py-2 px-4">Donor Name</div>
+                      </div>
+                    </div>
                     
-                    {individualDonorsMoreThan1Cr.length === 0 && individualDonors50to1Cr.length === 0 && individualDonorsUpto1.length === 0 && (
-                      <div className="p-4 text-center text-slate-400 text-base">No data available</div>
-                    )}
-                  </div>
-                </div>
+                    <div className="overflow-y-auto flex-1 custom-scrollbar relative">
+                      {/* Category 0 */}
+                      {individualDonorsMoreThan1Cr.length > 0 && (
+                        <>
+                          <div className="bg-slate-50 text-slate-500 font-semibold py-3 px-4 text-base text-center border-b border-slate-200 sticky top-0 z-20 shadow-sm">
+                            Donation More than Rs. 1 Crore
+                          </div>
+                          {individualDonorsMoreThan1Cr.map((donor: string, idx: number) => (
+                            <div key={idx} className="flex border-b border-slate-100 text-base leading-[31px] font-normal hover:bg-slate-50 transition-colors">
+                              <div className="w-16 py-3 border-r border-slate-100 text-center text-slate-400 shrink-0">{idx + 1}</div>
+                              <div className="flex-1 py-3 px-4 text-slate-600">{donor}</div>
+                            </div>
+                          ))}
+                        </>
+                      )}
 
+                      {/* Category 1 */}
+                      {individualDonors50to1Cr.length > 0 && (
+                        <>
+                          <div className={`bg-slate-50 text-slate-500 font-semibold py-3 px-4 text-base text-center border-slate-200 sticky top-0 z-20 shadow-sm ${individualDonorsMoreThan1Cr.length > 0 ? 'border-y' : 'border-b'}`}>
+                            Donation Rs. 50 Lakh to 1 crore
+                          </div>
+                          {individualDonors50to1Cr.map((donor: string, idx: number) => (
+                            <div key={idx} className="flex border-b border-slate-100 text-base leading-[31px] font-normal hover:bg-slate-50 transition-colors">
+                              <div className="w-16 py-3 border-r border-slate-100 text-center text-slate-400 shrink-0">{idx + 1}</div>
+                              <div className="flex-1 py-3 px-4 text-slate-600">{donor}</div>
+                            </div>
+                          ))}
+                        </>
+                      )}
+
+                      {/* Category 4 */}
+                      {individualDonorsUpto1.length > 0 && (
+                        <>
+                          <div className="bg-slate-50 text-slate-500 font-semibold py-3 px-4 text-base text-center border-y border-slate-200 sticky top-0 z-20 shadow-sm">
+                            Donation upto Rs.1 Lakh
+                          </div>
+                          {individualDonorsUpto1.map((donor: string, idx: number) => (
+                            <div key={idx} className="flex border-b border-slate-100 text-base leading-[31px] font-normal hover:bg-slate-50 transition-colors">
+                              <div className="w-16 py-3 border-r border-slate-100 text-center text-slate-400 shrink-0">{idx + 1}</div>
+                              <div className="flex-1 py-3 px-4 text-slate-600">{donor}</div>
+                            </div>
+                          ))}
+                        </>
+                      )}
+                      
+                      {individualDonorsMoreThan1Cr.length === 0 && individualDonors50to1Cr.length === 0 && individualDonorsUpto1.length === 0 && (
+                        <div className="p-4 text-center text-slate-400 text-base">No data available</div>
+                      )}
+                    </div>
+                  </>
+                )}
               </div>
 
             </div>
