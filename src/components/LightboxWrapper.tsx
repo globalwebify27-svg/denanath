@@ -128,7 +128,8 @@ export default function LightboxWrapper({ htmlContent }: { htmlContent: string }
       }, 100);
 
       // --- Lightbox Initialization ---
-      const imgElements = Array.from(containerRef.current.querySelectorAll('img'));
+      const imgElements = Array.from(containerRef.current.querySelectorAll('img'))
+        .filter(img => !img.closest('a')); // Exclude images inside links (e.g. consultant cards)
       const imgData = imgElements.map(img => ({
         src: img.getAttribute('src') || img.src,
         alt: img.alt || 'Gallery Image'
@@ -182,6 +183,9 @@ export default function LightboxWrapper({ htmlContent }: { htmlContent: string }
 
   const handleContainerClick = (e: React.MouseEvent<HTMLDivElement>) => {
     const target = e.target as HTMLElement;
+    
+    // If the clicked element (or any ancestor) is inside an <a> tag, let the browser navigate normally
+    if (target.closest('a')) return;
     
     // Find if the clicked element is an image, or contains an image (like clicking the card wrapper)
     // Or if a child of a card was clicked, traverse up to find the card, then get its image.

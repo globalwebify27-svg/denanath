@@ -275,6 +275,8 @@ export default function OpdScheduleClientPage({ initialData }: { initialData?: a
     return doctorsList.filter(doc => {
       const sName = doc.speciality_name || doc.specialty;
       const dName = doc.doctor_name || doc.name;
+      // When viewing all specialties, exclude ANAESTHESIOLOGY so they don't take pagination slots
+      if (selectedSpecialty === "--Select--" && sName && sName.toUpperCase() === 'ANAESTHESIOLOGY') return false;
       const matchSpecialty = selectedSpecialty === "--Select--" || sName === selectedSpecialty;
       const matchDoctor = selectedDoctor === "-- Doctor --" || dName === selectedDoctor;
       return matchSpecialty && matchDoctor;
@@ -303,9 +305,7 @@ export default function OpdScheduleClientPage({ initialData }: { initialData?: a
     return groups;
   }, [currentDoctors]);
 
-  const sortedSpecialties = Object.keys(groupedDoctors)
-    .filter(spec => spec.toUpperCase() !== 'ANAESTHESIOLOGY')
-    .sort();
+  const sortedSpecialties = Object.keys(groupedDoctors).sort();
 
   return (
     <div className="min-h-screen bg-[#f8fafc] font-sans selection:bg-teal-500/30">
@@ -384,6 +384,17 @@ export default function OpdScheduleClientPage({ initialData }: { initialData?: a
             <div className="py-12 flex flex-col items-center justify-center border-2 border-dashed border-slate-200 rounded-2xl bg-slate-50">
               <Loader2 className="w-10 h-10 text-[#007a87] animate-spin mb-4" />
               <h3 className="text-xl font-bold text-slate-700 mb-2">{initialData?.loadingMessage || "Loading Schedule..."}</h3>
+            </div>
+          ) : selectedSpecialty.toUpperCase() === 'ANAESTHESIOLOGY' ? (
+            <div className="py-12 text-center border-2 border-dashed border-slate-200 rounded-2xl bg-slate-50">
+              <h3 className="text-xl font-bold text-slate-700 mb-2">No OPD</h3>
+              <p className="text-slate-500 max-w-md mx-auto">OPD is not available for this specialty.</p>
+              <button 
+                onClick={() => { setSelectedSpecialty("--Select--"); setSelectedDoctor("-- Doctor --"); setCurrentPage(1); }}
+                className="mt-6 text-sm font-bold text-[#007a87] hover:underline"
+              >
+                {initialData?.clearFiltersBtnLabel || "Clear Filters"}
+              </button>
             </div>
           ) : sortedSpecialties.length > 0 ? (
             <div className="space-y-12">
