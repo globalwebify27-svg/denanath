@@ -396,6 +396,7 @@ export default function DoctorForm({ doctor, id, departments = [], apiSpecialiti
                   if (file) {
                     const uploadData = new FormData();
       uploadData.append('file', file);
+      uploadData.append('folder', 'doctor');
       fetch('/api/upload', {
         method: 'POST',
         body: uploadData
@@ -549,6 +550,7 @@ export default function DoctorForm({ doctor, id, departments = [], apiSpecialiti
                     try {
                       const uploadData = new FormData();
                       uploadData.append("file", file);
+                      uploadData.append("folder", "doctor");
                       const res = await fetch("/api/upload", {
                         method: "POST",
                         body: uploadData,

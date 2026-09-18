@@ -178,6 +178,7 @@ export default function EventsClientForm({ initialEvents }: { initialEvents: any
     setUploadingIdx(`${eventIndex}-${idx}`);
     const formData = new FormData();
     formData.append("file", file);
+    formData.append("folder", "events");
 
     try {
       const res = await fetch("/api/upload", {

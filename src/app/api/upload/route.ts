@@ -1,13 +1,17 @@
 import { NextResponse } from "next/server";
-import { writeFile, mkdir } from "fs/promises";
-import path from "path";
-import crypto from "crypto";
-import fs from "fs";
+import { v2 as cloudinary } from "cloudinary";
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 export async function POST(req: Request) {
   try {
     const formData = await req.formData();
     const file = (formData.get("file") || formData.get("files[0]")) as File;
+    const folder = formData.get("folder") as string || "general"; // Default to 'general' folder
 
     if (!file) {
       return NextResponse.json({ error: "No file provided" }, { status: 400 });
@@ -16,21 +20,22 @@ export async function POST(req: Request) {
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
-    // Generate unique filename
-    const uniqueSuffix = crypto.randomBytes(8).toString('hex');
-    const extension = path.extname(file.name) || '.png';
-    const filename = `${uniqueSuffix}${extension}`;
-    
-    // Ensure uploads directory exists
-    const uploadDir = path.join(process.cwd(), "public/uploads");
-    if (!fs.existsSync(uploadDir)) {
-      await mkdir(uploadDir, { recursive: true });
-    }
+    const uploadResult = await new Promise((resolve, reject) => {
+      const uploadStream = cloudinary.uploader.upload_stream(
+        { folder: folder },
+        (error, result) => {
+          if (error) {
+            reject(error);
+          } else {
+            resolve(result);
+          }
+        }
+      );
+      uploadStream.end(buffer);
+    });
 
-    const filepath = path.join(uploadDir, filename);
-    await writeFile(filepath, buffer);
-
-    const fileUrl = `/uploads/${filename}`;
+    // @ts-ignore
+    const fileUrl = uploadResult.secure_url;
 
     return NextResponse.json({ url: fileUrl });
   } catch (error) {
