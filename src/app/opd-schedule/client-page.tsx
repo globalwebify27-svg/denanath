@@ -38,6 +38,7 @@ const generatePagination = (currentPage: number, totalPages: number) => {
 const DoctorScheduleCard = ({ doc, initialData, index }: { doc: any, initialData: any, index: number }) => {
   const [timings, setTimings] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isAppAllowed, setIsAppAllowed] = useState(doc.isApp === 'Y' || doc.isApp === true);
 
   useEffect(() => {
     let isMounted = true;
@@ -61,6 +62,11 @@ const DoctorScheduleCard = ({ doc, initialData, index }: { doc: any, initialData
         const list = data?.opdDayTimeJSON || (Array.isArray(data) ? data : []);
         if (list.length > 0) {
           const dmhSchedule = list[0];
+          if (dmhSchedule.isApp !== undefined) {
+            setIsAppAllowed(dmhSchedule.isApp === 'Y');
+          } else if (dmhSchedule.OpdScheduleYN !== undefined) {
+            setIsAppAllowed(dmhSchedule.OpdScheduleYN === 'Yes' && !!dmhSchedule.service_point_id);
+          }
           const parsedTimings: any[] = [];
           daysOfWeek.forEach((day: string) => {
             const val = dmhSchedule[day];
@@ -179,9 +185,13 @@ const DoctorScheduleCard = ({ doc, initialData, index }: { doc: any, initialData
                 </td>
               ))}
               <td className="p-2 border-l border-slate-100 align-middle text-center">
-                <Link href={`/book-appointment?doctor_id=${doc.dmhDoctorId || doc.doctor_id || doc.id || ''}&speciality_id=${doc.dmhSpecialityId || doc.speciality_id || ''}`} className="inline-flex items-center justify-center px-4 py-2 bg-[#007a87] hover:bg-[#005f69] text-white text-base rounded-lg font-bold transition-colors w-full">
-                  {initialData?.tableBookBtnLabel || "Book"}
-                </Link>
+                {isAppAllowed ? (
+                  <Link href={`/book-appointment?doctor_id=${doc.dmhDoctorId || doc.doctor_id || doc.id || ''}&speciality_id=${doc.dmhSpecialityId || doc.speciality_id || ''}`} className="inline-flex items-center justify-center px-4 py-2 bg-[#007a87] hover:bg-[#005f69] text-white text-base rounded-lg font-bold transition-colors w-full">
+                    {initialData?.tableBookBtnLabel || "Book"}
+                  </Link>
+                ) : (
+                  <span className="text-slate-400 text-sm italic">Not Available</span>
+                )}
               </td>
             </tr>
           </tbody>
@@ -293,7 +303,9 @@ export default function OpdScheduleClientPage({ initialData }: { initialData?: a
     return groups;
   }, [currentDoctors]);
 
-  const sortedSpecialties = Object.keys(groupedDoctors).sort();
+  const sortedSpecialties = Object.keys(groupedDoctors)
+    .filter(spec => spec.toUpperCase() !== 'ANAESTHESIOLOGY')
+    .sort();
 
   return (
     <div className="min-h-screen bg-[#f8fafc] font-sans selection:bg-teal-500/30">
@@ -439,9 +451,13 @@ export default function OpdScheduleClientPage({ initialData }: { initialData?: a
             </div>
           ) : (
             <div className="py-12 text-center border-2 border-dashed border-slate-200 rounded-2xl bg-slate-50">
-              <h3 className="text-xl font-bold text-slate-700 mb-2">{initialData?.noDoctorsTitle || "No Doctors Found"}</h3>
+              <h3 className="text-xl font-bold text-slate-700 mb-2">
+                {selectedSpecialty.toUpperCase() === 'ANAESTHESIOLOGY' ? "No OPD" : (initialData?.noDoctorsTitle || "No Doctors Found")}
+              </h3>
               <p className="text-slate-500 max-w-md mx-auto">
-                {initialData?.noDoctorsDesc || "We couldn't find any doctors matching your current filters. Try adjusting the specialty or name."}
+                {selectedSpecialty.toUpperCase() === 'ANAESTHESIOLOGY' 
+                  ? "OPD is not available for this specialty." 
+                  : (initialData?.noDoctorsDesc || "We couldn't find any doctors matching your current filters. Try adjusting the specialty or name.")}
               </p>
               <button 
                 onClick={() => { setSelectedSpecialty("--Select--"); setSelectedDoctor("-- Doctor --"); setCurrentPage(1); }}
