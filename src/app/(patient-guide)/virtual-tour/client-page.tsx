@@ -222,8 +222,12 @@ export default function VirtualTourClientPage({ pageData }: { pageData?: any }) 
                   <div 
                     key={idx} 
                     onClick={() => {
-                      setActiveView(loc.name);
-                      setLightboxIndex(idx);
+                      if (loc.link) {
+                        window.open(loc.link, '_blank', 'noopener,noreferrer');
+                      } else {
+                        setActiveView(loc.name);
+                        setLightboxIndex(idx);
+                      }
                     }}
                     className="group cursor-pointer flex flex-col gap-3"
                   >

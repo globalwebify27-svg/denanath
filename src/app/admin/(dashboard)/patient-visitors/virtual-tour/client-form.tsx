@@ -12,7 +12,7 @@ export default function VirtualTourClientForm({ initialData }: { initialData: an
     seoMetaTitle: initialData?.seoMetaTitle || "",
     seoMetaDescription: initialData?.seoMetaDescription || "",
     seoKeywords: initialData?.seoKeywords || "",
-    locations: initialData?.locations && initialData.locations.length > 0 ? initialData.locations : [
+    locations: (initialData?.locations && initialData.locations.length > 0 ? initialData.locations : [
       { name: "Ambulance", category: "Facilities", img: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=800&auto=format&fit=crop" },
       { name: "Admission Desk", category: "Facilities", img: "https://images.unsplash.com/photo-1586773860418-d37222d8fce3?q=80&w=800&auto=format&fit=crop" },
       { name: "Auditorium", category: "Facilities", img: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=800&auto=format&fit=crop" },
@@ -55,7 +55,7 @@ export default function VirtualTourClientForm({ initialData }: { initialData: an
       { name: "Suite 2", category: "Rooms", img: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=800&auto=format&fit=crop" },
       { name: "Triple Sharing", category: "Rooms", img: "https://images.unsplash.com/photo-1586773860418-d37222d8fce3?q=80&w=800&auto=format&fit=crop" },
       { name: "Twin Sharing", category: "Rooms", img: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?q=80&w=800&auto=format&fit=crop" }
-    ],
+    ]).map((loc: any) => ({ ...loc, link: loc.link || "https://www.vrwix.com/vr/hospital/ind/maharashtra/pune/deenanath_mangeshkar_hospital" })),
   });
 
   const updateLocation = (index: number, field: string, value: string) => {
@@ -72,7 +72,7 @@ export default function VirtualTourClientForm({ initialData }: { initialData: an
   const addLocation = () => {
     setData({
       ...data,
-      locations: [...data.locations, { name: "", category: "", img: "" }]
+      locations: [...data.locations, { name: "", category: "", img: "", link: "https://www.vrwix.com/vr/hospital/ind/maharashtra/pune/deenanath_mangeshkar_hospital" }]
     });
   };
 
@@ -167,6 +167,16 @@ export default function VirtualTourClientForm({ initialData }: { initialData: an
                       onChange={(e) => updateLocation(index, "category", e.target.value)}
                       className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#007a87]/50 text-sm"
                       placeholder="Category (e.g. Facilities)"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-gray-700 mb-1">Link URL</label>
+                    <input
+                      type="text"
+                      value={loc.link || ""}
+                      onChange={(e) => updateLocation(index, "link", e.target.value)}
+                      className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#007a87]/50 text-sm mb-3"
+                      placeholder="https://www.vrwix.com/..."
                     />
                   </div>
                   <div>
