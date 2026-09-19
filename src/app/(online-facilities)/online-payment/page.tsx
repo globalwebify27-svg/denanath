@@ -19,8 +19,12 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-import { redirect } from "next/navigation";
-
 export default async function OnlinePaymentPage() {
-  redirect("https://www.dmhospital.org/pay/index.php");
+  let seoData: any = {};
+  try {
+    const setting = await prisma.siteSetting.findUnique({ where: { key: 'page_online-facilities_online_payment' } });
+    if (setting && setting.value) seoData = JSON.parse(setting.value);
+  } catch (error) {}
+
+  return <ClientPage pageData={seoData} />;
 }

@@ -4,7 +4,6 @@ import ClientPage from "./client-page";
 
 export const dynamic = "force-dynamic";
 
-
 export async function generateMetadata(): Promise<Metadata> {
   let seoData: any = {};
   try {
@@ -19,8 +18,12 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-import { redirect } from "next/navigation";
-
 export default async function PatientRegistrationPage() {
-  redirect("https://mapp.dmhospital.org/amrita_login/patient_registration/index.php");
+  let seoData: any = {};
+  try {
+    const setting = await prisma.siteSetting.findUnique({ where: { key: 'page_online-facilities_patient_registration' } });
+    if (setting && setting.value) seoData = JSON.parse(setting.value);
+  } catch (error) {}
+
+  return <ClientPage pageData={seoData} />;
 }
