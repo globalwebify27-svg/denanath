@@ -5,6 +5,33 @@ import Link from "next/link";
 import { ChevronRight, Calendar as CalendarIcon, User, X, Search, Clock, ChevronDown } from "lucide-react";
 import CustomDropdown from "@/components/CustomDropdown";
 
+const DoctorImage = ({ doc, className, iconClassName }: { doc: any, className?: string, iconClassName?: string }) => {
+  const [error, setError] = useState(false);
+  
+  if (!doc.image || error) {
+    const isFemale = doc.gender?.toLowerCase() === 'female';
+    const bg = isFemale ? 'fdf2f8' : 'f0f9ff';
+    const color = isFemale ? 'be185d' : '0369a1';
+    const defaultPhoto = `https://ui-avatars.com/api/?name=${encodeURIComponent(doc.name || doc.doctor_name || 'Doctor')}&background=${bg}&color=${color}&size=128&rounded=true&font-size=0.33`;
+    return (
+      <img 
+        src={defaultPhoto} 
+        alt={doc.name || doc.doctor_name} 
+        className={className}
+      />
+    );
+  }
+
+  return (
+    <img 
+      src={doc.image} 
+      alt={doc.name || doc.doctor_name} 
+      className={className}
+      onError={() => setError(true)}
+    />
+  );
+};
+
 export default function BookAppointmentClientPage({ pageData }: { pageData: any }) {
   // --- State ---
   const [step, setStep] = useState<"search" | "calendar">("search");
@@ -12,6 +39,7 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
   // Search State
   const [specialities, setSpecialities] = useState<any[]>([]);
   const [doctors, setDoctors] = useState<any[]>([]);
+  const [localDoctorsMap, setLocalDoctorsMap] = useState<Record<string, any>>({});
   const [selectedSpeciality, setSelectedSpeciality] = useState("");
   const [selectedDoctor, setSelectedDoctor] = useState("");
   const [isSearching, setIsSearching] = useState(false);
@@ -153,6 +181,18 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
 
   // --- Initial Load & Direct Booking URL Query Handler ---
   useEffect(() => {
+    // Fetch local DB doctors for images
+    fetch('/api/doctors').then(res => res.json()).then(dbDocs => {
+       if (Array.isArray(dbDocs)) {
+          const map: Record<string, any> = {};
+          dbDocs.forEach((d: any) => {
+             const docId = String(d.dmhDoctorId || d.id);
+             map[docId] = d;
+          });
+          setLocalDoctorsMap(map);
+       }
+    }).catch(e => console.warn(e));
+
     // Fetch specialities on mount
     fetchApi("speciality").then(data => {
       if (!data) return;
@@ -866,17 +906,21 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
               const docName = doc.doctor_name || `${doc.first_name || ''} ${doc.last_name || ''}`.trim();
               const specName = doc.speciality_name || 'General';
               const qual = doc.qualification || 'MBBS';
+              
+              const localDoc = localDoctorsMap[String(doc.doctor_id || doc.id)] || {};
+              const docImage = doc.image || doc.doctorImage || localDoc.image;
+              const docGender = doc.gender || localDoc.gender;
 
               return (
                 <div key={idx} className="bg-white rounded-3xl p-6 sm:p-8 shadow-[0_8px_30px_rgb(0,0,0,0.05)] border border-slate-100 hover:border-teal-500/30 transition-all duration-300 flex flex-col gap-6">
                   <div className="flex flex-col lg:flex-row gap-6 items-start justify-between w-full">
                     <div className="flex-1 w-full flex items-start gap-4">
                       <div className="w-16 h-16 rounded-2xl bg-teal-50 flex items-center justify-center text-[#007a87] shrink-0 border border-teal-100 shadow-sm overflow-hidden p-1">
-                        {doc.doctorImage ? (
-                          <img src={doc.doctorImage} alt={docName} className="w-full h-full object-cover rounded-xl" />
-                        ) : (
-                          <User className="w-8 h-8 text-[#007a87]" />
-                        )}
+                        <DoctorImage 
+                          doc={{ ...doc, image: docImage, gender: docGender, name: docName }}
+                          className="w-full h-full object-cover rounded-xl"
+                          iconClassName="w-8 h-8 text-[#007a87]"
+                        />
                       </div>
                       <div>
                         <h3 className="text-xl sm:text-2xl font-extrabold text-[#002b5c] tracking-tight uppercase">{docName}</h3>

@@ -142,42 +142,60 @@ export default function VirtualTourClientPage({ pageData }: { pageData?: any }) 
                   }} 
                 />
                 
-                {/* 360 Tour Overlay UI Controls */}
-                <div className="absolute top-4 right-4 z-20">
-                  <div className="relative">
-                    <button 
-                      onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                      onBlur={() => setTimeout(() => setIsDropdownOpen(false), 200)}
-                      className="flex items-center justify-between w-[220px] bg-white/95 backdrop-blur text-sm font-bold text-[#002b5c] rounded-md px-4 py-2.5 border border-slate-200 shadow-sm hover:border-[#007a87]/50 focus:outline-none focus:ring-2 focus:ring-[#007a87]/30 transition-all"
-                    >
-                      <span className="truncate">{activeView}</span>
-                      <ChevronDown className={`w-4 h-4 text-slate-500 transition-transform duration-200 ${isDropdownOpen ? 'rotate-180' : ''}`} />
-                    </button>
-
-                    {isDropdownOpen && (
-                      <div className="absolute top-full right-0 mt-2 w-[220px] bg-white rounded-lg shadow-[0_10px_40px_-10px_rgba(0,0,0,0.3)] border border-slate-100 overflow-hidden z-50 flex flex-col max-h-[300px]">
-                        <div className="overflow-y-auto [scrollbar-width:thin] [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:bg-slate-300 [&::-webkit-scrollbar-thumb]:rounded-full">
-                          {locations.map((loc, i) => (
-                            <div
-                              key={`${loc.name}-${i}`}
-                              onClick={() => {
-                                setActiveView(loc.name);
-                                setIsDropdownOpen(false);
-                              }}
-                              className={`px-4 py-2.5 text-sm cursor-pointer transition-colors ${
-                                activeView === loc.name
-                                  ? 'bg-[#002b5c] text-white font-bold'
-                                  : 'text-slate-700 hover:bg-slate-50 hover:text-[#002b5c]'
-                              }`}
-                            >
-                              {loc.name}
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-                  </div>
+                {/* Start Virtual Tour Button Overlay */}
+                <div className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none">
+                   <button 
+                     className="pointer-events-auto bg-[#002b5c]/90 hover:bg-[#007a87] text-white px-6 py-3 md:px-8 md:py-4 rounded-full font-bold flex items-center gap-2 shadow-2xl transition-all hover:scale-105 border-2 border-white/20 hover:border-white/50 backdrop-blur-sm"
+                     onClick={(e) => {
+                        e.stopPropagation();
+                        if (activeLocation?.link) {
+                           window.open(activeLocation.link, '_blank', 'noopener,noreferrer');
+                        }
+                     }}
+                   >
+                     <MonitorPlay className="w-5 h-5 md:w-6 md:h-6" />
+                     <span className="text-sm md:text-base">Start Virtual Tour</span>
+                   </button>
                 </div>
+                
+                {/* HIDDEN FOR NOW: 360 Tour Overlay UI Controls */}
+                {false && (
+                  <div className="absolute top-4 right-4 z-20">
+                    <div className="relative">
+                      <button 
+                        onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                        onBlur={() => setTimeout(() => setIsDropdownOpen(false), 200)}
+                        className="flex items-center justify-between w-[220px] bg-white/95 backdrop-blur text-sm font-bold text-[#002b5c] rounded-md px-4 py-2.5 border border-slate-200 shadow-sm hover:border-[#007a87]/50 focus:outline-none focus:ring-2 focus:ring-[#007a87]/30 transition-all"
+                      >
+                        <span className="truncate">{activeView}</span>
+                        <ChevronDown className={`w-4 h-4 text-slate-500 transition-transform duration-200 ${isDropdownOpen ? 'rotate-180' : ''}`} />
+                      </button>
+
+                      {isDropdownOpen && (
+                        <div className="absolute top-full right-0 mt-2 w-[220px] bg-white rounded-lg shadow-[0_10px_40px_-10px_rgba(0,0,0,0.3)] border border-slate-100 overflow-hidden z-50 flex flex-col max-h-[300px]">
+                          <div className="overflow-y-auto [scrollbar-width:thin] [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:bg-slate-300 [&::-webkit-scrollbar-thumb]:rounded-full">
+                            {locations.map((loc, i) => (
+                              <div
+                                key={`${loc.name}-${i}`}
+                                onClick={() => {
+                                  setActiveView(loc.name);
+                                  setIsDropdownOpen(false);
+                                }}
+                                className={`px-4 py-2.5 text-sm cursor-pointer transition-colors ${
+                                  activeView === loc.name
+                                    ? 'bg-[#002b5c] text-white font-bold'
+                                    : 'text-slate-700 hover:bg-slate-50 hover:text-[#002b5c]'
+                                }`}
+                              >
+                                {loc.name}
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
 
                 {/* Decorative UI elements representing 360 view controls */}
                 <div className="absolute bottom-2 right-2 md:bottom-4 md:right-auto md:left-1/2 md:-translate-x-1/2 flex items-center gap-0.5 md:gap-2 bg-white/20 backdrop-blur-md rounded-full px-1.5 md:px-4 py-1 md:py-2 border border-white/30 shadow-lg transition-opacity duration-300 opacity-70 group-hover:opacity-100  z-10">
@@ -199,60 +217,65 @@ export default function VirtualTourClientPage({ pageData }: { pageData?: any }) 
                 </div>
               </div>
 
-              {/* Tabs */}
-              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-12">
-                {tabs.map((tab) => (
-                  <button
-                    key={tab}
-                    onClick={() => setActiveTab(tab)}
-                    className={`flex items-center justify-center px-4 py-4 text-sm md:text-base font-bold tracking-wide transition-colors duration-300 rounded-xl shadow-sm outline-none focus:outline-none border-none text-white ${
-                      activeTab === tab 
-                        ? 'bg-[#002b5c] hover:bg-[#9f0712]' 
-                        : 'bg-[#002b5c] hover:bg-[#9f0712]'
-                    }`}
-                  >
-                    {tab}
-                  </button>
-                ))}
-              </div>
-
-              {/* Grid of Thumbnails */}
-              <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
-                {filteredLocations.map((loc: any, idx: number) => (
-                  <div 
-                    key={idx} 
-                    onClick={() => {
-                      if (loc.link) {
-                        window.open(loc.link, '_blank', 'noopener,noreferrer');
-                      } else {
-                        setActiveView(loc.name);
-                        setLightboxIndex(idx);
-                      }
-                    }}
-                    className="group cursor-pointer flex flex-col gap-3"
-                  >
-                    <div className="relative aspect-video rounded-xl overflow-hidden border border-slate-200 shadow-sm group-hover:shadow-md group-hover:border-[#007a87]/50 transition-all">
-                      <Image
-                        src={loc.img}
-                        alt={loc.name}
-                        width={300}
-                        height={200}
-                        className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
-                      />
-                      <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors" />
-                      
-                      {/* 360 Icon Overlay */}
-                      <div className="absolute top-2 left-2 bg-white/90 backdrop-blur-sm rounded-md px-2 py-1 flex items-center gap-1 shadow-sm">
-                         <MonitorPlay className="w-3 h-3 text-[#007a87]" />
-                         <span className="text-[10px] font-black text-[#007a87]">360°</span>
-                      </div>
-                    </div>
-                    <div className="text-center font-bold text-sm text-slate-700 group-hover:text-[#c81b51] transition-colors">
-                      {loc.name}
-                    </div>
+              {/* HIDDEN FOR NOW: Tabs and Thumbnails */}
+              {false && (
+                <>
+                  {/* Tabs */}
+                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-12">
+                    {tabs.map((tab) => (
+                      <button
+                        key={tab}
+                        onClick={() => setActiveTab(tab)}
+                        className={`flex items-center justify-center px-4 py-4 text-sm md:text-base font-bold tracking-wide transition-colors duration-300 rounded-xl shadow-sm outline-none focus:outline-none border-none text-white ${
+                          activeTab === tab 
+                            ? 'bg-[#002b5c] hover:bg-[#9f0712]' 
+                            : 'bg-[#002b5c] hover:bg-[#9f0712]'
+                        }`}
+                      >
+                        {tab}
+                      </button>
+                    ))}
                   </div>
-                ))}
-              </div>
+
+                  {/* Grid of Thumbnails */}
+                  <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
+                    {filteredLocations.map((loc: any, idx: number) => (
+                      <div 
+                        key={idx} 
+                        onClick={() => {
+                          if (loc.link) {
+                            window.open(loc.link, '_blank', 'noopener,noreferrer');
+                          } else {
+                            setActiveView(loc.name);
+                            setLightboxIndex(idx);
+                          }
+                        }}
+                        className="group cursor-pointer flex flex-col gap-3"
+                      >
+                        <div className="relative aspect-video rounded-xl overflow-hidden border border-slate-200 shadow-sm group-hover:shadow-md group-hover:border-[#007a87]/50 transition-all">
+                          <Image
+                            src={loc.img}
+                            alt={loc.name}
+                            width={300}
+                            height={200}
+                            className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
+                          />
+                          <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors" />
+                          
+                          {/* 360 Icon Overlay */}
+                          <div className="absolute top-2 left-2 bg-white/90 backdrop-blur-sm rounded-md px-2 py-1 flex items-center gap-1 shadow-sm">
+                             <MonitorPlay className="w-3 h-3 text-[#007a87]" />
+                             <span className="text-[10px] font-black text-[#007a87]">360°</span>
+                          </div>
+                        </div>
+                        <div className="text-center font-bold text-sm text-slate-700 group-hover:text-[#c81b51] transition-colors">
+                          {loc.name}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </>
+              )}
 
             </div>
           </div>

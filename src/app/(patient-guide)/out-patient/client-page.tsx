@@ -90,8 +90,8 @@ export default function OutPatientClientPage({ pageData }: { pageData: any }) {
                       <ul className="list-none space-y-3 pl-2 md:pl-4">
                         {instructions.map((inst: string, i: number) => (
                           <li key={i} className="flex items-start gap-3 text-slate-600 leading-[31px] font-normal text-base">
-                            <ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-0.5" />
-                            <span>{inst}</span>
+                            <ChevronRight className="w-5 h-5 text-[#007a87] shrink-0 mt-[8px]" />
+                            <span className="flex-1">{inst}</span>
                           </li>
                         ))}
                       </ul>
@@ -111,15 +111,15 @@ export default function OutPatientClientPage({ pageData }: { pageData: any }) {
                         
                         return (
                           <li key={i} className={`flex items-start gap-3 text-slate-600 leading-[31px] font-normal text-base ${textClass}`}>
-                            <div className={`w-1.5 h-1.5 rounded-full ${bgClass} shrink-0 mt-2.5`} />
+                            <div className={`w-1.5 h-1.5 rounded-full ${bgClass} shrink-0 mt-[13px]`} />
                             {info.includes("020-40151100") ? (
-                              <span>
+                              <span className="flex-1">
                                 {info.split("020-40151100")[0]}
                                 <strong>020-40151100</strong>
                                 {info.split("020-40151100")[1]}
                               </span>
                             ) : (
-                              <span>{info}</span>
+                              <span className="flex-1">{info}</span>
                             )}
                           </li>
                         );
@@ -145,9 +145,9 @@ export default function OutPatientClientPage({ pageData }: { pageData: any }) {
                       <h4 className="text-base font-bold text-[#002b5c] mb-4 pb-4 border-b border-slate-100">General OPDs: Main Building :</h4>
                       <ul className="grid grid-cols-1 sm:grid-cols-2 gap-y-3 gap-x-6">
                         {generalOpds.map((opd: string, i: number) => (
-                          <li key={i} className="flex items-center gap-2 text-base leading-[31px] font-normal text-slate-600">
-                            <ChevronRight className="w-4 h-4 text-teal-600 shrink-0" />
-                            <span>{opd}</span>
+                          <li key={i} className="flex items-start gap-2 text-base leading-[31px] font-normal text-slate-600">
+                            <ChevronRight className="w-4 h-4 text-teal-600 shrink-0 mt-[7px]" />
+                            <span className="flex-1">{opd}</span>
                           </li>
                         ))}
                       </ul>
@@ -158,9 +158,9 @@ export default function OutPatientClientPage({ pageData }: { pageData: any }) {
                       <h4 className="text-base font-bold text-[#002b5c] mb-4 pb-4 border-b border-slate-100">Superspeciality OPDs : SS Building / Annexe Building :</h4>
                       <ul className="grid grid-cols-1 sm:grid-cols-2 gap-y-3 gap-x-6">
                         {superOpds.map((opd: string, i: number) => (
-                          <li key={i} className="flex items-center gap-2 text-base leading-[31px] font-normal text-slate-600">
-                            <ChevronRight className="w-4 h-4 text-teal-600 shrink-0" />
-                            <span>{opd}</span>
+                          <li key={i} className="flex items-start gap-2 text-base leading-[31px] font-normal text-slate-600">
+                            <ChevronRight className="w-4 h-4 text-teal-600 shrink-0 mt-[7px]" />
+                            <span className="flex-1">{opd}</span>
                           </li>
                         ))}
                       </ul>
