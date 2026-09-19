@@ -274,7 +274,7 @@ export default function DynamicFormEditor({
       }
         
       // clear string/num fields in template
-      const clearValues = (obj: any) => {
+      const clearValues = (obj: any): any => {
         if (typeof obj === 'string') return '';
         if (typeof obj === 'number') return 0;
         if (typeof obj === 'boolean') return obj;

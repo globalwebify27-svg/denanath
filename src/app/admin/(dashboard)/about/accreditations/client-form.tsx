@@ -7,6 +7,7 @@ import {  Plus, Trash2, GripVertical } from "lucide-react";
 import QuillEditor from "@/components/QuillEditor";
 
 export default function AccreditationsClientForm({ initialData }: { initialData: any[] }) {
+  const { handleUpload, uploading } = useImageUpload();
   const [items, setItems] = useState<any[]>(initialData.length > 0 ? initialData : [{
     id: Date.now(),
     title: "",
@@ -159,15 +160,38 @@ export default function AccreditationsClientForm({ initialData }: { initialData:
                 <p className="text-xs text-slate-400 mt-2">Upload a real image to show instead of the default SVG badge icon.</p>
               </div>
 
-              <div>
-                <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Link Text</label>
-                <input 
-                  type="text" 
-                  value={item.linkText} 
-                  onChange={(e) => updateItem(item.id, 'linkText', e.target.value)}
-                  className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium leading-relaxed"
-                  placeholder="e.g. Document"
-                />
+              <div className="md:col-span-2">
+                <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Accreditation PDF Document (Optional)</label>
+                <div className="flex flex-col gap-2">
+                  <div className="relative flex items-center gap-4">
+                    {uploading(`accred-pdf-${item.id}`) && <UploadSpinner />}
+                    <input 
+                      type="file" 
+                      accept=".pdf,application/pdf"
+                      onChange={async (e) => {
+                        const file = e.target.files?.[0];
+                        if (file) {
+                          const url = await handleUpload(file, `accred-pdf-${item.id}`);
+                          if (url) updateItem(item.id, 'linkText', url);
+                        }
+                      }}
+                      className="flex-1 p-3 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium text-sm"
+                    />
+                  </div>
+                  {item.linkText && item.linkText.startsWith('http') && (
+                    <div className="flex items-center gap-2 mt-2 p-3 bg-teal-50 border border-teal-100 rounded-xl">
+                      <span className="text-sm font-semibold text-teal-800">Current File:</span>
+                      <a href={item.linkText} target="_blank" rel="noreferrer" className="text-sm font-bold text-[#007a87] hover:underline truncate max-w-xs">{item.linkText.split('/').pop()}</a>
+                      <button 
+                        type="button" 
+                        onClick={() => updateItem(item.id, 'linkText', '')}
+                        className="ml-auto px-3 py-1.5 text-xs text-red-600 bg-white border border-red-200 rounded-lg hover:bg-red-50 font-bold shadow-sm transition-colors"
+                      >
+                        Remove PDF
+                      </button>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </div>
