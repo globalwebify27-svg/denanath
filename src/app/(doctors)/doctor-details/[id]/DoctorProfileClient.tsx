@@ -190,23 +190,43 @@ export default function DoctorProfileClient({ initialDoctor }: { initialDoctor: 
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-slate-100 bg-white">
-                        {dynamicTimings.map((t: any, i: number) => (
-                          <tr key={i} className="hover:bg-teal-50/30 transition-colors even:bg-slate-50/50">
-                            <td className="py-3 px-2 sm:py-4 sm:px-4 font-bold text-slate-700 uppercase tracking-wide break-words leading-snug">{t.branch}</td>
-                            <td className="py-3 px-1 sm:py-4 sm:px-4 font-medium text-slate-600 text-center">{t.day}</td>
-                            <td className="py-3 px-1 sm:py-4 sm:px-4 text-slate-600 font-medium whitespace-pre-line text-center leading-snug">{t.time}</td>
-                            <td className="py-3 px-2 sm:py-4 sm:px-5 text-center align-middle">
-                              {t.isApp === 'Y' && (
-                                <Link 
-                                  href={`/book-appointment?doctor_id=${doctor.dmhDoctorId || doctor.id || ''}&speciality_id=${t._speciality_id || doctor.dmhSpecialityId || ''}&service_point_id=${doctor.dmhServicePointId || ''}`} 
-                                  className="inline-flex items-center justify-center px-3 py-1.5 sm:px-5 sm:py-2.5 bg-gradient-to-r from-[#007a87] to-[#006a75] hover:from-[#005f69] hover:to-[#004f58] text-white font-extrabold text-[10px] sm:text-xs uppercase tracking-wider transition-all duration-300 rounded-lg shadow-sm hover:shadow-md whitespace-nowrap"
-                                >
-                                  Book
-                                </Link>
-                              )}
-                            </td>
-                          </tr>
-                        ))}
+                        {(() => {
+                           const grouped: any[] = [];
+                           let currentGroup: any = null;
+                           for (const t of dynamicTimings) {
+                             if (!currentGroup || currentGroup.branch !== t.branch) {
+                                currentGroup = { branch: t.branch, isApp: t.isApp, _speciality_id: t._speciality_id, slots: [] };
+                                grouped.push(currentGroup);
+                             }
+                             currentGroup.slots.push(t);
+                           }
+                           
+                           return grouped.map((group: any, gIdx: number) => {
+                             return group.slots.map((slot: any, sIdx: number) => (
+                               <tr key={`${gIdx}-${sIdx}`} className="hover:bg-teal-50/30 transition-colors even:bg-slate-50/50">
+                                 {sIdx === 0 && (
+                                   <td rowSpan={group.slots.length} className="py-3 px-2 sm:py-4 sm:px-4 font-bold text-slate-700 uppercase tracking-wide break-words leading-snug align-middle border-r border-slate-100/50 bg-white">
+                                     {group.branch}
+                                   </td>
+                                 )}
+                                 <td className={`py-3 px-1 sm:py-4 sm:px-4 font-medium text-slate-600 text-center ${sIdx !== 0 ? 'border-t border-slate-100/50' : ''}`}>{slot.day}</td>
+                                 <td className={`py-3 px-1 sm:py-4 sm:px-4 text-slate-600 font-medium whitespace-pre-line text-center leading-snug ${sIdx !== 0 ? 'border-t border-slate-100/50' : ''}`}>{slot.time}</td>
+                                 {sIdx === 0 && (
+                                   <td rowSpan={group.slots.length} className="py-3 px-2 sm:py-4 sm:px-5 text-center align-middle border-l border-slate-100/50 bg-white">
+                                     {group.isApp === 'Y' && (
+                                       <Link 
+                                         href={`/book-appointment?doctor_id=${doctor.dmhDoctorId || doctor.id || ''}&speciality_id=${group._speciality_id || doctor.dmhSpecialityId || ''}&service_point_id=${doctor.dmhServicePointId || ''}`} 
+                                         className="inline-flex items-center justify-center px-3 py-1.5 sm:px-5 sm:py-2.5 bg-gradient-to-r from-[#007a87] to-[#006a75] hover:from-[#005f69] hover:to-[#004f58] text-white font-extrabold text-[10px] sm:text-xs uppercase tracking-wider transition-all duration-300 rounded-lg shadow-sm hover:shadow-md whitespace-nowrap"
+                                       >
+                                         Book
+                                       </Link>
+                                     )}
+                                   </td>
+                                 )}
+                               </tr>
+                             ));
+                           });
+                        })()}
                       </tbody>
                     </table>
                   </div>
@@ -238,13 +258,31 @@ export default function DoctorProfileClient({ initialDoctor }: { initialDoctor: 
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-slate-100 bg-white">
-                        {doctor.timings.map((t: any, i: number) => (
-                          <tr key={i} className="hover:bg-teal-50/30 transition-colors even:bg-slate-50/50">
-                            <td className="py-3 px-2 sm:py-4 sm:px-4 font-bold text-slate-700 uppercase tracking-wide break-words leading-snug">{t.branch}</td>
-                            <td className="py-3 px-1 sm:py-4 sm:px-4 font-medium text-slate-600 text-center">{t.day}</td>
-                            <td className="py-3 px-1 sm:py-4 sm:px-4 text-slate-600 font-medium whitespace-pre-line text-center leading-snug">{t.time}</td>
-                          </tr>
-                        ))}
+                        {(() => {
+                           const grouped: any[] = [];
+                           let currentGroup: any = null;
+                           for (const t of doctor.timings) {
+                             if (!currentGroup || currentGroup.branch !== t.branch) {
+                                currentGroup = { branch: t.branch, slots: [] };
+                                grouped.push(currentGroup);
+                             }
+                             currentGroup.slots.push(t);
+                           }
+                           
+                           return grouped.map((group: any, gIdx: number) => {
+                             return group.slots.map((slot: any, sIdx: number) => (
+                               <tr key={`${gIdx}-${sIdx}`} className="hover:bg-teal-50/30 transition-colors even:bg-slate-50/50">
+                                 {sIdx === 0 && (
+                                   <td rowSpan={group.slots.length} className="py-3 px-2 sm:py-4 sm:px-4 font-bold text-slate-700 uppercase tracking-wide break-words leading-snug align-middle border-r border-slate-100/50 bg-white">
+                                     {group.branch}
+                                   </td>
+                                 )}
+                                 <td className={`py-3 px-1 sm:py-4 sm:px-4 font-medium text-slate-600 text-center ${sIdx !== 0 ? 'border-t border-slate-100/50' : ''}`}>{slot.day}</td>
+                                 <td className={`py-3 px-1 sm:py-4 sm:px-4 text-slate-600 font-medium whitespace-pre-line text-center leading-snug ${sIdx !== 0 ? 'border-t border-slate-100/50' : ''}`}>{slot.time}</td>
+                               </tr>
+                             ));
+                           });
+                        })()}
                       </tbody>
                     </table>
                   </div>
