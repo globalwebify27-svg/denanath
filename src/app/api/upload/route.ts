@@ -20,9 +20,15 @@ export async function POST(req: Request) {
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
+    const originalName = file.name ? file.name.split('.').slice(0, -1).join('.') : undefined;
+
     const uploadResult = await new Promise((resolve, reject) => {
       const uploadStream = cloudinary.uploader.upload_stream(
-        { folder: folder, resource_type: "auto" },
+        { 
+          folder: folder, 
+          resource_type: "auto",
+          ...(originalName && { public_id: originalName })
+        },
         (error, result) => {
           if (error) {
             reject(error);
