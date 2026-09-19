@@ -1,5 +1,7 @@
 "use client";
 
+import { useImageUpload, UploadSpinner } from "@/components/UploadOverlay";
+
 import NavigationMenuToggle from "@/components/NavigationMenuToggle";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -12,34 +14,20 @@ const ReactQuill = dynamic(() => import('react-quill-new'), { ssr: false });
 export default function ServicesClientForm({ initialData }: { initialData: any }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const { uploading, handleUpload } = useImageUpload();
   const [data, setData] = useState(initialData);
 
   const handleChange = (field: string, value: any) => {
     setData((prev: any) => ({ ...prev, [field]: value }));
   };
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      const formData = new FormData();
-      formData.append('file', file);
-      fetch('/api/upload', {
-        method: 'POST',
-        body: formData
-      })
-      .then(res => res.json())
-      .then(data => {
-        if (data.url) {
-        handleChange("image", data.url);
-      } else { alert('Upload failed'); }
-      })
-      .catch(err => {
-        console.error('Upload error:', err);
-        alert('Upload error');
-      });
+      const url = await handleUpload(file, "image");
+      if (url) handleChange("image", url);
     }
   };
-
   const handleSave = async () => {
     setLoading(true);
     try {
@@ -110,6 +98,8 @@ export default function ServicesClientForm({ initialData }: { initialData: any }
           <div className="flex flex-col sm:flex-row sm:items-center gap-4 bg-slate-50 p-4 rounded-2xl border border-slate-200">
             {data.image && (
               <div className="shrink-0 relative group">
+                {uploading("image") && <UploadSpinner />}
+
                 <img src={data.image} alt="Services" className="w-32 h-20 object-cover rounded-xl border border-slate-200 shadow-sm" />
                 <button 
                   type="button" 
@@ -118,6 +108,11 @@ export default function ServicesClientForm({ initialData }: { initialData: any }
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
                 </button>
+              </div>
+            )}
+            {!data.image && uploading("image") && (
+              <div className="shrink-0 relative w-32 h-20 bg-slate-100 rounded-xl border border-slate-200">
+                <UploadSpinner />
               </div>
             )}
             <input 

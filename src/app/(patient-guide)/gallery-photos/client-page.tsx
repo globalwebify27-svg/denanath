@@ -6,20 +6,20 @@ import Link from "next/link";
 import { ChevronRight, Image as ImageIcon, Maximize2, X, ChevronLeft, Pause, Play } from "lucide-react";
 
 export default function GalleryPhotosClientPage({ pageData }: { pageData: any }) {
-  const {
-    categories = [],
-    photos = []
-  } = pageData || {};
+  const stripHtml = (str: string) => str.replace(/<[^>]*>/g, '').trim();
+  
+  const rawCategories = (pageData?.categories || []).map((c: string) => stripHtml(c)).filter((c: string) => c);
+  const rawPhotos = (pageData?.photos || []).map((p: any) => ({ ...p, category: stripHtml(p.category || '') }));
 
-  const displayCategories = categories.includes("ALL") ? categories : ["ALL", ...categories];
+  const displayCategories = rawCategories.includes("ALL") ? rawCategories : ["ALL", ...rawCategories];
 
   const [activeCategory, setActiveCategory] = useState("ALL");
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
 
   const filteredPhotos = activeCategory === "ALL" 
-    ? photos 
-    : photos.filter((p: any) => p.category === activeCategory);
+    ? rawPhotos 
+    : rawPhotos.filter((p: any) => p.category === activeCategory);
 
   const categoriesScrollRef = useRef<HTMLDivElement>(null);
 
@@ -160,13 +160,13 @@ export default function GalleryPhotosClientPage({ pageData }: { pageData: any })
         >
           {/* Main Image Container */}
           <div 
-            className="relative flex items-center justify-center max-w-5xl w-full h-[75vh]"
+            className="relative flex items-center justify-center w-full h-[80vh] max-w-6xl"
             onClick={e => e.stopPropagation()}
           >
             <img 
               src={filteredPhotos[lightboxIndex].url} 
               alt={filteredPhotos[lightboxIndex].title}
-              className="max-w-full max-h-full object-contain shadow-[0_0_40px_rgba(0,0,0,0.5)] border-4 border-white rounded-sm bg-white"
+              className="w-full h-full object-contain drop-shadow-2xl rounded-lg"
             />
           </div>
 

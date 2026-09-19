@@ -1,4 +1,5 @@
 "use client";
+import { useImageUpload, UploadSpinner } from "@/components/UploadOverlay";
 import QuillEditor from "@/components/QuillEditor";
 
 
@@ -7,6 +8,7 @@ import {  Plus, Trash2, Image as ImageIcon, Folder } from "lucide-react";
 
 export default function GalleryPhotosClientForm({ initialData }: { initialData: any }) {
   const [filterCategory, setFilterCategory] = useState("ALL");
+  const { uploading, handleUpload } = useImageUpload();
   const [data, setData] = useState({
     categories: initialData?.categories ? initialData.categories.join("\n") : "DMH\nDMH MAIN BUILDING\nSUPER SPECIALITY BUILDING\nWORLD THYROID DAY 2024",
     photos: initialData?.photos ? initialData.photos.map((p: any) => ({
@@ -137,8 +139,8 @@ export default function GalleryPhotosClientForm({ initialData }: { initialData: 
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {(filterCategory === "ALL" ? data.photos : data.photos.filter((p: any) => p.category === filterCategory)).map((photo: any) => (
-              <div key={photo.id} className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm relative group flex flex-col">
+            {(filterCategory === "ALL" ? data.photos : data.photos.filter((p: any) => p.category === filterCategory)).map((photo: any, index: number) => (
+              <div key={`${photo.id}-${index}`} className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm relative group flex flex-col">
                 <button 
                   type="button" 
                   onClick={() => removePhoto(photo.id)}
@@ -147,8 +149,10 @@ export default function GalleryPhotosClientForm({ initialData }: { initialData: 
                   <Trash2 size={16} color="#D9232D" />
                 </button>
                 
-                <div className="aspect-[4/3] bg-slate-100 rounded-lg mb-4 flex items-center justify-center overflow-hidden border border-slate-100">
-                  {photo.url ? (
+                <div className="aspect-[4/3] bg-slate-100 rounded-lg mb-4 flex items-center justify-center overflow-hidden border border-slate-100 relative">
+                  {uploading(`photo-${photo.id}`) ? (
+                    <UploadSpinner />
+                  ) : photo.url ? (
                     <img src={photo.url} alt="Preview" className="w-full h-full object-cover" />
                   ) : (
                     <ImageIcon className="w-8 h-8 text-slate-300" />
@@ -161,25 +165,11 @@ export default function GalleryPhotosClientForm({ initialData }: { initialData: 
                     <input 
                       type="file" 
                       accept="image/*"
-                      onChange={(e) => {
+                      onChange={async (e) => {
                         const file = e.target.files?.[0];
                         if (file) {
-                          const formData = new FormData();
-      formData.append('file', file);
-      fetch('/api/upload', {
-        method: 'POST',
-        body: formData
-      })
-      .then(res => res.json())
-      .then(data => {
-        if (data.url) {
-                            updatePhoto(photo.id, 'url', data.url);
-                          } else { alert('Upload failed'); }
-      })
-      .catch(err => {
-        console.error('Upload error:', err);
-        alert('Upload error');
-      });
+                          const url = await handleUpload(file, `photo-${photo.id}`);
+                          if (url) updatePhoto(photo.id, 'url', url);
                         }
                       }}
                       className="w-full p-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-[#007a87] text-[10px] font-medium file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-[10px] file:font-bold file:bg-[#003360] file:text-white hover:file:bg-[#002b5c] cursor-pointer" 

@@ -1,5 +1,7 @@
 "use client";
 
+import { useImageUpload, UploadSpinner } from "@/components/UploadOverlay";
+
 import { useState } from "react";
 import {  Plus, Trash2, GripVertical } from "lucide-react";
 import QuillEditor from "@/components/QuillEditor";
@@ -39,25 +41,11 @@ export default function AccreditationsClientForm({ initialData }: { initialData:
     setItems(items.map(item => item.id === id ? { ...item, [field]: value } : item));
   };
 
-  const handleImageUpload = (id: number, e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = async (id: number, e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      const formData = new FormData();
-      formData.append('file', file);
-      fetch('/api/upload', {
-        method: 'POST',
-        body: formData
-      })
-      .then(res => res.json())
-      .then(data => {
-        if (data.url) {
-        updateItem(id, 'image', data.url);
-      } else { alert('Upload failed'); }
-      })
-      .catch(err => {
-        console.error('Upload error:', err);
-        alert('Upload error');
-      });
+      const url = await handleUpload(file, `accred-${id}`);
+      if (url) updateItem(id, 'image', url);
     }
   };
 
@@ -142,7 +130,15 @@ export default function AccreditationsClientForm({ initialData }: { initialData:
                 <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Badge Image (Optional)</label>
                 <div className="flex items-center gap-4">
                   {item.image && (
-                    <img src={item.image} alt="Preview" className="w-16 h-16 rounded-full object-contain border border-slate-200 p-1 bg-white" />
+                    <div className="relative">
+                      {uploading(`accred-${item.id}`) && <UploadSpinner />}
+                      <img src={item.image} alt="Preview" className="w-16 h-16 rounded-full object-contain border border-slate-200 p-1 bg-white" />
+                    </div>
+                  )}
+                  {!item.image && uploading(`accred-${item.id}`) && (
+                    <div className="relative w-16 h-16 rounded-full bg-slate-100 border border-slate-200">
+                      <UploadSpinner />
+                    </div>
                   )}
                   <input 
                     type="file" 

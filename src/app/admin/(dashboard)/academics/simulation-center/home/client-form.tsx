@@ -1,5 +1,7 @@
 "use client";
 
+import { useImageUpload, UploadSpinner } from "@/components/UploadOverlay";
+
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Save, HeartPulse } from "lucide-react";
@@ -8,34 +10,20 @@ import QuillEditor from "@/components/QuillEditor";
 export default function SimulationHomeClientForm({ initialData }: { initialData: any }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const { uploading, handleUpload } = useImageUpload();
   const [data, setData] = useState(initialData);
 
   const handleChange = (field: string, value: any) => {
     setData((prev: any) => ({ ...prev, [field]: value }));
   };
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      const formData = new FormData();
-      formData.append('file', file);
-      fetch('/api/upload', {
-        method: 'POST',
-        body: formData
-      })
-      .then(res => res.json())
-      .then(data => {
-        if (data.url) {
-        handleChange("image", data.url);
-      } else { alert('Upload failed'); }
-      })
-      .catch(err => {
-        console.error('Upload error:', err);
-        alert('Upload error');
-      });
+      const url = await handleUpload(file, "image");
+      if (url) handleChange("image", url);
     }
   };
-
   const handleSave = async () => {
     setLoading(true);
     try {

@@ -1,5 +1,7 @@
 "use client";
 
+import { useImageUpload, UploadSpinner } from "@/components/UploadOverlay";
+
 import { useState } from "react";
 import { ShieldAlert, Image as ImageIcon } from "lucide-react";
 
@@ -7,6 +9,7 @@ export default function PatientRightsClientForm({ initialData }: { initialData: 
   const [data, setData] = useState({
     imageUrl: initialData?.imageUrl || ""
   });
+  const { uploading, handleUpload } = useImageUpload();
 
   const handleChange = (field: string, value: string) => {
     setData({ ...data, [field]: value });

@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { Save, CheckCircle2, AlertCircle, ChevronDown, ChevronRight, Plus, Trash2 } from "lucide-react";
 import QuillEditor from "@/components/QuillEditor";
 import IconPicker from "@/components/IconPicker";
+import { useImageUpload, UploadSpinner } from "@/components/UploadOverlay";
 
 export default function DynamicFormEditor({
   value,
@@ -14,7 +15,7 @@ export default function DynamicFormEditor({
   onChange: (newVal: any) => void;
   label?: string;
 }) {
-
+  const { uploading, handleUpload } = useImageUpload();
   // Helper to deep set value
   const updateField = (path: (string | number)[], val: any) => {
     const newData = Array.isArray(value) ? [...value] : { ...value };
@@ -103,34 +104,26 @@ export default function DynamicFormEditor({
             </label>
             <div className="flex flex-col sm:flex-row sm:items-center gap-3">
               {value && (
-                <div className="shrink-0 bg-slate-100 p-1 rounded-lg border border-slate-200">
+                <div className="shrink-0 bg-slate-100 p-1 rounded-lg border border-slate-200 relative">
+                  {uploading(path.join("-")) && <UploadSpinner />}
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={value} alt="Preview" className="w-16 h-16 object-cover rounded-md" />
+                </div>
+              )}
+              {!value && uploading(path.join("-")) && (
+                <div className="shrink-0 bg-slate-100 p-1 rounded-lg border border-slate-200 relative w-[72px] h-[72px]">
+                  <UploadSpinner />
                 </div>
               )}
               <div className="flex-1 min-w-0 flex items-center gap-3">
                 <input
                   type="file"
                   accept="image/*"
-                  onChange={(e) => {
+                  onChange={async (e) => {
                     const file = e.target.files?.[0];
                     if (file) {
-                      const uploadData = new FormData();
-                      uploadData.append('file', file);
-                      fetch('/api/upload', {
-                        method: 'POST',
-                        body: uploadData
-                      })
-                      .then(res => res.json())
-                      .then(data => {
-                        if (data.url) {
-                          updateField(path, data.url);
-                        } else { alert('Upload failed'); }
-                      })
-                      .catch(err => {
-                        console.error('Upload error:', err);
-                        alert('Upload error');
-                      });
+                      const url = await handleUpload(file, path.join("-"));
+                      if (url) updateField(path, url);
                     }
                   }}
                   className="flex-1 w-full p-2 border border-slate-200 bg-white rounded-lg focus:ring-2 focus:ring-[#007a87] text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[#007a87]/10 file:text-[#007a87] hover:file:bg-[#007a87]/20 cursor-pointer"

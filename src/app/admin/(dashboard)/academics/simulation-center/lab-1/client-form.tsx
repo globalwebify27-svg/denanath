@@ -1,5 +1,7 @@
 "use client";
 
+import { useImageUpload, UploadSpinner } from "@/components/UploadOverlay";
+
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Save, HeartPulse } from "lucide-react";
@@ -8,6 +10,7 @@ import QuillEditor from "@/components/QuillEditor";
 export default function SimulationLab1ClientForm({ initialData }: { initialData: any }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const { uploading, handleUpload } = useImageUpload();
   const [data, setData] = useState(initialData);
 
   const handleChange = (field: string, value: any) => {
@@ -21,35 +24,21 @@ export default function SimulationLab1ClientForm({ initialData }: { initialData:
     }));
   };
 
-  const handleHeaderImageChange = (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleHeaderImageChange = async (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      const formData = new FormData();
-      formData.append('file', file);
-      fetch('/api/upload', {
-        method: 'POST',
-        body: formData
-      })
-      .then(res => res.json())
-      .then(data => {
-        if (data.url) {
-          setData((prev: any) => {
-            const newGallery = [...(prev.gallery || [])];
-            if (typeof newGallery[index] === 'string') {
-              newGallery[index] = { url: data.url, name: "" };
-            } else {
-              newGallery[index] = { ...newGallery[index], url: data.url };
-            }
-            return { ...prev, gallery: newGallery, image: newGallery.length > 0 ? (typeof newGallery[0] === 'string' ? newGallery[0] : newGallery[0].url) : "" };
-          });
-        } else {
-          alert('Upload failed');
-        }
-      })
-      .catch(err => {
-        console.error('Upload error:', err);
-        alert('Upload error');
-      });
+      const url = await handleUpload(file, `gallery-${index}`);
+      if (url) {
+        setData((prev: any) => {
+          const newGallery = [...(prev.gallery || [])];
+          if (typeof newGallery[index] === 'string') {
+            newGallery[index] = { url, name: "" };
+          } else {
+            newGallery[index] = { ...newGallery[index], url };
+          }
+          return { ...prev, gallery: newGallery, image: newGallery.length > 0 ? (typeof newGallery[0] === 'string' ? newGallery[0] : newGallery[0].url) : "" };
+        });
+      }
     }
   };
 
