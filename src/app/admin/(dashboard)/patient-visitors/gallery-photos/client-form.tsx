@@ -84,8 +84,9 @@ export default function GalleryPhotosClientForm({ initialData }: { initialData: 
   };
 
   const getJsonPayload = () => {
+    const plainTextCategories = data.categories.replace(/<\/(p|div)>/g, '\n').replace(/<br\s*\/?>/g, '\n').replace(/<[^>]*>/g, '');
     return JSON.stringify({
-      categories: data.categories.split('\n').map((s: string) => s.trim()).filter((s: string) => s),
+      categories: plainTextCategories.split('\n').map((s: string) => s.trim()).filter((s: string) => s),
       photos: data.photos.map((p: any) => ({
         title: p.title,
         category: p.category,
@@ -94,7 +95,8 @@ export default function GalleryPhotosClientForm({ initialData }: { initialData: 
     });
   };
 
-  const availableCategories = data.categories.split('\n').map((s: string) => s.trim()).filter((s: string) => s && s !== "ALL");
+  const plainTextCategories = data.categories.replace(/<\/(p|div)>/g, '\n').replace(/<br\s*\/?>/g, '\n').replace(/<[^>]*>/g, '');
+  const availableCategories = plainTextCategories.split('\n').map((s: string) => s.trim()).filter((s: string) => s && s !== "ALL");
 
   return (
     <>
