@@ -88,7 +88,7 @@ export default function SupportDonationsClientPage({ donationsData }: { donation
                     const parts = point.includes(" - ") ? point.split(" - ") : (point.includes(" – ") ? point.split(" – ") : [point]);
                     return (
                       <li key={idx} className="flex items-start gap-3">
-                        <ArrowRight className="w-5 h-5 text-teal-600 shrink-0 mt-0.5" />
+                        <ArrowRight className="w-5 h-5 text-teal-600 shrink-0 mt-1.5" />
                         <p className="text-slate-600 font-normal leading-[31px] text-base">
                           {parts.length > 1 ? (
                             <>

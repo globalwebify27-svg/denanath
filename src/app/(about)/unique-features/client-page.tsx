@@ -80,7 +80,7 @@ export default function UniqueFeaturesClientPage({ featuresData }: { featuresDat
                               const parts = bullet.split(' - ');
                               return (
                                 <li key={bIdx} className="flex items-start gap-2 md:gap-3">
-                                  <div className="w-1.5 h-1.5 rounded-full bg-teal-500 shrink-0 mt-1.5 md:mt-2"></div>
+                                  <div className="w-1.5 h-1.5 rounded-full bg-teal-500 shrink-0 mt-2.5 md:mt-[13px]"></div>
                                   <p className={`text-slate-600 ${[0, 1, 4, 5, 6].includes(idx) ? 'leading-[31px] font-normal text-base' : 'leading-relaxed text-[13px] sm:text-[14px] md:text-[14.5px]'}`}>
                                     {parts.length > 1 ? (
                                       <>
