@@ -155,8 +155,8 @@ export default function AboutHospitalClient({ data }: { data: any }) {
                     </h4>
                     <ul className="space-y-3">
                       {(data?.capabilities?.imaging || []).map((item: string, idx: number) => (
-                        <li key={idx} className="flex items-start gap-3  font-normal text-slate-600 leading-[29px]">
-                          <ChevronRight className="w-4 h-4 text-[#007a87] shrink-0 mt-0.5" />
+                        <li key={idx} className="flex items-start gap-3 font-normal text-slate-600 leading-[29px]">
+                          <ChevronRight className="w-4 h-4 text-[#007a87] shrink-0 mt-2" />
                           <span>{item}</span>
                         </li>
                       ))}
@@ -170,8 +170,8 @@ export default function AboutHospitalClient({ data }: { data: any }) {
                     </h4>
                     <ul className="space-y-3">
                       {(data?.capabilities?.radiation || []).map((item: string, idx: number) => (
-                        <li key={idx} className="flex items-start gap-3  font-normal text-slate-600 leading-[29px]">
-                          <ChevronRight className="w-4 h-4 text-[#007a87] shrink-0 mt-0.5" />
+                        <li key={idx} className="flex items-start gap-3 font-normal text-slate-600 leading-[29px]">
+                          <ChevronRight className="w-4 h-4 text-[#007a87] shrink-0 mt-2" />
                           <span>{item}</span>
                         </li>
                       ))}
