@@ -73,6 +73,14 @@ export default async function DepartmentDetailsPage({
       const matchedSpec = specList.find((s: any) => (s.speciality_name || '').toLowerCase() === depName) ||
                           specList.find((s: any) => {
                             const sName = (s.speciality_name || '').toLowerCase();
+                            
+                            // Prevent generic short substring matching for other potential short department abbreviations
+                            if (depName === 'ent') {
+                              return sName === 'e.n.t.' || sName.includes('e.n.t') || sName.includes('ent ') || sName.includes(' ent') || sName === 'ent';
+                            }
+                            
+                            if (depName.length <= 3) return false;
+
                             return sName.length > 5 && (depName.includes(sName) || sName.includes(depName));
                           });
 
