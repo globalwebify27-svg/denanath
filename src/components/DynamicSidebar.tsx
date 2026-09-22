@@ -57,12 +57,8 @@ export default function DynamicSidebar({
         staticDropdown = [];
         filteredDynamicLinks = [];
       } else if (layoutMenu.dropdown) {
-        // Only keep static items that are NOT marked as isActive === false in the layout_header
-        staticDropdown = staticDropdown.filter((staticItem: any) => {
-           const match = layoutMenu.dropdown.find((lItem: any) => lItem.href === staticItem.href);
-           if (match && match.isActive === false) return false;
-           return true;
-        });
+        // Use the dropdown items from layoutMenu to get updated names and hrefs
+        staticDropdown = layoutMenu.dropdown.filter((lItem: any) => lItem.isActive !== false);
       }
     }
   }

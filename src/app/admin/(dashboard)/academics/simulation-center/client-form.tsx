@@ -123,6 +123,11 @@ export default function SimulationCenterClientForm({ initialData }: { initialDat
           </div>
         </div>
 
+        <div>
+          <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Payment Link</label>
+          <input type="text" value={data.paymentLink || ""} onChange={(e) => handleChange("paymentLink", e.target.value)} className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 transition-all duration-200 text-slate-700 font-medium leading-relaxed" placeholder="https://www.dmhospital.org/pay/index.php" />
+        </div>
+
         {/* Card: SEO Settings */}
         <div className="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden group hover:shadow-md transition-shadow duration-300">
           <div className="bg-slate-50/50 border-b border-slate-100 p-5 md:p-6 flex items-center gap-4">

@@ -225,127 +225,20 @@ export default function SimulationCenterClient({ initialData, labsData }: { init
                 {activeTab === "Payments" && (
                   <div className="bg-white border border-slate-200 rounded-3xl p-6 md:p-10 shadow-sm">
                     <h3 className="text-2xl font-bold text-[#002b5c] mb-6 border-b border-slate-100 pb-4">Online Payment</h3>
-                    <form className="space-y-6" onSubmit={handleSub}>
-                      {/* Row 1 */}
-                      <div>
-                        <label className="block text-base leading-[26px] font-semibold text-slate-700 mb-1">Purpose of Payment <span className="text-red-500">*</span></label>
-                        <div className="relative">
-                          <CustomDropdown
-                            name="purposeOfPayment"
-                            placeholder="-- Select --"
-                            icon={CreditCard}
-                            options={[
-                              "Simulation Course Fee",
-                              "Workshop Registration"
-                            ]}
-                          />
-                        </div>
-                      </div>
-
-                      {/* Row 2 */}
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                          <label className="block text-base leading-[26px] font-semibold text-slate-700 mb-1">Name Of Payer <span className="text-red-500">*</span></label>
-                          <input type="text" name="nameOfPayer" placeholder="Name Of Payer" className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500/50 bg-slate-50 text-base leading-[31px] font-normal text-slate-700" required />
-                        </div>
-                        <div>
-                          <label className="block text-base leading-[26px] font-semibold text-slate-700 mb-1">Contact Number <span className="text-red-500">*</span></label>
-                          <input type="text" name="contactNumber" placeholder="Contact Number" className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500/50 bg-slate-50 text-base leading-[31px] font-normal text-slate-700" pattern="[0-9]{10}" maxLength={10} minLength={10} title="Please enter a valid 10-digit mobile number" onInput={(e) => { e.currentTarget.value = e.currentTarget.value.replace(/[^0-9]/g, "").slice(0, 10); }} required />
-                        </div>
-                      </div>
-
-                      {/* Row 3 */}
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                          <label className="block text-base leading-[26px] font-semibold text-slate-700 mb-1">Email Id <span className="text-red-500">*</span></label>
-                          <input type="email" name="email" placeholder="Email ID" className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500/50 bg-slate-50 text-base leading-[31px] font-normal text-slate-700" required />
-                        </div>
-                        <div>
-                          <label className="block text-base leading-[26px] font-semibold text-slate-700 mb-1">Amount <span className="text-red-500">*</span></label>
-                          <input type="text" name="amount" placeholder="Amount" className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500/50 bg-slate-50 text-base leading-[31px] font-normal text-slate-700" required />
-                        </div>
-                      </div>
-
-                      {/* Row 4 */}
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                          <label className="block text-base leading-[26px] font-semibold text-slate-700 mb-1">Address <span className="text-red-500">*</span></label>
-                          <textarea name="address" rows={4} placeholder="Enter ..." className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500/50 bg-slate-50 resize-none text-base leading-[31px] font-normal text-slate-700" required></textarea>
-                        </div>
-                        <div className="space-y-6">
-                          <div>
-                            <label className="block text-base leading-[26px] font-semibold text-slate-700 mb-1">Country <span className="text-red-500">*</span></label>
-                            <div className="relative">
-                              <CustomDropdown
-                                name="country"
-                                placeholder="-- Select --"
-                                icon={Globe}
-                                options={[
-                                  "Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Antigua and Barbuda", "Argentina", "Armenia", "Australia", "Austria", "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bhutan", "Bolivia", "Bosnia & Herzegovina", "Botswana", "Brazil", "Brunei", "Bulgaria", "Burkina Faso", "Burundi", "Cabo Verde", "Cambodia", "Cameroon", "Canada", "Central African Republic", "Chad", "Chile", "China", "Colombia", "Comoros", "Congo", "Congo (East Africa)", "Costa Rica", "Croatia", "Cuba", "Cyprus", "Czech Republic", "Denmark", "Djibouti", "Dominica", "Dominican Republic", "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia", "Eswatini", "Ethiopia", "Fiji", "Finland", "France", "Gabon", "Gambia", "Georgia", "Germany", "Ghana", "Gibraltar", "Greece", "Grenada", "Guatemala", "Guinea", "Guinea-Bissau", "Guyana", "Haiti", "Honduras", "HongKong", "Hungary", "Iceland", "India", "Indonesia", "Iran", "IRAQ", "Ireland", "Israel", "Italy", "Jamaica", "Japan", "Jordan", "Kazakhstan", "Kenya", "Kiribati", "Kuwait", "Kyrgyzstan", "Laos", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libya", "Liechtenstein", "Lithuania", "Luxembourg", "Madagascar", "Malawi", "Malaysia", "Maldievs", "Mali", "Malta", "Marshall Islands", "Mauritania", "Mauritius", "Mexico", "Micronesia", "Moldova", "Monaco", "Mongolia", "Montenegro", "Morocco", "Mozambique", "Myanmar", "Namibia", "Nauru", "Nepal", "Netherlands", "New Zealand", "Nicaragua", "Niger", "Nigeria", "North Korea", "North Macedonia", "Norway", "Oman", "OTHER", "Pakistan", "Palau", "Palestine", "Panama", "Papua New Guinea", "Paraguay", "Peru", "PHILIPINES", "Poland", "Portugal", "Qatar", "Republic of Georgia", "Republic of Macedonia", "Romania", "Russia", "Rwanda", "Saint Kitts and Nevis", "Saint Lucia", "Saint Vincent and the Grenadines", "Samoa", "San Marino", "Sao Tome and Principe", "Saudi Arabia", "Senegal", "Serbia", "Serbia & Montenegro", "Seychelles", "SIERRA LEONEAN", "Singapore", "Slovakia", "Slovenia", "Solomon Islands", "Somalia", "South Africa", "South Korea", "South Sudan", "Spain", "Sri Lanka", "Sudan", "Suriname", "Sweden", "Switzerland", "Syria", "Taiwan", "Tajikistan", "Tanzania", "Thailand", "Timor-Leste", "Togo", "Tonga", "Trinidad and Tobago", "Tunisia", "Turkey", "Turkmenistan", "Tuvalu", "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", "United States", "Uruguay", "Uzbekistan", "Vanuatu", "Vatican City", "Venezuela", "Vietnam", "Yemen", "Zambia", "Zimbabwe"
-                                ]}
-                              />
-                            </div>
-                          </div>
-                          <div>
-                            <label className="block text-base leading-[26px] font-semibold text-slate-700 mb-1">State <span className="text-red-500">*</span></label>
-                            <div className="relative">
-                              <CustomDropdown
-                                name="state"
-                                placeholder="-- Select --"
-                                icon={Map}
-                                options={[
-                                  "Andaman & Nicobar", "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chandigarh", "Chattisgarh", "Dadra & Nagar", "Daman & Diu", "Delhi", "Goa", "Gujrat", "Haryana", "Himachal Pradesh", "Jammu & Kashmir", "Jharkhand", "Karnataka", "Kerala", "Lakshdweep", "Madhya Pradesh", "Maharashtra", "Manipur", "Meghalaya", "Mizoram", "Nagaland", "Orissa", "Pondichery", "Punjab", "Rajasthan", "Sikkim", "Tamil Nadu", "Telangana", "Tripura", "Uttar Pradesh", "Uttaranchal", "West Bengal"
-                                ]}
-                              />
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Row 5 */}
-                      <div>
-                        <label className="block text-base leading-[26px] font-semibold text-slate-700 mb-1">City <span className="text-red-500">*</span></label>
-                        <div className="relative w-full md:w-1/2">
-                          <CustomDropdown
-                            name="city"
-                            placeholder="-- Select --"
-                            icon={MapPin}
-                            options={[
-                              "Ahilya Nagar", "Akola", "Amravati", "Bandra(Mumbai Suburban district)", "Beed", "Bhandara", "Buldhana", "Chandrapur", "Dharashiv", "Dhule", "Gadchiroli", "Gondia", "Hingoli", "Jalgaon", "Jalna", "Kolhapur", "Latur", "Mumbai-City", "Nagpur", "Nanded", "Nandurbar", "Nashik", "Palghar", "Parbhani", "Pune", "Raigad", "Ratnagiri", "Sambhaji Nagar", "Sangli", "Satara", "Sindudurg", "Solapur", "Thane", "Wardha", "Washim", "Yavatmal"
-                            ]}
-                          />
-                        </div>
-                      </div>
-
-                      {/* Row 6 */}
-                      <div>
-                        <label className="block text-base leading-[26px] font-semibold text-slate-700 mb-1">Comments</label>
-                        <textarea name="comments" rows={2} placeholder="Enter ..." className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500/50 bg-slate-50 resize-none text-base leading-[31px] font-normal text-slate-700"></textarea>
-                      </div>
-
-                      <div>
-                        <label className="block text-base leading-[26px] font-semibold text-slate-700 mb-2">Captcha <span className="text-red-500">*</span></label>
-                        <div className="flex items-center gap-3 mb-2">
-                          <div className="bg-slate-200 px-4 py-2 rounded-lg tracking-widest font-mono font-bold  text-slate-800 select-none">
-                            {captchaCode}
-                          </div>
-                          <button 
-                            type="button" 
-                            onClick={() => setCaptchaCode(generateCaptcha())}
-                            className="text-blue-500 hover:text-blue-600 transition-colors"
-                          >
-                            <RefreshCw className="w-5 h-5" />
-                          </button>
-                        </div>
-                        <input name="captcha" type="text" placeholder="Enter Captcha Text" className="w-full md:w-1/2 px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-teal-500/50 bg-slate-50  leading-[31px] font-normal text-slate-700" required />
-                      </div>
-
-                      <div className="pt-4 flex justify-center md:justify-start">
-                        <button type="submit" disabled={isSubmitting} className="w-full md:w-[160px] py-2 bg-[#003360] text-white  leading-[28px] font-bold rounded-md hover:bg-[#002b5c] transition-colors shadow-sm disabled:opacity-70 disabled:cursor-not-allowed">
-                          {isSubmitting ? "Submitting..." : "Submit"}
-                        </button>
-                      </div>
-                    </form>
+                    <div className="flex flex-col items-center justify-center py-12 space-y-6">
+                      <p className="text-slate-600 text-lg text-center">
+                        Please click the button below to proceed to our secure online payment portal.
+                      </p>
+                      <a 
+                        href={initialData?.paymentLink || "https://www.dmhospital.org/pay/index.php"} 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="px-8 py-4 bg-[#003360] text-white text-lg font-bold rounded-lg hover:bg-[#002b5c] transition-colors shadow-md inline-flex items-center gap-3"
+                      >
+                        <CreditCard className="w-5 h-5" />
+                        Proceed to Payment
+                      </a>
+                    </div>
                   </div>
                 )}
 
