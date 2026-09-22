@@ -65,7 +65,7 @@ export default function VirtualTourClientPage({ pageData }: { pageData?: any }) 
 
   const activeLocation = locations.find(loc => loc.name === activeView) || locations[0];
   const [pan, setPan] = useState({ x: 50, y: 50 });
-  
+
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
   const filteredLocations = locations.filter((loc: any) => loc.category === activeTab);
 
@@ -87,7 +87,7 @@ export default function VirtualTourClientPage({ pageData }: { pageData?: any }) 
       <div className="w-full bg-[#002b5c] relative overflow-hidden">
         <div className="absolute inset-0 bg-[url(https://www.transparenttextures.com/patterns/cubes.png)] opacity-10 mix-blend-overlay pointer-events-none" />
         <div className="absolute right-0 top-0 w-1/2 h-full bg-gradient-to-l from-teal-500/20 to-transparent pointer-events-none" />
-        
+
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 md:py-4 relative z-10">
           <div className="flex items-center gap-2 text-blue-200 text-[10px] font-medium tracking-wide mb-1">
             <Link href="/" className="hover:text-white transition-colors">Home</Link>
@@ -104,14 +104,14 @@ export default function VirtualTourClientPage({ pageData }: { pageData?: any }) 
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-3 pb-8 md:pt-5 md:pb-12">
         <div className="flex flex-col lg:flex-row gap-8 xl:gap-12 items-start">
-          
+
           {/* Dynamic Sidebar */}
           <DynamicSidebar categoryName="Patient & Visitors" activeHref="/virtual-tour" />
 
           {/* Right Main Content */}
           <div className="w-full flex-1">
             <div className="bg-white rounded-3xl shadow-[0_8px_40px_rgb(0,0,0,0.03)] border border-slate-100/60 px-6 pt-3 pb-6 sm:px-10 sm:pt-4 sm:pb-10 md:px-10 md:pt-4 md:pb-10">
-              
+
               <div className="mb-4">
                 <div style={{ fontSize: '10px' }} className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-teal-50 border border-teal-100 text-[#007a87] font-bold tracking-wider uppercase mb-4">
                   <MonitorPlay className="w-4 h-4" />
@@ -124,7 +124,7 @@ export default function VirtualTourClientPage({ pageData }: { pageData?: any }) 
               </div>
 
               {/* Main 360 Viewer */}
-              <div 
+              <div
                 className="w-full relative rounded-2xl overflow-hidden bg-slate-800 shadow-xl border-4 border-white mb-8 aspect-video group cursor-grab active:cursor-grabbing"
                 onMouseMove={(e) => {
                   // Optional: slight parallax on mouse move if desired, but we'll stick to button controls for explicit "360 degree" feel
@@ -133,36 +133,36 @@ export default function VirtualTourClientPage({ pageData }: { pageData?: any }) 
                   }
                 }}
               >
-                <div 
-                  className="absolute inset-0 bg-no-repeat transition-all duration-300 ease-out" 
-                  style={{ 
+                <div
+                  className="absolute inset-0 bg-no-repeat transition-all duration-300 ease-out"
+                  style={{
                     backgroundImage: `url('${activeLocation.img}')`,
-                    backgroundPosition: `${pan.x}% ${pan.y}%`,
-                    backgroundSize: '150% auto' // Zoomed in to allow panning
-                  }} 
+                    backgroundPosition: 'center 40%',
+                    backgroundSize: 'cover'
+                  }}
                 />
-                
+
                 {/* Start Virtual Tour Button Overlay */}
                 <div className="absolute inset-0 flex items-center justify-center z-20 pointer-events-none">
-                   <button 
-                     className="pointer-events-auto bg-[#002b5c]/90 hover:bg-[#007a87] text-white px-6 py-3 md:px-8 md:py-4 rounded-full font-bold flex items-center gap-2 shadow-2xl transition-all hover:scale-105 border-2 border-white/20 hover:border-white/50 backdrop-blur-sm"
-                     onClick={(e) => {
-                        e.stopPropagation();
-                        if (activeLocation?.link) {
-                           window.open(activeLocation.link, '_blank', 'noopener,noreferrer');
-                        }
-                     }}
-                   >
-                     <MonitorPlay className="w-5 h-5 md:w-6 md:h-6" />
-                     <span className="text-sm md:text-base">Start Virtual Tour</span>
-                   </button>
+                  <button
+                    className="pointer-events-auto bg-[#002b5c]/90 hover:bg-[#007a87] text-white px-6 py-3 md:px-8 md:py-4 rounded-full font-bold flex items-center gap-2 shadow-2xl transition-all hover:scale-105 border-2 border-white/20 hover:border-white/50 backdrop-blur-sm"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      if (activeLocation?.link) {
+                        window.open(activeLocation.link, '_blank', 'noopener,noreferrer');
+                      }
+                    }}
+                  >
+                    <MonitorPlay className="w-5 h-5 md:w-6 md:h-6" />
+                    <span className="text-sm md:text-base">Start Virtual Tour</span>
+                  </button>
                 </div>
-                
+
                 {/* HIDDEN FOR NOW: 360 Tour Overlay UI Controls */}
                 {false && (
                   <div className="absolute top-4 right-4 z-20">
                     <div className="relative">
-                      <button 
+                      <button
                         onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                         onBlur={() => setTimeout(() => setIsDropdownOpen(false), 200)}
                         className="flex items-center justify-between w-[220px] bg-white/95 backdrop-blur text-sm font-bold text-[#002b5c] rounded-md px-4 py-2.5 border border-slate-200 shadow-sm hover:border-[#007a87]/50 focus:outline-none focus:ring-2 focus:ring-[#007a87]/30 transition-all"
@@ -181,11 +181,10 @@ export default function VirtualTourClientPage({ pageData }: { pageData?: any }) 
                                   setActiveView(loc.name);
                                   setIsDropdownOpen(false);
                                 }}
-                                className={`px-4 py-2.5 text-sm cursor-pointer transition-colors ${
-                                  activeView === loc.name
-                                    ? 'bg-[#002b5c] text-white font-bold'
-                                    : 'text-slate-700 hover:bg-slate-50 hover:text-[#002b5c]'
-                                }`}
+                                className={`px-4 py-2.5 text-sm cursor-pointer transition-colors ${activeView === loc.name
+                                  ? 'bg-[#002b5c] text-white font-bold'
+                                  : 'text-slate-700 hover:bg-slate-50 hover:text-[#002b5c]'
+                                  }`}
                               >
                                 {loc.name}
                               </div>
@@ -199,19 +198,19 @@ export default function VirtualTourClientPage({ pageData }: { pageData?: any }) 
 
                 {/* Decorative UI elements representing 360 view controls */}
                 <div className="absolute bottom-2 right-2 md:bottom-4 md:right-auto md:left-1/2 md:-translate-x-1/2 flex items-center gap-0.5 md:gap-2 bg-white/20 backdrop-blur-md rounded-full px-1.5 md:px-4 py-1 md:py-2 border border-white/30 shadow-lg transition-opacity duration-300 opacity-70 group-hover:opacity-100  z-10">
-                   <div onClick={() => handlePan(-10, 0)} className="w-5 h-5 md:w-8 md:h-8 rounded-full bg-white/40 flex items-center justify-center hover:bg-white cursor-pointer transition-colors shrink-0"><ChevronRight className="w-3 h-3 md:w-5 md:h-5 text-slate-800 rotate-180" /></div>
-                   <div onClick={() => handlePan(0, -10)} className="w-5 h-5 md:w-8 md:h-8 rounded-full bg-white/40 flex items-center justify-center hover:bg-white cursor-pointer transition-colors shrink-0"><ChevronRight className="w-3 h-3 md:w-5 md:h-5 text-slate-800 -rotate-90" /></div>
-                   <div onClick={() => handlePan(0, 10)} className="w-5 h-5 md:w-8 md:h-8 rounded-full bg-white/40 flex items-center justify-center hover:bg-white cursor-pointer transition-colors shrink-0"><ChevronRight className="w-3 h-3 md:w-5 md:h-5 text-slate-800 rotate-90" /></div>
-                   <div onClick={() => handlePan(10, 0)} className="w-5 h-5 md:w-8 md:h-8 rounded-full bg-white/40 flex items-center justify-center hover:bg-white cursor-pointer transition-colors shrink-0"><ChevronRight className="w-3 h-3 md:w-5 md:h-5 text-slate-800" /></div>
-                   <div className="w-px h-3 md:h-6 bg-white/40 mx-1 md:mx-2 shrink-0" />
-                   <div className="font-bold text-white text-[9px] md:text-xs px-1 md:px-2 tracking-wider flex items-center gap-1 shrink-0"><MonitorPlay className="w-3 h-3 md:w-4 md:h-4"/> <span className="hidden sm:inline">360° VIEW</span><span className="sm:hidden">360°</span></div>
+                  <div onClick={() => handlePan(-10, 0)} className="w-5 h-5 md:w-8 md:h-8 rounded-full bg-white/40 flex items-center justify-center hover:bg-white cursor-pointer transition-colors shrink-0"><ChevronRight className="w-3 h-3 md:w-5 md:h-5 text-slate-800 rotate-180" /></div>
+                  <div onClick={() => handlePan(0, -10)} className="w-5 h-5 md:w-8 md:h-8 rounded-full bg-white/40 flex items-center justify-center hover:bg-white cursor-pointer transition-colors shrink-0"><ChevronRight className="w-3 h-3 md:w-5 md:h-5 text-slate-800 -rotate-90" /></div>
+                  <div onClick={() => handlePan(0, 10)} className="w-5 h-5 md:w-8 md:h-8 rounded-full bg-white/40 flex items-center justify-center hover:bg-white cursor-pointer transition-colors shrink-0"><ChevronRight className="w-3 h-3 md:w-5 md:h-5 text-slate-800 rotate-90" /></div>
+                  <div onClick={() => handlePan(10, 0)} className="w-5 h-5 md:w-8 md:h-8 rounded-full bg-white/40 flex items-center justify-center hover:bg-white cursor-pointer transition-colors shrink-0"><ChevronRight className="w-3 h-3 md:w-5 md:h-5 text-slate-800" /></div>
+                  <div className="w-px h-3 md:h-6 bg-white/40 mx-1 md:mx-2 shrink-0" />
+                  <div className="font-bold text-white text-[9px] md:text-xs px-1 md:px-2 tracking-wider flex items-center gap-1 shrink-0"><MonitorPlay className="w-3 h-3 md:w-4 md:h-4" /> <span className="hidden sm:inline">360° VIEW</span><span className="sm:hidden">360°</span></div>
                 </div>
 
                 <div className="absolute bottom-2 md:bottom-4 left-2 md:left-4 z-10">
                   <div className="bg-white/90 rounded-md p-1 md:p-2 shadow-lg border border-slate-200">
                     <div className="w-14 h-9 md:w-20 md:h-12 bg-slate-200 rounded overflow-hidden relative">
-                       <Image src={activeLocation.img} alt="mini map" width={80} height={48} className="object-cover w-full h-full" />
-                       <div className="absolute inset-0 border border-[#007a87]/50 rounded pointer-events-none" />
+                      <Image src={activeLocation.img} alt="mini map" width={80} height={48} className="object-cover w-full h-full" />
+                      <div className="absolute inset-0 border border-[#007a87]/50 rounded pointer-events-none" />
                     </div>
                   </div>
                 </div>
@@ -226,11 +225,10 @@ export default function VirtualTourClientPage({ pageData }: { pageData?: any }) 
                       <button
                         key={tab}
                         onClick={() => setActiveTab(tab)}
-                        className={`flex items-center justify-center px-4 py-4 text-sm md:text-base font-bold tracking-wide transition-colors duration-300 rounded-xl shadow-sm outline-none focus:outline-none border-none text-white ${
-                          activeTab === tab 
-                            ? 'bg-[#002b5c] hover:bg-[#9f0712]' 
-                            : 'bg-[#002b5c] hover:bg-[#9f0712]'
-                        }`}
+                        className={`flex items-center justify-center px-4 py-4 text-sm md:text-base font-bold tracking-wide transition-colors duration-300 rounded-xl shadow-sm outline-none focus:outline-none border-none text-white ${activeTab === tab
+                          ? 'bg-[#002b5c] hover:bg-[#9f0712]'
+                          : 'bg-[#002b5c] hover:bg-[#9f0712]'
+                          }`}
                       >
                         {tab}
                       </button>
@@ -240,8 +238,8 @@ export default function VirtualTourClientPage({ pageData }: { pageData?: any }) 
                   {/* Grid of Thumbnails */}
                   <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
                     {filteredLocations.map((loc: any, idx: number) => (
-                      <div 
-                        key={idx} 
+                      <div
+                        key={idx}
                         onClick={() => {
                           if (loc.link) {
                             window.open(loc.link, '_blank', 'noopener,noreferrer');
@@ -261,11 +259,11 @@ export default function VirtualTourClientPage({ pageData }: { pageData?: any }) 
                             className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-110"
                           />
                           <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors" />
-                          
+
                           {/* 360 Icon Overlay */}
                           <div className="absolute top-2 left-2 bg-white/90 backdrop-blur-sm rounded-md px-2 py-1 flex items-center gap-1 shadow-sm">
-                             <MonitorPlay className="w-3 h-3 text-[#007a87]" />
-                             <span className="text-[10px] font-black text-[#007a87]">360°</span>
+                            <MonitorPlay className="w-3 h-3 text-[#007a87]" />
+                            <span className="text-[10px] font-black text-[#007a87]">360°</span>
                           </div>
                         </div>
                         <div className="text-center font-bold text-sm text-slate-700 group-hover:text-[#c81b51] transition-colors">
@@ -284,23 +282,23 @@ export default function VirtualTourClientPage({ pageData }: { pageData?: any }) 
       </div>
 
       {lightboxIndex !== null && (
-        <div 
+        <div
           className="fixed inset-0 z-[100] bg-black/90 flex flex-col items-center justify-center p-4"
           onClick={() => setLightboxIndex(null)}
         >
           {/* Main Image Container */}
-          <div 
+          <div
             className="relative flex items-center justify-center max-w-5xl w-full h-[75vh]"
             onClick={e => e.stopPropagation()}
           >
-            <img 
-              src={filteredLocations[lightboxIndex].img} 
+            <img
+              src={filteredLocations[lightboxIndex].img}
               alt={filteredLocations[lightboxIndex].name}
               className="max-w-full max-h-full object-contain shadow-[0_0_40px_rgba(0,0,0,0.5)] border-4 border-white rounded-sm bg-white"
             />
-            
-            <button 
-              onClick={() => setLightboxIndex(null)} 
+
+            <button
+              onClick={() => setLightboxIndex(null)}
               className="absolute -top-5 -right-5 p-2 bg-white text-slate-700 hover:text-red-500 rounded-full shadow-xl transition-colors border border-slate-200 z-10"
             >
               <X className="w-6 h-6" />
