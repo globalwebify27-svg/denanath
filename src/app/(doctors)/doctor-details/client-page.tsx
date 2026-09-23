@@ -62,12 +62,24 @@ const DoctorImage = ({ doc, className, iconClassName }: { doc: any, className?: 
 
 export default function DoctorDetailsPage() {
   const [doctorsList, setDoctorsList] = useState<any[]>([]);
+  const [specialitiesList, setSpecialitiesList] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const loadDoctorsFromApi = async () => {
       setLoading(true);
       try {
+        const specRes = await fetch('/api/dmh', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'speciality' })
+        });
+        if (specRes.ok) {
+          const specData = await specRes.json();
+          let specs = specData?.specialityJSON || (Array.isArray(specData) ? specData : []);
+          setSpecialitiesList(specs);
+        }
+
         const docRes = await fetch('/api/doctors');
         if (!docRes.ok) return;
         const doctors = await docRes.json();
@@ -131,20 +143,26 @@ export default function DoctorDetailsPage() {
   }, [selectedSpecialty, searchName]);
 
   // Get unique specialties for dropdown
+  // Get unique specialties for dropdown from specialitiesList
   const uniqueSpecialties = useMemo(() => {
     const specialties = new Set<string>();
-    doctorsList.forEach(doc => {
-      // Split by comma in case of multiple specialties, but for now we take the full string to match the design
-      if (doc.specialty) specialties.add(doc.specialty);
+    specialitiesList.forEach((spec: any) => {
+      const sName = spec.speciality_name || spec.name;
+      if (sName) {
+        specialties.add(sName);
+      }
     });
     return Array.from(specialties).sort();
-  }, [doctorsList]);
+  }, [specialitiesList]);
 
   // Filter and sort doctors alphabetically by name
   const filteredDoctors = useMemo(() => {
+    const selectedSpecObj = specialitiesList.find((s: any) => (s.speciality_name || s.name) === selectedSpecialty);
+    const selectedSpecId = selectedSpecObj ? String(selectedSpecObj.speciality_id || selectedSpecObj.id) : null;
+
     const filtered = doctorsList.filter(doc => {
-      const docSpecialty = doc.specialty || "";
-      const matchSpecialty = selectedSpecialty === "--Select--" || docSpecialty === selectedSpecialty;
+      const docSpecIds = String(doc.speciality_id || doc.dmhSpecialityId || "").split(',').map(s => s.trim()).filter(Boolean);
+      const matchSpecialty = selectedSpecialty === "--Select--" || (selectedSpecId && docSpecIds.includes(selectedSpecId));
       const matchName = doc.name.toLowerCase().includes(searchName.toLowerCase());
       return matchSpecialty && matchName;
     });

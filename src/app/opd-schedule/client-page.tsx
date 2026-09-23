@@ -242,18 +242,24 @@ export default function OpdScheduleClientPage({ initialData }: { initialData?: a
 
   const uniqueSpecialties = useMemo(() => {
     const specialties = new Set<string>();
-    doctorsList.forEach(doc => {
-      const sName = doc.speciality_name || doc.specialty;
-      if (sName) specialties.add(sName);
+    specialitiesList.forEach((spec: any) => {
+      const sName = spec.speciality_name || spec.name;
+      if (sName) {
+        specialties.add(sName);
+      }
     });
     return Array.from(specialties).sort();
-  }, [doctorsList]);
+  }, [specialitiesList]);
 
   const uniqueDoctors = useMemo(() => {
     const doctors = new Set<string>();
+    const selectedSpecObj = specialitiesList.find((s: any) => (s.speciality_name || s.name) === selectedSpecialty);
+    const selectedSpecId = selectedSpecObj ? String(selectedSpecObj.speciality_id || selectedSpecObj.id) : null;
+
     doctorsList.forEach(doc => {
-      const sName = doc.speciality_name || doc.specialty;
-      if (selectedSpecialty === "--Select--" || sName === selectedSpecialty) {
+      const docSpecIds = String(doc.dmhSpecialityId || doc.speciality_id || "").split(',').map(s => s.trim()).filter(Boolean);
+      
+      if (selectedSpecialty === "--Select--" || (selectedSpecId && docSpecIds.includes(selectedSpecId))) {
         doctors.add(doc.doctor_name || doc.name);
       }
     });
@@ -262,7 +268,7 @@ export default function OpdScheduleClientPage({ initialData }: { initialData?: a
       const nameB = b.replace(/^Dr\.?\s+/i, "").trim().toLowerCase();
       return nameA.localeCompare(nameB);
     });
-  }, [doctorsList, selectedSpecialty]);
+  }, [doctorsList, selectedSpecialty, specialitiesList]);
 
   // When specialty changes, reset doctor selection and reset to page 1
   useEffect(() => {
@@ -272,12 +278,18 @@ export default function OpdScheduleClientPage({ initialData }: { initialData?: a
   }, [selectedSpecialty, uniqueDoctors, selectedDoctor]);
 
   const filteredDoctors = useMemo(() => {
+    const selectedSpecObj = specialitiesList.find((s: any) => (s.speciality_name || s.name) === selectedSpecialty);
+    const selectedSpecId = selectedSpecObj ? String(selectedSpecObj.speciality_id || selectedSpecObj.id) : null;
+
     return doctorsList.filter(doc => {
-      const sName = doc.speciality_name || doc.specialty;
+      const docSpecIds = String(doc.dmhSpecialityId || doc.speciality_id || "").split(',').map(s => s.trim()).filter(Boolean);
       const dName = doc.doctor_name || doc.name;
+      
       // When viewing all specialties, exclude ANAESTHESIOLOGY so they don't take pagination slots
-      if (selectedSpecialty === "--Select--" && sName && sName.toUpperCase() === 'ANAESTHESIOLOGY') return false;
-      const matchSpecialty = selectedSpecialty === "--Select--" || sName === selectedSpecialty;
+      const hasAnaesthesiology = String(doc.speciality_name || doc.specialty || "").toUpperCase().includes('ANAESTHESIOLOGY');
+      if (selectedSpecialty === "--Select--" && hasAnaesthesiology) return false;
+      
+      const matchSpecialty = selectedSpecialty === "--Select--" || (selectedSpecId && docSpecIds.includes(selectedSpecId));
       const matchDoctor = selectedDoctor === "-- Doctor --" || dName === selectedDoctor;
       return matchSpecialty && matchDoctor;
     }).sort((a, b) => {
