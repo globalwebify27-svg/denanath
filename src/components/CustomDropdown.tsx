@@ -1,17 +1,35 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
-import { ChevronDown, Search } from "lucide-react";
+import { ChevronDown, Search, Check } from "lucide-react";
 
-export default function CustomDropdown({ name, options, placeholder = "-- Select --", icon: Icon, required, defaultValue = "", value, className = "", onChange, hideSearch = false, hidePlaceholderOption = false }: any) {
+export default function CustomDropdown({ name, options, placeholder = "-- Select --", icon: Icon, required, defaultValue, value, className = "", onChange, hideSearch = false, hidePlaceholderOption = false, isMulti = false }: any) {
   const [isOpen, setIsOpen] = useState(false);
-  const [selected, setSelected] = useState(defaultValue);
   const [searchQuery, setSearchQuery] = useState("");
+
+  const getInitialSelected = () => {
+    if (isMulti) {
+      if (Array.isArray(value)) return value;
+      if (typeof value === "string" && value) return value.split(",").map((s) => s.trim()).filter(Boolean);
+      if (Array.isArray(defaultValue)) return defaultValue;
+      if (typeof defaultValue === "string" && defaultValue) return defaultValue.split(",").map((s) => s.trim()).filter(Boolean);
+      return [];
+    }
+    return value !== undefined ? value : (defaultValue || "");
+  };
+
+  const [selected, setSelected] = useState<any>(getInitialSelected());
 
   useEffect(() => {
     if (value !== undefined) {
-      setSelected(value);
+      if (isMulti) {
+        if (Array.isArray(value)) setSelected(value);
+        else if (typeof value === "string" && value) setSelected(value.split(",").map((s) => s.trim()).filter(Boolean));
+        else setSelected([]);
+      } else {
+        setSelected(value);
+      }
     }
-  }, [value]);
+  }, [value, isMulti]);
 
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -27,9 +45,24 @@ export default function CustomDropdown({ name, options, placeholder = "-- Select
 
   const filteredOptions = options.filter((opt: string) => opt.toLowerCase().includes(searchQuery.toLowerCase()));
 
+  const handleOptionClick = (opt: string) => {
+    if (isMulti) {
+      const isSelected = selected.includes(opt);
+      const newSelected = isSelected ? selected.filter((s: string) => s !== opt) : [...selected, opt];
+      setSelected(newSelected);
+      if (onChange) onChange(newSelected.join(", "));
+    } else {
+      setSelected(opt);
+      setIsOpen(false);
+      if (onChange) onChange(opt);
+    }
+  };
+
+  const displayValue = isMulti ? (selected.length > 0 ? selected.join(", ") : placeholder) : (selected || placeholder);
+
   return (
     <div className={`relative w-full ${isOpen ? "z-50" : "z-10"}`} ref={dropdownRef}>
-      <input type="hidden" name={name} value={selected} required={required && !selected} />
+      <input type="hidden" name={name} value={isMulti ? selected.join(", ") : selected} required={required && (isMulti ? selected.length === 0 : !selected)} />
       <div 
         className={`w-full bg-white border border-slate-200 text-slate-700 font-normal leading-[24px] ${isOpen ? 'rounded-t-lg rounded-b-none border-b-transparent' : 'rounded-lg'} py-1.5 px-3 cursor-pointer flex items-center justify-between transition-all shadow-sm hover:border-teal-400 ${Icon ? "pl-10" : ""} ${className}`}
         onClick={() => {
@@ -38,8 +71,8 @@ export default function CustomDropdown({ name, options, placeholder = "-- Select
         }}
       >
         {Icon && <Icon className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />}
-        <span className="truncate text-[15px] font-medium">{selected || placeholder}</span>
-        <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform ${isOpen ? "rotate-180" : ""}`} />
+        <span className="truncate text-[15px] font-medium block pr-4">{displayValue}</span>
+        <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform absolute right-3 top-1/2 -translate-y-1/2 ${isOpen ? "rotate-180" : ""}`} />
       </div>
       
       {isOpen && (
@@ -60,7 +93,7 @@ export default function CustomDropdown({ name, options, placeholder = "-- Select
             </div>
           )}
           <div className="overflow-y-auto">
-            {!hidePlaceholderOption && (
+            {!hidePlaceholderOption && !isMulti && (
               <div 
                 className="px-3 py-2.5 hover:bg-emerald-50 cursor-pointer text-slate-500 font-normal transition-colors text-[15px]"
                 onClick={() => { setSelected(""); setIsOpen(false); if (onChange) onChange(""); }}
@@ -68,15 +101,19 @@ export default function CustomDropdown({ name, options, placeholder = "-- Select
                 {placeholder}
               </div>
             )}
-            {filteredOptions.length > 0 ? filteredOptions.map((opt: string, i: number) => (
-              <div 
-                key={i}
-                className={`px-3 py-2.5 hover:bg-emerald-50 cursor-pointer font-normal transition-colors text-[15px] ${selected === opt ? "bg-emerald-50 text-emerald-800 font-medium" : "text-slate-700"}`}
-                onClick={() => { setSelected(opt); setIsOpen(false); if (onChange) onChange(opt); }}
-              >
-                {opt}
-              </div>
-            )) : (
+            {filteredOptions.length > 0 ? filteredOptions.map((opt: string, i: number) => {
+              const isSelected = isMulti ? selected.includes(opt) : selected === opt;
+              return (
+                <div 
+                  key={i}
+                  className={`px-3 py-2.5 hover:bg-emerald-50 cursor-pointer font-normal transition-colors flex items-center justify-between text-[15px] ${isSelected ? "bg-emerald-50 text-emerald-800 font-medium" : "text-slate-700"}`}
+                  onClick={() => handleOptionClick(opt)}
+                >
+                  <span className="truncate">{opt}</span>
+                  {isSelected && <Check className="w-4 h-4 text-emerald-600 shrink-0" />}
+                </div>
+              );
+            }) : (
               <div className="px-4 py-3 text-slate-400 text-[15px] italic text-center">No results found</div>
             )}
           </div>

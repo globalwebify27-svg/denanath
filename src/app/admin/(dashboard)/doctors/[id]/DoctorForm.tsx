@@ -361,6 +361,7 @@ export default function DoctorForm({ doctor, id, departments = [], apiSpecialiti
                 value={formData.specialty}
                 onChange={(val: string) => setFormData({ ...formData, specialty: val })}
                 className="w-full !p-2 bg-white border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-sm"
+                isMulti={true}
               />
             </div>
           )}
@@ -474,6 +475,7 @@ export default function DoctorForm({ doctor, id, departments = [], apiSpecialiti
                 value={timing.branch}
                 onChange={(val: string) => handleTimingChange(index, "branch", val)}
                 className="w-full !p-2 bg-white border border-gray-300 rounded-lg text-sm"
+                isMulti={true}
               />
             </div>
             <input
