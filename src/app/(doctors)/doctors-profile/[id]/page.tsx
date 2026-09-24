@@ -50,7 +50,7 @@ export default async function DoctorDedicatedPage({ params }: { params: Promise<
           <div className="flex items-center gap-2 text-blue-200 text-[10px] font-medium tracking-wide mb-1 flex-wrap">
             <Link href="/" className="hover:text-white transition-colors">Home</Link>
             <ChevronRight className="w-3.5 h-3.5" />
-            <Link href="/doctor-details" className="hover:text-white transition-colors">Doctors</Link>
+            <Link href="/doctors-profile" className="hover:text-white transition-colors">Doctors</Link>
             <ChevronRight className="w-3.5 h-3.5" />
             <span className="text-white truncate">{doctor.name}</span>
           </div>
@@ -61,7 +61,7 @@ export default async function DoctorDedicatedPage({ params }: { params: Promise<
       </div>
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-8 md:pt-6 md:pb-12">
-        <Link href="/doctor-details" className="inline-flex items-center gap-2 text-[#007a87] hover:text-[#002b5c] font-bold mb-8 transition-colors">
+        <Link href="/doctors-profile" className="inline-flex items-center gap-2 text-[#007a87] hover:text-[#002b5c] font-bold mb-8 transition-colors">
           <ArrowLeft className="w-4 h-4" /> Back to Doctors
         </Link>
         

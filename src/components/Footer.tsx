@@ -52,7 +52,7 @@ export default function Footer({ latestEvent, footerSettings }: { latestEvent?: 
               </p>
               <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-white/10 text-[10px] font-semibold text-white">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#a7ffeb] animate-ping" />
-                <span>{footerSettings?.managedBy ?? "Managed by Lata Mangeshkar Foundation"}</span>
+                <span>{footerSettings?.managedBy ?? "Managed by Lata Mangeshkar Medical Foundation"}</span>
               </div>
               
               {/* Social Links */}
@@ -125,7 +125,7 @@ export default function Footer({ latestEvent, footerSettings }: { latestEvent?: 
                 let quick1 = footerSettings?.quickChannels1 || [
                   { label: "About Us", href: "/about-hospital" },
                   { label: "Patient & Visitors", href: "/out-patient" },
-                  { label: "Doctors & Departments", href: "/doctor-details" },
+                  { label: "Doctors & Departments", href: "/doctors-profile" },
                   { label: "Research", href: "/research-about" },
                   { label: "Academics", href: "/academics" },
                   { label: "Online Facilities", href: "/email-login" },

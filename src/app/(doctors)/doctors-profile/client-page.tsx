@@ -203,7 +203,7 @@ export default function DoctorDetailsPage() {
         <div className="flex flex-col lg:flex-row gap-8 xl:gap-12 items-start">
           
           {/* Dynamic Sidebar */}
-          <DynamicSidebar categoryName="Doctors & Departments" activeHref="/doctor-details" />
+          <DynamicSidebar categoryName="Doctors & Departments" activeHref="/doctors-profile" />
 
           {/* Right Main Content */}
           <div className="w-full flex-1 min-w-0">

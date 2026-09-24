@@ -26,8 +26,8 @@ export default async function DoctorsRedirectPage({
   const dept = params.department;
   
   if (dept && typeof dept === 'string') {
-    redirect(`/doctor-details?department=${encodeURIComponent(dept)}`);
+    redirect(`/doctors-profile?department=${encodeURIComponent(dept)}`);
   } else {
-    redirect('/doctor-details');
+    redirect('/doctors-profile');
   }
 }

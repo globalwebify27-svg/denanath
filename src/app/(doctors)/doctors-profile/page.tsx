@@ -122,20 +122,20 @@ export default function DoctorDetailsPage() {
     const paramId = params.get('id');
 
     if (paramId) {
-      router.replace(`/doctor-details/${paramId}`);
+      router.replace(`/doctors-profile/${paramId}`);
       return;
     }
 
     if (paramName) {
       const exactMatch = doctorsList.find(d => d.name.toLowerCase() === paramName.toLowerCase());
       if (exactMatch) {
-        router.replace(`/doctor-details/${exactMatch.id}`);
+        router.replace(`/doctors-profile/${exactMatch.id}`);
         return;
       }
       
       const partialMatches = doctorsList.filter(d => d.name.toLowerCase().includes(paramName.toLowerCase()));
       if (partialMatches.length === 1) {
-        router.replace(`/doctor-details/${partialMatches[0].id}`);
+        router.replace(`/doctors-profile/${partialMatches[0].id}`);
         return;
       }
 
@@ -185,7 +185,7 @@ export default function DoctorDetailsPage() {
         <div className="absolute inset-0 bg-[url(https://www.transparenttextures.com/patterns/cubes.png)] opacity-10 mix-blend-overlay pointer-events-none" />
         <div className="absolute right-0 top-0 w-1/2 h-full bg-gradient-to-l from-teal-500/20 to-transparent pointer-events-none" />
         
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 md:py-4 relative z-10">
+        <div className="max-w-[1300px] mx-auto px-4 sm:px-6 lg:px-8 py-3 md:py-4 relative z-10">
           <div className="flex items-center gap-2 text-blue-200 text-[10px] font-medium tracking-wide mb-1">
             <Link href="/" className="hover:text-white transition-colors">Home</Link>
             <ChevronRight className="w-3.5 h-3.5" />
@@ -199,11 +199,11 @@ export default function DoctorDetailsPage() {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-3 pb-8 md:pt-5 md:pb-12">
+      <div className="max-w-[1300px] mx-auto px-4 sm:px-6 lg:px-8 pt-3 pb-8 md:pt-5 md:pb-12">
         <div className="flex flex-col lg:flex-row gap-8 xl:gap-12 items-start">
           
           {/* Dynamic Sidebar */}
-          <DynamicSidebar categoryName="Doctors & Departments" activeHref="/doctor-details" />
+          <DynamicSidebar categoryName="Doctors & Departments" activeHref="/doctors-profile" />
 
           {/* Right Main Content */}
           <div className="w-full flex-1 min-w-0">
@@ -265,10 +265,10 @@ export default function DoctorDetailsPage() {
                 </div>
               ) : paginatedDoctors.length > 0 ? (
                 <>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {paginatedDoctors.map((doc, idx) => (
                     <Link 
-                      href={`/doctor-details/${doc.id}`}
+                      href={`/doctors-profile/${doc.id}`}
                       key={`${doc.id || doc.doctor_id || 'doc'}_card_${idx}`} 
                       className="group bg-white border border-slate-200 hover:border-[#D9232D] rounded-2xl p-6 transition-all duration-300 hover:shadow-[0_8px_30px_rgba(217,35,45,0.15)] hover:-translate-y-1 flex flex-col h-full cursor-pointer block text-left"
                     >

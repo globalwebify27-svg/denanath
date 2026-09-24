@@ -13,8 +13,7 @@ export default function InPatientClientForm({ initialData }: { initialData: any 
   const [data, setData] = useState({
     guidelines: initialData?.guidelines ? initialData.guidelines.join("\n") : "Patient should be physically present in the hospital premises at the time of admission.\nTo facilitate the process of Registration/Admission/Charity/Mediclaim, please ensure to carry patients ID proof (Adhar card, Pan card, Voting card, Driving license, Passport).\nPatients are advised not to keep any valuables, jewellery or other costly items with them during their stay at the Hospital.\nYou can ask for room service for: a. Pharmacy, b. Diet, c. WiFi.\nPlease do not Smoke or Spit in the Hospital premises.\nPlease remember that the total cost of Treatment/Procedure will vary as per your ward/room.\nNo room booking service: rooms and hospital can not be booked in advance as exact discharge time of admitted patients can not be predicted and admission can not be denied to any patients needing treatment.",
     mainBuildingRooms: initialData?.mainBuildingRooms ? initialData.mainBuildingRooms : [
-      { id: 1, name: "GS Special Room A (Patient Room)", rate: "15000/-", fac: "One Attendant Bed, Attached Toilet- Attendant Bathroom, A/C As Well As Windows, Fan, Tv, Telephone, Sofaset, Refrigerator, Ward Robe" },
-      { id: 2, name: "GS Special Room A (Relative Room)", rate: "-", fac: "-" },
+      { id: 1, name: "GS Special Room A (Patient & Relative Room)", rate: "15000/-", fac: "One Attendant Bed, Attached Toilet- Attendant Bathroom, A/C As Well As Windows, Fan, Tv, Telephone, Sofaset, Refrigerator, Ward Robe" },
       { id: 3, name: "GS Special Room B", rate: "9000/-", fac: "One Attendant Bed, Attached Toilet- Attendant Bathroom, A/C As Well As Windows, Fan, Tv, Telephone, Sofaset, Refrigerator, Ward Robe," },
       { id: 4, name: "GS Private A", rate: "4500/-", fac: "One Attendant Bed, Attached Toilet-Bathroom, A/C As Well As Windows, Tv, Telephone, Sofaset, Refrigerator, Ward Robe, Fan" },
       { id: 5, name: "GS Private B", rate: "4000/-", fac: "One Attendant Bed, Attached Toilet-Bathroom, A/C As Well As Windows, Tv, Telephone, Sofaset, Ward Robe, Fan" },
@@ -25,8 +24,7 @@ export default function InPatientClientForm({ initialData }: { initialData: any 
       { id: 10, name: "GS Day Care (Non AC)", rate: "1100/-", fac: "Common Ward For Male And Female" }
     ],
     superSpecialityRooms: initialData?.superSpecialityRooms ? initialData.superSpecialityRooms : [
-      { id: 1, name: "SS Super Deluxe A (Patient Room)", rate: "9000/-", fac: "One attendant bed, Attached toilet-bathroom, A/C as well as windows, Tv, Telephone, Sofaset, Refrigerator, Ward Robe" },
-      { id: 2, name: "SS Super Deluxe A (Relative room)", rate: "-", fac: "No window, One bed, One sofa, TV, AC" },
+      { id: 1, name: "SS Super Deluxe A (Patient & Relative Room)", rate: "9000/-", fac: "Patient Room: One attendant bed, Attached toilet-bathroom, A/C as well as windows, Tv, Telephone, Sofaset, Refrigerator, Ward Robe. Relative Room: No window, One bed, One sofa, TV, AC" },
       { id: 3, name: "SS Super Deluxe B (Window room)", rate: "6700/-", fac: "One attendant bed, Attached toilet-bathroom, A/C, Tv, Telephone, Sofaset, Refrigerator, Ward robe" },
       { id: 4, name: "SS Super Deluxe B (Non Window room)", rate: "6700/-", fac: "One attendant bed, Attached toilet-bathroom, A/C, Tv, Telephone, Sofaset, Refrigerator, Ward robe" },
       { id: 5, name: "SS Super Deluxe C", rate: "6200/-", fac: "One attendant bed, A/C, Tv, Telephone, Sofaset, Refrigerator, Ward robe" },
@@ -103,11 +101,11 @@ export default function InPatientClientForm({ initialData }: { initialData: any 
   };
 
   const addMainRoom = () => {
-    setData({ ...data, mainBuildingRooms: [...data.mainBuildingRooms, { id: Date.now(), name: "", rate: "", fac: "", image: "/images/hospital.webp" }] });
+    setData({ ...data, mainBuildingRooms: [...data.mainBuildingRooms, { id: Date.now(), name: "", rate: "", fac: "", images: ["/images/hospital.webp"] }] });
   };
 
   const addSuperRoom = () => {
-    setData({ ...data, superSpecialityRooms: [...data.superSpecialityRooms, { id: Date.now(), name: "", rate: "", fac: "", image: "/images/hospital1.webp" }] });
+    setData({ ...data, superSpecialityRooms: [...data.superSpecialityRooms, { id: Date.now(), name: "", rate: "", fac: "", images: ["/images/hospital1.webp"] }] });
   };
 
   const removeMainRoom = (id: number) => {
@@ -373,50 +371,48 @@ export default function InPatientClientForm({ initialData }: { initialData: any 
                         x
                       </button>
                     </div>
-                    <div className="col-span-12 flex flex-col sm:flex-row sm:items-center gap-3 bg-slate-50 p-3 rounded border border-slate-200 mt-2">
-                      {r.image && (
-                        <div className="shrink-0">
-                          {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img src={r.image} alt="Preview" className="w-12 h-12 object-cover rounded border border-gray-200 bg-white" />
-                        </div>
-                      )}
+                    <div className="col-span-12 flex flex-col gap-3 bg-slate-50 p-3 rounded border border-slate-200 mt-2">
+                      <div className="flex flex-wrap gap-2">
+                        {(r.images || (r.image ? [r.image] : [])).map((imgUrl: string, imgIdx: number) => (
+                          <div key={imgIdx} className="relative group shrink-0">
+                            <img src={imgUrl} alt="Preview" className="w-16 h-16 object-cover rounded border border-gray-200 bg-white" />
+                            <button
+                              type="button"
+                              onClick={() => updateMainRoom(r.id, 'images', (r.images || (r.image ? [r.image] : [])).filter((_: any, i: number) => i !== imgIdx))}
+                              className="absolute -top-2 -right-2 w-5 h-5 bg-red-500 text-white rounded-full flex items-center justify-center text-xs opacity-0 group-hover:opacity-100 transition-opacity"
+                            >
+                              x
+                            </button>
+                          </div>
+                        ))}
+                      </div>
                       <div className="flex-1 min-w-0">
                         <input
                           type="file"
                           accept="image/*"
-                          onChange={(e) => {
-                            const file = e.target.files?.[0];
-                            if (file) {
-                              const formData = new FormData();
-      formData.append('file', file);
-      fetch('/api/upload', {
-        method: 'POST',
-        body: formData
-      })
-      .then(res => res.json())
-      .then(data => {
-        if (data.url) {
-                                updateMainRoom(r.id, 'image', data.url);
-                              } else { alert('Upload failed'); }
-      })
-      .catch(err => {
-        console.error('Upload error:', err);
-        alert('Upload error');
-      });
+                          multiple
+                          onChange={async (e) => {
+                            const files = Array.from(e.target.files || []);
+                            if (files.length > 0) {
+                              const uploadedUrls = [];
+                              for (const file of files) {
+                                const formData = new FormData();
+                                formData.append('file', file);
+                                try {
+                                  const res = await fetch('/api/upload', { method: 'POST', body: formData });
+                                  const data = await res.json();
+                                  if (data.url) uploadedUrls.push(data.url);
+                                } catch (err) {
+                                  console.error('Upload error:', err);
+                                }
+                              }
+                              const currentImages = r.images || (r.image ? [r.image] : []);
+                              updateMainRoom(r.id, 'images', [...currentImages, ...uploadedUrls]);
                             }
                           }}
                           className="w-full text-sm file:mr-4 file:py-1.5 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-[#007a87]/10 file:text-[#007a87] hover:file:bg-[#007a87]/20 cursor-pointer"
                         />
                       </div>
-                      {r.image && (
-                        <button
-                          type="button"
-                          onClick={() => updateMainRoom(r.id, 'image', "")}
-                          className="text-[#D9232D] text-xs font-bold px-3 py-1.5 bg-red-50 rounded-lg hover:bg-red-100 transition-colors shrink-0"
-                        >
-                          Remove Image
-                        </button>
-                      )}
                     </div>
                   </div>
                 ))}
@@ -446,50 +442,48 @@ export default function InPatientClientForm({ initialData }: { initialData: any 
                         x
                       </button>
                     </div>
-                    <div className="col-span-12 flex flex-col sm:flex-row sm:items-center gap-3 bg-slate-50 p-3 rounded border border-slate-200 mt-2">
-                      {r.image && (
-                        <div className="shrink-0">
-                          {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img src={r.image} alt="Preview" className="w-12 h-12 object-cover rounded border border-gray-200 bg-white" />
-                        </div>
-                      )}
+                    <div className="col-span-12 flex flex-col gap-3 bg-slate-50 p-3 rounded border border-slate-200 mt-2">
+                      <div className="flex flex-wrap gap-2">
+                        {(r.images || (r.image ? [r.image] : [])).map((imgUrl: string, imgIdx: number) => (
+                          <div key={imgIdx} className="relative group shrink-0">
+                            <img src={imgUrl} alt="Preview" className="w-16 h-16 object-cover rounded border border-gray-200 bg-white" />
+                            <button
+                              type="button"
+                              onClick={() => updateSuperRoom(r.id, 'images', (r.images || (r.image ? [r.image] : [])).filter((_: any, i: number) => i !== imgIdx))}
+                              className="absolute -top-2 -right-2 w-5 h-5 bg-red-500 text-white rounded-full flex items-center justify-center text-xs opacity-0 group-hover:opacity-100 transition-opacity"
+                            >
+                              x
+                            </button>
+                          </div>
+                        ))}
+                      </div>
                       <div className="flex-1 min-w-0">
                         <input
                           type="file"
                           accept="image/*"
-                          onChange={(e) => {
-                            const file = e.target.files?.[0];
-                            if (file) {
-                              const formData = new FormData();
-      formData.append('file', file);
-      fetch('/api/upload', {
-        method: 'POST',
-        body: formData
-      })
-      .then(res => res.json())
-      .then(data => {
-        if (data.url) {
-                                updateSuperRoom(r.id, 'image', data.url);
-                              } else { alert('Upload failed'); }
-      })
-      .catch(err => {
-        console.error('Upload error:', err);
-        alert('Upload error');
-      });
+                          multiple
+                          onChange={async (e) => {
+                            const files = Array.from(e.target.files || []);
+                            if (files.length > 0) {
+                              const uploadedUrls = [];
+                              for (const file of files) {
+                                const formData = new FormData();
+                                formData.append('file', file);
+                                try {
+                                  const res = await fetch('/api/upload', { method: 'POST', body: formData });
+                                  const data = await res.json();
+                                  if (data.url) uploadedUrls.push(data.url);
+                                } catch (err) {
+                                  console.error('Upload error:', err);
+                                }
+                              }
+                              const currentImages = r.images || (r.image ? [r.image] : []);
+                              updateSuperRoom(r.id, 'images', [...currentImages, ...uploadedUrls]);
                             }
                           }}
                           className="w-full text-sm file:mr-4 file:py-1.5 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-[#007a87]/10 file:text-[#007a87] hover:file:bg-[#007a87]/20 cursor-pointer"
                         />
                       </div>
-                      {r.image && (
-                        <button
-                          type="button"
-                          onClick={() => updateSuperRoom(r.id, 'image', "")}
-                          className="text-[#D9232D] text-xs font-bold px-3 py-1.5 bg-red-50 rounded-lg hover:bg-red-100 transition-colors shrink-0"
-                        >
-                          Remove Image
-                        </button>
-                      )}
                     </div>
                   </div>
                 ))}

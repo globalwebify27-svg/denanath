@@ -10,7 +10,7 @@ export default function ServicesClientPage({ pageData, services }: { pageData: a
   const options = [
     {
         "name": "Doctor Details",
-        "href": "/doctor-details",
+        "href": "/doctors-profile",
         "active": false
     },
     {

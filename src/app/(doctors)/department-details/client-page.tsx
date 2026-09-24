@@ -9,7 +9,7 @@ export default function DepartmentDetailsClientPage({ pageData, departments }: {
   const options = [
     {
         "name": "Doctor Details",
-        "href": "/doctor-details",
+        "href": "/doctors-profile",
         "active": false
     },
     {

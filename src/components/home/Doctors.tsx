@@ -120,7 +120,7 @@ export default function DoctorsSection({ data = defaultDoctorsData }: { data?: a
                   snap-start overflow-hidden flex-shrink-0 flex flex-col
                 "
               >
-                <Link href={`/doctor-details/${doctor.id}`} className="relative h-[340px] w-full overflow-hidden block group">
+                <Link href={`/doctors-profile/${doctor.id}`} className="relative h-[340px] w-full overflow-hidden block group">
                   <Image
                     src={doctor.image}
                     alt={doctor.name}
@@ -135,7 +135,7 @@ export default function DoctorsSection({ data = defaultDoctorsData }: { data?: a
                 </Link>
 
                 <div className="p-4 sm:p-6 flex flex-col flex-1">
-                  <Link href={`/doctor-details/${doctor.id}`} className="hover:text-[#007a87] transition-colors">
+                  <Link href={`/doctors-profile/${doctor.id}`} className="hover:text-[#007a87] transition-colors">
                     <h3 className="text-base sm:text-xl font-bold text-slate-900">
                       {doctor.name}
                     </h3>
@@ -149,7 +149,7 @@ export default function DoctorsSection({ data = defaultDoctorsData }: { data?: a
                     {doctor.experience}
                   </p>
 
-                  <Link href={`/doctor-details/${doctor.id}`} className="mt-auto w-full rounded-xl bg-[#002b5c] px-4 py-2.5 text-sm font-semibold text-white hover:bg-[#007a87] transition flex items-center justify-center">
+                  <Link href={`/doctors-profile/${doctor.id}`} className="mt-auto w-full rounded-xl bg-[#002b5c] px-4 py-2.5 text-sm font-semibold text-white hover:bg-[#007a87] transition flex items-center justify-center">
                     Book Appointment
                   </Link>
                 </div>

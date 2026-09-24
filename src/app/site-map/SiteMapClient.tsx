@@ -40,7 +40,7 @@ export default function SiteMapClient({ dynamicPages = [] }: { dynamicPages?: Dy
     {
       title: "Doctors & Departments",
       links: [
-        { label: "Doctor Details", href: "/doctor-details" },
+        { label: "Doctor Details", href: "/doctors-profile" },
         { label: "Department Details", href: "/department-details" },
         { label: "Services", href: "/services" },
       ],

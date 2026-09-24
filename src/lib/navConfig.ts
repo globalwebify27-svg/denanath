@@ -29,9 +29,9 @@ export const baseNavLinks = [
   },
   {
     name: "Doctors & Departments",
-    href: "/doctor-details",
+    href: "/doctors-profile",
     dropdown: [
-      { name: "Doctor Details", href: "/doctor-details" },
+      { name: "Doctor Details", href: "/doctors-profile" },
       { name: "Department Details", href: "/departments" },
       { name: "Services", href: "/services" },
     ],

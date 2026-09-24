@@ -148,7 +148,7 @@ export default async function DepartmentDetailsPage({
                 }
               }
               
-              const doctorProfileUrl = profileDoctorId ? `/doctor-details/${profileDoctorId}` : `/doctors`;
+              const doctorProfileUrl = profileDoctorId ? `/doctors-profile/${profileDoctorId}` : `/doctors`;
 
               return `
                 <a href="${doctorProfileUrl}" class="p-3.5 sm:p-5 bg-white border border-slate-200 rounded-2xl flex items-center justify-between gap-2.5 sm:gap-4 shadow-sm hover:shadow-md transition-shadow overflow-hidden group block">
@@ -670,7 +670,7 @@ export default async function DepartmentDetailsPage({
                   }
                }
                
-               const doctorProfileUrl = finalDoctorId ? `/doctor-details/${finalDoctorId}` : `/doctors`;
+               const doctorProfileUrl = finalDoctorId ? `/doctors-profile/${finalDoctorId}` : `/doctors`;
                const doctorImage = finalDoctorImage;
 
                docCards.push(`

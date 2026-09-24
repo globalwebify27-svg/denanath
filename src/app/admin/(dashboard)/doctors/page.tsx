@@ -55,7 +55,7 @@ export default async function AdminDoctorsPage({
           <p className="text-[15px] font-medium text-slate-500 max-w-xl leading-relaxed">
             Manage hospital medical staff and physician profiles.
           </p>
-          <NavigationMenuToggle href="/doctor-details" />
+          <NavigationMenuToggle href="/doctors-profile" />
         </div>
         <div className="z-10 shrink-0 mt-4 lg:mt-0 flex gap-4">
           <SyncDoctorsButton />

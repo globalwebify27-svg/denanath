@@ -38,8 +38,8 @@ export default function DoctorDetailsClientForm({ initialData }: { initialData: 
           key: "page_doctors_doctor_details",
           value: JSON.stringify(data),
           pathsToRevalidate: [
-            "/admin/doctors/doctor-details",
-            "/doctor-details"
+            "/admin/doctors/doctors-profile",
+            "/doctors-profile"
           ]
         })
       });
@@ -66,7 +66,7 @@ export default function DoctorDetailsClientForm({ initialData }: { initialData: 
           <p className="text-[15px] font-medium text-slate-500 max-w-xl leading-relaxed">
             Manage content for Doctor Details
           </p>
-            <NavigationMenuToggle href="/doctor-details" />
+            <NavigationMenuToggle href="/doctors-profile" />
         </div>
         <div className="z-10 shrink-0 mt-4 lg:mt-0">
           <button

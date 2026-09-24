@@ -38,7 +38,7 @@ export default function QuickAccessWidget() {
     {
       label: "Find a Doctor",
       icon: Stethoscope,
-      href: "/doctor-details",
+      href: "/doctors-profile",
       color: "bg-slate-900 hover:bg-slate-800",
     },
   ];
