@@ -713,9 +713,9 @@ export default async function DepartmentDetailsPage({
       // Clean up inline styles that might conflict
       $(table).find('th, td').each((_, cell) => {
          const $cell = $(cell);
-         // Keep width if explicitly set, otherwise remove inline styles to let Tailwind handle it
+         // Keep width and text-align if explicitly set, otherwise remove inline styles to let Tailwind handle it
          const style = $cell.attr('style') || '';
-         if (!style.includes('width')) {
+         if (!style.includes('width') && !style.includes('text-align')) {
             $cell.removeAttr('style'); 
          }
       });
