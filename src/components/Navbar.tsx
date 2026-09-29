@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { Menu, X, Phone, ChevronDown, Globe } from "lucide-react";
 import Link from "next/link";
+
 import { applyOfflineTranslation } from "@/lib/offlineTranslate";
 import { baseNavLinks } from "@/lib/navConfig";
 
@@ -49,66 +50,29 @@ export default function Navbar({ topHeaderSettings, headerSettings }: { topHeade
   };
 
   useEffect(() => {
-    // Patch DOM to prevent React crashes from Google Translate modifications
-    if (typeof Node === 'function' && Node.prototype) {
-      const originalRemoveChild = Node.prototype.removeChild;
-      Node.prototype.removeChild = function (child: any) {
-        if (child.parentNode !== this) {
-          if (console) {
-            console.warn('Cannot remove a child from a different parent', child, this);
-          }
-          return child;
-        }
-        return originalRemoveChild.apply(this, arguments as any);
-      };
-      
-      const originalInsertBefore = Node.prototype.insertBefore;
-      Node.prototype.insertBefore = function (newNode: any, referenceNode: any) {
-        if (referenceNode && referenceNode.parentNode !== this) {
-          if (console) {
-            console.warn('Cannot insert before a reference node from a different parent', referenceNode, this);
-          }
-          return newNode;
-        }
-        return originalInsertBefore.apply(this, arguments as any);
-      };
-    }
-
-    const handleScroll = () => {
-      if (window.scrollY > 10) {
-        setScrolled(true);
-      } else {
-        setScrolled(false);
-      }
-    };
+    const handleScroll = () => setScrolled(window.scrollY > 10);
     window.addEventListener("scroll", handleScroll);
 
     // Google Translate Initialization
     if (!(window as any).googleTranslateElementInit) {
-      const addScript = document.createElement("script");
-      addScript.setAttribute(
-        "src",
-        "//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
-      );
-      document.body.appendChild(addScript);
-
       (window as any).googleTranslateElementInit = () => {
         new (window as any).google.translate.TranslateElement(
-          {
-            pageLanguage: "en",
-            includedLanguages: "en,hi,mr,ar,gu,kn,ta,de",
-            autoDisplay: false,
-          },
+          { pageLanguage: "en", includedLanguages: "en,hi,mr,ar,gu,kn,ta,de", autoDisplay: false },
           "google_translate_element"
         );
       };
+      const script = document.createElement("script");
+      script.src = "//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
+      document.body.appendChild(script);
     }
 
-    // Apply offline/client translation fallback on load if offline or before Google Translate loads
+    // After Google Translate finishes translating (on reload), run term corrections
     try {
       const match = document.cookie.match(/googtrans=\/en\/([a-z]{2,3})/);
       if (match && match[1] && match[1] !== 'en') {
-        setTimeout(() => applyOfflineTranslation(match[1]), 50);
+        const lang = match[1];
+        // GT takes ~1.5-2s to finish translating the DOM after page load
+        setTimeout(() => applyOfflineTranslation(lang), 2000);
       }
     } catch (e) {}
 
@@ -118,40 +82,23 @@ export default function Navbar({ topHeaderSettings, headerSettings }: { topHeade
   const changeLanguage = (langCode: string) => {
     const hostname = window.location.hostname;
     const rootDomain = hostname.split('.').slice(-2).join('.');
+    const val = langCode === 'en' ? '' : `/en/${langCode}`;
+    const expires = langCode === 'en' ? 'expires=Thu, 01 Jan 1970 00:00:00 UTC;' : 'max-age=31536000;';
 
-    if (langCode === 'en') {
-      document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-      document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; domain=${hostname}; path=/;`;
-      if (rootDomain && rootDomain !== hostname) {
-        document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; domain=.${rootDomain}; path=/;`;
-      }
-    } else {
-      const val = `/en/${langCode}`;
-      document.cookie = `googtrans=${val}; path=/; max-age=31536000;`;
-      document.cookie = `googtrans=${val}; domain=${hostname}; path=/; max-age=31536000;`;
-      if (rootDomain && rootDomain !== hostname) {
-        document.cookie = `googtrans=${val}; domain=.${rootDomain}; path=/; max-age=31536000;`;
-      }
+    // Set cookie on root path (no domain scoping — most reliable)
+    document.cookie = val
+      ? `googtrans=${val}; path=/; ${expires}`
+      : `googtrans=; ${expires} path=/;`;
+
+    // Also set on root domain if on a subdomain
+    if (rootDomain && rootDomain !== hostname) {
+      document.cookie = val
+        ? `googtrans=${val}; domain=.${rootDomain}; path=/; ${expires}`
+        : `googtrans=; ${expires} domain=.${rootDomain}; path=/;`;
     }
 
-    try {
-      const combo = document.querySelector('.goog-te-combo') as HTMLSelectElement | null;
-      if (combo) {
-        combo.value = langCode;
-        combo.dispatchEvent(new Event('change'));
-      }
-    } catch (e) {
-      console.error("Error triggering direct translation:", e);
-    }
-
-    // Apply offline client dictionary translation immediately
-    applyOfflineTranslation(langCode);
-
-    setTimeout(() => {
-      if (navigator.onLine) {
-        window.location.reload();
-      }
-    }, 150);
+    // Reload so Google Translate reads the fresh cookie on page load
+    window.location.reload();
   };
 
   // baseNavLinks is now imported from @/lib/navConfig
