@@ -44,7 +44,7 @@ export default function QuickAccessWidget() {
   ];
 
   return (
-    <div className="fixed bottom-32 right-4 md:bottom-36 md:right-6 z-[999]">
+    <div className="fixed bottom-44 right-4 md:bottom-48 md:right-6 z-[999]">
       
       {/* Floating Actions Container */}
       <div 
