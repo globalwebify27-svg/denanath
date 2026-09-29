@@ -29,7 +29,7 @@ export default function Chatbot() {
     <>
       <Script src="https://unpkg.com/@elevenlabs/convai-widget-embed" strategy="lazyOnload" />
       {/* @ts-ignore */}
-      <elevenlabs-convai agent-id="agent_1601knkda0vdfhxtasv9f0ae3zhq"></elevenlabs-convai>
+      <elevenlabs-convai agent-id="agent_6601m3mzsd0heagr93m4cnbsx38y"></elevenlabs-convai>
     </>
   );
 }
