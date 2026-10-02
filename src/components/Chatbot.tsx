@@ -3,6 +3,8 @@
 import Script from "next/script";
 import { useEffect } from "react";
 
+
+
 export default function Chatbot() {
   useEffect(() => {
     // Forcefully adjust ElevenLabs chatbot position inside its Shadow DOM
@@ -28,8 +30,12 @@ export default function Chatbot() {
   return (
     <>
       <Script src="https://unpkg.com/@elevenlabs/convai-widget-embed" strategy="lazyOnload" />
-      {/* @ts-ignore */}
-      <elevenlabs-convai agent-id="agent_6601m3mzsd0heagr93m4cnbsx38y"></elevenlabs-convai>
+      <elevenlabs-convai
+        agent-id="agent_6601m3mzsd0heagr93m4cnbsx38y"
+        markdown-link-allowed-hosts="mediumblue-wasp-172027.hostingersite.com,dmhospital.org"
+        markdown-link-include-www="true"
+        markdown-link-allow-http="true"
+      ></elevenlabs-convai>
     </>
   );
 }
