@@ -32,7 +32,10 @@ export async function generateMetadata(): Promise<Metadata> {
 
   return {
     metadataBase: new URL(siteUrl),
-    title: sanitize(seoData.seoMetaTitle) || "Deenanath Mangeshkar Hospital and Research Center | Pune",
+    title: {
+      default: sanitize(seoData.seoMetaTitle) || "Best Multispeciality Hospital | Deenanath Mangeshkar Hospital And Research Center | DMH Pune",
+      template: "%s | DMH Pune"
+    },
     description: sanitize(seoData.seoMetaDescription) || "Official web portal of Deenanath Mangeshkar Hospital and Research Center, Pune. Experience state-of-the-art clinical super-specialties, Pune's finest doctor roster, 24/7 trauma emergency response, and preventative health care. Delivering medical excellence with human warmth.",
     keywords: seoData.seoKeywords ? sanitize(seoData.seoKeywords)?.split(',').map((k: string) => k.trim()) : ["Deenanath Mangeshkar Hospital and Research Center", "DMH Pune", "Erandwane Hospital", "Best Hospital in Pune", "Book Doctor Appointment Pune", "Emergency Trauma Care Pune", "Mangeshkar Hospital Pune"],
     authors: [{ name: "Deenanath Mangeshkar Hospital and Research Center" }],

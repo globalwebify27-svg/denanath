@@ -14,6 +14,7 @@ export default async function UsersPage() {
       username: true,
       email: true,
       roleId: true,
+      formAccess: true,
       createdAt: true,
       role: { select: { name: true } }
     },

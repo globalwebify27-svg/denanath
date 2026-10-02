@@ -33,7 +33,8 @@ export async function POST(req: Request) {
       id: user.id,
       username: user.username,
       role: user.role.name,
-      permissions: JSON.parse(user.role.permissions || '[]')
+      permissions: JSON.parse(user.role.permissions || '[]'),
+      formAccess: user.formAccess ? JSON.parse(user.formAccess) : []
     };
 
     const token = jwt.sign(payload, JWT_SECRET, { expiresIn: '1d' });

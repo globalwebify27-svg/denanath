@@ -63,30 +63,32 @@ export default function DepartmentsClientPage({ departments }: { departments: an
       </div>
 
       {/* Department Cards */}
-      <div className="space-y-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         {currentDepartments.length > 0 ? (
           currentDepartments.map((dept: any, index: number) => {
             const IconComponent = getDepartmentIcon(dept.name);
             return (
-              <div
+              <Link
                 key={dept.id}
-                className="group bg-white border border-gray-100 rounded-2xl p-6 flex flex-col sm:flex-row sm:items-center gap-6 hover:border-[#D9232D] hover:shadow-[0_8px_30px_rgb(217,35,45,0.08)] hover:-translate-y-0.5 transition-all duration-300"
+                href={`/departments/${dept.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`}
+                className="group bg-white border border-gray-200 rounded-[1.5rem] flex flex-col hover:border-[#007a87] hover:shadow-xl hover:shadow-[#007a87]/10 hover:-translate-y-1 transition-all duration-300 overflow-hidden"
               >
-                <div className="w-14 h-14 rounded-xl bg-[#007a87]/5 group-hover:bg-[#D9232D]/5 flex items-center justify-center shrink-0 border border-[#007a87]/10 group-hover:border-[#D9232D]/20 transition-colors">
-                  <IconComponent className="w-7 h-7 text-[#007a87] group-hover:text-[#D9232D] transition-colors" />
+                {/* Thumbnail / Icon Header */}
+                <div className="relative h-32 w-full bg-slate-50 flex items-center justify-center border-b border-gray-100 group-hover:bg-[#007a87]/5 transition-colors">
+                  <div className="w-16 h-16 rounded-2xl bg-white shadow-sm flex items-center justify-center text-[#007a87] group-hover:scale-110 transition-transform duration-300">
+                    <IconComponent className="w-8 h-8" />
+                  </div>
                 </div>
-                <div className="flex-1">
-                  <h3 className="text-[14px] font-[900] text-[#002b5c] group-hover:text-[#D9232D] uppercase tracking-wide mb-2 leading-tight transition-colors">
+
+                <div className="p-5 flex flex-col flex-1 items-center text-center">
+                  <h3 className="text-[14px] font-[900] text-[#002b5c] group-hover:text-[#007a87] uppercase tracking-wide leading-tight transition-colors min-h-[40px] flex items-center justify-center">
                     {dept.name}
                   </h3>
-                  <Link
-                    href={`/departments/${dept.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`}
-                    className="inline-flex items-center gap-1.5 text-[12px] font-[800] text-[#007a87] group-hover:text-[#D9232D] uppercase tracking-widest transition-colors"
-                  >
+                  <div className="mt-4 w-full rounded-xl bg-[#002b5c] px-4 py-2 text-[11px] font-bold text-white group-hover:bg-[#007a87] transition flex items-center justify-center gap-1.5 uppercase tracking-widest">
                     VIEW DETAILS <ArrowRight size={14} />
-                  </Link>
+                  </div>
                 </div>
-              </div>
+              </Link>
             );
           })
         ) : (

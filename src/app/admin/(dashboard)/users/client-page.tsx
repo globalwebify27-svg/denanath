@@ -9,9 +9,18 @@ export default function UsersClientPage({ initialUsers, roles }: { initialUsers:
   const router = useRouter();
   const [users, setUsers] = useState(initialUsers);
   const [editingUser, setEditingUser] = useState<any>(null);
-  const [formData, setFormData] = useState({ username: '', email: '', password: '', roleId: '' });
+  const [formData, setFormData] = useState({ username: '', email: '', password: '', roleId: '', formAccess: [] as string[] });
   const [saving, setSaving] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+
+  const availableForms = [
+    'Patient Portal Register',
+    'Job Application',
+    'Patient Registration',
+    'Online Payment',
+    'Contact Us',
+    'Patient Portal Login'
+  ];
 
   const handleEdit = (user: any) => {
     setEditingUser(user);
@@ -19,13 +28,14 @@ export default function UsersClientPage({ initialUsers, roles }: { initialUsers:
       username: user.username,
       email: user.email || '',
       password: '',
-      roleId: user.roleId
+      roleId: user.roleId,
+      formAccess: user.formAccess ? JSON.parse(user.formAccess) : []
     });
   };
 
   const handleNew = () => {
     setEditingUser({ id: 'new' });
-    setFormData({ username: '', email: '', password: '', roleId: roles[0]?.id || '' });
+    setFormData({ username: '', email: '', password: '', roleId: roles[0]?.id || '', formAccess: [] });
   };
 
   const handleSave = async () => {
@@ -37,11 +47,16 @@ export default function UsersClientPage({ initialUsers, roles }: { initialUsers:
     const url = editingUser.id === 'new' ? '/api/admin/users' : `/api/admin/users/${editingUser.id}`;
     const method = editingUser.id === 'new' ? 'POST' : 'PUT';
 
+    const payload = {
+      ...formData,
+      formAccess: JSON.stringify(formData.formAccess)
+    };
+
     try {
       const res = await fetch(url, {
         method,
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(payload)
       });
       const data = await res.json();
       
@@ -165,6 +180,29 @@ export default function UsersClientPage({ initialUsers, roles }: { initialUsers:
                 >
                   {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                 </button>
+              </div>
+            </div>
+            
+            <div className="md:col-span-2">
+              <label className="block text-sm font-bold text-slate-700 mb-2">Form Submission Access (Specific Forms)</label>
+              <p className="text-xs text-slate-500 mb-3">Select which form submissions this user can view. (Mainly applies if they have the Submissions permission)</p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+                {availableForms.map((formType) => (
+                  <label key={formType} className="flex items-center space-x-3 bg-slate-50 p-3 rounded-lg border border-slate-200 cursor-pointer hover:bg-slate-100 transition-colors">
+                    <input
+                      type="checkbox"
+                      className="w-4 h-4 text-[#007a87] rounded border-slate-300 focus:ring-[#007a87]"
+                      checked={formData.formAccess.includes(formType)}
+                      onChange={(e) => {
+                        const newAccess = e.target.checked 
+                          ? [...formData.formAccess, formType] 
+                          : formData.formAccess.filter((f) => f !== formType);
+                        setFormData({ ...formData, formAccess: newAccess });
+                      }}
+                    />
+                    <span className="text-sm font-medium text-slate-700">{formType}</span>
+                  </label>
+                ))}
               </div>
             </div>
           </div>

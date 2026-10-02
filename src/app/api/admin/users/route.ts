@@ -25,7 +25,7 @@ export async function GET() {
 
 export async function POST(req: Request) {
   try {
-    const { username, email, password, roleId } = await req.json();
+    const { username, email, password, roleId, formAccess } = await req.json();
     
     if (!username || !password || !roleId) {
       return NextResponse.json({ success: false, message: 'Username, password, and role are required' }, { status: 400 });
@@ -38,13 +38,15 @@ export async function POST(req: Request) {
         username,
         email,
         passwordHash,
-        roleId
+        roleId,
+        formAccess: formAccess || "[]"
       },
       select: {
         id: true,
         username: true,
         email: true,
         roleId: true,
+        formAccess: true,
         role: { select: { name: true } }
       }
     });

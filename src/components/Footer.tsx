@@ -50,9 +50,9 @@ export default function Footer({ latestEvent, footerSettings }: { latestEvent?: 
               <p className="text-xs text-[#b2dfdb] leading-relaxed font-light">
                 {footerSettings?.description ?? "Deenanath Mangeshkar Hospital and Research Center is Pune's leading clinical landmark, combining state-of-the-art diagnostics with legendary medical experts and warm, ethical care."}
               </p>
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-white/10 text-[10px] font-semibold text-white">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#a7ffeb] animate-ping" />
-                <span>{footerSettings?.managedBy ?? "Managed by Lata Mangeshkar Medical Foundation"}</span>
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-white/10 text-[10px] font-semibold text-white whitespace-nowrap">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#a7ffeb] animate-ping shrink-0" />
+                <span className="whitespace-nowrap">{footerSettings?.managedBy ?? "Managed by Lata Mangeshkar Medical Foundation"}</span>
               </div>
               
               {/* Social Links */}

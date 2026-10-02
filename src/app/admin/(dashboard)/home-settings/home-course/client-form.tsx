@@ -23,22 +23,37 @@ export default function HomeCourseClientForm({ initialData }: { initialData: any
     return endDate < now;
   };
 
+  const triggerSubmit = () => {
+    setTimeout(() => {
+      const btn = document.getElementById("hidden-submit-btn") as HTMLButtonElement;
+      if (btn) btn.click();
+    }, 50);
+  };
+
   const addLeftCourse = () => {
     const newId = "left-" + Date.now();
-    setFormData(prev => ({
-      ...prev,
-      leftCourses: [...prev.leftCourses, { id: newId, title: "New Course", link: "", linkText: "View Details", content: "", gallery: [] }]
-    }));
-    setTimeout(() => handleSave(), 100);
+    const newCourse = { id: newId, title: "New Course", link: "", linkText: "View Details", content: "", gallery: [] };
+    const updated = [...formData.leftCourses, newCourse];
+    setFormData(prev => ({ ...prev, leftCourses: updated }));
+    
+    // Explicitly sync the hidden input to avoid React batching delays before form submission
+    const input = document.querySelector('input[name="leftCourses"]') as HTMLInputElement;
+    if (input) input.value = JSON.stringify(updated);
+    
+    triggerSubmit();
   };
 
   const addRightCourse = () => {
     const newId = "right-" + Date.now();
-    setFormData(prev => ({
-      ...prev,
-      rightCourses: [...prev.rightCourses, { id: newId, title: "New Program", link: "", linkText: "View Form", content: "", gallery: [] }]
-    }));
-    setTimeout(() => handleSave(), 100);
+    const newCourse = { id: newId, title: "New Program", link: "", linkText: "View Form", content: "", gallery: [] };
+    const updated = [...formData.rightCourses, newCourse];
+    setFormData(prev => ({ ...prev, rightCourses: updated }));
+    
+    // Explicitly sync the hidden input to avoid React batching delays before form submission
+    const input = document.querySelector('input[name="rightCourses"]') as HTMLInputElement;
+    if (input) input.value = JSON.stringify(updated);
+    
+    triggerSubmit();
   };
 
   const removeLeftCourse = (index: number) => {
@@ -55,27 +70,29 @@ export default function HomeCourseClientForm({ initialData }: { initialData: any
     const updated = [...formData.leftCourses];
     updated[index].status = updated[index].status === false ? true : false;
     setFormData({ ...formData, leftCourses: updated });
-    setTimeout(() => handleSave(), 100);
+    
+    const input = document.querySelector('input[name="leftCourses"]') as HTMLInputElement;
+    if (input) input.value = JSON.stringify(updated);
+    triggerSubmit();
   };
 
   const toggleRightCourseStatus = (index: number) => {
     const updated = [...formData.rightCourses];
     updated[index].status = updated[index].status === false ? true : false;
     setFormData({ ...formData, rightCourses: updated });
-    setTimeout(() => handleSave(), 100);
+    
+    const input = document.querySelector('input[name="rightCourses"]') as HTMLInputElement;
+    if (input) input.value = JSON.stringify(updated);
+    triggerSubmit();
   };
 
   async function handleSave() {
-    try {
-      const form = document.getElementById("home-course-form") as HTMLFormElement;
-      if (form) form.requestSubmit();
-    } catch (e) {
-      console.error(e);
-    }
+    triggerSubmit();
   }
 
   return (
     <div className="space-y-8">
+      <button type="submit" id="hidden-submit-btn" className="hidden">Hidden Submit</button>
       
       {/* Header */}
       <div className="mb-10 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 bg-white p-6 md:p-10 rounded-3xl shadow-sm border border-slate-100 relative overflow-hidden group">

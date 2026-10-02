@@ -247,9 +247,10 @@ export default function SearchModal({ isOpen, onClose, doctors, departments }: S
                     ) : (
                       <div className="flex gap-4 overflow-x-auto pb-4 hide-scrollbar">
                         {displayDoctors.map(doc => (
-                          <div 
+                          <Link 
                             key={`trend-${doc.id}`} 
-                            onClick={() => setSearchQuery(doc.name)}
+                            href={`/doctors-profile/${doc.id}`}
+                            onClick={onClose}
                             className="sm: p-4 rounded-[1.25rem] sm:rounded-[1.5rem] bg-slate-50 border border-slate-100 flex items-center gap-3 sm:gap-4 cursor-pointer hover:bg-white hover:shadow-xl hover:shadow-[#007a87]/10 hover:-translate-y-1 transition-all group"
                           >
                             <img 
@@ -267,7 +268,7 @@ export default function SearchModal({ isOpen, onClose, doctors, departments }: S
                               <h5 className="text-xs sm:text-sm font-bold text-slate-900 truncate">{doc.name}</h5>
                               <p className="text-[9px] sm:text-[10px] text-[#007a87] font-bold uppercase tracking-wider mt-0.5 truncate">{doc.specialtyName}</p>
                             </div>
-                          </div>
+                          </Link>
                         ))}
                       </div>
                     )}
@@ -278,7 +279,7 @@ export default function SearchModal({ isOpen, onClose, doctors, departments }: S
                       filteredDoctors.map((doc) => (
                         <Link 
                           key={doc.id} 
-                          href={`/book-appointment?doctor_id=${doc.id}&speciality_id=${doc.specialtyId}`}
+                          href={`/doctors-profile/${doc.id}`}
                           onClick={onClose}
                           className="group p-4 sm:p-5 rounded-xl sm:rounded-2xl hover:bg-slate-50 border border-transparent hover:border-slate-100 transition-all flex items-center justify-between gap-4 cursor-pointer"
                         >

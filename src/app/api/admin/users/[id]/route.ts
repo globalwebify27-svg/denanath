@@ -4,9 +4,10 @@ import bcrypt from 'bcryptjs';
 
 export async function PUT(req: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const { username, email, password, roleId } = await req.json();
+    const { username, email, password, roleId, formAccess } = await req.json();
     
     const updateData: any = { username, email, roleId };
+    if (formAccess) updateData.formAccess = formAccess;
     
     if (password) {
       updateData.passwordHash = await bcrypt.hash(password, 10);
@@ -20,6 +21,7 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
         username: true,
         email: true,
         roleId: true,
+        formAccess: true,
         role: { select: { name: true } }
       }
     });
