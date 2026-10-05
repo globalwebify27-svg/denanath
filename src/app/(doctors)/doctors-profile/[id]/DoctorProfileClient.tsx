@@ -2,22 +2,22 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { 
-  Calendar, Clock, BookOpen, Briefcase, GraduationCap, 
+import {
+  Calendar, Clock, BookOpen, Briefcase, GraduationCap,
   Stethoscope, Phone, UserRound
 } from "lucide-react";
 
 const DoctorImage = ({ doc, className, iconClassName }: { doc: any, className?: string, iconClassName?: string }) => {
   const [error, setError] = useState(false);
-  
+
   if (!doc?.image || error) {
     return <UserRound className={iconClassName} />;
   }
 
   return (
-    <img 
-      src={doc.image} 
-      alt={doc.name} 
+    <img
+      src={doc.image}
+      alt={doc.name}
       className={className}
       onError={() => setError(true)}
     />
@@ -43,7 +43,7 @@ const renderListItem = (item: any) => {
       if (item.duration) parts.push(`for ${item.duration}`);
       return parts.join(' ');
     }
-    // Training: TrainingName at Institute for Duration
+    // Training: TrainingName at Institute for Duratio
     if ('trainingName' in item || 'institute' in item || 'duration' in item || 'completionYear' in item) {
       const parts = [];
       if (item.trainingName) parts.push(item.trainingName);
@@ -68,24 +68,24 @@ export default function DoctorProfileClient({ initialDoctor }: { initialDoctor: 
       setIsLoadingTimings(false);
       return;
     }
-    
+
     const fetchAppStatus = async () => {
       setIsLoadingTimings(true);
       try {
         const specNames = doctor.specialty ? String(doctor.specialty).split(',').map(s => s.trim()) : [];
         const specIds = doctor.dmhSpecialityId ? String(doctor.dmhSpecialityId).split(',').map(s => s.trim()) : [];
-        
+
         const branchAppStatus: Record<string, { isApp: boolean, speciality_id: string }> = {};
 
         const promises = specIds.map(async (specId, index) => {
           const specName = specNames[index] || '';
           if (!specId) return;
-          
+
           const res = await fetch('/api/dmh', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 
-              action: 'opd_day_time', 
+            body: JSON.stringify({
+              action: 'opd_day_time',
               doctor_id: String(doctor.dmhDoctorId),
               speciality_id: specId
             }),
@@ -105,48 +105,48 @@ export default function DoctorProfileClient({ initialDoctor }: { initialDoctor: 
         });
 
         await Promise.all(promises);
-        
-        const enhancedTimings = (doctor.timings || []).map((t: any) => {
-           const branchKey = (t.branch || '').toUpperCase();
-           const specId = t.speciality_id || '';
-           
-           let isApp = false;
-           let mappedSpecId = specId;
-           
-           // If we have an exact match by speciality_id from the DB
-           if (specId && branchAppStatus[specId]) {
-             isApp = branchAppStatus[specId].isApp;
-           } else {
-             // Fallback for older database formats
-             let status = branchAppStatus[branchKey];
-             if (status) {
-               isApp = status.isApp;
-               mappedSpecId = status.speciality_id;
-             } else if (specIds.length === 1) {
-               status = branchAppStatus[specIds[0]];
-               if (status) {
-                 isApp = status.isApp;
-                 mappedSpecId = status.speciality_id;
-               }
-             } else {
-               for (let i = 0; i < specNames.length; i++) {
-                 if (branchKey.includes(specNames[i].toUpperCase()) || specNames[i].toUpperCase().includes(branchKey)) {
-                   status = branchAppStatus[specIds[i]];
-                   if (status) {
-                     isApp = status.isApp;
-                     mappedSpecId = status.speciality_id;
-                     break;
-                   }
-                 }
-               }
-             }
-           }
 
-           return {
-             ...t,
-             isApp: isApp ? 'Y' : 'N',
-             _speciality_id: mappedSpecId
-           };
+        const enhancedTimings = (doctor.timings || []).map((t: any) => {
+          const branchKey = (t.branch || '').toUpperCase();
+          const specId = t.speciality_id || '';
+
+          let isApp = false;
+          let mappedSpecId = specId;
+
+          // If we have an exact match by speciality_id from the DB
+          if (specId && branchAppStatus[specId]) {
+            isApp = branchAppStatus[specId].isApp;
+          } else {
+            // Fallback for older database formats
+            let status = branchAppStatus[branchKey];
+            if (status) {
+              isApp = status.isApp;
+              mappedSpecId = status.speciality_id;
+            } else if (specIds.length === 1) {
+              status = branchAppStatus[specIds[0]];
+              if (status) {
+                isApp = status.isApp;
+                mappedSpecId = status.speciality_id;
+              }
+            } else {
+              for (let i = 0; i < specNames.length; i++) {
+                if (branchKey.includes(specNames[i].toUpperCase()) || specNames[i].toUpperCase().includes(branchKey)) {
+                  status = branchAppStatus[specIds[i]];
+                  if (status) {
+                    isApp = status.isApp;
+                    mappedSpecId = status.speciality_id;
+                    break;
+                  }
+                }
+              }
+            }
+          }
+
+          return {
+            ...t,
+            isApp: isApp ? 'Y' : 'N',
+            _speciality_id: mappedSpecId
+          };
         });
 
         setDynamicTimings(enhancedTimings.length > 0 ? enhancedTimings : doctor.timings || []);
@@ -161,12 +161,12 @@ export default function DoctorProfileClient({ initialDoctor }: { initialDoctor: 
 
   return (
     <div className="bg-white rounded-[2rem] shadow-[0_8px_40px_rgb(0,0,0,0.03)] border border-slate-100/60 overflow-hidden">
-      
+
       {/* Header Profile Section */}
       <div className="relative p-6 sm:p-10 border-b border-slate-100 bg-white">
         <div className="flex flex-col md:flex-row items-center md:items-start gap-8 md:gap-12 w-full">
           <div className="w-[180px] h-[240px] md:w-[240px] md:h-[300px] rounded-2xl bg-slate-50 flex items-center justify-center shrink-0 border border-slate-100 shadow-sm overflow-hidden text-slate-400 mx-auto md:mx-0">
-            <DoctorImage 
+            <DoctorImage
               doc={doctor}
               className="w-full h-full object-cover bg-white"
               iconClassName="w-20 h-20 text-slate-300"
@@ -181,13 +181,13 @@ export default function DoctorProfileClient({ initialDoctor }: { initialDoctor: 
                 <span>{doctor.specialty}</span>
               </div>
             </div>
-            
+
             <div className="mt-auto flex flex-col gap-5">
               {/* Timings Table */}
               {isLoadingTimings ? (
                 <div className="w-full max-w-2xl p-6 border border-dashed border-slate-300 rounded-xl bg-slate-50 text-slate-500 font-medium text-sm flex flex-col items-center justify-center gap-3">
-                   <div className="w-6 h-6 border-2 border-teal-500 border-t-transparent rounded-full animate-spin"></div>
-                   Loading OPD Schedule...
+                  <div className="w-6 h-6 border-2 border-teal-500 border-t-transparent rounded-full animate-spin"></div>
+                  Loading OPD Schedule...
                 </div>
               ) : dynamicTimings.length > 0 ? (
                 <div className="w-full max-w-2xl">
@@ -213,41 +213,41 @@ export default function DoctorProfileClient({ initialDoctor }: { initialDoctor: 
                       </thead>
                       <tbody className="divide-y divide-slate-100 bg-white">
                         {(() => {
-                           const grouped: any[] = [];
-                           let currentGroup: any = null;
-                           for (const t of dynamicTimings) {
-                             if (!currentGroup || currentGroup.branch !== t.branch) {
-                                currentGroup = { branch: t.branch, isApp: t.isApp, _speciality_id: t._speciality_id, slots: [] };
-                                grouped.push(currentGroup);
-                             }
-                             currentGroup.slots.push(t);
-                           }
-                           
-                           return grouped.map((group: any, gIdx: number) => {
-                             return group.slots.map((slot: any, sIdx: number) => (
-                               <tr key={`${gIdx}-${sIdx}`} className="hover:bg-teal-50/30 transition-colors even:bg-slate-50/50">
-                                 {sIdx === 0 && (
-                                   <td rowSpan={group.slots.length} className="py-3 px-2 sm:py-4 sm:px-4 font-bold text-slate-700 uppercase tracking-wide break-words leading-snug align-middle border-r border-slate-100/50 bg-white">
-                                     {group.branch}
-                                   </td>
-                                 )}
-                                 <td className={`py-3 px-1 sm:py-4 sm:px-4 font-medium text-slate-600 text-center ${sIdx !== 0 ? 'border-t border-slate-100/50' : ''}`}>{slot.day}</td>
-                                 <td className={`py-3 px-1 sm:py-4 sm:px-4 text-slate-600 font-medium whitespace-pre-line text-center leading-snug ${sIdx !== 0 ? 'border-t border-slate-100/50' : ''}`}>{slot.time}</td>
-                                 {sIdx === 0 && (
-                                   <td rowSpan={group.slots.length} className="py-3 px-2 sm:py-4 sm:px-5 text-center align-middle border-l border-slate-100/50 bg-white">
-                                     {group.isApp === 'Y' && (
-                                       <Link 
-                                         href={`/book-appointment?doctor_id=${doctor.dmhDoctorId || doctor.id || ''}&speciality_id=${group._speciality_id || doctor.dmhSpecialityId || ''}&service_point_id=${doctor.dmhServicePointId || ''}`} 
-                                         className="inline-flex items-center justify-center px-3 py-1.5 sm:px-5 sm:py-2.5 bg-gradient-to-r from-[#007a87] to-[#006a75] hover:from-[#005f69] hover:to-[#004f58] text-white font-extrabold text-[10px] sm:text-xs uppercase tracking-wider transition-all duration-300 rounded-lg shadow-sm hover:shadow-md whitespace-nowrap"
-                                       >
-                                         Book
-                                       </Link>
-                                     )}
-                                   </td>
-                                 )}
-                               </tr>
-                             ));
-                           });
+                          const grouped: any[] = [];
+                          let currentGroup: any = null;
+                          for (const t of dynamicTimings) {
+                            if (!currentGroup || currentGroup.branch !== t.branch) {
+                              currentGroup = { branch: t.branch, isApp: t.isApp, _speciality_id: t._speciality_id, slots: [] };
+                              grouped.push(currentGroup);
+                            }
+                            currentGroup.slots.push(t);
+                          }
+
+                          return grouped.map((group: any, gIdx: number) => {
+                            return group.slots.map((slot: any, sIdx: number) => (
+                              <tr key={`${gIdx}-${sIdx}`} className="hover:bg-teal-50/30 transition-colors even:bg-slate-50/50">
+                                {sIdx === 0 && (
+                                  <td rowSpan={group.slots.length} className="py-3 px-2 sm:py-4 sm:px-4 font-bold text-slate-700 uppercase tracking-wide break-words leading-snug align-middle border-r border-slate-100/50 bg-white">
+                                    {group.branch}
+                                  </td>
+                                )}
+                                <td className={`py-3 px-1 sm:py-4 sm:px-4 font-medium text-slate-600 text-center ${sIdx !== 0 ? 'border-t border-slate-100/50' : ''}`}>{slot.day}</td>
+                                <td className={`py-3 px-1 sm:py-4 sm:px-4 text-slate-600 font-medium whitespace-pre-line text-center leading-snug ${sIdx !== 0 ? 'border-t border-slate-100/50' : ''}`}>{slot.time}</td>
+                                {sIdx === 0 && (
+                                  <td rowSpan={group.slots.length} className="py-3 px-2 sm:py-4 sm:px-5 text-center align-middle border-l border-slate-100/50 bg-white">
+                                    {group.isApp === 'Y' && (
+                                      <Link
+                                        href={`/book-appointment?doctor_id=${doctor.dmhDoctorId || doctor.id || ''}&speciality_id=${group._speciality_id || doctor.dmhSpecialityId || ''}&service_point_id=${doctor.dmhServicePointId || ''}`}
+                                        className="inline-flex items-center justify-center px-3 py-1.5 sm:px-5 sm:py-2.5 bg-gradient-to-r from-[#007a87] to-[#006a75] hover:from-[#005f69] hover:to-[#004f58] text-white font-extrabold text-[10px] sm:text-xs uppercase tracking-wider transition-all duration-300 rounded-lg shadow-sm hover:shadow-md whitespace-nowrap"
+                                      >
+                                        Book
+                                      </Link>
+                                    )}
+                                  </td>
+                                )}
+                              </tr>
+                            ));
+                          });
                         })()}
                       </tbody>
                     </table>
@@ -281,29 +281,29 @@ export default function DoctorProfileClient({ initialDoctor }: { initialDoctor: 
                       </thead>
                       <tbody className="divide-y divide-slate-100 bg-white">
                         {(() => {
-                           const grouped: any[] = [];
-                           let currentGroup: any = null;
-                           for (const t of doctor.timings) {
-                             if (!currentGroup || currentGroup.branch !== t.branch) {
-                                currentGroup = { branch: t.branch, slots: [] };
-                                grouped.push(currentGroup);
-                             }
-                             currentGroup.slots.push(t);
-                           }
-                           
-                           return grouped.map((group: any, gIdx: number) => {
-                             return group.slots.map((slot: any, sIdx: number) => (
-                               <tr key={`${gIdx}-${sIdx}`} className="hover:bg-teal-50/30 transition-colors even:bg-slate-50/50">
-                                 {sIdx === 0 && (
-                                   <td rowSpan={group.slots.length} className="py-3 px-2 sm:py-4 sm:px-4 font-bold text-slate-700 uppercase tracking-wide break-words leading-snug align-middle border-r border-slate-100/50 bg-white">
-                                     {group.branch}
-                                   </td>
-                                 )}
-                                 <td className={`py-3 px-1 sm:py-4 sm:px-4 font-medium text-slate-600 text-center ${sIdx !== 0 ? 'border-t border-slate-100/50' : ''}`}>{slot.day}</td>
-                                 <td className={`py-3 px-1 sm:py-4 sm:px-4 text-slate-600 font-medium whitespace-pre-line text-center leading-snug ${sIdx !== 0 ? 'border-t border-slate-100/50' : ''}`}>{slot.time}</td>
-                               </tr>
-                             ));
-                           });
+                          const grouped: any[] = [];
+                          let currentGroup: any = null;
+                          for (const t of doctor.timings) {
+                            if (!currentGroup || currentGroup.branch !== t.branch) {
+                              currentGroup = { branch: t.branch, slots: [] };
+                              grouped.push(currentGroup);
+                            }
+                            currentGroup.slots.push(t);
+                          }
+
+                          return grouped.map((group: any, gIdx: number) => {
+                            return group.slots.map((slot: any, sIdx: number) => (
+                              <tr key={`${gIdx}-${sIdx}`} className="hover:bg-teal-50/30 transition-colors even:bg-slate-50/50">
+                                {sIdx === 0 && (
+                                  <td rowSpan={group.slots.length} className="py-3 px-2 sm:py-4 sm:px-4 font-bold text-slate-700 uppercase tracking-wide break-words leading-snug align-middle border-r border-slate-100/50 bg-white">
+                                    {group.branch}
+                                  </td>
+                                )}
+                                <td className={`py-3 px-1 sm:py-4 sm:px-4 font-medium text-slate-600 text-center ${sIdx !== 0 ? 'border-t border-slate-100/50' : ''}`}>{slot.day}</td>
+                                <td className={`py-3 px-1 sm:py-4 sm:px-4 text-slate-600 font-medium whitespace-pre-line text-center leading-snug ${sIdx !== 0 ? 'border-t border-slate-100/50' : ''}`}>{slot.time}</td>
+                              </tr>
+                            ));
+                          });
                         })()}
                       </tbody>
                     </table>
@@ -317,8 +317,8 @@ export default function DoctorProfileClient({ initialDoctor }: { initialDoctor: 
                 </div>
               ) : (
                 <div className="w-full max-w-2xl p-4 border border-dashed border-slate-300 rounded-xl bg-slate-50 text-slate-500 font-medium text-sm flex flex-col items-center justify-center gap-2">
-                   <Calendar className="w-5 h-5 text-slate-400" />
-                   No OPD schedule available
+                  <Calendar className="w-5 h-5 text-slate-400" />
+                  No OPD schedule available
                 </div>
               )}
             </div>
@@ -332,7 +332,7 @@ export default function DoctorProfileClient({ initialDoctor }: { initialDoctor: 
         <div className="space-y-8">
           {/* Full-width details — OPD timings now shown in header above */}
           <div className="space-y-8">
-            
+
             {doctor.education && doctor.education.length > 0 && (
               <div className="bg-white rounded-3xl p-6 sm:p-10 border border-slate-100 shadow-[0_4px_20px_rgb(0,0,0,0.02)]">
                 <h3 className="text-xl font-extrabold text-[#002b5c] mb-6 flex items-center gap-3">
@@ -390,7 +390,7 @@ export default function DoctorProfileClient({ initialDoctor }: { initialDoctor: 
                   {doctor.publications.map((item: any, i: number) => {
                     let title = '';
                     let link = '';
-                    
+
                     if (typeof item === 'string') {
                       title = item;
                     } else if (item && typeof item === 'object') {
