@@ -27,8 +27,30 @@ const DoctorImage = ({ doc, className, iconClassName }: { doc: any, className?: 
 const renderListItem = (item: any) => {
   if (typeof item === 'string') return item;
   if (typeof item === 'object' && item !== null) {
-    if (item.degree || item.collegeName || item.year) {
-      return [item.degree, item.collegeName, item.year].filter(Boolean).join(' - ');
+    // Education: Degree from College in Year
+    if ('degree' in item || 'collegeName' in item || 'year' in item) {
+      const parts = [];
+      if (item.degree) parts.push(item.degree);
+      if (item.collegeName) parts.push(`from ${item.collegeName}`);
+      if (item.year) parts.push(`in ${item.year}`);
+      return parts.join(' ');
+    }
+    // Experience: Specialist at Organization for Duration (Check experience before training to avoid overlap if only duration exists)
+    if ('specialist' in item || 'organization' in item || ('duration' in item && !('trainingName' in item) && !('institute' in item) && !('institute' in item))) {
+      const parts = [];
+      if (item.specialist) parts.push(item.specialist);
+      if (item.organization) parts.push(`at ${item.organization}`);
+      if (item.duration) parts.push(`for ${item.duration}`);
+      return parts.join(' ');
+    }
+    // Training: TrainingName at Institute for Duration
+    if ('trainingName' in item || 'institute' in item || 'duration' in item || 'completionYear' in item) {
+      const parts = [];
+      if (item.trainingName) parts.push(item.trainingName);
+      if (item.institute) parts.push(`at ${item.institute}`);
+      if (item.duration) parts.push(`for ${item.duration}`);
+      if (item.completionYear && !item.duration) parts.push(`in ${item.completionYear}`);
+      return parts.join(' ');
     }
     return Object.values(item).filter(Boolean).join(' - ');
   }
