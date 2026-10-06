@@ -118,6 +118,15 @@ const MENU_ITEMS = [
     ]
   },
   {
+    name: "Top Header Pages", permission: "manage_specialties",
+    icon: <FileText size={20} />,
+    links: [
+      { name: "Blood Bank", permission: "manage_specialties", href: "/admin/departments/blood-bank" },
+      { name: "Emergency", permission: "manage_specialties", href: "/admin/departments/emergency" },
+      { name: "Pharmacy", permission: "manage_specialties", href: "/admin/departments/pharmacy" },
+    ]
+  },
+  {
     name: "Research", permission: "manage_research",
     icon: <Microscope size={20} />,
     links: [
