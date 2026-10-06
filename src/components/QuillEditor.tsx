@@ -49,7 +49,7 @@ export default function QuillEditor({ name, defaultValue, value, onChange }: { n
     enableDragAndDropFileToEditor: true,
     askBeforePasteFromWord: false,
     askBeforePasteHTML: false,
-    defaultActionOnPaste: 'insert_only_text',
+    defaultActionOnPaste: 'insert_only_text' as any,
     controls: {
       fontsize: {
         list: {
@@ -268,15 +268,19 @@ export default function QuillEditor({ name, defaultValue, value, onChange }: { n
           font-weight: bold !important;
         }
         .jodit-wysiwyg ul {
+          display: block !important;
           list-style-type: disc !important;
-          padding-left: 2rem !important;
+          list-style-position: inside !important;
+          padding-left: 1.5rem !important;
           margin-top: 0.5rem !important;
           margin-bottom: 0.5rem !important;
           font-size: 18px !important;
         }
         .jodit-wysiwyg ol {
+          display: block !important;
           list-style-type: decimal !important;
-          padding-left: 2rem !important;
+          list-style-position: inside !important;
+          padding-left: 1.5rem !important;
           margin-top: 0.5rem !important;
           margin-bottom: 0.5rem !important;
           font-size: 18px !important;
@@ -284,6 +288,10 @@ export default function QuillEditor({ name, defaultValue, value, onChange }: { n
         .jodit-wysiwyg li {
           display: list-item !important;
           font-size: 18px !important;
+          margin-bottom: 0.25rem !important;
+        }
+        .jodit-wysiwyg li p {
+          display: inline !important;
         }
       `}</style>
       {name && <input type="hidden" name={name} defaultValue={value !== undefined ? value : (defaultValue || "")} ref={hiddenInputRef} />}
