@@ -126,8 +126,8 @@ export default function SimulationCenterClient({ initialData, labsData }: { init
                   <div className="bg-white border border-slate-200 rounded-3xl p-6 md:p-10 shadow-sm relative overflow-hidden group">
                     <div className="absolute top-0 left-0 w-2 h-full bg-[#007a87]"></div>
                     <div className="prose max-w-none text-slate-700 space-y-6">
-                      {initialData?.introText1 && <p className="text-base leading-relaxed">{initialData.introText1}</p>}
-                      {initialData?.introText2 && <p className="text-base leading-relaxed">{initialData.introText2}</p>}
+                      {initialData?.introText1 && <div className="text-base leading-relaxed" dangerouslySetInnerHTML={{ __html: initialData.introText1 }} />}
+                      {initialData?.introText2 && <div className="text-base leading-relaxed" dangerouslySetInnerHTML={{ __html: initialData.introText2 }} />}
                     </div>
                     {initialData?.image && (
                       <div className="mt-8 rounded-2xl overflow-hidden border border-slate-100 shadow-sm">
