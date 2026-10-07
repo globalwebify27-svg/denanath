@@ -40,7 +40,7 @@ export const defaultQuickLinksData = {
     { 
       title: "Diagnosis", 
       subtitle: "Advanced Diagnostic Services", 
-      url: "#", 
+      url: "/services", 
       iconString: "Microscope", 
       bgColorFrom: "#002b5c", 
       bgColorTo: "#004085", 

@@ -106,6 +106,7 @@ model AdminUser {
   email        String?
   passwordHash String
   roleId       String
+  formAccess   String?   @db.LongText
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
   role         AdminRole @relation(fields: [roleId], references: [id])

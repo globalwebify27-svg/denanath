@@ -67,8 +67,6 @@ export default function EmergencyClientPage({ data }: { data?: any }) {
           <div className="flex items-center gap-2 text-red-100 text-[10px] font-medium tracking-wide mb-2">
             <Link href="/" className="hover:text-white transition-colors">Home</Link>
             <ChevronRight className="w-3.5 h-3.5" />
-            <Link href="/departments" className="hover:text-white transition-colors">Departments</Link>
-            <ChevronRight className="w-3.5 h-3.5" />
             <span className="text-white">Emergency</span>
           </div>
           <h1 className="text-2xl md:text-3xl leading-tight font-extrabold text-white tracking-tight uppercase">{d.title}</h1>

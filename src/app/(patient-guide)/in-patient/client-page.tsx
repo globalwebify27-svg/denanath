@@ -296,7 +296,7 @@ export default function InPatientClientPage({ pageData }: { pageData: any }) {
                       {guidelines.map((g: string, i: number) => (
                         <li key={i} className="flex items-start gap-3 min-w-0">
                           <ChevronRight className="w-5 h-5 text-teal-600 shrink-0 mt-0.5" />
-                          <span className="flex-1 min-w-0 break-words md:break-normal">{g}</span>
+                          <span className="flex-1 min-w-0 break-words md:break-normal" dangerouslySetInnerHTML={{ __html: g }}></span>
                         </li>
                       ))}
                     </ul>
@@ -572,7 +572,7 @@ export default function InPatientClientPage({ pageData }: { pageData: any }) {
                         {insuranceCompanies.map((company: string, i: number) => (
                           <div key={i} className="flex items-start gap-2 border-b border-slate-100 pb-2">
                             <ChevronRight className="w-4 h-4 mt-1 text-teal-500 shrink-0" />
-                            <span style={{ fontSize: '14px', lineHeight: '24px' }} className="text-slate-600 font-normal">{company}</span>
+                            <span style={{ fontSize: '14px', lineHeight: '24px' }} className="text-slate-600 font-normal" dangerouslySetInnerHTML={{ __html: company }}></span>
                           </div>
                         ))}
                       </div>
@@ -583,7 +583,7 @@ export default function InPatientClientPage({ pageData }: { pageData: any }) {
                         {tpaCompanies.map((company: string, i: number) => (
                           <div key={i} className="flex items-start gap-2 border-b border-slate-100 pb-2">
                             <ChevronRight className="w-4 h-4 mt-1 text-teal-500 shrink-0" />
-                            <span style={{ fontSize: '14px', lineHeight: '24px' }} className="text-slate-600 font-normal">{company}</span>
+                            <span style={{ fontSize: '14px', lineHeight: '24px' }} className="text-slate-600 font-normal" dangerouslySetInnerHTML={{ __html: company }}></span>
                           </div>
                         ))}
                       </div>
@@ -595,7 +595,7 @@ export default function InPatientClientPage({ pageData }: { pageData: any }) {
                         {corporateCompanies.map((company: string, i: number) => (
                           <div key={i} className="flex items-start gap-2 border-b border-slate-100 pb-2">
                             <CheckCircle2 className="w-4 h-4 mt-1 text-blue-500 shrink-0" />
-                            <span style={{ fontSize: '14px', lineHeight: '24px' }} className="text-slate-600 font-normal">{company}</span>
+                            <span style={{ fontSize: '14px', lineHeight: '24px' }} className="text-slate-600 font-normal" dangerouslySetInnerHTML={{ __html: company }}></span>
                           </div>
                         ))}
                       </div>

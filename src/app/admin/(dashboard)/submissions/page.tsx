@@ -13,7 +13,12 @@ export default async function SubmissionsAdminPage() {
 
   if (adminDataCookie) {
     try {
-      const data = JSON.parse(decodeURIComponent(adminDataCookie));
+      let data;
+      try {
+        data = JSON.parse(decodeURIComponent(adminDataCookie));
+      } catch (innerErr) {
+        data = JSON.parse(adminDataCookie);
+      }
       const user = await prisma.adminUser.findUnique({
         where: { id: data.id },
         select: { formAccess: true, role: { select: { name: true } } }
@@ -28,11 +33,12 @@ export default async function SubmissionsAdminPage() {
   }
 
   // If Super Admin, they typically see everything. Otherwise, filter by formAccess.
-  // We apply filter if formAccess has items, or if role is not a master role like 'Super Admin'/'Developer'
+  // We apply filter if formAccess has items. If empty, we assume they can see all (since their role already gave them access to this page).
   let whereClause = {};
   if (userRole !== 'Super Admin' && userRole !== 'Developer') {
-    // If not a super admin, strictly check formAccess. If empty, they see none.
-    whereClause = { formType: { in: formAccess } };
+    if (formAccess && formAccess.length > 0) {
+      whereClause = { formType: { in: formAccess } };
+    }
   }
 
   const submissions = await prisma.formSubmission.findMany({

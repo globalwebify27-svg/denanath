@@ -18,8 +18,6 @@ export default function BloodBankClientPage({ pageData }: { pageData: any }) {
           <div className="flex items-center gap-2 text-blue-200 text-[10px] font-medium tracking-wide mb-2">
             <Link href="/" className="hover:text-white transition-colors">Home</Link>
             <ChevronRight className="w-3.5 h-3.5" />
-            <Link href="/departments" className="hover:text-white transition-colors">Departments</Link>
-            <ChevronRight className="w-3.5 h-3.5" />
             <span className="text-white">Blood Bank</span>
           </div>
           <h1 className="text-3xl md:text-[40px] leading-tight font-extrabold text-white tracking-tight">{pageData.title}</h1>
