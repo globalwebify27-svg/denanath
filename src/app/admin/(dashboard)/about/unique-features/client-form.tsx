@@ -3,13 +3,13 @@
 import { useState } from "react";
 import {  Plus, Trash2 } from "lucide-react";
 import * as Icons from "lucide-react";
-import QuillEditor from "@/components/QuillEditor";
+import QuillEditor, { formatListToHtml, parseHtmlToList } from "@/components/QuillEditor";
 
 export default function UniqueFeaturesClientForm({ initialData }: { initialData: any[] }) {
   const [items, setItems] = useState<any[]>(initialData.length > 0 ? initialData.map(item => ({
     ...item,
     id: item.id || Date.now() + Math.random(),
-    bulletsText: (item.bullets || []).join("\n")
+    bulletsText: formatListToHtml(item.bullets)
   })) : [{
     id: Date.now(),
     title: "",
@@ -45,7 +45,7 @@ export default function UniqueFeaturesClientForm({ initialData }: { initialData:
       id: item.id,
       title: item.title,
       description: item.description,
-      bullets: item.bulletsText.split('\n').map((s: string) => s.trim()).filter((s: string) => s),
+      bullets: parseHtmlToList(item.bulletsText),
       iconStr: item.iconStr,
       color: item.color
     }));

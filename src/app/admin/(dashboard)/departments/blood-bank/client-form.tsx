@@ -1,6 +1,6 @@
 "use client";
 import NavigationMenuToggle from "@/components/NavigationMenuToggle";
-import QuillEditor from "@/components/QuillEditor";
+import QuillEditor, { formatListToHtml, parseHtmlToList } from "@/components/QuillEditor";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Save, HeartPulse, Search, MapPin, Beaker, CheckCircle2, ShieldCheck, FileText, Image as ImageIcon } from "lucide-react";
@@ -19,7 +19,28 @@ export default function BloodBankClientForm({ initialData }: { initialData: any 
       { id: 5, label: "Blood Components Issued", value: "35000+" },
       { id: 6, label: "Thalassemic Patients Enrolled", value: "40" }
     ],
-    components: initialData?.components ? initialData.components.join("\n") : "Whole Human Blood I.P\nConcentrated Human Red Blood Corpuscles/Packed Red Blood Cells I.P.\nFresh Frozen Plasma B.P.\nPlatelet Concentrate I.P. ( Random Donor Platelet)\nPlateletpheresis (Single Donor Platelet)\nCryoprecipitated Antihaemophilic Factor I.P.\nLeucopheresis\nLeucodepleted/Leucoreduced Red Blood Cells (Modified PRBC)\nIrradiated Red Blood Cells (Modified PRBC)\nPlasmapheresis (Single Donor Plasma)\nPacked Red Cell Aliquot (For Pediatric Patients) (Modified PRBC)\nPooled Platelet\nPlatelet Concentrate (Leucodepleted) (Modified PC)\nPlatelet Concentrate (Suspended in Additive Solution)\nIrradiated Platelet Concentrate (Modified PC)\nGranulocyte Concentrate (prepared from Buffy Coat)\nErythrocytapheresis\nHematopoietic Stem Cells (Peripheral Blood Stem Cells)\nTherapeutic Plasmapheresis\nCryo Poor Plasma",
+    components: formatListToHtml(initialData?.components, [
+      "Whole Human Blood I.P",
+      "Concentrated Human Red Blood Corpuscles/Packed Red Blood Cells I.P.",
+      "Fresh Frozen Plasma B.P.",
+      "Platelet Concentrate I.P. ( Random Donor Platelet)",
+      "Plateletpheresis (Single Donor Platelet)",
+      "Cryoprecipitated Antihaemophilic Factor I.P.",
+      "Leucopheresis",
+      "Leucodepleted/Leucoreduced Red Blood Cells (Modified PRBC)",
+      "Irradiated Red Blood Cells (Modified PRBC)",
+      "Plasmapheresis (Single Donor Plasma)",
+      "Packed Red Cell Aliquot (For Pediatric Patients) (Modified PRBC)",
+      "Pooled Platelet",
+      "Platelet Concentrate (Leucodepleted) (Modified PC)",
+      "Platelet Concentrate (Suspended in Additive Solution)",
+      "Irradiated Platelet Concentrate (Modified PC)",
+      "Granulocyte Concentrate (prepared from Buffy Coat)",
+      "Erythrocytapheresis",
+      "Hematopoietic Stem Cells (Peripheral Blood Stem Cells)",
+      "Therapeutic Plasmapheresis",
+      "Cryo Poor Plasma"
+    ]),
     location: initialData?.location || "Ground floor, A wing, SS Building",
     images: initialData?.images || [],
     initiatives: initialData?.initiatives || [
@@ -32,7 +53,15 @@ export default function BloodBankClientForm({ initialData }: { initialData: any 
     donorTests: initialData?.donorTests || "ABO & Rh typing, indirect antiglobulin test (IAT) for immune antibodies and Rh Kell phenotyping",
     patientTests: initialData?.patientTests || "ABO & Rh typing, newborn ABO & Rh typing, direct antiglobulin test (DAT), antibody screening by 3 cell panel, antibody identification, Rh kell phenotyping, extending phenotyping if needed, cross matching, antibody titre",
     apheresisIntro: initialData?.apheresisIntro || "The Apheresis laboratory is equipped with fully automated cell separators which are catering to both donor and patient procedures. The various procedures being performed are:",
-    apheresisProcedures: initialData?.apheresisProcedures ? initialData.apheresisProcedures.join("\n") : "Plateletpheresis\nPlasmapheresis\nGranulocytapheresis\nLeucapheresis: Autologous & Allogenic (cryopreservation, if needed)\nTherapeutic Plasma Exchange\nTherapeutic Red Cell Exchange\nExtra Corporeal Photopheresis",
+    apheresisProcedures: formatListToHtml(initialData?.apheresisProcedures, [
+      "Plateletpheresis",
+      "Plasmapheresis",
+      "Granulocytapheresis",
+      "Leucapheresis: Autologous & Allogenic (cryopreservation, if needed)",
+      "Therapeutic Plasma Exchange",
+      "Therapeutic Red Cell Exchange",
+      "Extra Corporeal Photopheresis"
+    ]),
     team: initialData?.team || [
       { id: 1, name: "Dr. Sanjiv V Ketkar", qualifications: "MD Pathology", role: "Consultant Transfusion Medicine", image: "" },
       { id: 2, name: "Dr. Brinda Kakkar", qualifications: "DNB IHBT, PDCC IH & Aphersis Tech.", role: "Consultant Transfusion Medicine", image: "" }
@@ -62,14 +91,14 @@ export default function BloodBankClientForm({ initialData }: { initialData: any 
       title: d.title,
       introText: d.introText,
       stats: d.stats,
-      components: d.components.split('\n').map((s: string) => s.trim()).filter((s: string) => s),
+      components: parseHtmlToList(d.components),
       location: d.location,
       images: d.images,
       initiatives: d.initiatives,
       donorTests: d.donorTests,
       patientTests: d.patientTests,
       apheresisIntro: d.apheresisIntro,
-      apheresisProcedures: d.apheresisProcedures.split('\n').map((s: string) => s.trim()).filter((s: string) => s),
+      apheresisProcedures: parseHtmlToList(d.apheresisProcedures),
       team: d.team,
       trainingProgram: d.trainingProgram,
       publications: d.publications,

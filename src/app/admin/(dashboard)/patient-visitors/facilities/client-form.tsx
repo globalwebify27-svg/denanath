@@ -1,14 +1,27 @@
 "use client";
-import QuillEditor from "@/components/QuillEditor";
-
+import QuillEditor, { formatListToHtml, parseHtmlToList } from "@/components/QuillEditor";
 
 import { useState } from "react";
 import {  Plus, Trash2, Building, CreditCard, Clock, MapPin, Phone } from "lucide-react";
 
 export default function FacilitiesClientForm({ initialData }: { initialData: any }) {
   const [data, setData] = useState({
-    ipdBillingRules: initialData?.ipdBillingRules ? initialData.ipdBillingRules.join("\n") : "Estimate of bill may change due to the type of room you are selecting.\nWe accept payment by cash (upto 2 lacs), Demand Draft, Debit/Credit Cards, NEFT/RTGS, UPI payments, Gateway payments. Cheque is the last option.\nPlease do all procedures related to cashless billing on the day of admission.\nPlease check your outstanding bill once in two days at the billing department.\nFor expensive treatments and surgeries (Cardiac, Neuro, Joint Replacements, etc.) you may need to deposit advance.\nRefunds are paid by cheque/NEFT where the amount is more than Rs 19999/- only.",
-    opdBillingRules: initialData?.opdBillingRules ? initialData.opdBillingRules.join("\n") : "OPD Billing Timings are 8am to 8pm and for Emergency Dept, billing counter runs 24hrs.\nFor all Specialities consultation with the same doctor is free within 10 days of 1st paid consultation. Follow up charges will be applicable after 10 days. For Dental, consultation with the same doctor is free for 3 months of 1st paid consultation.\nRe-registration charges are applicable consultant wise, i.e. if a patient visits a particular consultant after a gap of 90 days, 1st visit consultation are applicable.\nFew of the consultants also run private OPD in the hospital where in consultants could be seen with prior appointment. There would be no fixed consultation fees. Doctor will have the discretion to charge anything upto rs 750/-.\nRefunds are normally paid by cheque only where amounts are more than 19,990/-.\nWe accept payment by Cash / Credit & Debit Card / Demand Draft / NEFT / RTGS / UPI payments / Gateway Payments.",
+    ipdBillingRules: formatListToHtml(initialData?.ipdBillingRules, [
+      "Estimate of bill may change due to the type of room you are selecting.",
+      "We accept payment by cash (upto 2 lacs), Demand Draft, Debit/Credit Cards, NEFT/RTGS, UPI payments, Gateway payments. Cheque is the last option.",
+      "Please do all procedures related to cashless billing on the day of admission.",
+      "Please check your outstanding bill once in two days at the billing department.",
+      "For expensive treatments and surgeries (Cardiac, Neuro, Joint Replacements, etc.) you may need to deposit advance.",
+      "Refunds are paid by cheque/NEFT where the amount is more than Rs 19999/- only."
+    ]),
+    opdBillingRules: formatListToHtml(initialData?.opdBillingRules, [
+      "OPD Billing Timings are 8am to 8pm and for Emergency Dept, billing counter runs 24hrs.",
+      "For all Specialities consultation with the same doctor is free within 10 days of 1st paid consultation. Follow up charges will be applicable after 10 days. For Dental, consultation with the same doctor is free for 3 months of 1st paid consultation.",
+      "Re-registration charges are applicable consultant wise, i.e. if a patient visits a particular consultant after a gap of 90 days, 1st visit consultation are applicable.",
+      "Few of the consultants also run private OPD in the hospital where in consultants could be seen with prior appointment. There would be no fixed consultation fees. Doctor will have the discretion to charge anything upto rs 750/-.",
+      "Refunds are normally paid by cheque only where amounts are more than 19,990/-.",
+      "We accept payment by Cash / Credit & Debit Card / Demand Draft / NEFT / RTGS / UPI payments / Gateway Payments."
+    ]),
     ipdBillingTimings: initialData?.ipdBillingTimings ? initialData.ipdBillingTimings.map((t: any) => ({ ...t, id: t.id || Date.now() + Math.random() })) : [
       { id: Date.now() + 1, building: "GS 2nd Floor", timing: "08:00 a.m to 10:00 p.m" },
       { id: Date.now() + 2, building: "GS Ground Floor - ER", timing: "10:00 p.m to 08:00 a.m" },
@@ -22,21 +35,21 @@ export default function FacilitiesClientForm({ initialData }: { initialData: any
     facilities: initialData?.facilities ? initialData.facilities.map((f: any) => ({
       ...f,
       id: f.id || Date.now() + Math.random(),
-      detailsStr: f.details ? f.details.join("\n") : ""
+      detailsStr: formatListToHtml(f.details)
     })) : [
-      { id: Date.now() + 1, title: "Reception (GS Building)", time: "24 Hours", location: "Ground Floor Center Core GS Building", phone: "020 - 40151000 (General Enquiry)", detailsStr: "Information about Consultants / Doctors\nCoffee / Tea Tokens" },
-      { id: Date.now() + 2, title: "Reception (SS Building)", time: "24 Hours", location: "Ground Floor Center Core SS Building", phone: "020 - 49153000 (General Enquiry)", detailsStr: "Information about Consultants / Doctors\nCoffee / Tea Tokens" },
-      { id: Date.now() + 3, title: "Pharmacy", time: "24 Hours", location: "Ground Floor (Between B & C Wing, Main Bldg) | Ground Floor (New Bldg)", phone: "(020) 40151040, 40151041 | (020) 49153009, 49153443", detailsStr: "24x7 hours Pharmacy (Day & Night)" },
-      { id: Date.now() + 4, title: "Blood Bank", time: "24 Hours", location: "Ground Floor SS Building", phone: "+91 20 49153081 / 49153089", detailsStr: "FDA approved regional blood bank transfusion center.\nBlood components: RBC, FFP, Random/Single Donor Platelet, Cryo Precipitate, Peripheral Blood Stemcells, Plasma pherisis, Granulocyte apheresis.\nUltra modern equipments like chemiluminescence, irradiation, Snap freezer." },
-      { id: Date.now() + 5, title: "Public Relation Department", time: "Standard Hours", location: "GS Building Ground Floor C Wing", phone: "020-40151011 / 40151015", detailsStr: "Attend to complaints and suggestions\nMedical Certificates\nInsurance Claim Forms and related issues\nPeriodical / Routine Medical Checkups" },
-      { id: Date.now() + 6, title: "Canteen", time: "Standard Hours", location: "Basement C Wing (1941 / 1942)", phone: "-", detailsStr: "Well-equipped Catering Facility for Patients, Relatives, Doctors & Staff.\nProvides quality and hygienically safe food." },
-      { id: Date.now() + 7, title: "Health Checkup", time: "Standard Hours", location: "Public Relation Dept - GS Building Ground Floor C Wing", phone: "020-40151011, 020-40151015", detailsStr: "Know your health status with several Health Check-up packages.\nDone quickly, efficiently and offered at discounted rates." },
-      { id: Date.now() + 8, title: "Ambulance / Hospital Attendant", time: "24 Hours", location: "Ground Floor A Wing (Emergency Dept.)", phone: "020-40151540, 40151027", detailsStr: "For going home and emergencies." },
-      { id: Date.now() + 9, title: "Photo-Copy / Xerox", time: "Standard Hours", location: "Ground Floor C Wing", phone: "020-40151022", detailsStr: "For one A4 Size photocopy Rs. 1/- is charged." },
-      { id: Date.now() + 10, title: "Mortuary", time: "24 Hours", location: "GS Building Basement C Wing", phone: "Admission Dept: 020- 40151020", detailsStr: "For all relevant documentation and formalities contact Admission Department (Ground Floor B wing)." },
+      { id: Date.now() + 1, title: "Reception (GS Building)", time: "24 Hours", location: "Ground Floor Center Core GS Building", phone: "020 - 40151000 (General Enquiry)", detailsStr: formatListToHtml(["Information about Consultants / Doctors", "Coffee / Tea Tokens"]) },
+      { id: Date.now() + 2, title: "Reception (SS Building)", time: "24 Hours", location: "Ground Floor Center Core SS Building", phone: "020 - 49153000 (General Enquiry)", detailsStr: formatListToHtml(["Information about Consultants / Doctors", "Coffee / Tea Tokens"]) },
+      { id: Date.now() + 3, title: "Pharmacy", time: "24 Hours", location: "Ground Floor (Between B & C Wing, Main Bldg) | Ground Floor (New Bldg)", phone: "(020) 40151040, 40151041 | (020) 49153009, 49153443", detailsStr: formatListToHtml(["24x7 hours Pharmacy (Day & Night)"]) },
+      { id: Date.now() + 4, title: "Blood Bank", time: "24 Hours", location: "Ground Floor SS Building", phone: "+91 20 49153081 / 49153089", detailsStr: formatListToHtml(["FDA approved regional blood bank transfusion center.", "Blood components: RBC, FFP, Random/Single Donor Platelet, Cryo Precipitate, Peripheral Blood Stemcells, Plasma pherisis, Granulocyte apheresis.", "Ultra modern equipments like chemiluminescence, irradiation, Snap freezer."]) },
+      { id: Date.now() + 5, title: "Public Relation Department", time: "Standard Hours", location: "GS Building Ground Floor C Wing", phone: "020-40151011 / 40151015", detailsStr: formatListToHtml(["Attend to complaints and suggestions", "Medical Certificates", "Insurance Claim Forms and related issues", "Periodical / Routine Medical Checkups"]) },
+      { id: Date.now() + 6, title: "Canteen", time: "Standard Hours", location: "Basement C Wing (1941 / 1942)", phone: "-", detailsStr: formatListToHtml(["Well-equipped Catering Facility for Patients, Relatives, Doctors & Staff.", "Provides quality and hygienically safe food."]) },
+      { id: Date.now() + 7, title: "Health Checkup", time: "Standard Hours", location: "Public Relation Dept - GS Building Ground Floor C Wing", phone: "020-40151011, 020-40151015", detailsStr: formatListToHtml(["Know your health status with several Health Check-up packages.", "Done quickly, efficiently and offered at discounted rates."]) },
+      { id: Date.now() + 8, title: "Ambulance / Hospital Attendant", time: "24 Hours", location: "Ground Floor A Wing (Emergency Dept.)", phone: "020-40151540, 40151027", detailsStr: formatListToHtml(["For going home and emergencies."]) },
+      { id: Date.now() + 9, title: "Photo-Copy / Xerox", time: "Standard Hours", location: "Ground Floor C Wing", phone: "020-40151022", detailsStr: formatListToHtml(["For one A4 Size photocopy Rs. 1/- is charged."]) },
+      { id: Date.now() + 10, title: "Mortuary", time: "24 Hours", location: "GS Building Basement C Wing", phone: "Admission Dept: 020- 40151020", detailsStr: formatListToHtml(["For all relevant documentation and formalities contact Admission Department (Ground Floor B wing)."]) },
       { id: Date.now() + 11, title: "Emergency", time: "24 Hours", location: "Ground Floor A Wing", phone: "020-40151027, 40151065", detailsStr: "" },
       { id: Date.now() + 12, title: "Optician Shop", time: "08:00 a.m. to 04:30 p.m.", location: "Second Floor B wing", phone: "020-40151070", detailsStr: "" },
-      { id: Date.now() + 13, title: "Pass Counter", time: "Standard Hours", location: "SS Building Ground Floor", phone: "New Reg: 020-49153006 | OPD: 49153005 | IPD: 49153018", detailsStr: "Entry to the SS Building is only with a valid pass." }
+      { id: Date.now() + 13, title: "Pass Counter", time: "Standard Hours", location: "SS Building Ground Floor", phone: "New Reg: 020-49153006 | OPD: 49153005 | IPD: 49153018", detailsStr: formatListToHtml(["Entry to the SS Building is only with a valid pass."]) }
     ]
   });
 
@@ -90,8 +103,8 @@ export default function FacilitiesClientForm({ initialData }: { initialData: any
 
   const getJsonPayload = () => {
     return JSON.stringify({
-      ipdBillingRules: data.ipdBillingRules.split('\n').map((s: string) => s.trim()).filter((s: string) => s),
-      opdBillingRules: data.opdBillingRules.split('\n').map((s: string) => s.trim()).filter((s: string) => s),
+      ipdBillingRules: parseHtmlToList(data.ipdBillingRules),
+      opdBillingRules: parseHtmlToList(data.opdBillingRules),
       ipdBillingTimings: data.ipdBillingTimings.map((t: any) => ({ building: t.building, timing: t.timing })),
       facilities: data.facilities.map((f: any) => ({
         title: f.title,
@@ -99,7 +112,7 @@ export default function FacilitiesClientForm({ initialData }: { initialData: any
         time: f.time,
         location: f.location,
         phone: f.phone,
-        details: f.detailsStr.split('\n').map((s: string) => s.trim()).filter((s: string) => s)
+        details: parseHtmlToList(f.detailsStr)
       }))
     });
   };

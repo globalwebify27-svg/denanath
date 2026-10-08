@@ -7,11 +7,107 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Save, HeartPulse, List, Bed, ShieldCheck, Phone, CheckCircle2, Search } from "lucide-react";
 
+function cleanItem(str: string): string {
+  if (!str) return '';
+  return str
+    .replace(/&nbsp;/g, ' ')
+    .replace(/^<p[^>]*>/i, '')
+    .replace(/<\/p>$/i, '')
+    .replace(/^<li[^>]*>/i, '')
+    .replace(/<\/li>$/i, '')
+    .trim();
+}
+
+function parseHtmlToList(html: any): string[] {
+  if (!html) return [];
+  if (Array.isArray(html)) {
+    return html.map(s => (typeof s === 'string' ? cleanItem(s) : String(s))).filter(Boolean);
+  }
+  if (typeof html !== 'string') return [];
+
+  const trimmed = html.trim();
+  if (!trimmed) return [];
+
+  const liMatches = trimmed.match(/<li[^>]*>([\s\S]*?)<\/li>/gi);
+  if (liMatches && liMatches.length > 0) {
+    return liMatches
+      .map(li => {
+        const inner = li.replace(/^<li[^>]*>/i, '').replace(/<\/li>$/i, '');
+        return cleanItem(inner);
+      })
+      .filter(Boolean);
+  }
+
+  const pMatches = trimmed.match(/<p[^>]*>([\s\S]*?)<\/p>/gi);
+  if (pMatches && pMatches.length > 0) {
+    return pMatches
+      .map(p => {
+        const inner = p.replace(/^<p[^>]*>/i, '').replace(/<\/p>$/i, '');
+        return cleanItem(inner);
+      })
+      .filter(Boolean);
+  }
+
+  return trimmed
+    .replace(/<br\s*\/?>/gi, '\n')
+    .split('\n')
+    .map(s => cleanItem(s))
+    .filter(Boolean);
+}
+
+function formatListToHtml(input: any, defaultItems: string[] = []): string {
+  const items = parseHtmlToList(input);
+  const finalItems = items.length > 0 ? items : defaultItems;
+  return `<ul>\n${finalItems.map(it => `  <li>${it}</li>`).join('\n')}\n</ul>`;
+}
+
+function formatOrderedListToHtml(input: any, defaultItems: string[] = []): string {
+  const items = parseHtmlToList(input);
+  const finalItems = items.length > 0 ? items : defaultItems;
+  return `<ol>\n${finalItems.map(it => `  <li>${it}</li>`).join('\n')}\n</ol>`;
+}
+
+const defaultGuidelines = [
+  "Patient should be physically present in the hospital premises at the time of admission.",
+  "To facilitate the process of Registration/Admission/Charity/Mediclaim, please ensure to carry patients ID proof (Adhar card, Pan card, Voting card, Driving license, Passport).",
+  "Patients are advised not to keep any valuables, jewellery or other costly items with them during their stay at the Hospital.",
+  "You can ask for room service for: a. Pharmacy, b. Diet, c. WiFi.",
+  "Please do not Smoke or Spit in the Hospital premises.",
+  "Please remember that the total cost of Treatment/Procedure will vary as per your ward/room.",
+  "No room booking service: rooms and hospital can not be booked in advance as exact discharge time of admitted patients can not be predicted and admission can not be denied to any patients needing treatment."
+];
+
+const defaultTpa = ["Ericson Tpa Healthcare Pvt Ltd", "Family Health Plan Insurance Tpa Ltd", "Genins India Tpa Ltd"];
+const defaultInsurance = ["Acko General Insurance Company", "Aditya Birla Health Insurance Co.Ltd", "Bajaj Alliance General Insurance Co. Ltd."];
+const defaultCorporate = ["Bharat Electronic Ltd", "Cummins India Ltd", "TATA Motors"];
+const defaultIcu = ["High Dependency Unit (HDU)", "General Bed", "Private Room w/o AC", "Private Room with AC", "Deluxe Room"];
+const defaultNicu = ["Nursery Care", "Intermidiate Care", "High Dependancy"];
+const defaultPicu = ["Step Down Bed", "Non Ventilated Bed", "Ventilated Bed"];
+const defaultMealNotes = ["Tea-Coffee vending machines on each floor.", "Coffee shop is open for 24 hours.", "The hospital diet is optional."];
+const defaultAdmissionProcedure = [
+  "Confirm the room type which you will be staying in. All charges are based on a standard room, so please note your total bill may change in accordance to this.",
+  "You will be asked to complete an 'Admission Form' and verify who will be responsible for your medical expenses.",
+  "After admission, the patient will be guided to the allotted room. Porter assistance will be arranged upon request, based on the patient's condition and requirements.",
+  "Once you arrive, a nurse or coordinator will explain about the facilities in your room and you will be asked to make a preference for your meals (meals are not compulsory in the hospital, you can bring meals from outside).",
+  "The nurse will ask you to change your clothes into the hospital pyjamas and your temperature and blood pressure will be checked.",
+  "Additionally, if you need to undergo any minor or major surgery, you will be asked to sign Consent form in order to give permission to the Hospital to proceed.",
+  "If you have any questions at this point, please do not hesitate to ask our nurse or request for a coordinator."
+];
+const defaultPreAuthRequirements = [
+  "Health Insurance Policy copy, must for individual policy holders. Photo ID card if issued by TPA, Employee ID card (corporate policy holder)",
+  "Patient and Policy holder Aadhar Card, PAN card.",
+  "Passport size photo only for (Max Bhupa, Applo Munich, SBI General Ins., Manipal and Cigna TTK)",
+  "Admission note given by your treating doctor.",
+  "All necessary investigations reports.",
+  "Address proof (electricity bill) telephone bill / Rental agreement copy / bank statement.",
+  "Our liaison officer will guide you for filling pre-authorization."
+];
+
 export default function InPatientClientForm({ initialData }: { initialData: any }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState({
-    guidelines: initialData?.guidelines ? initialData.guidelines.join("\n") : "Patient should be physically present in the hospital premises at the time of admission.\nTo facilitate the process of Registration/Admission/Charity/Mediclaim, please ensure to carry patients ID proof (Adhar card, Pan card, Voting card, Driving license, Passport).\nPatients are advised not to keep any valuables, jewellery or other costly items with them during their stay at the Hospital.\nYou can ask for room service for: a. Pharmacy, b. Diet, c. WiFi.\nPlease do not Smoke or Spit in the Hospital premises.\nPlease remember that the total cost of Treatment/Procedure will vary as per your ward/room.\nNo room booking service: rooms and hospital can not be booked in advance as exact discharge time of admitted patients can not be predicted and admission can not be denied to any patients needing treatment.",
+    guidelines: formatListToHtml(initialData?.guidelines, defaultGuidelines),
     mainBuildingRooms: initialData?.mainBuildingRooms ? initialData.mainBuildingRooms : [
       { id: 1, name: "GS Special Room A (Patient & Relative Room)", rate: "15000/-", fac: "One Attendant Bed, Attached Toilet- Attendant Bathroom, A/C As Well As Windows, Fan, Tv, Telephone, Sofaset, Refrigerator, Ward Robe" },
       { id: 3, name: "GS Special Room B", rate: "9000/-", fac: "One Attendant Bed, Attached Toilet- Attendant Bathroom, A/C As Well As Windows, Fan, Tv, Telephone, Sofaset, Refrigerator, Ward Robe," },
@@ -34,9 +130,9 @@ export default function InPatientClientForm({ initialData }: { initialData: any 
       { id: 9, name: "SS Semi Private B", rate: "1700/-", fac: "Only One Patient In A Room, One Attendant Bed, Shared Toilet For 4 Rooms, Telephone, No Tv" },
       { id: 10, name: "SS Day Care (AC)", rate: "1300/-", fac: "Common Ward For Male And Female" }
     ],
-    tpaCompanies: initialData?.tpaCompanies ? initialData.tpaCompanies.join("\n") : "Ericson Tpa Healthcare Pvt Ltd\nFamily Health Plan Insurance Tpa Ltd\nGenins India Tpa Ltd",
-    insuranceCompanies: initialData?.insuranceCompanies ? initialData.insuranceCompanies.join("\n") : "Acko General Insurance Company\nAditya Birla Health Insurance Co.Ltd\nBajaj Alliance General Insurance Co. Ltd.",
-    corporateCompanies: initialData?.corporateCompanies ? initialData.corporateCompanies.join("\n") : "Bharat Electronic Ltd\nCummins India Ltd\nTATA Motors",
+    tpaCompanies: formatListToHtml(initialData?.tpaCompanies, defaultTpa),
+    insuranceCompanies: formatListToHtml(initialData?.insuranceCompanies, defaultInsurance),
+    corporateCompanies: formatListToHtml(initialData?.corporateCompanies, defaultCorporate),
     admissionDetails: initialData?.admissionDetails || {
       gsBuilding: { location: "Ground floor B wing", time: "24/7", contact: "020 40151019" },
       ssBuilding: { location: "Behind Reception", time: "7am to 10pm (Sunday closed)", contact: "020 49153024" }
@@ -56,9 +152,9 @@ export default function InPatientClientForm({ initialData }: { initialData: any 
       { id: 4, label: "Pharmacy", number: "49153009" },
       { id: 5, label: "Blood Bank", number: "49153081 / 49153089" }
     ],
-    icuList: initialData?.icuList ? initialData.icuList.join("\n") : "High Dependency Unit (HDU)\nGeneral Bed\nPrivate Room w/o AC\nPrivate Room with AC\nDeluxe Room",
-    nicuList: initialData?.nicuList ? initialData.nicuList.join("\n") : "Nursery Care\nIntermidiate Care\nHigh Dependancy",
-    picuList: initialData?.picuList ? initialData.picuList.join("\n") : "Step Down Bed\nNon Ventilated Bed\nVentilated Bed",
+    icuList: formatListToHtml(initialData?.icuList, defaultIcu),
+    nicuList: formatListToHtml(initialData?.nicuList, defaultNicu),
+    picuList: formatListToHtml(initialData?.picuList, defaultPicu),
     mealTimings: initialData?.mealTimings || [
       { id: 1, name: "Morning Tea", time: "07.00am - 07.30am" },
       { id: 2, name: "Breakfast & Milk", time: "08.30am - 09.00am" },
@@ -66,16 +162,23 @@ export default function InPatientClientForm({ initialData }: { initialData: any 
       { id: 4, name: "Afternoon Tea", time: "03.30pm - 04.00pm" },
       { id: 5, name: "Dinner", time: "07.00pm - 08.00pm" }
     ],
-    mealNotes: initialData?.mealNotes ? initialData.mealNotes.join("\n") : "Tea-Coffee vending machines on each floor.\nCoffee shop is open for 24 hours.\nThe hospital diet is optional.",
-    admissionProcedure: initialData?.admissionProcedure ? initialData.admissionProcedure.join("\n") : "Confirm the room type which you will be staying in. All charges are based on a standard room, so please note your total bill may change in accordance to this.\nYou will be asked to complete an 'Admission Form' and verify who will be responsible for your medical expenses.\nYou will now be escorted to your room by one of the hospital porters.\nOnce you arrive, a nurse or coordinator will explain about the facilities in your room and you will be asked to make a preference for your meals (meals are not compulsory in the hospital, you can bring meals from outside).\nThe nurse will ask you to change your clothes into the hospital pyjamas and your temperature and blood pressure will be checked.\nAdditionally, if you need to undergo any minor or major surgery, you will be asked to sign Consent form in order to give permission to the Hospital to proceed.\nIf you have any questions at this point, please do not hesitate to ask our nurse or request for a coordinator.",
-    cashlessDescription: initialData?.cashlessDescription ? initialData.cashlessDescription.join("\n") : "All Health Insurance Companies offer cashless hospitalization facility to their policy Holders. Most Insurance companies, particularly Public Sector Insurance companies provide cashless facility through TPA (Third Party Administrator). The insurance company, TPA and network hospital have entered into an agreement to ensure smooth cashless facility for all eligible policy holders.\nAs a policy holder one should be familiar with the terms TPA, cashless process, Network Hospital and Non-Network Hospital.\nName and Address of your TPA is usually mentioned on Policy document. In case of hospitalization, when you get admitted to a Network Hospital you will be eligible for cashless hospitalization, subject to the other terms and condition mentioned in your policy being fulfilled. If you are admitted to a Non-Network Hospital, you will have to settle the bill directly to the hospital and then seek re-imbursement through your TPA.\nNOTE: One must understand that cashless treatment does not mean free treatment. We as a network hospital have volunteered to provide this facility as a value added service to help you as our out-patient in this process.\nIn short, Cashless hospitalization is a facility provided by health insurance Company that enables an insured customer to obtain admission and undergo the required treatment without a direct payment. The assigned TPA will mediate between the network hospital (DMH) and the insurance company to settle the bills on behalf of the insured customer.\nFor planned admissions (where your surgery is already decided) you must get your initial approval prior to your admission date by visiting our Mediclaim help desk. However, for emergency and walk-in admission you can contact the Mediclaim help desk immediately on admission.",
+    mealNotes: formatListToHtml(initialData?.mealNotes, defaultMealNotes),
+    admissionProcedure: formatOrderedListToHtml(initialData?.admissionProcedure, defaultAdmissionProcedure),
+    cashlessDescription: formatListToHtml(initialData?.cashlessDescription, [
+      "All Health Insurance Companies offer cashless hospitalization facility to their policy Holders. Most Insurance companies, particularly Public Sector Insurance companies provide cashless facility through TPA (Third Party Administrator). The insurance company, TPA and network hospital have entered into an agreement to ensure smooth cashless facility for all eligible policy holders.",
+      "As a policy holder one should be familiar with the terms TPA, cashless process, Network Hospital and Non-Network Hospital.",
+      "Name and Address of your TPA is usually mentioned on Policy document. In case of hospitalization, when you get admitted to a Network Hospital you will be eligible for cashless hospitalization, subject to the other terms and condition mentioned in your policy being fulfilled. If you are admitted to a Non-Network Hospital, you will have to settle the bill directly to the hospital and then seek re-imbursement through your TPA.",
+      "NOTE: One must understand that cashless treatment does not mean free treatment. We as a network hospital have volunteered to provide this facility as a value added service to help you as our out-patient in this process.",
+      "In short, Cashless hospitalization is a facility provided by health insurance Company that enables an insured customer to obtain admission and undergo the required treatment without a direct payment. The assigned TPA will mediate between the network hospital (DMH) and the insurance company to settle the bills on behalf of the insured customer.",
+      "For planned admissions (where your surgery is already decided) you must get your initial approval prior to your admission date by visiting our Mediclaim help desk. However, for emergency and walk-in admission you can contact the Mediclaim help desk immediately on admission."
+    ]),
     cashlessContacts: initialData?.cashlessContacts || {
       gsBuilding: { location: "2nd floor 'C' wing", phone: "020 40151258, 020 40151259,\n020 - 40151254", email: "mediclaim@dmhospital.org" },
       ssBuilding: { location: "Ground Floor, R. No 28\nFor all patients: 8th Floor – 3877 / 3861", phone: "020 49153070, 020 49153071\n020 49153038", email: "mediclaim@dmhospital.org" }
     },
     preAuthDetails: {
       timing: initialData?.preAuthDetails?.timing || "For pre-authorization\n10.00 a.m. to 1.30 p.m. & 3 p.m. to 6 p.m. Mon. to Sat. & Sun. 10 a.m. to 2 p.m.",
-      requirements: initialData?.preAuthDetails?.requirements ? initialData.preAuthDetails.requirements.join("\n") : "Health Insurance Policy copy, must for individual policy holders. Photo ID card if issued by TPA, Employee ID card (corporate policy holder)\nPatient and Policy holder Aadhar Card, PAN card.\nPassport size photo only for (Max Bhupa, Applo Munich, SBI General Ins., Manipal and Cigna TTK)\nAdmission note given by your treating doctor.\nAll necessary investigations reports.\nAddress proof (electricity bill) telephone bill / Rental agreement copy / bank statement.\nOur liaison officer will guide you for filling pre-authorization."
+      requirements: formatListToHtml(initialData?.preAuthDetails?.requirements, defaultPreAuthRequirements)
     },
     seoMetaTitle: initialData?.seoMetaTitle || "",
     seoMetaDescription: initialData?.seoMetaDescription || "",
@@ -150,27 +253,27 @@ export default function InPatientClientForm({ initialData }: { initialData: any 
   const getJsonPayload = () => {
     const d: any = data;
     return JSON.stringify({
-      guidelines: d.guidelines.split('\n').map((s: string) => s.trim()).filter((s: string) => s),
+      guidelines: parseHtmlToList(d.guidelines),
       mainBuildingRooms: d.mainBuildingRooms,
       superSpecialityRooms: d.superSpecialityRooms,
-      tpaCompanies: d.tpaCompanies.split('\n').map((s: string) => s.trim()).filter((s: string) => s),
-      insuranceCompanies: d.insuranceCompanies.split('\n').map((s: string) => s.trim()).filter((s: string) => s),
-      corporateCompanies: d.corporateCompanies.split('\n').map((s: string) => s.trim()).filter((s: string) => s),
+      tpaCompanies: parseHtmlToList(d.tpaCompanies),
+      insuranceCompanies: parseHtmlToList(d.insuranceCompanies),
+      corporateCompanies: parseHtmlToList(d.corporateCompanies),
       admissionDetails: d.admissionDetails,
       mainBuildingPhones: d.mainBuildingPhones,
       superSpecialityPhones: d.superSpecialityPhones,
-      icuList: d.icuList.split('\n').map((s: string) => s.trim()).filter((s: string) => s),
-      nicuList: d.nicuList.split('\n').map((s: string) => s.trim()).filter((s: string) => s),
-      picuList: d.picuList.split('\n').map((s: string) => s.trim()).filter((s: string) => s),
+      icuList: parseHtmlToList(d.icuList),
+      nicuList: parseHtmlToList(d.nicuList),
+      picuList: parseHtmlToList(d.picuList),
       mealTimings: d.mealTimings,
-      mealNotes: d.mealNotes.split('\n').map((s: string) => s.trim()).filter((s: string) => s),
-      admissionProcedure: d.admissionProcedure.split('\n').map((s: string) => s.trim()).filter((s: string) => s),
+      mealNotes: parseHtmlToList(d.mealNotes),
+      admissionProcedure: parseHtmlToList(d.admissionProcedure),
       cashlessProcedure: d.cashlessProcedure,
-      cashlessDescription: d.cashlessDescription.split('\n').map((s: string) => s.trim()).filter((s: string) => s),
+      cashlessDescription: parseHtmlToList(d.cashlessDescription),
       cashlessContacts: d.cashlessContacts,
       preAuthDetails: {
         timing: d.preAuthDetails.timing,
-        requirements: d.preAuthDetails.requirements.split('\n').map((s: string) => s.trim()).filter((s: string) => s)
+        requirements: parseHtmlToList(d.preAuthDetails.requirements)
       },
       seoMetaTitle: d.seoMetaTitle,
       seoMetaDescription: d.seoMetaDescription,
@@ -339,7 +442,7 @@ export default function InPatientClientForm({ initialData }: { initialData: any 
             <CheckCircle2 className="w-5 h-5 text-[#007a87]" />
             Important Guidelines
           </h3>
-          <p className="text-sm text-slate-500 mb-4">Enter each guideline on a new line.</p>
+          <p className="text-sm text-slate-500 mb-4">Each guideline will appear as a bullet point. Press Enter in the editor to add a new guideline.</p>
           <QuillEditor value={data.guidelines} onChange={content => handleChange('guidelines', content)} />
         </div>
 

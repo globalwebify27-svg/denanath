@@ -1,13 +1,12 @@
 "use client";
-import QuillEditor from "@/components/QuillEditor";
-
+import QuillEditor, { formatListToHtml, parseHtmlToList } from "@/components/QuillEditor";
 
 import { useState } from "react";
 import {  Plus, Trash2, Video, Folder } from "lucide-react";
 
 export default function GalleryVideosClientForm({ initialData }: { initialData: any }) {
   const [data, setData] = useState({
-    categories: initialData?.categories ? initialData.categories.join("\n") : "ALL\nPATIENT STORIES\nICU-VISIT\nCOVID-19\nWELLNESS AND LIFESTYLE\nMAAI MOTHER'S MILK BANK",
+    categories: formatListToHtml(initialData?.categories, ["ALL", "PATIENT STORIES", "ICU-VISIT", "COVID-19", "WELLNESS AND LIFESTYLE", "MAAI MOTHER'S MILK BANK"]),
     videos: initialData?.videos ? initialData.videos.map((v: any) => ({
       ...v,
       id: v.id || Date.now() + Math.random()
@@ -70,7 +69,7 @@ export default function GalleryVideosClientForm({ initialData }: { initialData: 
 
   const getJsonPayload = () => {
     return JSON.stringify({
-      categories: data.categories.split('\n').map((s: string) => s.trim()).filter((s: string) => s),
+      categories: parseHtmlToList(data.categories),
       videos: data.videos.map((v: any) => ({
         title: v.title,
         category: v.category,
@@ -79,7 +78,7 @@ export default function GalleryVideosClientForm({ initialData }: { initialData: 
     });
   };
 
-  const availableCategories = data.categories.split('\n').map((s: string) => s.trim()).filter((s: string) => s && s !== "ALL");
+  const availableCategories = parseHtmlToList(data.categories).filter((s: string) => s && s !== "ALL");
 
   return (
     <>

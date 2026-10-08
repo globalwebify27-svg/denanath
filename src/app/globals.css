@@ -132,3 +132,34 @@ elevenlabs-convai {
   right: 24px !important;
   z-index: 998 !important;
 }
+
+/* Ensure rich text editors and rendered rich-content always display bullets properly */
+.prose ul, .rich-text-content ul, .jodit-wysiwyg ul {
+  display: block !important;
+  list-style-type: disc !important;
+  list-style-position: outside !important;
+  padding-left: 1.75rem !important;
+  margin-top: 0.5rem !important;
+  margin-bottom: 0.5rem !important;
+}
+
+.prose ol, .rich-text-content ol, .jodit-wysiwyg ol {
+  display: block !important;
+  list-style-type: decimal !important;
+  list-style-position: outside !important;
+  padding-left: 1.75rem !important;
+  margin-top: 0.5rem !important;
+  margin-bottom: 0.5rem !important;
+}
+
+.prose li, .rich-text-content li, .jodit-wysiwyg li {
+  display: list-item !important;
+  margin-bottom: 0.35rem !important;
+  line-height: 1.6 !important;
+}
+
+.prose li p, .rich-text-content li p, .jodit-wysiwyg li p {
+  display: inline !important;
+  margin: 0 !important;
+}
+

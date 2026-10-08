@@ -1,24 +1,46 @@
 "use client";
 
 import { useImageUpload, UploadSpinner } from "@/components/UploadOverlay";
-import QuillEditor from "@/components/QuillEditor";
-
+import QuillEditor, { formatListToHtml, parseHtmlToList } from "@/components/QuillEditor";
 
 import { useState } from "react";
 import {  Plus, Trash2, Edit2, List, Activity, Settings, Info } from "lucide-react";
 
 export default function OutPatientClientForm({ initialData }: { initialData: any }) {
   const [data, setData] = useState({
-    instructions: initialData?.instructions ? initialData.instructions.join("\n") : "For availing services provided by Deenanath Mangeshkar Hospital and Research Center, registration of patient is necessary.\nRegistration is one-time activity whereby a unique MRD number is provided to every patient and patient’s medical information is linked to this number.\nTo make Registration Procedure hassle-free please make sure that you have either of these documents ready with you - Passport, PAN card, Adhaar card, Voter ID, Driving Licence.",
-    additionalSteps: initialData?.additionalSteps ? initialData.additionalSteps.join("\n") : "2. After registration, the patient goes to the respective OPD billing counter.\n3. Make the receipt for respective consultant and visit to the respective OPD reception for further guidance regarding the consultation.",
-    appointmentInfo: initialData?.appointmentInfo ? initialData.appointmentInfo.join("\n") : "Some of the Outpatient Departments (OPDs) operate on an appointment system. To schedule an appointment, you can call 020-40151100.\nWalk-in patients will be accommodated alongside appointment patients; however, priority is given to those with appointments.\nIn addition, some consultants offer private OPD services in the hospital, which are available by appointment only.\nPlease note that OPDs are closed on Sundays and national holidays",
+    instructions: formatListToHtml(initialData?.instructions, [
+      "For availing services provided by Deenanath Mangeshkar Hospital and Research Center, registration of patient is necessary.",
+      "Registration is one-time activity whereby a unique MRD number is provided to every patient and patient’s medical information is linked to this number.",
+      "To make Registration Procedure hassle-free please make sure that you have either of these documents ready with you - Passport, PAN card, Adhaar card, Voter ID, Driving Licence."
+    ]),
+    additionalSteps: formatListToHtml(initialData?.additionalSteps, [
+      "2. After registration, the patient goes to the respective OPD billing counter.",
+      "3. Make the receipt for respective consultant and visit to the respective OPD reception for further guidance regarding the consultation."
+    ]),
+    appointmentInfo: formatListToHtml(initialData?.appointmentInfo, [
+      "Some of the Outpatient Departments (OPDs) operate on an appointment system. To schedule an appointment, you can call 020-40151100.",
+      "Walk-in patients will be accommodated alongside appointment patients; however, priority is given to those with appointments.",
+      "In addition, some consultants offer private OPD services in the hospital, which are available by appointment only.",
+      "Please note that OPDs are closed on Sundays and national holidays"
+    ]),
     opConsultationImage: initialData?.opConsultationImage || "",
-    generalOpds: initialData?.generalOpds ? initialData.generalOpds.join("\n") : "General Surgery\nMedicine\nOrthopaedics",
-    superOpds: initialData?.superOpds ? initialData.superOpds.join("\n") : "Oncology\nNeurosurgery\nCardiology",
+    generalOpds: formatListToHtml(initialData?.generalOpds, [
+      "General Surgery",
+      "Medicine",
+      "Orthopaedics"
+    ]),
+    superOpds: formatListToHtml(initialData?.superOpds, [
+      "Oncology",
+      "Neurosurgery",
+      "Cardiology"
+    ]),
     chargesTable: initialData?.chargesTable || [
       { id: 1, label: "Broad Speciality Interventional", v1: "600/-", v2: "350/-", v3: "400/-", v4: "300/-", v5: "450/-", v6: "300/-" }
     ],
-    rules: initialData?.rules ? initialData.rules.join("\n") : "Re-registration charges are applicable consultant wise, after a gap of 90 days-1st visit consultation charges are applicable.\nContinuum visit charges are applicable to same consultant every after 10 days.",
+    rules: formatListToHtml(initialData?.rules, [
+      "Re-registration charges are applicable consultant wise, after a gap of 90 days-1st visit consultation charges are applicable.",
+      "Continuum visit charges are applicable to same consultant every after 10 days."
+    ]),
     privateOpdText: initialData?.privateOpdText || "Private OPD : Few consultants also run Private OPD in the hospital wherein consultation will be available with prior appointment. 1st Visit Consultation charges are Rs.1000. Continumm Visit chares are Rs.500.",
     exceptionalOpdText: initialData?.exceptionalOpdText || "Exceptional specialities consultation charges are up to Rs. 1500."
   });
@@ -51,14 +73,14 @@ export default function OutPatientClientForm({ initialData }: { initialData: any
 
   const getJsonPayload = () => {
     return JSON.stringify({
-      instructions: data.instructions.split('\n').map((s: string) => s.trim()).filter((s: string) => s),
-      additionalSteps: data.additionalSteps.split('\n').map((s: string) => s.trim()).filter((s: string) => s),
-      appointmentInfo: data.appointmentInfo.split('\n').map((s: string) => s.trim()).filter((s: string) => s),
+      instructions: parseHtmlToList(data.instructions),
+      additionalSteps: parseHtmlToList(data.additionalSteps),
+      appointmentInfo: parseHtmlToList(data.appointmentInfo),
       opConsultationImage: data.opConsultationImage,
-      generalOpds: data.generalOpds.split('\n').map((s: string) => s.trim()).filter((s: string) => s),
-      superOpds: data.superOpds.split('\n').map((s: string) => s.trim()).filter((s: string) => s),
+      generalOpds: parseHtmlToList(data.generalOpds),
+      superOpds: parseHtmlToList(data.superOpds),
       chargesTable: data.chargesTable,
-      rules: data.rules.split('\n').map((s: string) => s.trim()).filter((s: string) => s),
+      rules: parseHtmlToList(data.rules),
       privateOpdText: data.privateOpdText,
       exceptionalOpdText: data.exceptionalOpdText
     });

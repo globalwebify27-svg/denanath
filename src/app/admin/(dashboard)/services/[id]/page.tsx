@@ -1,4 +1,4 @@
-import QuillEditor from "@/components/QuillEditor";
+import QuillEditor, { formatListToHtml, parseHtmlToList } from "@/components/QuillEditor";
 import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
 import Link from "next/link";
@@ -27,11 +27,9 @@ export default async function EditServicePage({
   let itemsStr = "";
   try {
     const parsed = JSON.parse(service.items);
-    if (Array.isArray(parsed)) {
-      itemsStr = parsed.join(", ");
-    }
+    itemsStr = formatListToHtml(parsed);
   } catch (e) {
-    itemsStr = "";
+    itemsStr = formatListToHtml([]);
   }
 
   async function updateService(formData: FormData) {
@@ -42,7 +40,7 @@ export default async function EditServicePage({
     const itemsRaw = formData.get("items") as string;
     const status = formData.get("status") === "on";
 
-    const itemsArray = itemsRaw.split(",").map(item => item.trim()).filter(item => item !== "");
+    const itemsArray = parseHtmlToList(itemsRaw);
     const newItemsStr = JSON.stringify(itemsArray);
 
     await prisma.service.update({

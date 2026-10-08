@@ -2,22 +2,21 @@
 
 import { useState } from "react";
 import {  Users } from "lucide-react";
-import QuillEditor from "@/components/QuillEditor";
+import QuillEditor, { formatListToHtml, parseHtmlToList } from "@/components/QuillEditor";
 
 export default function SupportDonationsClientForm({ initialData }: { initialData: any }) {
-  // Convert arrays to newline-separated strings for easy editing in textarea
   const [data, setData] = useState({
     contactPhone: initialData.contactPhone || "+912040151000",
     contactDisplayPhone: initialData.contactDisplayPhone || "(+91) 20 4015 1000",
     introText: initialData.introText || "",
-    countOnUsPoints: (initialData.countOnUsPoints || []).join("\n\n"),
-    donateForms: (initialData.donateForms || []).join("\n"),
+    countOnUsPoints: formatListToHtml(initialData.countOnUsPoints),
+    donateForms: formatListToHtml(initialData.donateForms),
     
-    institutionalDonors: (initialData.institutionalDonors || []).join("\n"),
-    donationInKind: (initialData.donationInKind || []).join("\n"),
-    individualDonorsMoreThan1Cr: (initialData.individualDonorsMoreThan1Cr || []).join("\n"),
-    individualDonors50to1Cr: (initialData.individualDonors50to1Cr || []).join("\n"),
-    individualDonorsUpto1: (initialData.individualDonorsUpto1 || []).join("\n")
+    institutionalDonors: formatListToHtml(initialData.institutionalDonors),
+    donationInKind: formatListToHtml(initialData.donationInKind),
+    individualDonorsMoreThan1Cr: formatListToHtml(initialData.individualDonorsMoreThan1Cr),
+    individualDonors50to1Cr: formatListToHtml(initialData.individualDonors50to1Cr),
+    individualDonorsUpto1: formatListToHtml(initialData.individualDonorsUpto1)
   });
 
   const handleChange = (field: string, value: string) => {
@@ -29,14 +28,14 @@ export default function SupportDonationsClientForm({ initialData }: { initialDat
     contactPhone: data.contactPhone,
     contactDisplayPhone: data.contactDisplayPhone,
     introText: data.introText,
-    countOnUsPoints: data.countOnUsPoints.split('\n\n').map((s: string) => s.trim()).filter((s: string) => s),
-    donateForms: data.donateForms.split('\n').map((s: string) => s.trim()).filter((s: string) => s),
+    countOnUsPoints: parseHtmlToList(data.countOnUsPoints),
+    donateForms: parseHtmlToList(data.donateForms),
     
-    institutionalDonors: data.institutionalDonors.split('\n').map((s: string) => s.trim()).filter((s: string) => s),
-    donationInKind: data.donationInKind.split('\n').map((s: string) => s.trim()).filter((s: string) => s),
-    individualDonorsMoreThan1Cr: data.individualDonorsMoreThan1Cr.split('\n').map((s: string) => s.trim()).filter((s: string) => s),
-    individualDonors50to1Cr: data.individualDonors50to1Cr.split('\n').map((s: string) => s.trim()).filter((s: string) => s),
-    individualDonorsUpto1: data.individualDonorsUpto1.split('\n').map((s: string) => s.trim()).filter((s: string) => s)
+    institutionalDonors: parseHtmlToList(data.institutionalDonors),
+    donationInKind: parseHtmlToList(data.donationInKind),
+    individualDonorsMoreThan1Cr: parseHtmlToList(data.individualDonorsMoreThan1Cr),
+    individualDonors50to1Cr: parseHtmlToList(data.individualDonors50to1Cr),
+    individualDonorsUpto1: parseHtmlToList(data.individualDonorsUpto1)
   });
 
   return (

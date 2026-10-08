@@ -1,7 +1,6 @@
 "use client";
 import { useImageUpload, UploadSpinner } from "@/components/UploadOverlay";
-import QuillEditor from "@/components/QuillEditor";
-
+import QuillEditor, { formatListToHtml, parseHtmlToList } from "@/components/QuillEditor";
 
 import { useState } from "react";
 import {  Plus, Trash2, Image as ImageIcon, Folder } from "lucide-react";
@@ -10,7 +9,7 @@ export default function GalleryPhotosClientForm({ initialData }: { initialData: 
   const [filterCategory, setFilterCategory] = useState("ALL");
   const { uploading, handleUpload } = useImageUpload();
   const [data, setData] = useState({
-    categories: initialData?.categories ? initialData.categories.join("\n") : "DMH\nDMH MAIN BUILDING\nSUPER SPECIALITY BUILDING\nWORLD THYROID DAY 2024",
+    categories: formatListToHtml(initialData?.categories, ["DMH", "DMH MAIN BUILDING", "SUPER SPECIALITY BUILDING", "WORLD THYROID DAY 2024"]),
     photos: initialData?.photos ? initialData.photos.map((p: any) => ({
       ...p,
       id: p.id || Date.now() + Math.random()
@@ -85,9 +84,8 @@ export default function GalleryPhotosClientForm({ initialData }: { initialData: 
   };
 
   const getJsonPayload = () => {
-    const plainTextCategories = data.categories.replace(/<\/(p|div)>/g, '\n').replace(/<br\s*\/?>/g, '\n').replace(/<[^>]*>/g, '');
     return JSON.stringify({
-      categories: plainTextCategories.split('\n').map((s: string) => s.trim()).filter((s: string) => s),
+      categories: parseHtmlToList(data.categories),
       photos: data.photos.map((p: any) => ({
         title: p.title,
         category: p.category,
@@ -96,8 +94,7 @@ export default function GalleryPhotosClientForm({ initialData }: { initialData: 
     });
   };
 
-  const plainTextCategories = data.categories.replace(/<\/(p|div)>/g, '\n').replace(/<br\s*\/?>/g, '\n').replace(/<[^>]*>/g, '');
-  const availableCategories = plainTextCategories.split('\n').map((s: string) => s.trim()).filter((s: string) => s && s !== "ALL");
+  const availableCategories = parseHtmlToList(data.categories).filter((s: string) => s && s !== "ALL");
 
   return (
     <>

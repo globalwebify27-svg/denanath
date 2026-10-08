@@ -293,12 +293,17 @@ export default function InPatientClientPage({ pageData }: { pageData: any }) {
                   </h3>
                   <div className="bg-teal-50/50 p-6 md:p-8 rounded-2xl border border-teal-100/50">
                     <ul className="space-y-4">
-                      {guidelines.map((g: string, i: number) => (
-                        <li key={i} className="flex items-start gap-3 min-w-0">
-                          <ChevronRight className="w-5 h-5 text-teal-600 shrink-0 mt-0.5" />
-                          <span className="flex-1 min-w-0 break-words md:break-normal" dangerouslySetInnerHTML={{ __html: g }}></span>
-                        </li>
-                      ))}
+                      {guidelines.map((g: string, i: number) => {
+                        const cleanG = typeof g === 'string'
+                          ? g.replace(/^<p[^>]*>/i, '').replace(/<\/p>$/i, '').trim()
+                          : g;
+                        return (
+                          <li key={i} className="flex items-start gap-3 min-w-0">
+                            <ChevronRight className="w-5 h-5 text-teal-600 shrink-0 mt-0.5" />
+                            <span className="flex-1 min-w-0 break-words md:break-normal" dangerouslySetInnerHTML={{ __html: cleanG }}></span>
+                          </li>
+                        );
+                      })}
                     </ul>
                   </div>
                 </section>

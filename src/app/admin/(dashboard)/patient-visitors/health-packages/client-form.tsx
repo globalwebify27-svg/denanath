@@ -1,6 +1,5 @@
 "use client";
-import QuillEditor from "@/components/QuillEditor";
-
+import QuillEditor, { formatListToHtml, parseHtmlToList } from "@/components/QuillEditor";
 
 import { useState } from "react";
 import {  Plus, Trash2, CheckCircle2, Building2, FileText, IndianRupee } from "lucide-react";
@@ -10,22 +9,50 @@ export default function HealthPackagesClientForm({ initialData }: { initialData:
     packages: initialData?.packages ? initialData.packages.map((p: any) => ({
       ...p,
       id: p.id || Date.now() + Math.random(),
-      testsStr: p.tests.join('\n')
+      testsStr: formatListToHtml(p.tests)
     })) : [
-      { id: Date.now() + 1, name: "Basic Package", cost: "3820.00", payable: "3450.00", testsStr: "Physician Consultation\nEye Consultation\nHaemogram\nBSL (F & PP)\nLipid Profile\nSr. Creatinine\nUrine Routine/Microscopy\nECG\nChest X Ray" },
-      { id: Date.now() + 2, name: "Senior Citizen", cost: "3890.00", payable: "3400.00", testsStr: "Physician Consultation\nHaemogram\nBSL (F &PP)\nLipid Profile\nSr. Creatinine\nSr. TSH (Ultra)\nUrine Routine/Microscopy\nBlood Urea Level\nHbA1C\nECG\nChest X Ray" },
-      { id: Date.now() + 3, name: "Executive - A", cost: "6540.00", payable: "5900.00", testsStr: "Physician Consultation\nEye Consultation\nHaemogram\nBSL (F &PP)\nLipid Profile\nSr. Creatinine\nHbA1c\nSr. TSH (Ultra)\nUrine Routine/Microscopy\nBlood Urea Level\nECG\nChest X Ray\nTMT(Stress Test)" },
-      { id: Date.now() + 4, name: "Executive - B", cost: "8740.00", payable: "7850.00", testsStr: "Physician Consultation\nEye Consultation\nHaemogram\nBSL (F &PP)\nLipid Profile\nSr. Creatinine\nUrine Routine/Microscopy\nBlood Urea Level\nSGOT\nSGPT\nHbA1c\nSr. TSH (Ultra)\nECG\nChest X Ray\nTMT(Stress Test)\nSonography (Abd + Pelvis)" },
-      { id: Date.now() + 5, name: "Well Woman - I", cost: "5100.00", payable: "4770.00", testsStr: "Gynaec Consultation\nHPV-Genotyping (16,18)\nDigital Mammography" },
-      { id: Date.now() + 6, name: "Well Woman - II", cost: "6900.00", payable: "6390.00", testsStr: "Gynaec Consultation\nHPV Genotyping (16,18)\nDigital Mammography\nSonography (Abd + Pelvis)" },
-      { id: Date.now() + 7, name: "Well Woman - III", cost: "5100.00", payable: "4590.00", testsStr: "Gynaec Consultation\nDigital Mammography\nSonography (Abd + Pelvis)" },
-      { id: Date.now() + 8, name: "Well Woman - IV", cost: "4200.00", payable: "3960.00", testsStr: "Gynaec Consultation\nHPV Genotyping (16,18)\nSonography (Abd + Pelvis)" },
-      { id: Date.now() + 9, name: "Comprehensive Package", cost: "8540.00", payable: "7700.00", testsStr: "Physician Consultation\nHaemogram\nBSL (F &PP)\nLipid Profile\nLiver Function Test (Sr. Bilirubin, SGPT, SGOT, Sr. Alkaline Phosphatase,Sr. Protein)\nRenal Function Test (Blood Urea Level, Sr. Creatinine, Sr. Electrolytes, Sr. Uric Acid, Sr. Calcium, Sr. Phosphorus)\nUrine Routine/Microscopy\nHbA1c\nSr. TSH (Ultra)\nECG\nChest X Ray\nTMT(Stress Test)\nSonography (Abd + Pelvis)" },
-      { id: Date.now() + 10, name: "Super Comprehensive Package", cost: "12090.00", payable: "10880.00", testsStr: "Physician Consultation\nEye Consultation\nHaemogram\nBSL (F &PP)\nLipid Profile\nLiver Function Test (Sr. Bilirubin, SGPT, SGOT, Sr. Alkaline Phosphatase,Sr. Protein)\nRenal Function Test (Blood Urea Level, Sr. Creatinine, Sr. Electrolytes, Sr. Uric Acid, Sr. Calcium, Sr. Phosphorus)\nUrine Routine/Microscopy\nHbA1c\nSr. Vit B12\n25 OH Vit D\nThyroid Function Test\nECG\nChest X Ray\nTMT(Stress Test)\nSonography (Abd+Pel)" },
-      { id: Date.now() + 11, name: "Super Comprehensive For Senior Citizen", cost: "12040.00", payable: "10350.00", testsStr: "Physician Consultation\nEye Consultation\nHaemogram\nBSL (F &PP)\nLipid Profile\nLiver Function Test (Sr. Bilirubin, SGPT, SGOT, Sr. Alkaline Phosphatase,Sr. Protein)\nRenal Function Test (Blood Urea Level, Sr. Creatinine, Sr. Electrolytes, Sr. Uric Acid, Sr. Calcium, Sr. Phosphorus)\nUrine Routine/Microscopy\nHbA1c\nSr. Vit B12\n25 OH Vit D\nThyroid Function Test\nECG\nChest X Ray\n2 D Echo + Colour Doppler\nSonography (Abd+Pel)" }
+      { id: Date.now() + 1, name: "Basic Package", cost: "3820.00", payable: "3450.00", testsStr: formatListToHtml(["Physician Consultation", "Eye Consultation", "Haemogram", "BSL (F & PP)", "Lipid Profile", "Sr. Creatinine", "Urine Routine/Microscopy", "ECG", "Chest X Ray"]) },
+      { id: Date.now() + 2, name: "Senior Citizen", cost: "3890.00", payable: "3400.00", testsStr: formatListToHtml(["Physician Consultation", "Haemogram", "BSL (F &PP)", "Lipid Profile", "Sr. Creatinine", "Sr. TSH (Ultra)", "Urine Routine/Microscopy", "Blood Urea Level", "HbA1C", "ECG", "Chest X Ray"]) },
+      { id: Date.now() + 3, name: "Executive - A", cost: "6540.00", payable: "5900.00", testsStr: formatListToHtml(["Physician Consultation", "Eye Consultation", "Haemogram", "BSL (F &PP)", "Lipid Profile", "Sr. Creatinine", "HbA1c", "Sr. TSH (Ultra)", "Urine Routine/Microscopy", "Blood Urea Level", "ECG", "Chest X Ray", "TMT(Stress Test)"]) },
+      { id: Date.now() + 4, name: "Executive - B", cost: "8740.00", payable: "7850.00", testsStr: formatListToHtml(["Physician Consultation", "Eye Consultation", "Haemogram", "BSL (F &PP)", "Lipid Profile", "Sr. Creatinine", "Urine Routine/Microscopy", "Blood Urea Level", "SGOT", "SGPT", "HbA1c", "Sr. TSH (Ultra)", "ECG", "Chest X Ray", "TMT(Stress Test)", "Sonography (Abd + Pelvis)"]) },
+      { id: Date.now() + 5, name: "Well Woman - I", cost: "5100.00", payable: "4770.00", testsStr: formatListToHtml(["Gynaec Consultation", "HPV-Genotyping (16,18)", "Digital Mammography"]) },
+      { id: Date.now() + 6, name: "Well Woman - II", cost: "6900.00", payable: "6390.00", testsStr: formatListToHtml(["Gynaec Consultation", "HPV Genotyping (16,18)", "Digital Mammography", "Sonography (Abd + Pelvis)"]) },
+      { id: Date.now() + 7, name: "Well Woman - III", cost: "5100.00", payable: "4590.00", testsStr: formatListToHtml(["Gynaec Consultation", "Digital Mammography", "Sonography (Abd + Pelvis)"]) },
+      { id: Date.now() + 8, name: "Well Woman - IV", cost: "4200.00", payable: "3960.00", testsStr: formatListToHtml(["Gynaec Consultation", "HPV Genotyping (16,18)", "Sonography (Abd + Pelvis)"]) },
+      { id: Date.now() + 9, name: "Comprehensive Package", cost: "8540.00", payable: "7700.00", testsStr: formatListToHtml(["Physician Consultation", "Haemogram", "BSL (F &PP)", "Lipid Profile", "Liver Function Test (Sr. Bilirubin, SGPT, SGOT, Sr. Alkaline Phosphatase,Sr. Protein)", "Renal Function Test (Blood Urea Level, Sr. Creatinine, Sr. Electrolytes, Sr. Uric Acid, Sr. Calcium, Sr. Phosphorus)", "Urine Routine/Microscopy", "HbA1c", "Sr. TSH (Ultra)", "ECG", "Chest X Ray", "TMT(Stress Test)", "Sonography (Abd + Pelvis)"]) },
+      { id: Date.now() + 10, name: "Super Comprehensive Package", cost: "12090.00", payable: "10880.00", testsStr: formatListToHtml(["Physician Consultation", "Eye Consultation", "Haemogram", "BSL (F &PP)", "Lipid Profile", "Liver Function Test (Sr. Bilirubin, SGPT, SGOT, Sr. Alkaline Phosphatase,Sr. Protein)", "Renal Function Test (Blood Urea Level, Sr. Creatinine, Sr. Electrolytes, Sr. Uric Acid, Sr. Calcium, Sr. Phosphorus)", "Urine Routine/Microscopy", "HbA1c", "Sr. Vit B12", "25 OH Vit D", "Thyroid Function Test", "ECG", "Chest X Ray", "TMT(Stress Test)", "Sonography (Abd+Pel)"]) },
+      { id: Date.now() + 11, name: "Super Comprehensive For Senior Citizen", cost: "12040.00", payable: "10350.00", testsStr: formatListToHtml(["Physician Consultation", "Eye Consultation", "Haemogram", "BSL (F &PP)", "Lipid Profile", "Liver Function Test (Sr. Bilirubin, SGPT, SGOT, Sr. Alkaline Phosphatase,Sr. Protein)", "Renal Function Test (Blood Urea Level, Sr. Creatinine, Sr. Electrolytes, Sr. Uric Acid, Sr. Calcium, Sr. Phosphorus)", "Urine Routine/Microscopy", "HbA1c", "Sr. Vit B12", "25 OH Vit D", "Thyroid Function Test", "ECG", "Chest X Ray", "2 D Echo + Colour Doppler", "Sonography (Abd+Pel)"]) }
     ],
-    companyList: initialData?.companyList ? initialData.companyList.join('\n') : "AAM India Manufacturing Corporation Pvt Ltd\nARAI (The Automotive Research Association of India)\nFleetguard Filters Private Limited\nBajaj Finserve Health Ltd\nIndian Oil Corporation Ltd ( IOCL)\nJnana Prabodhini Medical Trust (JPMT)\nMaharshi Karve Stree Shikshan Sanstha (MKSS)\nMedia Ocean India Pvt Ltd\nPrayas Health Group\nPrayas Energey Group\nSheetal Wireless Technologies Pvt Ltd\nSVC Co Operative Bank Ltd\nTata Motors Ltd\nThyssen Krupp Industrial Solutions (India) Pvt Ltd\nWai Technologies Pvt Ltd",
-    instructions: initialData?.instructions ? initialData.instructions.join('\n') : "Kindly take prior appointment.\nFor first time registration please bring a photo id proof such as PAN Card, Aadhaar Card, Passport.\nPlease ensure you have fasted overnight (8 to 10 hrs) prior to the check-up.\nDo not consume any alcoholic beverages in any form for 72 hours prior to check-up.\nPlease bring all your medical prescriptions and previous medical records with you.\nKindly inform the Health Check reception if you have any history of diabetes or cardiac problem.\nWe kindly request male participants in the TMT test to consider shaving their chest. Your co-operation is appreciated.\nWe kindly request all corporate clients to bring company letter, employee ID, or any confirmation letter if credit billing is required.\nPlease wear minimum jewellery on the day of health check-up.\nAccess your investigation reports electronically on the patient portal the same day or following day.\nAny additional tests suggested by the Doctor during the consultation that are not included in the package will incur extra charge.",
+    companyList: formatListToHtml(initialData?.companyList, [
+      "AAM India Manufacturing Corporation Pvt Ltd",
+      "ARAI (The Automotive Research Association of India)",
+      "Fleetguard Filters Private Limited",
+      "Bajaj Finserve Health Ltd",
+      "Indian Oil Corporation Ltd ( IOCL)",
+      "Jnana Prabodhini Medical Trust (JPMT)",
+      "Maharshi Karve Stree Shikshan Sanstha (MKSS)",
+      "Media Ocean India Pvt Ltd",
+      "Prayas Health Group",
+      "Prayas Energey Group",
+      "Sheetal Wireless Technologies Pvt Ltd",
+      "SVC Co Operative Bank Ltd",
+      "Tata Motors Ltd",
+      "Thyssen Krupp Industrial Solutions (India) Pvt Ltd",
+      "Wai Technologies Pvt Ltd"
+    ]),
+    instructions: formatListToHtml(initialData?.instructions, [
+      "Kindly take prior appointment.",
+      "For first time registration please bring a photo id proof such as PAN Card, Aadhaar Card, Passport.",
+      "Please ensure you have fasted overnight (8 to 10 hrs) prior to the check-up.",
+      "Do not consume any alcoholic beverages in any form for 72 hours prior to check-up.",
+      "Please bring all your medical prescriptions and previous medical records with you.",
+      "Kindly inform the Health Check reception if you have any history of diabetes or cardiac problem.",
+      "We kindly request male participants in the TMT test to consider shaving their chest. Your co-operation is appreciated.",
+      "We kindly request all corporate clients to bring company letter, employee ID, or any confirmation letter if credit billing is required.",
+      "Please wear minimum jewellery on the day of health check-up.",
+      "Access your investigation reports electronically on the patient portal the same day or following day.",
+      "Any additional tests suggested by the Doctor during the consultation that are not included in the package will incur extra charge."
+    ]),
     womenNote: initialData?.womenNote !== undefined ? initialData.womenNote : "Pregnant woman or those suspecting pregnancy should inform us and are advised to avoid X-rays or similar test. It is advisable to refrain from undergoing any health check up during menstruation.",
     appointmentPhones: initialData?.appointmentPhones ? initialData.appointmentPhones.join('\n') : "020 – 40151011\n020 – 40151015\n9158885173",
     appointmentTimings: initialData?.appointmentTimings !== undefined ? initialData.appointmentTimings : "Mon to Sat, 10 a.m. to 6 p.m.",
@@ -64,10 +91,10 @@ export default function HealthPackagesClientForm({ initialData }: { initialData:
         name: p.name,
         cost: p.cost,
         payable: p.payable,
-        tests: p.testsStr.split('\n').map((s: string) => s.trim()).filter((s: string) => s)
+        tests: parseHtmlToList(p.testsStr)
       })),
-      companyList: data.companyList.split('\n').map((s: string) => s.trim()).filter((s: string) => s),
-      instructions: data.instructions.split('\n').map((s: string) => s.trim()).filter((s: string) => s),
+      companyList: parseHtmlToList(data.companyList),
+      instructions: parseHtmlToList(data.instructions),
       womenNote: data.womenNote,
       appointmentPhones: data.appointmentPhones.split('\n').map((s: string) => s.trim()).filter((s: string) => s),
       appointmentTimings: data.appointmentTimings,
