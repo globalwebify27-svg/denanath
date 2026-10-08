@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ArrowLeft, Save, HeartPulse, Search } from "lucide-react";
 
 import IconPicker from "@/components/IconPicker";
+import SubmitButton from "@/app/admin/(dashboard)/components/SubmitButton";
 
 export default function NewServicePage() {
   async function createService(formData: FormData) {
@@ -37,7 +38,7 @@ export default function NewServicePage() {
     const { revalidatePath } = require("next/cache");
     revalidatePath("/", "layout");
 
-    redirect("/admin/services");
+    redirect("/admin/services?alert=" + encodeURIComponent("Service created successfully!"));
   }
 
   return (
@@ -138,13 +139,7 @@ export default function NewServicePage() {
         </div>
 
         <div className="mt-10 pt-6 border-t border-gray-100 flex justify-end">
-          <button
-            type="submit"
-            className="flex items-center gap-2 bg-[#007a87] text-white px-8 py-3.5 rounded-xl hover:bg-[#006570] hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 font-[800] text-[14px] tracking-wide hover:shadow-[0_8px_20px_rgba(0,122,135,0.3)]"
-          >
-            <Save size={18} />
-            <span>Save Service</span>
-          </button>
+          <SubmitButton text="Save Service" loadingText="Saving..." successMessage="Service created successfully!" />
         </div>
       </form>
     </div>

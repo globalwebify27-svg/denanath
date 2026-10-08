@@ -56,7 +56,7 @@ export default async function EditServicePage({
     const { revalidatePath } = require("next/cache");
     revalidatePath("/", "layout");
 
-    redirect("/admin/services");
+    redirect("/admin/services?alert=" + encodeURIComponent("Service updated successfully!"));
   }
 
   async function deleteService() {
@@ -64,7 +64,7 @@ export default async function EditServicePage({
     await prisma.service.delete({
       where: { id: resolvedParams.id },
     });
-    redirect("/admin/services");
+    redirect("/admin/services?alert=" + encodeURIComponent("Service deleted successfully!"));
   }
 
   return (

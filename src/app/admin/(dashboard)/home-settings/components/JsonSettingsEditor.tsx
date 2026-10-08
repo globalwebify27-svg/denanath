@@ -40,6 +40,7 @@ export default function JsonSettingsEditor({
 
       if (res.ok) {
         setSuccessMsg("Settings updated successfully!");
+        alert("Settings updated successfully!");
         // Format it nicely
         setJsonText(JSON.stringify(parsedData, null, 2));
       } else {

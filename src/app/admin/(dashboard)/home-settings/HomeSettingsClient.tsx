@@ -95,6 +95,7 @@ export default function HomeSettingsClient({
       setErrorMsg("Some settings failed to save. Please try again.");
     } else {
       setSuccessMsg("All settings saved successfully!");
+      alert("Settings saved successfully!");
     }
     
     setIsSaving(false);

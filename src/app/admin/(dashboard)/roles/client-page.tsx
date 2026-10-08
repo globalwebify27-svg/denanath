@@ -77,6 +77,7 @@ export default function RolesClientPage({ initialRoles }: { initialRoles: any[] 
       const data = await res.json();
       
       if (data.success) {
+        alert(editingRole.id === 'new' ? 'Role created successfully!' : 'Role updated successfully!');
         setEditingRole(null);
         router.refresh();
         // Optimistic update

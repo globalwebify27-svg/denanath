@@ -59,6 +59,7 @@ export default function MailConfigClientForm({ initialData }: { initialData: any
       });
       if (res.ok) {
         setSuccess(true);
+        alert("Settings saved successfully!");
         setTimeout(() => setSuccess(false), 3000);
       } else {
         alert("Failed to save settings");

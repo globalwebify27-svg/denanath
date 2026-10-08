@@ -61,6 +61,7 @@ export default function UsersClientPage({ initialUsers, roles }: { initialUsers:
       const data = await res.json();
       
       if (data.success) {
+        alert(editingUser.id === 'new' ? 'User created successfully!' : 'User updated successfully!');
         setEditingUser(null);
         router.refresh();
         if (method === 'POST') {

@@ -204,7 +204,7 @@ export default function DoctorForm({ doctor, id, departments = [], apiSpecialiti
 
       if (!response.ok) throw new Error("Failed to save");
       
-      alert("Doctor saved successfully!");
+      alert(doctor?.id ? "Doctor saved successfully!" : "Doctor created successfully!");
       
       // Go back to the previous page in history (keeps table pagination state)
       router.back();

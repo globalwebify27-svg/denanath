@@ -649,6 +649,7 @@ export default function SubmissionsClientPage({
                           data: JSON.stringify(editData),
                         });
                         setIsEditing(false);
+                        alert("Submission updated successfully!");
                       });
                     }}
                     disabled={isPending}

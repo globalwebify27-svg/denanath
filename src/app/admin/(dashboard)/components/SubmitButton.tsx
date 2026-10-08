@@ -2,15 +2,26 @@
 
 import { useFormStatus } from "react-dom";
 import { Save } from "lucide-react";
+import { useEffect, useRef } from "react";
 
 export default function SubmitButton({
   text = "Save Changes",
-  loadingText = "Saving..."
+  loadingText = "Saving...",
+  successMessage = "Saved successfully!"
 }: {
   text?: string;
   loadingText?: string;
+  successMessage?: string;
 }) {
   const { pending } = useFormStatus();
+  const wasPending = useRef(false);
+
+  useEffect(() => {
+    if (wasPending.current && !pending) {
+      alert(successMessage);
+    }
+    wasPending.current = pending;
+  }, [pending, successMessage]);
 
   return (
     <button

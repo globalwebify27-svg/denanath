@@ -224,7 +224,7 @@ export default async function EditDepartmentPage({
     const { revalidatePath } = require("next/cache");
     revalidatePath("/", "layout"); // Clears the entire Next.js data cache for all frontend pages
 
-    redirect("/admin/departments");
+    redirect("/admin/departments?alert=" + encodeURIComponent("Department updated successfully!"));
   }
 
   async function deleteDepartment() {
@@ -232,7 +232,7 @@ export default async function EditDepartmentPage({
     await prisma.department.delete({
       where: { id: resolvedParams.id },
     });
-    redirect("/admin/departments");
+    redirect("/admin/departments?alert=" + encodeURIComponent("Department deleted successfully!"));
   }
 
   const desc = department.description || "";

@@ -1,6 +1,8 @@
 import AdminSidebar from "./components/AdminSidebar";
 import { prisma } from "@/lib/prisma";
 import { cookies } from "next/headers";
+import { Suspense } from "react";
+import AdminAlertListener from "./components/AdminAlertListener";
 
 export default async function AdminLayout({
   children,
@@ -28,6 +30,9 @@ export default async function AdminLayout({
 
   return (
     <div className="flex h-screen bg-[#f4f7fb] overflow-hidden" style={{ fontFamily: 'system-ui, -apple-system, sans-serif' }}>
+      <Suspense fallback={null}>
+        <AdminAlertListener />
+      </Suspense>
       <AdminSidebar dynamicPages={dynamicPages} permissions={adminPermissions} />
       <main className="flex-1 overflow-y-auto bg-[#f4f7fb]/50">
         <div className="max-w-7xl mx-auto">

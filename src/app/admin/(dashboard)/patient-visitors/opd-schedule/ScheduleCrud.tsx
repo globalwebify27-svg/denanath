@@ -115,6 +115,7 @@ export default function ScheduleCrud({ departments = [] }: { departments?: strin
       setDoctors(prev => prev.map(d => d.id === doc.id ? { ...d, qualifications: editQualifications, specialty: editSpecialty, timings: cleanedTimings } : d));
       setEditingId(null);
       setMessage({ text: `Successfully updated details and schedule for ${doc.name}!`, type: 'success' });
+      alert(`Successfully updated details and schedule for ${doc.name}!`);
       setTimeout(() => setMessage(null), 4000);
     } catch (err: any) {
       console.error(err);

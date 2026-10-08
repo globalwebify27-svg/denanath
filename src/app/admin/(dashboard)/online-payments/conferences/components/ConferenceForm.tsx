@@ -66,6 +66,7 @@ export default function ConferenceForm({ conferenceId, initialData, categories }
         throw new Error('Failed to save conference');
       }
 
+      alert(isNew ? 'Conference created successfully!' : 'Conference updated successfully!');
       router.push('/admin/online-payments/conferences');
       router.refresh();
     } catch (error) {

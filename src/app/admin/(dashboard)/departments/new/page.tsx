@@ -8,6 +8,7 @@ import QuillEditor from "@/components/QuillEditor";
 import PhotoGalleryEditor from "@/components/PhotoGalleryEditor";
 import SectionHeaderClient from "../[id]/SectionHeaderClient";
 import PublicationLinkSectionClient from "../[id]/PublicationLinkSectionClient";
+import SubmitButton from "@/app/admin/(dashboard)/components/SubmitButton";
 
 export default function NewDepartmentPage() {
   async function createDepartment(formData: FormData) {
@@ -137,7 +138,7 @@ export default function NewDepartmentPage() {
     const { revalidatePath } = require("next/cache");
     revalidatePath("/", "layout");
 
-    redirect("/admin/departments");
+    redirect("/admin/departments?alert=" + encodeURIComponent("Department created successfully!"));
   }
 
   return (
@@ -278,13 +279,7 @@ export default function NewDepartmentPage() {
             >
               Cancel
             </Link>
-            <button
-              type="submit"
-              className="w-full sm:w-auto flex items-center justify-center gap-2 bg-[#007a87] text-white px-6 py-3 rounded-xl hover:bg-[#005c66] hover:shadow-lg transition-all duration-300 font-[700] text-[13px] tracking-wide hover:shadow-[0_8px_20px_rgba(0,122,135,0.3)]"
-            >
-              <Save size={18} />
-              Save Department
-            </button>
+            <SubmitButton text="Save Department" loadingText="Saving..." successMessage="Department created successfully!" />
           </div>
         </form>
       </div>

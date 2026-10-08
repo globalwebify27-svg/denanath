@@ -47,6 +47,7 @@ export default function CategoriesClientPage({ initialCategories }: { initialCat
       
       if (!res.ok) throw new Error('Failed to save category');
       
+      alert(editingCategory.id === 'new' ? 'Category created successfully!' : 'Category updated successfully!');
       setEditingCategory(null);
       router.refresh();
     } catch (error) {
