@@ -54,6 +54,7 @@ export default function GalleryVideosClientForm({ initialData }: { initialData: 
   };
 
   const removeVideo = (id: number) => {
+    if (!window.confirm("Are you sure you want to delete this video?")) return;
     setData({
       ...data,
       videos: data.videos.filter((v: any) => v.id !== id)

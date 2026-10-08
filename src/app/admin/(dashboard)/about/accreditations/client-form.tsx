@@ -35,6 +35,7 @@ export default function AccreditationsClientForm({ initialData }: { initialData:
   };
 
   const removeItem = (id: number) => {
+    if (!window.confirm("Are you sure you want to delete this accreditation certificate?")) return;
     setItems(items.filter(item => item.id !== id));
   };
 

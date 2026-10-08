@@ -23,6 +23,7 @@ export default function NbemsCoursesClientForm({ initialData }: { initialData: a
   };
 
   const removeFromArray = (field: string, idx: number) => {
+    if (!window.confirm("Are you sure you want to delete this program?")) return;
     handleChange(field, data[field].filter((_: any, i: number) => i !== idx));
   };
 

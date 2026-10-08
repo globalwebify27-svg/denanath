@@ -29,6 +29,7 @@ export default function ForeignContributionClientForm({ initialData }: { initial
   };
 
   const removeQuarter = (id: number) => {
+    if (!window.confirm("Are you sure you want to delete this quarter?")) return;
     setQuarters(quarters.filter(q => q.id !== id));
   };
 
@@ -49,6 +50,7 @@ export default function ForeignContributionClientForm({ initialData }: { initial
   };
 
   const removeDonation = (quarterId: number, donationId: number) => {
+    if (!window.confirm("Are you sure you want to delete this donation entry?")) return;
     setQuarters(quarters.map(q => {
       if (q.id === quarterId) {
         return { ...q, donations: q.donations.filter((d: any) => d.id !== donationId) };

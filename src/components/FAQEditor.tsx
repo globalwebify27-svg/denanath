@@ -17,6 +17,7 @@ export default function FAQEditor({ defaultItems = [] }: { defaultItems?: { ques
   };
 
   const removeItem = (id: string) => {
+    if (!window.confirm("Are you sure you want to delete this FAQ item?")) return;
     setItems(items.filter(item => item.id !== id));
   };
 

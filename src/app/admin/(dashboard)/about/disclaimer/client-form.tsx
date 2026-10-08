@@ -32,6 +32,7 @@ export default function DisclaimerClientForm({ initialData, saveAction }: { init
   };
 
   const handleGalleryRemove = (index: number) => {
+    if (!window.confirm("Are you sure you want to delete this gallery photo?")) return;
     const newGallery = [...formData.gallery];
     newGallery.splice(index, 1);
     setFormData({ ...formData, gallery: newGallery });
@@ -51,6 +52,7 @@ export default function DisclaimerClientForm({ initialData, saveAction }: { init
   };
 
   const handleLinkRemove = (index: number) => {
+    if (!window.confirm("Are you sure you want to delete this link?")) return;
     const newLinks = [...formData.links];
     newLinks.splice(index, 1);
     setFormData({ ...formData, links: newLinks });

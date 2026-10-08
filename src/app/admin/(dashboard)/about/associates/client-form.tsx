@@ -24,6 +24,7 @@ export default function AssociatesClientForm({ initialData }: { initialData: any
   };
 
   const removeItem = (id: number) => {
+    if (!window.confirm("Are you sure you want to delete this associate organization?")) return;
     setItems(items.filter(item => item.id !== id));
   };
 

@@ -22,6 +22,7 @@ export default function TrainingProgramsClientForm({ initialData }: { initialDat
   };
 
   const removeFromArray = (field: string, idx: number) => {
+    if (!window.confirm("Are you sure you want to delete this training program?")) return;
     handleChange(field, data[field].filter((_: any, i: number) => i !== idx));
   };
 

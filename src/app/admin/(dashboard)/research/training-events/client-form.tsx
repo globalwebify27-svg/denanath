@@ -28,6 +28,7 @@ export default function TrainingEventsClientForm({ initialData }: { initialData:
   };
 
   const handleRemoveEvent = (index: number) => {
+    if (!window.confirm("Are you sure you want to delete this event?")) return;
     setData((prev: any) => {
       const newEvents = [...prev.events];
       newEvents.splice(index, 1);

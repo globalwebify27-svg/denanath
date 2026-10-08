@@ -57,6 +57,7 @@ export default function PhotoGalleryEditor({ name, defaultItems = [], title = "H
   };
 
   const handleRemoveImage = (index: number) => {
+    if (!window.confirm("Are you sure you want to delete this gallery photo?")) return;
     setGallery(prev => {
       const next = prev.filter((_, i) => i !== index);
       if (onChange) onChange(next);

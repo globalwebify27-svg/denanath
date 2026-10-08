@@ -64,6 +64,7 @@ export default function LaryngologyFellowshipClientForm({ initialData }: { initi
   };
 
   const removeReference = (idx: number) => {
+    if (!window.confirm("Are you sure you want to delete this RCS reference publication?")) return;
     handleChange("rcsReferences", data.rcsReferences.filter((_: any, i: number) => i !== idx));
   };
 

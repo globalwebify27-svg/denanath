@@ -26,6 +26,7 @@ export default function PatientPortalClientForm({ initialData }: { initialData: 
   };
 
   const handleRemoveFeature = (index: number) => {
+    if (!window.confirm("Are you sure you want to delete this feature?")) return;
     const features = [...(data.features || [])];
     features.splice(index, 1);
     handleChange("features", features);

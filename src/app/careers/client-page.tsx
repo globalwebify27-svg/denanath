@@ -1,8 +1,8 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { ChevronRight, GraduationCap, Briefcase, ClipboardList, Mail, Users, Clock, ArrowRight, ShieldCheck, Phone, X, User, Calendar, Upload, RefreshCw, FileText, Send } from "lucide-react";
-import { jobsList } from "./careersData";
+import { ChevronRight, GraduationCap, Briefcase, ClipboardList, Mail, Users, Clock, ArrowRight, ShieldCheck, Phone, X, User, Calendar, Upload, RefreshCw, FileText, Send, Building2, Stethoscope, HeartPulse, Pill } from "lucide-react";
+import { jobsList, fallbackContacts } from "./careersData";
 import CustomDropdown from "@/components/CustomDropdown";
 
 
@@ -76,7 +76,7 @@ export default function CareersClientPage({ pageData }: { pageData: any }) {
             <span className="text-white">Careers</span>
           </div>
           <h1 className="text-[40px] leading-tight font-extrabold text-white tracking-tight flex items-center gap-4">
-            {pageData?.title || "Careers"}
+            {pageData?.pageTitle || pageData?.title || "Careers"}
           </h1>
         </div>
       </div>
@@ -118,10 +118,25 @@ export default function CareersClientPage({ pageData }: { pageData: any }) {
                   <h3 className="text-xl md:text-2xl font-[900] text-[#002b5c] pr-12 leading-tight">
                     {job.title}
                   </h3>
+                  {job.subtitle && (
+                    <p className="text-sm font-semibold text-teal-600 mt-1">{job.subtitle}</p>
+                  )}
                 </div>
 
                 <div className="px-6 md:px-8 pb-6 md:pb-8 flex-1 flex flex-col pt-2 [&_.text-sm]:!text-base">
                   <div className="space-y-6 flex-1 mb-8">
+                  {job.designation && (
+                    <div className="flex items-start gap-3.5">
+                      <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center shrink-0">
+                        <Briefcase className="w-4 h-4 text-slate-500" />
+                      </div>
+                      <div className="pt-0.5">
+                        <div className="text-[10px] font-[800] text-slate-400 uppercase tracking-widest mb-1.5">DESIGNATION</div>
+                        <div className="text-sm font-[700] text-[#002b5c] leading-snug">{job.designation}</div>
+                      </div>
+                    </div>
+                  )}
+
                   {job.qualification && (
                     <div className="flex items-start gap-3.5">
                       <div className="w-8 h-8 rounded-full bg-teal-50 flex items-center justify-center shrink-0">
@@ -146,18 +161,6 @@ export default function CareersClientPage({ pageData }: { pageData: any }) {
                     </div>
                   )}
 
-                  {job.description && (
-                    <div className="flex items-start gap-3.5">
-                      <div className="w-8 h-8 rounded-full bg-purple-50 flex items-center justify-center shrink-0">
-                        <ClipboardList className="w-4 h-4 text-purple-500" />
-                      </div>
-                      <div className="pt-0.5">
-                        <div className="text-[10px] font-[800] text-slate-400 uppercase tracking-widest mb-1.5">JOB DESCRIPTION</div>
-                        <div className="text-sm font-[500] text-slate-600 leading-relaxed">{job.description}</div>
-                      </div>
-                    </div>
-                  )}
-
                   {job.requirement && (
                     <div className="flex items-start gap-3.5">
                       <div className="w-8 h-8 rounded-full bg-orange-50 flex items-center justify-center shrink-0">
@@ -169,17 +172,51 @@ export default function CareersClientPage({ pageData }: { pageData: any }) {
                       </div>
                     </div>
                   )}
+
+                  {job.preference && (
+                    <div className="flex items-start gap-3.5">
+                      <div className="w-8 h-8 rounded-full bg-amber-50 flex items-center justify-center shrink-0">
+                        <ClipboardList className="w-4 h-4 text-amber-500" />
+                      </div>
+                      <div className="pt-0.5">
+                        <div className="text-[10px] font-[800] text-slate-400 uppercase tracking-widest mb-1.5">PREFERENCE</div>
+                        <div className="text-sm font-[500] text-slate-600 leading-relaxed">{job.preference}</div>
+                      </div>
+                    </div>
+                  )}
+
+                  {job.description && (
+                    <div className="flex items-start gap-3.5">
+                      <div className="w-8 h-8 rounded-full bg-purple-50 flex items-center justify-center shrink-0">
+                        <ClipboardList className="w-4 h-4 text-purple-500" />
+                      </div>
+                      <div className="pt-0.5 min-w-0 flex-1">
+                        <div className="text-[10px] font-[800] text-slate-400 uppercase tracking-widest mb-1.5">JOB DESCRIPTION</div>
+                        <div 
+                          className="text-sm font-[500] text-slate-600 leading-relaxed [&_p]:mb-1 [&_p:last-child]:mb-0 [&_ul]:list-disc [&_ul]:pl-4 [&_ol]:list-decimal [&_ol]:pl-4"
+                          dangerouslySetInnerHTML={{ __html: job.description }}
+                        />
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 <div className="mt-auto flex flex-col gap-6">
-                  {job.duty ? (
-                    <div className="inline-flex items-center gap-1.5 w-fit bg-[#fffbeb] border border-orange-100 text-[#d97706] px-3.5 py-1.5 rounded-lg text-xs font-[800]">
-                      <Clock className="w-3.5 h-3.5" />
-                      {job.duty}
-                    </div>
-                  ) : (
-                    <div className="h-8" />
-                  )}
+                  <div className="flex flex-wrap items-center gap-2">
+                    {job.duty && (
+                      <div className="inline-flex items-center gap-1.5 w-fit bg-[#fffbeb] border border-orange-100 text-[#d97706] px-3.5 py-1.5 rounded-lg text-xs font-[800]">
+                        <Clock className="w-3.5 h-3.5" />
+                        {job.duty}
+                      </div>
+                    )}
+                    {job.duration && (
+                      <div className="inline-flex items-center gap-1.5 w-fit bg-slate-100 border border-slate-200 text-slate-600 px-3.5 py-1.5 rounded-lg text-xs font-[800]">
+                        <Calendar className="w-3.5 h-3.5" />
+                        {job.duration}
+                      </div>
+                    )}
+                    {!job.duty && !job.duration && <div className="h-8" />}
+                  </div>
 
                   <button onClick={() => { setApplyingJob(job); setSelectedFile(null); }} className="w-full bg-[#f8fafc] border border-slate-200 text-[#002b5c] group-hover:bg-[#002b5c] group-hover:text-white group-hover:border-[#002b5c] font-[800] py-3.5 rounded-xl transition-all duration-300 shadow-sm text-sm tracking-wide flex items-center justify-center gap-2">
                     Apply Now
@@ -190,6 +227,43 @@ export default function CareersClientPage({ pageData }: { pageData: any }) {
             </div>
             ))}
           </div>
+
+          {/* Department Contact Directory */}
+          {((pageData?.contacts && pageData.contacts.length > 0) || (fallbackContacts && fallbackContacts.length > 0)) && (
+            <div className="bg-slate-50 border border-slate-200 rounded-3xl p-6 sm:p-10 mt-12">
+              <div className="text-center mb-8">
+                <h3 className="text-2xl font-extrabold text-[#002b5c] mb-2">Department Contact Directory</h3>
+                <p className="text-slate-500 text-sm">For specific departmental inquiries, please use the numbers below.</p>
+              </div>
+              
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {((pageData?.contacts && pageData.contacts.length > 0) ? pageData.contacts : fallbackContacts).map((contact: any, idx: number) => {
+                  let Icon = Building2;
+                  if (contact.iconType === "stethoscope1" || contact.iconType === "stethoscope2") Icon = Stethoscope;
+                  if (contact.iconType === "briefcase") Icon = Briefcase;
+                  if (contact.iconType === "heart") Icon = HeartPulse;
+                  if (contact.iconType === "pill") Icon = Pill;
+
+                  const colorClass = idx % 6 === 0 ? "bg-blue-50 text-blue-600" 
+                    : idx % 6 === 1 ? "bg-teal-50 text-teal-600"
+                    : idx % 6 === 2 ? "bg-purple-50 text-purple-600"
+                    : idx % 6 === 3 ? "bg-orange-50 text-orange-600"
+                    : idx % 6 === 4 ? "bg-rose-50 text-rose-600"
+                    : "bg-emerald-50 text-emerald-600";
+
+                  return (
+                    <div key={idx} className="bg-white p-5 rounded-2xl border border-slate-100 flex flex-col items-center text-center shadow-sm hover:shadow-md transition-shadow">
+                      <div className={`w-12 h-12 ${colorClass} rounded-full flex items-center justify-center mb-3`}>
+                        <Icon className="w-6 h-6" />
+                      </div>
+                      <h4 className="font-bold text-slate-800 mb-1">{contact.title}</h4>
+                      <p className="text-sm font-medium text-slate-600">{contact.phone}</p>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
 
         </div>
       </div>

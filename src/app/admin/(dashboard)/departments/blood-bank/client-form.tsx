@@ -170,7 +170,10 @@ export default function BloodBankClientForm({ initialData }: { initialData: any 
                       <img src={imgUrl} alt="Preview" className="w-24 h-24 object-cover rounded-lg border border-gray-200 bg-white" />
                       <button
                         type="button"
-                        onClick={() => handleChange('images', data.images.filter((_, i) => i !== imgIdx))}
+                        onClick={() => {
+                          if (!window.confirm("Are you sure you want to delete this picture?")) return;
+                          handleChange('images', data.images.filter((_: any, i: number) => i !== imgIdx));
+                        }}
                         className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs opacity-0 group-hover:opacity-100 transition-opacity"
                       >
                         x
@@ -246,7 +249,16 @@ export default function BloodBankClientForm({ initialData }: { initialData: any 
               <div key={i.id} className="bg-white p-4 rounded-xl border border-slate-200">
                 <div className="flex justify-between items-center mb-3 gap-4">
                   <input type="text" value={i.title} onChange={e => updateInitiative(i.id, 'title', e.target.value)} className="w-full p-2 border border-slate-200 rounded text-sm font-bold text-slate-800" placeholder="Initiative Title" />
-                  <button type="button" onClick={() => setData({...data, initiatives: data.initiatives.filter((item: any) => item.id !== i.id)})} className="text-red-500 font-bold px-2 py-1 bg-red-50 rounded hover:bg-red-100 shrink-0">x</button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (!window.confirm("Are you sure you want to delete this safety initiative?")) return;
+                      setData({...data, initiatives: data.initiatives.filter((item: any) => item.id !== i.id)});
+                    }}
+                    className="text-red-500 font-bold px-2 py-1 bg-red-50 rounded hover:bg-red-100 shrink-0"
+                  >
+                    x
+                  </button>
                 </div>
                 <QuillEditor value={i.description} onChange={content => updateInitiative(i.id, 'description', content)} />
               </div>
@@ -303,7 +315,16 @@ export default function BloodBankClientForm({ initialData }: { initialData: any 
                     <input type="text" value={t.role} onChange={e => updateTeam(t.id, 'role', e.target.value)} className="w-full p-2 border border-slate-200 rounded text-sm" placeholder="Role" />
                   </div>
                   <div className="col-span-12 md:col-span-1 flex items-center justify-end">
-                    <button type="button" onClick={() => setData({...data, team: data.team.filter((item: any) => item.id !== t.id)})} className="text-red-500 font-bold px-2 py-1 bg-red-50 rounded hover:bg-red-100">x</button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (!window.confirm("Are you sure you want to delete this team member?")) return;
+                        setData({...data, team: data.team.filter((item: any) => item.id !== t.id)});
+                      }}
+                      className="text-red-500 font-bold px-2 py-1 bg-red-50 rounded hover:bg-red-100"
+                    >
+                      x
+                    </button>
                   </div>
                   <div className="col-span-12 flex gap-4 items-center">
                     {t.image && <img src={t.image} alt={t.name} className="w-12 h-12 rounded-full object-cover border border-slate-200" />}

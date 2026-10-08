@@ -38,10 +38,11 @@ export default function ImplantClientForm({ initialData }: { initialData: any })
   };
 
   const removeRow = (index: number) => {
+    if (!window.confirm("Are you sure you want to delete this row?")) return;
     setData(prev => {
-      const newTable = prev.tableData.filter((_, i) => i !== index);
+      const newTable = prev.tableData.filter((_: any, i: number) => i !== index);
       // Reassign srNo
-      const renumbered = newTable.map((row, i) => ({ ...row, srNo: String(i + 1) }));
+      const renumbered = newTable.map((row: any, i: number) => ({ ...row, srNo: String(i + 1) }));
       return { ...prev, tableData: renumbered };
     });
   };

@@ -76,6 +76,9 @@ export default function PublicationLinkSectionClient({ defaultText = "View Detai
               <button
                 type="button"
                 onClick={() => {
+                  if (linkUrl || (linkText && linkText !== "View Details")) {
+                    if (!window.confirm("Are you sure you want to remove this publication link?")) return;
+                  }
                   setLinkUrl("");
                   setLinkText("View Details");
                 }}

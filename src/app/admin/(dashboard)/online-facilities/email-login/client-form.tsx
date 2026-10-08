@@ -27,6 +27,7 @@ export default function EMailLoginClientForm({ initialData }: { initialData: any
   };
 
   const handleRemovePortal = (index: number) => {
+    if (!window.confirm("Are you sure you want to delete this portal?")) return;
     setData((prev: any) => {
       const newPortals = [...prev.portals];
       newPortals.splice(index, 1);

@@ -105,6 +105,7 @@ export default function DoctorForm({ doctor, id, departments = [], apiSpecialiti
   };
 
   const handleArrayRemove = (field: string, index: number) => {
+    if (!window.confirm("Are you sure you want to remove this item?")) return;
     const newArray = [...formData[field as keyof typeof formData] as string[]];
     newArray.splice(index, 1);
     setFormData({ ...formData, [field]: newArray });
@@ -137,6 +138,7 @@ export default function DoctorForm({ doctor, id, departments = [], apiSpecialiti
   };
 
   const handleTimingRemove = (index: number) => {
+    if (!window.confirm("Are you sure you want to remove this timing entry?")) return;
     const newTimings = [...formData.timings];
     newTimings.splice(index, 1);
     setFormData({ ...formData, timings: newTimings });
@@ -156,6 +158,7 @@ export default function DoctorForm({ doctor, id, departments = [], apiSpecialiti
   };
 
   const handlePublicationRemove = (index: number) => {
+    if (!window.confirm("Are you sure you want to remove this publication?")) return;
     const newPubs = [...formData.publications];
     newPubs.splice(index, 1);
     setFormData({ ...formData, publications: newPubs });

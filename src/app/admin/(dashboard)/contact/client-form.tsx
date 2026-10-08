@@ -30,6 +30,7 @@ export default function ContactClientForm({ initialData }: { initialData: any })
     setData({ ...data, phoneLines: newLines });
   };
   const removePhoneLine = (idx: number) => {
+    if (!window.confirm("Are you sure you want to remove this phone line?")) return;
     const newLines = [...data.phoneLines];
     newLines.splice(idx, 1);
     setData({ ...data, phoneLines: newLines });
@@ -42,6 +43,7 @@ export default function ContactClientForm({ initialData }: { initialData: any })
     });
   };
   const removeDept = (idx: number) => {
+    if (!window.confirm("Are you sure you want to delete this department contact?")) return;
     const newDepts = [...data.departments];
     newDepts.splice(idx, 1);
     setData({ ...data, departments: newDepts });
@@ -62,6 +64,7 @@ export default function ContactClientForm({ initialData }: { initialData: any })
     setData({ ...data, departments: newDepts });
   };
   const removeDeptLine = (deptIdx: number, lineIdx: number) => {
+    if (!window.confirm("Are you sure you want to remove this contact line?")) return;
     const newDepts = [...data.departments];
     newDepts[deptIdx].lines.splice(lineIdx, 1);
     setData({ ...data, departments: newDepts });

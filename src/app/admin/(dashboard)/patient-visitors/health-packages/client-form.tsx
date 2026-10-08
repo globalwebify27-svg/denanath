@@ -44,6 +44,7 @@ export default function HealthPackagesClientForm({ initialData }: { initialData:
   };
 
   const removePackage = (id: number) => {
+    if (!window.confirm("Are you sure you want to delete this health package?")) return;
     setData({
       ...data,
       packages: data.packages.filter((p: any) => p.id !== id)

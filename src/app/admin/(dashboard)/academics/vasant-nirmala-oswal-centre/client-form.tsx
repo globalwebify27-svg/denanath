@@ -83,6 +83,7 @@ export default function OswalCentreClientForm({ initialData }: { initialData: an
   };
 
   const removeFromStringArray = (field: string, idx: number) => {
+    if (!window.confirm("Are you sure you want to delete this item?")) return;
     handleChange(field, data[field].filter((_: any, i: number) => i !== idx));
   };
 
@@ -101,6 +102,7 @@ export default function OswalCentreClientForm({ initialData }: { initialData: an
   };
 
   const removeMainFacility = (idx: number) => {
+    if (!window.confirm("Are you sure you want to delete this facility?")) return;
     handleChange("mainFacilities", data.mainFacilities.filter((_: any, i: number) => i !== idx));
   };
 

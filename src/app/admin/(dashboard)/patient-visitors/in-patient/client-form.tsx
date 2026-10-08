@@ -86,14 +86,14 @@ export default function InPatientClientForm({ initialData }: { initialData: any 
     setData({ ...data, [field]: value });
   };
 
-  const updateMainRoom = (id: number, field: string, value: string) => {
+  const updateMainRoom = (id: number, field: string, value: any) => {
     setData({
       ...data,
       mainBuildingRooms: data.mainBuildingRooms.map((r: any) => r.id === id ? { ...r, [field]: value } : r)
     });
   };
 
-  const updateSuperRoom = (id: number, field: string, value: string) => {
+  const updateSuperRoom = (id: number, field: string, value: any) => {
     setData({
       ...data,
       superSpecialityRooms: data.superSpecialityRooms.map((r: any) => r.id === id ? { ...r, [field]: value } : r)
@@ -109,10 +109,12 @@ export default function InPatientClientForm({ initialData }: { initialData: any 
   };
 
   const removeMainRoom = (id: number) => {
+    if (!window.confirm("Are you sure you want to delete this room?")) return;
     setData({ ...data, mainBuildingRooms: data.mainBuildingRooms.filter((r: any) => r.id !== id) });
   };
 
   const removeSuperRoom = (id: number) => {
+    if (!window.confirm("Are you sure you want to delete this room?")) return;
     setData({ ...data, superSpecialityRooms: data.superSpecialityRooms.filter((r: any) => r.id !== id) });
   };
 
@@ -141,6 +143,7 @@ export default function InPatientClientForm({ initialData }: { initialData: any 
   };
 
   const removePhone = (type: 'mainBuildingPhones' | 'superSpecialityPhones', id: number) => {
+    if (!window.confirm("Are you sure you want to delete this phone contact?")) return;
     setData({ ...data, [type]: data[type].filter((p: any) => p.id !== id) });
   };
 
@@ -378,7 +381,10 @@ export default function InPatientClientForm({ initialData }: { initialData: any 
                             <img src={imgUrl} alt="Preview" className="w-16 h-16 object-cover rounded border border-gray-200 bg-white" />
                             <button
                               type="button"
-                              onClick={() => updateMainRoom(r.id, 'images', (r.images || (r.image ? [r.image] : [])).filter((_: any, i: number) => i !== imgIdx))}
+                              onClick={() => {
+                                if (!window.confirm("Are you sure you want to delete this room picture?")) return;
+                                updateMainRoom(r.id, 'images', (r.images || (r.image ? [r.image] : [])).filter((_: any, i: number) => i !== imgIdx));
+                              }}
                               className="absolute -top-2 -right-2 w-5 h-5 bg-red-500 text-white rounded-full flex items-center justify-center text-xs opacity-0 group-hover:opacity-100 transition-opacity"
                             >
                               x
@@ -449,7 +455,10 @@ export default function InPatientClientForm({ initialData }: { initialData: any 
                             <img src={imgUrl} alt="Preview" className="w-16 h-16 object-cover rounded border border-gray-200 bg-white" />
                             <button
                               type="button"
-                              onClick={() => updateSuperRoom(r.id, 'images', (r.images || (r.image ? [r.image] : [])).filter((_: any, i: number) => i !== imgIdx))}
+                              onClick={() => {
+                                if (!window.confirm("Are you sure you want to delete this room picture?")) return;
+                                updateSuperRoom(r.id, 'images', (r.images || (r.image ? [r.image] : [])).filter((_: any, i: number) => i !== imgIdx));
+                              }}
                               className="absolute -top-2 -right-2 w-5 h-5 bg-red-500 text-white rounded-full flex items-center justify-center text-xs opacity-0 group-hover:opacity-100 transition-opacity"
                             >
                               x

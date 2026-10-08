@@ -41,6 +41,7 @@ export default function CareersClientForm({ initialData }: { initialData: any })
   };
 
   const removeJob = (index: number) => {
+    if (!window.confirm("Are you sure you want to delete this job posting?")) return;
     const newJobs = [...data.jobs];
     newJobs.splice(index, 1);
     setData({ ...data, jobs: newJobs });
@@ -61,6 +62,7 @@ export default function CareersClientForm({ initialData }: { initialData: any })
   };
 
   const removeContact = (index: number) => {
+    if (!window.confirm("Are you sure you want to delete this contact?")) return;
     const newContacts = [...data.contacts];
     newContacts.splice(index, 1);
     setData({ ...data, contacts: newContacts });

@@ -91,6 +91,7 @@ export default function EventsClientForm({ initialEvents }: { initialEvents: any
   };
 
   const removeArrayItem = (eventIndex: number, field: 'overview' | 'objectives' | 'features' | 'gallery', itemIdx: number) => {
+    if (!window.confirm("Are you sure you want to remove this item?")) return;
     setEvents(prev => {
       const arr = [...prev];
       if (!arr[eventIndex]) return arr;
@@ -126,6 +127,7 @@ export default function EventsClientForm({ initialEvents }: { initialEvents: any
   };
 
   const removeOrganizer = (eventIndex: number, itemIdx: number) => {
+    if (!window.confirm("Are you sure you want to remove this organizer?")) return;
     setEvents(prev => {
       const arr = [...prev];
       if (!arr[eventIndex]) return arr;
@@ -161,6 +163,7 @@ export default function EventsClientForm({ initialEvents }: { initialEvents: any
   };
 
   const removeAgenda = (eventIndex: number, itemIdx: number) => {
+    if (!window.confirm("Are you sure you want to remove this agenda item?")) return;
     setEvents(prev => {
       const arr = [...prev];
       if (!arr[eventIndex]) return arr;

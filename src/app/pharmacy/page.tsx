@@ -12,6 +12,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: data?.seoMetaTitle || "Deenanath Medical Stores | DMH",
     description: data?.seoMetaDescription || "Medicines and healthcare essentials, all within your hospital.",
+    ...(data?.seoKeywords ? { keywords: data.seoKeywords } : {}),
   };
 }
 

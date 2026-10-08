@@ -290,7 +290,7 @@ export default function AdminSidebar({
             const isOpen = openSections[section.name];
             
             const isActiveSection = hasChildren 
-              ? section.links!.some(link => pathname.startsWith(link.href))
+              ? section.links!.some((link: any) => pathname.startsWith(link.href))
               : (section.href === "/admin" ? pathname === "/admin" : pathname.startsWith(section.href!));
 
             if (!hasChildren) {
@@ -337,7 +337,7 @@ export default function AdminSidebar({
 
                 {isOpen && (
                   <div className="mt-1 mb-3 space-y-1 pl-11">
-                    {section.links!.map((link) => {
+                    {section.links!.map((link: any) => {
                       const isActive = link.href === "/admin" 
                         ? pathname === "/admin" 
                         : (pathname === link.href || pathname.startsWith(link.href + "/"));

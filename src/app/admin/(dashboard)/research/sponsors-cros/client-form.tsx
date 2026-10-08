@@ -34,6 +34,7 @@ export default function SponsorsCrosClientForm({ initialData }: { initialData: a
   };
 
   const handleRemoveSponsor = (index: number) => {
+    if (!window.confirm("Are you sure you want to delete this sponsor?")) return;
     setData((prev: any) => {
       const newSponsors = [...prev.sponsors];
       newSponsors.splice(index, 1);
@@ -57,6 +58,7 @@ export default function SponsorsCrosClientForm({ initialData }: { initialData: a
   };
 
   const handleRemoveCro = (index: number) => {
+    if (!window.confirm("Are you sure you want to delete this CRO?")) return;
     setData((prev: any) => {
       const newCros = [...prev.cros];
       newCros.splice(index, 1);

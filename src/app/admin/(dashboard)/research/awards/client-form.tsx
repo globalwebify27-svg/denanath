@@ -62,6 +62,7 @@ export default function AwardsClientForm({ initialData }: { initialData: any }) 
   };
 
   const handleRemoveAwardItem = (yearIndex: number, itemIndex: number) => {
+    if (!window.confirm("Are you sure you want to delete this award item?")) return;
     setData((prev: any) => {
       const newAwards = [...prev.awards];
       newAwards[yearIndex].items.splice(itemIndex, 1);
@@ -86,6 +87,7 @@ export default function AwardsClientForm({ initialData }: { initialData: any }) 
   };
 
   const handleRemoveGrant = (index: number) => {
+    if (!window.confirm("Are you sure you want to delete this ongoing grant?")) return;
     setData((prev: any) => {
       const newGrants = [...prev.grants];
       newGrants.splice(index, 1);
@@ -110,6 +112,7 @@ export default function AwardsClientForm({ initialData }: { initialData: any }) 
   };
 
   const handleRemovePastGrant = (index: number) => {
+    if (!window.confirm("Are you sure you want to delete this completed grant?")) return;
     setData((prev: any) => {
       const newPastGrants = [...prev.pastGrants];
       newPastGrants.splice(index, 1);

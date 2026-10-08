@@ -56,6 +56,7 @@ export default function DynamicFormEditor({
   };
 
   const removeArrayItem = (path: (string | number)[], indexToRemove: number) => {
+    if (!window.confirm("Are you sure you want to remove this item?")) return;
     const newData = Array.isArray(value) ? [...value] : { ...value };
     let current = newData;
     if (path.length === 0) {

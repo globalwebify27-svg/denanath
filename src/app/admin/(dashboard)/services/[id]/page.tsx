@@ -6,6 +6,7 @@ import { ArrowLeft, Save, Trash2, HeartPulse, Search } from "lucide-react";
 
 import IconPicker from "@/components/IconPicker";
 import SubmitButton from "@/app/admin/(dashboard)/components/SubmitButton";
+import DeleteActionButton from "@/app/admin/(dashboard)/components/DeleteActionButton";
 
 export const dynamic = "force-dynamic";
 
@@ -89,15 +90,11 @@ export default async function EditServicePage({
           {/* Actions in Header */}
           <div className="z-10 shrink-0 mt-4 lg:mt-0 flex items-center gap-3">
             <SubmitButton text="Save Changes" loadingText="Saving..." />
-            <button
+            <DeleteActionButton
               formAction={deleteService}
-              formNoValidate
-              type="submit"
-              className="p-3 text-rose-600 bg-rose-50 border border-rose-200 rounded-xl hover:bg-rose-100 transition-colors shadow-sm"
+              confirmMessage="Are you sure you want to delete this service? This action cannot be undone."
               title="Delete Service"
-            >
-              <Trash2 size={18} />
-            </button>
+            />
           </div>
 
           {/* subtle background decoration */}

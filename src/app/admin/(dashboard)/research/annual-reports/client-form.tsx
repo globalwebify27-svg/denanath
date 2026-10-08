@@ -38,6 +38,7 @@ export default function AnnualReportsClientForm({ initialData }: { initialData: 
   };
 
   const handleRemoveItem = (index: number) => {
+    if (!window.confirm("Are you sure you want to delete this annual report?")) return;
     setData((prev: any) => {
       const newItems = [...prev.items];
       newItems.splice(index, 1);

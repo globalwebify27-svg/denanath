@@ -31,6 +31,7 @@ export default function UniqueFeaturesClientForm({ initialData }: { initialData:
   };
 
   const removeItem = (id: number) => {
+    if (!window.confirm("Are you sure you want to delete this feature?")) return;
     setItems(items.filter(item => item.id !== id));
   };
 

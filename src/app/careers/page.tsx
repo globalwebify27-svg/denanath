@@ -20,9 +20,10 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function CareersPage() {
-  const setting = await prisma.siteSetting.findUnique({ where: { key: 'page_hospital_careers' } });
+  const setting = (await prisma.siteSetting.findUnique({ where: { key: 'page_careers' } }))
+    || (await prisma.siteSetting.findUnique({ where: { key: 'page_hospital_careers' } }));
   let pageData: any = { title: "Careers", content: "", image: "" };
-  try { if (setting) pageData = JSON.parse(setting.value); } catch (e) {}
+  try { if (setting && setting.value) pageData = JSON.parse(setting.value); } catch (e) {}
 
   return <ClientPage pageData={pageData} />;
 }

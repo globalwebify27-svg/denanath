@@ -52,6 +52,7 @@ export default function FacilitiesClientForm({ initialData }: { initialData: any
   };
 
   const removeFacility = (id: number) => {
+    if (!window.confirm("Are you sure you want to delete this facility?")) return;
     setData({
       ...data,
       facilities: data.facilities.filter((f: any) => f.id !== id)
@@ -73,6 +74,7 @@ export default function FacilitiesClientForm({ initialData }: { initialData: any
   };
 
   const removeIpdTiming = (id: number) => {
+    if (!window.confirm("Are you sure you want to delete this IPD billing timing?")) return;
     setData({
       ...data,
       ipdBillingTimings: data.ipdBillingTimings.filter((t: any) => t.id !== id)

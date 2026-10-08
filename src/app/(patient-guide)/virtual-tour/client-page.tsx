@@ -63,7 +63,7 @@ export default function VirtualTourClientPage({ pageData }: { pageData?: any }) 
   // Currently we show all regardless of category to match the layout in the image
   // but if needed we can filter by activeTab
 
-  const activeLocation = locations.find(loc => loc.name === activeView) || locations[0];
+  const activeLocation = locations.find((loc: any) => loc.name === activeView) || locations[0];
   const [pan, setPan] = useState({ x: 50, y: 50 });
 
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
@@ -174,7 +174,7 @@ export default function VirtualTourClientPage({ pageData }: { pageData?: any }) 
                       {isDropdownOpen && (
                         <div className="absolute top-full right-0 mt-2 w-[220px] bg-white rounded-lg shadow-[0_10px_40px_-10px_rgba(0,0,0,0.3)] border border-slate-100 overflow-hidden z-50 flex flex-col max-h-[300px]">
                           <div className="overflow-y-auto [scrollbar-width:thin] [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-thumb]:bg-slate-300 [&::-webkit-scrollbar-thumb]:rounded-full">
-                            {locations.map((loc, i) => (
+                            {locations.map((loc: any, i: number) => (
                               <div
                                 key={`${loc.name}-${i}`}
                                 onClick={() => {

@@ -12,7 +12,7 @@ export default async function PagesListPage() {
     });
 
     initialPages = allPages
-      .map(p => ({
+      .map((p: any) => ({
         id: p.id,
         title: p.title,
         slug: p.slug,

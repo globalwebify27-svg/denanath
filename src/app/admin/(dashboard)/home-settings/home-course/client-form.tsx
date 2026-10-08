@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Plus, Trash2, GraduationCap, FileText, Edit } from "lucide-react";
@@ -13,6 +13,13 @@ export default function HomeCourseClientForm({ initialData }: { initialData: any
     leftCourses: initialData.leftCourses || [],
     rightCourses: initialData.rightCourses || []
   });
+
+  useEffect(() => {
+    setFormData({
+      leftCourses: initialData.leftCourses || [],
+      rightCourses: initialData.rightCourses || []
+    });
+  }, [initialData]);
 
   const now = new Date();
   now.setHours(0, 0, 0, 0);
@@ -30,40 +37,24 @@ export default function HomeCourseClientForm({ initialData }: { initialData: any
     }, 50);
   };
 
-  const addLeftCourse = () => {
-    const newId = "left-" + Date.now();
-    const newCourse = { id: newId, title: "New Course", link: "", linkText: "View Details", content: "", gallery: [] };
-    const updated = [...formData.leftCourses, newCourse];
-    setFormData(prev => ({ ...prev, leftCourses: updated }));
-    
-    // Explicitly sync the hidden input to avoid React batching delays before form submission
-    const input = document.querySelector('input[name="leftCourses"]') as HTMLInputElement;
-    if (input) input.value = JSON.stringify(updated);
-    
-    triggerSubmit();
-  };
-
-  const addRightCourse = () => {
-    const newId = "right-" + Date.now();
-    const newCourse = { id: newId, title: "New Program", link: "", linkText: "View Form", content: "", gallery: [] };
-    const updated = [...formData.rightCourses, newCourse];
-    setFormData(prev => ({ ...prev, rightCourses: updated }));
-    
-    // Explicitly sync the hidden input to avoid React batching delays before form submission
-    const input = document.querySelector('input[name="rightCourses"]') as HTMLInputElement;
-    if (input) input.value = JSON.stringify(updated);
-    
-    triggerSubmit();
-  };
-
   const removeLeftCourse = (index: number) => {
+    const courseTitle = formData.leftCourses[index]?.title || "this course";
+    if (!window.confirm(`Are you sure you want to delete "${courseTitle}"?`)) return;
     const updated = formData.leftCourses.filter((_: any, i: number) => i !== index);
     setFormData({ ...formData, leftCourses: updated });
+    const input = document.querySelector('input[name="leftCourses"]') as HTMLInputElement;
+    if (input) input.value = JSON.stringify(updated);
+    triggerSubmit();
   };
 
   const removeRightCourse = (index: number) => {
+    const itemTitle = formData.rightCourses[index]?.title || "this item";
+    if (!window.confirm(`Are you sure you want to delete "${itemTitle}"?`)) return;
     const updated = formData.rightCourses.filter((_: any, i: number) => i !== index);
     setFormData({ ...formData, rightCourses: updated });
+    const input = document.querySelector('input[name="rightCourses"]') as HTMLInputElement;
+    if (input) input.value = JSON.stringify(updated);
+    triggerSubmit();
   };
 
   const toggleLeftCourseStatus = (index: number) => {
@@ -124,13 +115,12 @@ export default function HomeCourseClientForm({ initialData }: { initialData: any
                 <p className="text-[13px] text-slate-500 font-medium">Left column items</p>
               </div>
             </div>
-            <button
-              type="button"
-              onClick={addLeftCourse}
+            <Link
+              href="/admin/home-settings/home-course/new?col=left"
               className="flex items-center gap-2 px-4 py-2 bg-emerald-50 hover:bg-emerald-100 text-emerald-600 rounded-lg text-sm font-bold transition-colors border border-emerald-200"
             >
               <Plus size={16} /> Add Course
-            </button>
+            </Link>
           </div>
           <div className="p-6 md:p-8 space-y-3 max-h-[600px] overflow-y-auto custom-scrollbar">
             {formData.leftCourses.map((course: any, idx: number) => {
@@ -225,13 +215,12 @@ export default function HomeCourseClientForm({ initialData }: { initialData: any
                 <p className="text-[13px] text-slate-500 font-medium">Right column items</p>
               </div>
             </div>
-            <button
-              type="button"
-              onClick={addRightCourse}
+            <Link
+              href="/admin/home-settings/home-course/new?col=right"
               className="flex items-center gap-2 px-4 py-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-600 rounded-lg text-sm font-bold transition-colors border border-indigo-200"
             >
               <Plus size={16} /> Add Program
-            </button>
+            </Link>
           </div>
           <div className="p-6 md:p-8 space-y-3 max-h-[600px] overflow-y-auto custom-scrollbar">
             {formData.rightCourses.map((course: any, idx: number) => {

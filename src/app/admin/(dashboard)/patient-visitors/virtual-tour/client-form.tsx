@@ -65,6 +65,7 @@ export default function VirtualTourClientForm({ initialData }: { initialData: an
   };
 
   const removeLocation = (index: number) => {
+    if (!window.confirm("Are you sure you want to delete this virtual tour location?")) return;
     const newLocations = data.locations.filter((_: any, i: number) => i !== index);
     setData({ ...data, locations: newLocations });
   };

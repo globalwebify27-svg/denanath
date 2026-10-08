@@ -35,6 +35,7 @@ export default function OutPatientClientForm({ initialData }: { initialData: any
   };
 
   const removeTableRow = (id: number) => {
+    if (!window.confirm("Are you sure you want to delete this table row?")) return;
     setData({
       ...data,
       chargesTable: data.chargesTable.filter((row: any) => row.id !== id)

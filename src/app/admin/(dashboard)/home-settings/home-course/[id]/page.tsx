@@ -31,8 +31,10 @@ export default async function EditCoursePage(props: { params: Promise<any>, sear
   const resolvedParams = await props.params;
   const resolvedSearchParams = await props.searchParams;
   
-  const courseId = resolvedParams?.id;
+  const rawId = resolvedParams?.id;
+  const courseId = rawId ? decodeURIComponent(rawId) : "";
   const colParam = resolvedSearchParams?.col;
+  const isNew = courseId === "new";
   
   const setting = await prisma.siteSetting.findUnique({ where: { key: 'home_courses' } });
   
@@ -46,21 +48,83 @@ export default async function EditCoursePage(props: { params: Promise<any>, sear
     } catch(e) {}
   }
 
-  const col = colParam === "right" ? "rightCourses" : "leftCourses";
-  const course = parsed[col]?.find((c: any) => c.id === courseId);
+  let targetCol = (colParam === "right" || courseId.startsWith("right")) ? "rightCourses" : "leftCourses";
+  let course: any = null;
+
+  if (isNew) {
+    course = {
+      id: "new",
+      title: "",
+      link: "",
+      linkText: colParam === "right" ? "View Form" : "View Details",
+      content: "",
+      startDate: "",
+      endDate: "",
+      gallery: [],
+      status: true,
+      seoMetaTitle: "",
+      seoMetaDescription: "",
+      seoKeywords: "",
+    };
+  } else {
+    // 1. Check in target column
+    course = parsed[targetCol]?.find((c: any) => c.id === courseId);
+
+    // 2. If not found in target column, check the other column
+    if (!course) {
+      const otherCol = targetCol === "rightCourses" ? "leftCourses" : "rightCourses";
+      const otherMatch = parsed[otherCol]?.find((c: any) => c.id === courseId);
+      if (otherMatch) {
+        course = otherMatch;
+        targetCol = otherCol;
+      }
+    }
+
+    // 3. Fallback: match by title slug, legacy index, or case-insensitive ID
+    if (!course) {
+      const allCourses = [
+        ...(parsed.leftCourses || []).map((c: any, i: number) => ({ ...c, _col: "leftCourses", _idx: i })),
+        ...(parsed.rightCourses || []).map((c: any, i: number) => ({ ...c, _col: "rightCourses", _idx: i }))
+      ];
+      
+      const targetSlug = courseId.toLowerCase();
+      const match = allCourses.find((c: any) => {
+        if (!c) return false;
+        const titleSlug = (c.title || "").toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+        return (
+          c.id?.toLowerCase() === targetSlug || 
+          titleSlug === targetSlug ||
+          `left-legacy-${c._idx}` === targetSlug ||
+          `right-legacy-${c._idx}` === targetSlug ||
+          `left-${c._idx + 1}` === targetSlug ||
+          `right-${c._idx + 1}` === targetSlug
+        );
+      });
+
+      if (match) {
+        course = match;
+        targetCol = match._col;
+      }
+    }
+  }
   
   if (!course) {
     return (
       <div className="p-8 max-w-5xl mx-auto text-center">
         <h1 className="text-2xl font-bold text-red-500 mb-4">Course Not Found</h1>
-        <p className="text-slate-600 mb-4">Could not find a course with ID: <strong>{courseId}</strong> in column: <strong>{colParam}</strong></p>
-        <div className="bg-slate-100 p-4 rounded text-left overflow-auto text-xs font-mono">
-          <p>Available IDs in this column:</p>
+        <p className="text-slate-600 mb-4">Could not find a course with ID: <strong>{courseId}</strong></p>
+        <div className="bg-slate-100 p-4 rounded text-left overflow-auto text-xs font-mono max-w-lg mx-auto">
+          <p className="font-bold mb-2">Available IDs:</p>
+          <p className="font-semibold text-slate-700">Courses (Left):</p>
+          <ul className="mb-2">
+            {parsed.leftCourses?.map((c: any) => <li key={c.id}>{c.id} - {c.title}</li>)}
+          </ul>
+          <p className="font-semibold text-slate-700">Programs (Right):</p>
           <ul>
-            {parsed[col]?.map((c: any) => <li key={c.id}>{c.id} - {c.title}</li>)}
+            {parsed.rightCourses?.map((c: any) => <li key={c.id}>{c.id} - {c.title}</li>)}
           </ul>
         </div>
-        <a href="/admin/home-settings/home-course" className="mt-6 inline-block text-blue-500 underline">Go Back</a>
+        <a href="/admin/home-settings/home-course" className="mt-6 inline-block text-blue-500 underline font-bold">Go Back</a>
       </div>
     );
   }
@@ -80,22 +144,54 @@ export default async function EditCoursePage(props: { params: Promise<any>, sear
         } catch(e) {}
       }
       
-      const colStr = colParam === "right" ? "rightCourses" : "leftCourses";
-      const index = currentData[colStr].findIndex((c: any) => c.id === courseId);
+      const colStr = targetCol;
       
-      if (index === -1) return;
-      
-      currentData[colStr][index] = {
-        ...currentData[colStr][index],
-        title: formData.get("title"),
-        content: formData.get("content"),
-        startDate: formData.get("startDate"),
-        endDate: formData.get("endDate"),
-        link: formData.get("link"),
-        linkText: formData.get("linkText"),
-        status: formData.get("status") === "true",
-        gallery: JSON.parse(formData.get("gallery") as string || "[]")
-      };
+      if (isNew) {
+        const newId = `${colStr === "rightCourses" ? "right" : "left"}-${Date.now()}`;
+        const newCourse = {
+          id: newId,
+          title: (formData.get("title") as string) || "Untitled",
+          content: (formData.get("content") as string) || "",
+          startDate: (formData.get("startDate") as string) || "",
+          endDate: (formData.get("endDate") as string) || "",
+          link: (formData.get("link") as string) || "",
+          linkText: (formData.get("linkText") as string) || (colStr === "rightCourses" ? "View Form" : "View Details"),
+          status: formData.get("status") === "true",
+          gallery: JSON.parse((formData.get("gallery") as string) || "[]"),
+          seoMetaTitle: (formData.get("seoMetaTitle") as string) || "",
+          seoMetaDescription: (formData.get("seoMetaDescription") as string) || "",
+          seoKeywords: (formData.get("seoKeywords") as string) || ""
+        };
+        currentData[colStr] = [...currentData[colStr], newCourse];
+      } else {
+        let index = currentData[colStr].findIndex((c: any) => c.id === course.id || c.id === courseId);
+        let saveCol = colStr;
+        
+        if (index === -1) {
+          const otherCol = colStr === "rightCourses" ? "leftCourses" : "rightCourses";
+          index = currentData[otherCol].findIndex((c: any) => c.id === course.id || c.id === courseId);
+          if (index !== -1) {
+            saveCol = otherCol;
+          }
+        }
+        
+        if (index !== -1) {
+          currentData[saveCol][index] = {
+            ...currentData[saveCol][index],
+            title: formData.get("title"),
+            content: formData.get("content"),
+            startDate: formData.get("startDate"),
+            endDate: formData.get("endDate"),
+            link: formData.get("link"),
+            linkText: formData.get("linkText"),
+            status: formData.get("status") === "true",
+            gallery: JSON.parse(formData.get("gallery") as string || "[]"),
+            seoMetaTitle: (formData.get("seoMetaTitle") as string) || "",
+            seoMetaDescription: (formData.get("seoMetaDescription") as string) || "",
+            seoKeywords: (formData.get("seoKeywords") as string) || ""
+          };
+        }
+      }
       
       await prisma.siteSetting.upsert({
         where: { key: 'home_courses' },
@@ -105,7 +201,11 @@ export default async function EditCoursePage(props: { params: Promise<any>, sear
       
       revalidatePath("/");
       revalidatePath("/admin/home-settings/home-course");
-      revalidatePath(`/admin/home-settings/home-course/${courseId}`);
+      revalidatePath("/courses");
+      if (!isNew && course?.id) {
+        revalidatePath(`/admin/home-settings/home-course/${course.id}`);
+        revalidatePath(`/courses/${course.id}`);
+      }
     } catch (e) {
       console.error(e);
       throw new Error("Failed to save");
@@ -114,7 +214,13 @@ export default async function EditCoursePage(props: { params: Promise<any>, sear
 
   return (
     <div className="p-4 md:p-8 max-w-5xl mx-auto pb-32">
-      <CourseForm initialData={course} saveAction={saveAction} col={colParam} />
+      <CourseForm 
+        key={`${course?.id || courseId}-${targetCol}`}
+        initialData={course} 
+        saveAction={saveAction} 
+        col={targetCol === "rightCourses" ? "right" : "left"} 
+        isNew={isNew} 
+      />
     </div>
   );
 }

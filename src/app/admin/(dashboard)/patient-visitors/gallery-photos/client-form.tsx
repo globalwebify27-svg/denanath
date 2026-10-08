@@ -70,6 +70,7 @@ export default function GalleryPhotosClientForm({ initialData }: { initialData: 
   };
 
   const removePhoto = (id: number) => {
+    if (!window.confirm("Are you sure you want to delete this photo?")) return;
     setData({
       ...data,
       photos: data.photos.filter((p: any) => p.id !== id)

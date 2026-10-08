@@ -73,6 +73,7 @@ export default function PublicationsClientForm({ initialData }: { initialData: a
   };
 
   const handleRemovePublication = (index: number) => {
+    if (!window.confirm("Are you sure you want to delete this publication?")) return;
     setData((prev: any) => {
       const newPubs = [...prev.publications];
       newPubs.splice(index, 1);
@@ -96,6 +97,7 @@ export default function PublicationsClientForm({ initialData }: { initialData: a
   };
 
   const handleRemoveArchive = (index: number) => {
+    if (!window.confirm("Are you sure you want to delete this archive item?")) return;
     setData((prev: any) => {
       const newArchives = [...prev.archives];
       newArchives.splice(index, 1);

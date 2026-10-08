@@ -38,6 +38,7 @@ export default function ResearchContactClientForm({ initialData }: { initialData
   };
 
   const handleRemoveEmail = (index: number) => {
+    if (!window.confirm("Are you sure you want to remove this email?")) return;
     setData((prev: any) => {
       const newEmails = [...prev.emails];
       newEmails.splice(index, 1);
@@ -61,6 +62,7 @@ export default function ResearchContactClientForm({ initialData }: { initialData
   };
 
   const handleRemovePerson = (index: number) => {
+    if (!window.confirm("Are you sure you want to delete this personnel contact?")) return;
     setData((prev: any) => {
       const newPersonnel = [...prev.personnel];
       newPersonnel.splice(index, 1);

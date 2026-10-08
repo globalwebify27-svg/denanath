@@ -148,6 +148,7 @@ export default function AcademicsInfoClientForm({ initialData }: { initialData: 
   };
 
   const removeFromArray = (field: string, idx: number) => {
+    if (!window.confirm("Are you sure you want to delete this item?")) return;
     handleChange(field, data[field].filter((_: any, i: number) => i !== idx));
   };
 
@@ -235,6 +236,7 @@ export default function AcademicsInfoClientForm({ initialData }: { initialData: 
                           <button 
                             type="button" 
                             onClick={() => {
+                              if (!window.confirm("Are you sure you want to remove this bullet point?")) return;
                               const newItems = prog.items.filter((_: any, i: number) => i !== itemIdx);
                               handleObjectArrayChange("pgProgrammes", progIdx, "items", newItems);
                             }} 

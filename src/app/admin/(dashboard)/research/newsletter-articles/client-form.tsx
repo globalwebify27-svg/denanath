@@ -48,6 +48,7 @@ export default function NewsletterArticlesClientForm({ initialData }: { initialD
   };
 
   const handleRemoveItem = (index: number) => {
+    if (!window.confirm("Are you sure you want to delete this newsletter?")) return;
     setData((prev: any) => {
       const newItems = [...prev.items];
       newItems.splice(index, 1);

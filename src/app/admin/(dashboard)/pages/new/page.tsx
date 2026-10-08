@@ -20,7 +20,7 @@ export default async function NewPage() {
     });
     
     if (menuPages.length > 0) {
-      headerMenus = [...headerMenus, ...menuPages.map(p => p.title)];
+      headerMenus = [...headerMenus, ...menuPages.map((p: any) => p.title)];
     }
   } catch (e) {
     console.error("Failed to load header menus", e);

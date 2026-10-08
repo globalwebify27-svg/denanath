@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 export default function InlineSeoForm({
   settingKey,
   initialData,
+  pathsToRevalidate,
 }: {
   settingKey: string;
   initialData: any;

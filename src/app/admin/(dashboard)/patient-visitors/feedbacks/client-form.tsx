@@ -57,6 +57,7 @@ export default function FeedbacksClientForm({ initialData }: { initialData: any 
   };
 
   const removeStory = (id: number) => {
+    if (!window.confirm("Are you sure you want to delete this patient story?")) return;
     setData({
       ...data,
       stories: data.stories.filter((s: any) => s.id !== id)

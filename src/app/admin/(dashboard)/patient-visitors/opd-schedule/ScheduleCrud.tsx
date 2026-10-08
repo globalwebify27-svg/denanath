@@ -84,6 +84,7 @@ export default function ScheduleCrud({ departments = [] }: { departments?: strin
   };
 
   const handleRemoveTiming = (index: number) => {
+    if (!window.confirm("Are you sure you want to delete this timing slot?")) return;
     const updated = [...editTimings];
     updated.splice(index, 1);
     setEditTimings(updated);

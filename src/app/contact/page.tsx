@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import React from "react";
 import Link from "next/link";
 import { ChevronRight, Phone } from "lucide-react";
+import { prisma } from "@/lib/prisma";
 
 
 export async function generateMetadata(): Promise<Metadata> {

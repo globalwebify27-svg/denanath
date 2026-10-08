@@ -47,6 +47,7 @@ export default function ResearchAboutClientForm({ initialData }: { initialData: 
   };
 
   const handleRemoveIntro = (index: number) => {
+    if (!window.confirm("Are you sure you want to delete this paragraph?")) return;
     setData((prev: any) => {
       const newIntro = [...prev.introduction];
       newIntro.splice(index, 1);

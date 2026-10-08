@@ -6,6 +6,7 @@ import { notFound } from "next/navigation";
 
 import IconPicker from "@/components/IconPicker";
 import SubmitButton from "@/app/admin/(dashboard)/components/SubmitButton";
+import DeleteActionButton from "@/app/admin/(dashboard)/components/DeleteActionButton";
 import QuillEditor from "@/components/QuillEditor";
 import PhotoGalleryEditor from "@/components/PhotoGalleryEditor";
 import FAQEditor from "@/components/FAQEditor";
@@ -420,15 +421,11 @@ export default async function EditDepartmentPage({
           {/* Actions in Header */}
           <div className="z-10 shrink-0 mt-4 lg:mt-0 flex flex-wrap items-center gap-3">
             <SubmitButton text="Save Changes" loadingText="Saving..." />
-            <button
+            <DeleteActionButton
               formAction={deleteDepartment}
-              formNoValidate
-              type="submit"
-              className="p-3 text-rose-600 bg-rose-50 border border-rose-200 rounded-xl hover:bg-rose-100 transition-colors shadow-sm"
+              confirmMessage="Are you sure you want to delete this department? This action cannot be undone."
               title="Delete Department"
-            >
-              <Trash2 size={18} />
-            </button>
+            />
           </div>
 
           {/* subtle background decoration */}

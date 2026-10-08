@@ -29,6 +29,7 @@ export default function CharityDetailsClientForm({ initialData }: { initialData:
   };
 
   const removeItem = (id: number) => {
+    if (!window.confirm("Are you sure you want to delete this charity record?")) return;
     setItems(items.filter(item => item.id !== id));
   };
 

@@ -1,26 +1,60 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, Save, FileText, Image as ImageIcon, Trash2, Plus, Calendar } from "lucide-react";
+import { ArrowLeft, Save, FileText, Image as ImageIcon, Trash2, Plus, Calendar, Search } from "lucide-react";
 import QuillEditor from "@/components/QuillEditor";
 
-export default function CourseForm({ initialData, saveAction, col }: { initialData: any, saveAction: (data: FormData) => Promise<void>, col: string }) {
+function formatDateForInput(d: any) {
+  if (!d) return "";
+  if (typeof d === "string") {
+    if (d.includes("T")) return d.split("T")[0];
+    return d;
+  }
+  try {
+    return new Date(d).toISOString().split("T")[0];
+  } catch {
+    return "";
+  }
+}
+
+export default function CourseForm({ initialData, saveAction, col, isNew }: { initialData: any, saveAction: (data: FormData) => Promise<void>, col: string, isNew?: boolean }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [uploadingLink, setUploadingLink] = useState(false);
   
   const [formData, setFormData] = useState({
-    title: initialData.title || "",
-    link: initialData.link || "",
-    linkText: initialData.linkText || "View Details",
-    content: initialData.content || "",
-    startDate: initialData.startDate || "",
-    endDate: initialData.endDate || "",
-    gallery: initialData.gallery || [],
-    status: initialData.status !== false,
+    title: initialData?.title || "",
+    link: initialData?.link || "",
+    linkText: initialData?.linkText || (col === "right" ? "View Form" : "View Details"),
+    content: initialData?.content || "",
+    startDate: formatDateForInput(initialData?.startDate),
+    endDate: formatDateForInput(initialData?.endDate),
+    gallery: Array.isArray(initialData?.gallery) ? initialData.gallery : [],
+    status: initialData?.status !== false,
+    seoMetaTitle: initialData?.seoMetaTitle || "",
+    seoMetaDescription: initialData?.seoMetaDescription || "",
+    seoKeywords: initialData?.seoKeywords || "",
   });
+
+  useEffect(() => {
+    if (initialData) {
+      setFormData({
+        title: initialData.title || "",
+        link: initialData.link || "",
+        linkText: initialData.linkText || (col === "right" ? "View Form" : "View Details"),
+        content: initialData.content || "",
+        startDate: formatDateForInput(initialData.startDate),
+        endDate: formatDateForInput(initialData.endDate),
+        gallery: Array.isArray(initialData.gallery) ? initialData.gallery : [],
+        status: initialData.status !== false,
+        seoMetaTitle: initialData.seoMetaTitle || "",
+        seoMetaDescription: initialData.seoMetaDescription || "",
+        seoKeywords: initialData.seoKeywords || "",
+      });
+    }
+  }, [initialData, col]);
 
   const handleGalleryChange = (index: number, key: string, value: string) => {
     const newGallery = [...formData.gallery];
@@ -33,6 +67,7 @@ export default function CourseForm({ initialData, saveAction, col }: { initialDa
   };
 
   const handleGalleryRemove = (index: number) => {
+    if (!window.confirm("Are you sure you want to delete this gallery photo?")) return;
     const newGallery = [...formData.gallery];
     newGallery.splice(index, 1);
     setFormData({ ...formData, gallery: newGallery });
@@ -66,6 +101,12 @@ export default function CourseForm({ initialData, saveAction, col }: { initialDa
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (!formData.title.trim()) {
+      alert(`Please enter a title for the ${col === "right" ? "program" : "course"}.`);
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -75,7 +116,7 @@ export default function CourseForm({ initialData, saveAction, col }: { initialDa
       const cleanedContent = finalContent === "<p><br></p>" ? "" : finalContent;
 
       const data = new FormData();
-      data.append("title", formData.title);
+      data.append("title", formData.title.trim());
       data.append("startDate", formData.startDate);
       data.append("endDate", formData.endDate);
       data.append("link", formData.link);
@@ -83,9 +124,14 @@ export default function CourseForm({ initialData, saveAction, col }: { initialDa
       data.append("content", cleanedContent);
       data.append("status", formData.status.toString());
       data.append("gallery", JSON.stringify(formData.gallery.filter((g: any) => g.image || g.caption)));
+      data.append("seoMetaTitle", formData.seoMetaTitle);
+      data.append("seoMetaDescription", formData.seoMetaDescription);
+      data.append("seoKeywords", formData.seoKeywords);
 
       await saveAction(data);
-      alert("Saved successfully!");
+      alert(isNew ? `${col === "right" ? "Program" : "Course"} added successfully!` : "Saved successfully!");
+      router.push("/admin/home-settings/home-course");
+      router.refresh();
     } catch (error) {
       console.error(error);
       alert("Failed to save");
@@ -108,10 +154,12 @@ export default function CourseForm({ initialData, saveAction, col }: { initialDa
             <ArrowLeft size={16} /> Back to List
           </Link>
           <h1 className="text-[32px] md:text-[40px] font-black text-[#002b5c] tracking-tight leading-tight mb-2 flex items-center gap-3">
-            Edit {col === "right" ? "Program" : "Course"}
+            {isNew ? `Add New ${col === "right" ? "Program / Form" : "Upcoming Course"}` : `Edit ${col === "right" ? "Program" : "Course"}`}
           </h1>
           <p className="text-[15px] font-medium text-slate-500 max-w-xl leading-relaxed">
-            Update details for {formData.title || `this ${col === "right" ? "program" : "course"}`}
+            {isNew 
+              ? `Fill in the complete details below. Once saved, it will be added to the list.`
+              : `Update details for ${formData.title || `this ${col === "right" ? "program" : "course"}`}`}
           </p>
         </div>
         <div className="z-10 shrink-0 mt-4 lg:mt-0">
@@ -121,8 +169,49 @@ export default function CourseForm({ initialData, saveAction, col }: { initialDa
             className="flex items-center gap-2 bg-[#007a87] text-white px-6 py-3 rounded-xl hover:bg-[#006570] hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 font-bold text-xs shadow-md disabled:opacity-50"
           >
             <Save size={18} />
-            <span>{loading ? "Saving..." : "Save Changes"}</span>
+            <span>{loading ? "Saving..." : (isNew ? `Add ${col === "right" ? "Program" : "Course"}` : "Save Changes")}</span>
           </button>
+        </div>
+      </div>
+
+      {/* Basic Details: Title & Status */}
+      <div className="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden group hover:shadow-md transition-shadow duration-300">
+        <div className="bg-slate-50/50 border-b border-slate-100 p-5 md:p-6 flex items-center gap-4">
+          <div className="bg-teal-500/10 p-3 rounded-2xl text-teal-600">
+            <FileText size={24} strokeWidth={2.5} />
+          </div>
+          <div>
+            <h2 className="text-[20px] font-black text-[#002b5c]">Basic Details</h2>
+            <p className="text-[13px] text-slate-500 font-medium">Specify the {col === "right" ? "program/form" : "course"} title and visibility status.</p>
+          </div>
+        </div>
+        <div className="p-6 md:p-8 space-y-6">
+          <div>
+            <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">
+              {col === "right" ? "Program / Form Title *" : "Course Title *"}
+            </label>
+            <input 
+              type="text"
+              required
+              value={formData.title}
+              onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+              className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-800 font-bold text-base leading-relaxed placeholder:font-normal placeholder:text-slate-400" 
+              placeholder={col === "right" ? "e.g. Senior Registrar Vacancy Pathology" : "e.g. Practice Course for Practical Exam - Emergency Medicine"}
+            />
+          </div>
+          <div>
+            <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Visibility Status</label>
+            <label className="relative inline-flex items-center cursor-pointer">
+              <input 
+                type="checkbox" 
+                className="sr-only peer" 
+                checked={formData.status} 
+                onChange={(e) => setFormData({ ...formData, status: e.target.checked })}
+              />
+              <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-[#007a87]/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#007a87]"></div>
+              <span className="ml-3 text-sm font-bold text-slate-700">{formData.status ? "Active (Visible on Website)" : "Inactive (Hidden)"}</span>
+            </label>
+          </div>
         </div>
       </div>
 
@@ -161,31 +250,6 @@ export default function CourseForm({ initialData, saveAction, col }: { initialDa
         </div>
       </div>
 
-      {/* Status Settings */}
-      <div className="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden group hover:shadow-md transition-shadow duration-300">
-        <div className="bg-slate-50/50 border-b border-slate-100 p-5 md:p-6 flex items-center gap-4">
-          <div className="bg-teal-500/10 p-3 rounded-2xl text-teal-600">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-eye"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
-          </div>
-          <div>
-            <h2 className="text-[20px] font-black text-[#002b5c]">Visibility Status</h2>
-            <p className="text-[13px] text-slate-500 font-medium">Determine if this {col === "right" ? "program" : "course"} is publicly visible.</p>
-          </div>
-        </div>
-        <div className="p-6 md:p-8">
-          <label className="relative inline-flex items-center cursor-pointer">
-            <input 
-              type="checkbox" 
-              className="sr-only peer" 
-              checked={formData.status} 
-              onChange={(e) => setFormData({ ...formData, status: e.target.checked })}
-            />
-            <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-[#007a87]/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#007a87]"></div>
-            <span className="ml-3 text-sm font-bold text-slate-700">{formData.status ? "Active" : "Inactive"}</span>
-          </label>
-        </div>
-      </div>
-
       {/* Content Settings */}
       <div className="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden group hover:shadow-md transition-shadow duration-300">
         <div className="bg-slate-50/50 border-b border-slate-100 p-5 md:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -193,33 +257,16 @@ export default function CourseForm({ initialData, saveAction, col }: { initialDa
             <div className="bg-emerald-500/10 p-3 rounded-2xl text-emerald-600 shrink-0">
               <FileText size={24} strokeWidth={2.5} />
             </div>
-            <div className="flex-1 max-w-sm sm:max-w-md">
-              <input 
-                type="text"
-                value={formData.title}
-                onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                className="w-full font-black text-[#002b5c] text-base sm:text-xl border border-slate-300 focus:border-[#007a87] rounded-xl px-3.5 py-1.5 outline-none font-sans bg-white shadow-xs" 
-                placeholder="Section Title (e.g. Event Overview)" 
-              />
+            <div>
+              <h2 className="text-[20px] font-black text-[#002b5c]">Detailed Content</h2>
+              <p className="text-[13px] text-slate-500 font-medium">Add descriptions, online payment buttons, syllabus, or details.</p>
             </div>
           </div>
-          <button
-            type="button"
-            onClick={() => {
-              const editor = document.querySelector('.jodit-wysiwyg') as HTMLElement;
-              if (editor) {
-                editor.focus();
-              }
-            }}
-            className="inline-flex items-center gap-1.5 px-4 py-2.5 bg-[#002b5c] text-white hover:bg-[#001f42] rounded-xl text-xs font-bold transition-colors shrink-0 shadow-xs"
-          >
-            <Plus size={14} /> Add Paragraph
-          </button>
         </div>
         <div className="p-6 md:p-8 space-y-6">
           <div>
-            <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Detailed Content (HTML Supported)</label>
-            <QuillEditor name="content" defaultValue={formData.content} />
+            <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Content (HTML Supported)</label>
+            <QuillEditor key={initialData?.id || (isNew ? "new" : "edit")} name="content" defaultValue={formData.content} />
           </div>
         </div>
       </div>
@@ -320,8 +367,10 @@ export default function CourseForm({ initialData, saveAction, col }: { initialDa
               <FileText size={24} strokeWidth={2.5} />
             </div>
             <div>
-              <h2 className="text-[20px] font-black text-[#002b5c]">Publications / Link</h2>
-              <p className="text-[13px] text-slate-500 font-medium">Add the custom external link and text for this {col === "right" ? "program" : "course"} card.</p>
+              <h2 className="text-[20px] font-black text-[#002b5c]">{col === "right" ? "Form / Brochure Link & File" : "Publications / Link"}</h2>
+              <p className="text-[13px] text-slate-500 font-medium">
+                {col === "right" ? "Add the PDF form, brochure, or external link for this program card." : "Add the custom external link and text for this course card."}
+              </p>
             </div>
           </div>
         </div>
@@ -333,7 +382,7 @@ export default function CourseForm({ initialData, saveAction, col }: { initialDa
                 type="text"
                 value={formData.linkText}
                 onChange={(e) => setFormData({ ...formData, linkText: e.target.value })}
-                placeholder="View Details"
+                placeholder={col === "right" ? "View Form" : "View Details"}
                 className="sm:w-56 md:w-64 shrink-0 p-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-[#007a87]/20 focus:border-[#007a87] transition-all duration-200 text-sm font-medium text-slate-700 outline-none"
               />
               <input
@@ -357,7 +406,12 @@ export default function CourseForm({ initialData, saveAction, col }: { initialDa
                 </button>
                 <button
                   type="button"
-                  onClick={() => setFormData({ ...formData, link: "", linkText: "" })}
+                  onClick={() => {
+                    if (formData.link || formData.linkText) {
+                      if (!window.confirm("Are you sure you want to remove this attachment/link?")) return;
+                    }
+                    setFormData({ ...formData, link: "", linkText: "" });
+                  }}
                   className="p-2.5 text-[#D9232D] hover:bg-red-50 rounded-xl transition-colors shrink-0"
                   title="Clear Link"
                 >
@@ -365,6 +419,51 @@ export default function CourseForm({ initialData, saveAction, col }: { initialDa
                 </button>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+
+      {/* SEO Settings */}
+      <div className="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden group hover:shadow-md transition-shadow duration-300">
+        <div className="bg-slate-50/50 border-b border-slate-100 p-5 md:p-6 flex items-center gap-4">
+          <div className="bg-indigo-500/10 p-3 rounded-2xl text-indigo-600">
+            <Search size={24} strokeWidth={2.5} />
+          </div>
+          <div>
+            <h2 className="text-[20px] font-black text-[#002b5c]">SEO Settings</h2>
+            <p className="text-[13px] text-slate-500 font-medium">Manage search engine optimization meta tags for this {col === "right" ? "program" : "course"}.</p>
+          </div>
+        </div>
+        <div className="p-6 md:p-8 space-y-6">
+          <div>
+            <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Meta Title</label>
+            <input 
+              type="text" 
+              value={formData.seoMetaTitle}
+              onChange={(e) => setFormData({ ...formData, seoMetaTitle: e.target.value })}
+              className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 transition-all duration-200 text-slate-700 font-medium leading-relaxed" 
+              placeholder="Enter SEO Meta Title..." 
+            />
+          </div>
+          <div>
+            <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Meta Description</label>
+            <textarea 
+              value={formData.seoMetaDescription}
+              onChange={(e) => setFormData({ ...formData, seoMetaDescription: e.target.value })}
+              rows={3} 
+              className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 transition-all duration-200 text-slate-700 font-medium leading-relaxed resize-none" 
+              placeholder="Enter SEO Meta Description..." 
+            />
+          </div>
+          <div>
+            <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Keywords</label>
+            <textarea 
+              value={formData.seoKeywords}
+              onChange={(e) => setFormData({ ...formData, seoKeywords: e.target.value })}
+              rows={2} 
+              className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 transition-all duration-200 text-slate-700 font-medium leading-relaxed resize-none text-sm" 
+              placeholder="course, emergency medicine, hospital, pune..." 
+            />
           </div>
         </div>
       </div>

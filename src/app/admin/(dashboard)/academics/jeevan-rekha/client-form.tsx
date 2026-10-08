@@ -49,10 +49,12 @@ export default function JeevanRekhaClientForm({ initialData }: { initialData: an
   };
 
   const removeFromArray = (field: string, idx: number) => {
+    if (!window.confirm("Are you sure you want to delete this item?")) return;
     handleChange(field, data[field].filter((_: any, i: number) => i !== idx));
   };
 
   const removeNestedArray = (parent: string, field: string, idx: number) => {
+    if (!window.confirm("Are you sure you want to delete this item?")) return;
     handleNestedChange(parent, field, data[parent][field].filter((_: any, i: number) => i !== idx));
   };
 
