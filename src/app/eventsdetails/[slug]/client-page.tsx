@@ -56,7 +56,7 @@ export default function EventsClientPage({ events = [], pageData }: { events: an
         )}
         <div className="absolute right-0 top-0 w-1/2 h-full bg-gradient-to-l from-teal-500/20 to-transparent pointer-events-none" />
         
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="max-w-[1300px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           
           <nav className="flex items-center gap-2 text-[#b2dfdb] mb-2 font-medium" style={{ fontSize: '10px' }}>
             <Link href="/" className="hover:text-white transition-colors">Home</Link>
@@ -84,7 +84,7 @@ export default function EventsClientPage({ events = [], pageData }: { events: an
       </div>
 
       {/* 2. Main Events List */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-8 md:pb-12 space-y-16">
+      <div className="max-w-[1300px] mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-8 md:pb-12 space-y-16">
         {displayedEvents.map((event, index) => {
           const { title, date, overview, objectives, summary, organizers, gallery, agenda, overviewTitle, objectivesTitle, organizersTitle, agendaTitle, galleryTitle, features, featuresTitle } = event;
           

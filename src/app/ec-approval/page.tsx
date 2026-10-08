@@ -36,7 +36,7 @@ export default async function ECApprovalPage() {
         <div className="absolute inset-0 bg-[url(https://www.transparenttextures.com/patterns/cubes.png)] opacity-10 mix-blend-overlay pointer-events-none" />
         <div className="absolute right-0 top-0 w-1/2 h-full bg-gradient-to-l from-teal-500/20 to-transparent pointer-events-none" />
         
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="max-w-[1300px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           
           {/* Breadcrumb */}
           <nav className="flex items-center gap-2 text-sm text-[#b2dfdb] mb-2">
@@ -56,7 +56,7 @@ export default async function ECApprovalPage() {
       </div>
 
       {/* Content Section */}
-      <div className="container mx-auto px-4 pt-4 pb-8 md:pb-12 relative z-20">
+      <div className="max-w-[1300px] mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-8 md:pb-12 relative z-20">
         <div className="max-w-4xl mx-auto bg-white rounded-3xl shadow-xl shadow-slate-200/50 px-8 pt-4 pb-5 md:px-12 md:pt-5 md:pb-5 border border-slate-100">
           <div className="prose prose-slate prose-lg max-w-none prose-headings:text-[#002b5c] prose-a:text-[#007a87] prose-a:font-semibold hover:prose-a:text-[#005c66]">
             

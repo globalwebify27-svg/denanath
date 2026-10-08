@@ -71,7 +71,7 @@ export default function CoursesAndPricing({
       {/* Subtle Texture Pattern */}
       <div className="absolute inset-0 bg-[radial-gradient(#007a8706_1px,transparent_1px)] [background-size:20px_20px] pointer-events-none z-0" />
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="relative z-10 max-w-[1300px] mx-auto px-4 sm:px-6 lg:px-8">
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 mb-10 max-w-5xl mx-auto">
           {pricingCards.map((card: any, idx: number) => {

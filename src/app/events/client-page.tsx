@@ -71,7 +71,7 @@ export default function EventsListClientPage({ events = [], pageData }: { events
   return (
     <div className="min-h-screen bg-[#f8fafc]">
       <div className="w-full bg-[#002b5c] relative overflow-hidden py-4">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 flex flex-col justify-center">
+        <div className="max-w-[1300px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10 flex flex-col justify-center">
           <div className="max-w-3xl">
             <nav className="flex items-center gap-2 text-[#b2dfdb] mb-2 font-medium" style={{ fontSize: '10px' }}>
               <Link href="/" className="hover:text-white transition-colors">Home</Link>
@@ -83,7 +83,7 @@ export default function EventsListClientPage({ events = [], pageData }: { events
         </div>
       </div>
 
-      <div id="events-list-top" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div id="events-list-top" className="max-w-[1300px] mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="flex flex-col lg:flex-row gap-8 items-start">
           
           {/* Calendar Sidebar */}

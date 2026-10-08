@@ -62,7 +62,7 @@ export default function VasantNirmalaOswalCentreClientPage({ initialData }: { in
         <div className="absolute inset-0 bg-[url(https://www.transparenttextures.com/patterns/cubes.png)] opacity-10 mix-blend-overlay pointer-events-none" />
         <div className="absolute right-0 top-0 w-1/2 h-full bg-gradient-to-l from-teal-500/20 to-transparent pointer-events-none" />
         
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 md:py-4 relative z-10">
+        <div className="max-w-[1300px] mx-auto px-4 sm:px-6 lg:px-8 py-3 md:py-4 relative z-10">
           
           {/* Breadcrumb */}
           <div className="flex items-center gap-2 text-blue-200 text-[10px] font-medium tracking-wide mb-1 overflow-hidden ">
@@ -84,7 +84,7 @@ export default function VasantNirmalaOswalCentreClientPage({ initialData }: { in
       </div>
 
       {/* 2. Main Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-8 md:pt-8 md:pb-12">
+      <div className="max-w-[1300px] mx-auto px-4 sm:px-6 lg:px-8 pt-6 pb-8 md:pt-8 md:pb-12">
         
         {/* Overview */}
         <section className="bg-white rounded-3xl px-6 pt-3 pb-6 sm:px-10 sm:pt-4 sm:pb-10 md:px-12 md:pt-4 md:pb-8 shadow-sm border border-slate-100 relative overflow-hidden group hover:shadow-md transition-shadow mb-8 lg:mb-12">

@@ -24,7 +24,7 @@ export default function PharmacyClientPage({ data }: { data?: any }) {
         className="bg-[#f8fafc] text-slate-800 antialiased min-h-screen"
         style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
       >
-        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-12">
+        <main className="max-w-[1300px] mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-12">
 
           {/* ══════════════════════════════════════════════
               HERO SECTION
@@ -414,7 +414,7 @@ export default function PharmacyClientPage({ data }: { data?: any }) {
             FOOTER BAR
         ══════════════════════════════════════════════ */}
         <footer className="bg-white border-t border-slate-200 mt-12 py-8">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between text-xs sm:text-sm text-slate-600 gap-4">
+          <div className="max-w-[1300px] mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between text-xs sm:text-sm text-slate-600 gap-4">
             <div className="flex items-center text-center md:text-left">
               <svg className="w-5 h-5 text-teal-700 mr-2 flex-shrink-0" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                 <path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" strokeLinecap="round" strokeLinejoin="round" />

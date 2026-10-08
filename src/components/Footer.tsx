@@ -32,7 +32,7 @@ export default function Footer({ latestEvent, footerSettings }: { latestEvent?: 
       </div>
 
       {/* 1. Primary Footer Grid */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 relative z-10">
+      <div className="max-w-[1300px] mx-auto px-4 sm:px-6 lg:px-8 py-16 relative z-10">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1.5fr_0.7fr_0.8fr_0.8fr_1.3fr] gap-6 lg:gap-8 xl:gap-9">
           
           {/* Logo & Brand Column */}
@@ -278,7 +278,7 @@ export default function Footer({ latestEvent, footerSettings }: { latestEvent?: 
 
       {/* 2. Copyright & Heartbeat */}
       <div className="w-full bg-[#00343a] py-6 px-4 sm:px-6 lg:px-8 border-t border-white/10 relative z-10">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4 md:gap-0 text-xs text-[#80cbc4] font-medium">
+        <div className="max-w-[1300px] mx-auto flex flex-col md:flex-row justify-between items-center gap-4 md:gap-0 text-xs text-[#80cbc4] font-medium">
           <div className="text-center md:text-left">
             {(!footerSettings || footerSettings.copyrightText !== "") && (
               <>© {new Date().getFullYear()} {footerSettings?.copyrightText ?? "Deenanath Mangeshkar Hospital and Research Center. All rights reserved."}</>

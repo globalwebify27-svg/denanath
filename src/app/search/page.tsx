@@ -76,7 +76,7 @@ export default async function SearchPage({
 
   return (
     <div className="min-h-screen bg-slate-50 pt-28 pb-20">
-      <div className="max-w-4xl mx-auto px-4">
+      <div className="max-w-[1300px] mx-auto px-4 sm:px-6 lg:px-8">
         <h1 className="text-3xl font-bold text-[#002b5c] mb-2">Search Results</h1>
         <p className="text-slate-600 mb-8">
           Showing results for <span className="font-semibold">&quot;{query}&quot;</span>

@@ -117,7 +117,7 @@ export default function PatientReviews({ data = defaultPatientReviewsData }: { d
       <div className="absolute top-1/2 left-0 w-96 h-96 bg-teal-500/[0.02] rounded-full blur-[100px] pointer-events-none -z-10" />
       <div className="absolute right-0 top-0 w-80 h-80 bg-orange-500/[0.02] rounded-full blur-[100px] pointer-events-none -z-10" />
       
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-[1300px] mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Header Block */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 gap-6">

@@ -142,7 +142,7 @@ export default function SpecialtyClinics({ data = defaultSpecialtyClinicsData }:
       <div className="absolute bottom-0 right-0 h-72 w-72 rounded-full bg-teal-300/30 blur-3xl pointer-events-none"></div>
       <div className="absolute inset-0 opacity-[0.03] bg-[linear-gradient(to_right,#065f46_1px,transparent_1px),linear-gradient(to_bottom,#065f46_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none"></div>
 
-      <div className="relative z-10 max-w-7xl mx-auto">
+      <div className="relative z-10 max-w-[1300px] mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Heading */}
         <div className="flex flex-col md:flex-row md:items-start justify-between gap-6 mb-4 md:mb-10 border-b border-emerald-200/60 pb-4 md:pb-8 text-center md:text-left">

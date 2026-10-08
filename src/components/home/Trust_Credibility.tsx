@@ -53,7 +53,7 @@ export default function TrustSection({ data = defaultTrustData }: { data?: any }
   {/* Soft Gradient */}
   <div className="absolute inset-0 bg-gradient-to-br from-white via-[#f0f9ff] to-[#ecfeff]"></div>
 
-      <div className="relative z-10 mx-auto max-w-7xl px-6">
+      <div className="relative z-10 mx-auto max-w-[1300px] px-4 sm:px-6 lg:px-8">
 
         {/* Heading */}
         <motion.div

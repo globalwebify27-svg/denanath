@@ -25,7 +25,7 @@ export default function AboutSection({ data = defaultAboutData }: { data?: any }
 
   return (
     <section className="w-full bg-gradient-to-b from-white to-[#f6fafb] relative z-20 pt-[20px] md:pt-16 pb-[20px] md:pb-12 border-b border-slate-100">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-[1300px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           
           {/* Image Side */}
