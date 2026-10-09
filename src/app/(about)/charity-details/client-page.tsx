@@ -4,16 +4,18 @@ import React, { useEffect, useRef } from "react";
 import DynamicSidebar from "@/components/DynamicSidebar";
 import Link from "next/link";
 import { ChevronRight, HeartHandshake, Users, ActivitySquare, Building2 } from "lucide-react";
+import { sortCharityRecordsDescending } from "@/lib/charityUtils";
 
 export default function CharityDetailsClientPage({ charityData }: { charityData: any }) {
   const badgeText = charityData.badgeText || "Our Commitment to Society";
   const heading = charityData.heading || "Information Regarding Charity";
   const introduction = charityData.introduction || "Deenanath Mangeshkar Hospital and Research Center actively provides world-class medical treatment to patients from indigent (निर्धन) and weaker sections (दुर्बल) of society. Below is a detailed breakdown of the patients we have recently assisted.";
-  const records = charityData.records || [];
+  const records = sortCharityRecordsDescending(charityData.records || []);
 
   // Calculate totals for the dashboard cards
   const totalIndigent = records.reduce((acc: number, curr: any) => acc + (parseInt(curr.indigent) || 0), 0);
   const totalWeaker = records.reduce((acc: number, curr: any) => acc + (parseInt(curr.weaker) || 0), 0);
+  const oldestMonth = records.length > 0 ? records[records.length - 1]?.month : "Sept 2025";
 
   return (
     <div className="min-h-screen bg-[#f8fafc] font-sans selection:bg-teal-500/30">
@@ -83,7 +85,7 @@ export default function CharityDetailsClientPage({ charityData }: { charityData:
                     </div>
                     <div>
                       <p className="text-teal-900 font-extrabold text-3xl mb-1">{totalIndigent.toLocaleString()}</p>
-                      <p className="text-teal-700 font-semibold text-sm leading-tight">Indigent Patients (निर्धन) <br className="hidden md:block"/>Treated Since Sept 2025</p>
+                      <p className="text-teal-700 font-semibold text-sm leading-tight">Indigent Patients (निर्धन) <br className="hidden md:block"/>Treated Since {oldestMonth}</p>
                     </div>
                   </div>
                   
@@ -93,7 +95,7 @@ export default function CharityDetailsClientPage({ charityData }: { charityData:
                     </div>
                     <div>
                       <p className="text-blue-900 font-extrabold text-3xl mb-1">{totalWeaker.toLocaleString()}</p>
-                      <p className="text-blue-700 font-semibold text-sm leading-tight">Weaker Section Patients (दुर्बल) <br className="hidden md:block"/>Treated Since Sept 2025</p>
+                      <p className="text-blue-700 font-semibold text-sm leading-tight">Weaker Section Patients (दुर्बल) <br className="hidden md:block"/>Treated Since {oldestMonth}</p>
                     </div>
                   </div>
                 </div>

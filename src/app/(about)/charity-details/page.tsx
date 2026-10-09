@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { prisma } from "@/lib/prisma";
 import CharityDetailsClientPage from "./client-page";
+import { sortCharityRecordsDescending } from "@/lib/charityUtils";
 
 export const dynamic = "force-dynamic";
 
@@ -50,6 +51,10 @@ export default async function CharityDetailsPage() {
       ];
     }
   } catch (e) {}
+
+  if (Array.isArray(charityData.records)) {
+    charityData.records = sortCharityRecordsDescending(charityData.records);
+  }
 
   return <CharityDetailsClientPage charityData={charityData} />;
 }

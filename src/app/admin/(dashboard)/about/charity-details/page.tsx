@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import SubmitButton from "@/app/admin/(dashboard)/components/SubmitButton";
 import CharityDetailsClientForm from "./client-form";
+import { sortCharityRecordsDescending } from "@/lib/charityUtils";
 
 export const dynamic = "force-dynamic";
 
@@ -27,6 +28,10 @@ const setting = await prisma.siteSetting.findUnique({ where: { key: 'page_charit
     } 
   } catch (e) {}
 
+  if (Array.isArray(charityData.records)) {
+    charityData.records = sortCharityRecordsDescending(charityData.records);
+  }
+
   async function saveCharityData(formData: FormData) {
     "use server";
 const rawJson = formData.get("charityJson") as string;
@@ -36,6 +41,9 @@ const rawJson = formData.get("charityJson") as string;
       parsed.seoMetaTitle = formData.get("seoMetaTitle") || "";
       parsed.seoMetaDescription = formData.get("seoMetaDescription") || "";
       parsed.seoKeywords = formData.get("seoKeywords") || "";
+      if (Array.isArray(parsed.records)) {
+        parsed.records = sortCharityRecordsDescending(parsed.records);
+      }
       const finalJson = JSON.stringify(parsed);
       await prisma.siteSetting.upsert({
         where: { key: 'page_charity_details' },

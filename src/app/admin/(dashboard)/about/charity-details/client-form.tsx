@@ -1,31 +1,42 @@
 "use client";
 
 import { useState } from "react";
-import {  Plus, Trash2, HeartHandshake } from "lucide-react";
+import { Plus, Trash2, HeartHandshake, ArrowDownUp } from "lucide-react";
 import QuillEditor from "@/components/QuillEditor";
+import { sortCharityRecordsDescending } from "@/lib/charityUtils";
 
 export default function CharityDetailsClientForm({ initialData }: { initialData: any }) {
   const [badgeText, setBadgeText] = useState(initialData.badgeText || "Our Commitment to Society");
   const [heading, setHeading] = useState(initialData.heading || "Information Regarding Charity");
   const [introduction, setIntroduction] = useState(initialData.introduction || "Deenanath Mangeshkar Hospital and Research Center actively provides world-class medical treatment to patients from indigent (निर्धन) and weaker sections (दुर्बल) of society. Below is a detailed breakdown of the patients we have recently assisted.");
   
-  const [items, setItems] = useState<any[]>(initialData.records?.length > 0 ? initialData.records.map((item: any) => ({
-    ...item,
-    id: item.id || Date.now() + Math.random(),
-  })) : [{
-    id: Date.now(),
-    month: "April 2026",
-    indigent: "81",
-    weaker: "520"
-  }]);
+  const [items, setItems] = useState<any[]>(() => {
+    const records = Array.isArray(initialData.records) && initialData.records.length > 0
+      ? sortCharityRecordsDescending(initialData.records)
+      : [
+          { month: "April 2026", indigent: "81", weaker: "520" }
+        ];
+
+    return records.map((item: any) => ({
+      ...item,
+      id: item.id || Date.now() + Math.random(),
+    }));
+  });
 
   const addItem = () => {
-    setItems([...items, {
-      id: Date.now(),
-      month: "",
-      indigent: "",
-      weaker: ""
-    }]);
+    setItems([
+      {
+        id: Date.now(),
+        month: "",
+        indigent: "",
+        weaker: ""
+      },
+      ...items
+    ]);
+  };
+
+  const handleSortDescending = () => {
+    setItems(prev => sortCharityRecordsDescending(prev));
   };
 
   const removeItem = (id: number) => {
@@ -37,13 +48,14 @@ export default function CharityDetailsClientForm({ initialData }: { initialData:
     setItems(items.map(item => item.id === id ? { ...item, [field]: value } : item));
   };
 
-  // Convert state to JSON payload format
+  // Convert state to JSON payload format (ensured sorted descending)
   const getJsonPayload = () => {
+    const sorted = sortCharityRecordsDescending(items);
     const payload = {
       badgeText,
       heading,
       introduction,
-      records: items.map(item => ({
+      records: sorted.map(item => ({
         month: item.month,
         indigent: item.indigent,
         weaker: item.weaker
@@ -103,13 +115,23 @@ export default function CharityDetailsClientForm({ initialData }: { initialData:
             </h3>
             <p className="text-slate-500 text-sm mt-1">Manage the monthly charity patient numbers.</p>
           </div>
-          <button 
-            type="button"
-            onClick={addItem}
-            className="flex items-center justify-center gap-2 bg-[#D9232D] text-white px-4 py-2 rounded-lg hover:bg-red-700 font-bold transition-colors w-full sm:w-auto shrink-0"
-          >
-            <Plus size={16} /> Add Month
-          </button>
+          <div className="flex items-center gap-2.5 w-full sm:w-auto">
+            <button 
+              type="button"
+              onClick={handleSortDescending}
+              className="flex items-center justify-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-700 px-3.5 py-2 rounded-lg font-bold transition-colors w-full sm:w-auto text-sm shrink-0 border border-slate-200"
+              title="Sort entries chronologically from newest to oldest"
+            >
+              <ArrowDownUp size={16} /> Sort (Newest First)
+            </button>
+            <button 
+              type="button"
+              onClick={addItem}
+              className="flex items-center justify-center gap-2 bg-[#D9232D] text-white px-4 py-2 rounded-lg hover:bg-red-700 font-bold transition-colors w-full sm:w-auto text-sm shrink-0"
+            >
+              <Plus size={16} /> Add Month
+            </button>
+          </div>
         </div>
 
         <div className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
