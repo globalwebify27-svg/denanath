@@ -112,33 +112,7 @@ export async function POST(req: Request) {
       const combinedSpecIds = Array.from(group.specIds).join(',');
       const combinedQuals = Array.from(group.qualifications).join(', ') || 'Consultant';
 
-      // Timings Fallback Logic
-      let finalTimings = null;
-      if (group.opdTimings.length > 0) {
-        finalTimings = JSON.stringify(group.opdTimings);
-      } else {
-        // Fallback to manual entry if API provided no schedules
-        const existingDoc = await prisma.doctor.findUnique({
-          where: { dmhDoctorId }
-        });
-        if (existingDoc && existingDoc.timings) {
-          finalTimings = existingDoc.timings;
-        }
-      }
-
       try {
-        const dataToSet = {
-          dmhDoctorId,
-          name: formattedName,
-          specialty: combinedSpecs,
-          qualifications: combinedQuals,
-          dmhSpecialityId: combinedSpecIds,
-          gender: group.gender || null,
-          consultantType: group.consultantType || null,
-          hasOpdSchedule: group.hasOpdSchedule,
-          timings: finalTimings,
-        };
-
         // Check if a record exists with either the API ID as dmhDoctorId or as the primary key id
         const existingDoc = await prisma.doctor.findFirst({
           where: {
@@ -152,17 +126,33 @@ export async function POST(req: Request) {
         });
 
         if (existingDoc) {
-          // Safely update the found record
+          // Only sync name and specialty from the API; never overwrite timings or CMS details
           await prisma.doctor.update({
             where: { id: existingDoc.id },
-            data: dataToSet,
+            data: {
+              dmhDoctorId,
+              name: formattedName,
+              specialty: combinedSpecs,
+              dmhSpecialityId: combinedSpecIds,
+              gender: group.gender || existingDoc.gender,
+              consultantType: group.consultantType || existingDoc.consultantType,
+              hasOpdSchedule: group.hasOpdSchedule,
+            },
           });
         } else {
-          // If no record exists, strictly create with id = API ID
+          // If no record exists, create new doctor profile
           await prisma.doctor.create({
             data: {
               id: dmhDoctorId,
-              ...dataToSet,
+              dmhDoctorId,
+              name: formattedName,
+              specialty: combinedSpecs,
+              qualifications: combinedQuals || 'Consultant',
+              dmhSpecialityId: combinedSpecIds,
+              gender: group.gender || null,
+              consultantType: group.consultantType || null,
+              hasOpdSchedule: group.hasOpdSchedule,
+              isAppAllowed: true,
             },
           });
         }

@@ -7,15 +7,30 @@ async function main() {
     const dataRaw = fs.readFileSync('bulk_mapped.json', 'utf8');
     const allDocs = JSON.parse(dataRaw);
     
+    // Group all entries by doctor_id
+    const docsByDoctorId = new Map<string, any[]>();
+    for (const doc of allDocs) {
+        const docId = String(doc.api_data.doctor_id || '');
+        if (!docId) continue;
+        if (!docsByDoctorId.has(docId)) {
+            docsByDoctorId.set(docId, []);
+        }
+        docsByDoctorId.get(docId)!.push(doc);
+    }
+
+    console.log(`Loaded ${allDocs.length} raw entries, grouped into ${docsByDoctorId.size} unique doctors.`);
+
     let countUpdated = 0;
     let countSkippedPrisma = 0;
 
-    for (const mappedDoc of allDocs) {
-        const doctor_id = String(mappedDoc.api_data.doctor_id || '');
-        
-        // Find in Prisma by dmhDoctorId = doctor_id
+    for (const [doctorId, mappedEntries] of docsByDoctorId.entries()) {
         const prismaDoc = await prisma.doctor.findFirst({
-            where: { dmhDoctorId: doctor_id }
+            where: {
+                OR: [
+                    { dmhDoctorId: doctorId },
+                    { id: doctorId }
+                ]
+            }
         });
 
         if (!prismaDoc) {
@@ -23,28 +38,64 @@ async function main() {
             continue;
         }
 
-        // Format Arrays
-        const education = mappedDoc.education.map((e: any) => ({
-            degree: e.degree || '',
-            collegeName: e.college || '',
-            year: e.completion_year || ''
-        }));
+        const firstEntry = mappedEntries[0];
+        const dbProfile = firstEntry.db_profile || {};
 
-        const experience = mappedDoc.experience.map((e: any) => ({
-            specialist: e.specialist || '',
-            organization: e.organization || '',
-            duration: e.duration || '',
-            completionYear: e.completion_year || ''
-        }));
+        // Merge and deduplicate education
+        const allEdu = mappedEntries.flatMap(m => m.education || []).filter((e: any) => e.deleted !== 'Y');
+        const seenEdu = new Set<string>();
+        const education: any[] = [];
+        for (const e of allEdu) {
+            const key = `${e.degree || ''}|${e.college || ''}|${e.completion_year || ''}`;
+            if (!seenEdu.has(key) && (e.degree || e.college)) {
+                seenEdu.add(key);
+                education.push({
+                    degree: e.degree || '',
+                    collegeName: e.college || '',
+                    year: e.completion_year || ''
+                });
+            }
+        }
 
-        const training = mappedDoc.training.map((t: any) => ({
-            trainingName: t.training_name || '',
-            institute: t.institute || '',
-            duration: t.duration || '',
-            completionYear: t.completion_year || ''
-        }));
+        // Merge and deduplicate experience
+        const allExp = mappedEntries.flatMap(m => m.experience || []).filter((e: any) => e.deleted !== 'Y');
+        const seenExp = new Set<string>();
+        const experience: any[] = [];
+        for (const exp of allExp) {
+            const key = `${exp.specialist || ''}|${exp.organization || ''}|${exp.duration || ''}`;
+            if (!seenExp.has(key) && (exp.specialist || exp.organization)) {
+                seenExp.add(key);
+                experience.push({
+                    specialist: exp.specialist || '',
+                    organization: exp.organization || '',
+                    duration: exp.duration || '',
+                    completionYear: exp.completion_year || ''
+                });
+            }
+        }
 
-        const timings = mappedDoc.opd_timings.map((t: any) => {
+        // Merge and deduplicate training
+        const allTrn = mappedEntries.flatMap(m => m.training || []).filter((t: any) => t.deleted !== 'Y');
+        const seenTrn = new Set<string>();
+        const training: any[] = [];
+        for (const trn of allTrn) {
+            const key = `${trn.training_name || ''}|${trn.institute || ''}|${trn.duration || ''}`;
+            if (!seenTrn.has(key) && (trn.training_name || trn.institute)) {
+                seenTrn.add(key);
+                training.push({
+                    trainingName: trn.training_name || '',
+                    institute: trn.institute || '',
+                    duration: trn.duration || '',
+                    completionYear: trn.completion_year || ''
+                });
+            }
+        }
+
+        // Merge and deduplicate OPD timings from CMS DB
+        const allTimings = mappedEntries.flatMap(m => m.opd_timings || []).filter((t: any) => t.deleted !== 'Y');
+        const seenTimings = new Set<string>();
+        const timings: any[] = [];
+        for (const t of allTimings) {
             let specIdStr = '';
             let branchStr = t.branch || '';
             if (branchStr.includes('-')) {
@@ -52,41 +103,68 @@ async function main() {
                 specIdStr = parts[0].trim();
                 branchStr = parts.slice(1).join('-').trim();
             }
-            return {
-                branch: branchStr,
+            const dayStr = (t.day || '').trim();
+            const timeStr = (t.time || '').trim();
+            if (!dayStr && !timeStr) continue;
+
+            const key = `${branchStr}|${specIdStr}|${dayStr}|${timeStr}`;
+            if (seenTimings.has(key)) continue;
+            seenTimings.add(key);
+
+            timings.push({
+                branch: branchStr || prismaDoc.specialty || 'General OPD',
                 speciality_id: specIdStr,
-                day: t.day || '',
-                time: t.time || ''
-            };
-        });
+                day: dayStr,
+                time: timeStr
+            });
+        }
 
-        const qualifications = mappedDoc.db_profile.qualification || '';
+        const qualification = (dbProfile.qualification || '').trim();
 
+        // Speciality IDs from API (preserved)
         const existingSpecId = prismaDoc.dmhSpecialityId || '';
         let newSpecId = existingSpecId;
-        if (!existingSpecId.includes(',') && mappedDoc.api_data.speciality_id) {
-            newSpecId = mappedDoc.api_data.speciality_id;
+        if (!existingSpecId.includes(',') && firstEntry.api_data.speciality_id) {
+            newSpecId = firstEntry.api_data.speciality_id;
+        }
+
+        const updateData: any = {
+            dmhSpecialityId: newSpecId,
+            consultantType: firstEntry.api_data.consultant_type || prismaDoc.consultantType,
+            gender: firstEntry.api_data.gender || prismaDoc.gender,
+        };
+
+        if (qualification) {
+            updateData.qualifications = qualification;
+        }
+
+        if (education.length > 0) {
+            updateData.education = JSON.stringify(education);
+        }
+
+        if (experience.length > 0) {
+            updateData.experience = JSON.stringify(experience);
+        }
+
+        if (training.length > 0) {
+            updateData.training = JSON.stringify(training);
+        }
+
+        if (timings.length > 0) {
+            updateData.timings = JSON.stringify(timings);
+            updateData.hasOpdSchedule = true;
         }
 
         await prisma.doctor.update({
             where: { id: prismaDoc.id },
-            data: {
-                qualifications: qualifications || prismaDoc.qualifications,
-                education: JSON.stringify(education),
-                experience: JSON.stringify(experience),
-                training: JSON.stringify(training),
-                timings: JSON.stringify(timings),
-                dmhSpecialityId: newSpecId,
-                consultantType: mappedDoc.api_data.consultant_type || prismaDoc.consultantType,
-                gender: mappedDoc.api_data.gender || prismaDoc.gender,
-            }
+            data: updateData
         });
 
         countUpdated++;
     }
-    
-    console.log(`\n--- SYNC COMPLETE ---`);
-    console.log(`Successfully Updated in Prisma: ${countUpdated}`);
+
+    console.log(`\n--- RESTORE COMPLETE ---`);
+    console.log(`Successfully Updated in Prisma from DB: ${countUpdated}`);
     console.log(`Skipped (Not in Prisma): ${countSkippedPrisma}`);
 }
 
