@@ -63,6 +63,9 @@ export default function QuillEditor({
     }
   }, [value, asBulletList]);
 
+  const onChangeRef = useRef(onChange);
+  onChangeRef.current = onChange;
+
   const config = useMemo(() => ({
     readonly: false,
     placeholder: 'Start typing...',
@@ -71,7 +74,12 @@ export default function QuillEditor({
     askBeforePasteFromWord: false,
     askBeforePasteHTML: false,
     defaultActionOnPaste: 'insert_only_text' as any,
+    toolbarAdaptive: false,
+    sourceEditor: 'area' as any,
     controls: {
+      source: {
+        tooltip: 'Source Code / HTML View (<>)',
+      },
       fontsize: {
         list: {
           '8': '8px',
@@ -102,6 +110,34 @@ export default function QuillEditor({
       'align', 'undo', 'redo', '|',
       'hr', 'eraser', 'copyformat', '|',
       'symbol', 'fullsize', 'print', 'about'
+    ],
+    buttonsMD: [
+      'source', '|',
+      'bold', 'strikethrough', 'underline', 'italic', '|',
+      'ul', 'ol', '|',
+      'font', 'fontsize', 'brush', 'paragraph', '|',
+      'image', 'addVideo', 'uploadVideo', 'table', 'link', '|',
+      'align', 'undo', 'redo', '|',
+      'hr', 'eraser', 'copyformat', '|',
+      'symbol', 'fullsize', 'dots'
+    ],
+    buttonsSM: [
+      'source', '|',
+      'bold', 'strikethrough', 'underline', 'italic', '|',
+      'ul', 'ol', '|',
+      'fontsize', 'brush', 'paragraph', '|',
+      'image', 'table', 'link', '|',
+      'align', 'undo', 'redo', '|',
+      'fullsize', 'dots'
+    ],
+    buttonsXS: [
+      'source', '|',
+      'bold', 'italic', 'underline', '|',
+      'ul', 'ol', '|',
+      'fontsize', 'brush', '|',
+      'image', 'link', '|',
+      'undo', 'redo', '|',
+      'dots'
     ],
     disablePlugins: 'iframe,video',
     cleanHTML: {
@@ -232,12 +268,30 @@ export default function QuillEditor({
   // onChange/onBlur might miss the DOM mutation or fire too late.
   useEffect(() => {
     const form = hiddenInputRef.current?.closest('form');
-    if (!form) return;
     
+    const syncLatest = () => {
+      let latest = "";
+      try {
+        const mirror = editorRef.current?.container?.querySelector('.jodit-source__mirror') as HTMLTextAreaElement | null;
+        if (mirror && typeof mirror.value === "string") {
+          latest = mirror.value;
+        } else if (editorRef.current && typeof editorRef.current.value === "string") {
+          latest = editorRef.current.value;
+        }
+      } catch (e) {
+        if (editorRef.current) latest = editorRef.current.value;
+      }
+      if (latest !== undefined && hiddenInputRef.current) {
+        hiddenInputRef.current.value = latest;
+      }
+      return latest;
+    };
+
     const handleSubmit = () => {
-       if (editorRef.current && hiddenInputRef.current) {
-          hiddenInputRef.current.value = editorRef.current.value;
-       }
+      const val = syncLatest();
+      if (val !== undefined && onChangeRef.current) {
+        onChangeRef.current(val);
+      }
     };
     
     const handleGlobalClick = (e: MouseEvent) => {
@@ -256,13 +310,24 @@ export default function QuillEditor({
           }
        }
     };
+
+    const handleSourceInput = (e: Event) => {
+       const target = e.target as HTMLElement;
+       if (target && target.classList.contains('jodit-source__mirror')) {
+          const val = (target as HTMLTextAreaElement).value;
+          if (hiddenInputRef.current) hiddenInputRef.current.value = val;
+          if (onChangeRef.current) onChangeRef.current(val);
+       }
+    };
     
-    form.addEventListener('submit', handleSubmit);
+    if (form) form.addEventListener('submit', handleSubmit);
     document.addEventListener('click', handleGlobalClick, { capture: true });
+    document.addEventListener('input', handleSourceInput);
     
     return () => {
-      form.removeEventListener('submit', handleSubmit);
+      if (form) form.removeEventListener('submit', handleSubmit);
       document.removeEventListener('click', handleGlobalClick, { capture: true });
+      document.removeEventListener('input', handleSourceInput);
     };
   }, []);
 
@@ -313,6 +378,50 @@ export default function QuillEditor({
         }
         .jodit-wysiwyg li p {
           display: inline !important;
+        }
+
+        /* Source Code view styling */
+        .jodit-source {
+          background-color: #0f172a !important;
+        }
+        .jodit-source__mirror {
+          font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !important;
+          font-size: 14px !important;
+          line-height: 1.6 !important;
+          color: #f8fafc !important;
+          background-color: #0f172a !important;
+          padding: 16px !important;
+          box-sizing: border-box !important;
+          width: 100% !important;
+          min-height: 400px !important;
+          outline: none !important;
+          border: none !important;
+          resize: vertical !important;
+        }
+
+        /* Prominent Source Code (<>) toolbar button */
+        .jodit-toolbar-button_source .jodit-icon,
+        .jodit-toolbar-button_source svg {
+          color: #007a87 !important;
+          fill: #007a87 !important;
+          font-weight: bold !important;
+        }
+        .jodit-toolbar-button_source:hover button {
+          background-color: #e0f2f1 !important;
+        }
+        .jodit-toolbar-button_source.jodit_active button,
+        .jodit-toolbar-button_source[aria-pressed="true"] button,
+        .jodit-toolbar-button_source.jodit-ui-button_active_true button {
+          background-color: #007a87 !important;
+          color: #ffffff !important;
+          border-radius: 6px !important;
+        }
+        .jodit-toolbar-button_source.jodit_active svg,
+        .jodit-toolbar-button_source[aria-pressed="true"] svg,
+        .jodit-toolbar-button_source.jodit-ui-button_active_true svg {
+          fill: #ffffff !important;
+          stroke: #ffffff !important;
+          color: #ffffff !important;
         }
       `}</style>
       {name && <input type="hidden" name={name} defaultValue={value !== undefined ? value : (defaultValue || "")} ref={hiddenInputRef} />}
