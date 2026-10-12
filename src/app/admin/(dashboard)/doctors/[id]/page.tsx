@@ -31,22 +31,18 @@ export default async function EditDoctorPage({
   let apiSpecialities: string[] = [];
   try {
     const { callDMHApi } = await import("@/lib/dmhApi");
-    const specRes = await callDMHApi('speciality');
-    const list = specRes?.specialityJSON || (Array.isArray(specRes) ? specRes : []);
+    const drRes = await callDMHApi('drAhis');
+    const list = drRes?.drAhisJSON || (Array.isArray(drRes) ? drRes : []);
     if (Array.isArray(list)) {
       apiSpecialities = list
-        .map((s: any) => String(s.speciality_name || s.name || s.speciality || '').trim().toUpperCase())
+        .map((s: any) => String(s.speciality_name || '').trim().toUpperCase())
         .filter(Boolean);
     }
   } catch (error) {
     console.error("Error fetching specialities from DMH API:", error);
   }
 
-  apiSpecialities = Array.from(new Set(apiSpecialities)).sort((a, b) => a.localeCompare(b));
-
-  if (apiSpecialities.length === 0) {
-    apiSpecialities = [...dbDepartments];
-  }
+  apiSpecialities = Array.from(new Set([...apiSpecialities, ...dbDepartments.map((d: string) => d.toUpperCase())])).sort((a, b) => a.localeCompare(b));
 
   return (
     <div className="p-4 md:p-8 max-w-6xl mx-auto pb-32">

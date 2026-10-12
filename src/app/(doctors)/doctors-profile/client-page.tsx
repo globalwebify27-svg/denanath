@@ -157,12 +157,17 @@ export default function DoctorDetailsPage() {
 
   // Filter and sort doctors alphabetically by name
   const filteredDoctors = useMemo(() => {
+    const norm = (s: string) => (s || '').trim().toUpperCase().replace(/[^A-Z0-9]/g, '');
     const selectedSpecObj = specialitiesList.find((s: any) => (s.speciality_name || s.name) === selectedSpecialty);
     const selectedSpecId = selectedSpecObj ? String(selectedSpecObj.speciality_id || selectedSpecObj.id) : null;
+    const selNorm = norm(selectedSpecialty);
 
     const filtered = doctorsList.filter(doc => {
       const docSpecIds = String(doc.speciality_id || doc.dmhSpecialityId || "").split(',').map(s => s.trim()).filter(Boolean);
-      const matchSpecialty = selectedSpecialty === "--Select--" || (selectedSpecId && docSpecIds.includes(selectedSpecId));
+      const docSpecs = String(doc.specialty || "").split(/\s*&\s*|\s*,\s*/);
+      const matchSpecialty = selectedSpecialty === "--Select--" || 
+        (selectedSpecId && docSpecIds.includes(selectedSpecId)) ||
+        docSpecs.some(s => norm(s) === selNorm);
       const matchName = doc.name.toLowerCase().includes(searchName.toLowerCase());
       return matchSpecialty && matchName;
     });
@@ -553,20 +558,57 @@ export default function DoctorDetailsPage() {
                       <h3 className="text-base font-extrabold text-[#002b5c] mb-6 flex items-center gap-3 leading-[31px]">
                         <BookOpen className="w-6 h-6 text-[#007a87]" /> Publications
                       </h3>
-                      <ul className="space-y-4">
-                        {selectedDoctor.publications.map((item: string, i: number) => (
-                          <li key={i} className="flex gap-3 text-slate-600 font-medium text-sm sm:text-base leading-relaxed">
-                            <div className="w-1.5 h-1.5 rounded-full bg-red-400 shrink-0 mt-2.5"></div>
-                            {item.includes('[PDF]') ? (
-                              <span>
-                                {item.replace('[PDF]', '')}
-                                <span className="text-red-500 font-bold ml-1">[PDF]</span>
+                      <ul className="space-y-3">
+                        {selectedDoctor.publications.map((item: any, i: number) => {
+                          let title = '';
+                          let link = '';
+                          
+                          if (typeof item === 'string') {
+                            title = item;
+                          } else if (item && typeof item === 'object') {
+                            title = item.title || '';
+                            link = item.link || '';
+                          }
+
+                          const docCode = selectedDoctor.dmhDoctorId || selectedDoctor.doctor_id || selectedDoctor.id || '';
+                          const docPrefix = `${selectedDoctor.name}${docCode ? ` (${docCode})` : ''}`;
+
+                          if (!title || title.trim().toLowerCase() === 'view pdf link') {
+                            title = `${docPrefix} - Publication ${i + 1}`;
+                          } else if (docCode && !title.includes(docCode)) {
+                            if (!title.toLowerCase().includes((selectedDoctor.name || '').toLowerCase())) {
+                              title = `${docPrefix} - ${title}`;
+                            } else {
+                              title = `${docPrefix} - ${title.replace(selectedDoctor.name, '').replace(/^[\s:-]+/, '') || `Publication ${i + 1}`}`;
+                            }
+                          }
+
+                          const displayTitle = title.replace(/\[PDF\]/g, '').trim();
+
+                          return (
+                            <li key={i} className="flex items-start gap-3 text-slate-600 font-medium leading-relaxed bg-slate-50/70 p-3 rounded-xl border border-slate-100">
+                              <span className="shrink-0 text-xs font-bold text-purple-700 bg-purple-50 px-2 py-0.5 rounded border border-purple-100 mt-0.5">
+                                #{i + 1}
                               </span>
-                            ) : (
-                              item
-                            )}
-                          </li>
-                        ))}
+                              <div className="flex-1 min-w-0">
+                                <span className="text-slate-800 text-sm font-semibold break-words block">{displayTitle}</span>
+                                {docCode && (
+                                  <span className="text-xs text-slate-500 block mt-0.5">Doctor Code: {docCode}</span>
+                                )}
+                              </div>
+                              {link && (
+                                <a
+                                  href={link}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="shrink-0 inline-flex items-center gap-1 text-red-600 font-bold hover:underline text-xs bg-red-50 px-2.5 py-1 rounded border border-red-100 uppercase tracking-wider self-center"
+                                >
+                                  [View PDF]
+                                </a>
+                              )}
+                            </li>
+                          );
+                        })}
                       </ul>
                     </div>
                   )}

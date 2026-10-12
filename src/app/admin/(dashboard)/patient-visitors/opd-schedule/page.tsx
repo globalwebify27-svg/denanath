@@ -25,24 +25,19 @@ export default async function AdminOpdSchedulePage() {
   let apiSpecialities: string[] = [];
   try {
     const { callDMHApi } = await import("@/lib/dmhApi");
-    const specRes = await callDMHApi('speciality');
-    
-    const list = specRes?.specialityJSON || (Array.isArray(specRes) ? specRes : []);
+    const drRes = await callDMHApi('drAhis');
+    const list = drRes?.drAhisJSON || (Array.isArray(drRes) ? drRes : []);
     if (Array.isArray(list)) {
       apiSpecialities = list
-        .map((s: any) => String(s.speciality_name || s.name || s.speciality || '').trim().toUpperCase())
+        .map((s: any) => String(s.speciality_name || '').trim().toUpperCase())
         .filter(Boolean);
     }
   } catch (error) {
     console.error("Error fetching specialities from DMH API:", error);
   }
 
-  if (apiSpecialities.length === 0) {
-    const departments = await prisma.department.findMany({ select: { name: true } });
-    apiSpecialities = departments.map((d: any) => d.name.toUpperCase());
-  }
-
-  apiSpecialities = Array.from(new Set(apiSpecialities)).sort((a, b) => a.localeCompare(b));
+  const departments = await prisma.department.findMany({ select: { name: true } });
+  apiSpecialities = Array.from(new Set([...apiSpecialities, ...departments.map((d: any) => d.name.toUpperCase())])).sort((a, b) => a.localeCompare(b));
 
   async function saveData(formData: FormData) {
     "use server";

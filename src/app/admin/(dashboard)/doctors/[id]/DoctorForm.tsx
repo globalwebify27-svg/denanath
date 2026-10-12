@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Save, Plus, Trash2, ArrowLeft, HeartPulse, Search, Upload } from "lucide-react";
+import { Save, Plus, Trash2, ArrowLeft, HeartPulse, Search, Upload, ExternalLink, FileText, Loader2 } from "lucide-react";
 import CustomDropdown from "@/components/CustomDropdown";
 
 
@@ -11,6 +11,7 @@ export default function DoctorForm({ doctor, id, departments = [], apiSpecialiti
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [uploadingPubIndex, setUploadingPubIndex] = useState<number | null>(null);
+  const [bulkUploading, setBulkUploading] = useState(false);
   
   const isDmhDoctor = id !== "new" || Boolean(doctor?.dmhDoctorId);
   
@@ -144,6 +145,11 @@ export default function DoctorForm({ doctor, id, departments = [], apiSpecialiti
     setFormData({ ...formData, timings: newTimings });
   };
 
+  const getDoctorPrefix = () => {
+    const code = doctor?.dmhDoctorId || doctor?.id || (id !== "new" ? id : "");
+    return `${formData.name || doctor?.name || "Doctor"}${code ? ` (${code})` : ""}`;
+  };
+
   const handlePublicationChange = (index: number, key: string, value: string) => {
     const newPubs = [...formData.publications];
     newPubs[index] = { ...newPubs[index], [key]: value };
@@ -151,10 +157,102 @@ export default function DoctorForm({ doctor, id, departments = [], apiSpecialiti
   };
 
   const handlePublicationAdd = () => {
+    const prefix = getDoctorPrefix();
+    const count = formData.publications.length + 1;
     setFormData({
       ...formData,
-      publications: [...formData.publications, { title: "", link: "" }],
+      publications: [...formData.publications, { title: `${prefix} - Publication ${count}`, link: "" }],
     });
+  };
+
+  const handleSinglePdfUpload = async (index: number, file: File) => {
+    if (!file) return;
+    setUploadingPubIndex(index);
+    try {
+      const docCode = doctor?.dmhDoctorId || doctor?.id || (id !== "new" ? id : "");
+      const cleanDocName = (formData.name || "Doctor").replace(/[^a-zA-Z0-9]/g, "_");
+      const cleanFileName = file.name ? file.name.split('.').slice(0, -1).join(' ').trim() : `Publication_${index + 1}`;
+      const safeCustomId = `${cleanDocName}_${docCode ? `${docCode}_` : ""}pub_${index + 1}_${Date.now()}`;
+
+      const uploadData = new FormData();
+      uploadData.append("file", file);
+      uploadData.append("folder", "doctor");
+      uploadData.append("customName", safeCustomId);
+
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        body: uploadData,
+      });
+      const data = await res.json();
+      if (data.url) {
+        const prefix = getDoctorPrefix();
+        const currentTitle = formData.publications[index]?.title?.trim() || "";
+        let newTitle = currentTitle;
+        if (!newTitle || newTitle.toLowerCase().includes("view pdf link") || newTitle.endsWith(`Publication ${index + 1}`)) {
+          newTitle = `${prefix} - ${cleanFileName || `Publication ${index + 1}`}`;
+        }
+        const newPubs = [...formData.publications];
+        newPubs[index] = { ...newPubs[index], link: data.url, title: newTitle };
+        setFormData({ ...formData, publications: newPubs });
+      } else {
+        alert("Failed to upload PDF");
+      }
+    } catch (err) {
+      console.error("PDF Upload Error:", err);
+      alert("Error uploading PDF");
+    } finally {
+      setUploadingPubIndex(null);
+    }
+  };
+
+  const handleBulkPdfUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+    setBulkUploading(true);
+    try {
+      const docCode = doctor?.dmhDoctorId || doctor?.id || (id !== "new" ? id : "");
+      const cleanDocName = (formData.name || "Doctor").replace(/[^a-zA-Z0-9]/g, "_");
+      const prefix = getDoctorPrefix();
+      const currentCount = formData.publications.length;
+
+      const newUploadedPubs: { title: string; link: string }[] = [];
+
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        const cleanFileName = file.name ? file.name.split('.').slice(0, -1).join(' ').trim() : `Publication ${currentCount + i + 1}`;
+        const safeCustomId = `${cleanDocName}_${docCode ? `${docCode}_` : ""}pub_${currentCount + i + 1}_${Date.now()}_${i}`;
+
+        const uploadData = new FormData();
+        uploadData.append("file", file);
+        uploadData.append("folder", "doctor");
+        uploadData.append("customName", safeCustomId);
+
+        const res = await fetch("/api/upload", {
+          method: "POST",
+          body: uploadData,
+        });
+        const data = await res.json();
+        if (data.url) {
+          newUploadedPubs.push({
+            title: `${prefix} - ${cleanFileName || `Publication ${currentCount + i + 1}`}`,
+            link: data.url,
+          });
+        }
+      }
+
+      if (newUploadedPubs.length > 0) {
+        setFormData(prev => ({
+          ...prev,
+          publications: [...prev.publications, ...newUploadedPubs]
+        }));
+      }
+    } catch (err) {
+      console.error("Bulk upload error:", err);
+      alert("Error uploading some or all files");
+    } finally {
+      setBulkUploading(false);
+      e.target.value = "";
+    }
   };
 
   const handlePublicationRemove = (index: number) => {
@@ -189,6 +287,24 @@ export default function DoctorForm({ doctor, id, departments = [], apiSpecialiti
       const url = doctor?.id ? `/api/doctors/${doctor.id}` : `/api/doctors`;
       const method = doctor?.id ? "PUT" : "POST";
 
+      const docPrefix = getDoctorPrefix();
+      const docCode = doctor?.dmhDoctorId || doctor?.id || (id !== "new" ? id : "");
+      const formattedPublications = formData.publications
+        .filter((p: any) => p.title || p.link)
+        .map((p: any, idx: number) => {
+          let t = p.title?.trim() || "";
+          if (!t || t.toLowerCase().includes("view pdf link")) {
+            t = `${docPrefix} - Publication ${idx + 1}`;
+          } else if (docCode && !t.includes(docCode)) {
+            if (!t.toLowerCase().includes((formData.name || "").toLowerCase())) {
+              t = `${docPrefix} - ${t}`;
+            } else {
+              t = `${docPrefix} - ${t.replace(formData.name, "").replace(/^[\s:-]+/, "") || `Publication ${idx + 1}`}`;
+            }
+          }
+          return { title: t, link: p.link || "" };
+        });
+
       const response = await fetch(url, {
         method,
         headers: { "Content-Type": "application/json" },
@@ -198,7 +314,7 @@ export default function DoctorForm({ doctor, id, departments = [], apiSpecialiti
           education: JSON.stringify(formData.education.filter(Boolean)),
           training: JSON.stringify(formData.training.filter(Boolean)),
           experience: JSON.stringify(formData.experience.filter(Boolean)),
-          publications: JSON.stringify(formData.publications.filter((p: any) => p.title || p.link)),
+          publications: JSON.stringify(formattedPublications),
         }),
       });
 
@@ -514,67 +630,83 @@ export default function DoctorForm({ doctor, id, departments = [], apiSpecialiti
       {renderObjectArrayField("Experience", "experience", [{key: "specialist", placeholder: "Specialist"}, {key: "organization", placeholder: "Organization"}, {key: "duration", placeholder: "Duration"}, {key: "completionYear", placeholder: "Completion Year"}], {specialist: "", organization: "", duration: "", completionYear: ""})}
 
       <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 mb-6">
-        <div className="flex items-center justify-between mb-4 gap-2">
-          <h3 className="text-base sm:text-base font-semibold text-gray-800 truncate min-w-0">Publications</h3>
-          <button
-            type="button"
-            onClick={handlePublicationAdd}
-            className="flex items-center gap-1.5 px-3 py-2 sm:px-4 sm:py-2.5 bg-[#003360] text-white hover:bg-[#002545] rounded-xl text-xs font-bold transition-all duration-300 shadow-sm hover:shadow shrink-0  ml-auto"
-          >
-            <Plus size={14} /> Add Publication
-          </button>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-3">
+          <div>
+            <h3 className="text-base font-semibold text-gray-800 flex items-center gap-2">
+              <FileText size={18} className="text-[#007a87]" />
+              Publications ({formData.publications.length})
+            </h3>
+            <p className="text-xs text-gray-500 mt-0.5">
+              Each publication includes the doctor&apos;s name and code. Supports multiple publications and bulk PDF upload.
+            </p>
+          </div>
+          <div className="flex items-center gap-2 flex-wrap">
+            <label className="cursor-pointer inline-flex items-center gap-1.5 px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold transition-all shadow-sm">
+              {bulkUploading ? <Loader2 size={14} className="animate-spin" /> : <Upload size={14} />}
+              <span>{bulkUploading ? "Uploading PDFs..." : "Bulk Upload PDFs"}</span>
+              <input
+                type="file"
+                multiple
+                accept=".pdf,application/pdf"
+                className="hidden"
+                disabled={bulkUploading}
+                onChange={handleBulkPdfUpload}
+              />
+            </label>
+            <button
+              type="button"
+              onClick={handlePublicationAdd}
+              className="flex items-center gap-1.5 px-3 py-2 bg-[#003360] text-white hover:bg-[#002545] rounded-xl text-xs font-bold transition-all shadow-sm shrink-0"
+            >
+              <Plus size={14} /> Add Publication
+            </button>
+          </div>
         </div>
+
         {formData.publications.map((pub: any, index: number) => (
-          <div key={index} className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 mb-3 bg-gray-50 p-3 rounded-lg border border-gray-200">
+          <div key={index} className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 mb-3 bg-gray-50 p-3 rounded-lg border border-gray-200 hover:border-gray-300 transition-colors">
+            <span className="shrink-0 text-xs font-bold text-gray-500 bg-white px-2 py-1 rounded border border-gray-200 self-start sm:self-center">
+              #{index + 1}
+            </span>
             <input
               type="text"
-              placeholder="Publication Title"
+              placeholder="Publication Title (e.g. Dr. Name (Code) - Topic)"
               value={pub.title}
               onChange={(e) => handlePublicationChange(index, "title", e.target.value)}
-              className="w-full sm:w-56 md:w-64 shrink-0 p-2 border border-gray-300 rounded-lg text-sm bg-white"
+              className="w-full sm:w-72 md:w-80 shrink-0 p-2 border border-gray-300 rounded-lg text-sm bg-white focus:outline-none focus:ring-1 focus:ring-[#007a87]"
             />
             <div className="w-full sm:flex-1 flex items-center gap-2">
               <input
                 type="text"
-                placeholder="PDF Link (Optional)"
+                placeholder="PDF Link / URL"
                 value={pub.link}
                 onChange={(e) => handlePublicationChange(index, "link", e.target.value)}
-                className="w-full p-2 border border-gray-300 rounded-lg text-sm bg-white"
+                className="w-full p-2 border border-gray-300 rounded-lg text-sm bg-white focus:outline-none focus:ring-1 focus:ring-[#007a87]"
               />
               <label className="cursor-pointer shrink-0 inline-flex items-center gap-1.5 px-3 py-2 bg-[#007a87] text-white hover:bg-[#005f69] rounded-lg text-xs font-bold transition-all shadow-sm">
-                <Upload size={14} />
+                {uploadingPubIndex === index ? <Loader2 size={14} className="animate-spin" /> : <Upload size={14} />}
                 <span>{uploadingPubIndex === index ? "Uploading..." : "Upload PDF"}</span>
                 <input
                   type="file"
                   accept=".pdf,application/pdf"
                   className="hidden"
-                  onChange={async (e) => {
+                  onChange={(e) => {
                     const file = e.target.files?.[0];
-                    if (!file) return;
-                    setUploadingPubIndex(index);
-                    try {
-                      const uploadData = new FormData();
-                      uploadData.append("file", file);
-                      uploadData.append("folder", "doctor");
-                      const res = await fetch("/api/upload", {
-                        method: "POST",
-                        body: uploadData,
-                      });
-                      const data = await res.json();
-                      if (data.url) {
-                        handlePublicationChange(index, "link", data.url);
-                      } else {
-                        alert("Failed to upload PDF");
-                      }
-                    } catch (err) {
-                      console.error("PDF Upload Error:", err);
-                      alert("Error uploading PDF");
-                    } finally {
-                      setUploadingPubIndex(null);
-                    }
+                    if (file) handleSinglePdfUpload(index, file);
                   }}
                 />
               </label>
+              {pub.link && (
+                <a
+                  href={pub.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 text-[#007a87] hover:bg-teal-50 rounded-lg shrink-0 border border-teal-200 bg-white"
+                  title="View / Download PDF"
+                >
+                  <ExternalLink size={16} />
+                </a>
+              )}
             </div>
             <button
               type="button"
@@ -587,7 +719,7 @@ export default function DoctorForm({ doctor, id, departments = [], apiSpecialiti
           </div>
         ))}
         {formData.publications.length === 0 && (
-          <p className="text-gray-500 text-sm italic">No publications added yet.</p>
+          <p className="text-gray-500 text-sm italic">No publications added yet. Click &ldquo;Add Publication&rdquo; or &ldquo;Bulk Upload PDFs&rdquo; to add publications for this doctor.</p>
         )}
       </div>
 

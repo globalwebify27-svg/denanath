@@ -3,7 +3,10 @@
 import React, { useEffect, useRef } from "react";
 import DynamicSidebar from "@/components/DynamicSidebar";
 import Link from "next/link";
-import { ChevronRight, Bed, Phone, MapPin, Clock, FileText, CheckCircle2 } from "lucide-react";
+import { 
+  ChevronRight, Bed, Phone, PhoneCall, MapPin, Clock, FileText, CheckCircle2,
+  Building2, Building, Siren, Activity, Pill, Droplets, Headphones, Users
+} from "lucide-react";
 
 
 function AutoSwipingRoomCard({ room, defaultImage }: { room: any, defaultImage: string }) {
@@ -60,6 +63,164 @@ function AutoSwipingRoomCard({ room, defaultImage }: { room: any, defaultImage: 
       <div className="p-5 flex flex-col flex-1">
         <h5 className="font-bold text-base text-[#002b5c] group-hover:text-[#D9232D] transition-colors mb-3 leading-tight">{room.name}</h5>
         {room.fac && room.fac !== "-" && <p className="text-sm text-slate-600 leading-relaxed flex-1">{room.fac}</p>}
+      </div>
+    </div>
+  );
+}
+
+function formatPhoneNumbers(rawStr: string) {
+  if (!rawStr) return [];
+  const parts = rawStr.split(/[\/,|]/).map((s: string) => s.trim()).filter(Boolean);
+  let basePrefix = "";
+  return parts.map((p: string) => {
+    const cleanDigits = p.replace(/\D/g, "");
+    let fullDial = cleanDigits;
+    let display = p;
+    if (cleanDigits.length >= 8) {
+      basePrefix = cleanDigits.slice(0, -2);
+      fullDial = cleanDigits.startsWith("020") ? cleanDigits : "020" + cleanDigits;
+    } else if (cleanDigits.length <= 4 && basePrefix) {
+      const full = basePrefix.slice(0, basePrefix.length - (cleanDigits.length - 2)) + cleanDigits;
+      fullDial = "020" + full;
+      display = full;
+    } else {
+      fullDial = cleanDigits.startsWith("020") ? cleanDigits : "020" + cleanDigits;
+    }
+    return { display, tel: fullDial };
+  });
+}
+
+function getPhoneMeta(label: string) {
+  const l = (label || '').toLowerCase();
+  if (l.includes('emergency')) {
+    return {
+      Icon: Siren,
+      isEmergency: true,
+      iconColor: 'text-red-600',
+      iconBg: 'bg-red-100',
+      badgeText: '24/7 Priority Emergency',
+    };
+  }
+  if (l.includes('icu') || l.includes('picu') || l.includes('nicu')) {
+    return {
+      Icon: Activity,
+      isEmergency: false,
+      iconColor: 'text-teal-600',
+      iconBg: 'bg-teal-50 border border-teal-100',
+      badgeText: 'Critical Care Unit',
+    };
+  }
+  if (l.includes('pharmacy')) {
+    return {
+      Icon: Pill,
+      isEmergency: false,
+      iconColor: 'text-blue-600',
+      iconBg: 'bg-blue-50 border border-blue-100',
+      badgeText: 'Pharmacy Dispensing',
+    };
+  }
+  if (l.includes('blood')) {
+    return {
+      Icon: Droplets,
+      isEmergency: false,
+      iconColor: 'text-rose-600',
+      iconBg: 'bg-rose-50 border border-rose-100',
+      badgeText: 'Blood Bank / Transfusion',
+    };
+  }
+  if (l.includes('operator')) {
+    return {
+      Icon: Headphones,
+      isEmergency: false,
+      iconColor: 'text-indigo-600',
+      iconBg: 'bg-indigo-50 border border-indigo-100',
+      badgeText: 'Central Assistance',
+    };
+  }
+  if (l.includes('relation') || l.includes('public')) {
+    return {
+      Icon: Users,
+      isEmergency: false,
+      iconColor: 'text-amber-600',
+      iconBg: 'bg-amber-50 border border-amber-100',
+      badgeText: 'Helpdesk & PR',
+    };
+  }
+  return {
+    Icon: Phone,
+    isEmergency: false,
+    iconColor: 'text-[#007a87]',
+    iconBg: 'bg-teal-50 border border-teal-100',
+    badgeText: 'Hospital Desk',
+  };
+}
+
+function PhoneBoxCard({ p }: { p: any }) {
+  const numbers = formatPhoneNumbers(p.number || '');
+  const { Icon, isEmergency, iconColor, iconBg, badgeText } = getPhoneMeta(p.label || '');
+
+  if (isEmergency) {
+    return (
+      <div className="relative rounded-2xl p-4 bg-gradient-to-br from-red-50/90 via-white to-red-50/40 border-2 border-red-200 hover:border-red-400 shadow-[0_2px_12px_rgba(220,38,38,0.06)] hover:shadow-[0_6px_20px_rgba(220,38,38,0.12)] transition-all duration-300 flex flex-col justify-between group">
+        <div className="flex items-start justify-between gap-2 mb-3">
+          <div className="flex items-center gap-2.5">
+            <div className={`w-9 h-9 rounded-xl ${iconBg} flex items-center justify-center ${iconColor} shrink-0`}>
+              <Icon className="w-4 h-4" />
+            </div>
+            <div>
+              <span className="text-[10px] font-extrabold uppercase tracking-wider text-red-600 block">{badgeText}</span>
+              <h5 className="font-extrabold text-[#002b5c] text-sm group-hover:text-red-700 transition-colors">{p.label}</h5>
+            </div>
+          </div>
+          <span className="flex h-2.5 w-2.5 relative mt-1 mr-1">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span>
+          </span>
+        </div>
+
+        <div className="flex flex-wrap gap-2 pt-3 border-t border-red-100">
+          {numbers.map((item: any, nIdx: number) => (
+            <a
+              key={nIdx}
+              href={`tel:${item.tel}`}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-xs shadow-sm hover:shadow transition-all group/btn"
+              title={`Call ${item.display}`}
+            >
+              <PhoneCall className="w-3.5 h-3.5 group-hover/btn:scale-110 transition-transform" />
+              <span>{item.display}</span>
+            </a>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="rounded-2xl p-4 bg-white border border-slate-200/80 hover:border-[#007a87]/60 shadow-[0_2px_10px_rgba(0,43,92,0.03)] hover:shadow-[0_8px_24px_rgba(0,122,135,0.1)] hover:-translate-y-0.5 transition-all duration-300 flex flex-col justify-between group">
+      <div className="flex items-start justify-between gap-2 mb-3">
+        <div className="flex items-center gap-2.5">
+          <div className={`w-8 h-8 rounded-xl ${iconBg} flex items-center justify-center ${iconColor} shrink-0`}>
+            <Icon className="w-4 h-4" />
+          </div>
+          <div>
+            <span className="text-[10px] font-semibold text-slate-400 block">{badgeText}</span>
+            <h5 className="font-bold text-slate-800 text-sm group-hover:text-[#007a87] transition-colors">{p.label}</h5>
+          </div>
+        </div>
+      </div>
+
+      <div className="flex flex-wrap gap-1.5 pt-2.5 border-t border-slate-100">
+        {numbers.map((item: any, nIdx: number) => (
+          <a
+            key={nIdx}
+            href={`tel:${item.tel}`}
+            className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-slate-50 hover:bg-teal-50 border border-slate-200/80 hover:border-teal-300 text-slate-700 hover:text-[#007a87] font-semibold text-xs transition-all group/btn"
+            title={`Call ${item.display}`}
+          >
+            <PhoneCall className="w-3 h-3 text-[#007a87] group-hover/btn:scale-110 transition-transform" />
+            <span>{item.display}</span>
+          </a>
+        ))}
       </div>
     </div>
   );
@@ -254,33 +415,70 @@ export default function InPatientClientPage({ pageData }: { pageData: any }) {
                 </section>
 
                 {/* Important Phone Numbers */}
-                <section>
-                  <h3 className="text-2xl font-bold text-[#002b5c] mb-6 flex items-center gap-3">
-                    <Phone className="w-6 h-6 text-[#007a87]" />
-                    Important Phone Numbers
-                  </h3>
-                  <div className="grid md:grid-cols-2 gap-8">
+                <section className="mb-10">
+                  <div className="flex items-center justify-between flex-wrap gap-3 mb-6">
                     <div>
-                      <h4 className="font-bold text-slate-800 text-base mb-4">Main Building</h4>
-                      <ul className="space-y-3 text-sm">
-                        {mainBuildingPhones.map((p: any, i: number) => (
-                          <li key={i} className="flex items-center justify-between border-b border-slate-100 pb-2">
-                            <span className="text-slate-600">{p.label}</span>
-                            <span className="font-semibold">{p.number}</span>
-                          </li>
-                        ))}
-                      </ul>
+                      <div style={{ fontSize: '10px' }} className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-teal-50 border border-teal-100 text-[#007a87] font-bold tracking-wider uppercase mb-1.5">
+                        <Phone className="w-3.5 h-3.5" />
+                        <span>Direct Dial Directory</span>
+                      </div>
+                      <h3 className="text-2xl md:text-3xl font-extrabold text-[#002b5c] tracking-tight flex items-center gap-2.5">
+                        Important Phone Numbers
+                      </h3>
                     </div>
-                    <div>
-                      <h4 className="font-bold text-slate-800 text-base mb-4">Super Speciality Building</h4>
-                      <ul className="space-y-3 text-sm">
-                        {superSpecialityPhones.map((p: any, i: number) => (
-                          <li key={i} className="flex items-center justify-between border-b border-slate-100 pb-2">
-                            <span className="text-slate-600">{p.label}</span>
-                            <span className="font-semibold">{p.number}</span>
-                          </li>
+                    <div className="text-[11px] text-slate-500 bg-slate-50 border border-slate-200/80 rounded-xl px-3 py-1.5 font-medium flex items-center gap-1.5">
+                      <PhoneCall className="w-3.5 h-3.5 text-[#007a87]" />
+                      <span>Prefix <strong>(020)</strong> when calling from mobile or outside Pune</span>
+                    </div>
+                  </div>
+
+                  <div className="grid lg:grid-cols-2 gap-6">
+                    {/* Main Building Card */}
+                    <div className="bg-slate-50/70 rounded-3xl p-5 sm:p-6 border border-slate-200/90 shadow-[0_4px_20px_rgba(0,43,92,0.02)] flex flex-col">
+                      <div className="flex items-center justify-between pb-4 mb-4 border-b border-slate-200/70">
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 rounded-2xl bg-teal-100/70 text-[#007a87] flex items-center justify-center font-bold">
+                            <Building2 className="w-5 h-5" />
+                          </div>
+                          <div>
+                            <h4 className="font-extrabold text-base text-[#002b5c] tracking-tight">Main Building (GS Wing)</h4>
+                            <p className="text-[11px] text-slate-500">General Surgery, Core Units & 24/7 Trauma</p>
+                          </div>
+                        </div>
+                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-teal-50 text-[#007a87] border border-teal-100">
+                          {mainBuildingPhones.length} Desks
+                        </span>
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 flex-1">
+                        {mainBuildingPhones.map((p: any, i: number) => (
+                          <PhoneBoxCard key={i} p={p} />
                         ))}
-                      </ul>
+                      </div>
+                    </div>
+
+                    {/* Super Speciality Building Card */}
+                    <div className="bg-slate-50/70 rounded-3xl p-5 sm:p-6 border border-slate-200/90 shadow-[0_4px_20px_rgba(0,43,92,0.02)] flex flex-col">
+                      <div className="flex items-center justify-between pb-4 mb-4 border-b border-slate-200/70">
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 rounded-2xl bg-blue-100/70 text-[#002b5c] flex items-center justify-center font-bold">
+                            <Building className="w-5 h-5" />
+                          </div>
+                          <div>
+                            <h4 className="font-extrabold text-base text-[#002b5c] tracking-tight">Super Speciality Building (SS Wing)</h4>
+                            <p className="text-[11px] text-slate-500">Specialized Critical Care, NICU & Advanced Diagnostics</p>
+                          </div>
+                        </div>
+                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-50 text-[#002b5c] border border-blue-100">
+                          {superSpecialityPhones.length} Desks
+                        </span>
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 flex-1">
+                        {superSpecialityPhones.map((p: any, i: number) => (
+                          <PhoneBoxCard key={i} p={p} />
+                        ))}
+                      </div>
                     </div>
                   </div>
                 </section>

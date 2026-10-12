@@ -163,3 +163,24 @@ elevenlabs-convai {
   margin: 0 !important;
 }
 
+/* Google Translate Presentation Reset & Clean Display */
+body {
+  top: 0px !important;
+  position: static !important;
+}
+iframe.skiptranslate,
+.goog-te-banner-frame,
+#goog-gt-tt,
+.goog-te-balloon-frame {
+  display: none !important;
+  visibility: hidden !important;
+}
+body > .skiptranslate {
+  display: none !important;
+}
+.goog-text-highlight {
+  background: none !important;
+  box-shadow: none !important;
+}
+
+

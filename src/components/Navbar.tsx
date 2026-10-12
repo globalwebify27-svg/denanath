@@ -2,11 +2,11 @@
 
 import React, { useState, useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { Menu, X, Phone, ChevronDown, Globe } from "lucide-react";
+import { Menu, X, Phone, ChevronDown, Globe, Check } from "lucide-react";
 import Link from "next/link";
 
-import { applyOfflineTranslation } from "@/lib/offlineTranslate";
 import { baseNavLinks } from "@/lib/navConfig";
+import { SUPPORTED_LANGUAGES, getActiveLanguage, setLanguageCookie, getLanguageByCode } from "@/lib/languageConfig";
 
 export default function Navbar({ topHeaderSettings, headerSettings }: { topHeaderSettings?: any, headerSettings?: any }) {
   const pathname = usePathname();
@@ -19,6 +19,7 @@ export default function Navbar({ topHeaderSettings, headerSettings }: { topHeade
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
   const [isLangOpen, setIsLangOpen] = useState(false);
+  const [selectedLang, setSelectedLang] = useState<string>('en');
   const [dynamicLinks, setDynamicLinks] = useState<any[]>([]);
 
   useEffect(() => {
@@ -53,52 +54,30 @@ export default function Navbar({ topHeaderSettings, headerSettings }: { topHeade
     const handleScroll = () => setScrolled(window.scrollY > 10);
     window.addEventListener("scroll", handleScroll);
 
-    // Google Translate Initialization
-    if (!(window as any).googleTranslateElementInit) {
-      (window as any).googleTranslateElementInit = () => {
-        new (window as any).google.translate.TranslateElement(
-          { pageLanguage: "en", includedLanguages: "en,hi,mr,ar,gu,kn,ta,de", autoDisplay: false },
-          "google_translate_element"
-        );
-      };
-      const script = document.createElement("script");
-      script.src = "//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
-      document.body.appendChild(script);
-    }
-
-    // After Google Translate finishes translating (on reload), run term corrections
-    try {
-      const match = document.cookie.match(/googtrans=\/en\/([a-z]{2,3})/);
-      if (match && match[1] && match[1] !== 'en') {
-        const lang = match[1];
-        // GT takes ~1.5-2s to finish translating the DOM after page load
-        setTimeout(() => applyOfflineTranslation(lang), 2000);
-      }
-    } catch (e) {}
+    // Sync active language state
+    setSelectedLang(getActiveLanguage());
 
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const changeLanguage = (langCode: string) => {
-    const hostname = window.location.hostname;
-    const rootDomain = hostname.split('.').slice(-2).join('.');
-    const val = langCode === 'en' ? '' : `/en/${langCode}`;
-    const expires = langCode === 'en' ? 'expires=Thu, 01 Jan 1970 00:00:00 UTC;' : 'max-age=31536000;';
+    setSelectedLang(langCode);
+    setLanguageCookie(langCode);
 
-    // Set cookie on root path (no domain scoping — most reliable)
-    document.cookie = val
-      ? `googtrans=${val}; path=/; ${expires}`
-      : `googtrans=; ${expires} path=/;`;
-
-    // Also set on root domain if on a subdomain
-    if (rootDomain && rootDomain !== hostname) {
-      document.cookie = val
-        ? `googtrans=${val}; domain=.${rootDomain}; path=/; ${expires}`
-        : `googtrans=; ${expires} domain=.${rootDomain}; path=/;`;
+    // If switching to English, reload to reset DOM completely to clean English baseline
+    if (!langCode || langCode === 'en') {
+      window.location.reload();
+      return;
     }
 
-    // Reload so Google Translate reads the fresh cookie on page load
-    window.location.reload();
+    // Trigger Google Translate engine via its internal select combo
+    const combo = document.querySelector('.goog-te-combo') as HTMLSelectElement | null;
+    if (combo) {
+      combo.value = langCode;
+      combo.dispatchEvent(new Event('change'));
+    } else {
+      window.location.reload();
+    }
   };
 
   // baseNavLinks is now imported from @/lib/navConfig
@@ -186,7 +165,6 @@ export default function Navbar({ topHeaderSettings, headerSettings }: { topHeade
         .goog-te-spinner-pos { display: none !important; }
         html.translated-ltr body, html.translated-rtl body { opacity: 1 !important; visibility: visible !important; }
       `}} />
-      <div id="google_translate_element" style={{ position: 'absolute', opacity: 0, zIndex: -1, width: 0, height: 0, overflow: 'hidden' }}></div>
       {/* Tier 1: Teal Utility Bar */}
       {topHeaderSettings?.isActive !== false && (
         <div className="block w-full bg-[#007a87] text-white text-[10px] md:text-[8px] 2xl:text-[11px] py-1.5 px-2 md:px-1 2xl:px-4 font-medium border-b border-teal-600/30">
@@ -276,25 +254,47 @@ export default function Navbar({ topHeaderSettings, headerSettings }: { topHeade
               </div>
             )}
 
+            {/* Top Bar Language Selector */}
             <div 
-              className="relative group hidden md:flex items-center gap-1.5 cursor-pointer hover:text-white transition-colors py-1 px-2"
+              className="relative group hidden md:flex items-center gap-1.5 cursor-pointer hover:text-white transition-colors py-1 px-2.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/10"
               onClick={(e) => { e.stopPropagation(); setIsLangOpen(!isLangOpen); }}
+              title="Change Language / भाषा निवडा"
             >
-              <Globe className="w-4 h-4" />
-              <span className="hidden md:inline">Select Language</span>
+              <Globe className="w-3.5 h-3.5 text-teal-300 shrink-0" />
+              <span className="hidden md:inline font-bold text-xs tracking-wide text-white">
+                {getLanguageByCode(selectedLang).nativeLabel}
+              </span>
+              <ChevronDown className={`w-3 h-3 text-white/70 transition-transform ${isLangOpen ? 'rotate-180' : ''}`} />
+
               <div 
-                className={`absolute top-full right-0 ${isLangOpen ? 'block' : 'hidden'} group-hover:block w-32 bg-white rounded-lg shadow-xl border border-slate-100 overflow-hidden text-slate-700 z-50 notranslate`}
+                className={`absolute top-full right-0 ${isLangOpen ? 'block' : 'hidden'} group-hover:block w-44 bg-white rounded-xl shadow-2xl border border-slate-100 overflow-hidden text-slate-700 z-50 notranslate mt-1.5 animate-fadeIn`}
                 onClick={(e) => e.stopPropagation()}
               >
-                <div className="flex flex-col text-[11px] 2xl:text-[12px] font-bold">
-                  <div onClick={() => { changeLanguage('en'); setIsLangOpen(false); }} className="px-4 py-2.5 hover:bg-[#007a87] hover:text-white transition-colors cursor-pointer">English</div>
-                  <div onClick={() => { changeLanguage('hi'); setIsLangOpen(false); }} className="px-4 py-2.5 hover:bg-[#007a87] hover:text-white transition-colors cursor-pointer border-t border-slate-50">Hindi</div>
-                  <div onClick={() => { changeLanguage('mr'); setIsLangOpen(false); }} className="px-4 py-2.5 hover:bg-[#007a87] hover:text-white transition-colors cursor-pointer border-t border-slate-50">Marathi</div>
-                  <div onClick={() => { changeLanguage('gu'); setIsLangOpen(false); }} className="px-4 py-2.5 hover:bg-[#007a87] hover:text-white transition-colors cursor-pointer border-t border-slate-50">Gujarati</div>
-                  <div onClick={() => { changeLanguage('kn'); setIsLangOpen(false); }} className="px-4 py-2.5 hover:bg-[#007a87] hover:text-white transition-colors cursor-pointer border-t border-slate-50">Kannada</div>
-                  <div onClick={() => { changeLanguage('ta'); setIsLangOpen(false); }} className="px-4 py-2.5 hover:bg-[#007a87] hover:text-white transition-colors cursor-pointer border-t border-slate-50">Tamil</div>
-                  <div onClick={() => { changeLanguage('ar'); setIsLangOpen(false); }} className="px-4 py-2.5 hover:bg-[#007a87] hover:text-white transition-colors cursor-pointer border-t border-slate-50">Arabic</div>
-                  <div onClick={() => { changeLanguage('de'); setIsLangOpen(false); }} className="px-4 py-2.5 hover:bg-[#007a87] hover:text-white transition-colors cursor-pointer border-t border-slate-50">German</div>
+                <div className="py-1 flex flex-col text-[12px]">
+                  {SUPPORTED_LANGUAGES.map((lang, idx) => {
+                    const isSelected = selectedLang === lang.code;
+                    return (
+                      <div
+                        key={lang.code}
+                        onClick={() => { changeLanguage(lang.code); setIsLangOpen(false); }}
+                        className={`px-3.5 py-2 flex items-center justify-between transition-colors cursor-pointer ${
+                          idx > 0 ? 'border-t border-slate-50' : ''
+                        } ${
+                          isSelected
+                            ? 'bg-[#007a87] text-white font-bold'
+                            : 'hover:bg-slate-100 text-slate-700 font-medium'
+                        }`}
+                      >
+                        <div className="flex items-center gap-1.5">
+                          <span>{lang.nativeLabel}</span>
+                          <span className={`text-[10px] ${isSelected ? 'text-teal-100' : 'text-slate-400'}`}>
+                            ({lang.label})
+                          </span>
+                        </div>
+                        {isSelected && <Check className="w-3.5 h-3.5 text-white shrink-0 ml-1.5" />}
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             </div>
@@ -462,24 +462,45 @@ export default function Navbar({ topHeaderSettings, headerSettings }: { topHeade
                 </svg>
               </button>
 
+              {/* Main Bar Language Selector (Tablet/Mobile Header) */}
               <div 
-                className="relative group flex items-center cursor-pointer text-slate-500 hover:text-slate-900 transition-colors py-1.5 px-1.5"
+                className="relative group flex items-center gap-1 cursor-pointer text-slate-600 hover:text-slate-900 transition-colors py-1 px-1.5 rounded-lg hover:bg-slate-100"
                 onClick={(e) => { e.stopPropagation(); setIsLangOpen(!isLangOpen); }}
+                title="Change Language / भाषा निवडा"
               >
-                <Globe className="w-4 md:w-5 h-4 md:h-5" />
+                <Globe className="w-4 md:w-5 h-4 md:h-5 text-[#007a87]" />
+                <span className="text-[10px] font-extrabold uppercase px-1 py-0.5 rounded bg-teal-50 text-[#007a87] border border-teal-200">
+                  {selectedLang}
+                </span>
                 <div 
-                  className={`absolute top-full right-0 ${isLangOpen ? 'block' : 'hidden'} group-hover:block w-36 bg-white rounded-xl shadow-2xl border border-slate-100 overflow-hidden text-slate-700 z-50 notranslate mt-2`}
+                  className={`absolute top-full right-0 ${isLangOpen ? 'block' : 'hidden'} group-hover:block w-44 bg-white rounded-xl shadow-2xl border border-slate-100 overflow-hidden text-slate-700 z-50 notranslate mt-2 animate-fadeIn`}
                   onClick={(e) => e.stopPropagation()}
                 >
-                  <div className="flex flex-col text-[13px] font-bold max-h-[60vh] overflow-y-auto">
-                    <div onClick={() => { changeLanguage('en'); setIsLangOpen(false); }} className="px-4 py-3 hover:bg-[#007a87] hover:text-white transition-colors cursor-pointer text-left">English</div>
-                    <div onClick={() => { changeLanguage('hi'); setIsLangOpen(false); }} className="px-4 py-3 hover:bg-[#007a87] hover:text-white transition-colors cursor-pointer border-t border-slate-50 text-left">Hindi</div>
-                    <div onClick={() => { changeLanguage('mr'); setIsLangOpen(false); }} className="px-4 py-3 hover:bg-[#007a87] hover:text-white transition-colors cursor-pointer border-t border-slate-50 text-left">Marathi</div>
-                    <div onClick={() => { changeLanguage('gu'); setIsLangOpen(false); }} className="px-4 py-3 hover:bg-[#007a87] hover:text-white transition-colors cursor-pointer border-t border-slate-50 text-left">Gujarati</div>
-                    <div onClick={() => { changeLanguage('kn'); setIsLangOpen(false); }} className="px-4 py-3 hover:bg-[#007a87] hover:text-white transition-colors cursor-pointer border-t border-slate-50 text-left">Kannada</div>
-                    <div onClick={() => { changeLanguage('ta'); setIsLangOpen(false); }} className="px-4 py-3 hover:bg-[#007a87] hover:text-white transition-colors cursor-pointer border-t border-slate-50 text-left">Tamil</div>
-                    <div onClick={() => { changeLanguage('ar'); setIsLangOpen(false); }} className="px-4 py-3 hover:bg-[#007a87] hover:text-white transition-colors cursor-pointer border-t border-slate-50 text-left">Arabic</div>
-                    <div onClick={() => { changeLanguage('de'); setIsLangOpen(false); }} className="px-4 py-3 hover:bg-[#007a87] hover:text-white transition-colors cursor-pointer border-t border-slate-50 text-left">German</div>
+                  <div className="py-1 flex flex-col text-[12px] max-h-[60vh] overflow-y-auto">
+                    {SUPPORTED_LANGUAGES.map((lang, idx) => {
+                      const isSelected = selectedLang === lang.code;
+                      return (
+                        <div
+                          key={lang.code}
+                          onClick={() => { changeLanguage(lang.code); setIsLangOpen(false); }}
+                          className={`px-3.5 py-2 flex items-center justify-between transition-colors cursor-pointer ${
+                            idx > 0 ? 'border-t border-slate-50' : ''
+                          } ${
+                            isSelected
+                              ? 'bg-[#007a87] text-white font-bold'
+                              : 'hover:bg-slate-100 text-slate-700 font-medium'
+                          }`}
+                        >
+                          <div className="flex items-center gap-1.5">
+                            <span>{lang.nativeLabel}</span>
+                            <span className={`text-[10px] ${isSelected ? 'text-teal-100' : 'text-slate-400'}`}>
+                              ({lang.label})
+                            </span>
+                          </div>
+                          {isSelected && <Check className="w-3.5 h-3.5 text-white shrink-0 ml-1.5" />}
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
               </div>
@@ -580,31 +601,39 @@ export default function Navbar({ topHeaderSettings, headerSettings }: { topHeade
 
             {/* Bottom Panel Actions inside Mobile Drawer */}
             <div className="pt-3 border-t border-slate-100 mt-3 flex flex-col gap-2">
-              <div className="bg-slate-50 p-3 rounded-lg border border-slate-200">
-                <div className="flex items-center gap-1.5 text-xs font-bold text-slate-700 mb-2">
-                  <Globe className="w-4 h-4 text-[#007a87]" />
-                  <span>Select Language / भाषा चुनें</span>
+              <div className="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                <div className="flex items-center justify-between text-xs font-bold text-slate-700 mb-2.5">
+                  <div className="flex items-center gap-1.5">
+                    <Globe className="w-4 h-4 text-[#007a87]" />
+                    <span>Select Language / भाषा निवडा</span>
+                  </div>
+                  <span className="text-[10px] bg-teal-100 text-[#007a87] px-2 py-0.5 rounded-full font-bold">
+                    {getLanguageByCode(selectedLang).label}
+                  </span>
                 </div>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5 text-[11px] font-semibold">
-                  {[
-                    { code: 'en', label: 'English' },
-                    { code: 'hi', label: 'Hindi' },
-                    { code: 'mr', label: 'Marathi' },
-                    { code: 'gu', label: 'Gujarati' },
-                    { code: 'kn', label: 'Kannada' },
-                    { code: 'ta', label: 'Tamil' },
-                    { code: 'ar', label: 'Arabic' },
-                    { code: 'de', label: 'German' },
-                  ].map((lang) => (
-                    <button
-                      key={lang.code}
-                      type="button"
-                      onClick={() => { changeLanguage(lang.code); setMobileMenuOpen(false); }}
-                      className="px-2 py-1.5 rounded bg-white hover:bg-[#007a87] hover:text-white border border-slate-200 transition-colors text-center shadow-sm"
-                    >
-                      {lang.label}
-                    </button>
-                  ))}
+                  {SUPPORTED_LANGUAGES.map((lang) => {
+                    const isSelected = selectedLang === lang.code;
+                    return (
+                      <button
+                        key={lang.code}
+                        type="button"
+                        onClick={() => { changeLanguage(lang.code); setMobileMenuOpen(false); }}
+                        className={`px-2.5 py-2 rounded-lg text-center transition-all flex items-center justify-between text-[11px] font-bold ${
+                          isSelected
+                            ? 'bg-[#007a87] text-white border-2 border-[#005a63] shadow-md'
+                            : 'bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 shadow-sm'
+                        }`}
+                      >
+                        <span>{lang.nativeLabel}</span>
+                        {isSelected ? (
+                          <Check className="w-3.5 h-3.5 text-white shrink-0 ml-1" />
+                        ) : (
+                          <span className="text-[9px] text-slate-400 uppercase font-medium">{lang.code}</span>
+                        )}
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
 

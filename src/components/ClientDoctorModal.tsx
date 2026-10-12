@@ -292,24 +292,42 @@ export default function ClientDoctorModal({ apiDocs = [] }: { apiDocs: any[] }) 
                         link = item.link || '';
                       }
 
+                      const docCode = selectedDoctor.dmhDoctorId || selectedDoctor.doctor_id || selectedDoctor.id || '';
+                      const docPrefix = `${selectedDoctor.name}${docCode ? ` (${docCode})` : ''}`;
+
+                      if (!title || title.trim().toLowerCase() === 'view pdf link') {
+                        title = `${docPrefix} - Publication ${i + 1}`;
+                      } else if (docCode && !title.includes(docCode)) {
+                        if (!title.toLowerCase().includes((selectedDoctor.name || '').toLowerCase())) {
+                          title = `${docPrefix} - ${title}`;
+                        } else {
+                          title = `${docPrefix} - ${title.replace(selectedDoctor.name, '').replace(/^[\s:-]+/, '') || `Publication ${i + 1}`}`;
+                        }
+                      }
+
+                      const displayTitle = title.replace(/\[PDF\]/g, '').trim();
+
                       return (
-                        <li key={i} className="flex gap-3 text-slate-600 font-normal  leading-[31px]">
-                          <div className="w-1.5 h-1.5 rounded-full bg-purple-400 shrink-0 mt-2.5"></div>
-                          <div className="flex-1">
-                            {title.includes('[PDF]') ? (
-                              <span>
-                                {title.replace('[PDF]', '')}
-                                <span className="text-red-500 font-bold ml-1">[PDF]</span>
-                              </span>
-                            ) : (
-                              <span className="mr-2">{title}</span>
-                            )}
-                            {link && (
-                              <a href={link} target="_blank" rel="noopener noreferrer" className="text-red-500 font-bold hover:underline">
-                                [PDF]
-                              </a>
+                        <li key={i} className="flex items-start gap-3 text-slate-600 font-medium leading-relaxed bg-slate-50/70 p-3 rounded-xl border border-slate-100">
+                          <span className="shrink-0 text-xs font-bold text-purple-700 bg-purple-50 px-2 py-0.5 rounded border border-purple-100 mt-0.5">
+                            #{i + 1}
+                          </span>
+                          <div className="flex-1 min-w-0">
+                            <span className="text-slate-800 text-sm font-semibold break-words block">{displayTitle}</span>
+                            {docCode && (
+                              <span className="text-xs text-slate-500 block mt-0.5">Doctor Code: {docCode}</span>
                             )}
                           </div>
+                          {link && (
+                            <a
+                              href={link}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="shrink-0 inline-flex items-center gap-1 text-red-600 font-bold hover:underline text-xs bg-red-50 px-2.5 py-1 rounded border border-red-100 uppercase tracking-wider self-center"
+                            >
+                              [View PDF]
+                            </a>
+                          )}
                         </li>
                       );
                     })}

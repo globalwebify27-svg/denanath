@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import QuickAccessWidget from "./home/QuickAccessWidget";
-import { applyOfflineTranslation } from "@/lib/offlineTranslate";
+import { getActiveLanguage } from "@/lib/languageConfig";
 import Chatbot from "./Chatbot";
 
 export default function ClientLayoutWrapper({
@@ -28,11 +28,13 @@ export default function ClientLayoutWrapper({
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
 
     try {
-      const match = document.cookie.match(/googtrans=\/en\/([a-z]{2,3})/);
-      if (match && match[1] && match[1] !== 'en') {
-        setTimeout(() => applyOfflineTranslation(match[1]), 30);
-      } else {
-        applyOfflineTranslation('en');
+      const activeLang = getActiveLanguage();
+      if (activeLang && activeLang !== 'en') {
+        const combo = document.querySelector('.goog-te-combo') as HTMLSelectElement | null;
+        if (combo) {
+          combo.value = activeLang;
+          combo.dispatchEvent(new Event('change'));
+        }
       }
     } catch (e) {}
   }, [pathname]);

@@ -174,6 +174,292 @@ const DICTIONARY: TranslationDict = {
     de: "Wohltätigkeitsdetails",
   },
 
+  // About Hospital (Complete Page Content)
+  "the deenanath mangeshkar hospital is beautifully designed, having a central atrium with four wings built around it. it is a 800-bed hospital with 12 operation theaters, a sophisticated icu, blood bank, a digital radiology unit, a kidney transplant unit, and many other facilities. it has some of the best equipment for diagnostics as well as treatment, and is staffed by some of the finest medical and administrative personnel available in pune. we are pioneers in ems in india, ems with cardiac & trauma ambulances. great attention is given to the needs of the patients and their relatives. it is a truly multispecialty hospital, providing super-specialty care in cancer, voice disorders, cardiology and cardiothoracic surgery, gastroenterology, joint replacement, urology, nephrology and neurology.": {
+    hi: "दीनानाथ मंगेशकर अस्पताल बहुत ही खूबसूरती से डिज़ाइन किया गया है, जिसके चारों ओर चार पंखों वाला एक केंद्रीय आलिंद बना है। यह 12 ऑपरेशन थिएटर, एक परिष्कृत आईसीयू, ब्लड बैंक, डिजिटल रेडियोलॉजी यूनिट, किडनी प्रत्यारोपण यूनिट और कई अन्य सुविधाओं से युक्त 800 बिस्तरों वाला अस्पताल है। इसमें निदान के साथ-साथ उपचार के लिए सर्वोत्तम उपकरण हैं और पुणे में उपलब्ध बेहतरीन चिकित्सा और प्रशासनिक कर्मियों द्वारा संचालित है। हम भारत में ईएमएस (EMS) में अग्रणी हैं, कार्डियक और ट्रॉमा एम्बुलेंस से लैस हैं। रोगियों और उनके रिश्तेदारों की जरूरतों पर विशेष ध्यान दिया जाता है। यह वास्तव में एक मल्टी-स्पेशियलिटी अस्पताल है, जो कैंसर, आवाज विकार, कार्डियोलॉजी और कार्डियोथोरेसिक सर्जरी, गैस्ट्रोएंटरोलॉजी, संयुक्त प्रतिस्थापन, यूरोलॉजी, नेफ्रोलॉजी और न्यूरोलॉजी में सुपर-स्पेशियलिटी देखभाल प्रदान करता है।",
+    mr: "दीनानाथ मंगेशकर रुग्णालय अतिशय सुंदर रीतीने डिझाइन केलेले असून, मध्यवर्ती अ‍ॅट्रियमभोवती चार विंग्स बांधल्या आहेत. हे 800 खाटांचे रुग्णालय असून यात 12 शस्त्रक्रियागृहे (Operation Theatres), अत्याधुनिक आयसीयू (ICU), रक्तपेढी, डिजिटल रेडिओलॉजी युनिट, मूत्रपिंड प्रत्यारोपण (Kidney Transplant) युनिट आणि इतर अनेक अत्याधुनिक सुविधा उपलब्ध आहेत. येथे निदानासह उपचारासाठी सर्वोत्तम उपकरणे असून पुण्यातील सर्वोत्तम वैद्यकीय आणि प्रशासकीय तज्ज्ञ कार्यरत आहेत. आम्ही भारतातील ईएमएस (EMS) सेवेमध्ये अग्रेसर असून, कार्डियाक आणि ट्रॉमा अ‍ॅम्ब्युलन्सद्वारे आपत्कालीन सेवा पुरवतो. रुग्ण आणि त्यांच्या नातेवाईकांच्या गरजांकडे विशेष लक्ष दिले जाते. हे एक खरोखरच मल्टी-स्पेशालिटी रुग्णालय आहे, जे कर्करोग, व्हॉईस डिसऑर्डर, कार्डिओलॉजी आणि कार्डिओथोरॅसिक सर्जरी, गॅस्ट्रोएन्टेरोलॉजी, जॉइंट रिप्लेसमेंट, युरॉलॉजी, नेफ्रॉलॉजी आणि न्यूरोलॉजी यांसारख्या सुपर-स्पेशालिटी सेवा पुरवते.",
+    gu: "દીનાનાથ મંગેશકર હોસ્પિટલ સુંદર રીતે ડિઝાઇન કરવામાં આવી છે. આ 800 પથારીની હોસ્પિટલ છે જેમાં 12 ઓપરેશન થિયેટર, આઈસીયુ, બ્લડ બેંક, ડિજિટલ રેડિયોલોજી યુનિટ અને અન્ય ઘણી સુવિધાઓ છે."
+  },
+  "vision": {
+    hi: "दृष्टिकोण (Vision)",
+    mr: "व्हिजन (Vision)",
+    gu: "વિઝન (Vision)",
+    kn: "ದೃಷ್ಟಿಕೋನ",
+    ta: "பார்வை",
+    ar: "الرؤية",
+    de: "Vision"
+  },
+  "\"to provide rational ethical medical services of highest quality to all patients at affordable cost without any discrimination.\"": {
+    hi: "\"बिना किसी भेदभाव के किफायती लागत पर सभी रोगियों को उच्चतम गुणवत्ता की तर्कसंगत नैतिक चिकित्सा सेवाएं प्रदान करना।\"",
+    mr: "\"कोणत्याही भेदभावाशिवाय सर्व रुग्णांना परवडणाऱ्या दरात उच्च दर्जाच्या, विवेकपूर्ण आणि नैतिक वैद्यकीय सेवा पुरवणे.\"",
+    gu: "\"કોઈપણ ભેદભાવ વિના તમામ દર્દીઓને પોસાય તેવા ખર્ચે ઉચ્ચ ગુણવત્તાની વાજબી નૈતિક તબીબી સેવાઓ પૂરી પાડવી.\""
+  },
+  "to provide rational ethical medical services of highest quality to all patients at affordable cost without any discrimination.": {
+    hi: "बिना किसी भेदभाव के किफायती लागत पर सभी रोगियों को उच्चतम गुणवत्ता की तर्कसंगत नैतिक चिकित्सा सेवाएं प्रदान करना।",
+    mr: "कोणत्याही भेदभावाशिवाय सर्व रुग्णांना परवडणाऱ्या दरात उच्च दर्जाच्या, विवेकपूर्ण आणि नैतिक वैद्यकीय सेवा पुरवणे.",
+    gu: "કોઈપણ ભેદભાવ વિના તમામ દર્દીઓને પોસાય તેવા ખર્ચે ઉચ્ચ ગુણવત્તાની વાજબી નૈતિક તબીબી સેવાઓ પૂરી પાડવી."
+  },
+  "mission": {
+    hi: "मिशन (Mission)",
+    mr: "मिशन (Mission)",
+    gu: "મિશન (Mission)",
+    kn: "ಧ್ಯೇಯ",
+    ta: "நோக்கம்",
+    ar: "الرسالة",
+    de: "Mission"
+  },
+  "\"to provide competent, ethical, tertiary healthcare services with charity as a core value.\"": {
+    hi: "\"दान को मूल मूल्य मानकर सक्षम, नैतिक, तृतीयक स्वास्थ्य सेवा प्रदान करना।\"",
+    mr: "\"धर्मादाय हे मुख्य मूल्य मानून सक्षम, नैतिक आणि तृतीयक (Tertiary) आरोग्यसेवा प्रदान करणे.\"",
+    gu: "\"દાનને મૂળ મૂલ્ય ગણીને સક્ષમ, નૈતિક, તૃતીયક આરોગ્ય સંભાળ સેવાઓ પૂરી પાડવી.\""
+  },
+  "to provide competent, ethical, tertiary healthcare services with charity as a core value.": {
+    hi: "दान को मूल मूल्य मानकर सक्षम, नैतिक, तृतीयक स्वास्थ्य सेवा प्रदान करना।",
+    mr: "धर्मादाय हे मुख्य मूल्य मानून सक्षम, नैतिक आणि तृतीयक (Tertiary) आरोग्यसेवा प्रदान करणे.",
+    gu: "દાનને મૂળ મૂલ્ય ગણીને સક્ષમ, નૈતિક, તૃતીયક આરોગ્ય સંભાળ સેવાઓ પૂરી પાડવી."
+  },
+  "core values": {
+    hi: "मूलभूत मूल्य",
+    mr: "मूलभूत मूल्ये",
+    gu: "મૂળભૂત મૂલ્યો",
+    kn: "ಮೂಲ ಮೌಲ್ಯಗಳು",
+    ta: "முக்கிய மதிப்புகள்",
+    ar: "القيم الأساسية",
+    de: "Grundwerte"
+  },
+  "patient-centric care": {
+    hi: "मरीज-केंद्रित देखभाल",
+    mr: "रुग्णकेंद्रित काळजी",
+    gu: "દર્દી-કેન્દ્રિત સંભાળ"
+  },
+  "rational & ethical medical practice": {
+    hi: "तर्कसंगत और नैतिक चिकित्सा पद्धति",
+    mr: "विवेकपूर्ण आणि नैतिक वैद्यकीय सराव",
+    gu: "વાજબી અને નૈતિક તબીબી પ્રેક્ટિસ"
+  },
+  "holistic approach": {
+    hi: "समग्र दृष्टिकोण",
+    mr: "सर्वांगीण दृष्टिकोन",
+    gu: "સમગ્ર અભિગમ"
+  },
+  "charity": {
+    hi: "दान / सेवाभाव",
+    mr: "धर्मादाय / सेवाभाव",
+    gu: "દાન / ચેરિટી"
+  },
+  "quality policy": {
+    hi: "गुणवत्ता नीति",
+    mr: "गुणवत्ता धोरण",
+    gu: "ગુણવત્તા નીતિ",
+    kn: "ಗುಣಮಟ್ಟದ ನೀತಿ",
+    ta: "தரக் கொள்கை",
+    ar: "سياسة الجودة",
+    de: "Qualitätspolitik"
+  },
+  "deenanath mangeshkar hospital believes in highest professional competence with a human touch and will deliver excellent medical treatment to everyone. we will follow rational and ethical medical practices implicitly. we are committed to medico-social services.": {
+    hi: "दीनानाथ मंगेशकर अस्पताल मानवीय स्पर्श के साथ उच्चतम पेशेवर क्षमता में विश्वास करता है और सभी को उत्कृष्ट चिकित्सा उपचार प्रदान करेगा। हम तर्कसंगत और नैतिक चिकित्सा पद्धतियों का निष्ठापूर्वक पालन करेंगे। हम चिकित्सा-सामाजिक सेवाओं के लिए प्रतिबद्ध हैं।",
+    mr: "दीनानाथ मंगेशकर रुग्णालय मानवी स्पर्शासह सर्वोच्च व्यावसायिक सक्षमतेवर विश्वास ठेवते आणि प्रत्येकाला उत्कृष्ट वैद्यकीय उपचार देते. आम्ही विवेकपूर्ण आणि नैतिक वैद्यकीय पद्धतींचे काटेकोरपणे पालन करतो. आम्ही वैद्यकीय-सामाजिक सेवांसाठी कटिबद्ध आहोत.",
+    gu: "દીનાનાથ મંગેશકર હોસ્પિટલ માનવીય સ્પર્શ સાથે સર્વોચ્ચ વ્યાવસાયિક સક્ષમતામાં માને છે અને દરેકને ઉત્તમ તબીબી સારવાર પૂરી પાડશે."
+  },
+  "quality objective": {
+    hi: "गुणवत्ता उद्देश्य",
+    mr: "गुणवत्ता उद्दिष्टे",
+    gu: "ગુણવત્તા ઉદ્દેશ્ય",
+    kn: "ಗುಣಮಟ್ಟದ ಉದ್ದೇಶ",
+    ta: "தர நோக்கம்",
+    ar: "هدف الجودة",
+    de: "Qualitätsziel"
+  },
+  "we will sincerely work together as a team to make deenanath mangeshkar hospital a medical centre of international reputation. we will provide excellent health education pre and post hospital care. we will not discriminate between rich and poor with regard to medical treatment.": {
+    hi: "हम दीनानाथ मंगेशकर अस्पताल को अंतरराष्ट्रीय ख्याति का चिकित्सा केंद्र बनाने के लिए एक टीम के रूप में ईमानदारी से मिलकर काम करेंगे। हम अस्पताल में भर्ती होने से पहले और बाद में उत्कृष्ट स्वास्थ्य शिक्षा और देखभाल प्रदान करेंगे। हम चिकित्सा उपचार के संबंध में अमीर और गरीब के बीच कोई भेदभाव नहीं करेंगे।",
+    mr: "दीनानाथ मंगेशकर रुग्णालयाला आंतरराष्ट्रीय ख्यातीचे वैद्यकीय केंद्र बनवण्यासाठी आम्ही एक संघ म्हणून प्रामाणिकपणे एकत्र काम करू. आम्ही रुग्णालयापूर्वी आणि नंतर उत्कृष्ट आरोग्य शिक्षण व काळजी प्रदान करू. वैद्यकीय उपचारांच्या बाबतीत आम्ही श्रीमंत आणि गरीब असा कोणताही भेदभाव करणार नाही.",
+    gu: "દીનાનાથ મંગેશકર હોસ્પિટલને આંતરરાષ્ટ્રીય સ્તરનું તબીબી કેન્દ્ર બનાવવા માટે અમે એક ટીમ તરીકે સાથે મળીને કામ કરીશું."
+  },
+  "our history": {
+    hi: "हमारा इतिहास",
+    mr: "आमचा इतिहास",
+    gu: "અમારો ઇતિહાસ",
+    kn: "ನಮ್ಮ ಇತಿಹಾಸ",
+    ta: "எங்கள் வரலாறு",
+    ar: "تاريخنا",
+    de: "Unsere Geschichte"
+  },
+  "bharat ratna smt. lata mangeshkar has ruled the hearts of india’s music lovers for over 65 years. her mellifluous voice has weaved a magical and melodious web across the world, transcending all boundaries of caste, creed, gender, faith or nationality.": {
+    hi: "भारत रत्न श्रीमती लता मंगेशकर ने 65 से अधिक वर्षों तक भारत के संगीत प्रेमियों के दिलों पर राज किया है। उनकी मधुर आवाज ने जाति, पंथ, लिंग, विश्वास या राष्ट्रीयता की सभी सीमाओं को पार करते हुए दुनिया भर में एक जादुई और सुरीला ताना-बाना बुना है।",
+    mr: "भारतरत्न श्रीमती लता मंगेशकर यांनी 65 वर्षांहून अधिक काळ भारतातील संगीतप्रेमींच्या मनावर अधिराज्य गाजवले आहे. त्यांच्या सुमधुर आवाजाने जात, पंथ, लिंग, धर्म किंवा राष्ट्रीयत्वाच्या सर्व सीमा ओलांडून जगभरात एक जादुई आणि सुरेल विश्व निर्माण केले आहे.",
+    gu: "ભારત રત્ન શ્રીમતી લતા મંગેશકરે 65 થી વધુ વર્ષો સુધી ભારતના સંગીત પ્રેમીઓના દિલ પર રાજ કર્યું છે."
+  },
+  "bharat ratna smt. lata mangeshkar has ruled the hearts of india's music lovers for over 65 years. her mellifluous voice has weaved a magical and melodious web across the world, transcending all boundaries of caste, creed, gender, faith or nationality.": {
+    hi: "भारत रत्न श्रीमती लता मंगेशकर ने 65 से अधिक वर्षों तक भारत के संगीत प्रेमियों के दिलों पर राज किया है। उनकी मधुर आवाज ने जाति, पंथ, लिंग, विश्वास या राष्ट्रीयता की सभी सीमाओं को पार करते हुए दुनिया भर में एक जादुई और सुरीला ताना-बाना बुना है।",
+    mr: "भारतरत्न श्रीमती लता मंगेशकर यांनी 65 वर्षांहून अधिक काळ भारतातील संगीतप्रेमींच्या मनावर अधिराज्य गाजवले आहे. त्यांच्या सुमधुर आवाजाने जात, पंथ, लिंग, धर्म किंवा राष्ट्रीयत्वाच्या सर्व सीमा ओलांडून जगभरात एक जादुई आणि सुरेल विश्व निर्माण केले आहे.",
+    gu: "ભારત રત્ન શ્રીમતી લતા મંગેશકરે 65 થી વધુ વર્ષો સુધી ભારતના સંગીત પ્રેમીઓના દિલ પર રાજ કર્યું છે."
+  },
+  "daughter of the great marathi singer and actor of the early twentieth century, late master deenanath mangeshkar, smt. lata mangeshkar is the eldest of five siblings, all extraordinarily talented in the field of music. it was in 1989 that the five siblings, viz. smt. lata mangeshkar, smt. asha bhonsale, smt. usha mangeshkar, smt. meena khadikar and shri. hridaynath mangeshkar constituted the lata mangeshkar medical foundation.": {
+    hi: "बीसवीं सदी की शुरुआत के महान मराठी गायक और अभिनेता स्वर्गीय मास्टर दीनानाथ मंगेशकर की बेटी, श्रीमती लता मंगेशकर पांच भाई-बहनों में सबसे बड़ी हैं, जो सभी संगीत के क्षेत्र में असाधारण रूप से प्रतिभाशाली हैं। 1989 में पांच भाई-बहनों, अर्थात् श्रीमती लता मंगेशकर, श्रीमती आशा भोसले, श्रीमती उषा मंगेशकर, श्रीमती मीना खडीकर और श्री हृदयनाथ मंगेशकर ने लता मंगेशकर मेडिकल फाउंडेशन का गठन किया।",
+    mr: "विसाव्या शतकाच्या सुरुवातीचे महान मराठी गायक आणि अभिनेते कै. मास्टर दीनानाथ मंगेशकर यांच्या कन्या, श्रीमती लता मंगेशकर या पाच भावंडांमध्ये सर्वात मोठ्या आहेत. ही पाचही भावंडे संगीत क्षेत्रात अत्यंत प्रतिभावान आहेत. 1989 मध्ये या पाच भावंडांनी – श्रीमती लता मंगेशकर, श्रीमती आशा भोसले, श्रीमती उषा मंगेशकर, श्रीमती मीना खडीकर आणि श्री. हृदयनाथ मंगेशकर यांनी 'लता मंगेशकर मेडिकल फाउंडेशन'ची स्थापना केली.",
+    gu: "સ્વર્ગસ્થ માસ્ટર દીનાનાથ મંગેશકરના પુત્રી, શ્રીમતી લતા મંગેશકર પાંચ ભાઈ-બહેનોમાં સૌથી મોટા છે. 1989 માં પાંચ ભાઈ-બહેનોએ લતા મંગેશકર મેડિકલ ફાઉન્ડેશનની રચના કરી હતી."
+  },
+  "jnana prabodhini, an institution, which motivates intelligent students for social change. appa pendse was the founder of jnana prabodhini. past students of this school came together in 1993 to establish the jnana prabodhini medical trust.": {
+    hi: "ज्ञान प्रबोधिनी, एक ऐसी संस्था है जो सामाजिक परिवर्तन के लिए बुद्धिमान छात्रों को प्रेरित करती है। अप्पा पेंडसे ज्ञान प्रबोधिनी के संस्थापक थे। इस स्कूल के पूर्व छात्र 1993 में ज्ञान प्रबोधिनी मेडिकल ट्रस्ट की स्थापना के लिए एक साथ आए।",
+    mr: "ज्ञान प्रबोधिनी ही सामाजिक बदलासाठी हुशार विद्यार्थ्यांना प्रवृत्त करणारी संस्था आहे. आप्पा पेंडसे हे ज्ञान प्रबोधिनीचे संस्थापक होते. या शाळेच्या माजी विद्यार्थ्यांनी 1993 मध्ये एकत्र येऊन 'ज्ञान प्रबोधिनी मेडिकल ट्रस्ट'ची स्थापना केली.",
+    gu: "જ્ઞાન પ્રબોધિની સામાજિક પરિવર્તન માટે બુદ્ધિશાળી વિદ્યાર્થીઓને પ્રોત્સાહિત કરતી સંસ્થા છે."
+  },
+  "deenanath mangeshkar hospital features a 24-hour emergency, 12 operating theatres; four types of intensive care units (adult, pediatric, cardiac and a neo-natal icu); and a rehabilitation center.": {
+    hi: "दीनानाथ मंगेशकर अस्पताल में 24 घंटे की आपातकालीन सेवा, 12 ऑपरेटिंग थिएटर; चार प्रकार की गहन देखभाल इकाइयाँ (वयस्क, बाल चिकित्सा, कार्डियक और एक नवजात आईसीयू); और एक पुनर्वास केंद्र शामिल है।",
+    mr: "दीनानाथ मंगेशकर रुग्णालयात 24 तास आपत्कालीन सेवा, 12 ऑपरेशन थिएटर्स, चार प्रकारची अतिदक्षता युनिट्स (प्रौढ, बालरोग, कार्डियाक आणि नवजात शिशु आयसीयू - NICU) आणि पुनर्वसन केंद्र उपलब्ध आहे.",
+    gu: "દીનાનાથ મંગેશકર હોસ્પિટલમાં 24 કલાકની ઇમરજન્સી, 12 ઓપરેટિંગ થિયેટર અને ચાર પ્રકારના આઇસીયુ ઉપલબ્ધ છે."
+  },
+  "surgical facilities include one cardiac catheterization labs, 12 operating theaters (two specifically set up for cardiac surgery), a surgical navigation system; plus endoscopy, arthroscopy, lithotripsy and interventional radiology capabilities.": {
+    hi: "सर्जिकल सुविधाओं में एक कार्डियक कैथीटेराइजेशन लैब, 12 ऑपरेटिंग थिएटर (दो विशेष रूप से कार्डियक सर्जरी के लिए स्थापित), एक सर्जिकल नेविगेशन प्रणाली; साथ ही एंडोस्कोपी, आर्थ्रोस्कोपी, लिथोट्रिप्सी और इंटरवेंशनल रेडियोलॉजी क्षमताएं शामिल हैं।",
+    mr: "शस्त्रक्रिया सुविधांमध्ये एक कार्डियाक कॅथेटेरायझेशन लॅब, 12 शस्त्रक्रियागृहे (दोन विशेषतः हृदय शस्त्रक्रियेसाठी सज्ज), सर्जिकल नेव्हिगेशन प्रणाली; तसेच एंडोस्कोपी, आर्थ्रोस्कोपी, लिथोट्रिप्सी आणि इंटरव्हेंशनल रेडिओलॉजी क्षमतांचा समावेश आहे.",
+    gu: "સર્જિકલ સુવિધાઓમાં કાર્ડિયાક કેથેટેરાઇઝેશન લેબ, 12 ઓપરેટિંગ થિયેટર્સ અને અન્ય અદ્યતન સુવિધાઓ શામેલ છે."
+  },
+  "other special capabilities include:": {
+    hi: "अन्य विशेष क्षमताओं में शामिल हैं:",
+    mr: "इतर विशेष क्षमतांमध्ये खालील बाबींचा समावेश आहे:",
+    gu: "અન્ય વિશેષ ક્ષમતાઓમાં શામેલ છે:",
+    kn: "ಇತರ ವಿಶೇಷ ಸಾಮರ್ಥ್ಯಗಳು:",
+    ta: "பிற சிறப்பு திறன்கள்:",
+    ar: "تشمل القدرات الخاصة الأخرى ما يلي:",
+    de: "Zu den weiteren besonderen Fähigkeiten gehören:"
+  },
+  "complete diagnostic imaging": {
+    hi: "संपूर्ण नैदानिक इमेजिंग",
+    mr: "संपूर्ण निदान इमेजिंग सुविधा",
+    gu: "સંપૂર્ણ નિદાન ઇમેજિંગ",
+    kn: "ಸಂಪೂರ್ಣ ರೋಗನಿರ್ಣಯ ಇಮೇಜಿಂಗ್",
+    ta: "முழுமையான நோயறிதல் இமேஜிங்",
+    ar: "التصوير التشخيصي الكامل",
+    de: "Vollständige diagnostische Bildgebung"
+  },
+  "3 tesla mri; ct; 64 slices ct scanning; portable ct": {
+    hi: "3 टेस्ला एमआरआई; सीटी; 64 स्लाइस सीटी स्कैनिंग; पोर्टेबल सीटी",
+    mr: "3 टेस्ला एमआरआय (3 Tesla MRI); सीटी स्कॅन; 64 स्लाइस सीटी स्कॅनिंग; पोर्टेबल सीटी",
+    gu: "3 ટેસ્લા એમઆરઆઈ; સીટી; 64 સ્લાઇસ સીટી સ્કેનીંગ; પોર્ટેબલ સીટી"
+  },
+  "pacs digital imaging management": {
+    hi: "PACS डिजिटल इमेजिंग प्रबंधन",
+    mr: "PACS डिजिटल इमेजिंग व्यवस्थापन",
+    gu: "PACS ડિજિટલ ઇમેજિંગ મેનેજમેન્ટ"
+  },
+  "radiation therapy": {
+    hi: "विकिरण चिकित्सा (Radiation Therapy)",
+    mr: "रेडिएशन थेरपी (किरणोत्सर्गी उपचार)",
+    gu: "રેડિયેશન થેરાપી",
+    kn: "ವಿಕಿರಣ ಚಿಕಿತ್ಸೆ",
+    ta: "கதிர்வீச்சு சிகிச்சை",
+    ar: "العلاج الإشعاعي",
+    de: "Strahlentherapie"
+  },
+  "siemens linear accelerator": {
+    hi: "सीमेंस लीनियर एक्सेलेरेटर",
+    mr: "सीमेन्स लिनिअर अ‍ॅक्सिलरेटर (Siemens Linear Accelerator)",
+    gu: "સિમેન્સ લીનિયર એક્સિલરેટર"
+  },
+  "ct simulator": {
+    hi: "सीटी सिम्युलेटर",
+    mr: "सीटी सिम्युलेटर (CT Simulator)",
+    gu: "સીટી સિમ્યુલેટર"
+  },
+  "simulator topometric devices for pre-radiation preparation of patients to ensure accuracy": {
+    hi: "सटीकता सुनिश्चित करने के लिए विकिरण से पहले मरीजों की तैयारी हेतु सिम्युलेटर टोपोलॉजिकल उपकरण",
+    mr: "अचूकता सुनिश्चित करण्यासाठी रुग्णांच्या रेडिएशन-पूर्व तयारीसाठी सिम्युलेटर टोपॉमेट्रिक उपकरणे",
+    gu: "ચોક્કસતા સુનિશ્ચિત કરવા માટે સિમ્યુલેટર ટોપોમેટ્રિક ઉપકરણો"
+  },
+  "3-d computer planning system with direct connection to ct & mri imaging systems": {
+    hi: "सीटी और एमआरआई इमेजिंग सिस्टम से सीधे कनेक्शन के साथ 3-डी कंप्यूटर प्लानिंग सिस्टम",
+    mr: "सीटी आणि एमआरआय इमेजिंग सिस्टमशी थेट जोडणी असलेली 3-डी कॉम्प्युटर प्लॅनिंग यंत्रणा",
+    gu: "સીટી અને એમઆરઆઈ સિસ્ટમ્સ સાથે સીધા જોડાણ સાથે 3-ડી કમ્પ્યુટર પ્લાનિંગ સિસ્ટમ"
+  },
+  "state-of-the-art-treatment planning": {
+    hi: "अत्याधुनिक उपचार योजना",
+    mr: "अत्याधुनिक उपचार नियोजन (Treatment Planning)",
+    gu: "અત્યાધુનિક સારવાર આયોજન"
+  },
+  "3d conformal brachytherapy treatment planning": {
+    hi: "3D कन्फर्मल ब्रैकीथेरेपी उपचार योजना",
+    mr: "3D कन्फॉर्मल ब्रॅकीथेरपी उपचार नियोजन",
+    gu: "3D કન્ફોર્મલ બ્રેકીથેરાપી સારવાર આયોજન"
+  },
+  "custom block fabrication ; allows the radiation oncologists to protect healthy tissue and organs by using custom made protection": {
+    hi: "कस्टम ब्लॉक फैब्रिकेशन; विकिरण ऑन्कोलॉजिस्ट को कस्टम सुरक्षा का उपयोग करके स्वस्थ ऊतकों और अंगों की रक्षा करने की अनुमति देता है",
+    mr: "कस्टम ब्लॉक फॅब्रिकेशन; रेडिएशन ऑन्कोलॉजिस्टना सानुकूल संरक्षणाचा वापर करून निरोगी ऊतींचे आणि अवयवांचे संरक्षण करण्यास अनुमती देते",
+    gu: "કસ્ટમ બ્લોક ફેબ્રિકેશન; રેડિયેશન ઓન્કોલોજિસ્ટ્સને સ્વસ્થ પેશીઓ અને અવયવોનું રક્ષણ કરવા દે છે"
+  },
+  // Patient Guide - Important Phone Numbers & Directory
+  "important phone numbers": {
+    hi: "महत्वपूर्ण फोन नंबर",
+    mr: "महत्त्वाचे संपर्क क्रमांक",
+    gu: "મહત્વપૂર્ણ ફોન નંબરો",
+    kn: "ಪ್ರಮುಖ ದೂರವಾಣಿ ಸಂಖ್ಯೆಗಳು",
+    ta: "முக்கிய தொலைபேசி எண்கள்",
+    ar: "أرقام هواتف مهمة",
+    de: "Wichtige Telefonnummern",
+  },
+  "direct dial directory": {
+    hi: "डायरेक्ट डायल निर्देशिका",
+    mr: "थेट संपर्क निर्देशिका",
+    gu: "ડાયરેક્ટ ડાયલ ડિરેક્ટરી",
+    kn: "ನೇರ ಸಂಪರ್ಕ ಕೋಶ",
+    ta: "நேரடி அழைப்பு அடைவு",
+    ar: "دليل الاتصال المباشر",
+    de: "Direktwahl-Verzeichnis",
+  },
+  "main building": {
+    hi: "मुख्य भवन (Main Building)",
+    mr: "मुख्य इमारत (Main Building)",
+    gu: "મુખ્ય બિલ્ડિંગ",
+    kn: "ಮುಖ್ಯ ಕಟ್ಟಡ",
+    ta: "முதன்மை கட்டிடம்",
+    ar: "المبنى الرئيسي",
+    de: "Hauptgebäude",
+  },
+  "main building (gs wing)": {
+    hi: "मुख्य भवन (GS विंग)",
+    mr: "मुख्य इमारत (GS विंग)",
+    gu: "મુખ્ય બિલ્ડિંગ (GS વિંગ)",
+    kn: "ಮುಖ್ಯ ಕಟ್ಟಡ (GS ವಿಂಗ್)",
+    ta: "முதன்மை கட்டிடம் (GS பிரிவு)",
+    ar: "المبنى الرئيسي (جناح GS)",
+    de: "Hauptgebäude (GS-Flügel)",
+  },
+  "super speciality building": {
+    hi: "सुपर स्पेशियलिटी भवन",
+    mr: "सुपर स्पेशालिटी इमारत",
+    gu: "સુપર સ્પેશિયાલિટી બિલ્ડિંગ",
+    kn: "ಸೂಪರ್ ಸ್ಪೆಷಾಲಿಟಿ ಕಟ್ಟಡ",
+    ta: "சூப்பர் ஸ்பெஷாலிட்டி கட்டிடம்",
+    ar: "مبنى التخصصات الدقيقة",
+    de: "Superspezialitätsgebäude",
+  },
+  "super speciality building (ss wing)": {
+    hi: "सुपर स्पेशियलिटी भवन (SS विंग)",
+    mr: "सुपर स्पेशालिटी इमारत (SS विंग)",
+    gu: "સુપર સ્પેશિયાલિટી બિલ્ડિંગ (SS વિંગ)",
+    kn: "ಸೂપರ್ ಸ್ಪೆಷಾಲಿಟಿ ಕಟ್ಟಡ (SS વિಂಗ್)",
+    ta: "சூப்பர் ஸ்பெஷாலிட்டி கட்டிடம் (SS பிரிவு)",
+    ar: "مبنى التخصصات الدقيقة (جناح SS)",
+    de: "Superspezialitätsgebäude (SS-Flügel)",
+  },
+  "operator assistance": {
+    hi: "ऑपरेटर सहायता",
+    mr: "ऑपरेटर मदत (Operator Assistance)",
+    gu: "ઓપરેટર સહાય",
+    kn: "ಆಪರೇಟರ್ ಸಹಾಯ",
+    ta: "ஆபரேட்டர் உதவி",
+    ar: "مساعدة المشغل",
+    de: "Vermittlungshilfe",
+  },
+  "public relation": {
+    hi: "जनसंपर्क",
+    mr: "जनसंपर्क (Public Relations)",
+    gu: "જનસંપર્ક",
+    kn: "ಸಾರ್ವಜನಿಕ ಸಂಪರ್ಕ",
+    ta: "மக்கள் தொடர்பு",
+    ar: "العلاقات العامة",
+    de: "Öffentlichkeitsarbeit",
+  },
+
   // Associates Page Content (Screenshot 1)
   "collaborating with dedicated institutions and foundations to expand the reach of quality healthcare and charitable services across the region.": {
     hi: "क्षेत्र भर में गुणवत्तापूर्ण स्वास्थ्य सेवा और धर्मार्थ सेवाओं की पहुंच का विस्तार करने के लिए समर्पित संस्थानों और नींव के साथ सहयोग करना।",
@@ -1551,6 +1837,7 @@ const VOCAB_DICTIONARY: TranslationDict = {
 
 let observer: MutationObserver | null = null;
 let currentLang: SupportedLang = 'en';
+let debounceTimer: any = null;
 
 export function applyOfflineTranslation(lang: string) {
   if (!lang || lang === 'en') {
@@ -1566,14 +1853,42 @@ export function applyOfflineTranslation(lang: string) {
   const validLang = (DICTIONARY["emergency"] as any)[lang] ? (lang as SupportedLang) : null;
   if (!validLang) return;
 
+  // If changing language from another non-English language, restore to original English baseline first
+  if (currentLang !== 'en' && currentLang !== validLang) {
+    restoreOriginalTexts();
+  }
+
   currentLang = validLang;
   translateDOM(validLang);
 
-  // Set up mutation observer to translate new DOM elements added by React routing or state changes
+  // Set up debounced mutation observer to translate newly added DOM elements without re-triggering loops
   if (!observer && typeof window !== 'undefined' && document.body) {
     observer = new MutationObserver((mutations) => {
-      if (currentLang !== 'en') {
-        translateDOM(currentLang);
+      let shouldTranslate = false;
+      for (const m of mutations) {
+        if (m.type === 'childList' && m.addedNodes.length > 0) {
+          for (let i = 0; i < m.addedNodes.length; i++) {
+            const node = m.addedNodes[i];
+            if (node.nodeType === Node.ELEMENT_NODE) {
+              const el = node as HTMLElement;
+              if (!el.hasAttribute('data-orig-text') && !el.classList.contains('notranslate')) {
+                shouldTranslate = true;
+                break;
+              }
+            } else if (node.nodeType === Node.TEXT_NODE && node.nodeValue?.trim()) {
+              shouldTranslate = true;
+              break;
+            }
+          }
+        }
+        if (shouldTranslate) break;
+      }
+
+      if (shouldTranslate && currentLang !== 'en') {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => {
+          translateDOM(currentLang);
+        }, 100);
       }
     });
     observer.observe(document.body, { childList: true, subtree: true });
@@ -1599,11 +1914,23 @@ function lookupDict(text: string, lang: SupportedLang): string | null {
   if (DICTIONARY[noDashes] && (DICTIONARY[noDashes] as any)[lang]) {
     return (DICTIONARY[noDashes] as any)[lang];
   }
+  // Try stripping surrounding quotes / escaped quotes
+  const unquoted = norm.replace(/^["'“\\«]+|["'”\\»]+$/g, '').trim();
+  if (unquoted && unquoted !== norm) {
+    if (DICTIONARY[unquoted] && (DICTIONARY[unquoted] as any)[lang]) {
+      return (DICTIONARY[unquoted] as any)[lang];
+    }
+  }
   return null;
 }
 
 function translateDOM(lang: SupportedLang) {
   if (typeof window === 'undefined' || !document.body || lang === 'en') return;
+
+  // Temporarily pause mutation observer during our DOM updates to prevent mutation feedback loops
+  if (observer) {
+    observer.disconnect();
+  }
 
   // 1. Walk and translate exact text nodes
   const treeWalker = document.createTreeWalker(
@@ -1615,7 +1942,7 @@ function translateDOM(lang: SupportedLang) {
         const parent = node.parentElement;
         if (!parent) return NodeFilter.FILTER_REJECT;
         const tag = parent.tagName.toLowerCase();
-        if (tag === 'script' || tag === 'style' || tag === 'noscript' || tag === 'iframe' || tag === 'svg' || parent.closest('svg') || parent.closest('.notranslate') || parent.closest('[translate="no"]')) {
+        if (tag === 'script' || tag === 'style' || tag === 'noscript' || tag === 'iframe' || tag === 'svg' || parent.closest('svg')) {
           return NodeFilter.FILTER_REJECT;
         }
         return NodeFilter.FILTER_ACCEPT;
@@ -1634,13 +1961,20 @@ function translateDOM(lang: SupportedLang) {
     const parent = node.parentElement;
     if (!parent) return;
 
-    if (!parent.hasAttribute('data-orig-text')) {
+    if (!(node as any).__origText) {
+      (node as any).__origText = node.nodeValue || '';
+    }
+
+    if (parent.childNodes.length === 1 && !parent.hasAttribute('data-orig-text')) {
       parent.setAttribute('data-orig-text', node.nodeValue || '');
     }
 
-    const trans = lookupDict(node.nodeValue || '', lang);
+    const sourceText = (node as any).__origText || parent.getAttribute('data-orig-text') || node.nodeValue || '';
+    const trans = lookupDict(sourceText, lang);
     if (trans && node.nodeValue !== trans) {
       node.nodeValue = trans;
+      parent.setAttribute('translate', 'no');
+      parent.classList.add('notranslate');
     }
   });
 
@@ -1649,16 +1983,27 @@ function translateDOM(lang: SupportedLang) {
   candidateElements.forEach((el) => {
     const htmlEl = el as HTMLElement;
     
-    // Avoid translating large containers that wrap multiple unrelated components, or containers that wrap SVG icons / notranslate elements
+    // Skip if already translated in Layer 1 as a single text node
+    if (htmlEl.childNodes.length === 1 && htmlEl.firstChild?.nodeType === Node.TEXT_NODE && htmlEl.classList.contains('notranslate')) {
+      return;
+    }
+
+    // Avoid translating large containers that wrap multiple unrelated components, or containers that wrap SVG icons
     if (htmlEl.children.length > 5) return;
-    if (htmlEl.querySelector('svg, img, [translate="no"], .notranslate') !== null || htmlEl.tagName.toLowerCase() === 'svg') {
+    if (htmlEl.querySelector('svg, img') !== null || htmlEl.tagName.toLowerCase() === 'svg') {
       return;
     }
     
-    const trans = lookupDict(htmlEl.innerText || htmlEl.textContent || '', lang);
+    const origHtml = htmlEl.getAttribute('data-orig-html');
+    const origText = htmlEl.getAttribute('data-orig-text');
+    const source = origText || origHtml || htmlEl.innerText || htmlEl.textContent || '';
+    const trans = lookupDict(source, lang);
     if (trans) {
       if (!htmlEl.hasAttribute('data-orig-html')) {
         htmlEl.setAttribute('data-orig-html', htmlEl.innerHTML);
+      }
+      if (!htmlEl.hasAttribute('data-orig-text')) {
+        htmlEl.setAttribute('data-orig-text', htmlEl.innerText || htmlEl.textContent || '');
       }
       // If translation or original contains line breaks or html, set innerHTML; otherwise set textContent
       if (trans.includes('<br') || htmlEl.innerHTML.includes('<br')) {
@@ -1670,16 +2015,21 @@ function translateDOM(lang: SupportedLang) {
           htmlEl.textContent = trans;
         }
       }
+      htmlEl.setAttribute('translate', 'no');
+      htmlEl.classList.add('notranslate');
     }
   });
 
   // 3. Layer 3: Vocabulary Fallback ONLY for short labels/phrases (<= 4 words and <= 35 characters)
-  // This prevents long English sentences from turning into mixed-language "Frankenstein" sentences
-  // when an exact sentence translation is not found in DICTIONARY.
   const sortedVocabKeys = Object.keys(VOCAB_DICTIONARY).sort((a, b) => b.length - a.length);
   textNodes.forEach((node) => {
-    let text = node.nodeValue || '';
+    let text = (node as any).__origText || node.nodeValue || '';
     if (!text.trim()) return;
+
+    const parent = node.parentElement;
+    if (parent && (parent.hasAttribute('translate') || parent.classList.contains('notranslate'))) {
+      return;
+    }
 
     const wordCount = text.trim().split(/\s+/).length;
     if (wordCount > 4 || text.length > 35) {
@@ -1702,6 +2052,10 @@ function translateDOM(lang: SupportedLang) {
 
     if (modified && node.nodeValue !== text) {
       node.nodeValue = text;
+      if (parent) {
+        parent.setAttribute('translate', 'no');
+        parent.classList.add('notranslate');
+      }
     }
   });
 
@@ -1712,16 +2066,43 @@ function translateDOM(lang: SupportedLang) {
     if (!el.hasAttribute('data-orig-placeholder')) {
       el.setAttribute('data-orig-placeholder', el.getAttribute('placeholder') || '');
     }
-    const ph = lookupDict(el.getAttribute('placeholder') || '', lang);
+    const origPh = el.getAttribute('data-orig-placeholder') || el.getAttribute('placeholder') || '';
+    const ph = lookupDict(origPh, lang);
     if (ph) {
       el.setAttribute('placeholder', ph);
+      el.setAttribute('translate', 'no');
+      el.classList.add('notranslate');
     }
   });
+
+  // Re-enable mutation observer after our DOM modifications complete
+  if (observer && typeof window !== 'undefined' && document.body) {
+    observer.observe(document.body, { childList: true, subtree: true });
+  }
 }
 
 function restoreOriginalTexts() {
   if (typeof window === 'undefined' || !document.body) return;
+
+  if (observer) {
+    observer.disconnect();
+  }
   
+  // Restore text nodes where __origText was recorded
+  const treeWalker = document.createTreeWalker(
+    document.body,
+    NodeFilter.SHOW_TEXT,
+    null
+  );
+  let n = treeWalker.nextNode();
+  while (n) {
+    if ((n as any).__origText !== undefined) {
+      n.nodeValue = (n as any).__origText;
+      delete (n as any).__origText;
+    }
+    n = treeWalker.nextNode();
+  }
+
   const htmlElements = document.querySelectorAll('[data-orig-html]');
   htmlElements.forEach((el) => {
     const orig = el.getAttribute('data-orig-html');
@@ -1729,6 +2110,9 @@ function restoreOriginalTexts() {
       el.innerHTML = orig;
       el.removeAttribute('data-orig-html');
     }
+    el.removeAttribute('data-orig-text');
+    el.removeAttribute('translate');
+    el.classList.remove('notranslate');
   });
 
   const elements = document.querySelectorAll('[data-orig-text]');
@@ -1738,6 +2122,8 @@ function restoreOriginalTexts() {
       el.firstChild.nodeValue = orig;
     }
     el.removeAttribute('data-orig-text');
+    el.removeAttribute('translate');
+    el.classList.remove('notranslate');
   });
 
   const inputs = document.querySelectorAll('[data-orig-placeholder]');
@@ -1747,6 +2133,9 @@ function restoreOriginalTexts() {
       input.setAttribute('placeholder', orig);
       input.removeAttribute('data-orig-placeholder');
     }
+    input.removeAttribute('translate');
+    input.classList.remove('notranslate');
   });
 }
+
 

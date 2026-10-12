@@ -1,11 +1,12 @@
 import {getRequestConfig} from 'next-intl/server';
 import {cookies} from 'next/headers';
+import { SUPPORTED_LANGUAGES, DEFAULT_LANGUAGE } from '@/lib/languageConfig';
 
 export default getRequestConfig(async () => {
   const cookieStore = await cookies();
   const googtrans = cookieStore.get('googtrans')?.value;
   
-  let locale = 'en';
+  let locale = DEFAULT_LANGUAGE;
   if (googtrans) {
     // format is typically /en/hi
     const match = googtrans.match(/\/en\/([a-z]{2,3})/);
@@ -15,9 +16,9 @@ export default getRequestConfig(async () => {
   }
 
   // Ensure locale is supported
-  const supported = ['en', 'hi', 'mr', 'gu', 'kn', 'ta', 'ar', 'de'];
+  const supported = SUPPORTED_LANGUAGES.map((l) => l.code);
   if (!supported.includes(locale)) {
-    locale = 'en';
+    locale = DEFAULT_LANGUAGE;
   }
 
   let messages = {};

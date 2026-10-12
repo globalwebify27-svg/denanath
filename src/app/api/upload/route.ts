@@ -21,13 +21,16 @@ export async function POST(req: Request) {
     const buffer = Buffer.from(bytes);
 
     const originalName = file.name ? file.name.split('.').slice(0, -1).join('.') : undefined;
+    const customName = formData.get("customName") as string;
+    const rawPublicId = customName || originalName;
+    const cleanPublicId = rawPublicId ? rawPublicId.replace(/[^a-zA-Z0-9_\-\.]/g, '_') : undefined;
 
     const uploadResult = await new Promise((resolve, reject) => {
       const uploadStream = cloudinary.uploader.upload_stream(
         { 
           folder: folder, 
           resource_type: "auto",
-          ...(originalName && { public_id: originalName })
+          ...(cleanPublicId && { public_id: cleanPublicId })
         },
         (error, result) => {
           if (error) {

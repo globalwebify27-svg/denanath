@@ -4,38 +4,89 @@ import { DMH_API_CONFIG } from '@/lib/dmhApi';
 let cachedDrAhis: { data: any[]; timestamp: number } | null = null;
 const CACHE_TTL = 5 * 60 * 1000;
 
+async function getCachedOrFetchDrAhis(): Promise<any[]> {
+  const now = Date.now();
+  if (cachedDrAhis && now - cachedDrAhis.timestamp < CACHE_TTL) {
+    return cachedDrAhis.data;
+  }
+  const drAhisUrl = `${DMH_API_CONFIG.baseUrl}doctorList.php`;
+  const drAhisRes = await fetch(drAhisUrl, {
+    method: 'POST',
+    headers: DMH_API_CONFIG.headers,
+    body: JSON.stringify({ action: 'drAhis' }),
+  });
+  const text = await drAhisRes.text();
+  try {
+    const parsed = JSON.parse(text);
+    const allDocs = parsed.drAhisJSON || [];
+    cachedDrAhis = { data: allDocs, timestamp: now };
+    return allDocs;
+  } catch (e) {
+    console.error('drAhis parse error:', e, text);
+    return [];
+  }
+}
+
 export async function POST(request: Request) {
   try {
     const body = await request.json();
     const { action, ...restParams } = body;
+
+    // ── Special case: speciality ─────────────────────────────────────────────
+    // The external backend doctorList.php { action: 'speciality' } only returns
+    // 80 specialties and omits critical specialties like CANCER GENETICS (id: 79),
+    // ALLERGY CLINIC (id: 103), LUNG TRANSPLANT (id: 104), etc.
+    // We merge drAhis specialties so all hospital departments/specialties
+    // are available to dropdowns and booking flows.
+    if (action === 'speciality') {
+      const allDocs = await getCachedOrFetchDrAhis();
+      
+      let originalSpecs: any[] = [];
+      try {
+        const specUrl = `${DMH_API_CONFIG.baseUrl}doctorList.php`;
+        const specRes = await fetch(specUrl, {
+          method: 'POST',
+          headers: DMH_API_CONFIG.headers,
+          body: JSON.stringify({ action: 'speciality' }),
+        });
+        if (specRes.ok) {
+          const specData = await specRes.json();
+          originalSpecs = specData?.specialityJSON || [];
+        }
+      } catch (err) {
+        console.warn('[DMH API] Failed fetching original speciality list, using drAhis fallback:', err);
+      }
+
+      const specMap = new Map<string, any>();
+      for (const s of originalSpecs) {
+        const id = String(s.id || s.speciality_id || '').trim();
+        const name = String(s.speciality_name || s.name || '').trim();
+        if (id && name) {
+          specMap.set(id, { id, speciality_id: id, speciality_name: name });
+        }
+      }
+
+      for (const d of allDocs) {
+        const id = String(d.speciality_id || '').trim();
+        const name = String(d.speciality_name || '').trim();
+        if (id && name && !specMap.has(id)) {
+          specMap.set(id, { id, speciality_id: id, speciality_name: name });
+        }
+      }
+
+      const specialityJSON = Array.from(specMap.values()).sort((a, b) => 
+        a.speciality_name.localeCompare(b.speciality_name)
+      );
+
+      return NextResponse.json({ specialityJSON });
+    }
 
     // ── Special case: speciality_doctor ──────────────────────────────────────
     // The backend does NOT support this action natively (returns empty).
     // We call drAhis (which returns ALL doctors with service_point_id & OpdScheduleYN),
     // cache the result for 5 minutes, then filter by speciality_id.
     if (action === 'speciality_doctor') {
-      const now = Date.now();
-      let allDocs: any[] = [];
-
-      if (cachedDrAhis && now - cachedDrAhis.timestamp < CACHE_TTL) {
-        allDocs = cachedDrAhis.data;
-      } else {
-        const drAhisUrl = `${DMH_API_CONFIG.baseUrl}doctorList.php`;
-        const drAhisRes = await fetch(drAhisUrl, {
-          method: 'POST',
-          headers: DMH_API_CONFIG.headers,
-          body: JSON.stringify({ action: 'drAhis' }),
-        });
-
-        const text = await drAhisRes.text();
-        try {
-          const parsed = JSON.parse(text);
-          allDocs = parsed.drAhisJSON || [];
-          cachedDrAhis = { data: allDocs, timestamp: now };
-        } catch (e) {
-          return NextResponse.json({ error: 'drAhis parse error', raw: text }, { status: 500 });
-        }
-      }
+      const allDocs = await getCachedOrFetchDrAhis();
 
       // Filter by speciality_id if provided
       const specId = restParams.speciality_id ? String(restParams.speciality_id) : null;

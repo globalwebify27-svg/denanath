@@ -112,7 +112,23 @@ export default function DoctorDetailsPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 30;
 
-  // Auto-select doctor from URL query parameters (e.g. ?name=Dr.+GADRE+ANIKET or ?id=...)
+  // Get unique specialties for dropdown
+  const uniqueSpecialties = useMemo(() => {
+    const specialties = new Set<string>();
+    doctorsList.forEach(doc => {
+      if (doc.specialty) {
+        // Split by '&' or ',' to get individual atomic department names
+        const parts = doc.specialty.split(/\s*&\s*|\s*,\s*/);
+        parts.forEach((p: string) => {
+          const clean = p.trim();
+          if (clean) specialties.add(clean);
+        });
+      }
+    });
+    return Array.from(specialties).sort((a, b) => a.localeCompare(b));
+  }, [doctorsList]);
+
+  // Auto-select doctor or specialty from URL query parameters (e.g. ?name=Dr.+GADRE+ANIKET or ?specialty=CANCER+GENETICS)
   useEffect(() => {
     if (doctorsList.length === 0) return;
     if (typeof window === 'undefined') return;
@@ -120,10 +136,19 @@ export default function DoctorDetailsPage() {
     const params = new URLSearchParams(window.location.search);
     const paramName = params.get('name') || params.get('doctor') || params.get('search');
     const paramId = params.get('id');
+    const paramSpecialty = params.get('specialty') || params.get('department');
 
     if (paramId) {
       router.replace(`/doctors-profile/${paramId}`);
       return;
+    }
+
+    if (paramSpecialty) {
+      const norm = (s: string) => (s || '').trim().toUpperCase().replace(/[^A-Z0-9]/g, '');
+      const match = uniqueSpecialties.find(s => norm(s) === norm(paramSpecialty));
+      if (match) {
+        setSelectedSpecialty(match);
+      }
     }
 
     if (paramName) {
@@ -141,28 +166,25 @@ export default function DoctorDetailsPage() {
 
       setSearchName(paramName);
     }
-  }, [doctorsList, router]);
+  }, [doctorsList, router, uniqueSpecialties]);
 
   // Reset page when filters change
   useEffect(() => {
     setCurrentPage(1);
   }, [selectedSpecialty, searchName]);
 
-  // Get unique specialties for dropdown
-  const uniqueSpecialties = useMemo(() => {
-    const specialties = new Set<string>();
-    doctorsList.forEach(doc => {
-      // Split by comma in case of multiple specialties, but for now we take the full string to match the design
-      if (doc.specialty) specialties.add(doc.specialty);
-    });
-    return Array.from(specialties).sort();
-  }, [doctorsList]);
-
   // Filter and sort doctors based on inputs
   const filteredDoctors = useMemo(() => {
+    const norm = (s: string) => (s || '').trim().toUpperCase().replace(/[^A-Z0-9]/g, '');
+    const selNorm = norm(selectedSpecialty);
+
     const filtered = doctorsList.filter(doc => {
       const docSpecialty = doc.specialty || "";
-      const matchSpecialty = selectedSpecialty === "--Select--" || docSpecialty === selectedSpecialty;
+      let matchSpecialty = selectedSpecialty === "--Select--";
+      if (!matchSpecialty) {
+        const parts = docSpecialty.split(/\s*&\s*|\s*,\s*/);
+        matchSpecialty = parts.some((p: string) => norm(p) === selNorm);
+      }
       const matchName = doc.name.toLowerCase().includes(searchName.toLowerCase());
       return matchSpecialty && matchName;
     });

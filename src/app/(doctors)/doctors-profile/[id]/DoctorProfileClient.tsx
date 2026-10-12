@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import {
   Calendar, Clock, BookOpen, Briefcase, GraduationCap,
-  Stethoscope, Phone, UserRound
+  Stethoscope, Phone, UserRound, FileText, ExternalLink
 } from "lucide-react";
 
 const DoctorImage = ({ doc, className, iconClassName }: { doc: any, className?: string, iconClassName?: string }) => {
@@ -72,7 +72,7 @@ export default function DoctorProfileClient({ initialDoctor }: { initialDoctor: 
     const fetchAppStatus = async () => {
       setIsLoadingTimings(true);
       try {
-        const specNames = doctor.specialty ? String(doctor.specialty).split(',').map(s => s.trim()) : [];
+        const specNames = doctor.specialty ? String(doctor.specialty).split(/\s*&\s*|\s*,\s*/).map(s => s.trim()) : [];
         const specIds = doctor.dmhSpecialityId ? String(doctor.dmhSpecialityId).split(',').map(s => s.trim()) : [];
 
         const branchAppStatus: Record<string, { isApp: boolean, speciality_id: string }> = {};
@@ -383,10 +383,15 @@ export default function DoctorProfileClient({ initialDoctor }: { initialDoctor: 
 
             {doctor.publications && doctor.publications.length > 0 && (
               <div className="bg-white rounded-3xl p-6 sm:p-10 border border-slate-100 shadow-[0_4px_20px_rgb(0,0,0,0.02)]">
-                <h3 className="text-xl font-extrabold text-[#002b5c] mb-6 flex items-center gap-3">
-                  <BookOpen className="w-6 h-6 text-[#007a87]" /> Publications
-                </h3>
-                <ul className="space-y-4">
+                <div className="flex items-center justify-between mb-6 pb-3 border-b border-slate-100 flex-wrap gap-2">
+                  <h3 className="text-xl font-extrabold text-[#002b5c] flex items-center gap-3">
+                    <BookOpen className="w-6 h-6 text-[#007a87]" /> Publications
+                  </h3>
+                  <span className="text-xs font-bold text-slate-500 bg-slate-100 px-3 py-1 rounded-full">
+                    {doctor.publications.length} {doctor.publications.length === 1 ? 'Publication' : 'Publications'}
+                  </span>
+                </div>
+                <div className="space-y-3">
                   {doctor.publications.map((item: any, i: number) => {
                     let title = '';
                     let link = '';
@@ -398,28 +403,58 @@ export default function DoctorProfileClient({ initialDoctor }: { initialDoctor: 
                       link = item.link || '';
                     }
 
+                    const docCode = doctor.dmhDoctorId || doctor.id || '';
+                    const docPrefix = `${doctor.name}${docCode ? ` (${docCode})` : ''}`;
+
+                    if (!title || title.trim().toLowerCase() === 'view pdf link') {
+                      title = `${docPrefix} - Publication ${i + 1}`;
+                    } else if (docCode && !title.includes(docCode)) {
+                      if (!title.toLowerCase().includes((doctor.name || '').toLowerCase())) {
+                        title = `${docPrefix} - ${title}`;
+                      } else {
+                        title = `${docPrefix} - ${title.replace(doctor.name, '').replace(/^[\s:-]+/, '') || `Publication ${i + 1}`}`;
+                      }
+                    }
+
+                    const displayTitle = title.replace(/\[PDF\]/g, '').trim();
+
                     return (
-                      <li key={i} className="flex gap-4 text-slate-600 font-medium text-base leading-relaxed">
-                        <div className="w-2 h-2 rounded-full bg-purple-400 shrink-0 mt-2.5 shadow-sm shadow-purple-200"></div>
-                        <div className="flex-1">
-                          {title.includes('[PDF]') ? (
-                            <span>
-                              {title.replace('[PDF]', '')}
-                              <span className="text-red-500 font-bold ml-2 text-sm tracking-wide bg-red-50 px-2 py-0.5 rounded">[PDF]</span>
-                            </span>
-                          ) : (
-                            <span className="mr-3">{title}</span>
-                          )}
-                          {link && (
-                            <a href={link} target="_blank" rel="noopener noreferrer" className="text-red-500 font-bold hover:underline text-sm uppercase tracking-wide bg-red-50 px-2 py-0.5 rounded ml-2 inline-block">
-                              [View PDF]
-                            </a>
-                          )}
+                      <div
+                        key={i}
+                        className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-2xl bg-slate-50/70 border border-slate-100 hover:border-teal-200 hover:bg-teal-50/30 transition-all duration-200"
+                      >
+                        <div className="flex items-start gap-3 min-w-0 flex-1">
+                          <div className="w-8 h-8 rounded-xl bg-purple-50 text-purple-700 flex items-center justify-center shrink-0 mt-0.5 border border-purple-100 font-bold text-xs">
+                            #{i + 1}
+                          </div>
+                          <div className="min-w-0 flex-1">
+                            <p className="text-slate-800 font-semibold text-sm sm:text-base leading-snug break-words">
+                              {displayTitle}
+                            </p>
+                            {docCode && (
+                              <p className="text-xs text-slate-500 mt-1 flex items-center gap-1.5 font-medium">
+                                <span className="inline-block w-1.5 h-1.5 rounded-full bg-teal-500"></span>
+                                Doctor Code: {docCode}
+                              </p>
+                            )}
+                          </div>
                         </div>
-                      </li>
+
+                        {link && (
+                          <a
+                            href={link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-white border border-slate-200 text-[#007a87] hover:bg-[#007a87] hover:text-white font-bold text-xs sm:text-sm tracking-wide transition-all shadow-sm shrink-0 self-start sm:self-center"
+                          >
+                            <ExternalLink className="w-3.5 h-3.5" />
+                            <span>View PDF</span>
+                          </a>
+                        )}
+                      </div>
                     );
                   })}
-                </ul>
+                </div>
               </div>
             )}
 

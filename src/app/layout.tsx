@@ -97,26 +97,53 @@ export default async function RootLayout({
         className={`${plusJakartaSans.className} min-h-full bg-slate-50 text-slate-800 antialiased`}
         suppressHydrationWarning
         >
-        <CanonicalLink />
-        <Script id="google-translate-fouc" strategy="afterInteractive">
-          {`
-            (function() {
-              try {
-                var match = document.cookie.match(/googtrans=\\/en\\/([a-z]{2,3})/);
-                if (match && match[1] !== 'en') {
-                  var style = document.createElement('style');
-                  style.id = 'gt-fouc-guard';
-                  style.textContent = 'body { opacity: 0 !important; visibility: hidden !important; transition: opacity 0.3s ease; }';
-                  document.head.appendChild(style);
-                  setTimeout(function() {
-                    var guard = document.getElementById('gt-fouc-guard');
-                    if (guard) guard.remove();
-                  }, 3000);
+        {/* DOM protection script against React hydration errors when Google Translate wraps text nodes */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              if (typeof window !== 'undefined' && typeof Node === 'function' && Node.prototype) {
+                var originalRemoveChild = Node.prototype.removeChild;
+                Node.prototype.removeChild = function(child) {
+                  if (child && child.parentNode !== this) {
+                    return child;
+                  }
+                  return originalRemoveChild.apply(this, arguments);
+                };
+                var originalInsertBefore = Node.prototype.insertBefore;
+                Node.prototype.insertBefore = function(newNode, referenceNode) {
+                  if (referenceNode && referenceNode.parentNode !== this) {
+                    return newNode;
+                  }
+                  return originalInsertBefore.apply(this, arguments);
+                };
+              }
+            `,
+          }}
+        />
+        <div id="google_translate_element" style={{ position: 'absolute', top: -9999, left: -9999, opacity: 0, pointerEvents: 'none', height: 0, width: 0, overflow: 'hidden' }} aria-hidden="true" />
+        <Script
+          id="google-translate-init"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              function googleTranslateElementInit() {
+                if (window.google && window.google.translate) {
+                  new window.google.translate.TranslateElement({
+                    pageLanguage: 'en',
+                    includedLanguages: 'en,hi,mr,gu,kn,ta,ar,de',
+                    autoDisplay: false
+                  }, 'google_translate_element');
                 }
-              } catch(e) {}
-            })();
-          `}
-        </Script>
+              }
+            `,
+          }}
+        />
+        <Script
+          id="google-translate-cdn"
+          strategy="afterInteractive"
+          src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
+        />
+        <CanonicalLink />
         <HospitalProvider>
           <div className="flex flex-col min-h-screen w-full overflow-x-hidden relative">
             <ClientLayoutWrapper 

@@ -57,123 +57,122 @@ export default async function DepartmentDetailsPage({
   let allApiDocs: any[] = [];
 
   try {
-    const depName = department.name.trim().toLowerCase();
-    const specRes = await fetch(`${DMH_API_CONFIG.baseUrl}${DMH_API_CONFIG.endpoints.speciality}`, {
+    const normalizeStr = (s: string) => (s || '').trim().toUpperCase().replace(/[^A-Z0-9]/g, '');
+    const depNorm = normalizeStr(department.name);
+
+    // Fetch live doctors from DMH API drAhis (contains exact speciality_name and speciality_id for every consultant)
+    const drAhisRes = await fetch(`${DMH_API_CONFIG.baseUrl}doctorList.php`, {
       method: 'POST',
       headers: DMH_API_CONFIG.headers,
-      body: JSON.stringify({ action: 'speciality' }),
-      next: { revalidate: 3600 }
+      body: JSON.stringify({ action: 'drAhis' }),
+      next: { revalidate: 300 } // Cache for 5 minutes
     });
 
-    if (specRes.ok) {
-      const specData = await specRes.json();
-      const specList = specData?.specialityJSON || (Array.isArray(specData) ? specData : []);
+    let matchedDocs: any[] = [];
 
-      // Exact match first, then fallback to substring
-      const matchedSpec = specList.find((s: any) => (s.speciality_name || '').toLowerCase() === depName) ||
-                          specList.find((s: any) => {
-                            const sName = (s.speciality_name || '').toLowerCase();
-                            
-                            // Prevent generic short substring matching for other potential short department abbreviations
-                            if (depName === 'ent') {
-                              return sName === 'e.n.t.' || sName.includes('e.n.t') || sName.includes('ent ') || sName.includes(' ent') || sName === 'ent';
-                            }
-                            
-                            if (depName.length <= 3) return false;
+    if (drAhisRes.ok) {
+      const drAhisData = await drAhisRes.json();
+      const allDrAhisDocs: any[] = drAhisData?.drAhisJSON || [];
 
-                            return sName.length > 5 && (depName.includes(sName) || sName.includes(depName));
-                          });
+      // Exact normalized match on speciality_name
+      // e.g. "CANCER GENETICS" === "CANCERGENETICS", "GENETICS" === "GENETICS", "E.N.T." === "ENT"
+      matchedDocs = allDrAhisDocs
+        .filter((d: any) => normalizeStr(d.speciality_name) === depNorm)
+        .map((d: any) => ({
+          ...d,
+          doctor_id: d.doctor_id || d.doctor_code || '',
+          isApp: d.OpdScheduleYN === 'Yes' ? 'Y' : 'N',
+        }));
+    }
 
-      if (matchedSpec) {
-        // NOTE: The external speciality_doctor API returns empty — it's not supported by the client's server.
-        // We use our internal /api/dmh proxy which has the drAhis workaround.
-        // For server components, we call drAhis directly and filter here (same as what the proxy does).
-        const drAhisRes = await fetch(`${DMH_API_CONFIG.baseUrl}doctorList.php`, {
-          method: 'POST',
-          headers: DMH_API_CONFIG.headers,
-          body: JSON.stringify({ action: 'drAhis' }),
-          next: { revalidate: 300 } // Cache for 5 minutes
+    // Fallback: match from local DB doctors if API returns no doctors for this department
+    if (matchedDocs.length === 0) {
+      const localMatches = localDoctors.filter((doc) => {
+        const specs = (doc.specialty || '').split(/\s*&\s*|\s*,\s*/);
+        return specs.some((s: string) => normalizeStr(s) === depNorm);
+      });
+
+      if (localMatches.length > 0) {
+        matchedDocs = localMatches.map((doc) => ({
+          doctor_id: doc.dmhDoctorId || doc.id,
+          doctor_name: doc.name,
+          speciality_name: department.name,
+          qualification: doc.qualifications || 'Consultant',
+          doctorImage: doc.image || '',
+          isApp: doc.isAppAllowed ? 'Y' : 'N',
+        }));
+      }
+    }
+
+    // Deduplicate by doctor_id or clean doctor_name
+    const uniqueDocsMap = new Map<string, any>();
+    for (const doc of matchedDocs) {
+      const docKey = String(doc.doctor_id || doc.doctor_code || doc.id || doc.doctor_name || '').trim();
+      if (docKey && !uniqueDocsMap.has(docKey)) {
+        uniqueDocsMap.set(docKey, doc);
+      }
+    }
+    const apiDocs = Array.from(uniqueDocsMap.values());
+    allApiDocs = apiDocs;
+
+    if (Array.isArray(apiDocs) && apiDocs.length > 0) {
+      const circlesHtml = apiDocs.map((doc: any) => {
+        const dName = doc.doctor_name || `${doc.first_name || ''} ${doc.last_name || ''}`.trim();
+        const cleanName = dName.replace(/\s*\(.*?\)\s*/g, '').trim();
+        const displayName = cleanName.toLowerCase().startsWith('dr.') || cleanName.toLowerCase().startsWith('dr ') ? cleanName : `Dr. ${cleanName}`;
+        const qual = doc.qualification || 'Consultant';
+        const words = cleanName.replace(/^dr\.?\s*/i, '').split(' ').filter(Boolean);
+        let initials = 'DM';
+        if (words.length >= 2) {
+          initials = (words[0][0] + words[1][0]).toUpperCase();
+        } else if (words.length === 1) {
+          initials = words[0].substring(0, 2).toUpperCase();
+        }
+
+        // Determine the best profile URL: use API doctor_id first, then fall back to local DB
+        let profileDoctorId = doc.doctor_id || doc.id || '';
+        let profileDoctorImage = doc.doctorImage || '';
+
+        // Always try to match against local DB doctors to get their uploaded images and details
+        const nameForMatch = cleanName.toLowerCase().replace(/^dr\.?\s*/i, '').trim();
+        const matchedLocalDoc = localDoctors.find((localDoc) => {
+          if (profileDoctorId && localDoc.dmhDoctorId === profileDoctorId) return true;
+          const localName = (localDoc.name || '').toLowerCase().replace(/^dr\.?\s*/i, '').replace(/\s*\(.*?\)\s*/g, '').trim();
+          return localName === nameForMatch || localName.includes(nameForMatch) || nameForMatch.includes(localName);
         });
 
-        if (drAhisRes.ok) {
-          const drAhisData = await drAhisRes.json();
-          const allDrAhisDocs: any[] = drAhisData?.drAhisJSON || [];
-          const specId = String(matchedSpec.id || matchedSpec.speciality_id || '');
-
-          // Filter by speciality_id and normalize fields
-          const filteredDocs = allDrAhisDocs
-            .filter((d: any) => String(d.speciality_id) === specId)
-            .map((d: any) => ({
-              ...d,
-              doctor_id: d.doctor_id || d.doctor_code || '',
-              isApp: d.OpdScheduleYN === 'Yes' ? 'Y' : 'N',
-            }));
-
-          const apiDocs = filteredDocs;
-          allApiDocs = apiDocs;
-
-          if (Array.isArray(apiDocs) && apiDocs.length > 0) {
-            const circlesHtml = apiDocs.map((doc: any) => {
-
-              const dName = doc.doctor_name || `${doc.first_name || ''} ${doc.last_name || ''}`.trim();
-              const cleanName = dName.replace(/\s*\(.*?\)\s*/g, '').trim();
-              const displayName = cleanName.toLowerCase().startsWith('dr.') || cleanName.toLowerCase().startsWith('dr ') ? cleanName : `Dr. ${cleanName}`;
-              const qual = doc.qualification || 'Consultant';
-              const words = cleanName.replace(/^dr\.?\s*/i, '').split(' ').filter(Boolean);
-              let initials = 'DM';
-              if (words.length >= 2) {
-                initials = (words[0][0] + words[1][0]).toUpperCase();
-              } else if (words.length === 1) {
-                initials = words[0].substring(0, 2).toUpperCase();
-              }
-
-              // Determine the best profile URL: use API doctor_id first, then fall back to local DB
-              let profileDoctorId = doc.doctor_id || doc.id || '';
-              let profileDoctorImage = doc.doctorImage || '';
-              
-              // Always try to match against local DB doctors to get their uploaded images and details
-              const nameForMatch = cleanName.toLowerCase().replace(/^dr\.?\s*/i, '').trim();
-              const matchedLocalDoc = localDoctors.find((localDoc) => {
-                if (profileDoctorId && localDoc.dmhDoctorId === profileDoctorId) return true;
-                const localName = (localDoc.name || '').toLowerCase().replace(/^dr\.?\s*/i, '').replace(/\s*\(.*?\)\s*/g, '').trim();
-                return localName === nameForMatch || localName.includes(nameForMatch) || nameForMatch.includes(localName);
-              });
-              
-              if (matchedLocalDoc) {
-                if (!profileDoctorId) {
-                  profileDoctorId = matchedLocalDoc.dmhDoctorId || matchedLocalDoc.id || '';
-                }
-                if (!profileDoctorImage) {
-                  profileDoctorImage = matchedLocalDoc.image || '';
-                }
-              }
-              
-              const doctorProfileUrl = profileDoctorId ? `/doctors-profile/${profileDoctorId}` : `/doctors`;
-
-              return `
-                <a href="${doctorProfileUrl}" class="p-3.5 sm:p-5 bg-white border border-slate-200 rounded-2xl flex items-center justify-between gap-2.5 sm:gap-4 shadow-sm hover:shadow-md transition-shadow overflow-hidden group block">
-                  <div class="flex items-center gap-2.5 sm:gap-4 flex-1 min-w-0 pr-1">
-                    <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-teal-50 border border-teal-100 flex items-center justify-center text-[#007a87] font-extrabold text-sm sm:text-base shrink-0">
-                      ${profileDoctorImage ? `<img src="${profileDoctorImage}" alt="${cleanName}" class="w-full h-full object-cover rounded-2xl" />` : initials}
-                    </div>
-                    <div class="text-sm sm:text-base font-bold text-[#002b5c] m-0 leading-snug group-hover:text-[#007a87] transition-colors min-w-0 break-words flex-1">${displayName}</div>
-                  </div>
-                  <div class="px-2.5 py-1.5 sm:px-4 sm:py-2 bg-teal-50 group-hover:bg-teal-100 text-[#007a87] rounded-xl text-[11px] sm:text-xs font-bold transition-colors shrink-0 ">
-                    View Profile
-                  </div>
-                </a>
-              `;
-            }).join('');
-
-            apiConsultantsHtml = `
-              <h3 class="text-xl font-bold text-[#002b5c] mb-6 border-b pb-2">Consultants</h3>
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                ${circlesHtml}
-              </div>
-            `;
+        if (matchedLocalDoc) {
+          if (!profileDoctorId) {
+            profileDoctorId = matchedLocalDoc.dmhDoctorId || matchedLocalDoc.id || '';
+          }
+          if (!profileDoctorImage) {
+            profileDoctorImage = matchedLocalDoc.image || '';
           }
         }
-      }
+
+        const doctorProfileUrl = profileDoctorId ? `/doctors-profile/${profileDoctorId}` : `/doctors-profile`;
+
+        return `
+          <a href="${doctorProfileUrl}" class="p-3.5 sm:p-5 bg-white border border-slate-200 rounded-2xl flex items-center justify-between gap-2.5 sm:gap-4 shadow-sm hover:shadow-md transition-shadow overflow-hidden group block">
+            <div class="flex items-center gap-2.5 sm:gap-4 flex-1 min-w-0 pr-1">
+              <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-teal-50 border border-teal-100 flex items-center justify-center text-[#007a87] font-extrabold text-sm sm:text-base shrink-0">
+                ${profileDoctorImage ? `<img src="${profileDoctorImage}" alt="${cleanName}" class="w-full h-full object-cover rounded-2xl" />` : initials}
+              </div>
+              <div class="text-sm sm:text-base font-bold text-[#002b5c] m-0 leading-snug group-hover:text-[#007a87] transition-colors min-w-0 break-words flex-1">${displayName}</div>
+            </div>
+            <div class="px-2.5 py-1.5 sm:px-4 sm:py-2 bg-teal-50 group-hover:bg-teal-100 text-[#007a87] rounded-xl text-[11px] sm:text-xs font-bold transition-colors shrink-0 ">
+              View Profile
+            </div>
+          </a>
+        `;
+      }).join('');
+
+      apiConsultantsHtml = `
+        <h3 class="text-xl font-bold text-[#002b5c] mb-6 border-b pb-2">Consultants</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          ${circlesHtml}
+        </div>
+      `;
     }
   } catch (e) {
     console.warn("Failed to pre-fetch DMH API consultants for department:", e);
@@ -181,6 +180,7 @@ export default async function DepartmentDetailsPage({
 
   if (department.description) {
     const $ = cheerio.load(department.description, null, false);
+    let consultantSectionFound = false;
     
     // Strip inline margin and display from images to allow Tailwind to center them responsively
     $('img').each((_, img) => {
@@ -619,6 +619,7 @@ export default async function DepartmentDetailsPage({
 
         
       } else if (h3Text === 'consultant' || h3Text === 'consultants') {
+        consultantSectionFound = true;
         if (apiConsultantsHtml) {
           $(section).html(apiConsultantsHtml);
         } else {
@@ -702,6 +703,10 @@ export default async function DepartmentDetailsPage({
         $(section).addClass('department-contact-us');
       }
     });
+
+    if (!consultantSectionFound && apiConsultantsHtml) {
+      $.root().append(`<section class="mb-12 mt-8">${apiConsultantsHtml}</section>`);
+    }
 
     // Wrap tables in responsive container and apply beautiful Tailwind styling
     $('table').each((_, table) => {
