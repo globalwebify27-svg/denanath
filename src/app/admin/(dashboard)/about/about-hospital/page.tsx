@@ -3,6 +3,7 @@ import { Save, Info, Target, List, Award, HeartPulse, Search } from "lucide-reac
 import { revalidatePath } from "next/cache";
 import SubmitButton from "@/app/admin/(dashboard)/components/SubmitButton";
 import QuillEditor from "@/components/QuillEditor";
+import { formatListToHtml, parseHtmlToList } from "@/lib/editorUtils";
 
 export const dynamic = "force-dynamic";
 
@@ -79,11 +80,11 @@ Surgical facilities include one cardiac catheterization labs, 12 operating theat
       mission: formData.get("mission") || "",
       qualityPolicy: formData.get("qualityPolicy") || "",
       qualityObjective: formData.get("qualityObjective") || "",
-      coreValues: ((formData.get("coreValues") as string) || "").split("\n").map(v => v.trim()).filter(v => v),
+      coreValues: parseHtmlToList(formData.get("coreValues")),
       history: formData.get("history") || "",
       capabilities: {
-        imaging: ((formData.get("capabilities_imaging") as string) || "").split("\n").map(v => v.trim()).filter(v => v),
-        radiation: ((formData.get("capabilities_radiation") as string) || "").split("\n").map(v => v.trim()).filter(v => v),
+        imaging: parseHtmlToList(formData.get("capabilities_imaging")),
+        radiation: parseHtmlToList(formData.get("capabilities_radiation")),
       },
       seoMetaTitle: formData.get("seoMetaTitle") || "",
       seoMetaDescription: formData.get("seoMetaDescription") || "",
@@ -199,7 +200,7 @@ Surgical facilities include one cardiac catheterization labs, 12 operating theat
           </div>
         </div>
 
-        {/* Card 3: Lists & Arrays */}
+        {/* Card 3: Strategic Lists */}
         <div className="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden group hover:shadow-md transition-shadow duration-300">
           <div className="bg-slate-50/50 border-b border-slate-100 p-5 md:p-6 flex items-center gap-4 justify-between">
              <div className="flex items-center gap-4">
@@ -208,15 +209,23 @@ Surgical facilities include one cardiac catheterization labs, 12 operating theat
                 </div>
                 <div>
                   <h2 className="text-[20px] font-black text-[#002b5c]">Strategic Lists</h2>
-                  <p className="text-[13px] text-slate-500 font-medium">Core values, history, and institutional courses.</p>
+                  <p className="text-[13px] text-slate-500 font-medium">Core values, imaging capabilities, radiation capabilities, and institutional history.</p>
                 </div>
              </div>
-             <span className="hidden sm:inline-block text-[10px] font-bold text-white uppercase tracking-widest bg-[#D9232D] border border-transparent px-3 py-1.5 rounded-lg shadow-sm">One item per line</span>
+             <span className="hidden sm:inline-block text-[10px] font-bold text-white uppercase tracking-widest bg-[#007a87] border border-transparent px-3 py-1.5 rounded-lg shadow-sm">Rich Text Editor Enabled</span>
           </div>
           <div className="p-6 md:p-8 grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
             <div>
               <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Core Values</label>
-              <textarea name="coreValues" defaultValue={(aboutData.coreValues || []).join("\n")} rows={8} className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium leading-relaxed resize-none text-sm" placeholder="Excellence&#10;Compassion&#10;Integrity" />
+              <QuillEditor name="coreValues" defaultValue={formatListToHtml(aboutData.coreValues)} />
+            </div>
+            <div>
+              <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Imaging Capabilities</label>
+              <QuillEditor name="capabilities_imaging" defaultValue={formatListToHtml(aboutData.capabilities?.imaging)} />
+            </div>
+            <div>
+              <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Radiation Capabilities</label>
+              <QuillEditor name="capabilities_radiation" defaultValue={formatListToHtml(aboutData.capabilities?.radiation)} />
             </div>
             <div>
               <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">History Highlights</label>
@@ -225,44 +234,25 @@ Surgical facilities include one cardiac catheterization labs, 12 operating theat
           </div>
         </div>
 
-        {/* Card 4: Quality & Capabilities */}
+        {/* Card 4: Quality Policies */}
         <div className="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden group hover:shadow-md transition-shadow duration-300">
           <div className="bg-slate-50/50 border-b border-slate-100 p-5 md:p-6 flex items-center gap-4">
             <div className="bg-rose-500/10 p-3 rounded-2xl text-rose-600">
               <Award size={24} strokeWidth={2.5} />
             </div>
             <div>
-              <h2 className="text-[20px] font-black text-[#002b5c]">Quality & Capabilities</h2>
-              <p className="text-[13px] text-slate-500 font-medium">Quality policies and medical capabilities mapping.</p>
+              <h2 className="text-[20px] font-black text-[#002b5c]">Quality Policies</h2>
+              <p className="text-[13px] text-slate-500 font-medium">Quality policy and institutional objectives.</p>
             </div>
           </div>
           <div className="p-6 md:p-8 grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
-            <div className="space-y-8">
-              <div>
-                <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Quality Policy</label>
-                <QuillEditor name="qualityPolicy" defaultValue={aboutData.qualityPolicy} />
-              </div>
-              <div>
-                <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Quality Objective</label>
-                <QuillEditor name="qualityObjective" defaultValue={aboutData.qualityObjective} />
-              </div>
+            <div>
+              <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Quality Policy</label>
+              <QuillEditor name="qualityPolicy" defaultValue={aboutData.qualityPolicy} />
             </div>
-            
-            <div className="space-y-8">
-              <div>
-                <label className="flex items-start justify-between gap-2 text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">
-                   <span>Imaging Capabilities</span>
-                   <span className="text-[9px] bg-[#D9232D] text-white px-2 py-0.5 rounded-md normal-case tracking-normal  shrink-0">1 item/line</span>
-                </label>
-                <textarea name="capabilities_imaging" defaultValue={(aboutData.capabilities?.imaging || []).join("\n")} rows={4} className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-rose-500/30 focus:border-rose-500 transition-all duration-200 text-slate-700 font-medium leading-relaxed resize-none text-sm" placeholder="MRI 3 Tesla&#10;CT Scan 128 Slice" />
-              </div>
-              <div>
-                <label className="flex items-start justify-between gap-2 text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">
-                   <span>Radiation Capabilities</span>
-                   <span className="text-[9px] bg-[#D9232D] text-white px-2 py-0.5 rounded-md normal-case tracking-normal  shrink-0">1 item/line</span>
-                </label>
-                <textarea name="capabilities_radiation" defaultValue={(aboutData.capabilities?.radiation || []).join("\n")} rows={4} className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-rose-500/30 focus:border-rose-500 transition-all duration-200 text-slate-700 font-medium leading-relaxed resize-none text-sm" placeholder="Linear Accelerator&#10;Brachytherapy" />
-              </div>
+            <div>
+              <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Quality Objective</label>
+              <QuillEditor name="qualityObjective" defaultValue={aboutData.qualityObjective} />
             </div>
           </div>
         </div>

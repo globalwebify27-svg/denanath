@@ -93,7 +93,7 @@ export default function AboutHospitalClient({ data }: { data: any }) {
                       <div className="bg-teal-100/50 rounded-full p-1 text-teal-600 group-hover:text-[#D9232D] shrink-0 transition-colors">
                         <CheckCircle2 className="w-5 h-5" />
                       </div>
-                      <span className="font-normal text-slate-700  leading-[31px]">{value}</span>
+                      <span className="font-normal text-slate-700 leading-[31px]" dangerouslySetInnerHTML={{ __html: value }} />
                     </div>
                   ))}
                 </div>
@@ -157,7 +157,7 @@ export default function AboutHospitalClient({ data }: { data: any }) {
                       {(data?.capabilities?.imaging || []).map((item: string, idx: number) => (
                         <li key={idx} className="flex items-start gap-3 font-normal text-slate-600 leading-[29px]">
                           <ChevronRight className="w-4 h-4 text-[#007a87] shrink-0 mt-2" />
-                          <span>{item}</span>
+                          <span dangerouslySetInnerHTML={{ __html: item }} />
                         </li>
                       ))}
                     </ul>
@@ -172,7 +172,7 @@ export default function AboutHospitalClient({ data }: { data: any }) {
                       {(data?.capabilities?.radiation || []).map((item: string, idx: number) => (
                         <li key={idx} className="flex items-start gap-3 font-normal text-slate-600 leading-[29px]">
                           <ChevronRight className="w-4 h-4 text-[#007a87] shrink-0 mt-2" />
-                          <span>{item}</span>
+                          <span dangerouslySetInnerHTML={{ __html: item }} />
                         </li>
                       ))}
                     </ul>

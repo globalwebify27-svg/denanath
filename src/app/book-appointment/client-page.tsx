@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { ChevronRight, Calendar as CalendarIcon, User, X, Search, Clock, ChevronDown } from "lucide-react";
+import { ChevronRight, ChevronLeft, Calendar as CalendarIcon, User, X, Search, Clock, ChevronDown } from "lucide-react";
 import CustomDropdown from "@/components/CustomDropdown";
 
 const DoctorImage = ({ doc, className, iconClassName }: { doc: any, className?: string, iconClassName?: string }) => {
@@ -204,16 +204,17 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
       }
     });
 
-    // Check URL parameters for direct doctor booking
+    // Check URL parameters for direct doctor booking (supports doctor_id / doctorid, speciality_id / specialityid, service_point_id / servicepointid)
     if (typeof window !== 'undefined') {
       const params = new URLSearchParams(window.location.search);
-      const urlDocId = params.get('doctor_id');
-      const urlSpecId = params.get('speciality_id');
-      const urlServicePointId = params.get('service_point_id');
+      const urlDocId = params.get('doctor_id') || params.get('doctorid') || params.get('doctorId');
+      const urlSpecId = params.get('speciality_id') || params.get('specialityid') || params.get('specialityId');
+      const urlServicePointId = params.get('service_point_id') || params.get('servicepointid') || params.get('servicePointId');
 
       if (urlDocId) {
         if (urlSpecId) setSelectedSpeciality(urlSpecId);
         setSelectedDoctor(urlDocId);
+        setCurrentMonth(new Date());
 
         // Directly load calendar step for this doctor
         const loadDirectCalendar = async () => {
@@ -230,7 +231,9 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
                 if (Array.isArray(docs)) {
                   setDoctors(docs);
                   // Find the exact doctor and grab their service_point_id
-                  const matchedDoc = docs.find((d: any) => String(d.doctor_id) === String(urlDocId));
+                  const matchedDoc = docs.find((d: any) => 
+                    String(d.doctor_id || d.doctor_code || d.id) === String(urlDocId)
+                  );
                   if (matchedDoc?.service_point_id) {
                     resolvedServicePointId = String(matchedDoc.service_point_id);
                     console.log("[BookAppt] Resolved service_point_id from doctor:", resolvedServicePointId);
@@ -252,7 +255,6 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
               if (Array.isArray(datesRes)) dateArr = datesRes;
               else dateArr = Object.values(datesRes).find(v => Array.isArray(v)) as any[] || [];
             }
-
 
             if (dateArr.length > 0) {
               setAvailableDates(dateArr.map((d: any) => typeof d === 'string' ? d : (d.date || d.appointment_date || d.availableDate || Object.values(d)[0])));
@@ -564,9 +566,6 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
   };
 
   // --- Calendar Rendering Helpers ---
-  const getDaysInMonth = (date: Date) => new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
-  const getFirstDayOfMonth = (date: Date) => new Date(date.getFullYear(), date.getMonth(), 1).getDay();
-  
   const renderCalendar = () => {
     const today = new Date();
     today.setHours(0, 0, 0, 0); // start of today
@@ -576,13 +575,13 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
     
     const days = [];
     
-    // Empty cells for the first row to align with the correct weekday
+    // Empty cells for the first row to align with the correct weekday (MON start)
     for (let i = 0; i < firstDay; i++) {
       days.push(<div key={`empty-${i}`} className="p-4 border-b border-r border-slate-100 bg-slate-50/50"></div>);
     }
 
-    // Next 30 days
-    for (let d = 0; d < 30; d++) {
+    // Current date + 30 days on one single calendar page (equality condition verified: d <= 30)
+    for (let d = 0; d <= 30; d++) {
       const current = new Date(today);
       current.setDate(today.getDate() + d);
       
@@ -606,10 +605,22 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
               isAvailable ? 'cursor-pointer hover:bg-teal-600 bg-white hover:shadow-md' : 'bg-slate-50/30 text-slate-400 cursor-not-allowed'}
           `}
         >
-          <span className={`text-base transition-colors ${isHoliday ? 'font-medium text-red-500' : isAvailable ? 'text-[#002b5c] font-bold group-hover:text-white' : 'font-medium'}`}>
+          <span className={`text-base transition-colors ${
+            isHoliday 
+              ? 'font-medium text-red-500' 
+              : isAvailable 
+              ? 'text-[#002b5c] font-bold group-hover:text-white' 
+              : 'font-medium text-slate-400'
+          }`}>
             {dayStr}
           </span>
-          <span className={`text-xs mt-1 uppercase tracking-wider transition-colors ${isHoliday ? 'font-medium text-red-400' : isAvailable ? 'font-medium text-slate-600 group-hover:text-teal-50' : ''}`}>
+          <span className={`text-xs mt-1 uppercase tracking-wider transition-colors ${
+            isHoliday 
+              ? 'font-medium text-red-400' 
+              : isAvailable 
+              ? 'font-bold text-[#002b5c] group-hover:text-teal-50' 
+              : 'text-slate-400 font-medium'
+          }`}>
             {current.toLocaleString('default', { month: 'short' })}
           </span>
           {isHoliday && (
@@ -622,7 +633,7 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
     }
     
     // Fill the remaining cells in the last row to complete the grid
-    const totalCells = firstDay + 30;
+    const totalCells = firstDay + 31;
     const remainder = totalCells % 7;
     if (remainder !== 0) {
       for (let i = 0; i < 7 - remainder; i++) {
@@ -1037,12 +1048,15 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
         {!bookingSuccess && step === "calendar" && (
           <div className="bg-white rounded-2xl shadow-xl border border-slate-100 overflow-hidden mt-6">
             <div className="bg-[#007a87] text-white text-center py-4 px-5 sm:py-5 sm:px-28 relative flex flex-col items-center justify-center gap-1">
-              <button onClick={() => setStep("search")} className="self-start text-sm font-semibold hover:underline text-teal-100 bg-white/10 px-4 py-2 rounded-full backdrop-blur-sm transition-colors mb-2 sm:mb-0 sm:absolute sm:left-6 sm:bottom-4 sm:text-sm sm:px-3 sm:py-1.5">
+              <button 
+                onClick={() => setStep("search")} 
+                className="self-start text-sm font-semibold hover:underline text-teal-100 bg-white/10 px-4 py-2 rounded-full backdrop-blur-sm transition-colors mb-2 sm:mb-0 sm:absolute sm:left-6 sm:bottom-4 sm:text-sm sm:px-3 sm:py-1.5"
+              >
                 ← Back To Search
               </button>
               {(() => {
-                const currentDoc = doctors.find(d => String(d.doctor_id || d.id) === String(selectedDoctor)) || 
-                                   searchResults.find(d => String(d.doctor_id || d.id) === String(selectedDoctor));
+                const currentDoc = doctors.find(d => String(d.doctor_id || d.doctor_code || d.id) === String(selectedDoctor)) || 
+                                   searchResults.find(d => String(d.doctor_id || d.doctor_code || d.id) === String(selectedDoctor));
                 const docName = currentDoc ? (currentDoc.doctor_name || `${currentDoc.first_name || ''} ${currentDoc.last_name || ''}`.trim()) : '';
                 return (
                   <>
@@ -1056,20 +1070,23 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
                 );
               })()}
             </div>
-            
+
             {isLoadingCalendar ? (
               <div className="py-20 text-center text-slate-500">Loading calendar...</div>
             ) : (
               <div className="w-full">
+                {/* Days of week header */}
                 <div className="grid grid-cols-7 bg-[#40a99a] text-white text-xs font-bold text-center uppercase tracking-wider">
-                  <div className="py-3">Mon</div>
-                  <div className="py-3">Tue</div>
-                  <div className="py-3">Wed</div>
-                  <div className="py-3">Thu</div>
-                  <div className="py-3">Fri</div>
-                  <div className="py-3">Sat</div>
-                  <div className="py-3">Sun</div>
+                  <div className="py-3">MON</div>
+                  <div className="py-3">TUE</div>
+                  <div className="py-3">WED</div>
+                  <div className="py-3">THU</div>
+                  <div className="py-3">FRI</div>
+                  <div className="py-3">SAT</div>
+                  <div className="py-3">SUN</div>
                 </div>
+
+                {/* Days grid of Current Date + 30 Days */}
                 <div className="grid grid-cols-7 border-l border-t border-slate-100">
                   {renderCalendar()}
                 </div>

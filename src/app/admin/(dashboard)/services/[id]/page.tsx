@@ -1,4 +1,5 @@
-import QuillEditor, { formatListToHtml, parseHtmlToList } from "@/components/QuillEditor";
+import QuillEditor from "@/components/QuillEditor";
+import { formatListToHtml, parseHtmlToList } from "@/lib/editorUtils";
 import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
 import Link from "next/link";
