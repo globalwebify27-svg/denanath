@@ -18,6 +18,8 @@ export default function Navbar({ topHeaderSettings, headerSettings }: { topHeade
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
+  const [liveSuggestions, setLiveSuggestions] = useState<any[]>([]);
+  const [isSearchingLive, setIsSearchingLive] = useState(false);
   const [isLangOpen, setIsLangOpen] = useState(false);
   const [selectedLang, setSelectedLang] = useState<string>('en');
   const [dynamicLinks, setDynamicLinks] = useState<any[]>([]);
@@ -39,12 +41,59 @@ export default function Navbar({ topHeaderSettings, headerSettings }: { topHeade
     return () => window.removeEventListener("click", handleDocClick);
   }, []);
 
+  useEffect(() => {
+    if (!isSearchOpen || searchQuery.trim().length < 2) {
+      setLiveSuggestions([]);
+      setIsSearchingLive(false);
+      return;
+    }
+
+    const timer = setTimeout(() => {
+      setIsSearchingLive(true);
+      fetch(`/api/search?q=${encodeURIComponent(searchQuery.trim())}`)
+        .then(res => res.json())
+        .then(data => {
+          const combined: any[] = [];
+          if (Array.isArray(data?.pages)) {
+            data.pages.slice(0, 3).forEach((p: any) => combined.push({
+              title: p.title,
+              category: p.category,
+              href: p.href,
+              type: "page"
+            }));
+          }
+          if (Array.isArray(data?.doctors)) {
+            data.doctors.slice(0, 2).forEach((d: any) => combined.push({
+              title: d.name,
+              category: d.specialty,
+              href: d.profileHref,
+              type: "doctor"
+            }));
+          }
+          if (Array.isArray(data?.departments)) {
+            data.departments.slice(0, 2).forEach((dept: any) => combined.push({
+              title: dept.name,
+              category: "Department",
+              href: dept.href,
+              type: "department"
+            }));
+          }
+          setLiveSuggestions(combined.slice(0, 5));
+          setIsSearchingLive(false);
+        })
+        .catch(() => setIsSearchingLive(false));
+    }, 200);
+
+    return () => clearTimeout(timer);
+  }, [searchQuery, isSearchOpen]);
+
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
       router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
       setIsSearchOpen(false);
       setIsMobileSearchOpen(false);
+      setLiveSuggestions([]);
       setSearchQuery("");
       setMobileMenuOpen(false);
     }
@@ -518,26 +567,79 @@ export default function Navbar({ topHeaderSettings, headerSettings }: { topHeade
 
         {/* Search Popup Overlay */}
         {isSearchOpen && (
-          <div className="absolute top-full right-2 sm:right-6 mt-1 z-[60] animate-fadeIn">
-            <div className="bg-white rounded-xl shadow-2xl border border-slate-100 p-2 w-[280px] sm:w-[350px] relative">
+          <div className="absolute top-full right-2 sm:right-6 mt-1.5 z-[60] animate-fadeIn">
+            <div className="bg-white rounded-2xl shadow-2xl border border-slate-200 p-2.5 w-[310px] sm:w-[420px] relative overflow-hidden">
               <form onSubmit={handleSearch} className="flex items-center">
                 <input 
                   type="text" 
-                  placeholder="What are you looking for?"
+                  placeholder="Search doctors, simulation, charity, etc..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   autoFocus
-                  className="w-full bg-slate-50 outline-none text-sm text-slate-700 px-4 py-2.5 rounded-l-lg border border-transparent focus:border-slate-200 transition-all"
+                  className="w-full bg-slate-50 outline-none text-sm text-slate-800 px-3.5 py-2.5 rounded-l-xl border border-transparent focus:border-slate-200 transition-all font-medium"
                 />
-                <button type="submit" className="px-4 py-2.5 bg-[#007a87] text-white rounded-r-lg hover:bg-teal-700 transition-colors border border-[#007a87]">
+                <button type="submit" className="px-4 py-2.5 bg-[#007a87] text-white rounded-r-xl hover:bg-teal-700 transition-colors border border-[#007a87] flex items-center justify-center shrink-0">
                   <svg className="w-4 h-4 stroke-current" fill="none" viewBox="0 0 24 24" strokeWidth="2.5">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                   </svg>
                 </button>
               </form>
+
+              {/* Quick Live Suggestions */}
+              {searchQuery.trim().length >= 2 && (
+                <div className="mt-2.5 pt-2 border-t border-slate-100 max-h-64 overflow-y-auto">
+                  {isSearchingLive ? (
+                    <div className="py-3 text-center text-xs text-slate-400 font-medium">
+                      Searching hospital records...
+                    </div>
+                  ) : liveSuggestions.length > 0 ? (
+                    <div className="space-y-1">
+                      {liveSuggestions.map((item, idx) => (
+                        <button
+                          key={idx}
+                          type="button"
+                          onClick={() => {
+                            router.push(item.href);
+                            setIsSearchOpen(false);
+                            setSearchQuery("");
+                            setLiveSuggestions([]);
+                          }}
+                          className="w-full text-left p-2 rounded-lg hover:bg-teal-50 transition-colors flex items-center justify-between group"
+                        >
+                          <div className="truncate pr-2">
+                            <span className="text-xs font-bold text-slate-800 group-hover:text-[#007a87] block truncate">
+                              {item.title}
+                            </span>
+                            <span className="text-[10px] text-[#007a87] font-semibold uppercase tracking-wider block">
+                              {item.category}
+                            </span>
+                          </div>
+                          <span className="text-slate-300 group-hover:text-[#007a87] shrink-0 text-xs">→</span>
+                        </button>
+                      ))}
+                      <button
+                        type="button"
+                        onClick={handleSearch}
+                        className="w-full text-center py-2 text-[11px] font-bold text-[#007a87] hover:bg-slate-50 rounded-lg transition-colors border-t border-slate-100 mt-1 block"
+                      >
+                        Press Enter to see all results
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="py-3 text-center text-xs text-slate-400">
+                      No quick matches. Press Enter to search everywhere.
+                    </div>
+                  )}
+                </div>
+              )}
+
               <button 
                 type="button"
-                onClick={() => setIsSearchOpen(false)}
+                onClick={() => {
+                  setIsSearchOpen(false);
+                  setSearchQuery("");
+                  setLiveSuggestions([]);
+                }}
                 className="absolute -top-2 -right-2 bg-white border border-slate-200 text-slate-400 hover:text-slate-700 rounded-full p-1 shadow-md transition-colors"
               >
                 <X className="w-3 h-3" />
