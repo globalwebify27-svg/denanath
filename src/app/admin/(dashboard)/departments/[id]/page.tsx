@@ -63,18 +63,18 @@ export default async function EditDepartmentPage({
     let galleryHtml = "";
     if (galleryJson) {
       try {
-        const items = JSON.parse(galleryJson);
+        const rawItems = JSON.parse(galleryJson);
+        const items = Array.isArray(rawItems) 
+          ? rawItems.filter((img: any) => img && typeof img.url === 'string' && img.url.trim() !== '' && !img.url.startsWith('Image:'))
+          : [];
         if (items.length > 0) {
           galleryHtml = `
     <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
       ${items.map((img: any) => `
       <div class="bg-slate-50 rounded-xl text-center border border-slate-200 overflow-hidden flex flex-col">
-        ${img.url && !img.url.startsWith('Image:') ? 
-          `<img src="${img.url}" alt="${img.name}" class="w-full h-48 object-cover m-0" />` : 
-          `<div class="w-full h-48 bg-slate-200 flex items-center justify-center text-slate-400 font-medium">${img.url || 'Image Preview'}</div>`
-        }
+        <img src="${img.url}" alt="${img.name || ''}" class="w-full h-48 object-cover m-0" />
         <div class="p-4 flex-grow flex items-center justify-center">
-          <p class="font-bold text-[#002b5c] m-0">${img.name}</p>
+          <p class="font-bold text-[#002b5c] m-0">${img.name || ''}</p>
         </div>
       </div>`).join('')}
     </div>`;
@@ -89,7 +89,10 @@ export default async function EditDepartmentPage({
 
     if (facilitiesImagesJson) {
       try {
-        const items = JSON.parse(facilitiesImagesJson);
+        const rawItems = JSON.parse(facilitiesImagesJson);
+        const items = Array.isArray(rawItems)
+          ? rawItems.filter((img: any) => img && typeof img.url === 'string' && img.url.trim() !== '' && !img.url.startsWith('Image:'))
+          : [];
         if (items.length > 0) {
           const cheerio = await import('cheerio');
           const $ = cheerio.load(facilities, null, false);
@@ -102,9 +105,7 @@ export default async function EditDepartmentPage({
               $('p, li').each((_: any, el: any) => {
                  const text = $(el).text().trim().toLowerCase();
                  if (text && (text === searchName || text.includes(searchName))) {
-                    const imgHtml = img.url && !img.url.startsWith('Image:') 
-                       ? `<div class="mt-4 facility-img-wrapper"><img src="${img.url}" alt="${img.name}" class="facility-assigned-image w-full max-w-sm mx-auto h-40 object-cover rounded-xl shadow-sm border border-teal-100" /></div>` 
-                       : `<div class="mt-4 facility-img-wrapper"><div class="facility-assigned-image w-full max-w-sm mx-auto h-40 bg-slate-200 rounded-xl flex items-center justify-center text-slate-400 font-medium">${img.url || 'Image Preview'}</div></div>`;
+                    const imgHtml = `<div class="mt-4 facility-img-wrapper"><img src="${img.url}" alt="${img.name}" class="facility-assigned-image w-full max-w-sm mx-auto h-40 object-cover rounded-xl shadow-sm border border-teal-100" /></div>`;
                     
                     if (!$(el).parent().hasClass('facility-item-wrapper')) {
                        $(el).wrap('<div class="facility-item-wrapper h-full flex flex-col"></div>');
@@ -127,10 +128,7 @@ export default async function EditDepartmentPage({
     <div class="facilities-images-grid col-span-full grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
       ${unassignedItems.map((img: any) => `
       <div class="bg-slate-50 p-4 rounded-xl text-center border border-teal-100 shadow-sm">
-        ${img.url && !img.url.startsWith('Image:') ? 
-          `<img src="${img.url}" alt="${img.name}" class="w-full h-32 object-cover rounded-lg mb-2 shadow-sm" />` : 
-          `<div class="w-full h-32 bg-slate-200 rounded-lg mb-2 flex items-center justify-center text-slate-400 font-medium">${img.url || 'Image Preview'}</div>`
-        }
+        <img src="${img.url}" alt="${img.name}" class="w-full h-32 object-cover rounded-lg mb-2 shadow-sm" />
         <span class="block font-bold text-[#007a87] m-0 text-sm mt-3">${img.name}</span>
       </div>`).join('')}
     </div>`;

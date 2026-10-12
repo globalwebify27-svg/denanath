@@ -3,11 +3,12 @@ import NavigationMenuToggle from "@/components/NavigationMenuToggle";
 import QuillEditor, { formatListToHtml, parseHtmlToList } from "@/components/QuillEditor";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Save, HeartPulse, Search, MapPin, Beaker, CheckCircle2, ShieldCheck, FileText, Image as ImageIcon } from "lucide-react";
+import { Save, HeartPulse, Search, MapPin, Beaker, CheckCircle2, ShieldCheck, FileText, Image as ImageIcon, Upload, Loader2, ExternalLink } from "lucide-react";
 
 export default function BloodBankClientForm({ initialData }: { initialData: any }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [uploadingImages, setUploadingImages] = useState(false);
   const [data, setData] = useState({
     title: initialData?.title || "Department of Transfusion Medicine (Blood Centre)",
     introText: initialData?.introText || "Blood Transfusion Services (BTS) are a vital part of any modern healthcare organization without which provision of efficient medical care is impossible. The Department of Transfusion Medicine (Blood Centre) at DMHRC, functions 24 hours a day for 365 days and is involved in blood collection, testing, processing, storage and issue of blood/blood components. The department is utilizing state of the art technology and follows stringent quality control protocols to ensure safe blood and patient safety.",
@@ -93,7 +94,7 @@ export default function BloodBankClientForm({ initialData }: { initialData: any 
       stats: d.stats,
       components: parseHtmlToList(d.components),
       location: d.location,
-      images: d.images,
+      images: (d.images || []).filter((u: any) => typeof u === 'string' && u.trim() !== ''),
       initiatives: d.initiatives,
       donorTests: d.donorTests,
       patientTests: d.patientTests,
@@ -192,49 +193,74 @@ export default function BloodBankClientForm({ initialData }: { initialData: any 
             </div>
             <div>
               <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Department Pictures</label>
-              <div className="flex flex-col gap-3 bg-white p-4 rounded-xl border border-slate-200">
+              <div className="flex flex-col gap-4 bg-white p-5 rounded-2xl border border-slate-200">
                 <div className="flex flex-wrap gap-4">
                   {data.images.map((imgUrl: string, imgIdx: number) => (
-                    <div key={imgIdx} className="relative group shrink-0">
-                      <img src={imgUrl} alt="Preview" className="w-24 h-24 object-cover rounded-lg border border-gray-200 bg-white" />
+                    <div key={imgIdx} className="relative group shrink-0 w-24 h-24 rounded-xl overflow-hidden border border-slate-200 bg-slate-100 shadow-sm">
+                      <img src={imgUrl} alt="Preview" className="w-full h-full object-cover" />
+                      <a 
+                        href={imgUrl} 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        className="absolute inset-0 bg-slate-900/40 opacity-0 group-hover:opacity-100 flex items-center justify-center text-white transition-opacity"
+                        title="View Full"
+                      >
+                        <ExternalLink size={14} />
+                      </a>
                       <button
                         type="button"
                         onClick={() => {
                           if (!window.confirm("Are you sure you want to delete this picture?")) return;
                           handleChange('images', data.images.filter((_: any, i: number) => i !== imgIdx));
                         }}
-                        className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs opacity-0 group-hover:opacity-100 transition-opacity"
+                        className="absolute top-1 right-1 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs opacity-0 group-hover:opacity-100 transition-opacity z-10 shadow-sm"
+                        title="Remove"
                       >
                         x
                       </button>
                     </div>
                   ))}
+                  {data.images.length === 0 && (
+                    <div className="w-full py-6 text-center text-slate-400 text-xs italic">
+                      No department pictures added yet.
+                    </div>
+                  )}
                 </div>
-                <div className="mt-2">
-                  <input
-                    type="file"
-                    accept="image/*"
-                    multiple
-                    onChange={async (e) => {
-                      const files = Array.from(e.target.files || []);
-                      if (files.length > 0) {
-                        const uploadedUrls = [];
-                        for (const file of files) {
-                          const formData = new FormData();
-                          formData.append('file', file);
-                          try {
-                            const res = await fetch('/api/upload', { method: 'POST', body: formData });
-                            const d = await res.json();
-                            if (d.url) uploadedUrls.push(d.url);
-                          } catch (err) {
-                            console.error('Upload error:', err);
+
+                <div className="pt-2 border-t border-slate-100 flex items-center gap-3">
+                  <label className="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold flex items-center gap-2 cursor-pointer transition-colors shadow-sm">
+                    {uploadingImages ? <Loader2 size={15} className="animate-spin" /> : <Upload size={15} />}
+                    <span>{uploadingImages ? 'Uploading Photos...' : 'Upload Photos'}</span>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      multiple
+                      disabled={uploadingImages}
+                      onChange={async (e) => {
+                        const files = Array.from(e.target.files || []);
+                        if (files.length > 0) {
+                          setUploadingImages(true);
+                          const uploadedUrls = [];
+                          for (const file of files) {
+                            const formData = new FormData();
+                            formData.append('file', file);
+                            try {
+                              const res = await fetch('/api/upload', { method: 'POST', body: formData });
+                              const d = await res.json();
+                              if (d.url) uploadedUrls.push(d.url);
+                            } catch (err) {
+                              console.error('Upload error:', err);
+                            }
                           }
+                          handleChange('images', [...data.images, ...uploadedUrls]);
+                          setUploadingImages(false);
+                          e.target.value = '';
                         }
-                        handleChange('images', [...data.images, ...uploadedUrls]);
-                      }
-                    }}
-                    className="text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-bold file:bg-[#007a87]/10 file:text-[#007a87] hover:file:bg-[#007a87]/20 cursor-pointer"
-                  />
+                      }}
+                      className="hidden"
+                    />
+                  </label>
+                  <span className="text-xs text-slate-500 font-medium">Select multiple photos to upload</span>
                 </div>
               </div>
             </div>

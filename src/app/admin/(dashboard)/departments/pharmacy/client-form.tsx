@@ -304,8 +304,11 @@ export default function PharmacyClientForm({ initialData }: { initialData: any }
         ? d.homeDeliveryBullets.split("\n").map((s: string) => s.trim()).filter(Boolean)
         : d.homeDeliveryBullets;
 
+    const validHeroSlides = (d.heroSlides || []).filter((s: any) => s && s.image && s.image.trim() !== "");
+
     return JSON.stringify({
       ...d,
+      heroSlides: validHeroSlides,
       title: d.heroTitle,
       subtitle: d.heroBadge,
       introText: d.heroIntro,

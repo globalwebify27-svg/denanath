@@ -1,10 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import {  Plus, Trash2 } from "lucide-react";
+import { Plus, Trash2, Upload, Loader2, ExternalLink, Image as ImageIcon } from "lucide-react";
 import QuillEditor from "@/components/QuillEditor";
 
 export default function AssociatesClientForm({ initialData }: { initialData: any[] }) {
+  const [uploadingId, setUploadingId] = useState<number | null>(null);
   const [items, setItems] = useState<any[]>(initialData.length > 0 ? initialData : [{
     id: Date.now(),
     name: "",
@@ -14,13 +15,13 @@ export default function AssociatesClientForm({ initialData }: { initialData: any
   }]);
 
   const addItem = () => {
-    setItems([...items, {
+    setItems([{
       id: Date.now(),
       name: "",
       description: "",
       image: "",
       link: "#"
-    }]);
+    }, ...items]);
   };
 
   const removeItem = (id: number) => {
@@ -32,9 +33,11 @@ export default function AssociatesClientForm({ initialData }: { initialData: any
     setItems(items.map(item => item.id === id ? { ...item, [field]: value } : item));
   };
 
+  const validItems = items.filter(item => item && (item.name?.trim() || item.image?.trim()));
+
   return (
     <>
-      <input type="hidden" name="associatesJson" value={JSON.stringify(items)} />
+      <input type="hidden" name="associatesJson" value={JSON.stringify(validItems)} />
       
       <div className="space-y-6">
         {items.map((item, index) => (
@@ -76,19 +79,52 @@ export default function AssociatesClientForm({ initialData }: { initialData: any
 
               <div className="md:col-span-2">
                 <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Image Upload / URL</label>
-                <div className="flex flex-col sm:flex-row sm:items-center gap-3">
-                  {item.image && (
-                    <div className="shrink-0">
-                      <img src={item.image} alt="Preview" className="w-16 h-16 object-cover rounded-lg border border-gray-200" />
-                    </div>
-                  )}
+                <div className="flex flex-col sm:flex-row sm:items-center gap-3 bg-slate-50 p-3 rounded-xl border border-slate-200">
+                  <div className="relative w-16 h-16 shrink-0 rounded-lg overflow-hidden border border-slate-200 bg-white flex items-center justify-center">
+                    {item.image ? (
+                      <>
+                        <img src={item.image} alt="Preview" className="w-full h-full object-cover" />
+                        <a 
+                          href={item.image} 
+                          target="_blank" 
+                          rel="noopener noreferrer" 
+                          className="absolute inset-0 bg-slate-900/40 opacity-0 hover:opacity-100 flex items-center justify-center text-white transition-opacity"
+                          title="View Full"
+                        >
+                          <ExternalLink size={14} />
+                        </a>
+                      </>
+                    ) : (
+                      <ImageIcon size={24} className="text-slate-300" />
+                    )}
+                    {uploadingId === item.id && (
+                      <div className="absolute inset-0 bg-slate-900/60 flex items-center justify-center text-white">
+                        <Loader2 size={16} className="animate-spin" />
+                      </div>
+                    )}
+                  </div>
+
                   <div className="flex-1 min-w-0">
+                    <input 
+                      type="text" 
+                      value={item.image || ""} 
+                      onChange={(e) => updateItem(item.id, 'image', e.target.value)}
+                      placeholder="Image URL or upload ->"
+                      className="w-full p-2 bg-white border border-slate-200 rounded-lg text-xs font-mono focus:ring-1 focus:ring-[#007a87]"
+                    />
+                  </div>
+
+                  <label className="px-3 py-2 bg-white border border-slate-200 hover:border-[#007a87] text-[#007a87] hover:bg-[#007a87] hover:text-white rounded-lg text-xs font-bold flex items-center gap-1.5 transition-colors cursor-pointer shrink-0">
+                    {uploadingId === item.id ? <Loader2 size={14} className="animate-spin" /> : <Upload size={14} />}
+                    <span>{uploadingId === item.id ? 'Uploading...' : 'Upload'}</span>
                     <input 
                       type="file" 
                       accept="image/*"
+                      disabled={uploadingId === item.id}
                       onChange={async (e) => {
                         const file = e.target.files?.[0];
                         if (file) {
+                          setUploadingId(item.id);
                           const formData = new FormData();
                           formData.append('file', file);
                           try {
@@ -105,19 +141,23 @@ export default function AssociatesClientForm({ initialData }: { initialData: any
                           } catch (err) {
                             console.error(err);
                             alert("Error uploading image");
+                          } finally {
+                            setUploadingId(null);
+                            e.target.value = '';
                           }
                         }
                       }}
-                      className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#007a87] text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[#007a87]/10 file:text-[#007a87] hover:file:bg-[#007a87]/20 cursor-pointer"
+                      className="hidden"
                     />
-                  </div>
+                  </label>
+
                   {item.image && (
                     <button
                       type="button"
                       onClick={() => updateItem(item.id, 'image', "")}
-                      className="text-white hover:text-white text-sm font-bold px-4 py-2 bg-[#003360] rounded-lg hover:bg-[#002b5c] transition-colors shrink-0 self-start sm:self-auto"
+                      className="text-red-500 hover:text-red-700 hover:bg-red-50 text-xs font-bold px-3 py-2 rounded-lg border border-red-200 transition-colors shrink-0"
                     >
-                      Remove
+                      Clear
                     </button>
                   )}
                 </div>

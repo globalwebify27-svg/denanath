@@ -41,18 +41,18 @@ export default function NewDepartmentPage() {
     let galleryHtml = "";
     if (galleryJson) {
       try {
-        const items = JSON.parse(galleryJson);
+        const rawItems = JSON.parse(galleryJson);
+        const items = Array.isArray(rawItems)
+          ? rawItems.filter((img: any) => img && typeof img.url === 'string' && img.url.trim() !== '' && !img.url.startsWith('Image:'))
+          : [];
         if (items.length > 0) {
           galleryHtml = `
     <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
       ${items.map((img: any) => `
       <div class="bg-slate-50 rounded-xl text-center border border-slate-200 overflow-hidden flex flex-col">
-        ${img.url && !img.url.startsWith('Image:') ? 
-          `<img src="${img.url}" alt="${img.name}" class="w-full h-48 object-cover m-0" />` : 
-          `<div class="w-full h-48 bg-slate-200 flex items-center justify-center text-slate-400 font-medium">${img.url || 'Image Preview'}</div>`
-        }
+        <img src="${img.url}" alt="${img.name || ''}" class="w-full h-48 object-cover m-0" />
         <div class="p-4 flex-grow flex items-center justify-center">
-          <p class="font-bold text-[#002b5c] m-0">${img.name}</p>
+          <p class="font-bold text-[#002b5c] m-0">${img.name || ''}</p>
         </div>
       </div>`).join('')}
     </div>`;

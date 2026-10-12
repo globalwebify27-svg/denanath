@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, Save, FileText, Image as ImageIcon, Trash2, Plus, Calendar, Search } from "lucide-react";
+import { ArrowLeft, Save, FileText, Image as ImageIcon, Trash2, Plus, Calendar, Search, Upload, Loader2, ExternalLink, CheckCircle2 } from "lucide-react";
 import QuillEditor from "@/components/QuillEditor";
 
 function formatDateForInput(d: any) {
@@ -23,6 +23,8 @@ export default function CourseForm({ initialData, saveAction, col, isNew }: { in
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [uploadingLink, setUploadingLink] = useState(false);
+  const [uploadingGalleryIndices, setUploadingGalleryIndices] = useState<number[]>([]);
+  const [bulkUploadingImages, setBulkUploadingImages] = useState(false);
   
   const [formData, setFormData] = useState({
     title: initialData?.title || "",
@@ -57,20 +59,102 @@ export default function CourseForm({ initialData, saveAction, col, isNew }: { in
   }, [initialData, col]);
 
   const handleGalleryChange = (index: number, key: string, value: string) => {
-    const newGallery = [...formData.gallery];
-    newGallery[index] = { ...newGallery[index], [key]: value };
-    setFormData({ ...formData, gallery: newGallery });
+    setFormData(prev => {
+      const newGallery = [...prev.gallery];
+      if (newGallery[index]) {
+        newGallery[index] = { ...newGallery[index], [key]: value };
+      }
+      return { ...prev, gallery: newGallery };
+    });
   };
 
   const handleGalleryAdd = () => {
-    setFormData({ ...formData, gallery: [...formData.gallery, { image: "", caption: "" }] });
+    setFormData(prev => ({
+      ...prev,
+      gallery: [...prev.gallery, { image: "", caption: "" }]
+    }));
   };
 
   const handleGalleryRemove = (index: number) => {
     if (!window.confirm("Are you sure you want to delete this gallery photo?")) return;
-    const newGallery = [...formData.gallery];
-    newGallery.splice(index, 1);
-    setFormData({ ...formData, gallery: newGallery });
+    setFormData(prev => {
+      const newGallery = [...prev.gallery];
+      newGallery.splice(index, 1);
+      return { ...prev, gallery: newGallery };
+    });
+  };
+
+  const handleSingleImageUpload = async (index: number, file: File) => {
+    setUploadingGalleryIndices(prev => [...prev, index]);
+    try {
+      const uploadData = new FormData();
+      uploadData.append("file", file);
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        body: uploadData,
+      });
+      if (!res.ok) throw new Error("Upload failed");
+      const data = await res.json();
+      if (data.url) {
+        setFormData(prev => {
+          const newGallery = [...prev.gallery];
+          if (newGallery[index]) {
+            const cleanCaption = newGallery[index].caption || (file.name ? file.name.replace(/\.[^/.]+$/, "").replace(/[_-]/g, " ") : "");
+            newGallery[index] = {
+              ...newGallery[index],
+              image: data.url,
+              caption: cleanCaption
+            };
+          }
+          return { ...prev, gallery: newGallery };
+        });
+      } else {
+        alert("Upload failed. No image URL returned.");
+      }
+    } catch (err) {
+      console.error("Upload error:", err);
+      alert("Failed to upload image. Please try again.");
+    } finally {
+      setUploadingGalleryIndices(prev => prev.filter(i => i !== index));
+    }
+  };
+
+  const handleBulkImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+
+    setBulkUploadingImages(true);
+    try {
+      const newItems: { image: string; caption: string }[] = [];
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        const uploadData = new FormData();
+        uploadData.append("file", file);
+        const res = await fetch("/api/upload", {
+          method: "POST",
+          body: uploadData,
+        });
+        if (res.ok) {
+          const data = await res.json();
+          if (data.url) {
+            const cleanCaption = file.name ? file.name.replace(/\.[^/.]+$/, "").replace(/[_-]/g, " ") : "";
+            newItems.push({ image: data.url, caption: cleanCaption });
+          }
+        }
+      }
+      if (newItems.length > 0) {
+        setFormData(prev => ({
+          ...prev,
+          gallery: [...prev.gallery, ...newItems]
+        }));
+      }
+    } catch (err) {
+      console.error("Bulk image upload error:", err);
+      alert("Some images could not be uploaded.");
+    } finally {
+      setBulkUploadingImages(false);
+      e.target.value = "";
+    }
   };
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -89,12 +173,22 @@ export default function CourseForm({ initialData, saveAction, col, isNew }: { in
         if (!res.ok) throw new Error("Upload failed");
         
         const resData = await res.json();
-        setFormData({ ...formData, link: resData.url });
+        if (!resData.url) throw new Error("No URL returned");
+
+        const friendlyName = file.name ? file.name.replace(/\.[^/.]+$/, "").replace(/[_-]/g, " ") : "";
+        setFormData(prev => ({
+          ...prev,
+          link: resData.url,
+          linkText: (prev.linkText && prev.linkText !== "View Details" && prev.linkText !== "View Form")
+            ? prev.linkText
+            : (friendlyName || (col === "right" ? "View Form" : "View Details"))
+        }));
       } catch (err) {
         console.error("Error uploading file:", err);
-        alert("Failed to upload file.");
+        alert("Failed to upload PDF file. Please try again.");
       } finally {
         setUploadingLink(false);
+        e.target.value = "";
       }
     }
   };
@@ -119,8 +213,8 @@ export default function CourseForm({ initialData, saveAction, col, isNew }: { in
       data.append("title", formData.title.trim());
       data.append("startDate", formData.startDate);
       data.append("endDate", formData.endDate);
-      data.append("link", formData.link);
-      data.append("linkText", formData.linkText);
+      data.append("link", (formData.link || "").trim());
+      data.append("linkText", (formData.linkText || "").trim());
       data.append("content", cleanedContent);
       data.append("status", formData.status.toString());
       data.append("gallery", JSON.stringify(formData.gallery.filter((g: any) => g.image || g.caption)));
@@ -273,87 +367,137 @@ export default function CourseForm({ initialData, saveAction, col, isNew }: { in
 
       {/* Gallery Settings */}
       <div className="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden group hover:shadow-md transition-shadow duration-300">
-        <div className="bg-slate-50/50 border-b border-slate-100 p-5 md:p-6 flex items-center justify-between">
+        <div className="bg-slate-50/50 border-b border-slate-100 p-5 md:p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div className="flex items-center gap-4">
             <div className="bg-blue-500/10 p-3 rounded-2xl text-blue-600">
               <ImageIcon size={24} strokeWidth={2.5} />
             </div>
             <div>
               <h2 className="text-[20px] font-black text-[#002b5c]">HEADER IMAGES / GALLERY</h2>
-              <p className="text-[13px] text-slate-500 font-medium">Add photos and captions.</p>
+              <p className="text-[13px] text-slate-500 font-medium">Add photos and captions for this {col === "right" ? "program" : "course"}.</p>
             </div>
           </div>
-          <button
-            type="button"
-            onClick={handleGalleryAdd}
-            className="flex items-center gap-1.5 px-4 py-2.5 bg-[#003360] text-white hover:bg-[#002545] rounded-xl text-xs font-bold transition-all duration-300 shadow-sm hover:shadow"
-          >
-            <Plus size={14} /> Add Image
-          </button>
+          <div className="flex items-center gap-2">
+            <label className="cursor-pointer flex items-center gap-1.5 px-3.5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold transition-all duration-300 shadow-sm border border-slate-200">
+              {bulkUploadingImages ? <Loader2 size={14} className="animate-spin text-[#007a87]" /> : <Upload size={14} />}
+              <span>{bulkUploadingImages ? "Uploading Photos..." : "Bulk Upload Photos"}</span>
+              <input
+                type="file"
+                multiple
+                accept="image/*"
+                disabled={bulkUploadingImages}
+                onChange={handleBulkImageUpload}
+                className="hidden"
+              />
+            </label>
+            <button
+              type="button"
+              onClick={handleGalleryAdd}
+              className="flex items-center gap-1.5 px-4 py-2.5 bg-[#003360] text-white hover:bg-[#002545] rounded-xl text-xs font-bold transition-all duration-300 shadow-sm hover:shadow"
+            >
+              <Plus size={14} /> Add Image
+            </button>
+          </div>
         </div>
         
         <div className="p-6 md:p-8">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {formData.gallery.map((item: any, index: number) => (
-              <div key={index} className="border border-slate-200 rounded-2xl overflow-hidden bg-white shadow-sm flex flex-col relative">
-                <div className="h-48 bg-slate-100 relative group/img">
-                  {item.image ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img src={item.image} alt="Gallery" className="w-full h-full object-cover" />
-                  ) : (
-                    <div className="w-full h-full flex flex-col items-center justify-center text-slate-400 gap-2">
-                      <ImageIcon size={32} opacity={0.5} />
-                      <span className="text-sm font-medium">No Image</span>
+            {formData.gallery.map((item: any, index: number) => {
+              const isItemUploading = uploadingGalleryIndices.includes(index);
+              return (
+                <div key={index} className="border border-slate-200 rounded-2xl overflow-hidden bg-white shadow-sm flex flex-col relative group/card hover:shadow-md transition-shadow">
+                  <div className="h-48 bg-slate-100 relative group/img overflow-hidden">
+                    {item.image ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img src={item.image} alt={item.caption || "Gallery"} className="w-full h-full object-cover transition-transform duration-300 group-hover/img:scale-105" />
+                    ) : (
+                      <div className="w-full h-full flex flex-col items-center justify-center text-slate-400 gap-2">
+                        <ImageIcon size={32} opacity={0.5} />
+                        <span className="text-sm font-medium">No Image Uploaded</span>
+                      </div>
+                    )}
+
+                    {isItemUploading && (
+                      <div className="absolute inset-0 bg-white/85 backdrop-blur-[2px] flex flex-col items-center justify-center z-20 gap-2">
+                        <Loader2 size={28} className="text-[#007a87] animate-spin" />
+                        <span className="text-xs font-bold text-[#007a87]">Uploading photo...</span>
+                      </div>
+                    )}
+
+                    <div className="absolute top-3 right-3 flex items-center gap-1.5 z-10">
+                      {item.image && (
+                        <a
+                          href={item.image}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="bg-white/95 text-slate-700 p-2 rounded-xl shadow-sm hover:bg-white hover:text-[#007a87] transition-colors"
+                          title="View Full Image"
+                        >
+                          <ExternalLink size={15} />
+                        </a>
+                      )}
+                      <button
+                        type="button"
+                        onClick={() => handleGalleryRemove(index)}
+                        className="bg-white/95 text-red-500 p-2 rounded-xl shadow-sm hover:bg-red-50 hover:text-red-600 transition-colors"
+                        title="Delete Image"
+                      >
+                        <Trash2 size={15} />
+                      </button>
                     </div>
-                  )}
-                  <button
-                    type="button"
-                    onClick={() => handleGalleryRemove(index)}
-                    className="absolute top-3 right-3 bg-white/90 text-red-500 p-2 rounded-xl shadow-sm hover:bg-red-50 hover:text-red-600 transition-colors"
-                  >
-                    <Trash2 size={16} />
-                  </button>
-                </div>
-                <div className="p-4 space-y-4 flex-1 flex flex-col">
-                  <div>
-                    <label className="block text-[11px] font-extrabold text-slate-500 uppercase tracking-widest mb-1.5">UPLOAD PHOTO</label>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={(e) => {
-                        const file = e.target.files?.[0];
-                        if (file) {
-                          const uploadData = new FormData();
-                          uploadData.append('file', file);
-                          fetch('/api/upload', { method: 'POST', body: uploadData })
-                          .then(res => res.json())
-                          .then(data => {
-                            if (data.url) handleGalleryChange(index, "image", data.url);
-                            else alert('Upload failed');
-                          })
-                          .catch(err => alert('Upload error'));
-                        }
-                      }}
-                      className="w-full text-sm text-slate-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-[#002b5c] file:text-white hover:file:bg-[#001f42] cursor-pointer"
-                    />
                   </div>
-                  <div className="mt-auto pt-2 border-t border-slate-100">
-                    <label className="block text-[11px] font-extrabold text-slate-500 uppercase tracking-widest mb-1.5">IMAGE CAPTION / NAME</label>
-                    <input
-                      type="text"
-                      value={item.caption}
-                      onChange={(e) => handleGalleryChange(index, "caption", e.target.value)}
-                      placeholder="e.g. Fibroscan"
-                      className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-lg focus:bg-white focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all duration-200 text-sm"
-                    />
+
+                  <div className="p-4 space-y-3 flex-1 flex flex-col bg-white">
+                    <div>
+                      <label className="block text-[11px] font-extrabold text-slate-500 uppercase tracking-widest mb-1.5">
+                        {item.image ? "REPLACE PHOTO" : "UPLOAD PHOTO"}
+                      </label>
+                      <label className="cursor-pointer w-full flex items-center justify-center gap-2 py-2 px-3 bg-[#002b5c] hover:bg-[#001f42] text-white rounded-xl text-xs font-bold transition-colors shadow-sm">
+                        {isItemUploading ? <Loader2 size={14} className="animate-spin" /> : <Upload size={14} />}
+                        <span>{isItemUploading ? "Uploading..." : (item.image ? "Choose New Image" : "Choose Image")}</span>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          disabled={isItemUploading}
+                          onChange={(e) => {
+                            const file = e.target.files?.[0];
+                            if (file) handleSingleImageUpload(index, file);
+                            e.target.value = "";
+                          }}
+                          className="hidden"
+                        />
+                      </label>
+                    </div>
+
+                    <div>
+                      <label className="block text-[10px] font-extrabold text-slate-400 uppercase tracking-wider mb-1">IMAGE URL</label>
+                      <input
+                        type="text"
+                        value={item.image || ""}
+                        onChange={(e) => handleGalleryChange(index, "image", e.target.value)}
+                        placeholder="https://... or uploaded image URL"
+                        className="w-full p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-mono text-slate-700 focus:bg-white focus:ring-1 focus:ring-[#007a87] outline-none"
+                      />
+                    </div>
+
+                    <div className="mt-auto pt-2 border-t border-slate-100">
+                      <label className="block text-[11px] font-extrabold text-slate-500 uppercase tracking-widest mb-1.5">IMAGE CAPTION / NAME</label>
+                      <input
+                        type="text"
+                        value={item.caption || ""}
+                        onChange={(e) => handleGalleryChange(index, "caption", e.target.value)}
+                        placeholder="e.g. Practical Session, Workshop..."
+                        className="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-lg focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-sm font-medium text-slate-800"
+                      />
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
           {formData.gallery.length === 0 && (
             <div className="text-center py-12 text-slate-400 bg-slate-50 rounded-2xl border border-dashed border-slate-200">
-              <p>No images added to gallery yet.</p>
+              <p>No images added to gallery yet. Click &quot;Add Image&quot; or &quot;Bulk Upload Photos&quot; above.</p>
             </div>
           )}
         </div>
@@ -375,51 +519,80 @@ export default function CourseForm({ initialData, saveAction, col, isNew }: { in
           </div>
         </div>
         
-        <div className="p-6 md:p-8">
+        <div className="p-6 md:p-8 space-y-4">
           <div className="bg-slate-50/50 p-4 sm:p-5 rounded-2xl border border-slate-200/80">
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-              <input
-                type="text"
-                value={formData.linkText}
-                onChange={(e) => setFormData({ ...formData, linkText: e.target.value })}
-                placeholder={col === "right" ? "View Form" : "View Details"}
-                className="sm:w-56 md:w-64 shrink-0 p-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-[#007a87]/20 focus:border-[#007a87] transition-all duration-200 text-sm font-medium text-slate-700 outline-none"
-              />
-              <input
-                type="text"
-                value={formData.link}
-                onChange={(e) => setFormData({ ...formData, link: e.target.value })}
-                placeholder="https://..."
-                className="flex-1 p-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-[#007a87]/20 focus:border-[#007a87] transition-all duration-200 text-sm font-medium text-slate-700 outline-none"
-              />
-              <div className="relative shrink-0 flex items-center gap-3">
-                <input 
-                  type="file"
-                  accept=".pdf"
-                  onChange={handleFileUpload}
-                  disabled={uploadingLink}
-                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer disabled:cursor-not-allowed z-10"
-                  title="Upload File"
+              <div className="sm:w-56 md:w-64 shrink-0">
+                <label className="block text-[10px] font-extrabold text-slate-500 uppercase tracking-wider mb-1">BUTTON TEXT</label>
+                <input
+                  type="text"
+                  value={formData.linkText}
+                  onChange={(e) => setFormData(prev => ({ ...prev, linkText: e.target.value }))}
+                  placeholder={col === "right" ? "View Form" : "View Details"}
+                  className="w-full p-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-[#007a87]/20 focus:border-[#007a87] transition-all duration-200 text-sm font-medium text-slate-700 outline-none"
                 />
-                <button type="button" disabled={uploadingLink} className="bg-[#007a87] text-white text-xs font-bold px-5 py-3 rounded-xl hover:bg-[#005f69] transition-colors disabled:opacity-50 relative z-0 shadow-sm">
-                  {uploadingLink ? "Uploading..." : "Upload"}
-                </button>
+              </div>
+
+              <div className="flex-1">
+                <label className="block text-[10px] font-extrabold text-slate-500 uppercase tracking-wider mb-1">PDF LINK / URL</label>
+                <input
+                  type="text"
+                  value={formData.link}
+                  onChange={(e) => setFormData(prev => ({ ...prev, link: e.target.value }))}
+                  placeholder="https://... or upload PDF using button"
+                  className="w-full p-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-[#007a87]/20 focus:border-[#007a87] transition-all duration-200 text-sm font-medium text-slate-700 outline-none"
+                />
+              </div>
+
+              <div className="shrink-0 flex items-end sm:items-center gap-2 pt-2 sm:pt-5">
+                <label className="cursor-pointer shrink-0 inline-flex items-center gap-2 bg-[#007a87] text-white text-xs font-bold px-5 py-3 rounded-xl hover:bg-[#005f69] transition-colors shadow-sm disabled:opacity-50">
+                  {uploadingLink ? <Loader2 size={16} className="animate-spin" /> : <Upload size={16} />}
+                  <span>{uploadingLink ? "Uploading..." : "Upload PDF"}</span>
+                  <input 
+                    type="file"
+                    accept=".pdf,application/pdf"
+                    onChange={handleFileUpload}
+                    disabled={uploadingLink}
+                    className="hidden"
+                  />
+                </label>
+
+                {formData.link && (
+                  <a
+                    href={formData.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-3 bg-teal-50 text-[#007a87] hover:bg-teal-100 rounded-xl transition-colors shrink-0 font-bold text-xs flex items-center gap-1.5 border border-teal-200/60"
+                    title="Preview attached PDF in new tab"
+                  >
+                    <ExternalLink size={16} />
+                    <span className="hidden md:inline">Preview</span>
+                  </a>
+                )}
+
                 <button
                   type="button"
                   onClick={() => {
                     if (formData.link || formData.linkText) {
                       if (!window.confirm("Are you sure you want to remove this attachment/link?")) return;
                     }
-                    setFormData({ ...formData, link: "", linkText: "" });
+                    setFormData(prev => ({ ...prev, link: "", linkText: "" }));
                   }}
-                  className="p-2.5 text-[#D9232D] hover:bg-red-50 rounded-xl transition-colors shrink-0"
+                  className="p-3 text-[#D9232D] hover:bg-red-50 rounded-xl transition-colors shrink-0 border border-transparent hover:border-red-100"
                   title="Clear Link"
                 >
-                  <Trash2 size={20} />
+                  <Trash2 size={18} />
                 </button>
               </div>
             </div>
           </div>
+
+          {formData.link && (
+            <div className="flex items-center gap-2 px-4 py-2.5 bg-emerald-50 text-emerald-800 border border-emerald-200 rounded-xl text-xs font-semibold">
+              <CheckCircle2 size={16} className="text-emerald-600 shrink-0" />
+              <span className="truncate">Active Attachment: <strong className="font-bold">{formData.link}</strong></span>
+            </div>
+          )}
         </div>
       </div>
 

@@ -2,26 +2,34 @@
 import QuillEditor from "@/components/QuillEditor";
 
 
-import { useState, useEffect } from "react";
-import { Plus, Trash2, GripVertical, Image as ImageIcon, Upload, Loader2, Calendar } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
+import { Plus, Trash2, GripVertical, Image as ImageIcon, Upload, Loader2, Calendar, ExternalLink } from "lucide-react";
 
 export default function EventsClientForm({ initialEvents }: { initialEvents: any[] }) {
   const [uploadingIdx, setUploadingIdx] = useState<string | null>(null);
+  const [bulkUploadingIdx, setBulkUploadingIdx] = useState<number | null>(null);
 
-  
-  const [events, setEvents] = useState<any[]>(initialEvents?.length > 0 ? initialEvents : [
-    {
-      id: "event-" + Date.now(),
-      title: "New Event",
-      date: "",
-      overview: [""],
-      objectives: [""],
-      summary: "",
-      organizers: [],
-      gallery: [],
-      agenda: []
+  const [events, setEvents] = useState<any[]>(() => {
+    if (!Array.isArray(initialEvents) || initialEvents.length === 0) {
+      return [{
+        id: "event-" + Date.now(),
+        title: "New Event",
+        date: "",
+        overview: [""],
+        objectives: [""],
+        summary: "",
+        organizers: [],
+        gallery: [],
+        agenda: []
+      }];
     }
-  ]);
+    return initialEvents.map(ev => ({
+      ...ev,
+      gallery: Array.isArray(ev.gallery) 
+        ? ev.gallery.filter((img: any) => typeof img === "string" && img.trim() !== "")
+        : []
+    }));
+  });
 
   const [currentPage, setCurrentPage] = useState(1);
   const eventsPerPage = 10;
@@ -200,12 +208,64 @@ export default function EventsClientForm({ initialEvents }: { initialEvents: any
       alert("Error uploading file");
     } finally {
       setUploadingIdx(null);
+      e.target.value = "";
     }
   };
 
+  const handleBulkUpload = async (eventIndex: number, e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+
+    setBulkUploadingIdx(eventIndex);
+    const newUrls: string[] = [];
+
+    try {
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("folder", "events");
+
+        const res = await fetch("/api/upload", {
+          method: "POST",
+          body: formData,
+        });
+
+        if (res.ok) {
+          const { url } = await res.json();
+          if (url) newUrls.push(url);
+        }
+      }
+
+      if (newUrls.length > 0) {
+        setEvents(prev => {
+          const arr = [...prev];
+          if (!arr[eventIndex]) return arr;
+          const curr = { ...arr[eventIndex] };
+          const cleanedPrev = (curr.gallery || []).filter((g: string) => typeof g === "string" && g.trim() !== "");
+          curr.gallery = [...newUrls, ...cleanedPrev];
+          arr[eventIndex] = curr;
+          return arr;
+        });
+      }
+    } catch (err) {
+      console.error("Bulk upload error:", err);
+      alert("Failed to upload some images.");
+    } finally {
+      setBulkUploadingIdx(null);
+      e.target.value = "";
+    }
+  };
+
+  // Strictly filter out empty gallery items before saving to database!
+  const sanitizedEvents = events.map(ev => ({
+    ...ev,
+    gallery: (ev.gallery || []).filter((img: string) => typeof img === "string" && img.trim() !== "")
+  }));
+
   return (
     <div className="space-y-8">
-      <input type="hidden" name="eventsJson" value={JSON.stringify(events)} />
+      <input type="hidden" name="eventsJson" value={JSON.stringify(sanitizedEvents)} />
 
       {/* Event Selector / Tabs */}
       <div className="bg-white rounded-3xl shadow-sm border border-slate-100 p-6 md:p-8 space-y-4">
@@ -388,35 +448,94 @@ export default function EventsClientForm({ initialEvents }: { initialEvents: any
 
           {/* Gallery */}
           <div className="bg-white rounded-3xl shadow-sm border border-slate-100 p-6 md:p-8 space-y-6">
-            <div className="flex justify-between items-center border-b pb-4">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b pb-4 gap-3">
               <input type="text" value={data.galleryTitle !== undefined ? data.galleryTitle : "Event Gallery"} onChange={e => updateField(selectedIndex, "galleryTitle", e.target.value)} className="text-[20px] font-black text-[#002b5c] bg-transparent border-b-2 border-transparent hover:border-slate-200 focus:border-[#007a87] focus:ring-0 p-0 m-0 w-full max-w-[300px] transition-colors" />
-              <button type="button" onClick={() => addArrayItem(selectedIndex, 'gallery')} className="px-4 py-2 text-sm bg-[#002b5c] text-white rounded-lg hover:bg-[#001a38] hover:shadow-sm flex items-center gap-2 font-bold transition-all duration-300">
-                <Plus size={16} /> Add Image
-              </button>
+              <div className="flex items-center gap-2">
+                <label className="px-3.5 py-2 text-xs bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg flex items-center gap-1.5 font-bold transition-all duration-300 shadow-sm cursor-pointer">
+                  {bulkUploadingIdx === selectedIndex ? <Loader2 size={14} className="animate-spin" /> : <Upload size={14} />}
+                  <span>{bulkUploadingIdx === selectedIndex ? 'Uploading Batch...' : 'Bulk Upload'}</span>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    disabled={bulkUploadingIdx === selectedIndex}
+                    onChange={(e) => handleBulkUpload(selectedIndex, e)}
+                    className="hidden"
+                  />
+                </label>
+                <button type="button" onClick={() => addArrayItem(selectedIndex, 'gallery')} className="px-4 py-2 text-xs bg-[#002b5c] text-white rounded-lg hover:bg-[#001a38] hover:shadow-sm flex items-center gap-1.5 font-bold transition-all duration-300">
+                  <Plus size={14} /> Add Image
+                </button>
+              </div>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {(data.gallery || []).map((img: string, idx: number) => (
-                <div key={idx} className="flex gap-4 items-center bg-slate-50 p-3 rounded-xl border border-slate-100">
-                  {img ? (
-                    <img src={img} alt="Preview" className="w-10 h-10 object-cover rounded shrink-0 border border-slate-200" />
-                  ) : (
-                    <ImageIcon className="text-slate-400 shrink-0" size={24} />
-                  )}
-                  <input type="text" value={img || ""} onChange={e => updateArrayItem(selectedIndex, 'gallery', idx, e.target.value)} className="flex-1 p-2 bg-white border border-slate-200 rounded-lg text-sm" placeholder="Image URL or upload ->" />
-                  <div className="relative overflow-hidden group shrink-0">
-                    <input type="file" accept="image/*" onChange={(e) => handleUpload(selectedIndex, idx, e)} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" />
-                    <button type="button" className="px-4 py-2 bg-white border border-slate-200 text-[#007a87] rounded-lg text-sm font-bold flex items-center gap-2 group-hover:bg-[#007a87] group-hover:text-white transition-colors">
-                      {uploadingIdx === `${selectedIndex}-${idx}` ? <Loader2 size={16} className="animate-spin" /> : <Upload size={16} />}
-                      <span>{uploadingIdx === `${selectedIndex}-${idx}` ? 'Uploading...' : 'Upload'}</span>
-                    </button>
-                  </div>
-                  <button type="button" onClick={() => removeArrayItem(selectedIndex, 'gallery', idx)} className="p-2 text-red-500 hover:bg-red-50 rounded-lg shrink-0">
-                    <Trash2 size={18} />
-                  </button>
-                </div>
-              ))}
-            </div>
-            <p className="text-xs text-slate-500">Ensure images are uploaded to the public/images folder.</p>
+            {(!data.gallery || data.gallery.length === 0) ? (
+              <div className="text-center py-8 text-slate-400 bg-slate-50 rounded-2xl border border-dashed border-slate-200">
+                <p className="text-sm">No photos added to this event yet. Click &quot;Add Image&quot; or &quot;Bulk Upload&quot;.</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {(data.gallery || []).map((img: string, idx: number) => {
+                  const isUploading = uploadingIdx === `${selectedIndex}-${idx}`;
+                  const hasValidImg = Boolean(img && img.trim() !== "");
+
+                  return (
+                    <div key={idx} className={`flex gap-3 items-center bg-slate-50 p-3 rounded-xl border ${hasValidImg ? 'border-slate-200' : 'border-amber-300 ring-1 ring-amber-200'} transition-all`}>
+                      <div className="relative w-12 h-12 shrink-0 rounded-lg overflow-hidden bg-slate-200 flex items-center justify-center border border-slate-300">
+                        {hasValidImg ? (
+                          <>
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img src={img} alt="Preview" className="w-full h-full object-cover" />
+                            <a
+                              href={img}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="absolute inset-0 bg-slate-900/40 opacity-0 hover:opacity-100 flex items-center justify-center text-white transition-opacity"
+                              title="View Full Image"
+                            >
+                              <ExternalLink size={14} />
+                            </a>
+                          </>
+                        ) : (
+                          <ImageIcon className="text-slate-400" size={20} />
+                        )}
+                        {isUploading && (
+                          <div className="absolute inset-0 bg-slate-900/60 flex items-center justify-center text-white">
+                            <Loader2 size={16} className="animate-spin" />
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="flex-1 min-w-0 flex flex-col gap-1">
+                        <input 
+                          type="text" 
+                          value={img || ""} 
+                          onChange={e => updateArrayItem(selectedIndex, 'gallery', idx, e.target.value)} 
+                          className="w-full p-2 bg-white border border-slate-200 rounded-lg text-xs font-mono focus:ring-1 focus:ring-[#007a87] focus:border-[#007a87]" 
+                          placeholder="Image URL or upload ->" 
+                        />
+                      </div>
+
+                      <label className="px-3 py-2 bg-white border border-slate-200 hover:border-[#007a87] text-[#007a87] hover:bg-[#007a87] hover:text-white rounded-lg text-xs font-bold flex items-center gap-1.5 transition-colors cursor-pointer shrink-0">
+                        {isUploading ? <Loader2 size={14} className="animate-spin" /> : <Upload size={14} />}
+                        <span>{isUploading ? 'Uploading...' : 'Upload'}</span>
+                        <input 
+                          type="file" 
+                          accept="image/*" 
+                          disabled={isUploading}
+                          onChange={(e) => handleUpload(selectedIndex, idx, e)} 
+                          className="hidden" 
+                        />
+                      </label>
+
+                      <button type="button" onClick={() => removeArrayItem(selectedIndex, 'gallery', idx)} className="p-2 text-red-500 hover:bg-red-50 rounded-lg shrink-0" title="Delete Photo">
+                        <Trash2 size={16} />
+                      </button>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+            <p className="text-xs text-slate-500">Supported formats: JPG, PNG, WebP. Blank images are automatically discarded upon save.</p>
           </div>
                 </div>
         );

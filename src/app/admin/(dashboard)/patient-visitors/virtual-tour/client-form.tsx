@@ -2,12 +2,13 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Save, Plus, Trash2, Camera } from "lucide-react";
+import { Save, Plus, Trash2, Camera, Upload, ExternalLink, Loader2, Image as ImageIcon } from "lucide-react";
 import Image from "next/image";
 
 export default function VirtualTourClientForm({ initialData }: { initialData: any }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [uploadingIdx, setUploadingIdx] = useState<number | null>(null);
   const [data, setData] = useState({
     seoMetaTitle: initialData?.seoMetaTitle || "",
     seoMetaDescription: initialData?.seoMetaDescription || "",
@@ -73,19 +74,26 @@ export default function VirtualTourClientForm({ initialData }: { initialData: an
   const addLocation = () => {
     setData({
       ...data,
-      locations: [...data.locations, { name: "", category: "", img: "", link: "https://www.vrwix.com/vr/hospital/ind/maharashtra/pune/deenanath_mangeshkar_hospital" }]
+      locations: [{ name: "", category: "", img: "", link: "https://www.vrwix.com/vr/hospital/ind/maharashtra/pune/deenanath_mangeshkar_hospital" }, ...data.locations]
     });
   };
 
   const handleSave = async () => {
     setLoading(true);
     try {
+      // Filter out blank image locations before saving to DB!
+      const validLocations = (data.locations || []).filter((loc: any) => loc && loc.img && loc.img.trim() !== "");
+      const payload = {
+        ...data,
+        locations: validLocations
+      };
+
       const res = await fetch("/api/settings", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ 
           key: 'page_virtual_tour', 
-          value: JSON.stringify(data),
+          value: JSON.stringify(payload),
           pathsToRevalidate: [
             "/admin/patient-visitors/virtual-tour",
             "/patient-visitors/virtual-tour",
@@ -135,106 +143,137 @@ export default function VirtualTourClientForm({ initialData }: { initialData: an
         </div>
         <div className="p-6 space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            {data.locations.map((loc: any, index: number) => (
-              <div key={index} className="bg-gray-50 rounded-lg p-4 border border-gray-200 relative group">
+            {data.locations.map((loc: any, index: number) => {
+              const isUploading = uploadingIdx === index;
+              const hasValidImg = Boolean(loc.img && loc.img.trim() !== "");
+
+              return (
+              <div key={index} className={`bg-white rounded-xl p-4 border ${hasValidImg ? 'border-gray-200' : 'border-amber-300 ring-1 ring-amber-200'} shadow-sm relative group flex flex-col transition-all`}>
                 <button
+                  type="button"
                   onClick={() => removeLocation(index)}
-                  className="absolute top-3 right-3 p-2 bg-white text-red-500 rounded-full opacity-0 group-hover:opacity-100 shadow-md border border-gray-200 hover:bg-red-50 hover:border-red-200 transition-all z-10"
+                  className="absolute top-2.5 right-2.5 p-1.5 bg-white text-red-500 rounded-lg shadow-sm border border-gray-200 hover:bg-red-500 hover:text-white transition-all z-20"
                   title="Remove location"
                 >
                   <Trash2 className="w-4 h-4" />
                 </button>
-                <div className="space-y-3 mt-2">
-                  {loc.img && (
-                    <div className="w-full h-24 relative rounded overflow-hidden border border-gray-200 mb-2">
-                      <Image src={loc.img} alt={loc.name} fill className="object-cover" />
+
+                {/* Image Preview Box */}
+                <div className="w-full h-36 relative rounded-lg overflow-hidden bg-slate-100 border border-gray-200 mb-3 flex items-center justify-center">
+                  {hasValidImg ? (
+                    <>
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={loc.img} alt={loc.name || "Preview"} className="w-full h-full object-cover" />
+                      <a
+                        href={loc.img}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="absolute bottom-2 right-2 bg-slate-900/75 hover:bg-slate-900 text-white text-[11px] font-semibold px-2 py-1 rounded flex items-center gap-1 backdrop-blur-sm transition-colors"
+                      >
+                        <ExternalLink size={11} />
+                        <span>View Full</span>
+                      </a>
+                    </>
+                  ) : (
+                    <div className="flex flex-col items-center justify-center text-slate-400 p-2 text-center">
+                      <ImageIcon size={28} className="opacity-40 mb-1" />
+                      <span className="text-xs font-semibold text-slate-500">No Image</span>
                     </div>
                   )}
+
+                  {isUploading && (
+                    <div className="absolute inset-0 bg-slate-900/60 flex flex-col items-center justify-center text-white z-10">
+                      <Loader2 size={20} className="animate-spin mb-1 text-white" />
+                      <span className="text-xs font-bold">Uploading...</span>
+                    </div>
+                  )}
+                </div>
+
+                <div className="space-y-3 flex-1 flex flex-col">
                   <div>
-                    <label className="block text-xs font-medium text-gray-700 mb-1">Name</label>
+                    <label className="block text-[11px] font-bold text-gray-600 uppercase tracking-wider mb-1">Upload Photo</label>
+                    <label className="flex items-center justify-center gap-1.5 w-full py-2 px-3 border border-dashed border-[#007a87]/40 hover:border-[#007a87] bg-teal-50/40 hover:bg-teal-50/80 rounded-lg text-xs font-bold text-[#007a87] cursor-pointer transition-colors text-center">
+                      <Upload size={14} />
+                      <span>{isUploading ? "Uploading..." : hasValidImg ? "Change Photo File" : "Choose Photo File"}</span>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        disabled={isUploading}
+                        onChange={async (e) => {
+                          const file = e.target.files?.[0];
+                          if (file) {
+                            setUploadingIdx(index);
+                            const formData = new FormData();
+                            formData.append('file', file);
+                            try {
+                              const res = await fetch('/api/upload', { method: 'POST', body: formData });
+                              if (res.ok) {
+                                const uploadData = await res.json();
+                                updateLocation(index, "img", uploadData.url);
+                              } else {
+                                alert("Failed to upload image");
+                              }
+                            } catch (err) {
+                              console.error(err);
+                              alert("Error uploading image");
+                            } finally {
+                              setUploadingIdx(null);
+                              e.target.value = '';
+                            }
+                          }
+                        }}
+                        className="hidden"
+                      />
+                    </label>
+                  </div>
+
+                  <div>
+                    <label className="block text-[11px] font-bold text-gray-600 uppercase tracking-wider mb-1">Image URL</label>
+                    <input
+                      type="text"
+                      value={loc.img || ""}
+                      onChange={(e) => updateLocation(index, "img", e.target.value)}
+                      className="w-full px-2.5 py-1.5 bg-slate-50 border border-gray-200 rounded-lg focus:bg-white focus:outline-none focus:ring-1 focus:ring-[#007a87] text-xs font-mono"
+                      placeholder="https://... or /uploads/..."
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-[11px] font-bold text-gray-600 uppercase tracking-wider mb-1">Location Name</label>
                     <input
                       type="text"
                       value={loc.name}
                       onChange={(e) => updateLocation(index, "name", e.target.value)}
-                      className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#007a87]/50 text-sm"
-                      placeholder="Location Name"
+                      className="w-full px-2.5 py-1.5 bg-slate-50 border border-gray-200 rounded-lg focus:bg-white focus:outline-none focus:ring-1 focus:ring-[#007a87] text-xs font-medium"
+                      placeholder="e.g. ICU Lobby"
                     />
                   </div>
+
                   <div>
-                    <label className="block text-xs font-medium text-gray-700 mb-1">Category</label>
+                    <label className="block text-[11px] font-bold text-gray-600 uppercase tracking-wider mb-1">Category</label>
                     <input
                       type="text"
                       value={loc.category}
                       onChange={(e) => updateLocation(index, "category", e.target.value)}
-                      className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#007a87]/50 text-sm"
-                      placeholder="Category (e.g. Facilities)"
+                      className="w-full px-2.5 py-1.5 bg-slate-50 border border-gray-200 rounded-lg focus:bg-white focus:outline-none focus:ring-1 focus:ring-[#007a87] text-xs font-medium"
+                      placeholder="Facilities / Units / Rooms"
                     />
                   </div>
-                  <div>
-                    <label className="block text-xs font-medium text-gray-700 mb-1">Link URL</label>
+
+                  <div className="mt-auto pt-1">
+                    <label className="block text-[11px] font-bold text-gray-600 uppercase tracking-wider mb-1">VR 360 Tour Link</label>
                     <input
                       type="text"
                       value={loc.link || ""}
                       onChange={(e) => updateLocation(index, "link", e.target.value)}
-                      className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#007a87]/50 text-sm mb-3"
+                      className="w-full px-2.5 py-1.5 bg-slate-50 border border-gray-200 rounded-lg focus:bg-white focus:outline-none focus:ring-1 focus:ring-[#007a87] text-xs"
                       placeholder="https://www.vrwix.com/..."
                     />
                   </div>
-                  <div>
-                    <label className="block text-xs font-medium text-gray-700 mb-1">Upload Image</label>
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={async (e) => {
-                        const file = e.target.files?.[0];
-                        if (file) {
-                          const formData = new FormData();
-                          formData.append('file', file);
-                          try {
-                            const res = await fetch('/api/upload', { method: 'POST', body: formData });
-                            if (res.ok) {
-                              const uploadData = await res.json();
-                              updateLocation(index, "img", uploadData.url);
-                              
-                              // Auto-save to prevent user error
-                              const newLocations = [...data.locations];
-                              newLocations[index] = { ...newLocations[index], img: uploadData.url };
-                              const updatedData = { ...data, locations: newLocations };
-                              await fetch("/api/settings", {
-                                method: "POST",
-                                headers: { "Content-Type": "application/json" },
-                                body: JSON.stringify({ 
-                                  key: 'page_virtual_tour', 
-                                  value: JSON.stringify(updatedData),
-                                  pathsToRevalidate: [
-                                    "/admin/patient-visitors/virtual-tour",
-                                    "/patient-visitors/virtual-tour",
-                                    "/virtual-tour"
-                                  ] 
-                                })
-                              });
-                            } else {
-                              alert("Failed to upload image");
-                            }
-                          } catch (err) {
-                            console.error(err);
-                            alert("Error uploading image");
-                          } finally {
-                            e.target.value = ''; // allow uploading same file again
-                          }
-                        }
-                      }}
-                      className="w-full p-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#007a87]/50 text-sm file:mr-4 file:py-1 file:px-3 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-[#007a87]/10 file:text-[#007a87] hover:file:bg-[#007a87]/20 cursor-pointer"
-                    />
-                    {loc.img && loc.img.startsWith('/uploads/') && (
-                      <div className="mt-2 text-xs truncate text-emerald-600 font-medium border border-emerald-200 bg-emerald-50 rounded-md p-2" title={loc.img}>
-                        Uploaded: {loc.img.split('/').pop()?.substring(0, 30)}...
-                      </div>
-                    )}
-                  </div>
                 </div>
               </div>
-            ))}
+              );
+            })}
           </div>
           <button
             onClick={addLocation}
