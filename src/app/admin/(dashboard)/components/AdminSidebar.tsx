@@ -124,6 +124,7 @@ const MENU_ITEMS = [
       { name: "Blood Bank", permission: "manage_specialties", href: "/admin/departments/blood-bank" },
       { name: "Emergency", permission: "manage_specialties", href: "/admin/departments/emergency" },
       { name: "Pharmacy", permission: "manage_specialties", href: "/admin/departments/pharmacy" },
+      { name: "Ambulance", permission: "manage_specialties", href: "/admin/departments/ambulance" },
     ]
   },
   {
