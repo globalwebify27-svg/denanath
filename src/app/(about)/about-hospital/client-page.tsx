@@ -47,138 +47,152 @@ export default function AboutHospitalClient({ data }: { data: any }) {
               </div>
 
               {/* Introduction */}
-              <div className="prose prose-slate max-w-none">
-                <div className=" text-slate-700 leading-[31px] font-normal mb-2" dangerouslySetInnerHTML={{ __html: data?.introduction || '' }} />
-                <div className=" text-slate-700 leading-[29px] font-normal mb-8" dangerouslySetInnerHTML={{ __html: data?.description || '' }} />
-              </div>
+              {data?.generalActive !== false && (
+                <div className="prose prose-slate max-w-none">
+                  <div className=" text-slate-700 leading-[31px] font-normal mb-2" dangerouslySetInnerHTML={{ __html: data?.introduction || '' }} />
+                  <div className=" text-slate-700 leading-[29px] font-normal mb-8" dangerouslySetInnerHTML={{ __html: data?.description || '' }} />
+                </div>
+              )}
 
               {/* Vision & Mission Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                <div className="bg-gradient-to-br from-teal-50 to-white p-8 rounded-2xl border border-teal-100/50 relative overflow-hidden group">
-                  <div className="absolute top-0 right-0 p-6 opacity-10 transform translate-x-4 -translate-y-4 group-hover:scale-110 transition-transform duration-500">
-                    <Eye className="w-24 h-24 text-teal-600" />
-                  </div>
-                  <div className="flex items-center gap-3 mb-4 relative z-10">
-                    <div className="bg-teal-100 p-2.5 rounded-xl text-teal-600">
-                      <Eye className="w-6 h-6" />
+              {data?.visionMissionActive !== false && (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                  <div className="bg-gradient-to-br from-teal-50 to-white p-8 rounded-2xl border border-teal-100/50 relative overflow-hidden group">
+                    <div className="absolute top-0 right-0 p-6 opacity-10 transform translate-x-4 -translate-y-4 group-hover:scale-110 transition-transform duration-500">
+                      <Eye className="w-24 h-24 text-teal-600" />
                     </div>
-                    <h3 className="text-2xl font-bold text-[#002b5c] tracking-tight">Vision</h3>
+                    <div className="flex items-center gap-3 mb-4 relative z-10">
+                      <div className="bg-teal-100 p-2.5 rounded-xl text-teal-600">
+                        <Eye className="w-6 h-6" />
+                      </div>
+                      <h3 className="text-2xl font-bold text-[#002b5c] tracking-tight">Vision</h3>
+                    </div>
+                    <div className="text-slate-700 italic font-normal leading-[29px] relative z-10" dangerouslySetInnerHTML={{ __html: data?.vision || '' }} />
                   </div>
-                  <div className="text-slate-700 italic font-normal leading-[29px] relative z-10" dangerouslySetInnerHTML={{ __html: data?.vision || '' }} />
-                </div>
 
-                <div className="bg-gradient-to-br from-blue-50 to-white p-8 rounded-2xl border border-blue-100/50 relative overflow-hidden group">
-                  <div className="absolute top-0 right-0 p-6 opacity-10 transform translate-x-4 -translate-y-4 group-hover:scale-110 transition-transform duration-500">
-                    <Target className="w-24 h-24 text-blue-600" />
-                  </div>
-                  <div className="flex items-center gap-3 mb-4 relative z-10">
-                    <div className="bg-blue-100 p-2.5 rounded-xl text-blue-600">
-                      <Target className="w-6 h-6" />
+                  <div className="bg-gradient-to-br from-blue-50 to-white p-8 rounded-2xl border border-blue-100/50 relative overflow-hidden group">
+                    <div className="absolute top-0 right-0 p-6 opacity-10 transform translate-x-4 -translate-y-4 group-hover:scale-110 transition-transform duration-500">
+                      <Target className="w-24 h-24 text-blue-600" />
                     </div>
-                    <h3 className="text-2xl font-bold text-[#002b5c] tracking-tight">Mission</h3>
+                    <div className="flex items-center gap-3 mb-4 relative z-10">
+                      <div className="bg-blue-100 p-2.5 rounded-xl text-blue-600">
+                        <Target className="w-6 h-6" />
+                      </div>
+                      <h3 className="text-2xl font-bold text-[#002b5c] tracking-tight">Mission</h3>
+                    </div>
+                    <div className="text-slate-700 italic font-normal leading-[29px] relative z-10" dangerouslySetInnerHTML={{ __html: data?.mission || '' }} />
                   </div>
-                  <div className="text-slate-700 italic font-normal leading-[29px] relative z-10" dangerouslySetInnerHTML={{ __html: data?.mission || '' }} />
                 </div>
-              </div>
+              )}
 
               {/* Core Values */}
-              <div className="mb-8">
-                <h3 className="text-2xl font-bold text-[#002b5c] mb-6 tracking-tight flex items-center gap-2">
-                  <Heart className="w-6 h-6 text-[#007a87]" />
-                  Core Values
-                </h3>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {(data?.coreValues || []).map((value: string, idx: number) => (
-                    <div key={idx} className="group flex items-center gap-4 bg-slate-50 p-4 rounded-xl border border-slate-100 hover:border-[#D9232D] hover:bg-white hover:shadow-[0_8px_30px_rgba(217,35,45,0.15)] transition-all duration-300">
-                      <div className="bg-teal-100/50 rounded-full p-1 text-teal-600 group-hover:text-[#D9232D] shrink-0 transition-colors">
-                        <CheckCircle2 className="w-5 h-5" />
+              {data?.coreValuesActive !== false && (
+                <div className="mb-8">
+                  <h3 className="text-2xl font-bold text-[#002b5c] mb-6 tracking-tight flex items-center gap-2">
+                    <Heart className="w-6 h-6 text-[#007a87]" />
+                    Core Values
+                  </h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {(data?.coreValues || []).map((value: string, idx: number) => (
+                      <div key={idx} className="group flex items-center gap-4 bg-slate-50 p-4 rounded-xl border border-slate-100 hover:border-[#D9232D] hover:bg-white hover:shadow-[0_8px_30px_rgba(217,35,45,0.15)] transition-all duration-300">
+                        <div className="bg-teal-100/50 rounded-full p-1 text-teal-600 group-hover:text-[#D9232D] shrink-0 transition-colors">
+                          <CheckCircle2 className="w-5 h-5" />
+                        </div>
+                        <span className="font-normal text-slate-700 leading-[31px]" dangerouslySetInnerHTML={{ __html: value }} />
                       </div>
-                      <span className="font-normal text-slate-700 leading-[31px]" dangerouslySetInnerHTML={{ __html: value }} />
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
 
               {/* Quality Policy & Objective */}
-              <div className="bg-[#002b5c] rounded-3xl p-6 md:p-8 text-white mb-8 relative overflow-hidden">
-                <div className="absolute right-0 bottom-0 opacity-5 pointer-events-none">
-                  <ShieldCheck className="w-64 h-64 -mb-10 -mr-10" />
-                </div>
-                
-                <div className="relative z-10 space-y-6">
-                  <div>
-                    <h3 className="text-xl font-bold text-teal-300 mb-3 tracking-wide uppercase text-sm flex items-center gap-2">
-                      <ShieldCheck className="w-5 h-5" />
-                      Quality Policy
-                    </h3>
-                    <div className="text-blue-50  leading-[29px] font-normal" dangerouslySetInnerHTML={{ __html: data?.qualityPolicy || '' }} />
+              {data?.qualityPolicyActive !== false && (
+                <div className="bg-[#002b5c] rounded-3xl p-6 md:p-8 text-white mb-8 relative overflow-hidden">
+                  <div className="absolute right-0 bottom-0 opacity-5 pointer-events-none">
+                    <ShieldCheck className="w-64 h-64 -mb-10 -mr-10" />
                   </div>
                   
-                  <div className="h-px w-full bg-blue-800/50" />
-                  
-                  <div>
-                    <h3 className="text-xl font-bold text-teal-300 mb-3 tracking-wide uppercase text-sm flex items-center gap-2">
-                      <Award className="w-5 h-5" />
-                      Quality Objective
-                    </h3>
-                    <div className="text-blue-50  leading-[29px] font-normal" dangerouslySetInnerHTML={{ __html: data?.qualityObjective || '' }} />
+                  <div className="relative z-10 space-y-6">
+                    <div>
+                      <h3 className="text-xl font-bold text-teal-300 mb-3 tracking-wide uppercase text-sm flex items-center gap-2">
+                        <ShieldCheck className="w-5 h-5" />
+                        Quality Policy
+                      </h3>
+                      <div className="text-blue-50  leading-[29px] font-normal" dangerouslySetInnerHTML={{ __html: data?.qualityPolicy || '' }} />
+                    </div>
+                    
+                    <div className="h-px w-full bg-blue-800/50" />
+                    
+                    <div>
+                      <h3 className="text-xl font-bold text-teal-300 mb-3 tracking-wide uppercase text-sm flex items-center gap-2">
+                        <Award className="w-5 h-5" />
+                        Quality Objective
+                      </h3>
+                      <div className="text-blue-50  leading-[29px] font-normal" dangerouslySetInnerHTML={{ __html: data?.qualityObjective || '' }} />
+                    </div>
                   </div>
                 </div>
-              </div>
+              )}
 
               {/* History */}
-              <div className="mb-8">
-                <h3 className="text-3xl font-extrabold text-[#002b5c] mb-6 tracking-tight">Our History</h3>
-                <div className="prose prose-slate max-w-none prose-p:leading-[29px] font-normal text-slate-600 border-l-4 border-teal-100 pl-6 md:pl-8 py-2 relative">
-                  <div className="absolute top-0 left-0 w-1 h-12 bg-[#007a87] -ml-[4px] rounded-full" />
-                  <div 
-                    dangerouslySetInnerHTML={{ __html: (Array.isArray(data?.history) ? data.history : [data?.history || ""]).join('') }} 
-                    className="flex flex-col gap-3 [&>p]:!my-0 [&>p:empty]:hidden [&>div]:!my-0 [&_br]:hidden"
-                  />
+              {data?.historyActive !== false && (
+                <div className="mb-8">
+                  <h3 className="text-3xl font-extrabold text-[#002b5c] mb-6 tracking-tight">Our History</h3>
+                  <div className="prose prose-slate max-w-none prose-p:leading-[29px] font-normal text-slate-600 border-l-4 border-teal-100 pl-6 md:pl-8 py-2 relative">
+                    <div className="absolute top-0 left-0 w-1 h-12 bg-[#007a87] -ml-[4px] rounded-full" />
+                    <div 
+                      dangerouslySetInnerHTML={{ 
+                        __html: Array.isArray(data?.history) 
+                          ? data.history.map((p: string) => (p.trim().startsWith('<p') ? p : `<p>${p}</p>`)).join('') 
+                          : (data?.history || '') 
+                      }} 
+                      className="flex flex-col gap-3 [&>p]:!my-0 [&>p:empty]:hidden [&>div]:!my-0 [&_br]:hidden"
+                    />
+                  </div>
                 </div>
-              </div>
-
-
+              )}
 
               {/* Facilities / Capabilities */}
-              <div>
-                <h3 className="text-2xl font-bold text-[#002b5c] mb-6 tracking-tight flex items-center gap-2">
-                  <Activity className="w-6 h-6 text-[#007a87]" />
-                  Other special capabilities include:
-                </h3>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  {/* Complete Diagnostic Imaging */}
-                  <div className="bg-slate-50 p-6 md:p-8 rounded-2xl border border-slate-100">
-                    <h4 className="text-base font-bold text-[#002b5c] mb-5 pb-3 border-b border-slate-200">
-                      Complete Diagnostic Imaging
-                    </h4>
-                    <ul className="space-y-3">
-                      {(data?.capabilities?.imaging || []).map((item: string, idx: number) => (
-                        <li key={idx} className="flex items-start gap-3 font-normal text-slate-600 leading-[29px]">
-                          <ChevronRight className="w-4 h-4 text-[#007a87] shrink-0 mt-2" />
-                          <span dangerouslySetInnerHTML={{ __html: item }} />
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
+              {data?.capabilitiesActive !== false && (
+                <div>
+                  <h3 className="text-2xl font-bold text-[#002b5c] mb-6 tracking-tight flex items-center gap-2">
+                    <Activity className="w-6 h-6 text-[#007a87]" />
+                    {data?.capabilitiesTitle || "Other special capabilities include:"}
+                  </h3>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    {/* Complete Diagnostic Imaging */}
+                    <div className="bg-slate-50 p-6 md:p-8 rounded-2xl border border-slate-100">
+                      <h4 className="text-base font-bold text-[#002b5c] mb-5 pb-3 border-b border-slate-200">
+                        {data?.imagingTitle || "Complete Diagnostic Imaging"}
+                      </h4>
+                      <ul className="space-y-3">
+                        {(data?.capabilities?.imaging || []).map((item: string, idx: number) => (
+                          <li key={idx} className="flex items-start gap-3 font-normal text-slate-600 leading-[29px]">
+                            <ChevronRight className="w-4 h-4 text-[#007a87] shrink-0 mt-2" />
+                            <span dangerouslySetInnerHTML={{ __html: item }} />
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
 
-                  {/* Radiation Therapy */}
-                  <div className="bg-slate-50 p-6 md:p-8 rounded-2xl border border-slate-100">
-                    <h4 className="text-base font-bold text-[#002b5c] mb-5 pb-3 border-b border-slate-200">
-                      Radiation Therapy
-                    </h4>
-                    <ul className="space-y-3">
-                      {(data?.capabilities?.radiation || []).map((item: string, idx: number) => (
-                        <li key={idx} className="flex items-start gap-3 font-normal text-slate-600 leading-[29px]">
-                          <ChevronRight className="w-4 h-4 text-[#007a87] shrink-0 mt-2" />
-                          <span dangerouslySetInnerHTML={{ __html: item }} />
-                        </li>
-                      ))}
-                    </ul>
+                    {/* Radiation Therapy */}
+                    <div className="bg-slate-50 p-6 md:p-8 rounded-2xl border border-slate-100">
+                      <h4 className="text-base font-bold text-[#002b5c] mb-5 pb-3 border-b border-slate-200">
+                        {data?.radiationTitle || "Radiation Therapy"}
+                      </h4>
+                      <ul className="space-y-3">
+                        {(data?.capabilities?.radiation || []).map((item: string, idx: number) => (
+                          <li key={idx} className="flex items-start gap-3 font-normal text-slate-600 leading-[29px]">
+                            <ChevronRight className="w-4 h-4 text-[#007a87] shrink-0 mt-2" />
+                            <span dangerouslySetInnerHTML={{ __html: item }} />
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
                   </div>
                 </div>
-              </div>
+              )}
 
             </div>
           </div>

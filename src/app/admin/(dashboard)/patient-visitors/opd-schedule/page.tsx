@@ -74,6 +74,7 @@ export default async function AdminOpdSchedulePage() {
       });
       
       revalidatePath("/admin/patient-visitors/opd-schedule");
+      revalidatePath("/out-patient-department");
       revalidatePath("/opd-schedule");
     } catch (e) {
       console.error("Failed to save OPD Schedule data", e);

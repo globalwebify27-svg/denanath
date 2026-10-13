@@ -20,7 +20,7 @@ export default function QuickAccessWidget() {
     {
       label: "Book Appointment",
       icon: CalendarPlus,
-      href: "/book-appointment",
+      href: "/Appointment",
       color: "bg-blue-600 hover:bg-blue-700",
     },
     {

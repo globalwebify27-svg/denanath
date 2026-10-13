@@ -1,6 +1,7 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
+import { sortCoursesLatestFirst } from "@/lib/courseUtils";
 
 export async function getHomeCourses() {
   const setting = await prisma.siteSetting.findUnique({ where: { key: 'home_courses' } });
@@ -46,14 +47,16 @@ export async function getHomeCourses() {
       };
 
       if (parsed.leftCourses) {
-        leftCourses = parsed.leftCourses
+        const mapped = parsed.leftCourses
           .filter(isValidCourse)
           .map((c: any, i: number) => ({ ...c, id: c.id || `left-legacy-${i}` }));
+        leftCourses = sortCoursesLatestFirst(mapped);
       }
       if (parsed.rightCourses) {
-        rightCourses = parsed.rightCourses
+        const mapped = parsed.rightCourses
           .filter(isValidCourse)
           .map((c: any, i: number) => ({ ...c, id: c.id || `right-legacy-${i}` }));
+        rightCourses = sortCoursesLatestFirst(mapped);
       }
     } catch (e) {
       console.error("Failed to parse home courses data", e);

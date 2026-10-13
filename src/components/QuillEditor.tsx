@@ -47,6 +47,8 @@ export default function QuillEditor({
     const raw = value !== undefined ? value : (defaultValue || "");
     return normalizeEditorContent(raw, asBulletList);
   });
+  const contentRef = useRef(content);
+  contentRef.current = content;
 
   useEffect(() => {
     isMounted.current = true;
@@ -58,6 +60,7 @@ export default function QuillEditor({
       const normalized = normalizeEditorContent(value, asBulletList);
       if (normalized !== content) {
         setContent(normalized);
+        contentRef.current = normalized;
         if (hiddenInputRef.current) hiddenInputRef.current.value = normalized;
       }
     }
@@ -270,18 +273,32 @@ export default function QuillEditor({
     const form = hiddenInputRef.current?.closest('form');
     
     const syncLatest = () => {
-      let latest = "";
+      let latest: string | undefined = undefined;
       try {
         const mirror = editorRef.current?.container?.querySelector('.jodit-source__mirror') as HTMLTextAreaElement | null;
-        if (mirror && typeof mirror.value === "string") {
+        if (mirror && typeof mirror.value === "string" && mirror.value.trim().length > 0) {
           latest = mirror.value;
-        } else if (editorRef.current && typeof editorRef.current.value === "string") {
-          latest = editorRef.current.value;
+        } else if (editorRef.current) {
+          if (typeof editorRef.current.value === "string" && editorRef.current.value.trim().length > 0) {
+            latest = editorRef.current.value;
+          } else if (editorRef.current.editor && typeof editorRef.current.editor.value === "string" && editorRef.current.editor.value.trim().length > 0) {
+            latest = editorRef.current.editor.value;
+          }
         }
-      } catch (e) {
-        if (editorRef.current) latest = editorRef.current.value;
+        if (!latest) {
+          const wysiwyg = editorRef.current?.container?.querySelector('.jodit-wysiwyg') as HTMLElement | null;
+          if (wysiwyg && typeof wysiwyg.innerHTML === "string" && wysiwyg.innerHTML.trim().length > 0) {
+            latest = wysiwyg.innerHTML;
+          }
+        }
+      } catch (e) {}
+
+      // Fallback: If editorRef did not provide a value, use contentRef, NEVER wipe out with empty string!
+      if (latest === undefined) {
+        latest = contentRef.current || hiddenInputRef.current?.value || "";
       }
-      if (latest !== undefined && hiddenInputRef.current) {
+
+      if (hiddenInputRef.current && latest !== undefined) {
         hiddenInputRef.current.value = latest;
       }
       return latest;
@@ -424,7 +441,7 @@ export default function QuillEditor({
           color: #ffffff !important;
         }
       `}</style>
-      {name && <input type="hidden" name={name} defaultValue={value !== undefined ? value : (defaultValue || "")} ref={hiddenInputRef} />}
+      {name && <input type="hidden" name={name} defaultValue={content} ref={hiddenInputRef} />}
       <JoditEditor
         ref={editorRef}
         value={content}
@@ -432,6 +449,7 @@ export default function QuillEditor({
         onBlur={newContent => {
            if (!isMounted.current) return;
            setContent(newContent);
+           contentRef.current = newContent;
            if (hiddenInputRef.current) hiddenInputRef.current.value = newContent;
            if (onChange) onChange(newContent);
         }}
@@ -439,6 +457,7 @@ export default function QuillEditor({
            if (!isMounted.current) return;
            if (newContent === content) return;
            setContent(newContent);
+           contentRef.current = newContent;
            if (hiddenInputRef.current) hiddenInputRef.current.value = newContent;
            if (onChange) onChange(newContent);
         }}

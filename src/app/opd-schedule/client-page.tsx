@@ -186,7 +186,7 @@ const DoctorScheduleCard = ({ doc, initialData, index }: { doc: any, initialData
               ))}
               <td className="p-2 border-l border-slate-100 align-middle text-center">
                 {isAppAllowed ? (
-                  <Link href={`/book-appointment?doctor_id=${doc.dmhDoctorId || doc.doctor_id || doc.id || ''}&speciality_id=${doc.dmhSpecialityId || doc.speciality_id || ''}`} className="inline-flex items-center justify-center px-4 py-2 bg-[#007a87] hover:bg-[#005f69] text-white text-base rounded-lg font-bold transition-colors w-full">
+                  <Link href={`/Appointment?doctor_id=${doc.dmhDoctorId || doc.doctor_id || doc.id || ''}&speciality_id=${doc.dmhSpecialityId || doc.speciality_id || ''}`} className="inline-flex items-center justify-center px-4 py-2 bg-[#007a87] hover:bg-[#005f69] text-white text-base rounded-lg font-bold transition-colors w-full">
                     {initialData?.tableBookBtnLabel || "Book"}
                   </Link>
                 ) : (

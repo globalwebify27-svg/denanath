@@ -38,6 +38,7 @@ export default function BookAppointmentClientForm({ initialData }: { initialData
           value: JSON.stringify(data),
           pathsToRevalidate: [
             "/admin/hospital/book-appointment",
+            "/Appointment",
             "/book-appointment"
           ]
         })

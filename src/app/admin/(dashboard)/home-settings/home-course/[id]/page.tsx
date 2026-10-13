@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { sortCoursesLatestFirst } from "@/lib/courseUtils";
 import CourseForm from "./CourseForm";
 
 export const dynamic = "force-dynamic";
@@ -147,7 +148,8 @@ export default async function EditCoursePage(props: { params: Promise<any>, sear
       const colStr = targetCol;
       
       if (isNew) {
-        const newId = `${colStr === "rightCourses" ? "right" : "left"}-${Date.now()}`;
+        const timestamp = Date.now();
+        const newId = `${colStr === "rightCourses" ? "right" : "left"}-${timestamp}`;
         const newCourse = {
           id: newId,
           title: (formData.get("title") as string) || "Untitled",
@@ -160,9 +162,10 @@ export default async function EditCoursePage(props: { params: Promise<any>, sear
           gallery: JSON.parse((formData.get("gallery") as string) || "[]"),
           seoMetaTitle: (formData.get("seoMetaTitle") as string) || "",
           seoMetaDescription: (formData.get("seoMetaDescription") as string) || "",
-          seoKeywords: (formData.get("seoKeywords") as string) || ""
+          seoKeywords: (formData.get("seoKeywords") as string) || "",
+          createdAt: new Date(timestamp).toISOString()
         };
-        currentData[colStr] = [...currentData[colStr], newCourse];
+        currentData[colStr] = [newCourse, ...currentData[colStr]];
       } else {
         let index = currentData[colStr].findIndex((c: any) => c.id === course.id || c.id === courseId);
         let saveCol = colStr;
@@ -178,12 +181,12 @@ export default async function EditCoursePage(props: { params: Promise<any>, sear
         if (index !== -1) {
           currentData[saveCol][index] = {
             ...currentData[saveCol][index],
-            title: formData.get("title"),
-            content: formData.get("content"),
-            startDate: formData.get("startDate"),
-            endDate: formData.get("endDate"),
-            link: formData.get("link"),
-            linkText: formData.get("linkText"),
+            title: (formData.get("title") as string) || "Untitled",
+            content: (formData.get("content") as string) || "",
+            startDate: (formData.get("startDate") as string) || "",
+            endDate: (formData.get("endDate") as string) || "",
+            link: (formData.get("link") as string) || "",
+            linkText: (formData.get("linkText") as string) || (saveCol === "rightCourses" ? "View Form" : "View Details"),
             status: formData.get("status") === "true",
             gallery: JSON.parse(formData.get("gallery") as string || "[]"),
             seoMetaTitle: (formData.get("seoMetaTitle") as string) || "",
@@ -192,6 +195,9 @@ export default async function EditCoursePage(props: { params: Promise<any>, sear
           };
         }
       }
+      
+      currentData.leftCourses = sortCoursesLatestFirst(currentData.leftCourses);
+      currentData.rightCourses = sortCoursesLatestFirst(currentData.rightCourses);
       
       await prisma.siteSetting.upsert({
         where: { key: 'home_courses' },

@@ -205,9 +205,32 @@ export default function CourseForm({ initialData, saveAction, col, isNew }: { in
 
     try {
       const formNode = e.currentTarget;
-      const htmlContent = new FormData(formNode).get("content");
-      const finalContent = htmlContent !== null ? (htmlContent as string) : formData.content;
-      const cleanedContent = finalContent === "<p><br></p>" ? "" : finalContent;
+
+      // Robustly extract editor content from Jodit DOM, mirror textarea, hidden input, or React state
+      const editorMirror = formNode.querySelector('.jodit-source__mirror') as HTMLTextAreaElement | null;
+      const editorArea = formNode.querySelector('.jodit-wysiwyg') as HTMLElement | null;
+      const hiddenInp = formNode.querySelector('input[name="content"]') as HTMLInputElement | null;
+
+      const isSourceMode = Boolean(
+        formNode.querySelector('.jodit-container_source-mode, .jodit_source-mode') || 
+        (editorMirror && (editorMirror.offsetWidth > 0 || editorMirror.offsetHeight > 0))
+      );
+
+      let extractedContent = "";
+      if (isSourceMode && editorMirror && typeof editorMirror.value === "string" && editorMirror.value.trim().length > 0) {
+        extractedContent = editorMirror.value;
+      } else if (editorArea && typeof editorArea.innerHTML === "string" && editorArea.innerHTML.trim().length > 0) {
+        extractedContent = editorArea.innerHTML;
+      } else if (hiddenInp && typeof hiddenInp.value === "string" && hiddenInp.value.trim().length > 0) {
+        extractedContent = hiddenInp.value;
+      } else if (formData.content && typeof formData.content === "string" && formData.content.trim().length > 0) {
+        extractedContent = formData.content;
+      } else if (editorMirror && typeof editorMirror.value === "string" && editorMirror.value.trim().length > 0) {
+        extractedContent = editorMirror.value;
+      }
+
+      extractedContent = (extractedContent || "").trim();
+      const cleanedContent = (extractedContent === "<p><br></p>" || extractedContent === "<p></p>" || extractedContent === "<p><br/></p>") ? "" : extractedContent;
 
       const data = new FormData();
       data.append("title", formData.title.trim());
@@ -360,7 +383,12 @@ export default function CourseForm({ initialData, saveAction, col, isNew }: { in
         <div className="p-6 md:p-8 space-y-6">
           <div>
             <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Content (HTML Supported)</label>
-            <QuillEditor key={initialData?.id || (isNew ? "new" : "edit")} name="content" defaultValue={formData.content} />
+            <QuillEditor 
+              name="content" 
+              defaultValue={formData.content} 
+              value={formData.content}
+              onChange={(val) => setFormData(prev => ({ ...prev, content: val }))} 
+            />
           </div>
         </div>
       </div>
@@ -639,6 +667,24 @@ export default function CourseForm({ initialData, saveAction, col, isNew }: { in
             />
           </div>
         </div>
+      </div>
+
+      {/* Bottom Save Bar */}
+      <div className="flex items-center justify-between gap-4 bg-white p-6 rounded-3xl shadow-sm border border-slate-100">
+        <Link 
+          href="/admin/home-settings/home-course" 
+          className="inline-flex items-center gap-2 text-sm font-bold text-slate-600 hover:text-slate-800 transition-colors bg-slate-100 hover:bg-slate-200 px-4 py-3 rounded-xl"
+        >
+          <ArrowLeft size={16} /> Back to List
+        </Link>
+        <button
+          type="submit"
+          disabled={loading}
+          className="flex items-center gap-2 bg-[#007a87] text-white px-8 py-3.5 rounded-xl hover:bg-[#006570] hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 font-bold text-sm shadow-md disabled:opacity-50"
+        >
+          <Save size={18} />
+          <span>{loading ? "Saving..." : (isNew ? `Add ${col === "right" ? "Program" : "Course"}` : "Save Changes")}</span>
+        </button>
       </div>
 
     </form>

@@ -237,7 +237,7 @@ export default function DoctorProfileClient({ initialDoctor }: { initialDoctor: 
                                   <td rowSpan={group.slots.length} className="py-3 px-2 sm:py-4 sm:px-5 text-center align-middle border-l border-slate-100/50 bg-white">
                                     {group.isApp === 'Y' && (
                                       <Link
-                                        href={`/book-appointment?doctor_id=${doctor.dmhDoctorId || doctor.id || ''}&speciality_id=${group._speciality_id || doctor.dmhSpecialityId || ''}&service_point_id=${doctor.dmhServicePointId || ''}`}
+                                        href={`/Appointment?doctor_id=${doctor.dmhDoctorId || doctor.id || ''}&speciality_id=${group._speciality_id || doctor.dmhSpecialityId || ''}&service_point_id=${doctor.dmhServicePointId || ''}`}
                                         className="inline-flex items-center justify-center px-3 py-1.5 sm:px-5 sm:py-2.5 bg-gradient-to-r from-[#007a87] to-[#006a75] hover:from-[#005f69] hover:to-[#004f58] text-white font-extrabold text-[10px] sm:text-xs uppercase tracking-wider transition-all duration-300 rounded-lg shadow-sm hover:shadow-md whitespace-nowrap"
                                       >
                                         Book

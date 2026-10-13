@@ -57,7 +57,7 @@ export default function SiteMapClient({ dynamicPages = [] }: { dynamicPages?: Dy
       title: "Patient & Visitors",
       links: [
         { label: "Patient Guide Home", href: "/patient-guide" },
-        { label: "OPD Schedule", href: "/opd-schedule" },
+        { label: "OPD Schedule", href: "/out-patient-department" },
         { label: "Book Appointment", href: "/manage-appointments" },
         { label: "In-Patient Services", href: "/in-patient" },
         { label: "Out-Patient Services", href: "/out-patient" },

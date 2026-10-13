@@ -272,8 +272,8 @@ export async function performGlobalSearch(rawQuery: string): Promise<GlobalSearc
     dmhDoctorId: doc.dmhDoctorId || undefined,
     profileHref: `/doctors-profile/${doc.id}`,
     appointmentHref: doc.dmhDoctorId
-      ? `/book-appointment?doctorid=${doc.dmhDoctorId}`
-      : `/book-appointment`,
+      ? `/Appointment?doctorid=${doc.dmhDoctorId}`
+      : `/Appointment`,
   }));
 
   // 7. Format Services

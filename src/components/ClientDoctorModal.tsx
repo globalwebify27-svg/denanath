@@ -163,7 +163,7 @@ export default function ClientDoctorModal({ apiDocs = [] }: { apiDocs: any[] }) 
                 {loadingSchedule ? (
                   <div className="text-xs font-semibold text-slate-400 mt-2 sm:mt-0">Checking appointment availability...</div>
                 ) : isAppAllowed !== false ? (
-                  <Link href={`/book-appointment?doctor_id=${selectedDoctor.doctor_id || selectedDoctor.id || ''}&speciality_id=${selectedDoctor.speciality_id || ''}&service_point_id=${selectedDoctor.service_point_id || ''}`} className="inline-flex items-center justify-center px-3 py-1.5 sm:px-6 sm:py-2.5 bg-[#007a87] hover:bg-[#005f69] text-white font-bold sm:font-extrabold text-[11px] sm:text-sm transition-colors rounded-md sm:rounded-lg w-fit mt-2 sm:mt-6 ">
+                  <Link href={`/Appointment?doctor_id=${selectedDoctor.doctor_id || selectedDoctor.id || ''}&speciality_id=${selectedDoctor.speciality_id || ''}&service_point_id=${selectedDoctor.service_point_id || ''}`} className="inline-flex items-center justify-center px-3 py-1.5 sm:px-6 sm:py-2.5 bg-[#007a87] hover:bg-[#005f69] text-white font-bold sm:font-extrabold text-[11px] sm:text-sm transition-colors rounded-md sm:rounded-lg w-fit mt-2 sm:mt-6 ">
                     Book Appointment
                   </Link>
                 ) : null}

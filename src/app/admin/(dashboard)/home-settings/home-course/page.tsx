@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
+import { sortCoursesLatestFirst } from "@/lib/courseUtils";
 import HomeCourseClientForm from "./client-form";
 
 export const dynamic = "force-dynamic";
@@ -37,8 +38,8 @@ export default async function AdminHomeCoursePage() {
   try {
     if (setting) {
       data = JSON.parse(setting.value);
-      data.leftCourses = (data.leftCourses || []).map((c: any, i: number) => ({ ...c, id: c.id || `left-legacy-${i}` }));
-      data.rightCourses = (data.rightCourses || []).map((c: any, i: number) => ({ ...c, id: c.id || `right-legacy-${i}` }));
+      data.leftCourses = sortCoursesLatestFirst((data.leftCourses || []).map((c: any, i: number) => ({ ...c, id: c.id || `left-legacy-${i}` })));
+      data.rightCourses = sortCoursesLatestFirst((data.rightCourses || []).map((c: any, i: number) => ({ ...c, id: c.id || `right-legacy-${i}` })));
     }
   } catch(e) {}
 

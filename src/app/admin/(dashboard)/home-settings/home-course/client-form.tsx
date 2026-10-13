@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Plus, Trash2, GraduationCap, FileText, Edit } from "lucide-react";
+import { Plus, Trash2, GraduationCap, FileText, Edit, ChevronUp, ChevronDown } from "lucide-react";
 import SubmitButton from "../../components/SubmitButton";
 
 export default function HomeCourseClientForm({ initialData }: { initialData: any }) {
@@ -35,6 +35,32 @@ export default function HomeCourseClientForm({ initialData }: { initialData: any
       const btn = document.getElementById("hidden-submit-btn") as HTMLButtonElement;
       if (btn) btn.click();
     }, 50);
+  };
+
+  const moveLeftCourse = (index: number, direction: 'up' | 'down') => {
+    const targetIndex = direction === 'up' ? index - 1 : index + 1;
+    if (targetIndex < 0 || targetIndex >= formData.leftCourses.length) return;
+    const updated = [...formData.leftCourses];
+    const temp = updated[index];
+    updated[index] = updated[targetIndex];
+    updated[targetIndex] = temp;
+    setFormData({ ...formData, leftCourses: updated });
+    const input = document.querySelector('input[name="leftCourses"]') as HTMLInputElement;
+    if (input) input.value = JSON.stringify(updated);
+    triggerSubmit();
+  };
+
+  const moveRightCourse = (index: number, direction: 'up' | 'down') => {
+    const targetIndex = direction === 'up' ? index - 1 : index + 1;
+    if (targetIndex < 0 || targetIndex >= formData.rightCourses.length) return;
+    const updated = [...formData.rightCourses];
+    const temp = updated[index];
+    updated[index] = updated[targetIndex];
+    updated[targetIndex] = temp;
+    setFormData({ ...formData, rightCourses: updated });
+    const input = document.querySelector('input[name="rightCourses"]') as HTMLInputElement;
+    if (input) input.value = JSON.stringify(updated);
+    triggerSubmit();
   };
 
   const removeLeftCourse = (index: number) => {
@@ -128,16 +154,43 @@ export default function HomeCourseClientForm({ initialData }: { initialData: any
               return (
               <div key={course.id || idx} className="flex items-center justify-between p-4 bg-white rounded-xl border border-slate-200 hover:border-[#007a87] transition-all hover:shadow-md group/item">
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-400 font-bold text-xs">
+                  <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-400 font-bold text-xs shrink-0">
                     {idx + 1}
                   </div>
-                  <span className="font-semibold text-slate-700">{course.title}</span>
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span className="font-semibold text-slate-700">{course.title}</span>
+                    {(course.createdAt || (course.id && (course.id.startsWith("left-17") || course.id.startsWith("left-18")))) && (
+                      <span className="px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-emerald-50 text-emerald-600 border border-emerald-200 rounded-md">
+                        New
+                      </span>
+                    )}
+                  </div>
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1.5 shrink-0">
+                  <div className="flex items-center border border-slate-200 rounded-lg overflow-hidden bg-slate-50 mr-1 shadow-sm">
+                    <button
+                      type="button"
+                      disabled={idx === 0}
+                      onClick={() => moveLeftCourse(idx, 'up')}
+                      className="p-1 text-slate-500 hover:text-[#007a87] hover:bg-white disabled:opacity-30 disabled:pointer-events-none transition-colors border-r border-slate-200"
+                      title="Move Up (Come First)"
+                    >
+                      <ChevronUp size={16} />
+                    </button>
+                    <button
+                      type="button"
+                      disabled={idx === formData.leftCourses.length - 1}
+                      onClick={() => moveLeftCourse(idx, 'down')}
+                      className="p-1 text-slate-500 hover:text-[#007a87] hover:bg-white disabled:opacity-30 disabled:pointer-events-none transition-colors"
+                      title="Move Down"
+                    >
+                      <ChevronDown size={16} />
+                    </button>
+                  </div>
                   <button 
                     onClick={() => toggleLeftCourseStatus(idx)}
                     type="button" 
-                    className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors focus:outline-none ${course.status !== false ? 'bg-[#007a87]' : 'bg-slate-200'} mr-2`}
+                    className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors focus:outline-none ${course.status !== false ? 'bg-[#007a87]' : 'bg-slate-200'} mr-1`}
                     title={course.status !== false ? "Active (Click to disable)" : "Inactive (Click to enable)"}
                   >
                     <span className={`inline-block h-3.5 w-3.5 transform rounded-full bg-white transition-transform ${course.status !== false ? 'translate-x-4' : 'translate-x-1'}`} />
@@ -228,16 +281,43 @@ export default function HomeCourseClientForm({ initialData }: { initialData: any
               return (
               <div key={course.id || idx} className="flex items-center justify-between p-4 bg-white rounded-xl border border-slate-200 hover:border-[#007a87] transition-all hover:shadow-md group/item">
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-400 font-bold text-xs">
+                  <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-400 font-bold text-xs shrink-0">
                     {idx + 1}
                   </div>
-                  <span className="font-semibold text-slate-700">{course.title}</span>
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span className="font-semibold text-slate-700">{course.title}</span>
+                    {(course.createdAt || (course.id && (course.id.startsWith("right-17") || course.id.startsWith("right-18")))) && (
+                      <span className="px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-indigo-50 text-indigo-600 border border-indigo-200 rounded-md">
+                        New
+                      </span>
+                    )}
+                  </div>
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1.5 shrink-0">
+                  <div className="flex items-center border border-slate-200 rounded-lg overflow-hidden bg-slate-50 mr-1 shadow-sm">
+                    <button
+                      type="button"
+                      disabled={idx === 0}
+                      onClick={() => moveRightCourse(idx, 'up')}
+                      className="p-1 text-slate-500 hover:text-indigo-600 hover:bg-white disabled:opacity-30 disabled:pointer-events-none transition-colors border-r border-slate-200"
+                      title="Move Up (Come First)"
+                    >
+                      <ChevronUp size={16} />
+                    </button>
+                    <button
+                      type="button"
+                      disabled={idx === formData.rightCourses.length - 1}
+                      onClick={() => moveRightCourse(idx, 'down')}
+                      className="p-1 text-slate-500 hover:text-indigo-600 hover:bg-white disabled:opacity-30 disabled:pointer-events-none transition-colors"
+                      title="Move Down"
+                    >
+                      <ChevronDown size={16} />
+                    </button>
+                  </div>
                   <button 
                     onClick={() => toggleRightCourseStatus(idx)}
                     type="button" 
-                    className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors focus:outline-none ${course.status !== false ? 'bg-indigo-500' : 'bg-slate-200'} mr-2`}
+                    className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors focus:outline-none ${course.status !== false ? 'bg-indigo-500' : 'bg-slate-200'} mr-1`}
                     title={course.status !== false ? "Active (Click to disable)" : "Inactive (Click to enable)"}
                   >
                     <span className={`inline-block h-3.5 w-3.5 transform rounded-full bg-white transition-transform ${course.status !== false ? 'translate-x-4' : 'translate-x-1'}`} />

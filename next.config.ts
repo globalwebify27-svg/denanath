@@ -35,6 +35,30 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+
+  async redirects() {
+    return [
+      {
+        source: '/book-appointment',
+        destination: '/Appointment',
+        permanent: true,
+      },
+      {
+        source: '/opd-schedule',
+        destination: '/out-patient-department',
+        permanent: true,
+      },
+    ];
+  },
+
+  async rewrites() {
+    return [
+      {
+        source: '/appointment',
+        destination: '/Appointment',
+      },
+    ];
+  },
 };
 
 import withSerwistInit from "@serwist/next";

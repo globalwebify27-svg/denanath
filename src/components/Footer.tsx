@@ -129,7 +129,7 @@ export default function Footer({ latestEvent, footerSettings }: { latestEvent?: 
                   { label: "Research", href: "/research-about" },
                   { label: "Academics", href: "/academics" },
                   { label: "Online Facilities", href: "/email-login" },
-                  { label: "Book Appointment", href: "/book-appointment" },
+                  { label: "Book Appointment", href: "/Appointment" },
                   { label: "Testimonials", href: "/#testimonials" },
                   { label: "Photo Gallery", href: "/gallery-photos" },
                   { label: "Video Gallery", href: "/gallery-videos" },
@@ -186,7 +186,7 @@ export default function Footer({ latestEvent, footerSettings }: { latestEvent?: 
                   { label: "Careers", href: "/careers" },
                   { label: "Contact Us", href: "/contact-us" },
                   { label: "Event/News", href: "/events" },
-                  { label: "OPD Schedule", href: "/opd-schedule" },
+                  { label: "OPD Schedule", href: "/out-patient-department" },
                   { label: "EC Approval", href: "/ec-approval" },
                   { label: "Site Map", href: "/site-map" },
                   { label: "Disclaimer", href: "/disclaimer" }

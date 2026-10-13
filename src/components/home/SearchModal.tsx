@@ -345,7 +345,7 @@ export default function SearchModal({ isOpen, onClose, doctors, departments }: S
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
                     {filteredDepts.length > 0 ? (
                       filteredDepts.map((dept) => (
-                        <Link key={dept.id} href={`/book-appointment?speciality_id=${dept.id}`} onClick={onClose} className="group p-4 sm:p-5 rounded-xl sm:rounded-2xl border border-slate-100 hover:border-slate-200 hover:bg-slate-50 flex items-start gap-4 sm:gap-5 transition-all">
+                        <Link key={dept.id} href={`/Appointment?speciality_id=${dept.id}`} onClick={onClose} className="group p-4 sm:p-5 rounded-xl sm:rounded-2xl border border-slate-100 hover:border-slate-200 hover:bg-slate-50 flex items-start gap-4 sm:gap-5 transition-all">
                           <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl bg-white border border-slate-100 flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform shadow-sm">
                             <Activity className="w-4 h-4 sm:w-5 sm:h-5 text-slate-400 group-hover:text-slate-900 transition-colors" />
                           </div>

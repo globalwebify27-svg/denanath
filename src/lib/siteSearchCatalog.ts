@@ -359,7 +359,7 @@ export const SITE_SEARCH_CATALOG: SiteCatalogItem[] = [
     id: "opd-schedule",
     title: "OPD Schedule & Doctor Timings",
     category: "Patient & Visitors",
-    href: "/opd-schedule",
+    href: "/out-patient-department",
     description: "Daily and weekly Outpatient Department clinic schedule with consulting doctor names, room numbers, and timings.",
     keywords: ["opd schedule", "doctor timings", "schedule", "clinic timings", "consultation hours", "timetable"],
     settingKey: "page_opd_schedule"
@@ -433,7 +433,7 @@ export const SITE_SEARCH_CATALOG: SiteCatalogItem[] = [
     id: "book-appointment",
     title: "Book Doctor Appointment Online",
     category: "Online Facilities",
-    href: "/book-appointment",
+    href: "/Appointment",
     description: "Book an outpatient clinic appointment with our specialist doctors online quickly and conveniently.",
     keywords: ["book appointment", "appointment", "consultation", "doctor appointment", "schedule appointment"],
     settingKey: "page_hospital_book_appointment"
