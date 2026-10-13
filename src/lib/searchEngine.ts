@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import type { Department, Doctor, Service } from "@prisma/client";
 import { SITE_SEARCH_CATALOG, SiteCatalogItem } from "./siteSearchCatalog";
 
 export interface SearchPageResult {
@@ -89,7 +90,7 @@ export async function performGlobalSearch(rawQuery: string): Promise<GlobalSearc
     select: { key: true, value: true },
   });
   const settingsMap = new Map<string, string>();
-  siteSettings.forEach((s) => {
+  siteSettings.forEach((s: { key: string; value: string | null }) => {
     if (s.value) settingsMap.set(s.key, extractTextFromSetting(s.value));
   });
 
@@ -251,7 +252,7 @@ export async function performGlobalSearch(rawQuery: string): Promise<GlobalSearc
   matchedPages.sort((a, b) => b.score - a.score);
 
   // 5. Format Departments
-  const departments: SearchDepartmentResult[] = dbDepartments.map((dept) => {
+  const departments: SearchDepartmentResult[] = dbDepartments.map((dept: Department) => {
     const slug = dept.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
     return {
       id: dept.id,
@@ -262,7 +263,7 @@ export async function performGlobalSearch(rawQuery: string): Promise<GlobalSearc
   });
 
   // 6. Format Doctors
-  const doctors: SearchDoctorResult[] = dbDoctors.map((doc) => ({
+  const doctors: SearchDoctorResult[] = dbDoctors.map((doc: Doctor) => ({
     id: doc.id,
     name: doc.name,
     specialty: doc.specialty || "Specialist",
@@ -276,7 +277,7 @@ export async function performGlobalSearch(rawQuery: string): Promise<GlobalSearc
   }));
 
   // 7. Format Services
-  const services: SearchServiceResult[] = dbServices.map((svc) => ({
+  const services: SearchServiceResult[] = dbServices.map((svc: Service) => ({
     id: svc.id,
     title: svc.title,
     href: `/services`,
