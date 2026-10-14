@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { Doctor, Department } from "@/context/HospitalContext";
-import { X, ArrowRight, Activity } from "lucide-react";
+import { X, ArrowRight, Activity, Search } from "lucide-react";
 
 interface SearchModalProps {
   isOpen: boolean;
@@ -204,14 +204,14 @@ export default function SearchModal({ isOpen, onClose, doctors, departments }: S
           </h2>
           
           {/* Minimalist Tabs */}
-          <div className="flex gap-5 sm:gap-8 border-b border-slate-100 mb-6 overflow-x-auto  hide-scrollbar">
+          <div className="flex gap-5 sm:gap-8 border-b border-slate-200/80 mb-5 overflow-x-auto hide-scrollbar">
             {(["doctor", "specialty"] as const).map((tab) => (
               <button
                 key={tab}
                 onClick={() => { setActiveTab(tab); setSearchQuery(""); }}
-                className={`pb-4 text-xs sm:text-sm uppercase tracking-[0.1em] font-semibold transition-colors border-b-2 flex-shrink-0 focus:outline-none ${
+                className={`pb-3.5 text-xs sm:text-sm uppercase tracking-[0.12em] font-bold transition-all border-b-2 flex-shrink-0 focus:outline-none ${
                   activeTab === tab
-                    ? "border-slate-900 text-slate-900"
+                    ? "border-[#007a87] text-[#007a87]"
                     : "border-transparent text-slate-400 hover:text-slate-600"
                 }`}
               >
@@ -220,28 +220,44 @@ export default function SearchModal({ isOpen, onClose, doctors, departments }: S
             ))}
           </div>
 
-          {/* Massive Input */}
-          <div className="pb-6 sm:pb-8">
-            <input
-              type="text"
-              placeholder={activeTab === "doctor" ? "Start typing a doctor's name..." : "Search for a clinical department..."}
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              autoFocus
-              className="w-full bg-transparent border-none outline-none text-xl sm:text-2xl md:text-3xl font-light text-slate-900 placeholder:text-slate-300 p-0 focus:ring-0"
-            />
+          {/* Highlighted Search Input Box */}
+          <div className="pb-5 sm:pb-7">
+            <div className="relative flex items-center gap-3 sm:gap-4 px-4 sm:px-5 py-3 sm:py-3.5 rounded-2xl bg-slate-50/90 border-2 border-slate-200 hover:border-slate-300 focus-within:border-[#007a87] focus-within:bg-white focus-within:ring-4 focus-within:ring-[#007a87]/15 shadow-sm transition-all duration-200">
+              <Search className="w-5 h-5 sm:w-6 sm:h-6 text-[#007a87] flex-shrink-0" />
+              <input
+                type="text"
+                placeholder={activeTab === "doctor" ? "Start typing a doctor's name or specialty..." : "Search for a clinical department or specialty..."}
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                autoFocus
+                className="w-full bg-transparent border-none outline-none text-base sm:text-lg md:text-xl font-medium text-slate-900 placeholder:text-slate-400 p-0 focus:ring-0"
+              />
+              {searchQuery.trim() !== "" && (
+                <button
+                  type="button"
+                  onClick={() => setSearchQuery("")}
+                  className="w-7 h-7 rounded-full bg-slate-200/80 hover:bg-slate-300 text-slate-600 flex items-center justify-center flex-shrink-0 transition-colors"
+                  aria-label="Clear search"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              )}
+            </div>
           </div>
         </div>
 
         {/* Dynamic Results Area (Scrollable) */}
-        <div className="bg-white overflow-y-auto flex-1 px-5 sm:px-10 md:px-12 pb-8 sm:pb-12">
+        <div className="bg-slate-50/40 overflow-y-auto flex-1 px-5 sm:px-10 md:px-12 pb-8 sm:pb-12">
             
             {/* Doctor Search Results */}
             {activeTab === "doctor" && (
               <div>
                 {searchQuery.trim() === "" ? (
-                  <div className="py-4 sm:py-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
-                    <p className="text-[10px] sm:text-xs font-semibold text-slate-400 uppercase tracking-[0.2em] mb-4 sm:mb-6">Available Specialists</p>
+                  <div className="py-2 sm:py-4 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                    <div className="flex items-center gap-2 mb-4">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#007a87]" />
+                      <p className="text-[11px] sm:text-xs font-bold text-slate-600 uppercase tracking-[0.15em]">Available Specialists</p>
+                    </div>
                     {isLoading && displayDoctors.length === 0 ? (
                       <div className="py-8 text-center text-slate-400 text-sm font-light">Loading specialists from hospital database...</div>
                     ) : (
@@ -251,9 +267,9 @@ export default function SearchModal({ isOpen, onClose, doctors, departments }: S
                             key={`trend-${doc.id}`} 
                             href={`/doctors-profile/${doc.id}`}
                             onClick={onClose}
-                            className="p-4 sm:p-5 rounded-xl sm:rounded-2xl bg-gradient-to-br from-slate-50 to-white border border-slate-100 cursor-pointer hover:border-[#007a87]/30 hover:shadow-lg hover:shadow-[#007a87]/5 hover:-translate-y-1 transition-all group flex items-start gap-3 sm:gap-4"
+                            className="p-3.5 sm:p-4 rounded-xl sm:rounded-2xl bg-white border border-slate-200/90 shadow-[0_2px_8px_-2px_rgba(0,0,0,0.06)] hover:border-[#007a87] hover:shadow-md hover:shadow-[#007a87]/10 hover:-translate-y-0.5 transition-all duration-200 group flex items-center gap-3.5 sm:gap-4 cursor-pointer"
                           >
-                            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full overflow-hidden bg-slate-100 border border-slate-100 flex-shrink-0 shadow-sm group-hover:scale-105 transition-transform">
+                            <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-full overflow-hidden bg-slate-100 ring-2 ring-slate-100 group-hover:ring-[#007a87]/40 flex-shrink-0 shadow-sm group-hover:scale-105 transition-all">
                               <img 
                                 src={doc.image} 
                                 alt={doc.name} 
@@ -267,8 +283,15 @@ export default function SearchModal({ isOpen, onClose, doctors, departments }: S
                               />
                             </div>
                             <div className="min-w-0 flex-1">
-                              <h5 className="text-xs sm:text-sm font-bold text-slate-900 group-hover:text-[#007a87] transition-colors truncate uppercase">{doc.name}</h5>
-                              <p className="text-[11px] sm:text-xs text-[#007a87] font-semibold mt-1 line-clamp-1 uppercase tracking-wider">{doc.specialtyName}</p>
+                              <h5 className="text-xs sm:text-sm font-bold text-slate-900 group-hover:text-[#007a87] transition-colors truncate uppercase tracking-tight">{doc.name}</h5>
+                              <div className="mt-1">
+                                <span className="inline-block px-2 py-0.5 rounded-md bg-[#007a87]/10 text-[#007a87] text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider truncate max-w-full">
+                                  {doc.specialtyName}
+                                </span>
+                              </div>
+                            </div>
+                            <div className="w-7 h-7 rounded-full bg-slate-50 group-hover:bg-[#007a87] group-hover:text-white text-slate-400 flex items-center justify-center transition-colors flex-shrink-0 opacity-70 group-hover:opacity-100">
+                              <ArrowRight className="w-3.5 h-3.5" />
                             </div>
                           </Link>
                         ))}
@@ -283,27 +306,33 @@ export default function SearchModal({ isOpen, onClose, doctors, departments }: S
                           key={doc.id} 
                           href={`/doctors-profile/${doc.id}`}
                           onClick={onClose}
-                          className="group p-4 sm:p-5 rounded-xl sm:rounded-2xl hover:bg-slate-50 border border-transparent hover:border-slate-100 transition-all flex items-center justify-between gap-4 cursor-pointer"
+                          className="group p-3.5 sm:p-4 rounded-xl sm:rounded-2xl bg-white border border-slate-200/90 shadow-[0_2px_8px_-2px_rgba(0,0,0,0.06)] hover:border-[#007a87] hover:shadow-md hover:shadow-[#007a87]/10 hover:-translate-y-0.5 transition-all flex items-center justify-between gap-3 sm:gap-4 cursor-pointer"
                         >
                           <div className="flex items-center gap-3 sm:gap-4 min-w-0 flex-1">
-                            <img 
-                              src={doc.image} 
-                              alt={doc.name} 
-                              className="w-12 h-12 sm:w-14 sm:h-14 rounded-full object-cover shadow-sm group-hover:scale-105 transition-transform flex-shrink-0" 
-                              onError={(e) => {
-                                const target = e.currentTarget;
-                                if (!target.src.includes('default.jpg')) {
-                                  target.src = "https://www.dmhospital.org/images/Hospital/Doctor/Small-DMH/default.jpg";
-                                }
-                              }}
-                            />
+                            <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-full overflow-hidden bg-slate-100 ring-2 ring-slate-100 group-hover:ring-[#007a87]/40 flex-shrink-0 shadow-sm group-hover:scale-105 transition-all">
+                              <img 
+                                src={doc.image} 
+                                alt={doc.name} 
+                                className="w-full h-full object-cover" 
+                                onError={(e) => {
+                                  const target = e.currentTarget;
+                                  if (!target.src.includes('default.jpg')) {
+                                    target.src = "https://www.dmhospital.org/images/Hospital/Doctor/Small-DMH/default.jpg";
+                                  }
+                                }}
+                              />
+                            </div>
                             <div className="min-w-0 flex-1">
-                              <h4 className="font-semibold text-slate-900 text-sm sm:text-base truncate">{doc.name}</h4>
-                              <p className="text-[10px] sm:text-xs text-[#007a87] font-semibold uppercase tracking-wider mt-0.5 truncate">{doc.specialtyName}</p>
+                              <h4 className="font-bold text-slate-900 text-xs sm:text-sm group-hover:text-[#007a87] transition-colors truncate uppercase tracking-tight">{doc.name}</h4>
+                              <div className="mt-1">
+                                <span className="inline-block px-2 py-0.5 rounded-md bg-[#007a87]/10 text-[#007a87] text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider truncate max-w-full">
+                                  {doc.specialtyName}
+                                </span>
+                              </div>
                             </div>
                           </div>
-                          <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white border border-slate-200 group-hover:bg-slate-900 group-hover:border-slate-900 group-hover:text-white text-slate-400 flex items-center justify-center transition-all flex-shrink-0 shadow-sm">
-                            <ArrowRight className="w-4 h-4" />
+                          <div className="w-7 h-7 rounded-full bg-slate-50 group-hover:bg-[#007a87] group-hover:text-white text-slate-400 flex items-center justify-center transition-colors flex-shrink-0 opacity-70 group-hover:opacity-100">
+                            <ArrowRight className="w-3.5 h-3.5" />
                           </div>
                         </Link>
                       ))
@@ -319,8 +348,11 @@ export default function SearchModal({ isOpen, onClose, doctors, departments }: S
             {activeTab === "specialty" && (
               <div>
                 {searchQuery.trim() === "" ? (
-                  <div className="py-4 sm:py-6 animate-in fade-in slide-in-from-bottom-4 duration-500 delay-100">
-                    <p className="text-[10px] sm:text-xs font-semibold text-slate-400 uppercase tracking-[0.2em] mb-4 sm:mb-6">Clinical Specialties</p>
+                  <div className="py-2 sm:py-4 animate-in fade-in slide-in-from-bottom-4 duration-500 delay-100">
+                    <div className="flex items-center gap-2 mb-4">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#007a87]" />
+                      <p className="text-[11px] sm:text-xs font-bold text-slate-600 uppercase tracking-[0.15em]">Clinical Specialties</p>
+                    </div>
                     {isLoading && displayDepts.length === 0 ? (
                       <div className="py-8 text-center text-slate-400 text-sm font-light">Loading clinical specialties...</div>
                     ) : (
@@ -329,14 +361,17 @@ export default function SearchModal({ isOpen, onClose, doctors, departments }: S
                           <div 
                             key={`feat-${dept.id}`} 
                             onClick={() => setSearchQuery(dept.name)}
-                            className="p-4 sm:p-5 rounded-xl sm:rounded-2xl bg-gradient-to-br from-slate-50 to-white border border-slate-100 cursor-pointer hover:border-[#007a87]/30 hover:shadow-lg hover:shadow-[#007a87]/5 hover:-translate-y-1 transition-all group flex items-start gap-3 sm:gap-4"
+                            className="p-3.5 sm:p-4 rounded-xl sm:rounded-2xl bg-white border border-slate-200/90 shadow-[0_2px_8px_-2px_rgba(0,0,0,0.06)] hover:border-[#007a87] hover:shadow-md hover:shadow-[#007a87]/10 hover:-translate-y-0.5 transition-all duration-200 group flex items-start gap-3.5 sm:gap-4 cursor-pointer"
                           >
-                            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-white border border-slate-100 flex items-center justify-center flex-shrink-0 group-hover:bg-[#007a87] transition-colors shadow-sm">
-                              <Activity className="w-4 h-4 sm:w-5 sm:h-5 text-slate-400 group-hover:text-white transition-colors" />
+                            <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-teal-50 border border-teal-100 text-[#007a87] flex items-center justify-center flex-shrink-0 group-hover:bg-[#007a87] group-hover:text-white group-hover:border-[#007a87] transition-all shadow-sm">
+                              <Activity className="w-4 h-4 sm:w-5 sm:h-5" />
                             </div>
                             <div className="min-w-0 flex-1">
-                              <h5 className="text-xs sm:text-sm font-bold text-slate-900 group-hover:text-[#007a87] transition-colors truncate">{dept.name}</h5>
+                              <h5 className="text-xs sm:text-sm font-bold text-slate-900 group-hover:text-[#007a87] transition-colors truncate uppercase tracking-tight">{dept.name}</h5>
                               <p className="text-[11px] sm:text-xs text-slate-500 mt-1 line-clamp-1">{dept.shortDesc}</p>
+                            </div>
+                            <div className="w-7 h-7 rounded-full bg-slate-50 group-hover:bg-[#007a87] group-hover:text-white text-slate-400 flex items-center justify-center transition-colors flex-shrink-0 opacity-70 group-hover:opacity-100 self-center">
+                              <ArrowRight className="w-3.5 h-3.5" />
                             </div>
                           </div>
                         ))}
@@ -347,13 +382,18 @@ export default function SearchModal({ isOpen, onClose, doctors, departments }: S
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
                     {filteredDepts.length > 0 ? (
                       filteredDepts.map((dept) => (
-                        <Link key={dept.id} href={`/Appointment?speciality_id=${dept.id}`} onClick={onClose} className="group p-4 sm:p-5 rounded-xl sm:rounded-2xl border border-slate-100 hover:border-slate-200 hover:bg-slate-50 flex items-start gap-4 sm:gap-5 transition-all">
-                          <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg sm:rounded-xl bg-white border border-slate-100 flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform shadow-sm">
-                            <Activity className="w-4 h-4 sm:w-5 sm:h-5 text-slate-400 group-hover:text-slate-900 transition-colors" />
+                        <Link key={dept.id} href={`/Appointment?speciality_id=${dept.id}`} onClick={onClose} 
+                          className="group p-3.5 sm:p-4 rounded-xl sm:rounded-2xl bg-white border border-slate-200/90 shadow-[0_2px_8px_-2px_rgba(0,0,0,0.06)] hover:border-[#007a87] hover:shadow-md hover:shadow-[#007a87]/10 hover:-translate-y-0.5 flex items-start gap-3.5 sm:gap-4 transition-all cursor-pointer"
+                        >
+                          <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-teal-50 border border-teal-100 text-[#007a87] flex items-center justify-center flex-shrink-0 group-hover:bg-[#007a87] group-hover:text-white group-hover:border-[#007a87] transition-all shadow-sm">
+                            <Activity className="w-4 h-4 sm:w-5 sm:h-5" />
                           </div>
                           <div className="min-w-0 flex-1">
-                            <h4 className="font-semibold text-slate-900 text-sm sm:text-base truncate">{dept.name}</h4>
-                            <p className="text-xs sm:text-sm text-slate-500 mt-1 line-clamp-2 leading-relaxed font-light">{dept.shortDesc}</p>
+                            <h4 className="font-bold text-slate-900 text-xs sm:text-sm group-hover:text-[#007a87] transition-colors truncate uppercase tracking-tight">{dept.name}</h4>
+                            <p className="text-xs text-slate-500 mt-1 line-clamp-2 leading-relaxed font-light">{dept.shortDesc}</p>
+                          </div>
+                          <div className="w-7 h-7 rounded-full bg-slate-50 group-hover:bg-[#007a87] group-hover:text-white text-slate-400 flex items-center justify-center transition-colors flex-shrink-0 opacity-70 group-hover:opacity-100 self-center">
+                            <ArrowRight className="w-3.5 h-3.5" />
                           </div>
                         </Link>
                       ))
