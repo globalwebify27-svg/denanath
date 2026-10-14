@@ -209,7 +209,7 @@ export default function SearchModal({ isOpen, onClose, doctors, departments }: S
               <button
                 key={tab}
                 onClick={() => { setActiveTab(tab); setSearchQuery(""); }}
-                className={`pb-4 text-xs sm:text-sm uppercase tracking-[0.1em] font-semibold transition-colors border-b-2 flex-shrink-0 ${
+                className={`pb-4 text-xs sm:text-sm uppercase tracking-[0.1em] font-semibold transition-colors border-b-2 flex-shrink-0 focus:outline-none ${
                   activeTab === tab
                     ? "border-slate-900 text-slate-900"
                     : "border-transparent text-slate-400 hover:text-slate-600"
@@ -245,28 +245,30 @@ export default function SearchModal({ isOpen, onClose, doctors, departments }: S
                     {isLoading && displayDoctors.length === 0 ? (
                       <div className="py-8 text-center text-slate-400 text-sm font-light">Loading specialists from hospital database...</div>
                     ) : (
-                      <div className="flex gap-4 overflow-x-auto pb-4 hide-scrollbar">
-                        {displayDoctors.map(doc => (
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                        {displayDoctors.slice(0, 8).map(doc => (
                           <Link 
                             key={`trend-${doc.id}`} 
                             href={`/doctors-profile/${doc.id}`}
                             onClick={onClose}
-                            className="sm: p-4 rounded-[1.25rem] sm:rounded-[1.5rem] bg-slate-50 border border-slate-100 flex items-center gap-3 sm:gap-4 cursor-pointer hover:bg-white hover:shadow-xl hover:shadow-[#007a87]/10 hover:-translate-y-1 transition-all group"
+                            className="p-4 sm:p-5 rounded-xl sm:rounded-2xl bg-gradient-to-br from-slate-50 to-white border border-slate-100 cursor-pointer hover:border-[#007a87]/30 hover:shadow-lg hover:shadow-[#007a87]/5 hover:-translate-y-1 transition-all group flex items-start gap-3 sm:gap-4"
                           >
-                            <img 
-                              src={doc.image} 
-                              alt={doc.name} 
-                              className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover shadow-sm group-hover:scale-105 transition-transform flex-shrink-0"
-                              onError={(e) => {
-                                const target = e.currentTarget;
-                                if (!target.src.includes('default.jpg')) {
-                                  target.src = "https://www.dmhospital.org/images/Hospital/Doctor/Small-DMH/default.jpg";
-                                }
-                              }}
-                            />
+                            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full overflow-hidden bg-slate-100 border border-slate-100 flex-shrink-0 shadow-sm group-hover:scale-105 transition-transform">
+                              <img 
+                                src={doc.image} 
+                                alt={doc.name} 
+                                className="w-full h-full object-cover"
+                                onError={(e) => {
+                                  const target = e.currentTarget;
+                                  if (!target.src.includes('default.jpg')) {
+                                    target.src = "https://www.dmhospital.org/images/Hospital/Doctor/Small-DMH/default.jpg";
+                                  }
+                                }}
+                              />
+                            </div>
                             <div className="min-w-0 flex-1">
-                              <h5 className="text-xs sm:text-sm font-bold text-slate-900 truncate">{doc.name}</h5>
-                              <p className="text-[9px] sm:text-[10px] text-[#007a87] font-bold uppercase tracking-wider mt-0.5 truncate">{doc.specialtyName}</p>
+                              <h5 className="text-xs sm:text-sm font-bold text-slate-900 group-hover:text-[#007a87] transition-colors truncate uppercase">{doc.name}</h5>
+                              <p className="text-[11px] sm:text-xs text-[#007a87] font-semibold mt-1 line-clamp-1 uppercase tracking-wider">{doc.specialtyName}</p>
                             </div>
                           </Link>
                         ))}
