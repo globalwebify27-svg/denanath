@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Calendar, MapPin, Users, Award, ChevronRight, ArrowLeft, Target, Stethoscope, Briefcase, Activity, CheckCircle2, X, Play, Pause, ChevronLeft } from 'lucide-react';
+import { Calendar, MapPin, Users, Award, ChevronRight, ArrowLeft, Target, Stethoscope, Briefcase, Activity, CheckCircle2, X, Play, Pause, ChevronLeft, Layers } from 'lucide-react';
 import Image from 'next/image';
 
 export default function EventsClientPage({ events = [], pageData }: { events: any[], pageData?: any }) {
@@ -86,7 +86,7 @@ export default function EventsClientPage({ events = [], pageData }: { events: an
       {/* 2. Main Events List */}
       <div className="max-w-[1300px] mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-8 md:pb-12 space-y-16">
         {displayedEvents.map((event, index) => {
-          const { title, date, overview, objectives, summary, organizers, gallery, agenda, overviewTitle, objectivesTitle, organizersTitle, agendaTitle, galleryTitle, features, featuresTitle } = event;
+          const { title, date, overview, objectives, summary, organizers, gallery, agenda, overviewTitle, objectivesTitle, organizersTitle, agendaTitle, galleryTitle, features, featuresTitle, customSections } = event;
           
           return (
             <div key={index} className="space-y-6 pb-16 border-b-2 border-slate-200 last:border-0 last:pb-0">
@@ -175,6 +175,22 @@ export default function EventsClientPage({ events = [], pageData }: { events: an
                       </ul>
                     </section>
                   )}
+
+                  {/* Custom Content Sections */}
+                  {customSections && customSections.length > 0 && customSections.map((sec: any, sIdx: number) => {
+                    if (!sec || (!sec.title?.trim() && !sec.content?.trim())) return null;
+                    return (
+                      <section key={sec.id || sIdx} className="bg-white rounded-3xl p-8 md:p-10 shadow-sm border border-slate-100 group hover:shadow-md transition-shadow">
+                        <div className="flex items-center gap-4 mb-6">
+                          <div className="w-12 h-12 rounded-xl bg-[#e0f2f1] flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+                            <Layers className="w-6 h-6 text-[#005f6b]" />
+                          </div>
+                          <h2 className="text-2xl font-bold text-slate-800">{sec.title || "Section"}</h2>
+                        </div>
+                        <div className="text-slate-600 font-normal leading-[31px] text-base space-y-3" dangerouslySetInnerHTML={{ __html: sec.content || "" }} />
+                      </section>
+                    );
+                  })}
 
                   {/* Summary */}
                   {summary && (
