@@ -64,6 +64,3 @@ migrate.js
 print-schema.js
 doctor_details_dump*.html
 
-# User Uploads
-public/uploads/
-
