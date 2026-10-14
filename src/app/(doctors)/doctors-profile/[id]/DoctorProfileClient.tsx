@@ -185,30 +185,24 @@ export default function DoctorProfileClient({ initialDoctor }: { initialDoctor: 
             <div className="mt-auto flex flex-col gap-5">
               {/* Timings Table */}
               {isLoadingTimings ? (
-                <div className="w-full max-w-2xl p-6 border border-dashed border-slate-300 rounded-xl bg-slate-50 text-slate-500 font-medium text-sm flex flex-col items-center justify-center gap-3">
+                <div className="w-full sm:w-fit sm:min-w-[500px] max-w-full p-6 border border-dashed border-slate-300 rounded-xl bg-slate-50 text-slate-500 font-medium text-sm flex flex-col items-center justify-center gap-3">
                   <div className="w-6 h-6 border-2 border-teal-500 border-t-transparent rounded-full animate-spin"></div>
                   Loading OPD Schedule...
                 </div>
               ) : dynamicTimings.length > 0 ? (
-                <div className="w-full max-w-2xl">
+                <div className="w-full sm:w-fit sm:min-w-[500px] max-w-full">
                   <div className="flex items-center gap-2 mb-2.5">
                     <Calendar className="w-4 h-4 text-[#007a87]" />
                     <span className="text-xs font-black text-[#002b5c] uppercase tracking-widest">OPD Timings</span>
                   </div>
-                  <div className="overflow-hidden rounded-2xl border border-slate-200 shadow-sm w-full max-w-full">
+                  <div className="overflow-x-auto rounded-t-2xl border border-slate-200 shadow-sm w-full max-w-full bg-white">
                     <table className="w-full text-[11px] sm:text-sm">
-                      <colgroup>
-                        <col className="w-[28%]" />
-                        <col className="w-[20%]" />
-                        <col className="w-[32%]" />
-                        <col className="w-[20%]" />
-                      </colgroup>
                       <thead>
                         <tr className="bg-[#002b5c] text-white">
-                          <th className="text-left py-2.5 px-3 sm:py-4 sm:px-5 font-bold uppercase tracking-wider text-[9px] sm:text-xs">Branch</th>
-                          <th className="text-center py-2.5 px-2 sm:py-4 sm:px-5 font-bold uppercase tracking-wider text-[9px] sm:text-xs">Day</th>
-                          <th className="text-center py-2.5 px-2 sm:py-4 sm:px-5 font-bold uppercase tracking-wider text-[9px] sm:text-xs">Time</th>
-                          <th className="text-center py-2.5 px-2 sm:py-4 sm:px-5 font-bold uppercase tracking-wider text-[9px] sm:text-xs">Action</th>
+                          <th className="text-left py-2.5 px-3 sm:py-3.5 sm:px-5 font-bold uppercase tracking-wider text-[9px] sm:text-xs whitespace-nowrap">Branch</th>
+                          <th className="text-center py-2.5 px-3 sm:py-3.5 sm:px-4 font-bold uppercase tracking-wider text-[9px] sm:text-xs whitespace-nowrap">Day</th>
+                          <th className="text-center py-2.5 px-4 sm:py-3.5 sm:px-6 font-bold uppercase tracking-wider text-[9px] sm:text-xs whitespace-nowrap">Time</th>
+                          <th className="text-center py-2.5 px-3 sm:py-3.5 sm:px-5 font-bold uppercase tracking-wider text-[9px] sm:text-xs whitespace-nowrap">Action</th>
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-slate-100 bg-white">
@@ -227,14 +221,14 @@ export default function DoctorProfileClient({ initialDoctor }: { initialDoctor: 
                             return group.slots.map((slot: any, sIdx: number) => (
                               <tr key={`${gIdx}-${sIdx}`} className="hover:bg-teal-50/30 transition-colors even:bg-slate-50/50">
                                 {sIdx === 0 && (
-                                  <td rowSpan={group.slots.length} className="py-3 px-2 sm:py-4 sm:px-4 font-bold text-slate-700 uppercase tracking-wide break-words leading-snug align-middle border-r border-slate-100/50 bg-white">
+                                  <td rowSpan={group.slots.length} className="py-3 px-3 sm:py-4 sm:px-5 font-bold text-slate-700 uppercase tracking-wide whitespace-nowrap sm:whitespace-normal leading-snug align-middle border-r border-slate-100/50 bg-white">
                                     {group.branch}
                                   </td>
                                 )}
-                                <td className={`py-3 px-1 sm:py-4 sm:px-4 font-medium text-slate-600 text-center ${sIdx !== 0 ? 'border-t border-slate-100/50' : ''}`}>{slot.day}</td>
-                                <td className={`py-3 px-1 sm:py-4 sm:px-4 text-slate-600 font-medium whitespace-pre-line text-center leading-snug ${sIdx !== 0 ? 'border-t border-slate-100/50' : ''}`}>{slot.time}</td>
+                                <td className={`py-3 px-3 sm:py-4 sm:px-4 font-medium text-slate-600 text-center whitespace-nowrap ${sIdx !== 0 ? 'border-t border-slate-100/50' : ''}`}>{slot.day}</td>
+                                <td className={`py-3 px-4 sm:py-4 sm:px-6 text-slate-600 font-medium whitespace-nowrap text-center leading-snug ${sIdx !== 0 ? 'border-t border-slate-100/50' : ''}`}>{slot.time}</td>
                                 {sIdx === 0 && (
-                                  <td rowSpan={group.slots.length} className="py-3 px-2 sm:py-4 sm:px-5 text-center align-middle border-l border-slate-100/50 bg-white">
+                                  <td rowSpan={group.slots.length} className="py-3 px-3 sm:py-4 sm:px-5 text-center align-middle border-l border-slate-100/50 bg-white whitespace-nowrap">
                                     {group.isApp === 'Y' && (
                                       <Link
                                         href={`/Appointment?doctor_id=${doctor.dmhDoctorId || doctor.id || ''}&speciality_id=${group._speciality_id || doctor.dmhSpecialityId || ''}&service_point_id=${doctor.dmhServicePointId || ''}`}
@@ -252,31 +246,26 @@ export default function DoctorProfileClient({ initialDoctor }: { initialDoctor: 
                       </tbody>
                     </table>
                   </div>
-                  <div className="mt-0 rounded-b-xl border border-t-0 border-slate-200 bg-slate-50 py-2.5">
-                    <p className="text-[#d9232d] text-xs font-bold text-center flex items-center justify-center gap-1.5">
+                  <div className="mt-0 rounded-b-xl border border-t-0 border-slate-200 bg-slate-50 py-2.5 px-4">
+                    <p className="text-[#d9232d] text-xs font-bold text-center flex items-center justify-center gap-1.5 whitespace-nowrap">
                       <Phone className="w-3.5 h-3.5" />
                       For Appointment, please call <a href="tel:02040151100" className="hover:underline">020 4015 1100</a>
                     </p>
                   </div>
                 </div>
               ) : doctor.timings && doctor.timings.length > 0 ? (
-                <div className="w-full max-w-2xl">
+                <div className="w-full sm:w-fit sm:min-w-[480px] max-w-full">
                   <div className="flex items-center gap-2 mb-2.5">
                     <Calendar className="w-4 h-4 text-[#007a87]" />
                     <span className="text-xs font-black text-[#002b5c] uppercase tracking-widest">OPD Timings</span>
                   </div>
-                  <div className="overflow-hidden rounded-2xl border border-slate-200 shadow-sm w-full max-w-full">
+                  <div className="overflow-x-auto rounded-t-2xl border border-slate-200 shadow-sm w-full max-w-full bg-white">
                     <table className="w-full text-[11px] sm:text-sm">
-                      <colgroup>
-                        <col className="w-[35%]" />
-                        <col className="w-[25%]" />
-                        <col className="w-[40%]" />
-                      </colgroup>
                       <thead>
                         <tr className="bg-[#002b5c] text-white">
-                          <th className="text-left py-2.5 px-3 sm:py-4 sm:px-5 font-bold uppercase tracking-wider text-[9px] sm:text-xs">Branch</th>
-                          <th className="text-center py-2.5 px-3 sm:py-4 sm:px-5 font-bold uppercase tracking-wider text-[9px] sm:text-xs">Day</th>
-                          <th className="text-center py-2.5 px-3 sm:py-4 sm:px-5 font-bold uppercase tracking-wider text-[9px] sm:text-xs">Time</th>
+                          <th className="text-left py-2.5 px-3 sm:py-3.5 sm:px-5 font-bold uppercase tracking-wider text-[9px] sm:text-xs whitespace-nowrap">Branch</th>
+                          <th className="text-center py-2.5 px-3 sm:py-3.5 sm:px-4 font-bold uppercase tracking-wider text-[9px] sm:text-xs whitespace-nowrap">Day</th>
+                          <th className="text-center py-2.5 px-4 sm:py-3.5 sm:px-6 font-bold uppercase tracking-wider text-[9px] sm:text-xs whitespace-nowrap">Time</th>
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-slate-100 bg-white">
@@ -295,12 +284,12 @@ export default function DoctorProfileClient({ initialDoctor }: { initialDoctor: 
                             return group.slots.map((slot: any, sIdx: number) => (
                               <tr key={`${gIdx}-${sIdx}`} className="hover:bg-teal-50/30 transition-colors even:bg-slate-50/50">
                                 {sIdx === 0 && (
-                                  <td rowSpan={group.slots.length} className="py-3 px-2 sm:py-4 sm:px-4 font-bold text-slate-700 uppercase tracking-wide break-words leading-snug align-middle border-r border-slate-100/50 bg-white">
+                                  <td rowSpan={group.slots.length} className="py-3 px-3 sm:py-4 sm:px-5 font-bold text-slate-700 uppercase tracking-wide whitespace-nowrap sm:whitespace-normal leading-snug align-middle border-r border-slate-100/50 bg-white">
                                     {group.branch}
                                   </td>
                                 )}
-                                <td className={`py-3 px-1 sm:py-4 sm:px-4 font-medium text-slate-600 text-center ${sIdx !== 0 ? 'border-t border-slate-100/50' : ''}`}>{slot.day}</td>
-                                <td className={`py-3 px-1 sm:py-4 sm:px-4 text-slate-600 font-medium whitespace-pre-line text-center leading-snug ${sIdx !== 0 ? 'border-t border-slate-100/50' : ''}`}>{slot.time}</td>
+                                <td className={`py-3 px-3 sm:py-4 sm:px-4 font-medium text-slate-600 text-center whitespace-nowrap ${sIdx !== 0 ? 'border-t border-slate-100/50' : ''}`}>{slot.day}</td>
+                                <td className={`py-3 px-4 sm:py-4 sm:px-6 text-slate-600 font-medium whitespace-nowrap text-center leading-snug ${sIdx !== 0 ? 'border-t border-slate-100/50' : ''}`}>{slot.time}</td>
                               </tr>
                             ));
                           });
@@ -308,15 +297,15 @@ export default function DoctorProfileClient({ initialDoctor }: { initialDoctor: 
                       </tbody>
                     </table>
                   </div>
-                  <div className="mt-0 rounded-b-xl border border-t-0 border-slate-200 bg-slate-50 py-2.5">
-                    <p className="text-[#d9232d] text-xs font-bold text-center flex items-center justify-center gap-1.5">
+                  <div className="mt-0 rounded-b-xl border border-t-0 border-slate-200 bg-slate-50 py-2.5 px-4">
+                    <p className="text-[#d9232d] text-xs font-bold text-center flex items-center justify-center gap-1.5 whitespace-nowrap">
                       <Phone className="w-3.5 h-3.5" />
                       For Appointment, please call <a href="tel:02040151100" className="hover:underline">020 4015 1100</a>
                     </p>
                   </div>
                 </div>
               ) : (
-                <div className="w-full max-w-2xl p-4 border border-dashed border-slate-300 rounded-xl bg-slate-50 text-slate-500 font-medium text-sm flex flex-col items-center justify-center gap-2">
+                <div className="w-full sm:w-fit sm:min-w-[480px] max-w-full p-4 border border-dashed border-slate-300 rounded-xl bg-slate-50 text-slate-500 font-medium text-sm flex flex-col items-center justify-center gap-2">
                   <Calendar className="w-5 h-5 text-slate-400" />
                   No OPD schedule available
                 </div>

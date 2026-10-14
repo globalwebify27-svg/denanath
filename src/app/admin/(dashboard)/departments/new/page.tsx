@@ -1,35 +1,21 @@
 import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, Save, HeartPulse, Search } from "lucide-react";
+import { ArrowLeft, HeartPulse, Search } from "lucide-react";
 
 import IconPicker from "@/components/IconPicker";
-import QuillEditor from "@/components/QuillEditor";
-import PhotoGalleryEditor from "@/components/PhotoGalleryEditor";
-import SectionHeaderClient from "../[id]/SectionHeaderClient";
-import PublicationLinkSectionClient from "../[id]/PublicationLinkSectionClient";
 import SubmitButton from "@/app/admin/(dashboard)/components/SubmitButton";
+import DepartmentSectionsManager from "../DepartmentSectionsManager";
+import {
+  getDefaultDepartmentSections,
+  buildDepartmentDescription,
+} from "../departmentSectionsHelper";
 
 export default function NewDepartmentPage() {
   async function createDepartment(formData: FormData) {
     "use server";
-    
-    const cleanHtml = (html: string) => html;
 
     const name = formData.get("name") as string;
-    const overview = cleanHtml(formData.get("overview") as string);
-    const spectrum = cleanHtml(formData.get("spectrum") as string);
-    const paediatric = cleanHtml(formData.get("paediatric") as string);
-    let facilities = cleanHtml(formData.get("facilities") as string);
-    const location = cleanHtml(formData.get("location") as string);
-    const timetable = cleanHtml(formData.get("timetable") as string);
-    const workload = cleanHtml(formData.get("workload") as string);
-    const courses = cleanHtml(formData.get("courses") as string);
-    const events = cleanHtml(formData.get("events") as string);
-    const contactUs = cleanHtml(formData.get("contactUs") as string);
-    const galleryJson = formData.get("gallery") as string;
-    const consultant = formData.get("consultant") as string;
-    
     const headOfDepartment = formData.get("headOfDepartment") as string;
     const icon = formData.get("icon") as string;
     const status = formData.get("status") === "on";
@@ -38,82 +24,7 @@ export default function NewDepartmentPage() {
     const seoMetaDescription = formData.get("seoMetaDescription") as string;
     const seoKeywords = formData.get("seoKeywords") as string;
 
-    let galleryHtml = "";
-    if (galleryJson) {
-      try {
-        const rawItems = JSON.parse(galleryJson);
-        const items = Array.isArray(rawItems)
-          ? rawItems.filter((img: any) => img && typeof img.url === 'string' && img.url.trim() !== '' && !img.url.startsWith('Image:'))
-          : [];
-        if (items.length > 0) {
-          galleryHtml = `
-    <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-      ${items.map((img: any) => `
-      <div class="bg-slate-50 rounded-xl text-center border border-slate-200 overflow-hidden flex flex-col">
-        <img src="${img.url}" alt="${img.name || ''}" class="w-full h-48 object-cover m-0" />
-        <div class="p-4 flex-grow flex items-center justify-center">
-          <p class="font-bold text-[#002b5c] m-0">${img.name || ''}</p>
-        </div>
-      </div>`).join('')}
-    </div>`;
-        }
-      } catch (e) {
-        galleryHtml = galleryJson;
-      }
-    }
-
-    // Helper to inject list styling
-    const styleList = (html: string) => {
-      if (!html) return '';
-      return html.replace(/<ul/g, '<ul class="list-disc pl-5 space-y-2"');
-    };
-
-    // Helper to format facilities as a grid of teal boxes
-    const styleFacilities = (html: string) => {
-      if (!html) return '';
-      let styled = html.replace(/<ul/g, '<ul class="grid grid-cols-2 md:grid-cols-4 gap-4 list-none pl-0 m-0"');
-      styled = styled.replace(/<li[^>]*>/g, '<li class="bg-teal-50 p-4 rounded-xl text-center font-semibold text-[#007a87] shadow-sm">');
-      styled = styled.replace(/<p[^>]*>/g, '<p class="font-medium text-slate-800 p-4 border border-slate-200 rounded-xl bg-slate-50 mt-4">');
-      return styled;
-    };
-
-    // Helper to style table
-    const styleTable = (html: string) => {
-      if (!html) return '';
-      let styled = html.replace(/<table/g, '<div class="overflow-x-auto"><table class="w-full text-sm text-left border-collapse border border-slate-200"');
-      styled = styled.replace(/<\/table>/g, '</table></div>');
-      styled = styled.replace(/<thead/g, '<thead class="text-xs text-white uppercase bg-[#002b5c]"');
-      styled = styled.replace(/<th/g, '<th class="p-2 border border-slate-300"');
-      styled = styled.replace(/<td/g, '<td class="p-2 border border-slate-200"');
-      styled = styled.replace(/<tr/g, '<tr class="bg-white hover:bg-slate-50"');
-      return styled;
-    };
-
-    const publicationLink = (formData.get("publicationLink") as string || "").trim();
-    const publicationLinkText = (formData.get("publicationLinkText") as string || "View Details").trim();
-    
-    let publicationHtml = "";
-    if (publicationLink) {
-      publicationHtml = `<section><h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Publications / Link</h3><p><a href="${publicationLink}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-5 py-2.5 bg-[#007a87] text-white font-bold text-sm rounded-xl hover:bg-[#005f69] transition-colors">${publicationLinkText || 'View Details'}</a></p></section>`;
-    }
-
-    const description = `
-<div class="space-y-8 text-slate-700">
-  ${publicationHtml}
-  ${overview ? `<section><h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Overview</h3>${styleList(overview)}</section>` : ''}
-  ${spectrum ? `<section><h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Spectrum and Services</h3>${styleList(spectrum)}</section>` : ''}
-  ${paediatric ? `<section><h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Paediatric Liver Clinic</h3>${styleList(paediatric)}</section>` : ''}
-  ${facilities ? `<section><h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Facilities</h3>${styleFacilities(facilities)}</section>` : ''}
-  ${location ? `<section><h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Location of Department</h3><div class="font-medium text-slate-800">${location}</div></section>` : ''}
-  ${timetable ? `<section><h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Departmental Timetable</h3>${styleTable(timetable)}</section>` : ''}
-  ${workload ? `<section><h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Departmental Workload</h3>${styleList(workload)}</section>` : ''}
-  ${courses ? `<section><h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Courses and Training</h3>${styleList(courses)}</section>` : ''}
-  ${events ? `<section><h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Events</h3>${styleList(events)}</section>` : ''}
-  ${contactUs ? `<section><h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Contact Us</h3>${styleList(contactUs)}</section>` : ''}
-  ${galleryHtml ? `<section><h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Photo Gallery</h3>${galleryHtml}</section>` : ''}
-  ${consultant ? `<section><h3 class="text-xl font-bold text-[#002b5c] mb-4 border-b pb-2">Consultant</h3>${consultant}</section>` : ''}
-</div>
-    `;
+    const description = await buildDepartmentDescription(formData, name);
 
     // Create department without description first
     const newDepartment = await prisma.department.create({
@@ -130,7 +41,7 @@ export default function NewDepartmentPage() {
 
     // Bypass Prisma Client stale schema limit by updating description directly via SQL
     await prisma.$executeRawUnsafe(
-      'UPDATE Department SET description = ? WHERE id = ?',
+      "UPDATE Department SET description = ? WHERE id = ?",
       description,
       newDepartment.id
     );
@@ -138,8 +49,13 @@ export default function NewDepartmentPage() {
     const { revalidatePath } = require("next/cache");
     revalidatePath("/", "layout");
 
-    redirect("/admin/departments?alert=" + encodeURIComponent("Department created successfully!"));
+    redirect(
+      "/admin/departments?alert=" +
+        encodeURIComponent("Department created successfully!")
+    );
   }
+
+  const initialSections = getDefaultDepartmentSections();
 
   return (
     <div className="p-4 md:p-8 max-w-6xl mx-auto pb-32">
@@ -147,7 +63,10 @@ export default function NewDepartmentPage() {
       <div className="mb-10 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 bg-white p-6 md:p-10 rounded-3xl shadow-sm border border-slate-100 relative overflow-hidden group">
         <div className="absolute top-0 left-0 w-2 h-full bg-gradient-to-b from-[#002b5c] to-[#007a87]"></div>
         <div className="z-10 relative">
-          <Link href="/admin/departments" className="inline-flex items-center gap-2 text-sm font-bold text-[#007a87] hover:text-[#005c66] transition-colors mb-3">
+          <Link
+            href="/admin/departments"
+            className="inline-flex items-center gap-2 text-sm font-bold text-[#007a87] hover:text-[#005c66] transition-colors mb-3"
+          >
             <ArrowLeft size={16} /> Back to Departments
           </Link>
           <h1 className="text-[32px] md:text-[40px] font-black text-[#002b5c] tracking-tight leading-tight mb-2">
@@ -159,7 +78,7 @@ export default function NewDepartmentPage() {
         </div>
         {/* subtle background decoration */}
         <div className="absolute right-0 top-0 opacity-[0.03] pointer-events-none group-hover:scale-110 transition-transform duration-700">
-           <HeartPulse size={200} className="text-[#007a87] -mt-10 -mr-10" />
+          <HeartPulse size={200} className="text-[#007a87] -mt-10 -mr-10" />
         </div>
       </div>
 
@@ -167,7 +86,12 @@ export default function NewDepartmentPage() {
         <form action={createDepartment} className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
-              <label htmlFor="name" className="text-[12px] font-[800] text-gray-700 uppercase tracking-widest">Department Name *</label>
+              <label
+                htmlFor="name"
+                className="text-[12px] font-[800] text-gray-700 uppercase tracking-widest"
+              >
+                Department Name *
+              </label>
               <input
                 type="text"
                 id="name"
@@ -179,7 +103,12 @@ export default function NewDepartmentPage() {
             </div>
 
             <div className="space-y-2">
-              <label htmlFor="headOfDepartment" className="text-[12px] font-[800] text-gray-700 uppercase tracking-widest">Head of Department</label>
+              <label
+                htmlFor="headOfDepartment"
+                className="text-[12px] font-[800] text-gray-700 uppercase tracking-widest"
+              >
+                Head of Department
+              </label>
               <input
                 type="text"
                 id="headOfDepartment"
@@ -190,47 +119,18 @@ export default function NewDepartmentPage() {
             </div>
 
             <div className="space-y-2 md:col-span-2">
-              <label className="text-[12px] font-[800] text-gray-700 uppercase tracking-widest">Department Icon Name</label>
+              <label className="text-[12px] font-[800] text-gray-700 uppercase tracking-widest">
+                Department Icon Name
+              </label>
               <IconPicker name="icon" placeholder="Select department icon" />
-              <p className="text-[11px] font-[600] text-gray-400 mt-1">Select a Lucide React icon visual representation.</p>
+              <p className="text-[11px] font-[600] text-gray-400 mt-1">
+                Select a Lucide React icon visual representation.
+              </p>
             </div>
           </div>
 
-          <div className="space-y-8">
-            <div className="border-t border-gray-100 pt-6">
-              <h4 className="text-[14px] font-[800] text-[#002b5c] uppercase tracking-widest mb-4">Department Content Sections</h4>
-              <p className="text-[12px] font-[600] text-gray-500 mb-6">Fill in the dedicated sections below. These will be formatted automatically on the frontend.</p>
-            </div>
-
-            <div className="space-y-6">
-              {[
-                { label: "Overview", name: "overview" },
-                { label: "Spectrum and Services", name: "spectrum" },
-                { label: "Paediatric Liver Clinic", name: "paediatric" },
-                { label: "Facilities", name: "facilities" },
-                { label: "Location of Department", name: "location" },
-                { label: "Departmental Timetable", name: "timetable" },
-                { label: "Departmental Workload", name: "workload" },
-                { label: "Courses and Training", name: "courses" },
-                { label: "Events", name: "events" },
-                { label: "Contact Us", name: "contactUs" },
-              ].map((sec) => (
-                <div key={sec.name} className="bg-slate-50/70 p-5 rounded-2xl border border-slate-200/80 space-y-4">
-                  <SectionHeaderClient title={sec.label} />
-                  <QuillEditor name={sec.name} />
-                </div>
-              ))}
-            </div>
-
-            <div className="space-y-2">
-              <PhotoGalleryEditor name="gallery" />
-            </div>
-
-            <div className="bg-slate-50/70 p-5 rounded-2xl border border-slate-200/80 space-y-4">
-              <SectionHeaderClient title="Consultant" />
-              <QuillEditor name="consultant" />
-            </div>
-          </div>
+          {/* Department Content Sections Manager */}
+          <DepartmentSectionsManager initialSections={initialSections} />
 
           {/* Card: SEO Settings */}
           <div className="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden group hover:shadow-md transition-shadow duration-300">
@@ -240,21 +140,44 @@ export default function NewDepartmentPage() {
               </div>
               <div>
                 <h2 className="text-[20px] font-black text-[#002b5c]">SEO Settings</h2>
-                <p className="text-[13px] text-slate-500 font-medium">Manage search engine optimization meta tags.</p>
+                <p className="text-[13px] text-slate-500 font-medium">
+                  Manage search engine optimization meta tags.
+                </p>
               </div>
             </div>
             <div className="p-6 md:p-8 space-y-6">
               <div>
-                <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Meta Title</label>
-                <input type="text" name="seoMetaTitle" className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 transition-all duration-200 text-slate-700 font-medium leading-relaxed" placeholder="Enter SEO Meta Title..." />
+                <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">
+                  Meta Title
+                </label>
+                <input
+                  type="text"
+                  name="seoMetaTitle"
+                  className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 transition-all duration-200 text-slate-700 font-medium leading-relaxed"
+                  placeholder="Enter SEO Meta Title..."
+                />
               </div>
               <div>
-                <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Meta Description</label>
-                <textarea name="seoMetaDescription" rows={3} className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 transition-all duration-200 text-slate-700 font-medium leading-relaxed resize-none" placeholder="Enter SEO Meta Description..." />
+                <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">
+                  Meta Description
+                </label>
+                <textarea
+                  name="seoMetaDescription"
+                  rows={3}
+                  className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 transition-all duration-200 text-slate-700 font-medium leading-relaxed resize-none"
+                  placeholder="Enter SEO Meta Description..."
+                />
               </div>
               <div>
-                <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Keywords</label>
-                <textarea name="seoKeywords" rows={2} className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 transition-all duration-200 text-slate-700 font-medium leading-relaxed resize-none text-sm" placeholder="hospital, care, pune, best hospital..." />
+                <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">
+                  Keywords
+                </label>
+                <textarea
+                  name="seoKeywords"
+                  rows={2}
+                  className="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 transition-all duration-200 text-slate-700 font-medium leading-relaxed resize-none text-sm"
+                  placeholder="hospital, care, pune, best hospital..."
+                />
               </div>
             </div>
           </div>
@@ -267,7 +190,10 @@ export default function NewDepartmentPage() {
               defaultChecked
               className="w-5 h-5 text-[#007a87] bg-white border-gray-300 rounded focus:ring-[#007a87]"
             />
-            <label htmlFor="status" className="text-[14px] font-[700] text-gray-800 cursor-pointer">
+            <label
+              htmlFor="status"
+              className="text-[14px] font-[700] text-gray-800 cursor-pointer"
+            >
               Active Department (Visible on website)
             </label>
           </div>
@@ -279,7 +205,11 @@ export default function NewDepartmentPage() {
             >
               Cancel
             </Link>
-            <SubmitButton text="Save Department" loadingText="Saving..." successMessage="Department created successfully!" />
+            <SubmitButton
+              text="Save Department"
+              loadingText="Saving..."
+              successMessage="Department created successfully!"
+            />
           </div>
         </form>
       </div>

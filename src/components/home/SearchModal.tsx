@@ -221,7 +221,7 @@ export default function SearchModal({ isOpen, onClose, doctors, departments }: S
           </div>
 
           {/* Highlighted Search Input Box */}
-          <div className="pb-5 sm:pb-7">
+          <div className="pb-4 sm:pb-5">
             <div className="relative flex items-center gap-3 sm:gap-4 px-4 sm:px-5 py-3 sm:py-3.5 rounded-2xl bg-slate-50/90 border-2 border-slate-200 hover:border-slate-300 focus-within:border-[#007a87] focus-within:bg-white focus-within:ring-4 focus-within:ring-[#007a87]/15 shadow-sm transition-all duration-200">
               <Search className="w-5 h-5 sm:w-6 sm:h-6 text-[#007a87] flex-shrink-0" />
               <input
@@ -247,7 +247,7 @@ export default function SearchModal({ isOpen, onClose, doctors, departments }: S
         </div>
 
         {/* Dynamic Results Area (Scrollable) */}
-        <div className="bg-slate-50/40 overflow-y-auto flex-1 px-5 sm:px-10 md:px-12 pb-8 sm:pb-12">
+        <div className="bg-slate-50/40 overflow-y-auto flex-1 px-5 sm:px-10 md:px-12 pt-3 sm:pt-4 pb-8 sm:pb-12">
             
             {/* Doctor Search Results */}
             {activeTab === "doctor" && (
@@ -324,10 +324,10 @@ export default function SearchModal({ isOpen, onClose, doctors, departments }: S
                     )}
                   </div>
                 ) : (
-                  <div>
+                  <div className="py-2 sm:py-3 animate-in fade-in duration-300">
                     {filteredDoctors.length > 0 ? (
                       <>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                           {filteredDoctors.map((doc) => (
                             <Link 
                               key={doc.id} 
@@ -421,9 +421,10 @@ export default function SearchModal({ isOpen, onClose, doctors, departments }: S
                       <>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                           {displayDepts.slice(0, 8).map((dept) => (
-                            <div 
+                            <Link 
                               key={`feat-${dept.id}`} 
-                              onClick={() => setSearchQuery(dept.name)}
+                              href={`/Appointment?speciality_id=${dept.id}`}
+                              onClick={onClose}
                               className="p-3.5 sm:p-4 rounded-xl sm:rounded-2xl bg-white border border-slate-200/90 shadow-[0_2px_8px_-2px_rgba(0,0,0,0.06)] hover:border-[#007a87] hover:shadow-md hover:shadow-[#007a87]/10 hover:-translate-y-0.5 transition-all duration-200 group flex items-start gap-3.5 sm:gap-4 cursor-pointer"
                             >
                               <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-teal-50 border border-teal-100 text-[#007a87] flex items-center justify-center flex-shrink-0 group-hover:bg-[#007a87] group-hover:text-white group-hover:border-[#007a87] transition-all shadow-sm">
@@ -436,7 +437,7 @@ export default function SearchModal({ isOpen, onClose, doctors, departments }: S
                               <div className="w-7 h-7 rounded-full bg-slate-50 group-hover:bg-[#007a87] group-hover:text-white text-slate-400 flex items-center justify-center transition-colors flex-shrink-0 opacity-70 group-hover:opacity-100 self-center">
                                 <ArrowRight className="w-3.5 h-3.5" />
                               </div>
-                            </div>
+                            </Link>
                           ))}
                         </div>
 
@@ -455,10 +456,10 @@ export default function SearchModal({ isOpen, onClose, doctors, departments }: S
                     )}
                   </div>
                 ) : (
-                  <div>
+                  <div className="py-2 sm:py-3 animate-in fade-in duration-300">
                     {filteredDepts.length > 0 ? (
                       <>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                           {filteredDepts.map((dept) => (
                             <Link key={dept.id} href={`/Appointment?speciality_id=${dept.id}`} onClick={onClose} 
                               className="group p-3.5 sm:p-4 rounded-xl sm:rounded-2xl bg-white border border-slate-200/90 shadow-[0_2px_8px_-2px_rgba(0,0,0,0.06)] hover:border-[#007a87] hover:shadow-md hover:shadow-[#007a87]/10 hover:-translate-y-0.5 flex items-start gap-3.5 sm:gap-4 transition-all cursor-pointer"
