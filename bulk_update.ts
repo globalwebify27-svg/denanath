@@ -6,8 +6,8 @@ const prisma = new PrismaClient();
 async function main() {
     const dataRaw = fs.readFileSync('bulk_mapped.json', 'utf8');
     const allDocs = JSON.parse(dataRaw);
-    
-    // Group all entries by doctor_id
+
+    // Group all entries by doctor_idssa
     const docsByDoctorId = new Map<string, any[]>();
     for (const doc of allDocs) {
         const docId = String(doc.api_data.doctor_id || '');
