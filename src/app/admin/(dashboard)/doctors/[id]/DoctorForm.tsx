@@ -3,8 +3,9 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Save, Plus, Trash2, ArrowLeft, HeartPulse, Search, Upload, ExternalLink, FileText, Loader2 } from "lucide-react";
+import { Save, Plus, Trash2, ArrowLeft, HeartPulse, Search, Upload, ExternalLink, FileText, Loader2, Eye, Download } from "lucide-react";
 import CustomDropdown from "@/components/CustomDropdown";
+import { getDoctorPublicationDetails, triggerDoctorPdfDownload } from "@/lib/doctorPublicationUtils";
 
 
 export default function DoctorForm({ doctor, id, departments = [], apiSpecialities = [] }: { doctor: any; id: string; departments?: string[], apiSpecialities?: string[] }) {
@@ -696,17 +697,31 @@ export default function DoctorForm({ doctor, id, departments = [], apiSpecialiti
                   }}
                 />
               </label>
-              {pub.link && (
-                <a
-                  href={pub.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-2 text-[#007a87] hover:bg-teal-50 rounded-lg shrink-0 border border-teal-200 bg-white"
-                  title="View / Download PDF"
-                >
-                  <ExternalLink size={16} />
-                </a>
-              )}
+              {pub.link && (() => {
+                const { fileName, downloadUrl, viewUrl } = getDoctorPublicationDetails(formData, pub, index);
+                return (
+                  <div className="flex items-center gap-1 shrink-0">
+                    <a
+                      href={viewUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="p-2 text-slate-700 hover:text-[#007a87] hover:bg-teal-50 rounded-lg shrink-0 border border-slate-200 bg-white"
+                      title="View PDF"
+                    >
+                      <Eye size={16} />
+                    </a>
+                    <a
+                      href={downloadUrl}
+                      download={fileName}
+                      onClick={(e) => triggerDoctorPdfDownload(e, pub.link, fileName)}
+                      className="p-2 text-white bg-[#007a87] hover:bg-[#005f6b] rounded-lg shrink-0"
+                      title={`Download PDF as ${fileName}`}
+                    >
+                      <Download size={16} />
+                    </a>
+                  </div>
+                );
+              })()}
             </div>
             <button
               type="button"

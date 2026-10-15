@@ -4,8 +4,9 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import {
   Calendar, Clock, BookOpen, Briefcase, GraduationCap,
-  Stethoscope, Phone, UserRound, FileText, ExternalLink
+  Stethoscope, Phone, UserRound, FileText, ExternalLink, Eye, Download
 } from "lucide-react";
+import { getDoctorPublicationDetails, triggerDoctorPdfDownload } from "@/lib/doctorPublicationUtils";
 
 const DoctorImage = ({ doc, className, iconClassName }: { doc: any, className?: string, iconClassName?: string }) => {
   const [error, setError] = useState(false);
@@ -382,30 +383,7 @@ export default function DoctorProfileClient({ initialDoctor }: { initialDoctor: 
                 </div>
                 <div className="space-y-3">
                   {doctor.publications.map((item: any, i: number) => {
-                    let title = '';
-                    let link = '';
-
-                    if (typeof item === 'string') {
-                      title = item;
-                    } else if (item && typeof item === 'object') {
-                      title = item.title || '';
-                      link = item.link || '';
-                    }
-
-                    const docCode = doctor.dmhDoctorId || doctor.id || '';
-                    const docPrefix = `${doctor.name}${docCode ? ` (${docCode})` : ''}`;
-
-                    if (!title || title.trim().toLowerCase() === 'view pdf link') {
-                      title = `${docPrefix} - Publication ${i + 1}`;
-                    } else if (docCode && !title.includes(docCode)) {
-                      if (!title.toLowerCase().includes((doctor.name || '').toLowerCase())) {
-                        title = `${docPrefix} - ${title}`;
-                      } else {
-                        title = `${docPrefix} - ${title.replace(doctor.name, '').replace(/^[\s:-]+/, '') || `Publication ${i + 1}`}`;
-                      }
-                    }
-
-                    const displayTitle = title.replace(/\[PDF\]/g, '').trim();
+                    const { displayTitle, docCode, link, fileName, downloadUrl, viewUrl } = getDoctorPublicationDetails(doctor, item, i);
 
                     return (
                       <div
@@ -430,15 +408,28 @@ export default function DoctorProfileClient({ initialDoctor }: { initialDoctor: 
                         </div>
 
                         {link && (
-                          <a
-                            href={link}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-white border border-slate-200 text-[#007a87] hover:bg-[#007a87] hover:text-white font-bold text-xs sm:text-sm tracking-wide transition-all shadow-sm shrink-0 self-start sm:self-center"
-                          >
-                            <ExternalLink className="w-3.5 h-3.5" />
-                            <span>View PDF</span>
-                          </a>
+                          <div className="flex items-center gap-2 shrink-0 self-start sm:self-center">
+                            <a
+                              href={viewUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl bg-white border border-slate-200 text-slate-700 hover:text-[#007a87] hover:border-teal-300 font-bold text-xs sm:text-sm tracking-wide transition-all shadow-xs"
+                              title="View PDF"
+                            >
+                              <Eye className="w-4 h-4" />
+                              <span>View</span>
+                            </a>
+                            <a
+                              href={downloadUrl}
+                              download={fileName}
+                              onClick={(e) => triggerDoctorPdfDownload(e, link, fileName)}
+                              className="inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-[#007a87] text-white hover:bg-[#005f6b] font-bold text-xs sm:text-sm tracking-wide transition-all shadow-xs"
+                              title={`Download PDF as ${fileName}`}
+                            >
+                              <Download className="w-4 h-4" />
+                              <span>Download PDF</span>
+                            </a>
+                          </div>
                         )}
                       </div>
                     );

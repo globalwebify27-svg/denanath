@@ -3,7 +3,8 @@
 import React, { useEffect, useRef, useState, useMemo } from "react";
 import DynamicSidebar from "@/components/DynamicSidebar";
 import Link from "next/link";
-import { ChevronRight, ChevronLeft, Stethoscope, Search, UserRound, GraduationCap, ArrowRight, X, Calendar, Clock, BookOpen, Briefcase } from "lucide-react";
+import { ChevronRight, ChevronLeft, Stethoscope, Search, UserRound, GraduationCap, ArrowRight, X, Calendar, Clock, BookOpen, Briefcase, Eye, Download } from "lucide-react";
+import { getDoctorPublicationDetails, triggerDoctorPdfDownload } from "@/lib/doctorPublicationUtils";
 
 const generatePagination = (currentPage: number, totalPages: number) => {
   const delta = 1;
@@ -560,51 +561,44 @@ export default function DoctorDetailsPage() {
                       </h3>
                       <ul className="space-y-3">
                         {selectedDoctor.publications.map((item: any, i: number) => {
-                          let title = '';
-                          let link = '';
-                          
-                          if (typeof item === 'string') {
-                            title = item;
-                          } else if (item && typeof item === 'object') {
-                            title = item.title || '';
-                            link = item.link || '';
-                          }
-
-                          const docCode = selectedDoctor.dmhDoctorId || selectedDoctor.doctor_id || selectedDoctor.id || '';
-                          const docPrefix = `${selectedDoctor.name}${docCode ? ` (${docCode})` : ''}`;
-
-                          if (!title || title.trim().toLowerCase() === 'view pdf link') {
-                            title = `${docPrefix} - Publication ${i + 1}`;
-                          } else if (docCode && !title.includes(docCode)) {
-                            if (!title.toLowerCase().includes((selectedDoctor.name || '').toLowerCase())) {
-                              title = `${docPrefix} - ${title}`;
-                            } else {
-                              title = `${docPrefix} - ${title.replace(selectedDoctor.name, '').replace(/^[\s:-]+/, '') || `Publication ${i + 1}`}`;
-                            }
-                          }
-
-                          const displayTitle = title.replace(/\[PDF\]/g, '').trim();
+                          const { displayTitle, docCode, link, fileName, downloadUrl, viewUrl } = getDoctorPublicationDetails(selectedDoctor, item, i);
 
                           return (
-                            <li key={i} className="flex items-start gap-3 text-slate-600 font-medium leading-relaxed bg-slate-50/70 p-3 rounded-xl border border-slate-100">
-                              <span className="shrink-0 text-xs font-bold text-purple-700 bg-purple-50 px-2 py-0.5 rounded border border-purple-100 mt-0.5">
-                                #{i + 1}
-                              </span>
-                              <div className="flex-1 min-w-0">
-                                <span className="text-slate-800 text-sm font-semibold break-words block">{displayTitle}</span>
-                                {docCode && (
-                                  <span className="text-xs text-slate-500 block mt-0.5">Doctor Code: {docCode}</span>
-                                )}
+                            <li key={i} className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-slate-600 font-medium leading-relaxed bg-slate-50/70 p-3.5 rounded-xl border border-slate-100">
+                              <div className="flex items-start gap-3 min-w-0 flex-1">
+                                <span className="shrink-0 text-xs font-bold text-purple-700 bg-purple-50 px-2 py-0.5 rounded border border-purple-100 mt-0.5">
+                                  #{i + 1}
+                                </span>
+                                <div className="flex-1 min-w-0">
+                                  <span className="text-slate-800 text-sm font-semibold break-words block">{displayTitle}</span>
+                                  {docCode && (
+                                    <span className="text-xs text-slate-500 block mt-0.5">Doctor Code: {docCode}</span>
+                                  )}
+                                </div>
                               </div>
                               {link && (
-                                <a
-                                  href={link}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="shrink-0 inline-flex items-center gap-1 text-red-600 font-bold hover:underline text-xs bg-red-50 px-2.5 py-1 rounded border border-red-100 uppercase tracking-wider self-center"
-                                >
-                                  [View PDF]
-                                </a>
+                                <div className="flex items-center gap-2 shrink-0 self-end sm:self-center">
+                                  <a
+                                    href={viewUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center gap-1.5 text-slate-700 hover:text-[#007a87] font-semibold text-xs bg-white px-2.5 py-1.5 rounded-lg border border-slate-200 hover:border-teal-300 transition-colors shadow-xs"
+                                    title="View PDF"
+                                  >
+                                    <Eye className="w-3.5 h-3.5" />
+                                    <span>View</span>
+                                  </a>
+                                  <a
+                                    href={downloadUrl}
+                                    download={fileName}
+                                    onClick={(e) => triggerDoctorPdfDownload(e, link, fileName)}
+                                    className="inline-flex items-center gap-1.5 text-white font-semibold text-xs bg-[#007a87] hover:bg-[#005f6b] px-3 py-1.5 rounded-lg transition-colors shadow-xs"
+                                    title={`Download PDF as ${fileName}`}
+                                  >
+                                    <Download className="w-3.5 h-3.5" />
+                                    <span>Download</span>
+                                  </a>
+                                </div>
                               )}
                             </li>
                           );
