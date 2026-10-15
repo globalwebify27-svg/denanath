@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Save, Plus, Trash2, ArrowLeft, HeartPulse, Search, Upload, ExternalLink, FileText, Loader2, Eye, Download } from "lucide-react";
 import CustomDropdown from "@/components/CustomDropdown";
-import { getDoctorPublicationDetails, triggerDoctorPdfDownload } from "@/lib/doctorPublicationUtils";
+import { getDoctorPublicationDetails } from "@/lib/doctorPublicationUtils";
 
 
 export default function DoctorForm({ doctor, id, departments = [], apiSpecialities = [] }: { doctor: any; id: string; departments?: string[], apiSpecialities?: string[] }) {
@@ -713,7 +713,6 @@ export default function DoctorForm({ doctor, id, departments = [], apiSpecialiti
                     <a
                       href={downloadUrl}
                       download={fileName}
-                      onClick={(e) => triggerDoctorPdfDownload(e, pub.link, fileName)}
                       className="p-2 text-white bg-[#007a87] hover:bg-[#005f6b] rounded-lg shrink-0"
                       title={`Download PDF as ${fileName}`}
                     >

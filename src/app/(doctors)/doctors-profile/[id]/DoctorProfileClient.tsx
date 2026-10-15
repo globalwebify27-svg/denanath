@@ -6,7 +6,7 @@ import {
   Calendar, Clock, BookOpen, Briefcase, GraduationCap,
   Stethoscope, Phone, UserRound, FileText, ExternalLink, Eye, Download
 } from "lucide-react";
-import { getDoctorPublicationDetails, triggerDoctorPdfDownload } from "@/lib/doctorPublicationUtils";
+import { getDoctorPublicationDetails } from "@/lib/doctorPublicationUtils";
 
 const DoctorImage = ({ doc, className, iconClassName }: { doc: any, className?: string, iconClassName?: string }) => {
   const [error, setError] = useState(false);
@@ -422,7 +422,6 @@ export default function DoctorProfileClient({ initialDoctor }: { initialDoctor: 
                             <a
                               href={downloadUrl}
                               download={fileName}
-                              onClick={(e) => triggerDoctorPdfDownload(e, link, fileName)}
                               className="inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-[#007a87] text-white hover:bg-[#005f6b] font-bold text-xs sm:text-sm tracking-wide transition-all shadow-xs"
                               title={`Download PDF as ${fileName}`}
                             >

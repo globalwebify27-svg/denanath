@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState, useMemo } from "react";
 import DynamicSidebar from "@/components/DynamicSidebar";
 import Link from "next/link";
 import { ChevronRight, ChevronLeft, Stethoscope, Search, UserRound, GraduationCap, ArrowRight, X, Calendar, Clock, BookOpen, Briefcase, Eye, Download } from "lucide-react";
-import { getDoctorPublicationDetails, triggerDoctorPdfDownload } from "@/lib/doctorPublicationUtils";
+import { getDoctorPublicationDetails } from "@/lib/doctorPublicationUtils";
 
 const generatePagination = (currentPage: number, totalPages: number) => {
   const delta = 1;
@@ -591,7 +591,6 @@ export default function DoctorDetailsPage() {
                                   <a
                                     href={downloadUrl}
                                     download={fileName}
-                                    onClick={(e) => triggerDoctorPdfDownload(e, link, fileName)}
                                     className="inline-flex items-center gap-1.5 text-white font-semibold text-xs bg-[#007a87] hover:bg-[#005f6b] px-3 py-1.5 rounded-lg transition-colors shadow-xs"
                                     title={`Download PDF as ${fileName}`}
                                   >

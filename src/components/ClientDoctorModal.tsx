@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { X, Calendar, Clock, BookOpen, Briefcase, GraduationCap, Stethoscope, UserRound, Eye, Download } from 'lucide-react';
-import { getDoctorPublicationDetails, triggerDoctorPdfDownload } from '@/lib/doctorPublicationUtils';
+import { getDoctorPublicationDetails } from '@/lib/doctorPublicationUtils';
 
 const DoctorImage = ({ doc, className, iconClassName }: { doc: any, className?: string, iconClassName?: string }) => {
   const [error, setError] = useState(false);
@@ -313,7 +313,6 @@ export default function ClientDoctorModal({ apiDocs = [] }: { apiDocs: any[] }) 
                               <a
                                 href={downloadUrl}
                                 download={fileName}
-                                onClick={(e) => triggerDoctorPdfDownload(e, link, fileName)}
                                 className="inline-flex items-center gap-1.5 text-white font-semibold text-xs bg-[#007a87] hover:bg-[#005f6b] px-3 py-1.5 rounded-lg transition-colors shadow-xs"
                                 title={`Download PDF as ${fileName}`}
                               >

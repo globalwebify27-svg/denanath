@@ -133,8 +133,9 @@ export async function triggerDoctorPdfDownload(
   url: string,
   fileName: string
 ): Promise<void> {
-  // If download URL already handles attachment header (Cloudinary or API route),
-  // let standard browser download handle it, but fallback to blob download for cross-origin consistency
+  if (e && typeof e.preventDefault === "function") {
+    e.preventDefault();
+  }
   try {
     const res = await fetch(url);
     if (!res.ok) throw new Error("Fetch failed");
@@ -147,9 +148,8 @@ export async function triggerDoctorPdfDownload(
     a.click();
     document.body.removeChild(a);
     setTimeout(() => URL.revokeObjectURL(blobUrl), 1000);
-    e.preventDefault();
   } catch (err) {
-    // If CORS or fetch fails, the anchor href default action will proceed
     console.warn("Direct blob download failed, falling back to link navigation:", err);
+    window.open(url, "_blank");
   }
 }
