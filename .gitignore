@@ -59,6 +59,24 @@ scripts/*backup*.json
 scripts/*.sql
 public/uploads/submissions/*.pdf
 
+# Temporary, Test & Scratch Files
+response.json
+mapped_doctors_test.json
+all_docs.txt
+Navbar_old.tsx
+dummy.png
+*.py
+fix_syntax.sh
+mysql2sqlite.sh
+bulk_*.ts
+test_*.ts
+test_*.js
+scratch_*.ts
+update_*.ts
+fix_*.ts
+fix-*.ts
+replace.js
+
 # Database migration scripts
 migrate.js
 print-schema.js
