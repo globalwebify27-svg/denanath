@@ -1,9 +1,10 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
 import InlineSeoForm from "@/app/admin/(dashboard)/components/InlineSeoForm";
 import DynamicFormEditor from "./components/DynamicFormEditor";
-import { ChevronDown, ChevronUp, Home, Save, CheckCircle2, AlertCircle } from "lucide-react";
+import { ChevronDown, ChevronUp, Home, Save, CheckCircle2, AlertCircle, Menu } from "lucide-react";
 
 export default function HomeSettingsClient({ 
   settingsData 
@@ -206,6 +207,23 @@ export default function HomeSettingsClient({
               
               {isExpanded && (
                 <div className="p-6 pt-0 border-t border-slate-100">
+                  {section.id === "layout_header" && (
+                    <div className="mb-6 p-4 rounded-2xl bg-teal-50 border border-teal-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                      <div>
+                        <h4 className="font-bold text-[#002b5c] text-sm">Dedicated Navigation Menu Manager</h4>
+                        <p className="text-xs text-slate-600 mt-0.5">
+                          Organize which menus appear directly in the top Navbar or inside Sub-menus, promote/demote items, and reorder links.
+                        </p>
+                      </div>
+                      <Link
+                        href="/admin/navigation-menu"
+                        className="px-4 py-2 bg-[#007a87] text-white text-xs font-bold rounded-xl hover:bg-[#00606a] transition-all shrink-0 flex items-center gap-1.5 shadow-sm"
+                      >
+                        <Menu size={14} />
+                        Open Menu Manager →
+                      </Link>
+                    </div>
+                  )}
                   <DynamicFormEditor 
                     value={formData[section.id] || {}}
                     onChange={(newVal) => setFormData(prev => ({ ...prev, [section.id]: newVal }))}

@@ -57,8 +57,16 @@ export default function DynamicSidebar({
         staticDropdown = [];
         filteredDynamicLinks = [];
       } else if (layoutMenu.dropdown) {
-        // Use the dropdown items from layoutMenu to get updated names and hrefs
-        staticDropdown = layoutMenu.dropdown.filter((lItem: any) => lItem.isActive !== false);
+        const activeList: any[] = [];
+        layoutMenu.dropdown.filter((lItem: any) => lItem.isActive !== false).forEach((lItem: any) => {
+          activeList.push(lItem);
+          if (lItem.dropdown) {
+            lItem.dropdown.filter((ss: any) => ss.isActive !== false).forEach((ss: any) => {
+              activeList.push(ss);
+            });
+          }
+        });
+        staticDropdown = activeList;
       }
     }
   }

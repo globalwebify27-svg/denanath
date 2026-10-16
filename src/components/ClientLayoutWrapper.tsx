@@ -56,6 +56,14 @@ export default function ClientLayoutWrapper({
             isInactive = true;
             break;
           }
+          if (sub.dropdown) {
+            for (const subSub of sub.dropdown) {
+              if (subSub.href === pathname && subSub.isActive === false) {
+                isInactive = true;
+                break;
+              }
+            }
+          }
         }
       }
     }

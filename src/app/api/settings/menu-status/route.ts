@@ -24,6 +24,15 @@ export async function POST(req: Request) {
 
         if (m.dropdown) {
           m.dropdown.forEach((sub: any) => {
+            if (sub.dropdown) {
+              sub.dropdown.forEach((subSub: any) => {
+                if (subSub.href === href) {
+                  subSub.isActive = isActive;
+                  modified = true;
+                  foundInSubmenu = true;
+                }
+              });
+            }
             if (sub.href === href) {
               sub.isActive = isActive;
               modified = true;

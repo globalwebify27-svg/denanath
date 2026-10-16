@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { Menu, X, Phone, ChevronDown, Globe, Check } from "lucide-react";
+import { Menu, X, Phone, ChevronDown, ChevronRight, Globe, Check } from "lucide-react";
 import Link from "next/link";
 
 import { baseNavLinks } from "@/lib/navConfig";
@@ -14,6 +14,7 @@ export default function Navbar({ topHeaderSettings, headerSettings }: { topHeade
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [expandedMobileMenu, setExpandedMobileMenu] = useState<string | null>(null);
+  const [expandedMobileSubMenu, setExpandedMobileSubMenu] = useState<string | null>(null);
   
   const [searchQuery, setSearchQuery] = useState('');
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -187,6 +188,22 @@ export default function Navbar({ topHeaderSettings, headerSettings }: { topHeade
         newDropdown = [...newDropdown, ...Array.from(injectedMap.values())];
       }
       
+      // Filter and sanitize any sub-sub items inside subLink.dropdown
+      newDropdown = newDropdown.map((subLink: any) => {
+        const filteredSubSub = subLink.dropdown
+          ? subLink.dropdown.filter((subSub: any) => subSub.isActive !== false)
+          : [];
+        let subHref = subLink.href;
+        if (filteredSubSub.length > 0 && (!subHref || subHref === "#")) {
+          subHref = filteredSubSub[0].href;
+        }
+        return {
+          ...subLink,
+          href: subHref,
+          dropdown: filteredSubSub.length > 0 ? filteredSubSub : undefined,
+        };
+      });
+
       let updatedHref = link.href;
       // If this menu has a dropdown, ensure the parent href points to the first ACTIVE child.
       // This prevents the parent link from redirecting to a 404 if the original first child is inactive.
@@ -202,6 +219,14 @@ export default function Navbar({ topHeaderSettings, headerSettings }: { topHeade
       setExpandedMobileMenu(null);
     } else {
       setExpandedMobileMenu(name);
+    }
+  };
+
+  const toggleMobileSubDropdown = (name: string) => {
+    if (expandedMobileSubMenu === name) {
+      setExpandedMobileSubMenu(null);
+    } else {
+      setExpandedMobileSubMenu(name);
     }
   };
 
@@ -466,17 +491,43 @@ export default function Navbar({ topHeaderSettings, headerSettings }: { topHeade
                     <div className={`absolute top-full pt-2 hidden group-hover:block w-56 2xl:w-64 z-50 animate-fadeIn ${
                       idx > 4 ? "right-0" : "left-0"
                     }`}>
-                      <div className="bg-white rounded-lg shadow-xl border border-slate-100 py-1.5 overflow-hidden">
-                        {link.dropdown.map((subLink: any, sIdx: number) => (
-                          <li key={sIdx} className="w-full list-none">
-                            <Link key={sIdx}
-                            href={subLink.href || "#"}
-                            className="block px-4 py-2 text-[13px] 2xl:text-[14px] font-semibold text-slate-600 hover:bg-slate-50 hover:text-[#007a87] border-b border-slate-50 last:border-0 transition-colors whitespace-normal"
-                          >
-                            {subLink.name || "Sub Menu"}
-                          </Link>
-                          </li>
-                        ))}
+                      <div className="bg-white rounded-lg shadow-xl border border-slate-100 py-1.5 overflow-visible">
+                        {link.dropdown.map((subLink: any, sIdx: number) => {
+                          const hasSubSub = subLink.dropdown && subLink.dropdown.length > 0;
+                          return (
+                            <div key={sIdx} className="w-full relative group/sub">
+                              <Link
+                                href={subLink.href || "#"}
+                                className="flex items-center justify-between px-4 py-2 text-[13px] 2xl:text-[14px] font-semibold text-slate-600 hover:bg-slate-50 hover:text-[#007a87] border-b border-slate-50 last:border-0 transition-colors whitespace-normal"
+                              >
+                                <span>{subLink.name || "Sub Menu"}</span>
+                                {hasSubSub && (
+                                  <ChevronRight className="w-3.5 h-3.5 text-slate-400 group-hover/sub:text-[#007a87] group-hover/sub:translate-x-0.5 shrink-0 ml-1.5 transition-all" />
+                                )}
+                              </Link>
+
+                              {/* Flyout Sub-Sub Menu */}
+                              {hasSubSub && (
+                                <div className={`absolute top-0 hidden group-hover/sub:block w-56 2xl:w-64 z-50 animate-fadeIn ${
+                                  idx > 4 ? "right-full mr-1" : "left-full ml-1"
+                                }`}>
+                                  <div className="bg-white rounded-lg shadow-xl border border-slate-100 py-1.5 overflow-hidden">
+                                    {subLink.dropdown.map((subSubLink: any, ssIdx: number) => (
+                                      <div key={ssIdx} className="w-full">
+                                        <Link
+                                          href={subSubLink.href || "#"}
+                                          className="block px-4 py-2 text-[12.5px] 2xl:text-[13.5px] font-semibold text-slate-600 hover:bg-slate-50 hover:text-[#007a87] border-b border-slate-50 last:border-0 transition-colors whitespace-normal"
+                                        >
+                                          {subSubLink.name || "Sub-Sub Menu"}
+                                        </Link>
+                                      </div>
+                                    ))}
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                          );
+                        })}
                       </div>
                     </div>
                   )}
@@ -674,19 +725,56 @@ export default function Navbar({ topHeaderSettings, headerSettings }: { topHeade
                     
                     <div
                       className={`pl-4 space-y-0.5 overflow-hidden transition-all duration-200 ${
-                        expandedMobileMenu === link.name ? "max-h-96 opacity-100 mt-1 mb-2" : "max-h-0 opacity-0"
+                        expandedMobileMenu === link.name ? "max-h-[1500px] opacity-100 mt-1 mb-2" : "max-h-0 opacity-0"
                       }`}
                     >
-                      {link.dropdown.map((subLink: any, sIdx: number) => (
-                        <Link
-                          key={sIdx}
-                          href={subLink.href}
-                          onClick={() => setMobileMenuOpen(false)}
-                          className="block px-3 py-2 text-[13px] md:text-[14px] font-semibold text-slate-600 hover:text-[#007a87]"
-                        >
-                          {subLink.name}
-                        </Link>
-                      ))}
+                      {link.dropdown.map((subLink: any, sIdx: number) => {
+                        const hasSubSub = subLink.dropdown && subLink.dropdown.length > 0;
+                        const subKey = `${link.name}-${subLink.name}`;
+                        const isSubExpanded = expandedMobileSubMenu === subKey;
+                        return (
+                          <div key={sIdx} className="flex flex-col">
+                            {hasSubSub ? (
+                              <>
+                                <button
+                                  type="button"
+                                  onClick={() => toggleMobileSubDropdown(subKey)}
+                                  className="w-full flex justify-between items-center px-3 py-2 text-[13px] md:text-[14px] font-semibold text-slate-700 hover:text-[#007a87]"
+                                >
+                                  <span>{subLink.name}</span>
+                                  <ChevronDown
+                                    className={`w-3.5 h-3.5 transform transition-transform ${
+                                      isSubExpanded ? "rotate-180 text-[#007a87]" : "text-slate-400"
+                                    }`}
+                                  />
+                                </button>
+                                {isSubExpanded && (
+                                  <div className="pl-4 space-y-0.5 border-l-2 border-teal-200/50 ml-3 my-1">
+                                    {subLink.dropdown.map((subSub: any, ssIdx: number) => (
+                                      <Link
+                                        key={ssIdx}
+                                        href={subSub.href}
+                                        onClick={() => setMobileMenuOpen(false)}
+                                        className="block px-3 py-1.5 text-[12px] md:text-[13px] font-medium text-slate-600 hover:text-[#007a87]"
+                                      >
+                                        {subSub.name}
+                                      </Link>
+                                    ))}
+                                  </div>
+                                )}
+                              </>
+                            ) : (
+                              <Link
+                                href={subLink.href}
+                                onClick={() => setMobileMenuOpen(false)}
+                                className="block px-3 py-2 text-[13px] md:text-[14px] font-semibold text-slate-600 hover:text-[#007a87]"
+                              >
+                                {subLink.name}
+                              </Link>
+                            )}
+                          </div>
+                        );
+                      })}
                     </div>
                   </>
                 ) : (

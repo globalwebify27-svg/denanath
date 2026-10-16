@@ -55,6 +55,11 @@ const MENU_ITEMS = [
     ]
   },
   {
+    name: "Navigation Menu", permission: ["manage_menu_pages", "manage_home"],
+    icon: <Menu size={20} />,
+    href: "/admin/navigation-menu"
+  },
+  {
     name: "News & Events", permission: "manage_events",
     icon: <Calendar size={20} />,
     href: "/admin/events"
@@ -254,7 +259,13 @@ export default function AdminSidebar({
   });
 
   // 3. Populate sub-pages into their respective menu categories
-  const finalMenuItems = allBaseMenus.filter((section: any) => permissions.includes("*") || section.permission === "any" || permissions.includes(section.permission));
+  const finalMenuItems = allBaseMenus.filter((section: any) => {
+    if (permissions.includes("*") || section.permission === "any") return true;
+    if (Array.isArray(section.permission)) {
+      return section.permission.some((p: string) => permissions.includes(p));
+    }
+    return permissions.includes(section.permission);
+  });
 
   return (
     <>
