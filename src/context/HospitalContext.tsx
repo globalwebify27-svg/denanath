@@ -154,88 +154,88 @@ const initialDepartments: Department[] = [
 
 const initialDoctors: Doctor[] = [
   {
-    id: "dr-shirish-kelkar",
-    name: "Dr. Shirish Kelkar",
-    specialtyId: "cardiology",
-    specialtyName: "Cardiology & Cardiac Surgery",
-    qualifications: "MD, DM (Cardiology), FACC",
-    experience: 26,
+    id: "3678",
+    name: "Dr. AGARKHEDKAR NIKHIL",
+    specialtyId: "54",
+    specialtyName: "PLASTIC SURGERY",
+    qualifications: "MBBS, MS, MCh (PLASTIC SURGERY)",
+    experience: 11,
     rating: 4.9,
+    availableDays: ["Wednesday", "Saturday"],
+    timings: "11.00 am to 1.00 pm / 2.00 pm to 4.00 pm",
+    image: "https://res.cloudinary.com/yce56tuw/image/upload/v1789716499/doctor/dj30vkhthwsurjkuwkhb.jpg",
+    fee: 1000,
+    bio: "Consultant Plastic & Cosmetic Surgeon at Deenanath Mangeshkar Hospital & Research Center."
+  },
+  {
+    id: "19518",
+    name: "Dr. REGE ISHANT SHEKHAR",
+    specialtyId: "36",
+    specialtyName: "NEUROLOGICAL SURGERY",
+    qualifications: "MBBS, MS (General Surgery), MCh (Neurosurgery)",
+    experience: 8,
+    rating: 4.8,
     availableDays: ["Monday", "Wednesday", "Friday"],
     timings: "10:00 AM - 02:00 PM",
-    image: "https://images.unsplash.com/photo-1622253692010-333f2da6031d?q=80&w=300&auto=format&fit=crop",
-    fee: 1000,
-    bio: "Dr. Shirish Kelkar is a pioneering interventional cardiologist in Maharashtra, specializing in complex angioplasties and structural heart disease interventions."
-  },
-  {
-    id: "dr-anjali-deshpande",
-    name: "Dr. Anjali Deshpande",
-    specialtyId: "neurology",
-    specialtyName: "Neurology & Neurosurgery",
-    qualifications: "MS, MCh (Neurosurgery)",
-    experience: 19,
-    rating: 4.8,
-    availableDays: ["Tuesday", "Thursday", "Saturday"],
-    timings: "11:00 AM - 04:00 PM",
-    image: "https://www.dmhospital.org/images/Hospital/Doctor/Small-DMH/102_Pic.jpg",
+    image: "https://www.dmhospital.org/images/Hospital/Doctor/Small-DMH/1955_Pic.jpg",
     fee: 1200,
-    bio: "Dr. Anjali Deshpande is an acclaimed brain specialist, focusing on micro-surgical tumor excisions, epilepsy surgeries, and precision spine rehabilitation."
+    bio: "Honorary Consultant Neurosurgeon at Deenanath Mangeshkar Hospital."
   },
   {
-    id: "dr-milind-kulkarni",
-    name: "Dr. Milind Kulkarni",
-    specialtyId: "oncology",
-    specialtyName: "Oncology & Cancer Care",
-    qualifications: "MD (Radiotherapy), DNB (Medical Oncology)",
-    experience: 22,
-    rating: 4.7,
-    availableDays: ["Monday", "Tuesday", "Thursday", "Friday"],
-    timings: "02:00 PM - 05:30 PM",
-    image: "https://images.unsplash.com/photo-1537368910025-700350fe46c7?q=80&w=300&auto=format&fit=crop",
-    fee: 1100,
-    bio: "Dr. Milind Kulkarni integrates target-based chemotherapy and innovative immunotherapy solutions to treat complex oncological tumors with customized clinical care."
-  },
-  {
-    id: "dr-smita-mangeshkar",
-    name: "Dr. Smita Mangeshkar",
-    specialtyId: "pediatrics",
-    specialtyName: "Paediatrics & Neonatal ICU",
-    qualifications: "MD (Paediatrics), Fellowship in Neonatology (UK)",
-    experience: 16,
-    rating: 4.9,
-    availableDays: ["Monday", "Wednesday", "Saturday"],
-    timings: "09:00 AM - 01:00 PM",
-    image: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?q=80&w=300&auto=format&fit=crop",
-    fee: 800,
-    bio: "Dr. Smita Mangeshkar heads our Neonatal ICU services, bringing globally refined protocols in critical newborn care and infant developmental therapies."
-  },
-  {
-    id: "dr-rajesh-shinde",
-    name: "Dr. Rajesh Shinde",
-    specialtyId: "nephrology",
-    specialtyName: "Nephrology & Kidney Transplants",
-    qualifications: "MD, DM (Nephrology)",
-    experience: 20,
+    id: "764",
+    name: "Dr. NAGARE UMESH",
+    specialtyId: "44",
+    specialtyName: "ORTHOPAEDICS",
+    qualifications: "MBBS, D' ORTHO, MS (UK), MRCSI",
+    experience: 14,
     rating: 4.8,
-    availableDays: ["Wednesday", "Thursday", "Friday"],
-    timings: "01:00 PM - 06:00 PM",
-    image: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?q=80&w=300&auto=format&fit=crop",
-    fee: 1000,
-    bio: "Dr. Rajesh Shinde oversees kidney transplants, having successfully directed over 350+ renal transplants, alongside managing acute chronic kidney diseases."
+    availableDays: ["Monday", "Thursday", "Saturday"],
+    timings: "11:00 AM - 03:00 PM",
+    image: "https://www.dmhospital.org/images/Hospital/Doctor/Small-DMH/1100_Pic.jpg",
+    fee: 1100,
+    bio: "Consultant Orthopaedic Surgeon specializing in trauma and joint reconstruction."
   },
   {
-    id: "dr-amit-patwardhan",
-    name: "Dr. Amit Patwardhan",
-    specialtyId: "orthopaedics",
-    specialtyName: "Orthopaedics & Joint Replacement",
-    qualifications: "MS (Orthopaedics), MCh (Orthopaedics, UK)",
-    experience: 18,
+    id: "649",
+    name: "Dr. NADKARNI ANUPAMA",
+    specialtyId: "50",
+    specialtyName: "PAEDIATRICS",
+    qualifications: "MBBS, MS (PUNE), FRCS (LONDON)",
+    experience: 17,
     rating: 4.9,
-    availableDays: ["Monday", "Tuesday", "Wednesday", "Friday"],
-    timings: "03:00 PM - 07:00 PM",
-    image: "https://images.unsplash.com/photo-1607990283143-e81e7a2c93ab?q=80&w=300&auto=format&fit=crop",
+    availableDays: ["Tuesday", "Wednesday", "Friday"],
+    timings: "10:00 AM - 01:00 PM",
+    image: "https://www.dmhospital.org/images/Hospital/Doctor/Small-DMH/971_Pic.jpg",
+    fee: 1000,
+    bio: "Senior Consultant Paediatrician and Neonatal specialist."
+  },
+  {
+    id: "74",
+    name: "Dr. KELKAR DHANANJAY",
+    specialtyId: "63",
+    specialtyName: "SURGERY",
+    qualifications: "MS, FRCS",
+    experience: 30,
+    rating: 5.0,
+    availableDays: ["Monday", "Wednesday", "Friday"],
+    timings: "10:00 AM - 01:00 PM",
+    image: "https://www.dmhospital.org/images/Hospital/Doctor/Small-DMH/74_Pic.jpg",
+    fee: 1500,
+    bio: "Medical Director and Chief Oncosurgeon at Deenanath Mangeshkar Hospital."
+  },
+  {
+    id: "19408",
+    name: "Dr. TAMHANKAR KSHIPRA RAJEEV",
+    specialtyId: "14",
+    specialtyName: "DENTISTRY",
+    qualifications: "BDS, MDS (Conservative Dentistry and Endodontics)",
+    experience: 12,
+    rating: 4.8,
+    availableDays: ["Friday"],
+    timings: "05:00 PM - 09:00 PM",
+    image: "https://www.dmhospital.org/images/Hospital/Doctor/Small-DMH/1945_Pic.jpg",
     fee: 900,
-    bio: "Dr. Amit Patwardhan is renowned for zero-error total knee replacements, utilizing computer-navigated systems, as well as complex sports medicine procedures."
+    bio: "Honorary Consultant Endodontist at Deenanath Mangeshkar Hospital."
   }
 ];
 
@@ -335,13 +335,39 @@ const initialNews: NewsItem[] = [
 
 export const HospitalProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [departments] = useState<Department[]>(initialDepartments);
-  const [doctors] = useState<Doctor[]>(initialDoctors);
+  const [doctors, setDoctors] = useState<Doctor[]>(initialDoctors);
   const [healthPackages] = useState<HealthPackage[]>(initialPackages);
   const [newsItems] = useState<NewsItem[]>(initialNews);
 
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [selectedDeptFilter, setSelectedDeptFilter] = useState<string>("");
+
+  // Load doctors dynamically from database
+  useEffect(() => {
+    fetch('/api/doctors')
+      .then(res => res.ok ? res.json() : [])
+      .then(dbDocs => {
+        if (Array.isArray(dbDocs) && dbDocs.length > 0) {
+          const mapped: Doctor[] = dbDocs.map((d: any, idx: number) => ({
+            id: String(d.dmhDoctorId || d.id || `doc-${idx}`),
+            name: d.name || "Doctor",
+            specialtyId: String(d.dmhSpecialityId || "general"),
+            specialtyName: d.specialty || "General",
+            qualifications: d.qualifications || "MBBS, MD",
+            experience: d.experience || 15,
+            rating: 4.8,
+            availableDays: ["Monday", "Wednesday", "Friday"],
+            timings: d.timings || "10:00 AM - 02:00 PM",
+            image: d.image || (d.dmhDoctorId ? `https://www.dmhospital.org/images/Hospital/Doctor/Small-DMH/${d.dmhDoctorId}_Pic.jpg` : "https://www.dmhospital.org/images/Hospital/Doctor/Small-DMH/default.jpg"),
+            fee: 1000,
+            bio: "Experienced specialist providing comprehensive clinical care at Deenanath Mangeshkar Hospital."
+          }));
+          setDoctors(mapped);
+        }
+      })
+      .catch(e => console.warn("Failed to fetch doctors in HospitalContext:", e));
+  }, []);
 
   // Load appointments from LocalStorage on mount
   useEffect(() => {
@@ -354,16 +380,16 @@ export const HospitalProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         console.error("Failed to load appointments", e);
       }
     } else {
-      // Create a few mock baseline appointments
+      // Create a few baseline appointments with real hospital doctors
       initialApts = [
         {
           id: "apt-1",
           patientName: "Ahmad Sana",
           patientPhone: "+91 98765 43210",
           patientEmail: "ahmad.sana@example.com",
-          doctorId: "dr-shirish-kelkar",
-          doctorName: "Dr. Shirish Kelkar",
-          specialtyName: "Cardiology & Cardiac Surgery",
+          doctorId: "3678",
+          doctorName: "Dr. AGARKHEDKAR NIKHIL",
+          specialtyName: "Plastic Surgery",
           date: "2026-05-20",
           timeSlot: "10:30 AM",
           status: "Scheduled",
@@ -374,9 +400,9 @@ export const HospitalProvider: React.FC<{ children: React.ReactNode }> = ({ chil
           patientName: "Rohan Joshi",
           patientPhone: "+91 91234 56789",
           patientEmail: "rohan@example.com",
-          doctorId: "dr-anjali-deshpande",
-          doctorName: "Dr. Anjali Deshpande",
-          specialtyName: "Neurology & Neurosurgery",
+          doctorId: "19518",
+          doctorName: "Dr. REGE ISHANT SHEKHAR",
+          specialtyName: "Neurological Surgery",
           date: "2026-05-21",
           timeSlot: "12:00 PM",
           status: "Scheduled",

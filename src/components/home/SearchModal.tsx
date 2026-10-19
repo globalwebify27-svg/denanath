@@ -141,7 +141,8 @@ export default function SearchModal({ isOpen, onClose, doctors, departments }: S
 
   if (!isOpen) return null;
 
-  const displayDoctors = apiDoctors.length > 0 ? apiDoctors : (doctors || []);
+  const validDoctorsProp = (doctors || []).filter(d => d.id && !d.id.startsWith('dr-'));
+  const displayDoctors = apiDoctors.length > 0 ? apiDoctors : validDoctorsProp;
   const displayDepts = apiDepartments.length > 0 ? apiDepartments : (departments || []);
 
   // Live Doctor Search Filter

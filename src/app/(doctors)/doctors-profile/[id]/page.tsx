@@ -1,6 +1,6 @@
 import React from "react";
 import { prisma } from "@/lib/prisma";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import Link from "next/link";
 import { ChevronRight, ArrowLeft } from "lucide-react";
 import DoctorProfileClient from "./DoctorProfileClient";
@@ -9,19 +9,51 @@ export const dynamic = 'force-dynamic'; // Ensure we always get fresh data
 
 export default async function DoctorDedicatedPage({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = await params;
+  const rawId = decodeURIComponent(resolvedParams.id || '').trim();
   
-  // Find doctor by DB id or dmhDoctorId
-  const doctor = await prisma.doctor.findFirst({
+  // 1. Direct match by DB id or dmhDoctorId
+  let doctor = await prisma.doctor.findFirst({
     where: {
       OR: [
-        { id: resolvedParams.id },
-        { dmhDoctorId: resolvedParams.id }
+        { id: rawId },
+        { dmhDoctorId: rawId }
       ]
     }
   });
 
+  // 2. Fallback: match by doctor name or slug keywords
   if (!doctor) {
-    notFound();
+    const cleanSlug = rawId.toLowerCase().replace(/^dr-?/i, '').replace(/[^a-z0-9]+/g, ' ').trim();
+    const words = cleanSlug.split(/\s+/).filter(w => w.length > 2);
+    
+    if (words.length > 0) {
+      const candidates = await prisma.doctor.findMany({
+        where: {
+          AND: words.map(w => ({
+            name: { contains: w }
+          }))
+        }
+      });
+      if (candidates.length > 0) {
+        doctor = candidates[0];
+      } else {
+        const anyCandidates = await prisma.doctor.findMany({
+          where: {
+            OR: words.map(w => ({
+              name: { contains: w }
+            }))
+          }
+        });
+        if (anyCandidates.length > 0) {
+          doctor = anyCandidates[0];
+        }
+      }
+    }
+  }
+
+  // 3. If no doctor matched at all, redirect to /doctors-profile directory instead of a dead 404
+  if (!doctor) {
+    redirect('/doctors-profile');
   }
 
   // Parse JSON fields safely
