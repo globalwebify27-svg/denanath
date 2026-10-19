@@ -4,7 +4,7 @@ import QuillEditor from "@/components/QuillEditor";
 
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { Plus, Trash2, GripVertical, Image as ImageIcon, Upload, Loader2, Calendar, ExternalLink, X, CheckCircle2, AlertCircle, FileText, Users, Clock, ChevronRight, ChevronLeft, Layers, ChevronUp, ChevronDown, AlertTriangle } from "lucide-react";
+import { Plus, Trash2, GripVertical, Image as ImageIcon, Upload, Loader2, Calendar, ExternalLink, X, CheckCircle2, AlertCircle, FileText, Users, Clock, ChevronRight, ChevronLeft, Layers, ChevronUp, ChevronDown, AlertTriangle, Edit, Save, Search } from "lucide-react";
 
 function formatDateForPicker(val: any): string {
   if (!val) return "";
@@ -27,8 +27,6 @@ function formatDateForPicker(val: any): string {
 
 export default function EventsClientForm({ initialEvents }: { initialEvents: any[] }) {
   const router = useRouter();
-  const [uploadingIdx, setUploadingIdx] = useState<string | null>(null);
-  const [bulkUploadingIdx, setBulkUploadingIdx] = useState<number | null>(null);
 
   const [events, setEvents] = useState<any[]>(() => {
     if (!Array.isArray(initialEvents) || initialEvents.length === 0) {
@@ -61,11 +59,8 @@ export default function EventsClientForm({ initialEvents }: { initialEvents: any
     }));
   });
 
-  const [currentPage, setCurrentPage] = useState(1);
-  const eventsPerPage = 10;
-  const totalPages = Math.ceil((events.length || 1) / eventsPerPage);
-  
-  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [tablePage, setTablePage] = useState(1);
+  const itemsPerPage = 10;
 
   // Comprehensive New Event Modal State
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
@@ -113,7 +108,9 @@ export default function EventsClientForm({ initialEvents }: { initialEvents: any
 
   const [isSubmittingModal, setIsSubmittingModal] = useState(false);
   const [modalError, setModalError] = useState<string | null>(null);
-  const [successMessage, setSuccessMessage] = useState<{ title: string; id: string } | null>(null);
+  const [editingEventIndex, setEditingEventIndex] = useState<number | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [successMessage, setSuccessMessage] = useState<{ title: string; id: string; isEdit?: boolean } | null>(null);
   const [highlightedEventId, setHighlightedEventId] = useState<string | null>(null);
   const [deleteSuccessMessage, setDeleteSuccessMessage] = useState<string | null>(null);
 
@@ -124,6 +121,87 @@ export default function EventsClientForm({ initialEvents }: { initialEvents: any
     }, 8000);
     return () => clearTimeout(timer);
   }, [successMessage]);
+
+  const openAddModal = () => {
+    setEditingEventIndex(null);
+    setModalError(null);
+    resetModalForm();
+    setIsAddModalOpen(true);
+  };
+
+  const openEditModal = (index: number) => {
+    const target = events[index];
+    if (!target) return;
+
+    setEditingEventIndex(index);
+    setModalError(null);
+    setModalActiveTab("basic");
+
+    setModalForm({
+      title: target.title || "",
+      date: formatDateForPicker(target.date) || target.date || "",
+      status: target.status !== false,
+      summary: target.summary || "",
+      overviewTitle: target.overviewTitle || "Event Overview",
+      overview: Array.isArray(target.overview) && target.overview.length > 0 ? [...target.overview] : [""],
+      objectivesTitle: target.objectivesTitle || "Key Objectives",
+      objectives: Array.isArray(target.objectives) && target.objectives.length > 0 ? [...target.objectives] : [""],
+      featuresTitle: target.featuresTitle || "Key Features",
+      features: Array.isArray(target.features) && target.features.length > 0 ? [...target.features] : [""],
+      customSections: Array.isArray(target.customSections)
+        ? target.customSections.map((s: any, idx: number) => ({
+            id: s.id || `sec-${idx}-${Date.now()}`,
+            title: s.title || "",
+            content: s.content || ""
+          }))
+        : [],
+      organizersTitle: target.organizersTitle || "Organizers",
+      organizers: Array.isArray(target.organizers) && target.organizers.length > 0
+        ? target.organizers.map((o: any) => ({ name: o.name || "", role: o.role || "" }))
+        : [{ name: "", role: "" }],
+      agendaTitle: target.agendaTitle || "Conference Topics & Speakers",
+      agenda: Array.isArray(target.agenda) && target.agenda.length > 0
+        ? target.agenda.map((a: any) => ({ topic: a.topic || "", speaker: a.speaker || "", role: a.role || "" }))
+        : [{ topic: "", speaker: "", role: "" }],
+      galleryTitle: target.galleryTitle || "Event Gallery",
+      gallery: Array.isArray(target.gallery) ? [...target.gallery] : []
+    });
+
+    setIsAddModalOpen(true);
+  };
+
+  const toggleEventStatus = async (index: number) => {
+    const updated = [...events];
+    if (!updated[index]) return;
+    updated[index] = {
+      ...updated[index],
+      status: updated[index].status === false ? true : false
+    };
+    setEvents(updated);
+    
+    try {
+      const seoMetaTitle = (document.querySelector('input[name="seoMetaTitle"]') as HTMLInputElement)?.value || "";
+      const seoMetaDescription = (document.querySelector('textarea[name="seoMetaDescription"]') as HTMLTextAreaElement)?.value || "";
+      const seoKeywords = (document.querySelector('textarea[name="seoKeywords"]') as HTMLTextAreaElement)?.value || "";
+
+      await fetch('/api/settings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          key: 'page_events',
+          value: JSON.stringify({
+            seoMetaTitle,
+            seoMetaDescription,
+            seoKeywords,
+            events: updated
+          }),
+          pathsToRevalidate: ['/admin/events', '/events']
+        })
+      });
+    } catch (err) {
+      console.error("Failed to update status:", err);
+    }
+  };
 
   useEffect(() => {
     if (!deleteSuccessMessage) return;
@@ -331,7 +409,7 @@ export default function EventsClientForm({ initialEvents }: { initialEvents: any
     }
   };
 
-  const handleCreateEventFromModal = async () => {
+  const handleSaveModalEvent = async () => {
     if (!modalForm.title.trim()) {
       setModalError("Please enter an event title in Basic Details.");
       setModalActiveTab("basic");
@@ -341,9 +419,12 @@ export default function EventsClientForm({ initialEvents }: { initialEvents: any
     setIsSubmittingModal(true);
     setModalError(null);
 
-    const newId = "event-" + Date.now();
-    const newEvent = {
-      id: newId,
+    const isEditing = editingEventIndex !== null && editingEventIndex >= 0 && editingEventIndex < events.length;
+    const existingId = isEditing ? events[editingEventIndex]?.id : null;
+    const eventId = existingId || "event-" + Date.now();
+
+    const formattedEvent = {
+      id: eventId,
       title: modalForm.title.trim(),
       date: modalForm.date.trim(),
       status: modalForm.status !== false,
@@ -365,10 +446,16 @@ export default function EventsClientForm({ initialEvents }: { initialEvents: any
       gallery: modalForm.gallery.filter(g => g && typeof g === "string" && g.trim() !== "")
     };
 
-    // Prepend to top so it appears right on Page 1 as Event 1!
-    const updatedEvents = [newEvent, ...events];
+    let updatedEvents: any[];
+    if (isEditing) {
+      updatedEvents = [...events];
+      updatedEvents[editingEventIndex] = formattedEvent;
+    } else {
+      updatedEvents = [formattedEvent, ...events];
+      setTablePage(1);
+    }
+
     setEvents(updatedEvents);
-    setCurrentPage(1);
 
     // Save to database via /api/settings immediately
     try {
@@ -391,17 +478,24 @@ export default function EventsClientForm({ initialEvents }: { initialEvents: any
         })
       });
     } catch (err) {
-      console.error("Failed to auto-save new event:", err);
+      console.error("Failed to auto-save event:", err);
     } finally {
       setIsSubmittingModal(false);
       setIsAddModalOpen(false);
       resetModalForm();
-      setSuccessMessage({ title: newEvent.title, id: newId });
-      setHighlightedEventId(newId);
+      const updatedTitle = formattedEvent.title;
+      setEditingEventIndex(null);
+      setSuccessMessage({ 
+        title: updatedTitle, 
+        id: eventId,
+        isEdit: isEditing
+      });
+      setHighlightedEventId(eventId);
 
-      // Scroll smoothly to the top of the events list
+      // Scroll smoothly to the target event
       setTimeout(() => {
-        document.getElementById("admin-events-top")?.scrollIntoView({ behavior: "smooth" });
+        const el = document.getElementById(`event-row-${eventId}`) || document.getElementById("admin-events-table");
+        el?.scrollIntoView({ behavior: "smooth" });
       }, 100);
 
       // Clear highlight after 5 seconds
@@ -411,27 +505,21 @@ export default function EventsClientForm({ initialEvents }: { initialEvents: any
     }
   };
 
-  const data = events[selectedIndex] || {};
-
   const handleDeleteEvent = async (index: number) => {
     const target = events[index];
     const targetTitle = target?.title?.trim() || `Event ${index + 1}`;
 
-    if (!window.confirm(`Are you sure you want to delete "${targetTitle}"?`)) {
+    if (!window.confirm(`Are you sure you want to permanently delete "${targetTitle}"? This cannot be undone.`)) {
       return;
     }
 
     const newEvents = events.filter((_, i) => i !== index);
     setEvents(newEvents);
 
-    if (selectedIndex >= newEvents.length) {
-      setSelectedIndex(Math.max(0, newEvents.length - 1));
-    }
-
-    // Adjust page if current page became empty
-    const newTotalPages = Math.ceil((newEvents.length || 1) / eventsPerPage);
-    if (currentPage > newTotalPages) {
-      setCurrentPage(Math.max(1, newTotalPages));
+    // Adjust tablePage if current page became empty
+    const newTotalPages = Math.ceil((newEvents.length || 1) / itemsPerPage);
+    if (tablePage > newTotalPages) {
+      setTablePage(Math.max(1, newTotalPages));
     }
 
     // Save directly to the database via /api/settings immediately
@@ -473,256 +561,6 @@ export default function EventsClientForm({ initialEvents }: { initialEvents: any
     }
   };
 
-  const updateField = (eventIndex: number, field: string, value: any) => {
-    setEvents(prev => {
-      const arr = [...prev];
-      if (!arr[eventIndex]) return arr;
-      arr[eventIndex] = { ...arr[eventIndex], [field]: value };
-      return arr;
-    });
-  };
-
-  const addArrayItem = (eventIndex: number, field: 'overview' | 'objectives' | 'features' | 'gallery') => {
-    setEvents(prev => {
-      const arr = [...prev];
-      if (!arr[eventIndex]) return arr;
-      const curr = { ...arr[eventIndex] };
-      curr[field] = [...(curr[field] || []), ""];
-      arr[eventIndex] = curr;
-      return arr;
-    });
-  };
-
-  const updateArrayItem = (eventIndex: number, field: 'overview' | 'objectives' | 'features' | 'gallery', itemIdx: number, value: string) => {
-    setEvents(prev => {
-      const arr = [...prev];
-      if (!arr[eventIndex]) return arr;
-      const curr = { ...arr[eventIndex] };
-      const newArr = [...(curr[field] || [])];
-      newArr[itemIdx] = value;
-      curr[field] = newArr;
-      arr[eventIndex] = curr;
-      return arr;
-    });
-  };
-
-  const removeArrayItem = (eventIndex: number, field: 'overview' | 'objectives' | 'features' | 'gallery', itemIdx: number) => {
-    if (!window.confirm("Are you sure you want to remove this item?")) return;
-    setEvents(prev => {
-      const arr = [...prev];
-      if (!arr[eventIndex]) return arr;
-      const curr = { ...arr[eventIndex] };
-      curr[field] = (curr[field] || []).filter((_: any, i: number) => i !== itemIdx);
-      arr[eventIndex] = curr;
-      return arr;
-    });
-  };
-
-  const addOrganizer = (eventIndex: number) => {
-    setEvents(prev => {
-      const arr = [...prev];
-      if (!arr[eventIndex]) return arr;
-      const curr = { ...arr[eventIndex] };
-      curr.organizers = [...(curr.organizers || []), { name: "", role: "" }];
-      arr[eventIndex] = curr;
-      return arr;
-    });
-  };
-
-  const updateOrganizer = (eventIndex: number, itemIdx: number, key: 'name' | 'role', value: string) => {
-    setEvents(prev => {
-      const arr = [...prev];
-      if (!arr[eventIndex]) return arr;
-      const curr = { ...arr[eventIndex] };
-      const newOrgs = [...(curr.organizers || [])];
-      newOrgs[itemIdx] = { ...newOrgs[itemIdx], [key]: value };
-      curr.organizers = newOrgs;
-      arr[eventIndex] = curr;
-      return arr;
-    });
-  };
-
-  const removeOrganizer = (eventIndex: number, itemIdx: number) => {
-    if (!window.confirm("Are you sure you want to remove this organizer?")) return;
-    setEvents(prev => {
-      const arr = [...prev];
-      if (!arr[eventIndex]) return arr;
-      const curr = { ...arr[eventIndex] };
-      curr.organizers = (curr.organizers || []).filter((_: any, i: number) => i !== itemIdx);
-      arr[eventIndex] = curr;
-      return arr;
-    });
-  };
-
-  const addAgenda = (eventIndex: number) => {
-    setEvents(prev => {
-      const arr = [...prev];
-      if (!arr[eventIndex]) return arr;
-      const curr = { ...arr[eventIndex] };
-      curr.agenda = [...(curr.agenda || []), { topic: "", speaker: "", role: "" }];
-      arr[eventIndex] = curr;
-      return arr;
-    });
-  };
-
-  const updateAgenda = (eventIndex: number, itemIdx: number, key: 'topic' | 'speaker' | 'role', value: string) => {
-    setEvents(prev => {
-      const arr = [...prev];
-      if (!arr[eventIndex]) return arr;
-      const curr = { ...arr[eventIndex] };
-      const newAgenda = [...(curr.agenda || [])];
-      newAgenda[itemIdx] = { ...newAgenda[itemIdx], [key]: value };
-      curr.agenda = newAgenda;
-      arr[eventIndex] = curr;
-      return arr;
-    });
-  };
-
-  const removeAgenda = (eventIndex: number, itemIdx: number) => {
-    if (!window.confirm("Are you sure you want to remove this agenda item?")) return;
-    setEvents(prev => {
-      const arr = [...prev];
-      if (!arr[eventIndex]) return arr;
-      const curr = { ...arr[eventIndex] };
-      curr.agenda = (curr.agenda || []).filter((_: any, i: number) => i !== itemIdx);
-      arr[eventIndex] = curr;
-      return arr;
-    });
-  };
-
-  const addCustomSection = (eventIndex: number) => {
-    setEvents(prev => {
-      const arr = [...prev];
-      if (!arr[eventIndex]) return arr;
-      const curr = { ...arr[eventIndex] };
-      const newSec = {
-        id: "sec-" + Date.now(),
-        title: "New Section",
-        content: ""
-      };
-      curr.customSections = [...(curr.customSections || []), newSec];
-      arr[eventIndex] = curr;
-      return arr;
-    });
-  };
-
-  const updateCustomSection = (eventIndex: number, secIdx: number, key: 'title' | 'content', value: string) => {
-    setEvents(prev => {
-      const arr = [...prev];
-      if (!arr[eventIndex]) return arr;
-      const curr = { ...arr[eventIndex] };
-      const newSecs = [...(curr.customSections || [])];
-      newSecs[secIdx] = { ...newSecs[secIdx], [key]: value };
-      curr.customSections = newSecs;
-      arr[eventIndex] = curr;
-      return arr;
-    });
-  };
-
-  const removeCustomSection = (eventIndex: number, secIdx: number) => {
-    if (!window.confirm("Are you sure you want to remove this section?")) return;
-    setEvents(prev => {
-      const arr = [...prev];
-      if (!arr[eventIndex]) return arr;
-      const curr = { ...arr[eventIndex] };
-      curr.customSections = (curr.customSections || []).filter((_: any, i: number) => i !== secIdx);
-      arr[eventIndex] = curr;
-      return arr;
-    });
-  };
-
-  const moveCustomSection = (eventIndex: number, secIdx: number, direction: -1 | 1) => {
-    setEvents(prev => {
-      const arr = [...prev];
-      if (!arr[eventIndex]) return arr;
-      const curr = { ...arr[eventIndex] };
-      const list = [...(curr.customSections || [])];
-      const targetIdx = secIdx + direction;
-      if (targetIdx < 0 || targetIdx >= list.length) return arr;
-      const temp = list[secIdx];
-      list[secIdx] = list[targetIdx];
-      list[targetIdx] = temp;
-      curr.customSections = list;
-      arr[eventIndex] = curr;
-      return arr;
-    });
-  };
-
-  const handleUpload = async (eventIndex: number, idx: number, e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    setUploadingIdx(`${eventIndex}-${idx}`);
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("folder", "events");
-
-    try {
-      const res = await fetch("/api/upload", {
-        method: "POST",
-        body: formData,
-      });
-
-      if (res.ok) {
-        const { url } = await res.json();
-        updateArrayItem(eventIndex, 'gallery', idx, url);
-      } else {
-        alert("Upload failed");
-      }
-    } catch (error) {
-      console.error(error);
-      alert("Error uploading file");
-    } finally {
-      setUploadingIdx(null);
-      e.target.value = "";
-    }
-  };
-
-  const handleBulkUpload = async (eventIndex: number, e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
-    if (!files || files.length === 0) return;
-
-    setBulkUploadingIdx(eventIndex);
-    const newUrls: string[] = [];
-
-    try {
-      for (let i = 0; i < files.length; i++) {
-        const file = files[i];
-        const formData = new FormData();
-        formData.append("file", file);
-        formData.append("folder", "events");
-
-        const res = await fetch("/api/upload", {
-          method: "POST",
-          body: formData,
-        });
-
-        if (res.ok) {
-          const { url } = await res.json();
-          if (url) newUrls.push(url);
-        }
-      }
-
-      if (newUrls.length > 0) {
-        setEvents(prev => {
-          const arr = [...prev];
-          if (!arr[eventIndex]) return arr;
-          const curr = { ...arr[eventIndex] };
-          const cleanedPrev = (curr.gallery || []).filter((g: string) => typeof g === "string" && g.trim() !== "");
-          curr.gallery = [...newUrls, ...cleanedPrev];
-          arr[eventIndex] = curr;
-          return arr;
-        });
-      }
-    } catch (err) {
-      console.error("Bulk upload error:", err);
-      alert("Failed to upload some images.");
-    } finally {
-      setBulkUploadingIdx(null);
-      e.target.value = "";
-    }
-  };
-
   // Strictly filter out empty gallery items before saving to database!
   const sanitizedEvents = events.map(ev => ({
     ...ev,
@@ -730,28 +568,208 @@ export default function EventsClientForm({ initialEvents }: { initialEvents: any
     gallery: (ev.gallery || []).filter((img: string) => typeof img === "string" && img.trim() !== "")
   }));
 
+  const filteredEvents = events
+    .map((ev, originalIndex) => ({ event: ev, originalIndex }))
+    .filter(({ event: ev }) => {
+      if (!searchQuery.trim()) return true;
+      const q = searchQuery.toLowerCase();
+      return (
+        (ev.title && ev.title.toLowerCase().includes(q)) ||
+        (ev.date && ev.date.toLowerCase().includes(q)) ||
+        (ev.summary && ev.summary.toLowerCase().includes(q))
+      );
+    });
+
+  const totalTablePages = Math.ceil((filteredEvents.length || 1) / itemsPerPage);
+  const paginatedEvents = filteredEvents.slice((tablePage - 1) * itemsPerPage, tablePage * itemsPerPage);
+
   return (
     <div className="space-y-8">
       <input type="hidden" name="eventsJson" value={JSON.stringify(sanitizedEvents)} />
 
-      {/* Event Selector / Tabs */}
-      <div className="bg-white rounded-3xl shadow-sm border border-slate-100 p-6 md:p-8 space-y-4">
+      {/* Event Selector / Table */}
+      <div id="admin-events-table" className="bg-white rounded-3xl shadow-sm border border-slate-100 p-6 md:p-8 space-y-6">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-slate-100 pb-4 gap-4">
           <div>
-            <h2 className="text-[20px] font-black text-[#002b5c] flex items-center gap-2">
-              <Calendar size={24} className="text-[#007a87]" />
-              Manage Events
-            </h2>
-            <p className="text-sm text-slate-500 mt-1">Manage events individually below.</p>
+            <div className="flex items-center gap-3">
+              <h2 className="text-[20px] font-black text-[#002b5c] flex items-center gap-2">
+                <Calendar size={24} className="text-[#007a87]" />
+                Manage Events
+              </h2>
+              <span className="px-3 py-1 bg-slate-100 text-[#002b5c] rounded-full text-xs font-bold">
+                {events.length} {events.length === 1 ? 'Event' : 'Events'}
+              </span>
+            </div>
+            <p className="text-sm text-slate-500 mt-1">
+              Select any event below to edit details or use the action buttons to update.
+            </p>
           </div>
           <button 
             type="button" 
-            onClick={() => { setModalError(null); setIsAddModalOpen(true); }}
+            onClick={openAddModal}
             className="px-5 py-2.5 bg-[#007a87] text-white rounded-xl text-sm font-bold flex items-center gap-2 hover:bg-[#005f6b] shadow-sm hover:shadow transition-all"
           >
             <Plus size={18} /> Add New Event
           </button>
         </div>
+
+        {/* Quick Search */}
+        {events.length > 3 && (
+          <div className="relative">
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 w-4 h-4" />
+            <input
+              type="text"
+              placeholder="Search existing events by title or date..."
+              value={searchQuery}
+              onChange={(e) => {
+                setSearchQuery(e.target.value);
+                setTablePage(1);
+              }}
+              className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all"
+            />
+          </div>
+        )}
+
+        {/* Events Table / List with Edit Action */}
+        {events.length === 0 ? (
+          <div className="bg-slate-50/50 rounded-2xl p-12 text-center border border-dashed border-slate-200 space-y-3">
+            <div className="w-12 h-12 rounded-2xl bg-slate-100 text-slate-400 mx-auto flex items-center justify-center">
+              <Calendar size={24} />
+            </div>
+            <h3 className="text-base font-bold text-slate-700">No Events Added Yet</h3>
+            <p className="text-xs text-slate-400 max-w-sm mx-auto">
+              All events have been deleted or none were created yet. Click below to add a new event.
+            </p>
+            <button
+              type="button"
+              onClick={openAddModal}
+              className="px-4 py-2 bg-[#007a87] text-white rounded-xl text-xs font-bold inline-flex items-center gap-1.5 hover:bg-[#005f6b] shadow-sm transition-all"
+            >
+              <Plus size={16} /> Add New Event
+            </button>
+          </div>
+        ) : (
+          <div className="border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
+            <div className="overflow-x-auto">
+              <table className="w-full text-left border-collapse">
+                <thead>
+                  <tr className="bg-slate-50 border-b border-slate-200 text-[11px] font-extrabold uppercase tracking-wider text-slate-500">
+                    <th className="py-3 px-4 w-12 text-center">#</th>
+                    <th className="py-3 px-4">Event Title</th>
+                    <th className="py-3 px-4 w-44">Date</th>
+                    <th className="py-3 px-4 w-28 text-center">Status</th>
+                    <th className="py-3 px-4 w-44 text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100 text-sm">
+                  {paginatedEvents.length === 0 ? (
+                    <tr>
+                      <td colSpan={5} className="py-8 text-center text-slate-400 text-sm">
+                        No events found matching "{searchQuery}"
+                      </td>
+                    </tr>
+                  ) : (
+                    paginatedEvents.map(({ event: ev, originalIndex }) => {
+                      const isHighlighted = highlightedEventId === ev.id;
+                      return (
+                        <tr 
+                          key={ev.id || originalIndex}
+                          id={ev.id ? `event-row-${ev.id}` : undefined}
+                          className={`hover:bg-slate-50/80 transition-colors ${isHighlighted ? 'bg-teal-50/60 font-semibold' : ''}`}
+                        >
+                          <td className="py-3.5 px-4 text-center font-bold text-slate-400 text-xs">
+                            {originalIndex + 1}
+                          </td>
+                          <td className="py-3.5 px-4">
+                            <div className="font-bold text-[#002b5c] line-clamp-1">{ev.title || 'Untitled Event'}</div>
+                            {ev.summary && (
+                              <p className="text-xs text-slate-400 line-clamp-1 mt-0.5">{ev.summary}</p>
+                            )}
+                          </td>
+                          <td className="py-3.5 px-4 text-slate-600 text-xs font-semibold whitespace-nowrap">
+                            {ev.date ? (
+                              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-slate-100 text-slate-700 rounded-lg">
+                                <Calendar size={13} className="text-[#007a87]" />
+                                {ev.date}
+                              </span>
+                            ) : (
+                              <span className="text-slate-400 italic">No date</span>
+                            )}
+                          </td>
+                          <td className="py-3.5 px-4 text-center">
+                            <button
+                              type="button"
+                              onClick={() => toggleEventStatus(originalIndex)}
+                              className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold transition-all ${
+                                ev.status !== false 
+                                  ? 'bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100' 
+                                  : 'bg-slate-100 text-slate-500 border border-slate-200 hover:bg-slate-200'
+                              }`}
+                              title="Click to toggle status"
+                            >
+                              <span className={`w-1.5 h-1.5 rounded-full ${ev.status !== false ? 'bg-emerald-500' : 'bg-slate-400'}`}></span>
+                              {ev.status !== false ? 'Active' : 'Inactive'}
+                            </button>
+                          </td>
+                          <td className="py-3.5 px-4 text-right">
+                            <div className="flex items-center justify-end gap-2">
+                              <button
+                                type="button"
+                                onClick={() => openEditModal(originalIndex)}
+                                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#007a87] text-white hover:bg-[#005f6b] rounded-xl text-xs font-bold transition-all shadow-sm"
+                                title="Edit Event"
+                              >
+                                <Edit size={13} /> Edit
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => handleDeleteEvent(originalIndex)}
+                                className="p-1.5 text-red-500 hover:bg-red-50 rounded-xl transition-colors border border-transparent hover:border-red-100"
+                                title="Delete Event"
+                              >
+                                <Trash2 size={16} />
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })
+                  )}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Pagination for the table */}
+            {totalTablePages > 1 && (
+              <div className="bg-slate-50 border-t border-slate-200 px-4 py-3 flex items-center justify-between">
+                <span className="text-xs text-slate-500 font-medium">
+                  Showing <span className="font-bold text-slate-700">{(tablePage - 1) * itemsPerPage + 1}</span> to <span className="font-bold text-slate-700">{Math.min(tablePage * itemsPerPage, filteredEvents.length)}</span> of <span className="font-bold text-slate-700">{filteredEvents.length}</span> events
+                </span>
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setTablePage(p => Math.max(1, p - 1))}
+                    disabled={tablePage === 1}
+                    className="px-3 py-1.5 rounded-lg border border-slate-200 text-xs font-semibold text-slate-600 bg-white hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+                  >
+                    Previous
+                  </button>
+                  <span className="text-xs font-bold text-slate-700 px-1">
+                    {tablePage} / {totalTablePages}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => setTablePage(p => Math.min(totalTablePages, p + 1))}
+                    disabled={tablePage === totalTablePages}
+                    className="px-3 py-1.5 rounded-lg border border-slate-200 text-xs font-semibold text-slate-600 bg-white hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
+                  >
+                    Next
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
       </div>
 
       {/* Success Notification Banner */}
@@ -763,10 +781,10 @@ export default function EventsClientForm({ initialEvents }: { initialEvents: any
             </div>
             <div>
               <h4 className="text-base font-black text-emerald-900">
-                Event Created Successfully!
+                {successMessage.isEdit ? "Event Updated Successfully!" : "Event Created Successfully!"}
               </h4>
               <p className="text-sm font-medium text-emerald-700 mt-1">
-                <span className="font-bold">"{successMessage.title}"</span> has been created and placed as <span className="font-bold">Event 1</span> at the top of Page 1. You can configure agenda, organizers, and gallery photos below. Click <span className="font-bold">Save Changes</span> at the top to commit all modifications.
+                <span className="font-bold">"{successMessage.title}"</span> has been {successMessage.isEdit ? "updated" : "created"}. Click <span className="font-bold">Save Changes</span> at the top to commit all modifications to disk.
               </p>
             </div>
           </div>
@@ -808,409 +826,7 @@ export default function EventsClientForm({ initialEvents }: { initialEvents: any
         </div>
       )}
 
-      <div id="admin-events-top">
-      {events.length === 0 && (
-        <div className="bg-white rounded-3xl p-12 text-center border border-slate-100 shadow-sm space-y-4 my-8">
-          <div className="w-16 h-16 rounded-3xl bg-slate-100 text-slate-400 mx-auto flex items-center justify-center">
-            <Calendar size={32} />
-          </div>
-          <h3 className="text-xl font-bold text-slate-700">No Events Added Yet</h3>
-          <p className="text-sm text-slate-400 max-w-md mx-auto">
-            All events have been deleted or none were created yet. Click below to add a new event.
-          </p>
-          <button
-            type="button"
-            onClick={() => { setModalError(null); setIsAddModalOpen(true); }}
-            className="px-5 py-2.5 bg-[#007a87] text-white rounded-xl text-sm font-bold inline-flex items-center gap-2 hover:bg-[#005f6b] shadow-sm transition-all"
-          >
-            <Plus size={18} /> Add New Event
-          </button>
-        </div>
-      )}
 
-      {events.length > 0 && events.slice((currentPage - 1) * eventsPerPage, currentPage * eventsPerPage).map((data, idx) => {
-        const selectedIndex = (currentPage - 1) * eventsPerPage + idx;
-        const isHighlighted = highlightedEventId === data.id;
-        return (
-        <div key={data.id || selectedIndex} className={`space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500 mt-12 transition-all duration-500 ${isHighlighted ? 'ring-4 ring-[#007a87]/40 rounded-3xl p-3 bg-[#007a87]/5' : ''}`}>
-          <div className="flex items-center justify-between border-b pb-4">
-            <h2 className="text-[28px] font-black text-[#002b5c]">Event {selectedIndex + 1}: {data.title || 'New Event'}</h2>
-            <button
-              type="button"
-              onClick={() => handleDeleteEvent(selectedIndex)}
-              className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
-              title="Delete Event"
-            >
-              <Trash2 size={24} />
-            </button>
-          </div>
-          {/* Basic Details */}
-          <div className="bg-white rounded-3xl shadow-sm border border-slate-100 p-6 md:p-8 space-y-6">
-            <h2 className="text-[20px] font-black text-[#002b5c] border-b pb-4">Basic Details</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="md:col-span-2 flex items-center gap-3 bg-slate-50 p-4 rounded-xl border border-slate-200">
-                <div className="flex-1">
-                  <h3 className="text-[14px] font-bold text-slate-700">Event Status</h3>
-                  <p className="text-[12px] text-slate-500">Determine if this event is publicly visible</p>
-                </div>
-                <label className="relative inline-flex items-center cursor-pointer">
-                  <input 
-                    type="checkbox" 
-                    className="sr-only peer" 
-                    checked={data.status !== false} 
-                    onChange={(e) => updateField(selectedIndex, "status", e.target.checked)}
-                  />
-                  <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-[#007a87]/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#007a87]"></div>
-                  <span className="ml-3 text-sm font-bold text-slate-700">{data.status !== false ? "Active" : "Inactive"}</span>
-                </label>
-              </div>
-              <div>
-                <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Event Title</label>
-                <input type="text" value={data.title || ""} onChange={e => updateField(selectedIndex, "title", e.target.value)} className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87]" placeholder="e.g. Diabetes Nursing Conference 2026" />
-              </div>
-              <div>
-                <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Event Date</label>
-                <input 
-                  type="date" 
-                  value={formatDateForPicker(data.date)} 
-                  onChange={e => updateField(selectedIndex, "date", e.target.value)} 
-                  className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] text-sm font-medium text-slate-800" 
-                />
-              </div>
-            </div>
-            <div>
-              <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Summary / Conclusion</label>
-              <textarea value={data.summary || ""} onChange={e => updateField(selectedIndex, "summary", e.target.value)} rows={3} className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87]" placeholder="Brief summary of the event" />
-            </div>
-          </div>
-
-          {/* Overview Paragraphs */}
-          <div className="bg-white rounded-3xl shadow-sm border border-slate-100 p-6 md:p-8 space-y-6">
-            <div className="flex justify-between items-center border-b pb-4">
-              <input type="text" value={data.overviewTitle !== undefined ? data.overviewTitle : "Event Overview"} onChange={e => updateField(selectedIndex, "overviewTitle", e.target.value)} className="text-[20px] font-black text-[#002b5c] bg-transparent border-b-2 border-transparent hover:border-slate-200 focus:border-[#007a87] focus:ring-0 p-0 m-0 w-full max-w-[300px] transition-colors" />
-              <button type="button" onClick={() => addArrayItem(selectedIndex, 'overview')} className="px-4 py-2 text-sm bg-[#002b5c] text-white rounded-lg hover:bg-[#001a38] hover:shadow-sm flex items-center gap-2 font-bold transition-all duration-300">
-                <Plus size={16} /> Add Paragraph
-              </button>
-            </div>
-            <div className="space-y-2">
-              {(data.overview || []).map((p: string, idx: number) => (
-                <div key={idx} className="flex gap-4 items-start">
-                  <div className="mt-2 text-slate-400 cursor-move"><GripVertical size={20} /></div>
-                  <QuillEditor value={p} onChange={content=> updateArrayItem(selectedIndex, 'overview', idx, content)} />
-                  <button type="button" onClick={() => removeArrayItem(selectedIndex, 'overview', idx)} className="mt-2 p-2 text-red-500 hover:bg-red-50 rounded-lg">
-                    <Trash2 size={20} />
-                  </button>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Objectives */}
-          <div className="bg-white rounded-3xl shadow-sm border border-slate-100 p-6 md:p-8 space-y-6">
-            <div className="flex justify-between items-center border-b pb-4">
-              <input type="text" value={data.objectivesTitle !== undefined ? data.objectivesTitle : "Key Objectives"} onChange={e => updateField(selectedIndex, "objectivesTitle", e.target.value)} className="text-[20px] font-black text-[#002b5c] bg-transparent border-b-2 border-transparent hover:border-slate-200 focus:border-[#007a87] focus:ring-0 p-0 m-0 w-full max-w-[300px] transition-colors" />
-              <button type="button" onClick={() => addArrayItem(selectedIndex, 'objectives')} className="px-4 py-2 text-sm bg-[#002b5c] text-white rounded-lg hover:bg-[#001a38] hover:shadow-sm flex items-center gap-2 font-bold transition-all duration-300">
-                <Plus size={16} /> Add Objective
-              </button>
-            </div>
-            <div className="space-y-2">
-              {(data.objectives || []).map((obj: string, idx: number) => (
-                <div key={idx} className="flex gap-4 items-center">
-                  <div className="text-slate-400 cursor-move"><GripVertical size={20} /></div>
-                  <input type="text" value={obj} onChange={e => updateArrayItem(selectedIndex, 'objectives', idx, e.target.value)} className="flex-1 p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87]" placeholder="Objective..." />
-                  <button type="button" onClick={() => removeArrayItem(selectedIndex, 'objectives', idx)} className="p-2 text-red-500 hover:bg-red-50 rounded-lg">
-                    <Trash2 size={20} />
-                  </button>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Key Features */}
-          <div className="bg-white rounded-3xl shadow-sm border border-slate-100 p-6 md:p-8 space-y-6">
-            <div className="flex justify-between items-center border-b pb-4">
-              <input type="text" value={data.featuresTitle !== undefined ? data.featuresTitle : "Key Features"} onChange={e => updateField(selectedIndex, "featuresTitle", e.target.value)} className="text-[20px] font-black text-[#002b5c] bg-transparent border-b-2 border-transparent hover:border-slate-200 focus:border-[#007a87] focus:ring-0 p-0 m-0 w-full max-w-[300px] transition-colors" />
-              <button type="button" onClick={() => addArrayItem(selectedIndex, 'features')} className="px-4 py-2 text-sm bg-[#002b5c] text-white rounded-lg hover:bg-[#001a38] hover:shadow-sm flex items-center gap-2 font-bold transition-all duration-300">
-                <Plus size={16} /> Add Feature
-              </button>
-            </div>
-            <div className="space-y-2">
-              {(data.features || []).map((feat: string, idx: number) => (
-                <div key={idx} className="flex gap-4 items-center">
-                  <div className="text-slate-400 cursor-move"><GripVertical size={20} /></div>
-                  <input type="text" value={feat} onChange={e => updateArrayItem(selectedIndex, 'features', idx, e.target.value)} className="flex-1 p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87]" placeholder="Feature description..." />
-                  <button type="button" onClick={() => removeArrayItem(selectedIndex, 'features', idx)} className="p-2 text-red-500 hover:bg-red-50 rounded-lg">
-                    <Trash2 size={20} />
-                  </button>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Custom Content Sections */}
-          <div className="bg-white rounded-3xl shadow-sm border border-slate-100 p-6 md:p-8 space-y-6">
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b pb-4 gap-3">
-              <div className="flex items-center gap-2.5">
-                <div className="w-9 h-9 rounded-xl bg-[#007a87]/10 flex items-center justify-center text-[#007a87]">
-                  <Layers size={18} />
-                </div>
-                <div>
-                  <h3 className="text-[18px] font-black text-[#002b5c]">
-                    Custom Content Sections ({(data.customSections || []).length})
-                  </h3>
-                  <p className="text-xs text-slate-500 font-medium">Add customizable sections with headings and rich text formatting</p>
-                </div>
-              </div>
-              <button 
-                type="button" 
-                onClick={() => addCustomSection(selectedIndex)} 
-                className="px-4 py-2 text-sm bg-[#002b5c] text-white rounded-lg hover:bg-[#001a38] hover:shadow-sm flex items-center gap-2 font-bold transition-all duration-300"
-              >
-                <Plus size={16} /> Add Section
-              </button>
-            </div>
-
-            {(!data.customSections || data.customSections.length === 0) ? (
-              <div className="text-center py-8 text-slate-400 bg-slate-50 rounded-2xl border border-dashed border-slate-200">
-                <Layers className="w-8 h-8 mx-auto text-slate-300 mb-2" />
-                <p className="text-sm font-medium">No custom sections added yet.</p>
-                <p className="text-xs text-slate-400 mt-1">Click &quot;+ Add Section&quot; to add a rich text section with editor.</p>
-              </div>
-            ) : (
-              <div className="space-y-6">
-                {(data.customSections || []).map((sec: any, secIdx: number) => (
-                  <div key={sec.id || secIdx} className="bg-slate-50/70 rounded-2xl border border-slate-200 p-5 md:p-6 space-y-4 hover:border-slate-300 transition-all">
-                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-slate-200 pb-3">
-                      <div className="flex items-center gap-3 flex-1 w-full">
-                        <span className="w-6 h-6 rounded-full bg-[#007a87] text-white text-xs font-bold flex items-center justify-center shrink-0">
-                          {secIdx + 1}
-                        </span>
-                        <input
-                          type="text"
-                          value={sec.title || ""}
-                          onChange={(e) => updateCustomSection(selectedIndex, secIdx, 'title', e.target.value)}
-                          placeholder="Section Title (e.g. Special Instructions, Clinical Details)"
-                          className="flex-1 text-base font-bold text-[#002b5c] bg-white border border-slate-200 rounded-xl px-3 py-2 focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87]"
-                        />
-                      </div>
-                      
-                      <div className="flex items-center gap-1.5 self-end sm:self-center">
-                        <button
-                          type="button"
-                          disabled={secIdx === 0}
-                          onClick={() => moveCustomSection(selectedIndex, secIdx, -1)}
-                          className="p-1.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-100 disabled:opacity-30 disabled:cursor-not-allowed text-slate-600 transition-all"
-                          title="Move Up"
-                        >
-                          <ChevronUp size={16} />
-                        </button>
-                        <button
-                          type="button"
-                          disabled={secIdx === (data.customSections || []).length - 1}
-                          onClick={() => moveCustomSection(selectedIndex, secIdx, 1)}
-                          className="p-1.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-100 disabled:opacity-30 disabled:cursor-not-allowed text-slate-600 transition-all"
-                          title="Move Down"
-                        >
-                          <ChevronDown size={16} />
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => removeCustomSection(selectedIndex, secIdx)}
-                          className="p-1.5 text-red-500 hover:bg-red-50 rounded-lg transition-colors ml-1"
-                          title="Delete Section"
-                        >
-                          <Trash2 size={16} />
-                        </button>
-                      </div>
-                    </div>
-
-                    <div>
-                      <label className="block text-xs font-bold text-slate-500 mb-2 uppercase tracking-wider">
-                        Section Content (Rich Text)
-                      </label>
-                      <QuillEditor
-                        value={sec.content || ""}
-                        onChange={(content) => updateCustomSection(selectedIndex, secIdx, 'content', content)}
-                      />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-
-          {/* Organizers */}
-          <div className="bg-white rounded-3xl shadow-sm border border-slate-100 p-6 md:p-8 space-y-6">
-            <div className="flex justify-between items-center border-b pb-4">
-              <input type="text" value={data.organizersTitle !== undefined ? data.organizersTitle : "Organizers"} onChange={e => updateField(selectedIndex, "organizersTitle", e.target.value)} className="text-[20px] font-black text-[#002b5c] bg-transparent border-b-2 border-transparent hover:border-slate-200 focus:border-[#007a87] focus:ring-0 p-0 m-0 w-full max-w-[300px] transition-colors" />
-              <button type="button" onClick={() => addOrganizer(selectedIndex)} className="px-4 py-2 text-sm bg-[#002b5c] text-white rounded-lg hover:bg-[#001a38] hover:shadow-sm flex items-center gap-2 font-bold transition-all duration-300">
-                <Plus size={16} /> Add Organizer
-              </button>
-            </div>
-            <div className="space-y-4">
-              {(data.organizers || []).map((org: any, idx: number) => (
-                <div key={idx} className="flex flex-col md:flex-row gap-4 items-center bg-slate-50 p-4 rounded-xl border border-slate-100">
-                  <input type="text" value={org.name || ""} onChange={e => updateOrganizer(selectedIndex, idx, 'name', e.target.value)} className="w-full md:flex-1 p-3 border border-slate-200 rounded-xl" placeholder="Organizer Name" />
-                  <input type="text" value={org.role || ""} onChange={e => updateOrganizer(selectedIndex, idx, 'role', e.target.value)} className="w-full md:flex-1 p-3 border border-slate-200 rounded-xl" placeholder="Role (e.g. Chairperson)" />
-                  <button type="button" onClick={() => removeOrganizer(selectedIndex, idx)} className="p-2 text-red-500 hover:bg-red-50 rounded-lg">
-                    <Trash2 size={20} />
-                  </button>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Agenda */}
-          <div className="bg-white rounded-3xl shadow-sm border border-slate-100 p-6 md:p-8 space-y-6">
-            <div className="flex justify-between items-center border-b pb-4">
-              <input type="text" value={data.agendaTitle !== undefined ? data.agendaTitle : "Conference Topics & Speakers"} onChange={e => updateField(selectedIndex, "agendaTitle", e.target.value)} className="text-[20px] font-black text-[#002b5c] bg-transparent border-b-2 border-transparent hover:border-slate-200 focus:border-[#007a87] focus:ring-0 p-0 m-0 w-full max-w-[300px] transition-colors" />
-              <button type="button" onClick={() => addAgenda(selectedIndex)} className="px-4 py-2 text-sm bg-[#002b5c] text-white rounded-lg hover:bg-[#001a38] hover:shadow-sm flex items-center gap-2 font-bold transition-all duration-300">
-                <Plus size={16} /> Add Session
-              </button>
-            </div>
-            <div className="space-y-4">
-              {(data.agenda || []).map((ag: any, idx: number) => (
-                <div key={idx} className="flex flex-col gap-3 bg-slate-50 p-4 rounded-xl border border-slate-100 relative">
-                  <button type="button" onClick={() => removeAgenda(selectedIndex, idx)} className="absolute top-4 right-4 p-2 text-red-500 hover:bg-red-50 rounded-lg">
-                    <Trash2 size={18} />
-                  </button>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pr-12">
-                    <input type="text" value={ag.topic || ""} onChange={e => updateAgenda(selectedIndex, idx, 'topic', e.target.value)} className="w-full p-3 border border-slate-200 rounded-xl md:col-span-2" placeholder="Topic / Title" />
-                    <input type="text" value={ag.speaker || ""} onChange={e => updateAgenda(selectedIndex, idx, 'speaker', e.target.value)} className="w-full p-3 border border-slate-200 rounded-xl" placeholder="Speaker Name" />
-                    <input type="text" value={ag.role || ""} onChange={e => updateAgenda(selectedIndex, idx, 'role', e.target.value)} className="w-full p-3 border border-slate-200 rounded-xl" placeholder="Speaker Role / Designation" />
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Gallery */}
-          <div className="bg-white rounded-3xl shadow-sm border border-slate-100 p-6 md:p-8 space-y-6">
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b pb-4 gap-3">
-              <input type="text" value={data.galleryTitle !== undefined ? data.galleryTitle : "Event Gallery"} onChange={e => updateField(selectedIndex, "galleryTitle", e.target.value)} className="text-[20px] font-black text-[#002b5c] bg-transparent border-b-2 border-transparent hover:border-slate-200 focus:border-[#007a87] focus:ring-0 p-0 m-0 w-full max-w-[300px] transition-colors" />
-              <div className="flex items-center gap-2">
-                <label className="px-3.5 py-2 text-xs bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg flex items-center gap-1.5 font-bold transition-all duration-300 shadow-sm cursor-pointer">
-                  {bulkUploadingIdx === selectedIndex ? <Loader2 size={14} className="animate-spin" /> : <Upload size={14} />}
-                  <span>{bulkUploadingIdx === selectedIndex ? 'Uploading Batch...' : 'Bulk Upload'}</span>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    multiple
-                    disabled={bulkUploadingIdx === selectedIndex}
-                    onChange={(e) => handleBulkUpload(selectedIndex, e)}
-                    className="hidden"
-                  />
-                </label>
-                <button type="button" onClick={() => addArrayItem(selectedIndex, 'gallery')} className="px-4 py-2 text-xs bg-[#002b5c] text-white rounded-lg hover:bg-[#001a38] hover:shadow-sm flex items-center gap-1.5 font-bold transition-all duration-300">
-                  <Plus size={14} /> Add Image
-                </button>
-              </div>
-            </div>
-            {(!data.gallery || data.gallery.length === 0) ? (
-              <div className="text-center py-8 text-slate-400 bg-slate-50 rounded-2xl border border-dashed border-slate-200">
-                <p className="text-sm">No photos added to this event yet. Click &quot;Add Image&quot; or &quot;Bulk Upload&quot;.</p>
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {(data.gallery || []).map((img: string, idx: number) => {
-                  const isUploading = uploadingIdx === `${selectedIndex}-${idx}`;
-                  const hasValidImg = Boolean(img && img.trim() !== "");
-
-                  return (
-                    <div key={idx} className={`flex gap-3 items-center bg-slate-50 p-3 rounded-xl border ${hasValidImg ? 'border-slate-200' : 'border-amber-300 ring-1 ring-amber-200'} transition-all`}>
-                      <div className="relative w-12 h-12 shrink-0 rounded-lg overflow-hidden bg-slate-200 flex items-center justify-center border border-slate-300">
-                        {hasValidImg ? (
-                          <>
-                            {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <img src={img} alt="Preview" className="w-full h-full object-cover" />
-                            <a
-                              href={img}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="absolute inset-0 bg-slate-900/40 opacity-0 hover:opacity-100 flex items-center justify-center text-white transition-opacity"
-                              title="View Full Image"
-                            >
-                              <ExternalLink size={14} />
-                            </a>
-                          </>
-                        ) : (
-                          <ImageIcon className="text-slate-400" size={20} />
-                        )}
-                        {isUploading && (
-                          <div className="absolute inset-0 bg-slate-900/60 flex items-center justify-center text-white">
-                            <Loader2 size={16} className="animate-spin" />
-                          </div>
-                        )}
-                      </div>
-
-                      <div className="flex-1 min-w-0 flex flex-col gap-1">
-                        <input 
-                          type="text" 
-                          value={img || ""} 
-                          onChange={e => updateArrayItem(selectedIndex, 'gallery', idx, e.target.value)} 
-                          className="w-full p-2 bg-white border border-slate-200 rounded-lg text-xs font-mono focus:ring-1 focus:ring-[#007a87] focus:border-[#007a87]" 
-                          placeholder="Image URL or upload ->" 
-                        />
-                      </div>
-
-                      <label className="px-3 py-2 bg-white border border-slate-200 hover:border-[#007a87] text-[#007a87] hover:bg-[#007a87] hover:text-white rounded-lg text-xs font-bold flex items-center gap-1.5 transition-colors cursor-pointer shrink-0">
-                        {isUploading ? <Loader2 size={14} className="animate-spin" /> : <Upload size={14} />}
-                        <span>{isUploading ? 'Uploading...' : 'Upload'}</span>
-                        <input 
-                          type="file" 
-                          accept="image/*" 
-                          disabled={isUploading}
-                          onChange={(e) => handleUpload(selectedIndex, idx, e)} 
-                          className="hidden" 
-                        />
-                      </label>
-
-                      <button type="button" onClick={() => removeArrayItem(selectedIndex, 'gallery', idx)} className="p-2 text-red-500 hover:bg-red-50 rounded-lg shrink-0" title="Delete Photo">
-                        <Trash2 size={16} />
-                      </button>
-                    </div>
-                  );
-                })}
-              </div>
-            )}
-            <p className="text-xs text-slate-500">Supported formats: JPG, PNG, WebP. Blank images are automatically discarded upon save.</p>
-          </div>
-                </div>
-        );
-      })}
-      </div>
-
-      {/* Admin Pagination Controls */}
-      {totalPages > 1 && (
-        <div className="flex flex-col sm:flex-row justify-between items-center bg-white p-6 rounded-3xl shadow-sm border border-slate-100 gap-4 mt-8">
-          <div className="text-slate-500 text-sm">
-            Showing <span className="font-extrabold text-[#002b5c]">{Math.min(currentPage * eventsPerPage, events.length)}</span> of <span className="font-extrabold text-[#002b5c]">{events.length}</span> Results
-          </div>
-          <div className="flex items-center gap-6">
-            <div className="font-extrabold text-[#002b5c] text-sm">
-              Page: {currentPage} of {totalPages}
-            </div>
-            <div className="flex items-center gap-3">
-              <button 
-                type="button"
-                onClick={(e) => { e.preventDefault(); e.currentTarget.blur(); setCurrentPage(p => Math.max(1, p - 1)); document.getElementById("admin-events-top")?.scrollIntoView({ behavior: "smooth" }); }}
-                disabled={currentPage === 1}
-                className="w-10 h-10 flex items-center justify-center bg-white border border-slate-200 text-slate-400 rounded-full hover:border-slate-300 hover:text-slate-600 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
-              >
-                <svg className="w-5 h-5 rotate-180" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
-              </button>
-              <button 
-                type="button"
-                onClick={(e) => { e.preventDefault(); e.currentTarget.blur(); setCurrentPage(p => Math.min(totalPages, p + 1)); document.getElementById("admin-events-top")?.scrollIntoView({ behavior: "smooth" }); }}
-                disabled={currentPage === totalPages}
-                className="w-10 h-10 flex items-center justify-center bg-[#005f6b] text-white rounded-full hover:bg-[#004a55] disabled:opacity-60 disabled:cursor-not-allowed transition-all shadow-sm"
-              >
-                <svg className="w-5 h-5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* Comprehensive Add New Event Modal */}
       {isAddModalOpen && (
@@ -1219,7 +835,7 @@ export default function EventsClientForm({ initialEvents }: { initialEvents: any
           onClick={() => setIsAddModalOpen(false)}
         >
           <div 
-            className="bg-white rounded-3xl w-full max-w-4xl shadow-2xl border border-slate-100 overflow-hidden flex flex-col max-h-[92vh] my-auto animate-in zoom-in-95 duration-200"
+            className="bg-white rounded-3xl w-full max-w-5xl shadow-2xl border border-slate-100 overflow-hidden flex flex-col max-h-[92vh] my-auto animate-in zoom-in-95 duration-200"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Modal Header */}
@@ -1229,12 +845,18 @@ export default function EventsClientForm({ initialEvents }: { initialEvents: any
                   <Calendar size={22} />
                 </div>
                 <div>
-                  <h3 className="text-xl font-black text-[#002b5c]">Add New Event (All Details)</h3>
-                  <p className="text-xs text-slate-500 font-medium">Configure all sections for this event. It will be added as Event 1 at the top of Page 1.</p>
+                  <h3 className="text-xl font-black text-[#002b5c]">
+                    {editingEventIndex !== null ? `Edit Event: ${modalForm.title || "Untitled"}` : "Add New Event (All Details)"}
+                  </h3>
+                  <p className="text-xs text-slate-500 font-medium">
+                    {editingEventIndex !== null 
+                      ? "Update and configure all sections for this event." 
+                      : "Configure all sections for this event. It will be added as Event 1 at the top of Page 1."}
+                  </p>
                 </div>
               </div>
               <button 
-                type="button"
+                type="button" 
                 onClick={() => setIsAddModalOpen(false)}
                 className="text-slate-400 hover:text-slate-600 p-2 hover:bg-slate-50 rounded-xl transition-colors"
                 aria-label="Close"
@@ -1243,34 +865,41 @@ export default function EventsClientForm({ initialEvents }: { initialEvents: any
               </button>
             </div>
 
-            {/* Modal Tab Strip */}
-            <div className="flex border-b border-slate-200 bg-slate-50/70 px-4 sm:px-6 overflow-x-auto hide-scrollbar gap-2 shrink-0">
-              {[
-                { id: 'basic', label: 'Basic Details', icon: Calendar },
-                { id: 'overview', label: 'Overview & Objectives', icon: FileText },
-                { id: 'features', label: 'Features & Organizers', icon: Users },
-                { id: 'sections', label: `Custom Sections${(modalForm.customSections?.length || 0) > 0 ? ` (${modalForm.customSections.length})` : ''}`, icon: Layers },
-                { id: 'agenda', label: 'Agenda & Sessions', icon: Clock },
-                { id: 'gallery', label: 'Photo Gallery', icon: ImageIcon },
-              ].map(t => {
-                const Icon = t.icon;
-                const isActive = modalActiveTab === t.id;
-                return (
-                  <button
-                    key={t.id}
-                    type="button"
-                    onClick={() => setModalActiveTab(t.id as any)}
-                    className={`flex items-center gap-2 py-3.5 px-3.5 text-xs font-bold border-b-2 transition-all whitespace-nowrap ${
-                      isActive
-                        ? 'border-[#007a87] text-[#007a87] bg-white rounded-t-xl shadow-sm'
-                        : 'border-transparent text-slate-500 hover:text-slate-700 hover:bg-slate-100/60 rounded-t-xl'
-                    }`}
-                  >
-                    <Icon size={15} />
-                    <span>{t.label}</span>
-                  </button>
-                );
-              })}
+            {/* Modal Tab Strip - Full 6-tab responsive grid ensuring Event Gallery is 100% visible */}
+            <div className="border-b border-slate-200 bg-slate-50/90 p-2 sm:p-3 shrink-0">
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-1.5 sm:gap-2">
+                {[
+                  { id: 'basic', label: 'Basic Details', icon: Calendar, count: null },
+                  { id: 'overview', label: 'Overview', icon: FileText, count: null },
+                  { id: 'features', label: 'Organizers', icon: Users, count: (modalForm.organizers?.length || 0) > 0 ? modalForm.organizers.length : null },
+                  { id: 'sections', label: 'Sections', icon: Layers, count: (modalForm.customSections?.length || 0) > 0 ? modalForm.customSections.length : null },
+                  { id: 'agenda', label: 'Agenda', icon: Clock, count: (modalForm.agenda?.length || 0) > 0 ? modalForm.agenda.length : null },
+                  { id: 'gallery', label: 'Event Gallery', icon: ImageIcon, count: (modalForm.gallery?.length || 0) > 0 ? modalForm.gallery.length : null },
+                ].map(t => {
+                  const Icon = t.icon;
+                  const isActive = modalActiveTab === t.id;
+                  return (
+                    <button
+                      key={t.id}
+                      type="button"
+                      onClick={() => setModalActiveTab(t.id as any)}
+                      className={`flex items-center justify-center gap-1.5 py-2.5 px-2 text-xs font-bold rounded-xl transition-all shadow-sm ${
+                        isActive
+                          ? 'bg-[#007a87] text-white ring-2 ring-[#007a87]/30'
+                          : 'bg-white text-slate-600 hover:text-[#007a87] hover:bg-slate-50 border border-slate-200/90'
+                      }`}
+                    >
+                      <Icon size={14} className="shrink-0" />
+                      <span className="truncate">{t.label}</span>
+                      {t.count !== null && (
+                        <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-black ${isActive ? 'bg-white/30 text-white' : 'bg-slate-100 text-[#007a87]'}`}>
+                          {t.count}
+                        </span>
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
 
             {/* Modal Body */}
@@ -1686,21 +1315,24 @@ export default function EventsClientForm({ initialEvents }: { initialEvents: any
                 </div>
               )}
 
-              {/* Tab 5: Photo Gallery */}
+              {/* Tab 6: Event Gallery */}
               {modalActiveTab === 'gallery' && (
                 <div className="space-y-6 animate-in fade-in duration-200">
-                  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-slate-200 pb-3 gap-3">
-                    <input 
-                      type="text" 
-                      value={modalForm.galleryTitle} 
-                      onChange={(e) => updateModalField("galleryTitle", e.target.value)}
-                      className="text-base font-black text-[#002b5c] bg-transparent border-b-2 border-transparent hover:border-slate-300 focus:border-[#007a87] focus:ring-0 p-0 m-0 w-full max-w-[280px]"
-                      placeholder="Gallery Section Title"
-                    />
-                    <div className="flex items-center gap-2">
-                      <label className="px-3.5 py-1.5 text-xs bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg flex items-center gap-1.5 font-bold transition-all shadow-sm cursor-pointer">
+                  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-slate-200 pb-4 gap-4">
+                    <div>
+                      <h4 className="text-base font-black text-[#002b5c] flex items-center gap-2">
+                        <ImageIcon size={20} className="text-[#007a87]" />
+                        Event Gallery
+                        <span className="text-xs font-extrabold text-teal-700 bg-teal-50 border border-teal-200 px-2.5 py-0.5 rounded-full">
+                          {modalForm.gallery.length} {modalForm.gallery.length === 1 ? 'Photo' : 'Photos'}
+                        </span>
+                      </h4>
+                      <p className="text-xs text-slate-500 mt-0.5">Upload photos or paste direct image URLs to display in the event photo gallery.</p>
+                    </div>
+                    <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
+                      <label className="px-4 py-2 text-xs bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl flex items-center gap-1.5 font-bold transition-all shadow-sm cursor-pointer">
                         {modalBulkUploading ? <Loader2 size={14} className="animate-spin" /> : <Upload size={14} />}
-                        <span>{modalBulkUploading ? 'Uploading...' : 'Bulk Upload'}</span>
+                        <span>{modalBulkUploading ? 'Uploading...' : 'Bulk Upload Photos'}</span>
                         <input
                           type="file"
                           accept="image/*"
@@ -1713,11 +1345,24 @@ export default function EventsClientForm({ initialEvents }: { initialEvents: any
                       <button 
                         type="button" 
                         onClick={() => addModalArrayItem('gallery')}
-                        className="px-3.5 py-1.5 text-xs bg-[#002b5c] text-white rounded-lg hover:bg-[#001a38] flex items-center gap-1.5 font-bold transition-all"
+                        className="px-4 py-2 text-xs bg-[#002b5c] text-white rounded-xl hover:bg-[#001a38] flex items-center gap-1.5 font-bold transition-all shadow-sm"
                       >
-                        <Plus size={14} /> Add Image
+                        <Plus size={14} /> Add Photo Slot
                       </button>
                     </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-[11px] font-extrabold text-slate-600 uppercase tracking-wider mb-2">
+                      Gallery Section Heading (Displayed on public event details page)
+                    </label>
+                    <input 
+                      type="text" 
+                      value={modalForm.galleryTitle} 
+                      onChange={(e) => updateModalField("galleryTitle", e.target.value)}
+                      className="w-full sm:max-w-md p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-bold text-[#002b5c] focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87]"
+                      placeholder="e.g. Event Gallery"
+                    />
                   </div>
 
                   {modalForm.gallery.length === 0 ? (
@@ -1825,19 +1470,19 @@ export default function EventsClientForm({ initialEvents }: { initialEvents: any
 
                 <button 
                   type="button" 
-                  onClick={handleCreateEventFromModal}
+                  onClick={handleSaveModalEvent}
                   disabled={isSubmittingModal}
                   className="px-6 py-2.5 rounded-xl bg-[#007a87] hover:bg-[#005f6b] text-white text-sm font-bold flex items-center gap-2 shadow-sm transition-all disabled:opacity-50"
                 >
                   {isSubmittingModal ? (
                     <>
                       <Loader2 size={16} className="animate-spin" />
-                      <span>Creating & Saving...</span>
+                      <span>{editingEventIndex !== null ? "Saving Updates..." : "Creating & Saving..."}</span>
                     </>
                   ) : (
                     <>
-                      <Plus size={16} />
-                      <span>Create & Save Event</span>
+                      {editingEventIndex !== null ? <Save size={16} /> : <Plus size={16} />}
+                      <span>{editingEventIndex !== null ? "Update & Save Event" : "Create & Save Event"}</span>
                     </>
                   )}
                 </button>
