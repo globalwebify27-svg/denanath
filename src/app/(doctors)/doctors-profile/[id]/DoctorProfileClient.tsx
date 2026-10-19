@@ -143,12 +143,6 @@ export default function DoctorProfileClient({ initialDoctor }: { initialDoctor: 
             }
           }
 
-          // Fallback if API did not return or was unreachable:
-          // If the doctor has isAppAllowed in the database (or isAppAllowed !== false), default to 'Y'
-          if (!isApp && doctor.isAppAllowed !== false) {
-            isApp = true;
-          }
-
           return {
             ...t,
             isApp: isApp ? 'Y' : 'N',
@@ -159,18 +153,13 @@ export default function DoctorProfileClient({ initialDoctor }: { initialDoctor: 
         setDynamicTimings(enhancedTimings.length > 0 ? enhancedTimings : doctor.timings || []);
       } catch (err) {
         console.error('Failed to fetch opd_day_time', err);
-        const fallbackTimings = (doctor.timings || []).map((t: any) => ({
-          ...t,
-          isApp: doctor.isAppAllowed !== false ? 'Y' : 'N',
-          _speciality_id: t.speciality_id || doctor.dmhSpecialityId || ''
-        }));
-        setDynamicTimings(fallbackTimings);
+        setDynamicTimings(doctor.timings || []);
       } finally {
         setIsLoadingTimings(false);
       }
     };
     fetchAppStatus();
-  }, [doctor?.dmhDoctorId, doctor?.dmhSpecialityId, doctor?.isAppAllowed]);
+  }, [doctor?.dmhDoctorId, doctor?.dmhSpecialityId]);
 
   return (
     <div className="bg-white rounded-[2rem] shadow-[0_8px_40px_rgb(0,0,0,0.03)] border border-slate-100/60 overflow-hidden">
