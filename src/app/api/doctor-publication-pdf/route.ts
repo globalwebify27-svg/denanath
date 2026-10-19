@@ -40,7 +40,12 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: "Invalid protocol" }, { status: 400 });
     }
 
-    const upstreamRes = await fetch(targetUrl);
+    const upstreamRes = await fetch(targetUrl, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+        'Accept': 'application/pdf, application/octet-stream, */*',
+      },
+    });
     if (!upstreamRes.ok) {
       return NextResponse.json(
         { error: `Upstream resource error: ${upstreamRes.status}` },

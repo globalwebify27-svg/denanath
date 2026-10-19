@@ -1,17 +1,13 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { DMH_API_CONFIG } from '@/lib/dmhApi';
 
 export const dynamic = 'force-dynamic';
 
 async function callDMHApi() {
-  const url = 'https://mapp.dmhospital.org/dmhApiRef/appointment_dummy/doctorList.php';
-  const headers = {
-    'Content-Type': 'application/json',
-    'X-User-Name': 'dmhPhr-api',
-    'X-Pass-Phrase': 'Phr25@DMH'
-  };
+  const url = `${DMH_API_CONFIG.baseUrl}doctorList.php`;
   const body = JSON.stringify({ action: "drAhis" });
-  const res = await fetch(url, { method: 'POST', headers, body });
+  const res = await fetch(url, { method: 'POST', headers: DMH_API_CONFIG.headers, body });
   return await res.json();
 }
 

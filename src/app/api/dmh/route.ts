@@ -1,29 +1,72 @@
 import { NextResponse } from 'next/server';
 import { DMH_API_CONFIG } from '@/lib/dmhApi';
+import { prisma } from '@/lib/prisma';
 
 let cachedDrAhis: { data: any[]; timestamp: number } | null = null;
 const CACHE_TTL = 5 * 60 * 1000;
+
+async function getFallbackDoctorsFromDb(): Promise<any[]> {
+  try {
+    const dbDocs = await prisma.doctor.findMany({
+      orderBy: { name: 'asc' },
+    });
+    return dbDocs.map((doc: any) => ({
+      doctor_id: doc.dmhDoctorId || doc.id,
+      doctor_code: doc.dmhDoctorId || doc.id,
+      speciality_id: doc.dmhSpecialityId || '',
+      speciality_name: doc.specialty || '',
+      doctor_name: doc.name,
+      first_name: doc.name?.replace(/^Dr\.\s*/i, '').split(' ')[0] || '',
+      last_name: doc.name?.replace(/^Dr\.\s*/i, '').split(' ').slice(1).join(' ') || '',
+      gender: doc.gender || '',
+      qualification: doc.qualifications || '',
+      consultant_type: doc.consultantType || 'Consultant',
+      OpdScheduleYN: doc.hasOpdSchedule || (doc.timings && doc.timings !== '[]') ? 'Yes' : 'No',
+      service_point_id: doc.dmhServicePointId || null,
+      service_center_id: doc.dmhServiceCenterId || null,
+      doctorImage: doc.image || '',
+      photo: doc.image || '',
+      isApp: doc.isAppAllowed !== false ? 'Y' : 'N',
+    }));
+  } catch (err) {
+    console.error('[DMH API] DB Fallback error for doctors:', err);
+    return [];
+  }
+}
 
 async function getCachedOrFetchDrAhis(): Promise<any[]> {
   const now = Date.now();
   if (cachedDrAhis && now - cachedDrAhis.timestamp < CACHE_TTL) {
     return cachedDrAhis.data;
   }
-  const drAhisUrl = `${DMH_API_CONFIG.baseUrl}doctorList.php`;
-  const drAhisRes = await fetch(drAhisUrl, {
-    method: 'POST',
-    headers: DMH_API_CONFIG.headers,
-    body: JSON.stringify({ action: 'drAhis' }),
-  });
-  const text = await drAhisRes.text();
   try {
+    const drAhisUrl = `${DMH_API_CONFIG.baseUrl}doctorList.php`;
+    const drAhisRes = await fetch(drAhisUrl, {
+      method: 'POST',
+      headers: DMH_API_CONFIG.headers,
+      body: JSON.stringify({ action: 'drAhis' }),
+    });
+    if (!drAhisRes.ok) {
+      console.warn(`[DMH API] drAhis HTTP error ${drAhisRes.status}, falling back to DB`);
+      const fallback = await getFallbackDoctorsFromDb();
+      if (fallback.length > 0) cachedDrAhis = { data: fallback, timestamp: now };
+      return fallback;
+    }
+    const text = await drAhisRes.text();
     const parsed = JSON.parse(text);
     const allDocs = parsed.drAhisJSON || [];
-    cachedDrAhis = { data: allDocs, timestamp: now };
-    return allDocs;
+    if (Array.isArray(allDocs) && allDocs.length > 0) {
+      cachedDrAhis = { data: allDocs, timestamp: now };
+      return allDocs;
+    }
+    const fallback = await getFallbackDoctorsFromDb();
+    if (fallback.length > 0) cachedDrAhis = { data: fallback, timestamp: now };
+    return fallback;
   } catch (e) {
-    console.error('drAhis parse error:', e, text);
-    return [];
+    console.error('[DMH API] drAhis fetch/parse error, falling back to DB:', e);
+    const fallback = await getFallbackDoctorsFromDb();
+    if (fallback.length > 0) cachedDrAhis = { data: fallback, timestamp: now };
+    return fallback;
   }
 }
 
@@ -74,11 +117,30 @@ export async function POST(request: Request) {
         }
       }
 
+      // If still empty (e.g. DMH API blocked or offline), fallback to prisma.department
+      if (specMap.size === 0) {
+        try {
+          const depts = await prisma.department.findMany({ where: { status: true } });
+          for (const dept of depts) {
+            specMap.set(dept.id, { id: dept.id, speciality_id: dept.id, speciality_name: dept.name });
+          }
+        } catch (dbErr) {
+          console.error('[DMH API] DB Fallback error for departments:', dbErr);
+        }
+      }
+
       const specialityJSON = Array.from(specMap.values()).sort((a, b) => 
         a.speciality_name.localeCompare(b.speciality_name)
       );
 
       return NextResponse.json({ specialityJSON });
+    }
+
+    // ── Special case: drAhis ─────────────────────────────────────────────────
+    // Fast in-memory cached handler for hospital doctor directory
+    if (action === 'drAhis') {
+      const allDocs = await getCachedOrFetchDrAhis();
+      return NextResponse.json({ drAhisJSON: allDocs });
     }
 
     // ── Special case: speciality_doctor ──────────────────────────────────────

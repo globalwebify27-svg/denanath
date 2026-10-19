@@ -22,63 +22,29 @@ export default function SearchModal({ isOpen, onClose, doctors, departments }: S
 
     let isMounted = true;
     setIsLoading(true);
+
+    const helperImg = (docObj: any) => {
+      const img = docObj.image || docObj.doctorImage || docObj.photo;
+      if (img && typeof img === "string" && img.trim() !== "" && !img.includes("unsplash.com")) {
+        return img;
+      }
+      const idToUse = docObj.dmhDoctorId || docObj.doctorId || docObj.doctor_id || docObj.id;
+      if (idToUse) {
+        const numericPart = String(idToUse).replace(/[^0-9]/g, "");
+        if (numericPart) {
+          return `https://www.dmhospital.org/images/Hospital/Doctor/Small-DMH/${numericPart}_Pic.jpg`;
+        }
+      }
+      return "https://www.dmhospital.org/images/Hospital/Doctor/Small-DMH/default.jpg";
+    };
+
     const fetchApiData = async () => {
       try {
-        // 1. Fetch Specialities from DMH API
-        const specRes = await fetch('/api/dmh', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ action: 'speciality' })
-        });
-        if (!specRes.ok) {
-          if (isMounted) setIsLoading(false);
-          return;
-        }
-        const specData = await specRes.json();
-        const specList = specData?.specialityJSON || (Array.isArray(specData) ? specData : []);
-        
-        if (!Array.isArray(specList) || specList.length === 0) {
-          if (isMounted) setIsLoading(false);
-          return;
-        }
-
-        const mappedDepts: Department[] = specList.map((spec: any, idx: number) => ({
-          id: String(spec.speciality_id || spec.id || idx),
-          name: spec.speciality_name || spec.name || "Specialty",
-          shortDesc: spec.short_desc || spec.description || "Expert clinical care and specialized treatments.",
-          longDesc: spec.long_desc || spec.description || "Comprehensive diagnostic and therapeutic care with advanced medical technology.",
-          icon: "Activity",
-          symptoms: [],
-          treatments: [],
-          opdHours: "08:00 AM - 08:00 PM (Mon - Sat)",
-          emergencyCare: true,
-        }));
-        
-        if (isMounted) setApiDepartments(mappedDepts);
-        if (isMounted) setIsLoading(false);
-
-        // Helper to resolve real DMH doctor picture URL
-        const getRealDoctorImg = (docObj: any) => {
-          const img = docObj.image || docObj.doctorImage || docObj.photo;
-          if (img && typeof img === "string" && img.trim() !== "" && !img.includes("unsplash.com")) {
-            return img;
-          }
-          const idToUse = docObj.dmhDoctorId || docObj.doctorId || docObj.doctor_id || docObj.id;
-          if (idToUse) {
-            const numericPart = String(idToUse).replace(/[^0-9]/g, "");
-            if (numericPart) {
-              return `https://www.dmhospital.org/images/Hospital/Doctor/Small-DMH/${numericPart}_Pic.jpg`;
-            }
-          }
-          return "https://www.dmhospital.org/images/Hospital/Doctor/Small-DMH/default.jpg";
-        };
-
-        // 1.5 Fetch doctors from local DB first to ensure all doctors are available
-        try {
-          const dbRes = await fetch('/api/doctors');
-          if (dbRes.ok) {
-            const dbDocs = await dbRes.json();
-            if (Array.isArray(dbDocs)) {
+        // 1. Fetch doctors from local DB immediately
+        const dbPromise = fetch('/api/doctors')
+          .then(res => res.ok ? res.json() : [])
+          .then(dbDocs => {
+            if (Array.isArray(dbDocs) && dbDocs.length > 0 && isMounted) {
               const mappedDbDocs: Doctor[] = dbDocs.map((doc: any, dIdx: number) => ({
                 id: String(doc.dmhDoctorId || doc.id || `dbdoc-${dIdx}`),
                 name: doc.name || "Doctor",
@@ -89,63 +55,82 @@ export default function SearchModal({ isOpen, onClose, doctors, departments }: S
                 rating: 4.8,
                 availableDays: ["Monday", "Wednesday", "Friday"],
                 timings: doc.timings || "10:00 AM - 02:00 PM",
-                image: getRealDoctorImg(doc),
+                image: helperImg(doc),
                 fee: 1000,
                 bio: "Experienced specialist providing comprehensive clinical care and personalized treatment protocols."
               }));
-              if (isMounted) {
-                setApiDoctors(prev => {
-                  const existingIds = new Set(prev.map(p => p.id));
-                  const newDocs = mappedDbDocs.filter(d => !existingIds.has(d.id));
-                  return [...prev, ...newDocs];
-                });
-              }
+              setApiDoctors(prev => {
+                const existingIds = new Set(prev.map(p => p.id));
+                const newDocs = mappedDbDocs.filter(d => !existingIds.has(d.id));
+                return [...prev, ...newDocs];
+              });
             }
-          }
-        } catch (e) {
-          console.warn("Failed to fetch doctors from local DB:", e);
-        }
+          })
+          .catch(e => console.warn("Failed to fetch doctors from local DB:", e));
 
-        // 2. Fetch Doctors progressively from DMH API for all departments
-        mappedDepts.forEach(async (dept) => {
-          try {
-            const docRes = await fetch('/api/dmh', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ action: 'speciality_doctor', speciality_id: dept.id })
-            });
-            if (!docRes.ok) return;
-            const docData = await docRes.json();
-            const docs = docData?.doctorJSON || (Array.isArray(docData) ? docData : []);
-            if (Array.isArray(docs) && docs.length > 0) {
+        // 2. Fetch Specialities from DMH API
+        const specPromise = fetch('/api/dmh', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'speciality' })
+        })
+          .then(res => res.ok ? res.json() : null)
+          .then(specData => {
+            const specList = specData?.specialityJSON || (Array.isArray(specData) ? specData : []);
+            if (Array.isArray(specList) && specList.length > 0 && isMounted) {
+              const mappedDepts: Department[] = specList.map((spec: any, idx: number) => ({
+                id: String(spec.speciality_id || spec.id || idx),
+                name: spec.speciality_name || spec.name || "Specialty",
+                shortDesc: spec.short_desc || spec.description || "Expert clinical care and specialized treatments.",
+                longDesc: spec.long_desc || spec.description || "Comprehensive diagnostic and therapeutic care with advanced medical technology.",
+                icon: "Activity",
+                symptoms: [],
+                treatments: [],
+                opdHours: "08:00 AM - 08:00 PM (Mon - Sat)",
+                emergencyCare: true,
+              }));
+              setApiDepartments(mappedDepts);
+            }
+          })
+          .catch(e => console.warn("Failed to fetch specialities:", e));
+
+        // 3. Fetch all doctors from DMH API in ONE call (drAhis)
+        const drAhisPromise = fetch('/api/dmh', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'drAhis' })
+        })
+          .then(res => res.ok ? res.json() : null)
+          .then(drAhisData => {
+            const docs = drAhisData?.drAhisJSON || (Array.isArray(drAhisData) ? drAhisData : []);
+            if (Array.isArray(docs) && docs.length > 0 && isMounted) {
               const mappedDocs: Doctor[] = docs.map((doc: any, dIdx: number) => ({
-                id: String(doc.doctor_id || `doc-${dept.id}-${dIdx}`),
+                id: String(doc.doctor_id || doc.doctor_code || `doc-${dIdx}`),
                 name: doc.doctor_name || `${doc.first_name || ''} ${doc.last_name || ''}`.trim() || "Doctor",
-                specialtyId: dept.id,
-                specialtyName: doc.speciality_name || dept.name || "General",
+                specialtyId: String(doc.speciality_id || "general"),
+                specialtyName: doc.speciality_name || "General",
                 qualifications: doc.qualification || doc.qualifications || "MBBS, MD",
                 experience: 15,
                 rating: 4.8,
                 availableDays: ["Monday", "Wednesday", "Friday"],
                 timings: "10:00 AM - 02:00 PM",
-                image: getRealDoctorImg(doc),
+                image: helperImg(doc),
                 fee: 1000,
                 bio: "Experienced specialist providing comprehensive clinical care and personalized treatment protocols."
               }));
-              if (isMounted) {
-                setApiDoctors(prev => {
-                  const existingIds = new Set(prev.map(p => p.id));
-                  const newDocs = mappedDocs.filter(d => !existingIds.has(d.id));
-                  return [...prev, ...newDocs];
-                });
-              }
+              setApiDoctors(prev => {
+                const existingIds = new Set(prev.map(p => p.id));
+                const newDocs = mappedDocs.filter(d => !existingIds.has(d.id));
+                return [...prev, ...newDocs];
+              });
             }
-          } catch (e) {
-            console.warn("Failed to fetch docs for specialty:", dept.id);
-          }
-        });
+          })
+          .catch(e => console.warn("Failed to fetch drAhis:", e));
+
+        await Promise.allSettled([dbPromise, specPromise, drAhisPromise]);
       } catch (err) {
         console.error("Failed to load search modal API data:", err);
+      } finally {
         if (isMounted) setIsLoading(false);
       }
     };
@@ -156,8 +141,8 @@ export default function SearchModal({ isOpen, onClose, doctors, departments }: S
 
   if (!isOpen) return null;
 
-  const displayDoctors = apiDoctors;
-  const displayDepts = apiDepartments;
+  const displayDoctors = apiDoctors.length > 0 ? apiDoctors : (doctors || []);
+  const displayDepts = apiDepartments.length > 0 ? apiDepartments : (departments || []);
 
   // Live Doctor Search Filter
   const filteredDoctors = searchQuery.trim() === ""
