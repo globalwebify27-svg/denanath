@@ -11,9 +11,18 @@ export default function EventsListClientPage({ events = [], pageData }: { events
   
   const [selectedDateObj, setSelectedDateObj] = useState<Date | null>(null); // Start with null to show ALL events by default
 
+  const parseEventDate = (dateVal: any) => {
+    if (!dateVal) return new Date(NaN);
+    const str = String(dateVal).trim();
+    if (/^\d{4}-\d{2}-\d{2}$/.test(str)) {
+      return new Date(str + "T00:00:00");
+    }
+    return new Date(str);
+  };
+
   const filteredEvents = selectedDateObj
     ? events.filter(e => {
-        const d = new Date(e.date);
+        const d = parseEventDate(e.date);
         return !isNaN(d.getTime()) && 
                d.getDate() === selectedDateObj.getDate() && 
                d.getMonth() === selectedDateObj.getMonth() && 
@@ -143,8 +152,8 @@ export default function EventsListClientPage({ events = [], pageData }: { events
               ) : (
                 filteredEvents.slice((currentPage - 1) * eventsPerPage, currentPage * eventsPerPage).map((event, idx) => {
                   const eSlug = event.slug || event.id || event.title?.replace(/[^a-zA-Z0-9-]/g, '');
-                  const eventDate = new Date(event.date);
-              const formattedDate = isNaN(eventDate.getTime()) ? event.date : eventDate.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+                  const eventDate = parseEventDate(event.date);
+                  const formattedDate = isNaN(eventDate.getTime()) ? event.date : eventDate.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
               
               return (
                 <div key={idx} className="bg-white rounded-2xl shadow-sm hover:shadow-xl border border-slate-200 hover:border-slate-300 overflow-hidden transition-all duration-300 group transform hover:-translate-y-1 relative">

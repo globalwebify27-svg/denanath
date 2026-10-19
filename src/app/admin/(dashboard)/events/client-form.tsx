@@ -6,6 +6,25 @@ import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { Plus, Trash2, GripVertical, Image as ImageIcon, Upload, Loader2, Calendar, ExternalLink, X, CheckCircle2, AlertCircle, FileText, Users, Clock, ChevronRight, ChevronLeft, Layers, ChevronUp, ChevronDown, AlertTriangle } from "lucide-react";
 
+function formatDateForPicker(val: any): string {
+  if (!val) return "";
+  if (typeof val === "string") {
+    const trimmed = val.trim();
+    if (/^\d{4}-\d{2}-\d{2}$/.test(trimmed)) return trimmed;
+    if (trimmed.includes("T")) return trimmed.split("T")[0];
+  }
+  try {
+    const d = new Date(val);
+    if (!isNaN(d.getTime())) {
+      const year = d.getFullYear();
+      const month = String(d.getMonth() + 1).padStart(2, "0");
+      const day = String(d.getDate()).padStart(2, "0");
+      return `${year}-${month}-${day}`;
+    }
+  } catch {}
+  return "";
+}
+
 export default function EventsClientForm({ initialEvents }: { initialEvents: any[] }) {
   const router = useRouter();
   const [uploadingIdx, setUploadingIdx] = useState<string | null>(null);
@@ -851,7 +870,12 @@ export default function EventsClientForm({ initialEvents }: { initialEvents: any
               </div>
               <div>
                 <label className="block text-[13px] font-extrabold text-slate-700 uppercase tracking-widest mb-3">Event Date</label>
-                <input type="text" value={data.date || ""} onChange={e => updateField(selectedIndex, "date", e.target.value)} className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87]" placeholder="e.g. Saturday March 21, 2026" />
+                <input 
+                  type="date" 
+                  value={formatDateForPicker(data.date)} 
+                  onChange={e => updateField(selectedIndex, "date", e.target.value)} 
+                  className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] text-sm font-medium text-slate-800" 
+                />
               </div>
             </div>
             <div>
@@ -1298,11 +1322,10 @@ export default function EventsClientForm({ initialEvents }: { initialEvents: any
                         Event Date
                       </label>
                       <input 
-                        type="text" 
-                        value={modalForm.date} 
+                        type="date" 
+                        value={formatDateForPicker(modalForm.date)} 
                         onChange={(e) => updateModalField("date", e.target.value)}
-                        placeholder="e.g. Saturday October 24, 2026" 
-                        className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] text-sm font-medium"
+                        className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] text-sm font-medium text-slate-800"
                       />
                     </div>
                   </div>

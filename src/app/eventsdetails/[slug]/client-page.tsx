@@ -19,12 +19,21 @@ export default function EventsClientPage({ events = [], pageData }: { events: an
   }, [isPlaying, galleryState]);
 
 
+  const parseEventDate = (dateVal: any) => {
+    if (!dateVal) return new Date(NaN);
+    const str = String(dateVal).trim();
+    if (/^\d{4}-\d{2}-\d{2}$/.test(str)) {
+      return new Date(str + "T00:00:00");
+    }
+    return new Date(str);
+  };
+
   const now = Date.now();
   const THIRTY_DAYS = 30 * 24 * 60 * 60 * 1000;
   
   const displayedEvents = events.filter((data, index) => {
     if (index === events.length - 1) return true; // Always show the latest event just in case
-    const eventDate = new Date(data.date);
+    const eventDate = parseEventDate(data.date);
     if (!isNaN(eventDate.getTime()) && (now - eventDate.getTime() > THIRTY_DAYS)) {
       return false; // Hide if older than 30 days
     }
@@ -96,7 +105,10 @@ export default function EventsClientPage({ events = [], pageData }: { events: an
                 {date && (
                   <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#005f6b]/10 text-[#005f6b] text-sm font-bold w-fit">
                     <Calendar className="w-4 h-4" />
-                    <span>{date}</span>
+                    <span>{(() => {
+                      const d = parseEventDate(date);
+                      return isNaN(d.getTime()) ? date : d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+                    })()}</span>
                   </div>
                 )}
                 {title && (
