@@ -102,7 +102,7 @@ export default function Footer({ latestEvent, footerSettings }: { latestEvent?: 
               <Link href={latestEvent ? `/eventsdetails/${latestEvent.slug || latestEvent.id || latestEvent.title?.replace(/[^a-zA-Z0-9-]/g, '')}` : '/eventsdetails/RCScourse17'} className="group flex flex-col gap-2.5 max-w-[140px]">
                 <div className="w-full h-14 rounded-lg overflow-hidden border border-white/20 bg-black/20 shrink-0">
                   <img 
-                    src={latestEvent && latestEvent.gallery && latestEvent.gallery.length > 0 ? latestEvent.gallery[0] : "/images/unnamed (7).webp"} 
+                    src={latestEvent?.featuredImage || (latestEvent && latestEvent.gallery && latestEvent.gallery.length > 0 ? latestEvent.gallery[0] : "/images/unnamed (7).webp")} 
                     alt={latestEvent?.title || "Diabetes Nursing Conference 2026"} 
                     className="w-full h-full object-cover opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-300"
                   />

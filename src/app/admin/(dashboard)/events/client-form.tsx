@@ -68,11 +68,15 @@ export default function EventsClientForm({ initialEvents }: { initialEvents: any
   const [modalUploadingIdx, setModalUploadingIdx] = useState<number | null>(null);
   const [modalBulkUploading, setModalBulkUploading] = useState(false);
 
+  const [modalFeaturedUploading, setModalFeaturedUploading] = useState(false);
+
   const [modalForm, setModalForm] = useState<{
     title: string;
     date: string;
     status: boolean;
     summary: string;
+    featuredImage: string;
+    isFooterFeatured: boolean;
     overviewTitle: string;
     overview: string[];
     objectivesTitle: string;
@@ -91,6 +95,8 @@ export default function EventsClientForm({ initialEvents }: { initialEvents: any
     date: "",
     status: true,
     summary: "",
+    featuredImage: "",
+    isFooterFeatured: false,
     overviewTitle: "Event Overview",
     overview: [""],
     objectivesTitle: "Key Objectives",
@@ -142,6 +148,8 @@ export default function EventsClientForm({ initialEvents }: { initialEvents: any
       date: formatDateForPicker(target.date) || target.date || "",
       status: target.status !== false,
       summary: target.summary || "",
+      featuredImage: target.featuredImage || "",
+      isFooterFeatured: Boolean(target.isFooterFeatured),
       overviewTitle: target.overviewTitle || "Event Overview",
       overview: Array.isArray(target.overview) && target.overview.length > 0 ? [...target.overview] : [""],
       objectivesTitle: target.objectivesTitle || "Key Objectives",
@@ -217,6 +225,8 @@ export default function EventsClientForm({ initialEvents }: { initialEvents: any
       date: "",
       status: true,
       summary: "",
+      featuredImage: "",
+      isFooterFeatured: false,
       overviewTitle: "Event Overview",
       overview: [""],
       objectivesTitle: "Key Objectives",
@@ -409,6 +419,38 @@ export default function EventsClientForm({ initialEvents }: { initialEvents: any
     }
   };
 
+  const handleModalFeaturedUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setModalFeaturedUploading(true);
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("folder", "events");
+
+    try {
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (res.ok) {
+        const { url } = await res.json();
+        if (url) {
+          updateModalField("featuredImage", url);
+        }
+      } else {
+        alert("Upload failed. Please check file format and size.");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Error uploading image.");
+    } finally {
+      setModalFeaturedUploading(false);
+      e.target.value = "";
+    }
+  };
+
   const handleSaveModalEvent = async () => {
     if (!modalForm.title.trim()) {
       setModalError("Please enter an event title in Basic Details.");
@@ -429,6 +471,8 @@ export default function EventsClientForm({ initialEvents }: { initialEvents: any
       date: modalForm.date.trim(),
       status: modalForm.status !== false,
       summary: modalForm.summary.trim(),
+      featuredImage: (modalForm.featuredImage || "").trim(),
+      isFooterFeatured: Boolean(modalForm.isFooterFeatured),
       overviewTitle: modalForm.overviewTitle || "Event Overview",
       overview: modalForm.overview.filter(p => p && p.trim() !== "").length > 0
         ? modalForm.overview.filter(p => p && p.trim() !== "")
@@ -448,10 +492,18 @@ export default function EventsClientForm({ initialEvents }: { initialEvents: any
 
     let updatedEvents: any[];
     if (isEditing) {
-      updatedEvents = [...events];
-      updatedEvents[editingEventIndex] = formattedEvent;
+      updatedEvents = events.map((ev, idx) => {
+        if (idx === editingEventIndex) return formattedEvent;
+        if (formattedEvent.isFooterFeatured) {
+          return { ...ev, isFooterFeatured: false };
+        }
+        return ev;
+      });
     } else {
-      updatedEvents = [formattedEvent, ...events];
+      const rest = formattedEvent.isFooterFeatured
+        ? events.map(ev => ({ ...ev, isFooterFeatured: false }))
+        : events;
+      updatedEvents = [formattedEvent, ...rest];
       setTablePage(1);
     }
 
@@ -564,6 +616,8 @@ export default function EventsClientForm({ initialEvents }: { initialEvents: any
   // Strictly filter out empty gallery items before saving to database!
   const sanitizedEvents = events.map(ev => ({
     ...ev,
+    featuredImage: typeof ev.featuredImage === "string" ? ev.featuredImage.trim() : "",
+    isFooterFeatured: Boolean(ev.isFooterFeatured),
     customSections: (ev.customSections || []).filter((s: any) => s && (s.title?.trim() || s.content?.trim())),
     gallery: (ev.gallery || []).filter((img: string) => typeof img === "string" && img.trim() !== "")
   }));
@@ -681,10 +735,34 @@ export default function EventsClientForm({ initialEvents }: { initialEvents: any
                             {originalIndex + 1}
                           </td>
                           <td className="py-3.5 px-4">
-                            <div className="font-bold text-[#002b5c] line-clamp-1">{ev.title || 'Untitled Event'}</div>
-                            {ev.summary && (
-                              <p className="text-xs text-slate-400 line-clamp-1 mt-0.5">{ev.summary}</p>
-                            )}
+                            <div className="flex items-center gap-3">
+                              {/* Event Thumbnail Preview */}
+                              <div className="w-10 h-10 rounded-lg overflow-hidden bg-slate-100 border border-slate-200 shrink-0 flex items-center justify-center">
+                                {ev.featuredImage || (ev.gallery && ev.gallery.length > 0) ? (
+                                  <img
+                                    src={ev.featuredImage || ev.gallery[0]}
+                                    alt={ev.title || "Event"}
+                                    className="w-full h-full object-cover"
+                                  />
+                                ) : (
+                                  <Calendar size={16} className="text-slate-400" />
+                                )}
+                              </div>
+                              <div className="min-w-0">
+                                <div className="flex items-center gap-2">
+                                  <span className="font-bold text-[#002b5c] line-clamp-1">{ev.title || 'Untitled Event'}</span>
+                                  {ev.isFooterFeatured && (
+                                    <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-teal-50 text-[#007a87] border border-teal-200 rounded-full text-[10px] font-extrabold uppercase shrink-0">
+                                      <span className="w-1.5 h-1.5 rounded-full bg-[#007a87]"></span>
+                                      Footer
+                                    </span>
+                                  )}
+                                </div>
+                                {ev.summary && (
+                                  <p className="text-xs text-slate-400 line-clamp-1 mt-0.5">{ev.summary}</p>
+                                )}
+                              </div>
+                            </div>
                           </td>
                           <td className="py-3.5 px-4 text-slate-600 text-xs font-semibold whitespace-nowrap">
                             {ev.date ? (
@@ -970,6 +1048,107 @@ export default function EventsClientForm({ initialEvents }: { initialEvents: any
                       placeholder="Brief summary or highlights of the event..." 
                       className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] text-sm font-medium resize-none"
                     />
+                  </div>
+
+                  {/* Featured / Homepage Footer Image Card */}
+                  <div className="bg-gradient-to-br from-teal-50/60 via-slate-50 to-white p-5 rounded-2xl border border-teal-200/80 space-y-4">
+                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-teal-100 pb-3">
+                      <div className="flex items-center gap-2.5">
+                        <div className="w-8 h-8 rounded-xl bg-[#007a87] text-white flex items-center justify-center shadow-sm">
+                          <ImageIcon size={16} />
+                        </div>
+                        <div>
+                          <h4 className="text-[14px] font-black text-[#002b5c] flex items-center gap-2">
+                            Featured Image (Homepage Footer Thumbnail)
+                          </h4>
+                          <p className="text-[11px] text-slate-500">
+                            This image is displayed in the website / homepage footer under &quot;Events / News&quot;
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Footer Feature Pin Toggle */}
+                      <label className="inline-flex items-center gap-2 cursor-pointer bg-white px-3 py-1.5 rounded-xl border border-teal-200 shadow-xs hover:border-teal-300 transition-colors">
+                        <input
+                          type="checkbox"
+                          checked={modalForm.isFooterFeatured}
+                          onChange={(e) => updateModalField("isFooterFeatured", e.target.checked)}
+                          className="w-4 h-4 text-[#007a87] rounded border-slate-300 focus:ring-[#007a87]"
+                        />
+                        <span className="text-xs font-bold text-slate-700">Display this event in Footer</span>
+                      </label>
+                    </div>
+
+                    <div className="flex flex-col sm:flex-row items-center gap-4">
+                      {/* Image Preview */}
+                      <div className="relative w-32 h-20 sm:w-36 sm:h-24 rounded-xl overflow-hidden bg-slate-100 border-2 border-dashed border-teal-200 flex items-center justify-center shrink-0 shadow-xs">
+                        {modalForm.featuredImage ? (
+                          <>
+                            <img
+                              src={modalForm.featuredImage}
+                              alt="Featured Preview"
+                              className="w-full h-full object-cover"
+                            />
+                            <a
+                              href={modalForm.featuredImage}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="absolute inset-0 bg-slate-900/40 opacity-0 hover:opacity-100 flex items-center justify-center text-white transition-opacity"
+                              title="View Full Size"
+                            >
+                              <ExternalLink size={16} />
+                            </a>
+                          </>
+                        ) : (
+                          <div className="text-center p-2 text-slate-400">
+                            <ImageIcon size={22} className="mx-auto mb-1 text-teal-600/40" />
+                            <span className="text-[10px] font-medium block">No image selected</span>
+                          </div>
+                        )}
+                        {modalFeaturedUploading && (
+                          <div className="absolute inset-0 bg-slate-900/70 flex items-center justify-center text-white">
+                            <Loader2 size={18} className="animate-spin text-teal-300" />
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Controls: URL Input & Upload Button */}
+                      <div className="flex-1 w-full space-y-2">
+                        <div className="flex gap-2">
+                          <input
+                            type="text"
+                            value={modalForm.featuredImage}
+                            onChange={(e) => updateModalField("featuredImage", e.target.value)}
+                            placeholder="Enter image URL or upload ->"
+                            className="flex-1 p-2.5 bg-white border border-slate-200 rounded-xl text-xs font-mono focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87]"
+                          />
+                          <label className="px-4 py-2.5 bg-[#007a87] hover:bg-[#005f6b] text-white rounded-xl text-xs font-bold flex items-center gap-1.5 transition-colors cursor-pointer shrink-0 shadow-xs">
+                            {modalFeaturedUploading ? <Loader2 size={14} className="animate-spin" /> : <Upload size={14} />}
+                            <span>{modalFeaturedUploading ? "Uploading..." : "Upload"}</span>
+                            <input
+                              type="file"
+                              accept="image/*"
+                              disabled={modalFeaturedUploading}
+                              onChange={handleModalFeaturedUpload}
+                              className="hidden"
+                            />
+                          </label>
+                          {modalForm.featuredImage && (
+                            <button
+                              type="button"
+                              onClick={() => updateModalField("featuredImage", "")}
+                              className="p-2.5 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-xl transition-colors border border-slate-200"
+                              title="Remove image"
+                            >
+                              <X size={15} />
+                            </button>
+                          )}
+                        </div>
+                        <p className="text-[11px] text-slate-500">
+                          Recommended ratio: 16:9 or 4:3 (JPEG, PNG, WebP). If left empty, the first photo from the Event Gallery will be used.
+                        </p>
+                      </div>
+                    </div>
                   </div>
                 </div>
               )}

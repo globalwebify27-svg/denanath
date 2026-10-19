@@ -68,9 +68,9 @@ export default async function RootLayout({
     const setting = await prisma.siteSetting.findUnique({ where: { key: 'page_events' } });
     if (setting && setting.value) {
       const parsedData = JSON.parse(setting.value);
-      const eventsList = parsedData.events || [];
+      const eventsList = (parsedData.events || []).filter((e: any) => e.status !== false && e.status !== "false");
       if (eventsList && eventsList.length > 0) {
-        latestEvent = eventsList[0];
+        latestEvent = eventsList.find((e: any) => e.isFooterFeatured) || eventsList[0];
       }
     }
   } catch (error) {
