@@ -286,7 +286,7 @@ export default function CourseForm({ initialData, saveAction, col, isNew }: { in
             className="flex items-center gap-2 bg-[#007a87] text-white px-6 py-3 rounded-xl hover:bg-[#006570] hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 font-bold text-xs shadow-md disabled:opacity-50"
           >
             <Save size={18} />
-            <span>{loading ? "Saving..." : (isNew ? `Add ${col === "right" ? "Program" : "Course"}` : "Save Changes")}</span>
+            <span>{loading ? "Saving..." : (isNew ? `Save ${col === "right" ? "Program" : "Course"}` : "Save Changes")}</span>
           </button>
         </div>
       </div>
@@ -683,7 +683,7 @@ export default function CourseForm({ initialData, saveAction, col, isNew }: { in
           className="flex items-center gap-2 bg-[#007a87] text-white px-8 py-3.5 rounded-xl hover:bg-[#006570] hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 font-bold text-sm shadow-md disabled:opacity-50"
         >
           <Save size={18} />
-          <span>{loading ? "Saving..." : (isNew ? `Add ${col === "right" ? "Program" : "Course"}` : "Save Changes")}</span>
+          <span>{loading ? "Saving..." : (isNew ? `Save ${col === "right" ? "Program" : "Course"}` : "Save Changes")}</span>
         </button>
       </div>
 
