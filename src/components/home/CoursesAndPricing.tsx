@@ -73,7 +73,7 @@ export default function CoursesAndPricing({
 
       <div className="relative z-10 max-w-[1300px] mx-auto px-4 sm:px-6 lg:px-8">
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 mb-10 max-w-5xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 mb-10 max-w-5xl mx-auto">
           {pricingCards.map((card: any, idx: number) => {
             const Icons = require('lucide-react');
             const Icon = Icons[card.iconString] || Icons.Activity;
@@ -93,27 +93,28 @@ export default function CoursesAndPricing({
               <Link 
                 key={idx}
                 href={card.url} 
-                className={`group relative overflow-hidden bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl p-6 sm:p-8 flex flex-col sm:flex-row items-center sm:justify-between gap-4 sm:gap-6 transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 border border-slate-700/50 ${isHex ? '' : theme.hover}`}
+                className={`group relative overflow-hidden bg-gradient-to-br from-slate-900 to-slate-800 rounded-2xl p-4 sm:p-6 lg:p-8 flex items-center justify-between gap-3 sm:gap-6 transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 border border-slate-700/50 ${isHex ? '' : theme.hover}`}
               >
                 <div 
                   className={`absolute top-0 right-0 w-32 h-32 rounded-bl-full -mr-4 -mt-4 transition-transform duration-500 group-hover:scale-110 ${isHex ? '' : theme.accent}`}
                   style={isHex ? { backgroundColor: `${themeValue}1A` } : {}}
                 ></div>
-                <div className="flex items-center gap-4 sm:gap-5 relative z-10 w-full sm:w-auto">
-                  <div className="w-12 h-12 rounded-full bg-slate-800/80 border border-slate-700 flex items-center justify-center shrink-0 shadow-inner">
+                <div className="flex items-center gap-3 sm:gap-5 relative z-10 min-w-0 flex-1">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-slate-800/80 border border-slate-700 flex items-center justify-center shrink-0 shadow-inner">
                     <Icon className={`w-5 h-5 ${isHex ? '' : theme.icon}`} style={isHex ? { color: themeValue } : {}} />
                   </div>
-                  <div>
-                    <p className="text-slate-400 text-[10px] font-bold tracking-widest uppercase mb-1">{card.subtitle}</p>
-                    <h3 className="text-white text-base font-semibold tracking-wide leading-snug" dangerouslySetInnerHTML={{__html: card.title}}></h3>
+                  <div className="min-w-0">
+                    <p className="text-slate-400 text-[10px] font-bold tracking-widest uppercase mb-0.5 sm:mb-1">{card.subtitle}</p>
+                    <h3 className="text-white text-sm sm:text-base font-semibold tracking-wide leading-snug" dangerouslySetInnerHTML={{__html: card.title}}></h3>
                   </div>
                 </div>
                 <div 
-                  className={`relative z-10 flex items-center gap-2 px-5 py-2.5 rounded-full text-base font-semibold leading-[22px] uppercase tracking-wider transition-colors shrink-0 w-full sm:w-auto justify-center sm:justify-start ${isHex ? 'group-hover:opacity-90' : theme.badge}`}
+                  className={`relative z-10 flex items-center gap-1.5 sm:gap-2 px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-semibold uppercase tracking-wider transition-colors shrink-0 ${isHex ? 'group-hover:opacity-90' : theme.badge}`}
                   style={isHex ? { backgroundColor: `${themeValue}33`, color: themeValue } : {}}
                 >
-                  <span>Click Here</span>
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  <span className="hidden xs:inline sm:inline">Click Here</span>
+                  <span className="xs:hidden sm:hidden">View</span>
+                  <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 group-hover:translate-x-1 transition-transform" />
                 </div>
               </Link>
             );

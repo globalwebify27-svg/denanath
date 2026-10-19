@@ -243,7 +243,7 @@ export default function Navbar({ topHeaderSettings, headerSettings }: { topHeade
       {topHeaderSettings?.isActive !== false && (
         <div className="block w-full bg-[#007a87] text-white text-[10px] md:text-[8px] 2xl:text-[11px] py-1.5 px-2 md:px-1 2xl:px-4 font-medium border-b border-teal-600/30">
         <div className="max-w-full 2xl:max-w-[96%] mx-auto px-1 flex justify-between items-center flex-wrap gap-1 md:gap-4 xl:gap-0">
-          <div className="flex items-center gap-1.5 md:gap-0.5 2xl:gap-4 text-white/90">
+          <div className="flex items-center flex-wrap gap-1.5 md:gap-0.5 2xl:gap-4 text-white/90">
               {(() => {
                 let topHeaderMenus = [...(topHeaderSettings?.menus || [
                   { name: "Emergency", href: "/emergency", textColor: "#f87171" },
@@ -297,7 +297,7 @@ export default function Navbar({ topHeaderSettings, headerSettings }: { topHeade
             ))}
           </div>
 
-          <div className="flex items-center gap-0.5 2xl:gap-4 font-bold tracking-wide">
+          <div className="flex items-center flex-wrap gap-1 2xl:gap-4 font-bold tracking-wide">
             {/* Phone Numbers */}
             {(topHeaderSettings?.phoneNumbers || []).filter((ph: any) => ph.isActive !== false && ph.text).length > 0 && (
               <div className="flex flex-wrap items-center gap-2">
@@ -383,7 +383,7 @@ export default function Navbar({ topHeaderSettings, headerSettings }: { topHeade
                   href={btn.link || "#"} 
                   target={btn.icon ? "_blank" : undefined}
                   rel={btn.icon ? "noopener noreferrer" : undefined}
-                  className={`flex items-center gap-1 border px-2.5 py-0.5 rounded transition-all shadow-sm ${
+                  className={`flex items-center gap-1 border px-2 py-0.5 rounded transition-all shadow-sm ${
                      btn.icon ? 'bg-black hover:bg-slate-900 border-slate-700/50 hover:scale-105' : 'bg-[#d9232d] hover:bg-red-700 text-white border-red-800/50 font-semibold uppercase tracking-wide ml-1'
                   }`}
                   style={!btn.icon ? { backgroundColor: btn.bgColor || "#d9232d" } : {}}
@@ -395,18 +395,18 @@ export default function Navbar({ topHeaderSettings, headerSettings }: { topHeade
                   }}
                 >
                   {btn.icon === "playstore" ? (
-                    <svg viewBox="0 0 1024 1024" className="w-3.5 h-3.5">
+                    <svg viewBox="0 0 1024 1024" className="w-3.5 h-3.5 shrink-0">
                       <path fill="#00E676" d="M104.5 125.1v773.8c0 14.3 8.3 26.6 20.4 32.5l398.8-419.4L104.5 125.1z" />
                       <path fill="#FF3D00" d="M523.7 512l153.9-161.8L160.7 53.6c-17.7-10.2-38.9-8-56.2 3.8l419.2 454.6z" />
                       <path fill="#FFC107" d="M677.6 350.2l198.5 114.6c24 13.9 24 48.7 0 62.6L677.6 642l-153.9-130 153.9-161.8z" />
                       <path fill="#00B0FF" d="M523.7 512L104.5 898.9c17.3 11.8 38.5 14 56.2 3.8L677.6 642 523.7 512z" />
                     </svg>
                   ) : btn.icon === "appstore" ? (
-                    <svg viewBox="0 0 1024 1024" className="w-3.5 h-3.5">
+                    <svg viewBox="0 0 1024 1024" className="w-3.5 h-3.5 shrink-0">
                       <path fill="#fff" d="M789.2 642.4c-0.4 46 39.4 61.2 39.8 61.4-0.4 0.8-6.2 21.2-20.6 42.4-12.8 19-26.2 38-47.2 38.4-21 0.4-27.4-12.4-51.6-12.4s-31.4 12-51.2 12.8c-20.6 0.8-36.2-20.4-49.4-39.2-30.8-44.6-53.8-126-22.2-181 15.6-27.2 43.6-44.4 74-44.8 20.2-0.4 39.4 13.6 52 13.6 12.6 0 35.8-16.6 60.2-14.2 10.2 0.4 39 4.2 57.6 31.4-1.6 1-34.4 20-34.4 59.8zM651.8 221c11.6-14 19.4-33.6 17.2-53.2-16.6 0.6-37.4 11-49.4 25.2-9.6 11.2-18.8 31.2-16.2 50.4 18.6 1.4 36.8-8.4 48.4-22.4z" />
                     </svg>
                   ) : btn.icon ? (
-                    <img src={btn.icon} alt="" className="w-3.5 h-3.5 object-contain" />
+                    <img src={btn.icon} alt="" className="w-3.5 h-3.5 object-contain shrink-0" />
                   ) : null}
                   {btn.icon ? (
                     <div className="flex flex-col items-start leading-[1] text-left mt-0.5">
@@ -426,17 +426,17 @@ export default function Navbar({ topHeaderSettings, headerSettings }: { topHeade
 
       {/* Main White Header */}
       <nav
-        className={`w-full bg-white border-b border-slate-200 py-3 z-40 transition-all duration-200 ${
+        className={`w-full bg-white border-b border-slate-200 py-2 sm:py-3 px-2 sm:px-4 z-40 transition-all duration-200 ${
           scrolled ? "fixed top-0 left-0 shadow-lg backdrop-blur-md bg-white/95" : "relative"
         }`}
       >
-        <div className="max-w-[98%] 2xl:max-w-[96%] mx-auto">
-          <div className="flex justify-between items-center">
+        <div className="max-w-full 2xl:max-w-[96%] mx-auto">
+          <div className="flex justify-between items-center gap-1 sm:gap-2">
 
             {/* DMH Logo Section */}
             <div className="flex items-center shrink-0">
               <Link href="/" className="flex items-center group focus:outline-none shrink-0">
-                <div className="relative flex items-center justify-start w-[180px] sm:w-[230px] xl:w-[280px] 2xl:w-[380px] h-[40px] sm:h-[55px] xl:h-[65px] shrink-0 transition-all">
+                <div className="relative flex items-center justify-start w-[130px] min-[360px]:w-[150px] min-[400px]:w-[175px] sm:w-[220px] xl:w-[280px] 2xl:w-[380px] h-[34px] min-[360px]:h-[38px] sm:h-[55px] xl:h-[65px] shrink-0 transition-all">
                   {(headerSettings?.logo !== "") && (
                     <img
                       src={headerSettings?.logo || "/images/Untitled design11.png"}
@@ -462,9 +462,9 @@ export default function Navbar({ topHeaderSettings, headerSettings }: { topHeade
             </div>
 
             {/* Mobile 25 Years Image (Centered between logo and triggers) */}
-            <div className="flex xl:hidden flex-1 justify-center items-center px-2">
+            <div className="flex xl:hidden flex-1 justify-center items-center px-1 sm:px-2 min-w-0">
               {(headerSettings?.yearsImage !== "") && (
-                <div className="relative flex items-center justify-center w-[70px] sm:w-[100px] h-[30px] sm:h-[45px] shrink-0 transition-all">
+                <div className="relative flex items-center justify-center w-[48px] min-[360px]:w-[58px] min-[400px]:w-[70px] sm:w-[95px] h-[24px] min-[360px]:h-[28px] sm:h-[42px] shrink-0 transition-all">
                   <img
                     src={headerSettings?.yearsImage || "/images/ChatGPT Image Jul 27, 2026, 05_05_55 PM (1)_transparent.png"}
                     alt="Years Image"
@@ -550,30 +550,30 @@ export default function Navbar({ topHeaderSettings, headerSettings }: { topHeade
             </div>
 
             {/* Mobile / Tablet View Trigger (Triggers under 1280px Screen width) */}
-            <div className="xl:hidden flex items-center gap-1.5 md:gap-3 shrink-0">
+            <div className="xl:hidden flex items-center gap-1 sm:gap-1.5 md:gap-3 shrink-0">
               <button 
                 suppressHydrationWarning={true}
                 onClick={() => setIsSearchOpen(!isSearchOpen)}
-                className="p-1.5 text-slate-500 hover:text-slate-900 transition-colors shrink-0"
+                className="p-1 sm:p-1.5 text-slate-500 hover:text-slate-900 transition-colors shrink-0"
                 aria-label="Toggle Search"
               >
-                <svg className="w-4 md:w-5 h-4 md:h-5 stroke-current" fill="none" viewBox="0 0 24 24" strokeWidth="2.5">
+                <svg className="w-4 sm:w-4.5 md:w-5 h-4 sm:h-4.5 md:h-5 stroke-current" fill="none" viewBox="0 0 24 24" strokeWidth="2.5">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
               </button>
 
               {/* Main Bar Language Selector (Tablet/Mobile Header) */}
               <div 
-                className="relative group flex items-center gap-1 cursor-pointer text-slate-600 hover:text-slate-900 transition-colors py-1 px-1.5 rounded-lg hover:bg-slate-100"
+                className="relative group flex items-center gap-0.5 sm:gap-1 cursor-pointer text-slate-600 hover:text-slate-900 transition-colors py-0.5 sm:py-1 px-1 sm:px-1.5 rounded-lg hover:bg-slate-100 shrink-0"
                 onClick={(e) => { e.stopPropagation(); setIsLangOpen(!isLangOpen); }}
                 title="Change Language / भाषा निवडा"
               >
-                <Globe className="w-4 md:w-5 h-4 md:h-5 text-[#007a87]" />
-                <span className="text-[10px] font-extrabold uppercase px-1 py-0.5 rounded bg-teal-50 text-[#007a87] border border-teal-200">
+                <Globe className="w-3.5 sm:w-4 md:w-5 h-3.5 sm:h-4 md:h-5 text-[#007a87] shrink-0" />
+                <span className="text-[9px] sm:text-[10px] font-extrabold uppercase px-1 py-0.5 rounded bg-teal-50 text-[#007a87] border border-teal-200">
                   {selectedLang}
                 </span>
                 <div 
-                  className={`absolute top-full right-0 ${isLangOpen ? 'block' : 'hidden'} group-hover:block w-44 bg-white rounded-xl shadow-2xl border border-slate-100 overflow-hidden text-slate-700 z-50 notranslate mt-2 animate-fadeIn`}
+                  className={`absolute top-full right-0 ${isLangOpen ? 'block' : 'hidden'} group-hover:block w-44 max-w-[calc(100vw-2rem)] bg-white rounded-xl shadow-2xl border border-slate-100 overflow-hidden text-slate-700 z-50 notranslate mt-2 animate-fadeIn`}
                   onClick={(e) => e.stopPropagation()}
                 >
                   <div className="py-1 flex flex-col text-[12px] max-h-[60vh] overflow-y-auto">
@@ -607,10 +607,10 @@ export default function Navbar({ topHeaderSettings, headerSettings }: { topHeade
 
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="p-1.5 md:p-2 rounded-md bg-slate-50 border border-slate-200 text-slate-700 transition-colors"
+                className="p-1 sm:p-1.5 md:p-2 rounded-md bg-slate-50 hover:bg-slate-100 border border-slate-200 text-slate-700 transition-colors shrink-0 flex items-center justify-center"
                 aria-label="Toggle Menu"
               >
-                {mobileMenuOpen ? <X className="w-4 md:w-5 h-4 md:h-5" /> : <Menu className="w-4 md:w-5 h-4 md:h-5" />}
+                {mobileMenuOpen ? <X className="w-4 sm:w-4.5 md:w-5 h-4 sm:h-4.5 md:h-5" /> : <Menu className="w-4 sm:w-4.5 md:w-5 h-4 sm:h-4.5 md:h-5" />}
               </button>
             </div>
           </div>
@@ -618,8 +618,8 @@ export default function Navbar({ topHeaderSettings, headerSettings }: { topHeade
 
         {/* Search Popup Overlay */}
         {isSearchOpen && (
-          <div className="absolute top-full right-2 sm:right-6 mt-1.5 z-[60] animate-fadeIn">
-            <div className="bg-white rounded-2xl shadow-2xl border border-slate-200 p-2.5 w-[310px] sm:w-[420px] relative overflow-hidden">
+          <div className="absolute top-full left-2 right-2 sm:left-auto sm:right-6 mt-1.5 z-[60] animate-fadeIn flex justify-end">
+            <div className="bg-white rounded-2xl shadow-2xl border border-slate-200 p-2.5 w-full sm:w-[420px] max-w-[420px] relative overflow-hidden">
               <form onSubmit={handleSearch} className="flex items-center">
                 <input 
                   type="text" 
@@ -702,10 +702,10 @@ export default function Navbar({ topHeaderSettings, headerSettings }: { topHeade
         {/* Mobile / Tablet Drawer */}
         <div
           className={`xl:hidden absolute inset-x-0 top-full bg-white border-b border-slate-200 overflow-y-auto transition-all duration-300 ease-in-out shadow-xl ${
-            mobileMenuOpen ? "max-h-[85vh] opacity-100 py-4" : "max-h-0 opacity-0 py-0 pointer-events-none"
+            mobileMenuOpen ? "max-h-[85vh] opacity-100 py-3" : "max-h-0 opacity-0 py-0 pointer-events-none"
           }`}
         >
-          <div className="flex-grow overflow-y-auto bg-slate-50 py-4 pb-24 h-full relative" style={{ WebkitOverflowScrolling: 'touch' }}>
+          <div className="bg-slate-50 py-3 sm:py-4 px-3 sm:px-4 pb-20 relative" style={{ WebkitOverflowScrolling: 'touch' }}>
             <div className="flex flex-col">
               {navLinks.map((link: any, idx: number) => (
                 <div key={idx} className="flex flex-col border-b border-slate-200/60 last:border-0 relative">
@@ -826,6 +826,57 @@ export default function Navbar({ topHeaderSettings, headerSettings }: { topHeade
                   })}
                 </div>
               </div>
+
+              {/* App Store & Google Play Store Buttons for Mobile Drawer */}
+              {(topHeaderSettings?.buttons || []).filter((btn: any) => btn.isActive !== false && btn.text).length > 0 && (
+                <div className="bg-white p-3 rounded-xl border border-slate-200 shadow-sm">
+                  <div className="flex items-center justify-between text-xs font-bold text-slate-700 mb-2">
+                    <span>Download DMH Mobile App</span>
+                    <span className="text-[10px] text-[#007a87] font-extrabold uppercase px-1.5 py-0.5 rounded bg-teal-50 border border-teal-200">
+                      Free App
+                    </span>
+                  </div>
+                  <div className="grid grid-cols-2 gap-2">
+                    {(topHeaderSettings?.buttons || [])
+                      .filter((btn: any) => btn.isActive !== false && btn.text)
+                      .map((btn: any, idx: number) => (
+                      <a 
+                        key={`drawer-app-btn-${idx}`}
+                        href={btn.link || "#"} 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        className={`flex items-center gap-2 border px-2.5 py-2 rounded-lg transition-all shadow-sm ${
+                           btn.icon ? 'bg-black hover:bg-slate-900 border-slate-800' : 'bg-[#d9232d] hover:bg-red-700 text-white border-red-800/50 font-semibold uppercase tracking-wide'
+                        }`}
+                        style={!btn.icon ? { backgroundColor: btn.bgColor || "#d9232d" } : {}}
+                      >
+                        {btn.icon === "playstore" ? (
+                          <svg viewBox="0 0 1024 1024" className="w-4 h-4 shrink-0">
+                            <path fill="#00E676" d="M104.5 125.1v773.8c0 14.3 8.3 26.6 20.4 32.5l398.8-419.4L104.5 125.1z" />
+                            <path fill="#FF3D00" d="M523.7 512l153.9-161.8L160.7 53.6c-17.7-10.2-38.9-8-56.2 3.8l419.2 454.6z" />
+                            <path fill="#FFC107" d="M677.6 350.2l198.5 114.6c24 13.9 24 48.7 0 62.6L677.6 642l-153.9-130 153.9-161.8z" />
+                            <path fill="#00B0FF" d="M523.7 512L104.5 898.9c17.3 11.8 38.5 14 56.2 3.8L677.6 642 523.7 512z" />
+                          </svg>
+                        ) : btn.icon === "appstore" ? (
+                          <svg viewBox="0 0 1024 1024" className="w-4 h-4 shrink-0">
+                            <path fill="#fff" d="M789.2 642.4c-0.4 46 39.4 61.2 39.8 61.4-0.4 0.8-6.2 21.2-20.6 42.4-12.8 19-26.2 38-47.2 38.4-21 0.4-27.4-12.4-51.6-12.4s-31.4 12-51.2 12.8c-20.6 0.8-36.2-20.4-49.4-39.2-30.8-44.6-53.8-126-22.2-181 15.6-27.2 43.6-44.4 74-44.8 20.2-0.4 39.4 13.6 52 13.6 12.6 0 35.8-16.6 60.2-14.2 10.2 0.4 39 4.2 57.6 31.4-1.6 1-34.4 20-34.4 59.8zM651.8 221c11.6-14 19.4-33.6 17.2-53.2-16.6 0.6-37.4 11-49.4 25.2-9.6 11.2-18.8 31.2-16.2 50.4 18.6 1.4 36.8-8.4 48.4-22.4z" />
+                          </svg>
+                        ) : btn.icon ? (
+                          <img src={btn.icon} alt="" className="w-4 h-4 object-contain shrink-0" />
+                        ) : null}
+                        {btn.icon ? (
+                          <div className="flex flex-col items-start leading-[1.1] text-left">
+                            <span className="text-[7px] text-slate-300 font-medium uppercase tracking-wider">{btn.icon === "playstore" ? "Get it on" : "Download on the"}</span>
+                            <span className="text-[11px] text-white font-bold">{btn.text}</span>
+                          </div>
+                        ) : (
+                          <span className="text-[11px] font-bold">{btn.text}</span>
+                        )}
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               <a 
                 href={topHeaderSettings?.whatsappNumber ? `https://wa.me/${topHeaderSettings.whatsappNumber}` : "https://wa.me/912040151000"} 

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { 
   Globe, FlaskConical, Heart, Home as HomeIcon, ShieldAlert, ChevronRight, ArrowRight, Microscope, Building2, GraduationCap, Users, BookOpen, Award 
@@ -269,70 +269,84 @@ export const defaultClinicalHubData = {
 
 export default function ClinicalHub({ data = defaultClinicalHubData }: { data?: any }) {
   if (!data || Object.keys(data).length === 0) data = defaultClinicalHubData;
-  const [activeHub, setActiveHub] = useState(0);
+  const [desktopActiveHub, setDesktopActiveHub] = useState(0);
+  const [mobileOpenHub, setMobileOpenHub] = useState<number | null>(null);
   const [hoveredHub, setHoveredHub] = useState<number | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 1024);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const hubItems = data.hubItems || defaultClinicalHubData.hubItems;
-
   const hubDetails = data.hubDetails || defaultClinicalHubData.hubDetails;
 
-  const currentHub = hubDetails[activeHub];
-  const ShowcaseIcon = iconMap[currentHub.iconString] || Globe;
-  const theme = currentHub.colorTheme;
+  const currentDesktopHub = hubDetails[desktopActiveHub] || hubDetails[0];
+
+  const handleHubClick = (idx: number) => {
+    setDesktopActiveHub(idx);
+    setMobileOpenHub(prev => (prev === idx ? null : idx));
+  };
 
   const renderDetail = (hub: any) => {
+    if (!hub) return null;
     const ShowcaseIcon = iconMap[hub.iconString] || Globe;
     const theme = hub.colorTheme;
     
     return (
-      <div className={`h-full border border-slate-200 bg-white rounded-3xl p-6 sm:p-8 flex flex-col md:flex-row gap-8 items-stretch transition-all duration-300 relative overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.04)] min-h-[380px] transform-gpu`}>
+      <div className={`h-full border border-slate-200 bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 lg:p-8 flex flex-col md:flex-row gap-5 sm:gap-6 md:gap-8 items-stretch transition-all duration-300 relative overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.04)] lg:min-h-[380px] transform-gpu`}>
         {/* Subtle decorative grid background inside the card */}
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808003_1px,transparent_1px),linear-gradient(to_bottom,#80808003_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none" />
 
-        {/* Left text portion (60% width on md/lg screen sizes) */}
+        {/* Left text portion */}
         <div className="relative z-10 flex-1 flex flex-col justify-start">
           <div className="space-y-3">
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-3 sm:gap-4">
               <div 
-                className={`w-12 h-12 rounded-2xl flex items-center justify-center shadow-inner ${hub.themeColor ? '' : theme?.iconPod}`}
+                className={`w-10 h-10 sm:w-12 sm:h-12 rounded-2xl flex items-center justify-center shadow-inner shrink-0 ${hub.themeColor ? '' : theme?.iconPod}`}
                 style={hub.themeColor ? { backgroundColor: `${hub.themeColor}15`, color: hub.themeColor } : {}}
               >
                 <ShowcaseIcon className="w-5 h-5" />
               </div>
               <div>
-                <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Selected Department</span>
-                <h3 className="text-base font-bold text-[#002b5c] tracking-tight">{hub.title}</h3>
+                <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest block">Selected Department</span>
+                <h3 className="text-base sm:text-lg font-bold text-[#002b5c] tracking-tight">{hub.title}</h3>
               </div>
             </div>
 
             <div 
-              className="text-slate-600 text-base sm:text-base font-normal leading-[31px] prose prose-slate prose-p:leading-[31px] max-w-none"
+              className="text-slate-600 text-sm sm:text-base font-normal leading-relaxed prose prose-slate max-w-none"
               dangerouslySetInnerHTML={{ __html: hub.description }}
             />
 
-            <div className="space-y-3 pt-1">
-              <h4 className="text-[10px] font-bold text-[#002b5c] uppercase tracking-wider">
-                {hub.featuresHeader || "Key Benefits & Protocols"}
-              </h4>
-              <ul className="space-y-2">
-                {hub.features.map((feature: string, fIdx: number) => (
-                  <li key={fIdx} className="flex items-start gap-2.5 text-slate-600 text-base sm:text-base font-normal leading-[31px]">
-                    <span 
-                      className={`w-1.5 h-1.5 rounded-full mt-[13px] flex-shrink-0 ${hub.themeColor ? '' : theme?.bullet}`} 
-                      style={hub.themeColor ? { backgroundColor: hub.themeColor } : {}}
-                    />
-                    <span className="flex-1">{feature}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
+            {hub.features && hub.features.length > 0 && (
+              <div className="space-y-2 pt-1">
+                <h4 className="text-[10px] font-bold text-[#002b5c] uppercase tracking-wider">
+                  {hub.featuresHeader || "Key Benefits & Protocols"}
+                </h4>
+                <ul className="space-y-1.5 sm:space-y-2">
+                  {hub.features.map((feature: string, fIdx: number) => (
+                    <li key={fIdx} className="flex items-start gap-2.5 text-slate-600 text-sm sm:text-base font-normal leading-relaxed">
+                      <span 
+                        className={`w-1.5 h-1.5 rounded-full mt-2 flex-shrink-0 ${hub.themeColor ? '' : theme?.bullet}`} 
+                        style={hub.themeColor ? { backgroundColor: hub.themeColor } : {}}
+                      />
+                      <span className="flex-1">{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
             
             {/* Action Button */}
-            {hub.title !== "DMH Diagnostics" && hub.title !== "Unique Clinics" && hub.ctaText && hub.ctaLink && (
-              <div className="pt-6 mt-auto">
+            {hub.ctaText && hub.ctaLink && (
+              <div className="pt-4 sm:pt-6 mt-auto">
                 <Link 
                   href={hub.ctaLink}
-                  className="inline-flex w-full sm:w-auto items-center justify-center px-6 py-3 text-sm font-semibold text-white rounded-lg transition-all duration-300 transform-gpu hover:-translate-y-0.5 hover:shadow-lg"
+                  className="inline-flex w-full sm:w-auto items-center justify-center px-5 sm:px-6 py-2.5 sm:py-3 text-xs sm:text-sm font-semibold text-white rounded-lg transition-all duration-300 transform-gpu hover:-translate-y-0.5 hover:shadow-lg"
                   style={hub.themeColor ? { backgroundColor: hub.themeColor, boxShadow: `0 10px 15px -3px ${hub.themeColor}30` } : {}}
                 >
                   {hub.ctaText}
@@ -343,16 +357,18 @@ export default function ClinicalHub({ data = defaultClinicalHubData }: { data?: 
           </div>
         </div>
 
-        {/* Right image portion (40% width on md/lg screens) */}
-        <div className="relative z-10 w-full md:w-[220px] lg:w-[280px] min-h-[200px] md:min-h-0 rounded-2xl overflow-hidden shadow-md border border-slate-100 shrink-0">
-          <img 
-            src={hub.image} 
-            alt={hub.title}
-            className="w-full h-full object-cover object-center absolute inset-0 transition-transform duration-500 hover:scale-105"
-          />
-          {/* Subtle brand overlay on image */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
-        </div>
+        {/* Right image portion */}
+        {hub.image && (
+          <div className="relative z-10 w-full h-48 sm:h-56 md:h-auto md:w-[220px] lg:w-[280px] rounded-2xl overflow-hidden shadow-md border border-slate-100 shrink-0">
+            <img 
+              src={hub.image} 
+              alt={hub.title}
+              className="w-full h-full object-cover object-center transition-transform duration-500 hover:scale-105"
+            />
+            {/* Subtle brand overlay on image */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none" />
+          </div>
+        )}
 
       </div>
     );
@@ -387,45 +403,33 @@ export default function ClinicalHub({ data = defaultClinicalHubData }: { data?: 
           <div className="lg:col-span-4 flex flex-col gap-2 justify-center">
             {hubItems.map((hub: any, idx: number) => {
               const HubIcon = iconMap[hub.iconString] || Globe;
-              const isActive = activeHub === idx;
+              const isDesktopActive = desktopActiveHub === idx;
+              const isMobileOpen = mobileOpenHub === idx;
+              const isCurrentActive = isMobile ? isMobileOpen : isDesktopActive;
               const isHovered = hoveredHub === idx;
-              const themeColor = hub.themeColor;
+              const themeColor = hub.themeColor || "#007a87";
               
-              let dynamicStyle: React.CSSProperties = {};
-              
-              if (themeColor) {
-                if (isActive) {
-                  dynamicStyle = {
-                    borderLeftColor: themeColor,
-                    color: themeColor,
-                    backgroundColor: 'white',
-                    boxShadow: `0 15px 30px -10px ${themeColor}20`,
-                    borderLeftWidth: '4px'
-                  };
-                } else {
-                   dynamicStyle = {
-                    borderLeftColor: 'transparent',
-                    color: isHovered ? themeColor : '#334155',
-                    backgroundColor: isHovered ? 'white' : 'rgba(255,255,255,0.7)',
-                    boxShadow: isHovered ? '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)' : 'none',
-                    borderLeftWidth: '4px'
-                   };
-                }
-              }
-
               return (
                 <div key={hub.id} className="w-full">
                   <button
-                    onClick={() => setActiveHub(idx)}
+                    onClick={() => handleHubClick(idx)}
                     onMouseEnter={() => setHoveredHub(idx)}
                     onMouseLeave={() => setHoveredHub(null)}
                     className={`w-full text-left flex items-center justify-between px-5 py-[15px] rounded-2xl border transition-all duration-300 transform-gpu ${
-                      themeColor ? (isActive ? 'border-slate-200' : 'border-slate-100') : (isActive ? hub.activeClass : hub.inactiveClass)
+                      isCurrentActive
+                        ? 'border-l-4 bg-white shadow-md border-slate-200'
+                        : 'border-l-4 border-l-transparent bg-white/70 hover:bg-white text-slate-700 border-slate-100'
                     }`}
-                    style={dynamicStyle}
+                    style={{
+                      borderLeftColor: (isCurrentActive || isHovered) ? themeColor : 'transparent',
+                      color: (isCurrentActive || isHovered) ? themeColor : '#334155',
+                      ...(isCurrentActive ? {
+                        boxShadow: `0 15px 30px -10px ${themeColor}25`
+                      } : {})
+                    }}
                   >
                     <div className="flex items-center gap-4">
-                      <span className={`text-[10px] font-bold tracking-widest ${isActive ? "opacity-100" : "text-slate-400"}`}>
+                      <span className={`text-[10px] font-bold tracking-widest ${isCurrentActive ? "opacity-100" : "text-slate-400"}`}>
                         {hub.id}
                       </span>
                       <HubIcon className="w-5 h-5 flex-shrink-0" />
@@ -433,12 +437,27 @@ export default function ClinicalHub({ data = defaultClinicalHubData }: { data?: 
                         {hub.title}
                       </span>
                     </div>
-                    <ChevronRight className={`w-4 h-4 transition-transform duration-300 ${isActive ? "rotate-90 lg:translate-x-1 lg:rotate-0 opacity-100" : "opacity-0"}`} />
+                    {/* Responsive Chevron: On mobile, indicates accordion state (rotates 90deg when open); on desktop, indicates active showcase */}
+                    <ChevronRight 
+                      className={`w-4 h-4 transition-transform duration-300 ${
+                        isMobile 
+                          ? (isMobileOpen ? "rotate-90 text-[#007a87] opacity-100" : "rotate-0 text-slate-400 opacity-70") 
+                          : (isDesktopActive ? "translate-x-1 opacity-100" : "opacity-0")
+                      }`} 
+                    />
                   </button>
                   
                   {/* Mobile Accordion Detail View */}
-                  <div className={`lg:hidden overflow-hidden transition-all duration-300 ${isActive ? 'mt-4 opacity-100 max-h-[2000px]' : 'max-h-0 opacity-0'}`}>
-                    {renderDetail(hubDetails[idx])}
+                  <div 
+                    className={`lg:hidden overflow-hidden transition-all duration-300 ${
+                      isMobileOpen ? 'mt-3 opacity-100 max-h-[2500px]' : 'max-h-0 opacity-0 pointer-events-none'
+                    }`}
+                  >
+                    {isMobileOpen && (
+                      <div className="pt-1 pb-2">
+                        {renderDetail(hubDetails[idx])}
+                      </div>
+                    )}
                   </div>
                 </div>
               );
@@ -447,7 +466,7 @@ export default function ClinicalHub({ data = defaultClinicalHubData }: { data?: 
 
           {/* Right Column: Premium Dynamic Detail Showcase (Desktop Only) */}
           <div className="hidden lg:block lg:col-span-8">
-            {renderDetail(currentHub)}
+            {renderDetail(currentDesktopHub)}
           </div>
 
         </div>
