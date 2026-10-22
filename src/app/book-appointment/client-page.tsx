@@ -313,16 +313,23 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
           const doctorsWithSchedule = await Promise.all(
             docsWithSpec.map(async (doc: any) => {
               let schedule: any[] = [];
-              let isApp = doc.isApp === 'Y' || doc.isApp === 'true' || doc.isApp === true;
+              let isApp = false;
               try {
-                const opdData = await fetchApi("opd_day_time", {
-                  doctor_id: String(doc.doctor_id || ''),
-                  speciality_id: String(selectedSpeciality)
-                });
-                const list = opdData?.opdDayTimeJSON || (Array.isArray(opdData) ? opdData : []);
-                if (Array.isArray(list) && list.length > 0) {
-                  schedule = list;
-                  if (list[0]?.isApp === 'Y' || list[0]?.isApp === 'true') isApp = true;
+                const rawSpec = selectedSpeciality || doc.speciality_id || '';
+                const specIds = String(rawSpec).split(',').map(s => s.trim()).filter(Boolean);
+                const targets = specIds.length > 0 ? specIds : [''];
+
+                for (const sId of targets) {
+                  const opdData = await fetchApi("opd_day_time", {
+                    doctor_id: String(doc.doctor_id || ''),
+                    speciality_id: sId
+                  });
+                  const list = opdData?.opdDayTimeJSON || (Array.isArray(opdData) ? opdData : []);
+                  if (Array.isArray(list) && list.length > 0) {
+                    schedule = list;
+                    isApp = list.some((slot: any) => slot.isApp === 'Y' || slot.isApp === 'true' || slot.isApp === true);
+                    if (isApp) break;
+                  }
                 }
               } catch (e) {
                 console.warn("Failed to fetch OPD time:", e);
@@ -352,7 +359,7 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
                 specialty_name: d.specialty,
                 service_point_id: d.dmhServicePointId,
                 service_center_id: d.dmhServiceCenterId,
-                isApp: d.isAppAllowed,
+                isApp: false,
               }));
               setDoctors(mapped);
             }
@@ -408,18 +415,25 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
     const doctorsWithSchedule = await Promise.all(
       currentDoctors.map(async (doc: any) => {
         let schedule: any[] = [];
-        let isApp = doc.isApp === 'Y' || doc.isApp === 'true' || doc.isApp === true;
+        let isApp = false;
 
         try {
-          const opdData = await fetchApi("opd_day_time", {
-            doctor_id: String(doc.doctor_id || ''),
-            speciality_id: String(doc.speciality_id || selectedSpeciality || '')
-          });
+          const rawSpecId = selectedSpeciality || doc.speciality_id || '';
+          const specIds = String(rawSpecId).split(',').map(s => s.trim()).filter(Boolean);
+          const targets = specIds.length > 0 ? specIds : [''];
 
-          const list = opdData?.opdDayTimeJSON || (Array.isArray(opdData) ? opdData : []);
-          if (Array.isArray(list) && list.length > 0) {
-            schedule = list;
-            if (list[0]?.isApp === 'Y' || list[0]?.isApp === 'true') isApp = true;
+          for (const sId of targets) {
+            const opdData = await fetchApi("opd_day_time", {
+              doctor_id: String(doc.doctor_id || ''),
+              speciality_id: sId
+            });
+
+            const list = opdData?.opdDayTimeJSON || (Array.isArray(opdData) ? opdData : []);
+            if (Array.isArray(list) && list.length > 0) {
+              schedule = list;
+              isApp = list.some((slot: any) => slot.isApp === 'Y' || slot.isApp === 'true' || slot.isApp === true);
+              if (isApp) break;
+            }
           }
         } catch (e) {
           console.warn("Failed to fetch OPD time:", e);

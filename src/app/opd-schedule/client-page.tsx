@@ -38,7 +38,7 @@ const generatePagination = (currentPage: number, totalPages: number) => {
 const DoctorScheduleCard = ({ doc, initialData, index }: { doc: any, initialData: any, index: number }) => {
   const [timings, setTimings] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [isAppAllowed, setIsAppAllowed] = useState(doc.isApp === 'Y' || doc.isApp === true);
+  const [isAppAllowed, setIsAppAllowed] = useState(false);
 
   useEffect(() => {
     let isMounted = true;
@@ -62,11 +62,8 @@ const DoctorScheduleCard = ({ doc, initialData, index }: { doc: any, initialData
         const list = data?.opdDayTimeJSON || (Array.isArray(data) ? data : []);
         if (list.length > 0) {
           const dmhSchedule = list[0];
-          if (dmhSchedule.isApp !== undefined) {
-            setIsAppAllowed(dmhSchedule.isApp === 'Y');
-          } else if (dmhSchedule.OpdScheduleYN !== undefined) {
-            setIsAppAllowed(dmhSchedule.OpdScheduleYN === 'Yes' && !!dmhSchedule.service_point_id);
-          }
+          const hasApp = list.some((slot: any) => slot.isApp === 'Y' || slot.isApp === 'true' || slot.isApp === true);
+          setIsAppAllowed(hasApp);
           const parsedTimings: any[] = [];
           daysOfWeek.forEach((day: string) => {
             const val = dmhSchedule[day];

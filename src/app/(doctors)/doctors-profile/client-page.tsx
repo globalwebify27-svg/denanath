@@ -131,11 +131,62 @@ export default function DoctorDetailsPage() {
   useEffect(() => {
     if (!selectedDoctor) {
       setIsAppAllowed(null);
+      setLoadingSchedule(false);
       return;
     }
-    
-    setIsAppAllowed(selectedDoctor.isAppAllowed);
-    setLoadingSchedule(false);
+
+    const docId = selectedDoctor.doctor_id || selectedDoctor.dmhDoctorId || selectedDoctor.id;
+    const rawSpecId = selectedDoctor.speciality_id || selectedDoctor.dmhSpecialityId || '';
+    const specIds = String(rawSpecId).split(',').map(s => s.trim()).filter(Boolean);
+
+    if (!docId) {
+      setIsAppAllowed(false);
+      setLoadingSchedule(false);
+      return;
+    }
+
+    setLoadingSchedule(true);
+    let isCancelled = false;
+
+    const checkApp = async () => {
+      let allowed = false;
+      try {
+        const targets = specIds.length > 0 ? specIds : [''];
+        for (const specId of targets) {
+          const res = await fetch('/api/dmh', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              action: 'opd_day_time',
+              doctor_id: String(docId),
+              speciality_id: specId
+            }),
+          });
+          if (res.ok) {
+            const data = await res.json();
+            const list = data?.opdDayTimeJSON || (Array.isArray(data) ? data : []);
+            if (Array.isArray(list) && list.length > 0) {
+              allowed = list.some((slot: any) => slot.isApp === 'Y' || slot.isApp === 'true' || slot.isApp === true);
+              if (allowed) break;
+            }
+          }
+        }
+      } catch (err) {
+        console.error('Failed to check opd_day_time', err);
+        allowed = false;
+      } finally {
+        if (!isCancelled) {
+          setIsAppAllowed(allowed);
+          setLoadingSchedule(false);
+        }
+      }
+    };
+
+    checkApp();
+
+    return () => {
+      isCancelled = true;
+    };
   }, [selectedDoctor]);
 
   // Reset page when filters change
@@ -423,7 +474,7 @@ export default function DoctorDetailsPage() {
                   <div className="mt-auto flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4">
                     {loadingSchedule ? (
                       <div className="text-xs font-semibold text-slate-400 mt-2 sm:mt-0">Checking appointment availability...</div>
-                    ) : isAppAllowed !== false ? (
+                    ) : isAppAllowed === true ? (
                       <Link href={`/Appointment?doctor_id=${selectedDoctor.doctor_id || selectedDoctor.id || ''}&speciality_id=${selectedDoctor.speciality_id || ''}&service_point_id=${selectedDoctor.service_point_id || ''}`} className="inline-flex items-center justify-center px-6 py-2.5 bg-[#007a87] hover:bg-[#005f69] text-[#ffffff] font-extrabold text-sm transition-colors rounded-lg w-fit mt-5 sm:mt-6">
                         Book Appointment
                       </Link>

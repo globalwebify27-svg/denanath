@@ -97,8 +97,7 @@ export default function ClientDoctorModal({ apiDocs = [] }: { apiDocs: any[] }) 
           const data = await res.json();
           const list = data?.opdDayTimeJSON || (Array.isArray(data) ? data : []);
           if (Array.isArray(list) && list.length > 0) {
-            const firstSlot = list[0];
-            const isApp = firstSlot?.isApp === 'Y' || firstSlot?.isApp === 'true' || firstSlot?.isApp === true || data?.isApp === 'Y' || data?.isApp === true;
+            const isApp = list.some((slot: any) => slot.isApp === 'Y' || slot.isApp === 'true' || slot.isApp === true);
             setIsAppAllowed(isApp);
 
             const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
@@ -124,13 +123,13 @@ export default function ClientDoctorModal({ apiDocs = [] }: { apiDocs: any[] }) 
               setSelectedDoctor((prev: any) => ({ ...prev, timings: parsedTimings }));
             }
           } else {
-            setIsAppAllowed(selectedDoctor.isApp ?? false);
+            setIsAppAllowed(false);
           }
         } else {
-          setIsAppAllowed(selectedDoctor.isApp ?? false);
+          setIsAppAllowed(false);
         }
       } catch (err) {
-        setIsAppAllowed(selectedDoctor.isApp ?? false);
+        setIsAppAllowed(false);
       } finally {
         setLoadingSchedule(false);
       }
@@ -163,7 +162,7 @@ export default function ClientDoctorModal({ apiDocs = [] }: { apiDocs: any[] }) 
               <div className="mt-auto flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4">
                 {loadingSchedule ? (
                   <div className="text-xs font-semibold text-slate-400 mt-2 sm:mt-0">Checking appointment availability...</div>
-                ) : isAppAllowed !== false ? (
+                ) : isAppAllowed === true ? (
                   <Link href={`/Appointment?doctor_id=${selectedDoctor.doctor_id || selectedDoctor.id || ''}&speciality_id=${selectedDoctor.speciality_id || ''}&service_point_id=${selectedDoctor.service_point_id || ''}`} className="inline-flex items-center justify-center px-3 py-1.5 sm:px-6 sm:py-2.5 bg-[#007a87] hover:bg-[#005f69] text-white font-bold sm:font-extrabold text-[11px] sm:text-sm transition-colors rounded-md sm:rounded-lg w-fit mt-2 sm:mt-6 ">
                     Book Appointment
                   </Link>

@@ -26,7 +26,7 @@ async function getFallbackDoctorsFromDb(): Promise<any[]> {
       service_center_id: doc.dmhServiceCenterId || null,
       doctorImage: doc.image || '',
       photo: doc.image || '',
-      isApp: doc.isAppAllowed !== false ? 'Y' : 'N',
+      isApp: 'N',
     }));
   } catch (err) {
     console.error('[DMH API] DB Fallback error for doctors:', err);
@@ -158,11 +158,11 @@ export async function POST(request: Request) {
 
       // Normalize fields so existing frontend code works:
       // - doctor_code → doctor_id
-      // - isApp = OpdScheduleYN is Yes AND service_point_id exists (required for check_date/check_slot)
+      // - isApp starts as 'N' and must be checked strictly from opd_day_time API
       const doctorJSON = filtered.map((d: any) => ({
         ...d,
         doctor_id: d.doctor_id || d.doctor_code || '',
-        isApp: (d.OpdScheduleYN === 'Yes' && d.service_point_id) ? 'Y' : 'N',
+        isApp: 'N',
       }));
 
       console.log(`[DMH API] speciality_doctor (via drAhis) spec=${specId}: ${doctorJSON.length} doctors`);
