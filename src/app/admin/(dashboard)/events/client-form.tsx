@@ -4,7 +4,7 @@ import QuillEditor from "@/components/QuillEditor";
 
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { Plus, Trash2, GripVertical, Image as ImageIcon, Upload, Loader2, Calendar, ExternalLink, X, CheckCircle2, AlertCircle, FileText, Users, Clock, ChevronRight, ChevronLeft, Layers, ChevronUp, ChevronDown, AlertTriangle, Edit, Save, Search } from "lucide-react";
+import { Plus, Trash2, GripVertical, Image as ImageIcon, Upload, Loader2, Calendar, ExternalLink, X, CheckCircle2, AlertCircle, FileText, Users, Clock, ChevronRight, ChevronLeft, Layers, ChevronUp, ChevronDown, AlertTriangle, Edit, Save, Search, Star, Sparkles } from "lucide-react";
 
 function formatDateForPicker(val: any): string {
   if (!val) return "";
@@ -751,12 +751,6 @@ export default function EventsClientForm({ initialEvents }: { initialEvents: any
                               <div className="min-w-0">
                                 <div className="flex items-center gap-2">
                                   <span className="font-bold text-[#002b5c] line-clamp-1">{ev.title || 'Untitled Event'}</span>
-                                  {ev.isFooterFeatured && (
-                                    <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-teal-50 text-[#007a87] border border-teal-200 rounded-full text-[10px] font-extrabold uppercase shrink-0">
-                                      <span className="w-1.5 h-1.5 rounded-full bg-[#007a87]"></span>
-                                      Footer
-                                    </span>
-                                  )}
                                 </div>
                                 {ev.summary && (
                                   <p className="text-xs text-slate-400 line-clamp-1 mt-0.5">{ev.summary}</p>
@@ -1048,107 +1042,6 @@ export default function EventsClientForm({ initialEvents }: { initialEvents: any
                       placeholder="Brief summary or highlights of the event..." 
                       className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] text-sm font-medium resize-none"
                     />
-                  </div>
-
-                  {/* Featured / Homepage Footer Image Card */}
-                  <div className="bg-gradient-to-br from-teal-50/60 via-slate-50 to-white p-5 rounded-2xl border border-teal-200/80 space-y-4">
-                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-teal-100 pb-3">
-                      <div className="flex items-center gap-2.5">
-                        <div className="w-8 h-8 rounded-xl bg-[#007a87] text-white flex items-center justify-center shadow-sm">
-                          <ImageIcon size={16} />
-                        </div>
-                        <div>
-                          <h4 className="text-[14px] font-black text-[#002b5c] flex items-center gap-2">
-                            Featured Image (Homepage Footer Thumbnail)
-                          </h4>
-                          <p className="text-[11px] text-slate-500">
-                            This image is displayed in the website / homepage footer under &quot;Events / News&quot;
-                          </p>
-                        </div>
-                      </div>
-
-                      {/* Footer Feature Pin Toggle */}
-                      <label className="inline-flex items-center gap-2 cursor-pointer bg-white px-3 py-1.5 rounded-xl border border-teal-200 shadow-xs hover:border-teal-300 transition-colors">
-                        <input
-                          type="checkbox"
-                          checked={modalForm.isFooterFeatured}
-                          onChange={(e) => updateModalField("isFooterFeatured", e.target.checked)}
-                          className="w-4 h-4 text-[#007a87] rounded border-slate-300 focus:ring-[#007a87]"
-                        />
-                        <span className="text-xs font-bold text-slate-700">Display this event in Footer</span>
-                      </label>
-                    </div>
-
-                    <div className="flex flex-col sm:flex-row items-center gap-4">
-                      {/* Image Preview */}
-                      <div className="relative w-32 h-20 sm:w-36 sm:h-24 rounded-xl overflow-hidden bg-slate-100 border-2 border-dashed border-teal-200 flex items-center justify-center shrink-0 shadow-xs">
-                        {modalForm.featuredImage ? (
-                          <>
-                            <img
-                              src={modalForm.featuredImage}
-                              alt="Featured Preview"
-                              className="w-full h-full object-cover"
-                            />
-                            <a
-                              href={modalForm.featuredImage}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="absolute inset-0 bg-slate-900/40 opacity-0 hover:opacity-100 flex items-center justify-center text-white transition-opacity"
-                              title="View Full Size"
-                            >
-                              <ExternalLink size={16} />
-                            </a>
-                          </>
-                        ) : (
-                          <div className="text-center p-2 text-slate-400">
-                            <ImageIcon size={22} className="mx-auto mb-1 text-teal-600/40" />
-                            <span className="text-[10px] font-medium block">No image selected</span>
-                          </div>
-                        )}
-                        {modalFeaturedUploading && (
-                          <div className="absolute inset-0 bg-slate-900/70 flex items-center justify-center text-white">
-                            <Loader2 size={18} className="animate-spin text-teal-300" />
-                          </div>
-                        )}
-                      </div>
-
-                      {/* Controls: URL Input & Upload Button */}
-                      <div className="flex-1 w-full space-y-2">
-                        <div className="flex gap-2">
-                          <input
-                            type="text"
-                            value={modalForm.featuredImage}
-                            onChange={(e) => updateModalField("featuredImage", e.target.value)}
-                            placeholder="Enter image URL or upload ->"
-                            className="flex-1 p-2.5 bg-white border border-slate-200 rounded-xl text-xs font-mono focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87]"
-                          />
-                          <label className="px-4 py-2.5 bg-[#007a87] hover:bg-[#005f6b] text-white rounded-xl text-xs font-bold flex items-center gap-1.5 transition-colors cursor-pointer shrink-0 shadow-xs">
-                            {modalFeaturedUploading ? <Loader2 size={14} className="animate-spin" /> : <Upload size={14} />}
-                            <span>{modalFeaturedUploading ? "Uploading..." : "Upload"}</span>
-                            <input
-                              type="file"
-                              accept="image/*"
-                              disabled={modalFeaturedUploading}
-                              onChange={handleModalFeaturedUpload}
-                              className="hidden"
-                            />
-                          </label>
-                          {modalForm.featuredImage && (
-                            <button
-                              type="button"
-                              onClick={() => updateModalField("featuredImage", "")}
-                              className="p-2.5 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-xl transition-colors border border-slate-200"
-                              title="Remove image"
-                            >
-                              <X size={15} />
-                            </button>
-                          )}
-                        </div>
-                        <p className="text-[11px] text-slate-500">
-                          Recommended ratio: 16:9 or 4:3 (JPEG, PNG, WebP). If left empty, the first photo from the Event Gallery will be used.
-                        </p>
-                      </div>
-                    </div>
                   </div>
                 </div>
               )}
@@ -1531,6 +1424,91 @@ export default function EventsClientForm({ initialEvents }: { initialEvents: any
                     </div>
                   </div>
 
+                  {/* Featured Thumbnail Banner in Event Gallery */}
+                  <div className="bg-gradient-to-br from-teal-50/70 via-slate-50 to-white p-4 sm:p-5 rounded-2xl border border-teal-200/80 shadow-xs space-y-3">
+                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+                      <div className="flex items-center gap-2.5">
+                        <div className="w-8 h-8 rounded-xl bg-amber-500 text-white flex items-center justify-center shadow-xs">
+                          <Star size={16} className="fill-white" />
+                        </div>
+                        <div>
+                          <h4 className="text-sm font-black text-[#002b5c] flex items-center gap-2">
+                            Featured Thumbnail
+                          </h4>
+                          <p className="text-xs text-slate-500">
+                            The photo displayed when this event appears in the footer. Toggle <strong className="text-amber-600 font-bold">&quot;Make Featured&quot;</strong> on any photo below, or upload a custom one.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Preview of current featured photo & custom input */}
+                    <div className="flex flex-col sm:flex-row items-center gap-3 pt-1">
+                      <div className="relative w-28 h-16 sm:w-32 sm:h-18 rounded-xl overflow-hidden bg-white border-2 border-dashed border-teal-200 flex items-center justify-center shrink-0 shadow-2xs">
+                        {modalForm.featuredImage || (modalForm.gallery && modalForm.gallery.length > 0 && modalForm.gallery[0]) ? (
+                          <>
+                            <img
+                              src={modalForm.featuredImage || modalForm.gallery[0]}
+                              alt="Featured Preview"
+                              className="w-full h-full object-cover"
+                            />
+                            <span className="absolute bottom-1 left-1 bg-amber-500 text-white text-[9px] font-black px-1.5 py-0.2 rounded shadow-xs uppercase tracking-wider">
+                              {modalForm.featuredImage ? "Selected" : "Default (1st)"}
+                            </span>
+                          </>
+                        ) : (
+                          <div className="text-center p-1 text-slate-400">
+                            <ImageIcon size={18} className="mx-auto text-teal-600/40" />
+                            <span className="text-[9px] font-medium block">No photo</span>
+                          </div>
+                        )}
+                        {modalFeaturedUploading && (
+                          <div className="absolute inset-0 bg-slate-900/70 flex items-center justify-center text-white">
+                            <Loader2 size={16} className="animate-spin text-teal-300" />
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="flex-1 w-full space-y-1.5">
+                        <div className="flex gap-2">
+                          <input
+                            type="text"
+                            value={modalForm.featuredImage}
+                            onChange={(e) => updateModalField("featuredImage", e.target.value)}
+                            placeholder="Featured image URL or toggle from photos below ->"
+                            className="flex-1 p-2 bg-white border border-slate-200 rounded-xl text-xs font-mono focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87]"
+                          />
+                          <label className="px-3 py-2 bg-[#007a87] hover:bg-[#005f6b] text-white rounded-xl text-xs font-bold flex items-center gap-1.5 transition-colors cursor-pointer shrink-0 shadow-2xs">
+                            {modalFeaturedUploading ? <Loader2 size={13} className="animate-spin" /> : <Upload size={13} />}
+                            <span>{modalFeaturedUploading ? "..." : "Upload Custom"}</span>
+                            <input
+                              type="file"
+                              accept="image/*"
+                              disabled={modalFeaturedUploading}
+                              onChange={handleModalFeaturedUpload}
+                              className="hidden"
+                            />
+                          </label>
+                          {modalForm.featuredImage && (
+                            <button
+                              type="button"
+                              onClick={() => updateModalField("featuredImage", "")}
+                              className="px-2.5 py-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-xl transition-colors border border-slate-200 text-xs font-bold"
+                              title="Reset to default first gallery photo"
+                            >
+                              Reset
+                            </button>
+                          )}
+                        </div>
+                        <p className="text-[11px] text-slate-500">
+                          {modalForm.featuredImage 
+                            ? "Custom featured photo active. Click 'Reset' to use default first photo, or toggle any photo below."
+                            : "Using first photo as default footer thumbnail. Click 'Make Featured' on any photo below to choose it."}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
                   <div>
                     <label className="block text-[11px] font-extrabold text-slate-600 uppercase tracking-wider mb-2">
                       Gallery Section Heading (Displayed on public event details page)
@@ -1554,50 +1532,98 @@ export default function EventsClientForm({ initialEvents }: { initialEvents: any
                       {modalForm.gallery.map((img, idx) => {
                         const isUploading = modalUploadingIdx === idx;
                         const hasValidImg = Boolean(img && img.trim() !== "");
+                        const isFeatured = hasValidImg && (modalForm.featuredImage ? modalForm.featuredImage === img : idx === 0);
 
                         return (
-                          <div key={idx} className="flex gap-2.5 items-center bg-slate-50 p-2.5 rounded-xl border border-slate-200">
-                            <div className="relative w-12 h-12 shrink-0 rounded-lg overflow-hidden bg-slate-200 flex items-center justify-center border border-slate-300">
-                              {hasValidImg ? (
-                                <img src={img} alt="Preview" className="w-full h-full object-cover" />
-                              ) : (
-                                <ImageIcon size={20} className="text-slate-400" />
-                              )}
-                              {isUploading && (
-                                <div className="absolute inset-0 bg-slate-900/60 flex items-center justify-center text-white">
-                                  <Loader2 size={16} className="animate-spin" />
-                                </div>
-                              )}
+                          <div 
+                            key={idx} 
+                            className={`flex flex-col sm:flex-row gap-2.5 sm:items-center p-3 rounded-xl border transition-all ${
+                              isFeatured 
+                                ? "bg-amber-50/50 border-amber-300 ring-2 ring-amber-400/40 shadow-xs" 
+                                : "bg-slate-50 border-slate-200"
+                            }`}
+                          >
+                            <div className="flex items-center gap-2.5 flex-1 min-w-0">
+                              <div className="relative w-14 h-14 shrink-0 rounded-lg overflow-hidden bg-slate-200 flex items-center justify-center border border-slate-300 shadow-2xs">
+                                {hasValidImg ? (
+                                  <>
+                                    <img src={img} alt="Preview" className="w-full h-full object-cover" />
+                                    {isFeatured && (
+                                      <span className="absolute top-0.5 right-0.5 bg-amber-500 text-white p-0.5 rounded shadow-xs" title="Featured Footer Thumbnail">
+                                        <Star size={10} className="fill-white" />
+                                      </span>
+                                    )}
+                                  </>
+                                ) : (
+                                  <ImageIcon size={20} className="text-slate-400" />
+                                )}
+                                {isUploading && (
+                                  <div className="absolute inset-0 bg-slate-900/60 flex items-center justify-center text-white">
+                                    <Loader2 size={16} className="animate-spin" />
+                                  </div>
+                                )}
+                              </div>
+
+                              <input 
+                                type="text" 
+                                value={img} 
+                                onChange={(e) => updateModalArrayItem('gallery', idx, e.target.value)}
+                                className="flex-1 p-2 bg-white border border-slate-200 rounded-lg text-xs font-mono min-w-0"
+                                placeholder="Image URL or upload ->"
+                              />
                             </div>
 
-                            <input 
-                              type="text" 
-                              value={img} 
-                              onChange={(e) => updateModalArrayItem('gallery', idx, e.target.value)}
-                              className="flex-1 p-2 bg-white border border-slate-200 rounded-lg text-xs font-mono"
-                              placeholder="Image URL or upload ->"
-                            />
+                            <div className="flex items-center gap-1.5 justify-end shrink-0">
+                              {/* Featured Toggle Button */}
+                              <button
+                                type="button"
+                                disabled={!hasValidImg}
+                                onClick={() => {
+                                  if (modalForm.featuredImage === img) {
+                                    updateModalField("featuredImage", "");
+                                  } else {
+                                    updateModalField("featuredImage", img);
+                                  }
+                                }}
+                                className={`px-2.5 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 transition-all shadow-xs ${
+                                  isFeatured 
+                                    ? "bg-amber-500 hover:bg-amber-600 text-white ring-1 ring-amber-400" 
+                                    : hasValidImg 
+                                      ? "bg-white border border-slate-200 text-slate-600 hover:border-amber-400 hover:text-amber-600 hover:bg-amber-50/50" 
+                                      : "bg-slate-100 text-slate-300 border border-slate-200 cursor-not-allowed"
+                                }`}
+                                title={isFeatured ? "Featured as Footer Thumbnail. Click to unfeature." : "Click to set this photo as the Featured Footer Thumbnail"}
+                              >
+                                <Star size={12} className={isFeatured ? "fill-white text-white" : "text-amber-500"} />
+                                <span>{isFeatured ? "Featured" : "Make Featured"}</span>
+                              </button>
 
-                            <label className="px-2.5 py-2 bg-white border border-slate-200 hover:border-[#007a87] text-[#007a87] hover:bg-[#007a87] hover:text-white rounded-lg text-xs font-bold flex items-center gap-1 transition-colors cursor-pointer shrink-0">
-                              {isUploading ? <Loader2 size={12} className="animate-spin" /> : <Upload size={12} />}
-                              <span>{isUploading ? '...' : 'Upload'}</span>
-                              <input 
-                                type="file" 
-                                accept="image/*" 
-                                disabled={isUploading}
-                                onChange={(e) => handleModalUpload(idx, e)}
-                                className="hidden" 
-                              />
-                            </label>
+                              <label className="px-2.5 py-1.5 bg-white border border-slate-200 hover:border-[#007a87] text-[#007a87] hover:bg-[#007a87] hover:text-white rounded-lg text-xs font-bold flex items-center gap-1 transition-colors cursor-pointer shrink-0">
+                                {isUploading ? <Loader2 size={12} className="animate-spin" /> : <Upload size={12} />}
+                                <span>{isUploading ? '...' : 'Upload'}</span>
+                                <input 
+                                  type="file" 
+                                  accept="image/*" 
+                                  disabled={isUploading}
+                                  onChange={(e) => handleModalUpload(idx, e)}
+                                  className="hidden" 
+                                />
+                              </label>
 
-                            <button 
-                              type="button" 
-                              onClick={() => removeModalArrayItem('gallery', idx)}
-                              className="p-1.5 text-red-500 hover:bg-red-50 rounded-lg shrink-0"
-                              title="Delete photo"
-                            >
-                              <Trash2 size={16} />
-                            </button>
+                              <button 
+                                type="button" 
+                                onClick={() => {
+                                  if (modalForm.featuredImage === img) {
+                                    updateModalField("featuredImage", "");
+                                  }
+                                  removeModalArrayItem('gallery', idx);
+                                }}
+                                className="p-1.5 text-red-500 hover:bg-red-50 rounded-lg shrink-0 transition-colors"
+                                title="Delete photo"
+                              >
+                                <Trash2 size={16} />
+                              </button>
+                            </div>
                           </div>
                         );
                       })}
