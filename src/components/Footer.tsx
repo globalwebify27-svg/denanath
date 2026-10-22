@@ -4,8 +4,28 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { Heart, Phone, Mail, MapPin, ExternalLink, ArrowRight } from "lucide-react";
 
-export default function Footer({ latestEvent, footerSettings }: { latestEvent?: any, footerSettings?: any }) {
+export default function Footer({ 
+  latestEvent, 
+  footerSettings, 
+  appButtons 
+}: { 
+  latestEvent?: any; 
+  footerSettings?: any; 
+  appButtons?: any[]; 
+}) {
   const [dynamicLinks, setDynamicLinks] = useState<any[]>([]);
+
+  const defaultPlayStoreLink = "https://play.google.com/store/apps/details?id=org.dmhospital.app&hl=en";
+  const defaultAppStoreLink = "https://apps.apple.com/in/app/deenanath-mangeshkar-hospital/id1187525263";
+
+  const allButtons = appButtons || footerSettings?.buttons || [];
+  const playStoreBtn = allButtons.find((b: any) => b.icon === "playstore" || b.text?.toLowerCase().includes("google play") || b.text?.toLowerCase().includes("playstore"));
+  const appStoreBtn = allButtons.find((b: any) => b.icon === "appstore" || b.text?.toLowerCase().includes("app store") || b.text?.toLowerCase().includes("appstore"));
+
+  const playStoreLink = playStoreBtn?.link || defaultPlayStoreLink;
+  const appStoreLink = appStoreBtn?.link || defaultAppStoreLink;
+  const isPlayActive = playStoreBtn ? playStoreBtn.isActive !== false : true;
+  const isAppActive = appStoreBtn ? appStoreBtn.isActive !== false : true;
 
   useEffect(() => {
     fetch('/api/dynamic-pages', { cache: 'no-store' })
@@ -33,7 +53,7 @@ export default function Footer({ latestEvent, footerSettings }: { latestEvent?: 
 
       {/* 1. Primary Footer Grid */}
       <div className="max-w-[1300px] mx-auto px-4 sm:px-6 lg:px-8 py-16 relative z-10">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1.5fr_0.7fr_0.8fr_0.8fr_1.3fr] gap-6 lg:gap-8 xl:gap-9">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1.5fr_0.7fr_1.6fr_1.3fr] gap-6 lg:gap-8 xl:gap-9">
           
           {/* Logo & Brand Column */}
           <div className="space-y-6">
@@ -89,6 +109,7 @@ export default function Footer({ latestEvent, footerSettings }: { latestEvent?: 
                   );
                 })}
               </div>
+
             </div>
           </div>
 
@@ -98,13 +119,14 @@ export default function Footer({ latestEvent, footerSettings }: { latestEvent?: 
               Events / News
               <span className="absolute -bottom-2 left-0 w-8 h-[2px] bg-[#a7ffeb] rounded-full" />
             </h4>
-            <div className="pt-2">
+            <div className="pt-3">
               <Link href={latestEvent ? `/eventsdetails/${latestEvent.slug || latestEvent.id || latestEvent.title?.replace(/[^a-zA-Z0-9-]/g, '')}` : '/eventsdetails/RCScourse17'} className="group flex flex-col gap-2.5 max-w-[140px]">
                 <div className="w-full h-14 rounded-lg overflow-hidden border border-white/20 bg-black/20 shrink-0">
                   <img 
                     src={latestEvent?.featuredImage || (latestEvent && latestEvent.gallery && latestEvent.gallery.length > 0 ? latestEvent.gallery[0] : "/images/unnamed (7).webp")} 
                     alt={latestEvent?.title || "Diabetes Nursing Conference 2026"} 
                     className="w-full h-full object-cover opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-300"
+                    style={{ objectPosition: 'center 35%' }}
                   />
                 </div>
                 <span className="text-[#b2dfdb] group-hover:text-[#a7ffeb] transition-colors text-xs font-medium leading-snug line-clamp-3" title={latestEvent?.title || "Diabetes Nursing Conference 2026"}>
@@ -114,120 +136,118 @@ export default function Footer({ latestEvent, footerSettings }: { latestEvent?: 
             </div>
           </div>
 
-          {/* Quick Channels Column 1 */}
-          <div className="space-y-6">
+          {/* Quick Channels Combined Columns (2 columns on mobile, tablet & desktop) */}
+          <div className="col-span-1 sm:col-span-2 lg:col-span-1 space-y-6">
             <h4 className="text-white font-bold text-xs uppercase tracking-[0.2em] relative">
               Quick Channels
               <span className="absolute -bottom-2 left-0 w-8 h-[2px] bg-[#a7ffeb] rounded-full" />
             </h4>
-            <ul className="space-y-3.5 text-xs pt-2">
-              {(() => {
-                let quick1 = footerSettings?.quickChannels1 || [
-                  { label: "About Us", href: "/about-hospital" },
-                  { label: "Patient & Visitors", href: "/out-patient" },
-                  { label: "Doctors & Departments", href: "/doctors-profile" },
-                  { label: "Research", href: "/research-about" },
-                  { label: "Academics", href: "/academics" },
-                  { label: "Online Facilities", href: "/email-login" },
-                  { label: "Book Appointment", href: "/Appointment" },
-                  { label: "Testimonials", href: "/#testimonials" },
-                  { label: "Photo Gallery", href: "/gallery-photos" },
-                  { label: "Video Gallery", href: "/gallery-videos" },
-                  { label: "Emergency", href: "/emergency" }
-                ];
-                
-                // Inject Footer Menu Pages
-                const footerPages = dynamicLinks.filter((p: any) => p.navbarMenu === "Footer" && p.status);
-                if (footerPages.length > 0) {
-                  const injectedMap = new Map();
-                  footerPages.forEach((p: any) => {
-                    injectedMap.set(p.title.toLowerCase(), {
-                      label: p.title,
-                      href: `/${p.slug}`,
-                      isActive: true
+            <div className="grid grid-cols-2 gap-4 sm:gap-6 lg:gap-8 pt-2">
+              {/* Quick Channels Column 1 */}
+              <ul className="space-y-3 sm:space-y-3.5 text-xs">
+                {(() => {
+                  let quick1 = footerSettings?.quickChannels1 || [
+                    { label: "About Us", href: "/about-hospital" },
+                    { label: "Patient & Visitors", href: "/out-patient" },
+                    { label: "Doctors & Departments", href: "/doctors-profile" },
+                    { label: "Research", href: "/research-about" },
+                    { label: "Academics", href: "/academics" },
+                    { label: "Online Facilities", href: "/email-login" },
+                    { label: "Book Appointment", href: "/Appointment" },
+                    { label: "Testimonials", href: "/#testimonials" },
+                    { label: "Photo Gallery", href: "/gallery-photos" },
+                    { label: "Video Gallery", href: "/gallery-videos" },
+                    { label: "Emergency", href: "/emergency" }
+                  ];
+                  
+                  // Inject Footer Menu Pages
+                  const footerPages = dynamicLinks.filter((p: any) => p.navbarMenu === "Footer" && p.status);
+                  if (footerPages.length > 0) {
+                    const injectedMap = new Map();
+                    footerPages.forEach((p: any) => {
+                      injectedMap.set(p.title.toLowerCase(), {
+                        label: p.title,
+                        href: `/${p.slug}`,
+                        isActive: true
+                      });
                     });
-                  });
-                  quick1 = quick1.map((item: any) => {
-                    const key = item.label.toLowerCase();
-                    if (injectedMap.has(key)) {
-                      const rep = injectedMap.get(key);
-                      injectedMap.delete(key);
-                      
-                      return rep;
-                    }
-                    return item;
-                  });
-                  quick1 = [...quick1, ...Array.from(injectedMap.values())];
-                }
-                
-                return quick1;
-              })().filter((item: any) => item.isActive !== false).map((item: any, idx: number) => (
-                <li key={idx} className="group flex items-center gap-2">
-                  <ArrowRight className="w-3.5 h-3.5 text-[#a7ffeb] opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all duration-300 shrink-0" />
-                  <Link href={item.href} className="text-[#b2dfdb] hover:text-white transition-colors leading-normal font-light">
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+                    quick1 = quick1.map((item: any) => {
+                      const key = item.label.toLowerCase();
+                      if (injectedMap.has(key)) {
+                        const rep = injectedMap.get(key);
+                        injectedMap.delete(key);
+                        
+                        return rep;
+                      }
+                      return item;
+                    });
+                    quick1 = [...quick1, ...Array.from(injectedMap.values())];
+                  }
+                  
+                  return quick1;
+                })().filter((item: any) => item.isActive !== false).map((item: any, idx: number) => (
+                  <li key={idx} className="group flex items-start gap-1.5 sm:gap-2">
+                    <ArrowRight className="w-3.5 h-3.5 text-[#a7ffeb] opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all duration-300 shrink-0 mt-0.5" />
+                    <Link href={item.href} className="text-[#b2dfdb] hover:text-white transition-colors leading-snug sm:leading-normal font-light break-words">
+                      {item.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
 
-          {/* Quick Channels Column 2 */}
-          <div className="space-y-6 mt-0 sm:mt-0">
-            <h4 className="hidden sm:block text-white font-bold text-xs uppercase tracking-[0.2em] relative select-none opacity-0">
-              Quick Channels
-            </h4>
-            <ul className="space-y-3.5 text-xs pt-0 sm:pt-2">
-              {(() => {
-                let quick2 = footerSettings?.quickChannels2 || [
-                  { label: "Pharmacy", href: "/pharmacy" },
-                  { label: "Ambulance", href: "/ambulance" },
-                  { label: "Blood Bank", href: "/blood-bank" },
-                  { label: "Careers", href: "/careers" },
-                  { label: "Contact Us", href: "/contact-us" },
-                  { label: "Event/News", href: "/events" },
-                  { label: "OPD Schedule", href: "/out-patient-department" },
-                  { label: "EC Approval", href: "/ec-approval" },
-                  { label: "Site Map", href: "/site-map" },
-                  { label: "Disclaimer", href: "/disclaimer" }
-                ];
-                
-                const footerCol2Pages = dynamicLinks.filter((p: any) => p.navbarMenu === "Footer Column 2" && p.status);
-                if (footerCol2Pages.length > 0) {
-                  const injectedMap = new Map();
-                  footerCol2Pages.forEach((p: any) => {
-                    injectedMap.set(p.title.toLowerCase(), {
-                      label: p.title,
-                      href: `/${p.slug}`,
-                      isActive: true
+              {/* Quick Channels Column 2 */}
+              <ul className="space-y-3 sm:space-y-3.5 text-xs">
+                {(() => {
+                  let quick2 = footerSettings?.quickChannels2 || [
+                    { label: "Pharmacy", href: "/pharmacy" },
+                    { label: "Ambulance", href: "/ambulance" },
+                    { label: "Blood Bank", href: "/blood-bank" },
+                    { label: "Careers", href: "/careers" },
+                    { label: "Contact Us", href: "/contact-us" },
+                    { label: "Event/News", href: "/events" },
+                    { label: "OPD Schedule", href: "/out-patient-department" },
+                    { label: "EC Approval", href: "/ec-approval" },
+                    { label: "Site Map", href: "/site-map" },
+                    { label: "Disclaimer", href: "/disclaimer" }
+                  ];
+                  
+                  const footerCol2Pages = dynamicLinks.filter((p: any) => p.navbarMenu === "Footer Column 2" && p.status);
+                  if (footerCol2Pages.length > 0) {
+                    const injectedMap = new Map();
+                    footerCol2Pages.forEach((p: any) => {
+                      injectedMap.set(p.title.toLowerCase(), {
+                        label: p.title,
+                        href: `/${p.slug}`,
+                        isActive: true
+                      });
                     });
-                  });
-                  quick2 = quick2.map((item: any) => {
-                    const key = item.label.toLowerCase();
-                    if (injectedMap.has(key)) {
-                      const rep = injectedMap.get(key);
-                      injectedMap.delete(key);
-                      
-                      return rep;
-                    }
-                    return item;
-                  });
-                  quick2 = [...quick2, ...Array.from(injectedMap.values())];
-                }
-                return quick2;
-              })().filter((item: any) => item.isActive !== false).map((item: any, idx: number) => (
-                <li key={idx} className="group flex items-center gap-2">
-                  <ArrowRight className="w-3.5 h-3.5 text-[#a7ffeb] opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all duration-300 shrink-0" />
-                  <Link href={item.href} className="text-[#b2dfdb] hover:text-white transition-colors leading-normal font-light">
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+                    quick2 = quick2.map((item: any) => {
+                      const key = item.label.toLowerCase();
+                      if (injectedMap.has(key)) {
+                        const rep = injectedMap.get(key);
+                        injectedMap.delete(key);
+                        
+                        return rep;
+                      }
+                      return item;
+                    });
+                    quick2 = [...quick2, ...Array.from(injectedMap.values())];
+                  }
+                  return quick2;
+                })().filter((item: any) => item.isActive !== false).map((item: any, idx: number) => (
+                  <li key={idx} className="group flex items-start gap-1.5 sm:gap-2">
+                    <ArrowRight className="w-3.5 h-3.5 text-[#a7ffeb] opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all duration-300 shrink-0 mt-0.5" />
+                    <Link href={item.href} className="text-[#b2dfdb] hover:text-white transition-colors leading-snug sm:leading-normal font-light break-words">
+                      {item.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
 
           {/* Contact & Map Column */}
-          <div className="space-y-6">
+          <div className="col-span-1 sm:col-span-2 lg:col-span-1 space-y-6">
             <h4 className="text-white font-bold text-xs uppercase tracking-[0.2em] relative">
               Campus Address
               <span className="absolute -bottom-2 left-0 w-8 h-[2px] bg-[#a7ffeb] rounded-full" />
@@ -268,6 +288,47 @@ export default function Footer({ latestEvent, footerSettings }: { latestEvent?: 
                     <ExternalLink className="w-4 h-4 text-[#a7ffeb] group-hover/btn:scale-110 transition-transform" />
                     <span>Get Campus Directions</span>
                   </a>
+                </div>
+              )}
+
+              {/* App Store & Google Play Store Buttons */}
+              {(isPlayActive || isAppActive) && (
+                <div className="pt-2 flex items-center gap-2.5 flex-wrap">
+                  {isPlayActive && (
+                    <a
+                      href={playStoreLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-2 bg-black/80 hover:bg-black text-white px-3 py-1.5 rounded-lg border border-white/15 hover:border-white/40 transition-all hover:-translate-y-0.5 hover:shadow-lg shadow-sm group"
+                    >
+                      <svg viewBox="0 0 1024 1024" className="w-4 h-4 shrink-0">
+                        <path fill="#00E676" d="M104.5 125.1v773.8c0 14.3 8.3 26.6 20.4 32.5l398.8-419.4L104.5 125.1z" />
+                        <path fill="#FF3D00" d="M523.7 512l153.9-161.8L160.7 53.6c-17.7-10.2-38.9-8-56.2 3.8l419.2 454.6z" />
+                        <path fill="#FFC107" d="M677.6 350.2l198.5 114.6c24 13.9 24 48.7 0 62.6L677.6 642l-153.9-130 153.9-161.8z" />
+                        <path fill="#00B0FF" d="M523.7 512L104.5 898.9c17.3 11.8 38.5 14 56.2 3.8L677.6 642 523.7 512z" />
+                      </svg>
+                      <div className="flex flex-col text-left leading-none">
+                        <span className="text-[7px] text-[#b2dfdb] uppercase font-medium tracking-wider">GET IT ON</span>
+                        <span className="text-[10px] font-bold text-white mt-0.5">Google Play</span>
+                      </div>
+                    </a>
+                  )}
+                  {isAppActive && (
+                    <a
+                      href={appStoreLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-2 bg-black/80 hover:bg-black text-white px-3 py-1.5 rounded-lg border border-white/15 hover:border-white/40 transition-all hover:-translate-y-0.5 hover:shadow-lg shadow-sm group"
+                    >
+                      <svg viewBox="0 0 1024 1024" className="w-3.5 h-3.5 shrink-0 fill-white">
+                        <path d="M789.2 642.4c-0.4 46 39.4 61.2 39.8 61.4-0.4 0.8-6.2 21.2-20.6 42.4-12.8 19-26.2 38-47.2 38.4-21 0.4-27.4-12.4-51.6-12.4s-31.4 12-51.2 12.8c-20.6 0.8-36.2-20.4-49.4-39.2-30.8-44.6-53.8-126-22.2-181 15.6-27.2 43.6-44.4 74-44.8 20.2-0.4 39.4 13.6 52 13.6 12.6 0 35.8-16.6 60.2-14.2 10.2 0.4 39 4.2 57.6 31.4-1.6 1-34.4 20-34.4 59.8zM651.8 221c11.6-14 19.4-33.6 17.2-53.2-16.6 0.6-37.4 11-49.4 25.2-9.6 11.2-18.8 31.2-16.2 50.4 18.6 1.4 36.8-8.4 48.4-22.4z" />
+                      </svg>
+                      <div className="flex flex-col text-left leading-none">
+                        <span className="text-[7px] text-[#b2dfdb] uppercase font-medium tracking-wider">Download on the</span>
+                        <span className="text-[10px] font-bold text-white mt-0.5">App Store</span>
+                      </div>
+                    </a>
+                  )}
                 </div>
               )}
             </div>

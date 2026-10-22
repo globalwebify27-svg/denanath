@@ -96,7 +96,7 @@ export default function ClientLayoutWrapper({
             </a>
           </div>
         </main>
-        {footer?.isActive !== false && <Footer latestEvent={latestEvent} footerSettings={footer} />}
+        {footer?.isActive !== false && <Footer latestEvent={latestEvent} footerSettings={footer} appButtons={topHeader?.buttons} />}
       </>
     );
   }
@@ -106,7 +106,7 @@ export default function ClientLayoutWrapper({
       <QuickAccessWidget />
       {header?.isActive !== false && <Navbar topHeaderSettings={topHeader?.isActive !== false ? topHeader : null} headerSettings={header} />}
       <main className="flex-grow flex flex-col">{children}</main>
-      {footer?.isActive !== false && <Footer latestEvent={latestEvent} footerSettings={footer} />}
+      {footer?.isActive !== false && <Footer latestEvent={latestEvent} footerSettings={footer} appButtons={topHeader?.buttons} />}
       <Chatbot />
     </>
   );
