@@ -278,45 +278,15 @@ export async function buildDepartmentDescription(
 
       // Attach facilities images if this is the facilities section
       if ((id === 'facilities' || title.toLowerCase() === 'facilities') && facilitiesImagesItems.length > 0) {
-        const cheerio = await import('cheerio');
-        const $ = cheerio.load(content, null, false);
-        const unassignedItems: any[] = [];
-
-        facilitiesImagesItems.forEach((img: any) => {
-          let assigned = false;
-          if (img.name) {
-            const searchName = img.name.trim().toLowerCase();
-            $('p, li').each((_: any, el: any) => {
-              const text = $(el).text().trim().toLowerCase();
-              if (text && (text === searchName || text.includes(searchName))) {
-                const imgHtml = `<div class="mt-4 facility-img-wrapper"><img src="${img.url}" alt="${img.name}" class="facility-assigned-image w-full max-w-sm mx-auto h-40 object-cover rounded-xl shadow-sm border border-teal-100" /></div>`;
-                if (!$(el).parent().hasClass('facility-item-wrapper')) {
-                  $(el).wrap('<div class="facility-item-wrapper h-full flex flex-col"></div>');
-                }
-                $(el).parent().append(imgHtml);
-                assigned = true;
-                return false;
-              }
-            });
-          }
-          if (!assigned) {
-            unassignedItems.push(img);
-          }
-        });
-
-        content = $.html();
-
-        if (unassignedItems.length > 0) {
-          const facilitiesGridHtml = `
+        const facilitiesGridHtml = `
     <div class="facilities-images-grid col-span-full grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
-      ${unassignedItems.map((img: any) => `
+      ${facilitiesImagesItems.map((img: any) => `
       <div class="bg-slate-50 p-4 rounded-xl text-center border border-teal-100 shadow-sm">
-        <img src="${img.url}" alt="${img.name}" class="w-full h-32 object-cover rounded-lg mb-2 shadow-sm" />
-        <span class="block font-bold text-[#007a87] m-0 text-sm mt-3">${img.name}</span>
+        <img src="${img.url}" alt="${img.name || ''}" class="w-full h-32 object-cover rounded-lg mb-2 shadow-sm" />
+        <span class="block font-bold text-[#007a87] m-0 text-sm mt-3">${img.name || ''}</span>
       </div>`).join('')}
     </div>`;
-          content = (content || '') + facilitiesGridHtml;
-        }
+        content = (content || '') + facilitiesGridHtml;
       }
 
       if (title && content) {

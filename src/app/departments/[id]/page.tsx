@@ -198,6 +198,32 @@ export default async function DepartmentDetailsPage({
       if (h3Text === 'facilities') {
         $(section).addClass('department-facilities-section');
         
+        // Normalize any individually assigned facility images back into the facilities-images-grid
+        const assignedImgs = $(section).find('img.facility-assigned-image');
+        if (assignedImgs.length > 0) {
+          let grid = $(section).find('div.facilities-images-grid');
+          if (grid.length === 0) {
+            grid = $('<div class="facilities-images-grid col-span-full grid grid-cols-2 md:grid-cols-4 gap-4 mt-6"></div>');
+            $(section).append(grid);
+          }
+          assignedImgs.each((_, img) => {
+            const $img = $(img);
+            const src = $img.attr('src');
+            const alt = $img.attr('alt') || '';
+            const card = $(`
+              <div class="bg-slate-50 p-4 rounded-xl text-center border border-teal-100 shadow-sm">
+                <img src="${src}" alt="${alt}" class="w-full h-32 object-cover rounded-lg mb-2 shadow-sm" />
+                <span class="block font-bold text-[#007a87] m-0 text-sm mt-3">${alt}</span>
+              </div>
+            `);
+            grid.append(card);
+            $img.closest('.facility-img-wrapper').remove();
+          });
+          $(section).find('div.facility-item-wrapper').each((_, wrap) => {
+            $(wrap).replaceWith($(wrap).html() || '');
+          });
+        }
+
         // Fix the messy HTML structure that stacks everything vertically (admin used <br> inside a single flex-col div)
         const wrappers = $(section).find('.facility-item-wrapper');
         if (wrappers.length > 0) {
