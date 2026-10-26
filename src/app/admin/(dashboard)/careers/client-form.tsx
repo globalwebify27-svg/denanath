@@ -971,38 +971,43 @@ export default function CareersClientForm({ initialData }: { initialData: any })
                   </button>
                 )}
 
-                {modalActiveTab !== 'description' && (
+                {modalActiveTab !== 'description' ? (
                   <button
                     type="button"
                     onClick={() => {
+                      if (modalActiveTab === 'general' && !modalForm.title.trim()) {
+                        setModalError("Please enter a Job Title before proceeding.");
+                        return;
+                      }
+                      setModalError(null);
                       const tabs = ['general', 'requirements', 'description'] as const;
                       const idx = tabs.indexOf(modalActiveTab);
                       if (idx < tabs.length - 1) setModalActiveTab(tabs[idx + 1]);
                     }}
-                    className="px-4 py-2.5 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-800 text-sm font-bold flex items-center gap-1.5 transition-all"
+                    className="px-5 py-2.5 rounded-xl bg-[#002b5c] hover:bg-[#001f42] text-white text-sm font-bold flex items-center gap-1.5 transition-all shadow-sm"
                   >
                     Next <ChevronRight size={16} />
                   </button>
+                ) : (
+                  <button 
+                    type="button" 
+                    onClick={handleSaveModalJob}
+                    disabled={isSubmittingModal}
+                    className="px-6 py-2.5 rounded-xl bg-[#007a87] hover:bg-[#005f6b] text-white text-sm font-bold flex items-center gap-2 shadow-sm transition-all disabled:opacity-50"
+                  >
+                    {isSubmittingModal ? (
+                      <>
+                        <Loader2 size={16} className="animate-spin" />
+                        <span>{editingJobIndex !== null ? "Saving..." : "Creating & Saving..."}</span>
+                      </>
+                    ) : (
+                      <>
+                        <Save size={16} />
+                        <span>{editingJobIndex !== null ? "Save Changes" : "Save Job Posting"}</span>
+                      </>
+                    )}
+                  </button>
                 )}
-
-                <button 
-                  type="button" 
-                  onClick={handleSaveModalJob}
-                  disabled={isSubmittingModal}
-                  className="px-6 py-2.5 rounded-xl bg-[#007a87] hover:bg-[#005f6b] text-white text-sm font-bold flex items-center gap-2 shadow-sm transition-all disabled:opacity-50"
-                >
-                  {isSubmittingModal ? (
-                    <>
-                      <Loader2 size={16} className="animate-spin" />
-                      <span>{editingJobIndex !== null ? "Saving..." : "Creating & Saving..."}</span>
-                    </>
-                  ) : (
-                    <>
-                      <Save size={16} />
-                      <span>{editingJobIndex !== null ? "Save Changes" : "Save Job Posting"}</span>
-                    </>
-                  )}
-                </button>
               </div>
             </div>
 
