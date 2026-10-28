@@ -2,18 +2,34 @@ import { NextResponse } from 'next/server';
 import { DMH_API_CONFIG } from '@/lib/dmhApi';
 import { prisma } from '@/lib/prisma';
 
-// Helper to extract AppTrana Incident ID if blocked
-function extractAppTranaIncident(html: string): string | null {
-  const match = html.match(/<td><strong>ID<\/strong><\/td>\s*<td>([a-f0-9]{32})<\/td>/i) ||
-                html.match(/Incident\s*ID\s*:\s*([a-f0-9]{32})/i) ||
-                html.match(/([a-f0-9]{32})/i);
-  return match ? match[1] : null;
+// Helper to extract AppTrana Incident details if blocked
+function extractAppTranaDetails(html: string): { incidentId: string | null; ip: string | null; time: string | null } {
+  const incidentMatch = html.match(/<td><strong>ID<\/strong><\/td>\s*<td>([a-f0-9]{32})<\/td>/i) ||
+                        html.match(/Incident\s*ID\s*:\s*([a-f0-9]{32})/i) ||
+                        html.match(/([a-f0-9]{32})/i);
+  const ipMatch = html.match(/<td><strong>IP<\/strong><\/td>\s*<td>([0-9a-f.:]+)<\/td>/i);
+  const timeMatch = html.match(/<td><strong>Time<\/strong><\/td>\s*<td>([^<]+)<\/td>/i);
+  return {
+    incidentId: incidentMatch ? incidentMatch[1] : null,
+    ip: ipMatch ? ipMatch[1].trim() : null,
+    time: timeMatch ? timeMatch[1].trim() : null,
+  };
 }
 
 // GET /api/dmh - Live diagnostic endpoint to test DMH API connectivity
 export async function GET() {
   const testUrl = `${DMH_API_CONFIG.baseUrl}doctorList.php`;
   try {
+    // Also check server's true outbound IP
+    let serverOutboundIp: string | null = null;
+    try {
+      const ipRes = await fetch('https://api.ipify.org?format=json', { signal: AbortSignal.timeout(3000) });
+      if (ipRes.ok) {
+        const ipData = await ipRes.json();
+        serverOutboundIp = ipData.ip;
+      }
+    } catch {}
+
     const res = await fetch(testUrl, {
       method: 'POST',
       headers: DMH_API_CONFIG.headers,
@@ -21,7 +37,7 @@ export async function GET() {
     });
     const text = await res.text();
     const isBlocked = res.status === 406 || text.includes('Not Acceptable') || text.includes('suspicious behavior');
-    const incidentId = isBlocked ? extractAppTranaIncident(text) : null;
+    const appTrana = isBlocked ? extractAppTranaDetails(text) : { incidentId: null, ip: null, time: null };
 
     let parsed: any = null;
     try {
@@ -32,8 +48,10 @@ export async function GET() {
       status: res.status,
       statusText: res.statusText,
       blockedByAppTrana: isBlocked,
-      appTranaIncidentId: incidentId,
-      success: res.status === 200 && !!parsed?.specialityJSON,
+      appTranaIncidentId: appTrana.incidentId,
+      appTranaDetectedIP: appTrana.ip,
+      serverOutboundIp: serverOutboundIp,
+      success: res.status === 200 && !isBlocked && !!parsed?.specialityJSON,
       specialityCount: parsed?.specialityJSON?.length || 0,
       headersSent: {
         'User-Agent': DMH_API_CONFIG.headers['User-Agent'],
@@ -41,7 +59,8 @@ export async function GET() {
         'Origin': (DMH_API_CONFIG.headers as any)['Origin'],
         'Content-Type': DMH_API_CONFIG.headers['Content-Type'],
       },
-      responsePreview: text.substring(0, 500),
+      appTranaDetails: appTrana,
+      responsePreview: text.substring(0, 1500),
       timestamp: new Date().toISOString(),
     });
   } catch (err: any) {
@@ -244,13 +263,14 @@ export async function POST(request: Request) {
     } catch (e) {
       console.error(`[DMH API] Error parsing JSON for ${action}:`, text);
       const isBlocked = response.status === 406 || text.includes('Not Acceptable') || text.includes('suspicious behavior');
-      const incidentId = isBlocked ? extractAppTranaIncident(text) : null;
+      const details = isBlocked ? extractAppTranaDetails(text) : { incidentId: null, ip: null, time: null };
       return NextResponse.json({
         error: isBlocked
-          ? `Blocked by AppTrana WAF (HTTP 406). Incident ID: ${incidentId || 'Unknown'}`
+          ? `Blocked by AppTrana WAF (HTTP 406). Incident ID: ${details.incidentId || 'Unknown'} (Detected IP: ${details.ip || 'Unknown'})`
           : 'Invalid JSON response from DMH API',
         blockedByAppTrana: isBlocked,
-        appTranaIncidentId: incidentId,
+        appTranaIncidentId: details.incidentId,
+        appTranaDetectedIP: details.ip,
         httpStatus: response.status,
         raw: text.substring(0, 1000),
       }, { status: response.status === 406 ? 406 : 500 });
