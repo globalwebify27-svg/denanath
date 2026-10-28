@@ -2,6 +2,58 @@ import { NextResponse } from 'next/server';
 import { DMH_API_CONFIG } from '@/lib/dmhApi';
 import { prisma } from '@/lib/prisma';
 
+// Helper to extract AppTrana Incident ID if blocked
+function extractAppTranaIncident(html: string): string | null {
+  const match = html.match(/<td><strong>ID<\/strong><\/td>\s*<td>([a-f0-9]{32})<\/td>/i) ||
+                html.match(/Incident\s*ID\s*:\s*([a-f0-9]{32})/i) ||
+                html.match(/([a-f0-9]{32})/i);
+  return match ? match[1] : null;
+}
+
+// GET /api/dmh - Live diagnostic endpoint to test DMH API connectivity
+export async function GET() {
+  const testUrl = `${DMH_API_CONFIG.baseUrl}doctorList.php`;
+  try {
+    const res = await fetch(testUrl, {
+      method: 'POST',
+      headers: DMH_API_CONFIG.headers,
+      body: JSON.stringify({ action: 'speciality' }),
+    });
+    const text = await res.text();
+    const isBlocked = res.status === 406 || text.includes('Not Acceptable') || text.includes('suspicious behavior');
+    const incidentId = isBlocked ? extractAppTranaIncident(text) : null;
+
+    let parsed: any = null;
+    try {
+      parsed = JSON.parse(text);
+    } catch {}
+
+    return NextResponse.json({
+      status: res.status,
+      statusText: res.statusText,
+      blockedByAppTrana: isBlocked,
+      appTranaIncidentId: incidentId,
+      success: res.status === 200 && !!parsed?.specialityJSON,
+      specialityCount: parsed?.specialityJSON?.length || 0,
+      headersSent: {
+        'User-Agent': DMH_API_CONFIG.headers['User-Agent'],
+        'Referer': (DMH_API_CONFIG.headers as any)['Referer'],
+        'Origin': (DMH_API_CONFIG.headers as any)['Origin'],
+        'Content-Type': DMH_API_CONFIG.headers['Content-Type'],
+      },
+      responsePreview: text.substring(0, 500),
+      timestamp: new Date().toISOString(),
+    });
+  } catch (err: any) {
+    return NextResponse.json({
+      status: 'FETCH_ERROR',
+      error: err.message,
+      cause: err.cause ? String(err.cause) : null,
+      timestamp: new Date().toISOString(),
+    }, { status: 500 });
+  }
+}
+
 let cachedDrAhis: { data: any[]; timestamp: number } | null = null;
 const CACHE_TTL = 5 * 60 * 1000;
 
@@ -191,7 +243,17 @@ export async function POST(request: Request) {
       console.log(`[DMH API] Success -> ${action}:`, data);
     } catch (e) {
       console.error(`[DMH API] Error parsing JSON for ${action}:`, text);
-      return NextResponse.json({ error: 'Invalid JSON response from DMH API', raw: text }, { status: 500 });
+      const isBlocked = response.status === 406 || text.includes('Not Acceptable') || text.includes('suspicious behavior');
+      const incidentId = isBlocked ? extractAppTranaIncident(text) : null;
+      return NextResponse.json({
+        error: isBlocked
+          ? `Blocked by AppTrana WAF (HTTP 406). Incident ID: ${incidentId || 'Unknown'}`
+          : 'Invalid JSON response from DMH API',
+        blockedByAppTrana: isBlocked,
+        appTranaIncidentId: incidentId,
+        httpStatus: response.status,
+        raw: text.substring(0, 1000),
+      }, { status: response.status === 406 ? 406 : 500 });
     }
 
     return NextResponse.json(data);
