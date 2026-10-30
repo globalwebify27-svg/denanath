@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState, useMemo } from "react";
 import Link from "next/link";
-import { ChevronRight, Calendar, UserRound, Clock, Loader2, ChevronLeft } from "lucide-react";
+import { ChevronRight, Calendar, UserRound, Clock, Loader2, ChevronLeft, Phone } from "lucide-react";
 import CustomDropdown from "@/components/CustomDropdown";
 
 const daysOfWeek = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
@@ -235,7 +235,14 @@ const DoctorScheduleCard = ({
                     {initialData?.tableBookBtnLabel || "Book"}
                   </Link>
                 ) : (
-                  <span className="text-slate-400 text-sm italic">Not Available</span>
+                  <a 
+                    href="tel:02040151100" 
+                    title="Call 020 4015 1100 for Appointment"
+                    className="inline-flex items-center justify-center gap-1.5 px-3 py-2 bg-[#d9232d] hover:bg-[#b81d24] text-white text-sm rounded-lg font-bold transition-colors w-full shadow-sm"
+                  >
+                    <Phone className="w-4 h-4 shrink-0" />
+                    <span>Call</span>
+                  </a>
                 )}
               </td>
             </tr>
@@ -445,7 +452,16 @@ export default function OpdScheduleClientPage({ initialData }: { initialData?: a
           ) : selectedSpecialty.toUpperCase() === 'ANAESTHESIOLOGY' ? (
             <div className="py-12 text-center border-2 border-dashed border-slate-200 rounded-2xl bg-slate-50">
               <h3 className="text-xl font-bold text-slate-700 mb-2">No OPD</h3>
-              <p className="text-slate-500 max-w-md mx-auto">OPD is not available for this specialty.</p>
+              <p className="text-slate-500 max-w-md mx-auto mb-4">OPD is not available for this specialty.</p>
+              <div className="flex items-center justify-center gap-3">
+                <a 
+                  href="tel:02040151100" 
+                  className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#d9232d] hover:bg-[#b81d24] text-white text-sm rounded-xl font-bold shadow-sm transition-all"
+                >
+                  <Phone className="w-4 h-4" />
+                  <span>Call: 020 4015 1100</span>
+                </a>
+              </div>
               <button 
                 onClick={() => { setSelectedSpecialty("--Select--"); setSelectedDoctor("-- Doctor --"); setCurrentPage(1); }}
                 className="mt-6 text-sm font-bold text-[#007a87] hover:underline"

@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { ChevronRight, ChevronLeft, Calendar as CalendarIcon, User, X, Search, Clock, ChevronDown } from "lucide-react";
+import { ChevronRight, ChevronLeft, Calendar as CalendarIcon, User, X, Search, Clock, ChevronDown, Phone } from "lucide-react";
 import CustomDropdown from "@/components/CustomDropdown";
 
 const DoctorImage = ({ doc, className, iconClassName }: { doc: any, className?: string, iconClassName?: string }) => {
@@ -984,8 +984,9 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
                       ) : (
                         <div className="text-center lg:text-right w-full">
                           <p className="text-xs text-slate-500 font-bold mb-2">Please call for appointment:</p>
-                          <a href="tel:02049153347" className="inline-flex items-center justify-center w-full lg:w-auto bg-[#d9232d] hover:bg-[#b81d24] text-white px-6 py-3 rounded-xl font-black text-sm shadow-md hover:shadow-lg transition-all duration-300">
-                            020 4915 3347
+                          <a href="tel:02049153347" className="inline-flex items-center justify-center gap-2 w-full lg:w-auto bg-[#d9232d] hover:bg-[#b81d24] text-white px-6 py-3 rounded-xl font-black text-sm shadow-md hover:shadow-lg transition-all duration-300">
+                            <Phone className="w-4 h-4 shrink-0" />
+                            <span>020 4915 3347</span>
                           </a>
                         </div>
                       )}
@@ -1144,7 +1145,16 @@ export default function BookAppointmentClientPage({ pageData }: { pageData: any 
                   ))}
                 </div>
               ) : (
-                <div className="text-center py-10 text-slate-500">No slots available for this date.</div>
+                <div className="text-center py-10 text-slate-500 flex flex-col items-center justify-center gap-3">
+                  <p className="font-medium text-slate-600">No online slots available for this date.</p>
+                  <a 
+                    href="tel:02040151100" 
+                    className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#d9232d] hover:bg-[#b81d24] text-white text-xs font-bold rounded-xl shadow-sm transition-all"
+                  >
+                    <Phone className="w-3.5 h-3.5" />
+                    <span>Call Helpline: 020 4015 1100</span>
+                  </a>
+                </div>
               )}
             </div>
           </div>
