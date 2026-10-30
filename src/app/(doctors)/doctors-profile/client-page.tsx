@@ -612,19 +612,18 @@ export default function DoctorDetailsPage() {
                       </h3>
                       <ul className="space-y-3">
                         {selectedDoctor.publications.map((item: any, i: number) => {
-                          const { displayTitle, docCode, link, fileName, downloadUrl, viewUrl } = getDoctorPublicationDetails(selectedDoctor, item, i);
+                          const { displayTitle, showBadge, link, fileName, downloadUrl, viewUrl } = getDoctorPublicationDetails(selectedDoctor, item, i);
 
                           return (
                             <li key={i} className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-slate-600 font-medium leading-relaxed bg-slate-50/70 p-3.5 rounded-xl border border-slate-100">
                               <div className="flex items-start gap-3 min-w-0 flex-1">
-                                <span className="shrink-0 text-xs font-bold text-purple-700 bg-purple-50 px-2 py-0.5 rounded border border-purple-100 mt-0.5">
-                                  #{i + 1}
-                                </span>
+                                {showBadge && (
+                                  <span className="shrink-0 text-xs font-bold text-purple-700 bg-purple-50 px-2 py-0.5 rounded border border-purple-100 mt-0.5">
+                                    #{i + 1}
+                                  </span>
+                                )}
                                 <div className="flex-1 min-w-0">
                                   <span className="text-slate-800 text-sm font-semibold break-words block">{displayTitle}</span>
-                                  {docCode && (
-                                    <span className="text-xs text-slate-500 block mt-0.5">Doctor Code: {docCode}</span>
-                                  )}
                                 </div>
                               </div>
                               {link && (

@@ -384,7 +384,7 @@ export default function DoctorProfileClient({ initialDoctor }: { initialDoctor: 
                 </div>
                 <div className="space-y-3">
                   {doctor.publications.map((item: any, i: number) => {
-                    const { displayTitle, docCode, link, fileName, downloadUrl, viewUrl } = getDoctorPublicationDetails(doctor, item, i);
+                    const { displayTitle, showBadge, link, fileName, downloadUrl, viewUrl } = getDoctorPublicationDetails(doctor, item, i);
 
                     return (
                       <div
@@ -392,19 +392,15 @@ export default function DoctorProfileClient({ initialDoctor }: { initialDoctor: 
                         className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-2xl bg-slate-50/70 border border-slate-100 hover:border-teal-200 hover:bg-teal-50/30 transition-all duration-200"
                       >
                         <div className="flex items-start gap-3 min-w-0 flex-1">
-                          <div className="w-8 h-8 rounded-xl bg-purple-50 text-purple-700 flex items-center justify-center shrink-0 mt-0.5 border border-purple-100 font-bold text-xs">
-                            #{i + 1}
-                          </div>
+                          {showBadge && (
+                            <div className="w-8 h-8 rounded-xl bg-purple-50 text-purple-700 flex items-center justify-center shrink-0 mt-0.5 border border-purple-100 font-bold text-xs">
+                              #{i + 1}
+                            </div>
+                          )}
                           <div className="min-w-0 flex-1">
                             <p className="text-slate-800 font-semibold text-sm sm:text-base leading-snug break-words">
                               {displayTitle}
                             </p>
-                            {docCode && (
-                              <p className="text-xs text-slate-500 mt-1 flex items-center gap-1.5 font-medium">
-                                <span className="inline-block w-1.5 h-1.5 rounded-full bg-teal-500"></span>
-                                Doctor Code: {docCode}
-                              </p>
-                            )}
                           </div>
                         </div>
 
