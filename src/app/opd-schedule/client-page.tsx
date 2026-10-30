@@ -35,7 +35,19 @@ const generatePagination = (currentPage: number, totalPages: number) => {
 };
 
 // Component for rendering individual doctor with staggered schedule loading
-const DoctorScheduleCard = ({ doc, initialData, index }: { doc: any, initialData: any, index: number }) => {
+const DoctorScheduleCard = ({ 
+  doc, 
+  initialData, 
+  index,
+  activeSpecialityId,
+  specialitiesList
+}: { 
+  doc: any; 
+  initialData: any; 
+  index: number;
+  activeSpecialityId?: string;
+  specialitiesList?: any[];
+}) => {
   const [timings, setTimings] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [isAppAllowed, setIsAppAllowed] = useState(false);
@@ -45,30 +57,59 @@ const DoctorScheduleCard = ({ doc, initialData, index }: { doc: any, initialData
     
     const fetchSchedule = async () => {
       try {
-        const res = await fetch('/api/dmh', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            action: 'opd_day_time',
-            doctor_id: doc.dmhDoctorId || String(doc.doctor_id || doc.id || ''),
-            speciality_id: doc.dmhSpecialityId || String(doc.speciality_id || ''),
-            service_point_id: doc.dmhServicePointId || '',
-            service_center_id: doc.dmhServiceCenterId || ''
-          })
-        });
-        const data = await res.json();
+        let specIdToUse = activeSpecialityId;
+        
+        // If no explicit activeSpecialityId, match by specialty name in specialitiesList
+        if (!specIdToUse && specialitiesList && specialitiesList.length > 0) {
+          const docSpecName = (doc.speciality_name || doc.specialty || '').trim().toLowerCase();
+          const match = specialitiesList.find((s: any) => 
+            (s.speciality_name || s.name || '').trim().toLowerCase() === docSpecName
+          );
+          if (match) {
+            specIdToUse = String(match.speciality_id || match.id);
+          }
+        }
+
+        const rawSpec = specIdToUse || doc.dmhSpecialityId || String(doc.speciality_id || '');
+        const specIds = String(rawSpec).split(',').map(s => s.trim()).filter(Boolean);
+        const targets = specIds.length > 0 ? specIds : [''];
+
+        let dmhSchedule: any = null;
+        let hasApp = false;
+
+        for (const sId of targets) {
+          const res = await fetch('/api/dmh', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              action: 'opd_day_time',
+              doctor_id: doc.dmhDoctorId || String(doc.doctor_id || doc.id || ''),
+              speciality_id: sId,
+              service_point_id: doc.dmhServicePointId || '',
+              service_center_id: doc.dmhServiceCenterId || ''
+            })
+          });
+          if (res.ok) {
+            const data = await res.json();
+            const list = data?.opdDayTimeJSON || (Array.isArray(data) ? data : []);
+            if (list.length > 0) {
+              dmhSchedule = list[0];
+              hasApp = list.some((slot: any) => slot.isApp === 'Y' || slot.isApp === 'true' || slot.isApp === true);
+              if (hasApp || targets.length === 1) break;
+            }
+          }
+        }
+
         if (!isMounted) return;
 
-        const list = data?.opdDayTimeJSON || (Array.isArray(data) ? data : []);
-        if (list.length > 0) {
-          const dmhSchedule = list[0];
-          const hasApp = list.some((slot: any) => slot.isApp === 'Y' || slot.isApp === 'true' || slot.isApp === true);
+        if (dmhSchedule) {
           setIsAppAllowed(hasApp);
           const parsedTimings: any[] = [];
           daysOfWeek.forEach((day: string) => {
             const val = dmhSchedule[day];
             if (val && val !== '-' && !val.toLowerCase().includes('no opd') && !val.toLowerCase().includes('none')) {
-              const cleanVal = val.replace(/<br\s*\/?>/gi, " | ").replace(/\[.*?\]/g, "");
+              // Convert <br> tags to newline for identical formatting as /Appointment
+              const cleanVal = val.replace(/<br\s*\/?>/gi, "\n");
               parsedTimings.push({ day, time: cleanVal.trim() });
             }
           });
@@ -90,18 +131,24 @@ const DoctorScheduleCard = ({ doc, initialData, index }: { doc: any, initialData
       isMounted = false; 
       clearTimeout(timer);
     };
-  }, [doc, index]);
+  }, [doc, index, activeSpecialityId, specialitiesList]);
 
   const availability = useMemo(() => {
     const mapping: { [key: string]: string[] } = {
       Mon: [], Tue: [], Wed: [], Thu: [], Fri: [], Sat: [], Sun: []
     };
-    timings.forEach(t => {
-      if (mapping[t.day]) {
-        mapping[t.day].push(t.time + (t.branch ? ` (${t.branch})` : ''));
-      }
-    });
-    // For original timings loaded directly with "Mon to Sat" parsing fallback
+
+    // 1. If we received live DMH API timings, use ONLY the live API timings (no local DB merge)
+    if (timings.length > 0) {
+      timings.forEach(t => {
+        if (mapping[t.day]) {
+          mapping[t.day].push(t.time);
+        }
+      });
+      return mapping;
+    }
+
+    // 2. Only if the DMH API returned no schedule or doctor is not on DMH API, fallback to database timings
     let fallbackTimings: any[] = [];
     if (typeof doc.timings === 'string' && doc.timings.trim().startsWith('[')) {
       try { fallbackTimings = JSON.parse(doc.timings); } catch(e) {}
@@ -130,6 +177,7 @@ const DoctorScheduleCard = ({ doc, initialData, index }: { doc: any, initialData
         mapping.Thu.push(displayStr); mapping.Fri.push(displayStr);
       }
     });
+
     for (const key in mapping) {
       mapping[key] = Array.from(new Set(mapping[key]));
     }
@@ -171,7 +219,7 @@ const DoctorScheduleCard = ({ doc, initialData, index }: { doc: any, initialData
                   {availability[day].length > 0 ? (
                     <div className="space-y-2">
                       {availability[day].map((time, i) => (
-                        <div key={i} className="text-slate-700  leading-[31px] font-[400]">
+                        <div key={i} className="text-slate-700 whitespace-pre-line leading-relaxed font-[500]">
                           {time}
                         </div>
                       ))}
@@ -416,14 +464,22 @@ export default function OpdScheduleClientPage({ initialData }: { initialData?: a
                   
                   {/* Doctors in this specialty */}
                   <div className="divide-y divide-slate-100">
-                    {groupedDoctors[spec].map((doc, docIdx) => (
-                      <DoctorScheduleCard 
-                        key={doc.doctor_id || docIdx} 
-                        doc={doc} 
-                        initialData={initialData} 
-                        index={docIdx} 
-                      />
-                    ))}
+                    {groupedDoctors[spec].map((doc, docIdx) => {
+                      const specObj = specialitiesList.find((s: any) => 
+                        (s.speciality_name || s.name || '').trim().toLowerCase() === spec.trim().toLowerCase()
+                      );
+                      const currentSpecId = specObj ? String(specObj.speciality_id || specObj.id) : undefined;
+                      return (
+                        <DoctorScheduleCard 
+                          key={doc.doctor_id || docIdx} 
+                          doc={doc} 
+                          initialData={initialData} 
+                          index={docIdx}
+                          activeSpecialityId={currentSpecId}
+                          specialitiesList={specialitiesList}
+                        />
+                      );
+                    })}
                   </div>
                 </div>
               ))}
