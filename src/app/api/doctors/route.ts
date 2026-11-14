@@ -32,6 +32,7 @@ export async function POST(request: Request) {
         seoMetaTitle: data.seoMetaTitle,
         seoMetaDescription: data.seoMetaDescription,
         seoKeywords: data.seoKeywords,
+        isCustomizedByAdmin: true,
       },
     });
     const { revalidatePath } = require("next/cache");

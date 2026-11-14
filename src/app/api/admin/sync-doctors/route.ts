@@ -126,21 +126,38 @@ export async function POST(req: Request) {
         });
 
         if (existingDoc) {
-          // Only sync name and specialty from the API; never overwrite timings or CMS details
+          // Check if doctor has manual customizations or education/experience entered in DB
+          const hasAdminCustomization = Boolean(
+            existingDoc.isCustomizedByAdmin ||
+            (existingDoc.education && existingDoc.education.trim() !== '[]' && existingDoc.education.trim() !== '') ||
+            (existingDoc.experience && existingDoc.experience.trim() !== '[]' && existingDoc.experience.trim() !== '') ||
+            (existingDoc.training && existingDoc.training !== '[]' && existingDoc.training !== '') ||
+            (existingDoc.publications && existingDoc.publications !== '[]' && existingDoc.publications !== '')
+          );
+
+          const updateData: any = {
+            dmhDoctorId,
+            name: formattedName,
+            specialty: combinedSpecs,
+            dmhSpecialityId: combinedSpecIds,
+            gender: group.gender || existingDoc.gender,
+            consultantType: group.consultantType || existingDoc.consultantType,
+            hasOpdSchedule: group.hasOpdSchedule,
+          };
+
+          // If doctor has only name & specialty with no education etc entered in DB,
+          // map the OPD timings from API. Once admin overrides/updates in DB,
+          // future syncs will NEVER overwrite it.
+          if (!hasAdminCustomization && group.opdTimings && group.opdTimings.length > 0) {
+            updateData.timings = JSON.stringify(group.opdTimings);
+          }
+
           await prisma.doctor.update({
             where: { id: existingDoc.id },
-            data: {
-              dmhDoctorId,
-              name: formattedName,
-              specialty: combinedSpecs,
-              dmhSpecialityId: combinedSpecIds,
-              gender: group.gender || existingDoc.gender,
-              consultantType: group.consultantType || existingDoc.consultantType,
-              hasOpdSchedule: group.hasOpdSchedule,
-            },
+            data: updateData,
           });
         } else {
-          // If no record exists, create new doctor profile
+          // If no record exists, create new doctor profile with API timings
           await prisma.doctor.create({
             data: {
               id: dmhDoctorId,
@@ -153,6 +170,8 @@ export async function POST(req: Request) {
               consultantType: group.consultantType || null,
               hasOpdSchedule: group.hasOpdSchedule,
               isAppAllowed: true,
+              timings: group.opdTimings && group.opdTimings.length > 0 ? JSON.stringify(group.opdTimings) : null,
+              isCustomizedByAdmin: false,
             },
           });
         }

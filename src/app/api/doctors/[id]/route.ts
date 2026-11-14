@@ -34,6 +34,7 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
         seoMetaTitle: data.seoMetaTitle,
         seoMetaDescription: data.seoMetaDescription,
         seoKeywords: data.seoKeywords,
+        isCustomizedByAdmin: true,
       },
     });
     const { revalidatePath } = require("next/cache");
