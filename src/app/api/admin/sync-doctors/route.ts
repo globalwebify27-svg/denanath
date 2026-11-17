@@ -17,6 +17,53 @@ const formatTime = (t: string) => {
   return `${formattedHour}:${m} ${ampm}`;
 };
 
+async function fetchFullOpdSchedule(doctorId: string, specialityId: string, branchName: string) {
+  if (!doctorId || !specialityId) return null;
+  try {
+    const res = await callDMHApi('opd_day_time', {
+      doctor_id: String(doctorId),
+      speciality_id: String(specialityId).split(',')[0].trim(),
+    });
+    const list = res?.opdDayTimeJSON || (Array.isArray(res) ? res : []);
+    if (!Array.isArray(list) || list.length === 0) return null;
+
+    const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    const fullTimings: any[] = [];
+
+    list.forEach((slot: any) => {
+      days.forEach(d => {
+        const rawVal = slot[d];
+        if (rawVal && rawVal !== '-' && !String(rawVal).toLowerCase().includes('no opd')) {
+          const match = String(rawVal).match(/(\d{1,2}:\d{2})\s*-\s*(\d{1,2}:\d{2})/);
+          let cleanTime = String(rawVal).replace(/<br\s*\/?>/gi, ' ').replace(/<[^>]*>/g, '').trim();
+          if (match) {
+            const [h1, m1] = match[1].split(':');
+            const [h2, m2] = match[2].split(':');
+            const f = (h: string, m: string) => {
+              let hr = parseInt(h, 10);
+              const ampm = hr >= 12 ? 'PM' : 'AM';
+              hr = hr % 12 || 12;
+              return `${hr}:${m} ${ampm}`;
+            };
+            cleanTime = `${f(h1, m1)} - ${f(h2, m2)}`;
+          }
+          fullTimings.push({
+            branch: branchName || slot.opd_type || 'General OPD',
+            day: dayNames[d] || d,
+            time: cleanTime,
+            speciality_id: String(specialityId).split(',')[0].trim(),
+            opdtyp: slot.opd_type || 'General',
+          });
+        }
+      });
+    });
+
+    return fullTimings.length > 0 ? fullTimings : null;
+  } catch (err) {
+    return null;
+  }
+}
+
 export async function POST(req: Request) {
   try {
     // 1. Fetch all doctors from DMH API using drAhis endpoint
@@ -147,10 +194,19 @@ export async function POST(req: Request) {
           };
 
           // If doctor has only name & specialty with no education etc entered in DB,
-          // map the OPD timings from API. Once admin overrides/updates in DB,
+          // map the full OPD timings from API. Once admin overrides/updates in DB,
           // future syncs will NEVER overwrite it.
-          if (!hasAdminCustomization && group.opdTimings && group.opdTimings.length > 0) {
-            updateData.timings = JSON.stringify(group.opdTimings);
+          if (!hasAdminCustomization) {
+            let finalTimings = group.opdTimings;
+            if (group.hasOpdSchedule) {
+              const fullSchedule = await fetchFullOpdSchedule(dmhDoctorId, combinedSpecIds, combinedSpecs);
+              if (fullSchedule && fullSchedule.length > 0) {
+                finalTimings = fullSchedule;
+              }
+            }
+            if (finalTimings && finalTimings.length > 0) {
+              updateData.timings = JSON.stringify(finalTimings);
+            }
           }
 
           await prisma.doctor.update({
@@ -159,6 +215,14 @@ export async function POST(req: Request) {
           });
         } else {
           // If no record exists, create new doctor profile with API timings
+          let finalTimings = group.opdTimings;
+          if (group.hasOpdSchedule) {
+            const fullSchedule = await fetchFullOpdSchedule(dmhDoctorId, combinedSpecIds, combinedSpecs);
+            if (fullSchedule && fullSchedule.length > 0) {
+              finalTimings = fullSchedule;
+            }
+          }
+
           await prisma.doctor.create({
             data: {
               id: dmhDoctorId,
@@ -171,7 +235,7 @@ export async function POST(req: Request) {
               consultantType: group.consultantType || null,
               hasOpdSchedule: group.hasOpdSchedule,
               isAppAllowed: true,
-              timings: group.opdTimings && group.opdTimings.length > 0 ? JSON.stringify(group.opdTimings) : null,
+              timings: finalTimings && finalTimings.length > 0 ? JSON.stringify(finalTimings) : null,
               isCustomizedByAdmin: false,
             },
           });
