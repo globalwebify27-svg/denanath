@@ -11,6 +11,22 @@ export default function ClientPage({ data }: { data: any }) {
   const [isPlaying, setIsPlaying] = useState(false);
   const contentRef = React.useRef<HTMLDivElement>(null);
 
+  const courseButtons = React.useMemo(() => {
+    if (Array.isArray(data?.links) && data.links.length > 0) {
+      return data.links.filter((b: any) => b && (b.link?.trim() || b.buttonText?.trim()));
+    }
+    if (Array.isArray(data?.buttons) && data.buttons.length > 0) {
+      return data.buttons.filter((b: any) => b && (b.link?.trim() || b.buttonText?.trim()));
+    }
+    if (data?.link && data.link.trim() !== "") {
+      return [{
+        buttonText: data.linkText || "View Details",
+        link: data.link.trim()
+      }];
+    }
+    return [];
+  }, [data?.links, data?.buttons, data?.link, data?.linkText]);
+
   useEffect(() => {
     let interval: NodeJS.Timeout;
     if (isPlaying && lightboxIndex !== null && data.gallery) {
@@ -250,7 +266,27 @@ export default function ClientPage({ data }: { data: any }) {
             </div>
           ) : (
             /* DEFAULT COURSE LAYOUT */
-            <div className={`bg-white rounded-3xl px-6 sm:px-10 md:px-12 shadow-sm border border-slate-100 ${data.title?.includes("Yoga") ? "pt-4 pb-3 sm:pt-5 sm:pb-4 md:pt-5 md:pb-4" : "pt-3 pb-6 sm:pt-4 sm:pb-8 md:pt-4 md:pb-6"}`}>
+            <div className={`bg-white rounded-3xl px-6 sm:px-10 md:px-12 shadow-sm border border-slate-100 ${data.title?.includes("Yoga") ? "pt-4 pb-3 sm:pt-5 sm:pb-4 md:pt-5 md:pb-4" : "pt-6 pb-6 sm:pt-8 sm:pb-8 md:pt-8 md:pb-8"}`}>
+              {/* Action Buttons at the Top */}
+              {courseButtons.length > 0 && data.title !== "Neuro Radiology Fellowship" && (
+                <div className="flex flex-wrap items-center gap-3 sm:gap-4 mb-6 sm:mb-8 pb-5 sm:pb-6 border-b border-slate-100">
+                  {courseButtons.map((btn: any, idx: number) => {
+                    const isExternal = btn.link?.startsWith("http") || btn.link?.includes(".pdf");
+                    return (
+                      <a 
+                        key={idx}
+                        href={btn.link} 
+                        target={isExternal ? "_blank" : "_self"}
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-[#007a87] text-white rounded-xl font-bold text-sm sm:text-base hover:bg-[#005f69] transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5"
+                      >
+                        <span>{btn.buttonText || "View Details"}</span>
+                      </a>
+                    );
+                  })}
+                </div>
+              )}
+
               {data.content ? (
                 <div 
                   ref={contentRef}
@@ -261,19 +297,6 @@ export default function ClientPage({ data }: { data: any }) {
                 />
               ) : (
                 <p className="text-slate-500">Detailed information about this program is currently being updated. Please check back later.</p>
-              )}
-              
-              {data.link && data.link.trim() !== "" && data.title !== "Neuro Radiology Fellowship" && (
-                <div className="mt-8 pt-8 border-t border-slate-100">
-                  <a 
-                    href={data.link} 
-                    target={data.link.startsWith("http") || data.link.includes(".pdf") ? "_blank" : "_self"}
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center px-8 py-4 bg-[#007a87] text-white rounded-xl font-bold hover:bg-[#005f69] transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5"
-                  >
-                    {data.linkText || "View Details"}
-                  </a>
-                </div>
               )}
             </div>
           )}

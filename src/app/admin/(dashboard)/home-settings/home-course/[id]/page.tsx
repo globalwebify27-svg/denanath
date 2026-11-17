@@ -147,6 +147,15 @@ export default async function EditCoursePage(props: { params: Promise<any>, sear
       
       const colStr = targetCol;
       
+      const rawLinks = (formData.get("links") as string) || "[]";
+      let parsedLinks: any[] = [];
+      try {
+        parsedLinks = JSON.parse(rawLinks);
+      } catch {}
+
+      const firstLink = parsedLinks[0]?.link || (formData.get("link") as string) || "";
+      const firstLinkText = parsedLinks[0]?.buttonText || (formData.get("linkText") as string) || (colStr === "rightCourses" ? "View Form" : "View Details");
+
       if (isNew) {
         const timestamp = Date.now();
         const newId = `${colStr === "rightCourses" ? "right" : "left"}-${timestamp}`;
@@ -156,8 +165,9 @@ export default async function EditCoursePage(props: { params: Promise<any>, sear
           content: (formData.get("content") as string) || "",
           startDate: (formData.get("startDate") as string) || "",
           endDate: (formData.get("endDate") as string) || "",
-          link: (formData.get("link") as string) || "",
-          linkText: (formData.get("linkText") as string) || (colStr === "rightCourses" ? "View Form" : "View Details"),
+          link: firstLink,
+          linkText: firstLinkText,
+          links: parsedLinks,
           status: formData.get("status") === "true",
           gallery: JSON.parse((formData.get("gallery") as string) || "[]"),
           seoMetaTitle: (formData.get("seoMetaTitle") as string) || "",
@@ -185,8 +195,9 @@ export default async function EditCoursePage(props: { params: Promise<any>, sear
             content: (formData.get("content") as string) || "",
             startDate: (formData.get("startDate") as string) || "",
             endDate: (formData.get("endDate") as string) || "",
-            link: (formData.get("link") as string) || "",
-            linkText: (formData.get("linkText") as string) || (saveCol === "rightCourses" ? "View Form" : "View Details"),
+            link: firstLink,
+            linkText: firstLinkText,
+            links: parsedLinks,
             status: formData.get("status") === "true",
             gallery: JSON.parse(formData.get("gallery") as string || "[]"),
             seoMetaTitle: (formData.get("seoMetaTitle") as string) || "",

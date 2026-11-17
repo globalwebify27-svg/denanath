@@ -22,12 +22,38 @@ function formatDateForInput(d: any) {
 export default function CourseForm({ initialData, saveAction, col, isNew }: { initialData: any, saveAction: (data: FormData) => Promise<void>, col: string, isNew?: boolean }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [uploadingLink, setUploadingLink] = useState(false);
+  const [uploadingLinkIndex, setUploadingLinkIndex] = useState<number | null>(null);
   const [uploadingGalleryIndices, setUploadingGalleryIndices] = useState<number[]>([]);
   const [bulkUploadingImages, setBulkUploadingImages] = useState(false);
   
+  const parseInitialLinks = (data: any) => {
+    if (Array.isArray(data?.links) && data.links.length > 0) {
+      return data.links.map((l: any) => ({
+        buttonText: l?.buttonText || (col === "right" ? "View Form" : "View Details"),
+        link: l?.link || "",
+      }));
+    }
+    if (Array.isArray(data?.buttons) && data.buttons.length > 0) {
+      return data.buttons.map((l: any) => ({
+        buttonText: l?.buttonText || (col === "right" ? "View Form" : "View Details"),
+        link: l?.link || "",
+      }));
+    }
+    if (data?.link) {
+      return [{
+        buttonText: data.linkText || (col === "right" ? "View Form" : "View Details"),
+        link: data.link || "",
+      }];
+    }
+    return [{
+      buttonText: col === "right" ? "View Form" : "View Details",
+      link: "",
+    }];
+  };
+
   const [formData, setFormData] = useState({
     title: initialData?.title || "",
+    links: parseInitialLinks(initialData),
     link: initialData?.link || "",
     linkText: initialData?.linkText || (col === "right" ? "View Form" : "View Details"),
     content: initialData?.content || "",
@@ -42,10 +68,12 @@ export default function CourseForm({ initialData, saveAction, col, isNew }: { in
 
   useEffect(() => {
     if (initialData) {
+      const initialLinks = parseInitialLinks(initialData);
       setFormData({
         title: initialData.title || "",
-        link: initialData.link || "",
-        linkText: initialData.linkText || (col === "right" ? "View Form" : "View Details"),
+        links: initialLinks,
+        link: initialData.link || initialLinks[0]?.link || "",
+        linkText: initialData.linkText || initialLinks[0]?.buttonText || (col === "right" ? "View Form" : "View Details"),
         content: initialData.content || "",
         startDate: formatDateForInput(initialData.startDate),
         endDate: formatDateForInput(initialData.endDate),
@@ -157,39 +185,93 @@ export default function CourseForm({ initialData, saveAction, col, isNew }: { in
     }
   };
 
-  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setUploadingLink(true);
-      try {
-        const uploadData = new FormData();
-        uploadData.append("file", file);
-        
-        const res = await fetch("/api/upload", {
-          method: "POST",
-          body: uploadData,
-        });
-        
-        if (!res.ok) throw new Error("Upload failed");
-        
-        const resData = await res.json();
-        if (!resData.url) throw new Error("No URL returned");
-
-        const friendlyName = file.name ? file.name.replace(/\.[^/.]+$/, "").replace(/[_-]/g, " ") : "";
-        setFormData(prev => ({
-          ...prev,
-          link: resData.url,
-          linkText: (prev.linkText && prev.linkText !== "View Details" && prev.linkText !== "View Form")
-            ? prev.linkText
-            : (friendlyName || (col === "right" ? "View Form" : "View Details"))
-        }));
-      } catch (err) {
-        console.error("Error uploading file:", err);
-        alert("Failed to upload PDF file. Please try again.");
-      } finally {
-        setUploadingLink(false);
-        e.target.value = "";
+  const handleButtonChange = (index: number, field: "buttonText" | "link", value: string) => {
+    setFormData(prev => {
+      const newLinks = [...prev.links];
+      if (newLinks[index]) {
+        newLinks[index] = { ...newLinks[index], [field]: value };
       }
+      return {
+        ...prev,
+        links: newLinks,
+        link: newLinks[0]?.link || "",
+        linkText: newLinks[0]?.buttonText || "",
+      };
+    });
+  };
+
+  const handleAddButton = () => {
+    setFormData(prev => ({
+      ...prev,
+      links: [
+        ...prev.links,
+        { buttonText: col === "right" ? "View Form" : "View Details", link: "" }
+      ]
+    }));
+  };
+
+  const handleRemoveButton = (index: number) => {
+    setFormData(prev => {
+      if (prev.links.length <= 1) {
+        return {
+          ...prev,
+          links: [{ buttonText: col === "right" ? "View Form" : "View Details", link: "" }],
+          link: "",
+          linkText: "",
+        };
+      }
+      const newLinks = [...prev.links];
+      newLinks.splice(index, 1);
+      return {
+        ...prev,
+        links: newLinks,
+        link: newLinks[0]?.link || "",
+        linkText: newLinks[0]?.buttonText || "",
+      };
+    });
+  };
+
+  const handleButtonFileUpload = async (index: number, file: File) => {
+    setUploadingLinkIndex(index);
+    try {
+      const uploadData = new FormData();
+      uploadData.append("file", file);
+      
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        body: uploadData,
+      });
+      
+      if (!res.ok) throw new Error("Upload failed");
+      const resData = await res.json();
+      if (!resData.url) throw new Error("No URL returned");
+
+      const friendlyName = file.name ? file.name.replace(/\.[^/.]+$/, "").replace(/[_-]/g, " ") : "";
+      setFormData(prev => {
+        const newLinks = [...prev.links];
+        if (newLinks[index]) {
+          const currentText = newLinks[index].buttonText;
+          const updatedText = (!currentText || currentText === "View Details" || currentText === "View Form")
+            ? (friendlyName || (col === "right" ? "View Form" : "View Details"))
+            : currentText;
+          newLinks[index] = {
+            ...newLinks[index],
+            link: resData.url,
+            buttonText: updatedText
+          };
+        }
+        return {
+          ...prev,
+          links: newLinks,
+          link: newLinks[0]?.link || "",
+          linkText: newLinks[0]?.buttonText || "",
+        };
+      });
+    } catch (err) {
+      console.error("Error uploading file:", err);
+      alert("Failed to upload PDF file. Please try again.");
+    } finally {
+      setUploadingLinkIndex(null);
     }
   };
 
@@ -232,12 +314,23 @@ export default function CourseForm({ initialData, saveAction, col, isNew }: { in
       extractedContent = (extractedContent || "").trim();
       const cleanedContent = (extractedContent === "<p><br></p>" || extractedContent === "<p></p>" || extractedContent === "<p><br/></p>") ? "" : extractedContent;
 
+      const validLinks = formData.links.filter((l: any) => l.link?.trim() || l.buttonText?.trim());
+      const firstLink = validLinks[0]?.link?.trim() || (formData.link || "").trim();
+      const firstLinkText = validLinks[0]?.buttonText?.trim() || (formData.linkText || "").trim() || (col === "right" ? "View Form" : "View Details");
+
       const data = new FormData();
       data.append("title", formData.title.trim());
       data.append("startDate", formData.startDate);
       data.append("endDate", formData.endDate);
-      data.append("link", (formData.link || "").trim());
-      data.append("linkText", (formData.linkText || "").trim());
+      data.append("link", firstLink);
+      data.append("linkText", firstLinkText);
+      data.append("links", JSON.stringify(validLinks));
+      data.append("content", cleanedContent);
+      data.append("status", formData.status.toString());
+      data.append("gallery", JSON.stringify(formData.gallery.filter((g: any) => g.image || g.caption)));
+      data.append("seoMetaTitle", formData.seoMetaTitle);
+      data.append("seoMetaDescription", formData.seoMetaDescription);
+      data.append("seoKeywords", formData.seoKeywords);
       data.append("content", cleanedContent);
       data.append("status", formData.status.toString());
       data.append("gallery", JSON.stringify(formData.gallery.filter((g: any) => g.image || g.caption)));
@@ -531,96 +624,133 @@ export default function CourseForm({ initialData, saveAction, col, isNew }: { in
         </div>
       </div>
 
-      {/* Publications / Links Settings */}
+      {/* Action Buttons / Publications / Links Settings */}
       <div className="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden group hover:shadow-md transition-shadow duration-300">
-        <div className="bg-slate-50/50 border-b border-slate-100 p-5 md:p-6 flex items-center justify-between">
+        <div className="bg-slate-50/50 border-b border-slate-100 p-5 md:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-center gap-4">
             <div className="bg-rose-100 p-3 rounded-2xl text-rose-600">
               <FileText size={24} strokeWidth={2.5} />
             </div>
             <div>
-              <h2 className="text-[20px] font-black text-[#002b5c]">{col === "right" ? "Form / Brochure Link & File" : "Publications / Link"}</h2>
+              <h2 className="text-[20px] font-black text-[#002b5c]">{col === "right" ? "Form / Brochure Links & Files" : "Action Buttons / Links"}</h2>
               <p className="text-[13px] text-slate-500 font-medium">
-                {col === "right" ? "Add the PDF form, brochure, or external link for this program card." : "Add the custom external link and text for this course card."}
+                {col === "right" ? "Add one or more buttons, brochure forms, or external links for this program card." : "Add one or more action buttons (e.g. Payment link, Registration Form PDF, Brochure, etc.) for this course card."}
               </p>
             </div>
           </div>
+          <button
+            type="button"
+            onClick={handleAddButton}
+            className="inline-flex items-center gap-2 bg-[#007a87] text-white text-xs font-bold px-4 py-2.5 rounded-xl hover:bg-[#005f69] transition-colors shadow-sm shrink-0 w-fit"
+          >
+            <Plus size={16} />
+            <span>Add More Button</span>
+          </button>
         </div>
         
         <div className="p-6 md:p-8 space-y-4">
-          <div className="bg-slate-50/50 p-4 sm:p-5 rounded-2xl border border-slate-200/80">
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-              <div className="sm:w-56 md:w-64 shrink-0">
-                <label className="block text-[10px] font-extrabold text-slate-500 uppercase tracking-wider mb-1">BUTTON TEXT</label>
-                <input
-                  type="text"
-                  value={formData.linkText}
-                  onChange={(e) => setFormData(prev => ({ ...prev, linkText: e.target.value }))}
-                  placeholder={col === "right" ? "View Form" : "View Details"}
-                  className="w-full p-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-[#007a87]/20 focus:border-[#007a87] transition-all duration-200 text-sm font-medium text-slate-700 outline-none"
-                />
-              </div>
+          {formData.links.map((item: any, index: number) => {
+            const isUploading = uploadingLinkIndex === index;
+            return (
+              <div key={index} className="bg-slate-50/50 p-4 sm:p-5 rounded-2xl border border-slate-200/80 space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-[11px] font-extrabold text-[#007a87] uppercase tracking-wider">Button #{index + 1}</span>
+                  {formData.links.length > 1 && (
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveButton(index)}
+                      className="text-red-500 hover:text-red-700 text-xs font-bold inline-flex items-center gap-1"
+                      title="Remove this button"
+                    >
+                      <Trash2 size={14} /> Remove
+                    </button>
+                  )}
+                </div>
 
-              <div className="flex-1">
-                <label className="block text-[10px] font-extrabold text-slate-500 uppercase tracking-wider mb-1">PDF LINK / URL</label>
-                <input
-                  type="text"
-                  value={formData.link}
-                  onChange={(e) => setFormData(prev => ({ ...prev, link: e.target.value }))}
-                  placeholder="https://... or upload PDF using button"
-                  className="w-full p-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-[#007a87]/20 focus:border-[#007a87] transition-all duration-200 text-sm font-medium text-slate-700 outline-none"
-                />
-              </div>
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                  <div className="sm:w-56 md:w-64 shrink-0">
+                    <label className="block text-[10px] font-extrabold text-slate-500 uppercase tracking-wider mb-1">BUTTON TEXT</label>
+                    <input
+                      type="text"
+                      value={item.buttonText || ""}
+                      onChange={(e) => handleButtonChange(index, "buttonText", e.target.value)}
+                      placeholder={col === "right" ? "View Form" : "View Details"}
+                      className="w-full p-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-[#007a87]/20 focus:border-[#007a87] transition-all duration-200 text-sm font-medium text-slate-700 outline-none"
+                    />
+                  </div>
 
-              <div className="shrink-0 flex items-end sm:items-center gap-2 pt-2 sm:pt-5">
-                <label className="cursor-pointer shrink-0 inline-flex items-center gap-2 bg-[#007a87] text-white text-xs font-bold px-5 py-3 rounded-xl hover:bg-[#005f69] transition-colors shadow-sm disabled:opacity-50">
-                  {uploadingLink ? <Loader2 size={16} className="animate-spin" /> : <Upload size={16} />}
-                  <span>{uploadingLink ? "Uploading..." : "Upload PDF"}</span>
-                  <input 
-                    type="file"
-                    accept=".pdf,application/pdf"
-                    onChange={handleFileUpload}
-                    disabled={uploadingLink}
-                    className="hidden"
-                  />
-                </label>
+                  <div className="flex-1">
+                    <label className="block text-[10px] font-extrabold text-slate-500 uppercase tracking-wider mb-1">PDF LINK / URL</label>
+                    <input
+                      type="text"
+                      value={item.link || ""}
+                      onChange={(e) => handleButtonChange(index, "link", e.target.value)}
+                      placeholder="https://... or upload PDF using button"
+                      className="w-full p-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-[#007a87]/20 focus:border-[#007a87] transition-all duration-200 text-sm font-medium text-slate-700 outline-none"
+                    />
+                  </div>
 
-                {formData.link && (
-                  <a
-                    href={formData.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-3 bg-teal-50 text-[#007a87] hover:bg-teal-100 rounded-xl transition-colors shrink-0 font-bold text-xs flex items-center gap-1.5 border border-teal-200/60"
-                    title="Preview attached PDF in new tab"
-                  >
-                    <ExternalLink size={16} />
-                    <span className="hidden md:inline">Preview</span>
-                  </a>
+                  <div className="shrink-0 flex items-end sm:items-center gap-2 pt-2 sm:pt-5">
+                    <label className="cursor-pointer shrink-0 inline-flex items-center gap-2 bg-[#007a87] text-white text-xs font-bold px-4 py-3 rounded-xl hover:bg-[#005f69] transition-colors shadow-sm disabled:opacity-50">
+                      {isUploading ? <Loader2 size={16} className="animate-spin" /> : <Upload size={16} />}
+                      <span>{isUploading ? "Uploading..." : "Upload PDF"}</span>
+                      <input 
+                        type="file"
+                        accept=".pdf,application/pdf"
+                        onChange={(e) => {
+                          const file = e.target.files?.[0];
+                          if (file) handleButtonFileUpload(index, file);
+                          e.target.value = "";
+                        }}
+                        disabled={isUploading}
+                        className="hidden"
+                      />
+                    </label>
+
+                    {item.link && (
+                      <a
+                        href={item.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="p-3 bg-teal-50 text-[#007a87] hover:bg-teal-100 rounded-xl transition-colors shrink-0 font-bold text-xs flex items-center gap-1.5 border border-teal-200/60"
+                        title="Preview link in new tab"
+                      >
+                        <ExternalLink size={16} />
+                        <span className="hidden md:inline">Preview</span>
+                      </a>
+                    )}
+
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveButton(index)}
+                      className="p-3 text-[#D9232D] hover:bg-red-50 rounded-xl transition-colors shrink-0 border border-transparent hover:border-red-100"
+                      title="Clear or Remove Button"
+                    >
+                      <Trash2 size={18} />
+                    </button>
+                  </div>
+                </div>
+
+                {item.link && (
+                  <div className="flex items-center gap-2 px-4 py-2 bg-emerald-50 text-emerald-800 border border-emerald-200 rounded-xl text-xs font-semibold">
+                    <CheckCircle2 size={16} className="text-emerald-600 shrink-0" />
+                    <span className="truncate">Active Link: <strong className="font-bold">{item.link}</strong></span>
+                  </div>
                 )}
-
-                <button
-                  type="button"
-                  onClick={() => {
-                    if (formData.link || formData.linkText) {
-                      if (!window.confirm("Are you sure you want to remove this attachment/link?")) return;
-                    }
-                    setFormData(prev => ({ ...prev, link: "", linkText: "" }));
-                  }}
-                  className="p-3 text-[#D9232D] hover:bg-red-50 rounded-xl transition-colors shrink-0 border border-transparent hover:border-red-100"
-                  title="Clear Link"
-                >
-                  <Trash2 size={18} />
-                </button>
               </div>
-            </div>
-          </div>
+            );
+          })}
 
-          {formData.link && (
-            <div className="flex items-center gap-2 px-4 py-2.5 bg-emerald-50 text-emerald-800 border border-emerald-200 rounded-xl text-xs font-semibold">
-              <CheckCircle2 size={16} className="text-emerald-600 shrink-0" />
-              <span className="truncate">Active Attachment: <strong className="font-bold">{formData.link}</strong></span>
-            </div>
-          )}
+          <div className="pt-2">
+            <button
+              type="button"
+              onClick={handleAddButton}
+              className="w-full py-3 px-4 border-2 border-dashed border-teal-300 hover:border-[#007a87] bg-teal-50/50 hover:bg-teal-50 text-[#007a87] rounded-2xl text-xs font-bold transition-all flex items-center justify-center gap-2"
+            >
+              <Plus size={16} />
+              <span>Add Another Action Button</span>
+            </button>
+          </div>
         </div>
       </div>
 
