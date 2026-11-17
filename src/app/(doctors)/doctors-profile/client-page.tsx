@@ -167,6 +167,43 @@ export default function DoctorDetailsPage() {
             const list = data?.opdDayTimeJSON || (Array.isArray(data) ? data : []);
             if (Array.isArray(list) && list.length > 0) {
               allowed = list.some((slot: any) => slot.isApp === 'Y' || slot.isApp === 'true' || slot.isApp === true);
+
+              if (!selectedDoctor.isCustomizedByAdmin || !selectedDoctor.timings || selectedDoctor.timings.length === 0) {
+                const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+                const dayNames: Record<string, string> = {
+                  Mon: 'Monday', Tue: 'Tuesday', Wed: 'Wednesday', Thu: 'Thursday', Fri: 'Friday', Sat: 'Saturday', Sun: 'Sunday'
+                };
+                const parsed: any[] = [];
+                list.forEach((slot: any) => {
+                  days.forEach(d => {
+                    const rawVal = slot[d];
+                    if (rawVal && rawVal !== '-' && !String(rawVal).toLowerCase().includes('no opd')) {
+                      const match = String(rawVal).match(/(\d{1,2}:\d{2})\s*-\s*(\d{1,2}:\d{2})/);
+                      let cleanTime = String(rawVal).replace(/<br\s*\/?>/gi, ' ').replace(/<[^>]*>/g, '').trim();
+                      if (match) {
+                        const [h1, m1] = match[1].split(':');
+                        const [h2, m2] = match[2].split(':');
+                        const f = (h: string, m: string) => {
+                          let hr = parseInt(h, 10);
+                          const ampm = hr >= 12 ? 'PM' : 'AM';
+                          hr = hr % 12 || 12;
+                          return `${hr}:${m} ${ampm}`;
+                        };
+                        cleanTime = `${f(h1, m1)} - ${f(h2, m2)}`;
+                      }
+                      parsed.push({
+                        branch: selectedDoctor.specialty || slot.opd_type || 'General OPD',
+                        day: dayNames[d] || d,
+                        time: cleanTime,
+                      });
+                    }
+                  });
+                });
+                if (parsed.length > 0) {
+                  setSelectedDoctor((prev: any) => ({ ...prev, timings: parsed }));
+                }
+              }
+
               if (allowed) break;
             }
           }

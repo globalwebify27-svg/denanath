@@ -77,6 +77,27 @@ export default function DoctorProfileClient({ initialDoctor }: { initialDoctor: 
         const specIds = doctor.dmhSpecialityId ? String(doctor.dmhSpecialityId).split(',').map(s => s.trim()) : [];
 
         const branchAppStatus: Record<string, { isApp: boolean, speciality_id: string }> = {};
+        const apiParsedTimings: any[] = [];
+        const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+        const dayNames: Record<string, string> = {
+          Mon: 'Monday', Tue: 'Tuesday', Wed: 'Wednesday', Thu: 'Thursday', Fri: 'Friday', Sat: 'Saturday', Sun: 'Sunday'
+        };
+
+        const formatOpdTime = (text: string) => {
+          if (!text) return '';
+          const match = text.match(/(\d{1,2}:\d{2})\s*-\s*(\d{1,2}:\d{2})/);
+          if (match) {
+            const formatH = (t: string) => {
+              const [h, m] = t.split(':');
+              let hour = parseInt(h, 10);
+              const ampm = hour >= 12 ? 'PM' : 'AM';
+              hour = hour % 12 || 12;
+              return `${hour}:${m} ${ampm}`;
+            };
+            return `${formatH(match[1])} - ${formatH(match[2])}`;
+          }
+          return text.replace(/<br\s*\/?>/gi, ' ').replace(/<[^>]*>/g, '').trim();
+        };
 
         const promises = specIds.map(async (specId, index) => {
           const specName = specNames[index] || '';
@@ -97,6 +118,25 @@ export default function DoctorProfileClient({ initialDoctor }: { initialDoctor: 
             let isApp = false;
             if (Array.isArray(list) && list.length > 0) {
               isApp = list.some((slot: any) => slot.isApp === 'Y' || slot.isApp === 'true' || slot.isApp === true);
+
+              list.forEach((slot: any) => {
+                days.forEach(d => {
+                  const rawVal = slot[d];
+                  if (rawVal && rawVal !== '-' && !String(rawVal).toLowerCase().includes('no opd')) {
+                    const cleanTime = formatOpdTime(String(rawVal));
+                    const isSlotApp = slot.isApp === 'Y' || slot.isApp === 'true' || slot.isApp === true;
+                    apiParsedTimings.push({
+                      branch: specName || doctor.specialty || slot.opd_type || 'General OPD',
+                      day: dayNames[d] || d,
+                      time: cleanTime,
+                      isApp: isSlotApp ? 'Y' : 'N',
+                      speciality_id: specId,
+                      _speciality_id: specId || doctor.dmhSpecialityId || '',
+                      opdtyp: slot.opd_type || 'General',
+                    });
+                  }
+                });
+              });
             }
             if (specName) {
               branchAppStatus[specName.toUpperCase()] = { isApp, speciality_id: specId };
@@ -150,7 +190,12 @@ export default function DoctorProfileClient({ initialDoctor }: { initialDoctor: 
           };
         });
 
-        setDynamicTimings(enhancedTimings.length > 0 ? enhancedTimings : doctor.timings || []);
+        // If doctor was NOT customized by admin and API has OPD timings, use API parsed timings
+        if (!doctor.isCustomizedByAdmin && apiParsedTimings.length > 0) {
+          setDynamicTimings(apiParsedTimings);
+        } else {
+          setDynamicTimings(enhancedTimings.length > 0 ? enhancedTimings : (apiParsedTimings.length > 0 ? apiParsedTimings : doctor.timings || []));
+        }
       } catch (err) {
         console.error('Failed to fetch opd_day_time', err);
         setDynamicTimings(doctor.timings || []);
