@@ -96,6 +96,7 @@ export async function POST(req: Request) {
 
     let synced = 0;
     let errors = 0;
+    let firstError: any = null;
     const validDmhDoctorIds = Array.from(groupedDocs.keys());
 
     // 3. Upsert each grouped doctor profile
@@ -176,8 +177,16 @@ export async function POST(req: Request) {
           });
         }
         synced++;
-      } catch (err) {
-        console.error(`Failed to upsert doctor ${formattedName}`, err);
+      } catch (err: any) {
+        if (!firstError) {
+          firstError = {
+            message: err?.message || String(err),
+            code: err?.code,
+            doctor: formattedName,
+            id: dmhDoctorId
+          };
+          console.error(`[SYNC FIRST ERROR] Failed to upsert doctor ${formattedName} (${dmhDoctorId}):`, err);
+        }
         errors++;
       }
     }
@@ -201,11 +210,14 @@ export async function POST(req: Request) {
     revalidatePath("/", "layout");
 
     return NextResponse.json({
-      success: true,
-      message: `Successfully synced ${synced} doctors. Removed ${deletedCount} stale doctors. ${errors} errors.`,
+      success: errors === 0,
+      message: errors > 0
+        ? `Sync had ${errors} errors.${firstError ? ' Reason: ' + firstError.message : ''}`
+        : `Successfully synced ${synced} doctors. Removed ${deletedCount} stale doctors.`,
       synced,
       deleted: deletedCount,
-      errors
+      errors,
+      firstError
     });
 
   } catch (error: any) {
