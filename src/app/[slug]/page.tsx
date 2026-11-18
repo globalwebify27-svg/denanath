@@ -4,33 +4,84 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ChevronRight, FileText } from "lucide-react";
 import DynamicSidebar from "@/components/DynamicSidebar";
+import CourseClientPage from "@/app/courses/[id]/client-page";
+
+export const dynamic = "force-dynamic";
+
+async function getCourseBySlug(rawSlug: string) {
+  try {
+    const setting = await prisma.siteSetting.findUnique({ where: { key: 'home_courses' } });
+    if (!setting) return null;
+    const parsed = JSON.parse(setting.value);
+    const allCourses = [
+      ...(parsed.leftCourses || []),
+      ...(parsed.rightCourses || [])
+    ];
+    const targetSlug = decodeURIComponent(rawSlug).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+    return allCourses.find((c: any) => {
+      if (!c) return false;
+      const titleSlug = (c.title || "").toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+      const idSlug = (c.id || "").toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+      return idSlug === targetSlug || titleSlug === targetSlug;
+    }) || null;
+  } catch {
+    return null;
+  }
+}
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const resolvedParams = await params;
-  const page = await prisma.dynamicPage.findUnique({
-    where: { slug: resolvedParams.slug },
+  const rawSlug = resolvedParams.slug;
+
+  const page = await prisma.dynamicPage.findFirst({
+    where: {
+      OR: [
+        { slug: rawSlug },
+        { slug: rawSlug.toLowerCase() }
+      ]
+    }
   });
 
-  if (!page || !page.status) {
+  if (page && page.status) {
     return {
-      title: "Page Not Found - DMH",
+      title: page.seoMetaTitle || `${page.title} - Deenanath Mangeshkar Hospital`,
+      description: page.seoMetaDescription || undefined,
+      keywords: page.seoKeywords || undefined,
+    };
+  }
+
+  const course = await getCourseBySlug(rawSlug);
+  if (course && course.status !== false) {
+    return {
+      title: course.seoMetaTitle || `${course.title} - Deenanath Mangeshkar Hospital`,
+      description: course.seoMetaDescription || undefined,
+      keywords: course.seoKeywords || undefined,
     };
   }
 
   return {
-    title: page.seoMetaTitle || `${page.title} - Deenanath Mangeshkar Hospital`,
-    description: page.seoMetaDescription || undefined,
-    keywords: page.seoKeywords || undefined,
+    title: "Page Not Found - DMH",
   };
 }
 
 export default async function DynamicPageRoute({ params }: { params: Promise<{ slug: string }> }) {
   const resolvedParams = await params;
-  const page = await prisma.dynamicPage.findUnique({
-    where: { slug: resolvedParams.slug },
+  const rawSlug = resolvedParams.slug;
+
+  const page = await prisma.dynamicPage.findFirst({
+    where: {
+      OR: [
+        { slug: rawSlug },
+        { slug: rawSlug.toLowerCase() }
+      ]
+    }
   });
 
   if (!page || !page.status) {
+    const course = await getCourseBySlug(rawSlug);
+    if (course && course.status !== false) {
+      return <CourseClientPage data={course} />;
+    }
     notFound();
   }
 
