@@ -48,6 +48,16 @@ const nextConfig: NextConfig = {
         destination: '/out-patient-department',
         permanent: true,
       },
+      {
+        source: '/canteen-facilities',
+        destination: '/canteen',
+        permanent: true,
+      },
+      {
+        source: '/pharmacy-features',
+        destination: '/pharmacy',
+        permanent: true,
+      },
     ];
   },
 
@@ -56,6 +66,10 @@ const nextConfig: NextConfig = {
       {
         source: '/appointment',
         destination: '/Appointment',
+      },
+      {
+        source: '/musculoskeletal-imaging-International-fellowship',
+        destination: '/musculoskeletal-imaging-international-fellowship',
       },
     ];
   },

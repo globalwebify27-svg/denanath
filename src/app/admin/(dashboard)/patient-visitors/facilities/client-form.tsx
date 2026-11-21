@@ -2,7 +2,7 @@
 import QuillEditor, { formatListToHtml, parseHtmlToList } from "@/components/QuillEditor";
 
 import { useState } from "react";
-import {  Plus, Trash2, Building, CreditCard, Clock, MapPin, Phone } from "lucide-react";
+import { Plus, Trash2, Building, CreditCard, Clock, MapPin, Phone, Link as LinkIcon } from "lucide-react";
 
 export default function FacilitiesClientForm({ initialData }: { initialData: any }) {
   const [data, setData] = useState({
@@ -35,21 +35,26 @@ export default function FacilitiesClientForm({ initialData }: { initialData: any
     facilities: initialData?.facilities ? initialData.facilities.map((f: any) => ({
       ...f,
       id: f.id || Date.now() + Math.random(),
+      link: f.link || (
+        f.title?.toLowerCase().includes('pharmacy') ? '/pharmacy' :
+        f.title?.toLowerCase().includes('blood') ? '/blood-bank' :
+        f.title?.toLowerCase().includes('canteen') ? '/canteen' : ''
+      ),
       detailsStr: formatListToHtml(f.details)
     })) : [
-      { id: Date.now() + 1, title: "Reception (GS Building)", time: "24 Hours", location: "Ground Floor Center Core GS Building", phone: "020 - 40151000 (General Enquiry)", detailsStr: formatListToHtml(["Information about Consultants / Doctors", "Coffee / Tea Tokens"]) },
-      { id: Date.now() + 2, title: "Reception (SS Building)", time: "24 Hours", location: "Ground Floor Center Core SS Building", phone: "020 - 49153000 (General Enquiry)", detailsStr: formatListToHtml(["Information about Consultants / Doctors", "Coffee / Tea Tokens"]) },
-      { id: Date.now() + 3, title: "Pharmacy", time: "24 Hours", location: "Ground Floor (Between B & C Wing, Main Bldg) | Ground Floor (New Bldg)", phone: "(020) 40151040, 40151041 | (020) 49153009, 49153443", detailsStr: formatListToHtml(["24x7 hours Pharmacy (Day & Night)"]) },
-      { id: Date.now() + 4, title: "Blood Bank", time: "24 Hours", location: "Ground Floor SS Building", phone: "+91 20 49153081 / 49153089", detailsStr: formatListToHtml(["FDA approved regional blood bank transfusion center.", "Blood components: RBC, FFP, Random/Single Donor Platelet, Cryo Precipitate, Peripheral Blood Stemcells, Plasma pherisis, Granulocyte apheresis.", "Ultra modern equipments like chemiluminescence, irradiation, Snap freezer."]) },
-      { id: Date.now() + 5, title: "Public Relation Department", time: "Standard Hours", location: "GS Building Ground Floor C Wing", phone: "020-40151011 / 40151015", detailsStr: formatListToHtml(["Attend to complaints and suggestions", "Medical Certificates", "Insurance Claim Forms and related issues", "Periodical / Routine Medical Checkups"]) },
-      { id: Date.now() + 6, title: "Canteen", time: "Standard Hours", location: "Basement C Wing (1941 / 1942)", phone: "-", detailsStr: formatListToHtml(["Well-equipped Catering Facility for Patients, Relatives, Doctors & Staff.", "Provides quality and hygienically safe food."]) },
-      { id: Date.now() + 7, title: "Health Checkup", time: "Standard Hours", location: "Public Relation Dept - GS Building Ground Floor C Wing", phone: "020-40151011, 020-40151015", detailsStr: formatListToHtml(["Know your health status with several Health Check-up packages.", "Done quickly, efficiently and offered at discounted rates."]) },
-      { id: Date.now() + 8, title: "Ambulance / Hospital Attendant", time: "24 Hours", location: "Ground Floor A Wing (Emergency Dept.)", phone: "020-40151540, 40151027", detailsStr: formatListToHtml(["For going home and emergencies."]) },
-      { id: Date.now() + 9, title: "Photo-Copy / Xerox", time: "Standard Hours", location: "Ground Floor C Wing", phone: "020-40151022", detailsStr: formatListToHtml(["For one A4 Size photocopy Rs. 1/- is charged."]) },
-      { id: Date.now() + 10, title: "Mortuary", time: "24 Hours", location: "GS Building Basement C Wing", phone: "Admission Dept: 020- 40151020", detailsStr: formatListToHtml(["For all relevant documentation and formalities contact Admission Department (Ground Floor B wing)."]) },
-      { id: Date.now() + 11, title: "Emergency", time: "24 Hours", location: "Ground Floor A Wing", phone: "020-40151027, 40151065", detailsStr: "" },
-      { id: Date.now() + 12, title: "Optician Shop", time: "08:00 a.m. to 04:30 p.m.", location: "Second Floor B wing", phone: "020-40151070", detailsStr: "" },
-      { id: Date.now() + 13, title: "Pass Counter", time: "Standard Hours", location: "SS Building Ground Floor", phone: "New Reg: 020-49153006 | OPD: 49153005 | IPD: 49153018", detailsStr: formatListToHtml(["Entry to the SS Building is only with a valid pass."]) }
+      { id: Date.now() + 1, title: "Reception (GS Building)", time: "24 Hours", location: "Ground Floor Center Core GS Building", phone: "020 - 40151000 (General Enquiry)", link: "", detailsStr: formatListToHtml(["Information about Consultants / Doctors", "Coffee / Tea Tokens"]) },
+      { id: Date.now() + 2, title: "Reception (SS Building)", time: "24 Hours", location: "Ground Floor Center Core SS Building", phone: "020 - 49153000 (General Enquiry)", link: "", detailsStr: formatListToHtml(["Information about Consultants / Doctors", "Coffee / Tea Tokens"]) },
+      { id: Date.now() + 3, title: "Pharmacy", time: "24 Hours", location: "Ground Floor (Between B & C Wing, Main Bldg) | Ground Floor (New Bldg)", phone: "(020) 40151040, 40151041 | (020) 49153009, 49153443", link: "/pharmacy", detailsStr: formatListToHtml(["24x7 hours Pharmacy (Day & Night)"]) },
+      { id: Date.now() + 4, title: "Blood Bank", time: "24 Hours", location: "Ground Floor SS Building", phone: "+91 20 49153081 / 49153089", link: "/blood-bank", detailsStr: formatListToHtml(["FDA approved regional blood bank transfusion center.", "Blood components: RBC, FFP, Random/Single Donor Platelet, Cryo Precipitate, Peripheral Blood Stemcells, Plasma pherisis, Granulocyte apheresis.", "Ultra modern equipments like chemiluminescence, irradiation, Snap freezer."]) },
+      { id: Date.now() + 5, title: "Public Relation Department", time: "Standard Hours", location: "GS Building Ground Floor C Wing", phone: "020-40151011 / 40151015", link: "", detailsStr: formatListToHtml(["Attend to complaints and suggestions", "Medical Certificates", "Insurance Claim Forms and related issues", "Periodical / Routine Medical Checkups"]) },
+      { id: Date.now() + 6, title: "Canteen", time: "Standard Hours", location: "Basement C Wing (1941 / 1942)", phone: "-", link: "/canteen", detailsStr: formatListToHtml(["Well-equipped Catering Facility for Patients, Relatives, Doctors & Staff.", "Provides quality and hygienically safe food."]) },
+      { id: Date.now() + 7, title: "Health Checkup", time: "Standard Hours", location: "Public Relation Dept - GS Building Ground Floor C Wing", phone: "020-40151011, 020-40151015", link: "", detailsStr: formatListToHtml(["Know your health status with several Health Check-up packages.", "Done quickly, efficiently and offered at discounted rates."]) },
+      { id: Date.now() + 8, title: "Ambulance / Hospital Attendant", time: "24 Hours", location: "Ground Floor A Wing (Emergency Dept.)", phone: "020-40151540, 40151027", link: "", detailsStr: formatListToHtml(["For going home and emergencies."]) },
+      { id: Date.now() + 9, title: "Photo-Copy / Xerox", time: "Standard Hours", location: "Ground Floor C Wing", phone: "020-40151022", link: "", detailsStr: formatListToHtml(["For one A4 Size photocopy Rs. 1/- is charged."]) },
+      { id: Date.now() + 10, title: "Mortuary", time: "24 Hours", location: "GS Building Basement C Wing", phone: "Admission Dept: 020- 40151020", link: "", detailsStr: formatListToHtml(["For all relevant documentation and formalities contact Admission Department (Ground Floor B wing)."]) },
+      { id: Date.now() + 11, title: "Emergency", time: "24 Hours", location: "Ground Floor A Wing", phone: "020-40151027, 40151065", link: "", detailsStr: "" },
+      { id: Date.now() + 12, title: "Optician Shop", time: "08:00 a.m. to 04:30 p.m.", location: "Second Floor B wing", phone: "020-40151070", link: "", detailsStr: "" },
+      { id: Date.now() + 13, title: "Pass Counter", time: "Standard Hours", location: "SS Building Ground Floor", phone: "New Reg: 020-49153006 | OPD: 49153005 | IPD: 49153018", link: "", detailsStr: formatListToHtml(["Entry to the SS Building is only with a valid pass."]) }
     ]
   });
 
@@ -60,7 +65,7 @@ export default function FacilitiesClientForm({ initialData }: { initialData: any
   const addFacility = () => {
     setData({
       ...data,
-      facilities: [...data.facilities, { id: Date.now(), title: "", iconName: "", time: "", location: "", phone: "", detailsStr: "" }]
+      facilities: [...data.facilities, { id: Date.now(), title: "", iconName: "", time: "", location: "", phone: "", link: "", detailsStr: "" }]
     });
   };
 
@@ -112,6 +117,7 @@ export default function FacilitiesClientForm({ initialData }: { initialData: any
         time: f.time,
         location: f.location,
         phone: f.phone,
+        link: f.link || "",
         details: parseHtmlToList(f.detailsStr)
       }))
     });
@@ -237,6 +243,10 @@ export default function FacilitiesClientForm({ initialData }: { initialData: any
                   <div>
                     <label className="block text-[10px] font-[800] text-gray-700 uppercase tracking-widest mb-1 flex items-center gap-1"><MapPin size={12}/> Location</label>
                     <input type="text" value={fac.location} onChange={(e) => updateFacility(fac.id, 'location', e.target.value)} className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium" placeholder="e.g. Ground Floor" />
+                  </div>
+                  <div>
+                    <label className="block text-[10px] font-[800] text-gray-700 uppercase tracking-widest mb-1 flex items-center gap-1"><LinkIcon size={12}/> Redirection Link (Read More URL)</label>
+                    <input type="text" value={fac.link || ""} onChange={(e) => updateFacility(fac.id, 'link', e.target.value)} className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-[#007a87]/30 focus:border-[#007a87] transition-all duration-200 text-slate-700 font-medium" placeholder="e.g. /pharmacy or /blood-bank or /canteen" />
                   </div>
                   <div>
                     <label className="block text-[10px] font-[800] text-gray-700 uppercase tracking-widest mb-1">Details (One per line)</label>

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ChevronRight, FileText } from "lucide-react";
 import DynamicSidebar from "@/components/DynamicSidebar";
 import CourseClientPage from "@/app/courses/[id]/client-page";
+import InternationalFellowshipClientPage from "@/app/musculoskeletal-imaging-international-fellowship/client-page";
 
 export const dynamic = "force-dynamic";
 
@@ -50,6 +51,14 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     };
   }
 
+  if (rawSlug.toLowerCase() === 'musculoskeletal-imaging-international-fellowship') {
+    return {
+      title: "Musculoskeletal Imaging - International Fellowship - Deenanath Mangeshkar Hospital",
+      description: "6-Month Advanced Cross-Sectional MSK Observership & Fellowship for Visiting International Radiologists at Deenanath Mangeshkar Hospital & Research Center, Pune.",
+      keywords: "musculoskeletal imaging international fellowship, msk fellowship pune, dmh radiology fellowship, dr sanjay desai radiology",
+    };
+  }
+
   const course = await getCourseBySlug(rawSlug);
   if (course && course.status !== false) {
     return {
@@ -78,6 +87,10 @@ export default async function DynamicPageRoute({ params }: { params: Promise<{ s
   });
 
   if (!page || !page.status) {
+    if (rawSlug.toLowerCase() === 'musculoskeletal-imaging-international-fellowship') {
+      return <InternationalFellowshipClientPage />;
+    }
+
     const course = await getCourseBySlug(rawSlug);
     if (course && course.status !== false) {
       return <CourseClientPage data={course} />;

@@ -320,6 +320,23 @@ export const SITE_SEARCH_CATALOG: SiteCatalogItem[] = [
     settingKey: "page_facilities"
   },
   {
+    id: "canteen",
+    title: "Canteen & Catering Facilities",
+    category: "Services",
+    href: "/canteen",
+    description: "24-hour Coffee Shop, Main Dining Canteen, takeaway counter, inpatient clinical diets, and beverage vending services.",
+    keywords: ["canteen", "cafeteria", "food", "coffee", "tea", "thali", "diet", "nutrition", "catering", "snacks", "meals"],
+    settingKey: "page_canteen"
+  },
+  {
+    id: "international-fellowship",
+    title: "Musculoskeletal Imaging – International Fellowship",
+    category: "Academics",
+    href: "/musculoskeletal-imaging-International-fellowship",
+    description: "6-Month cross-sectional MSK observership and fellowship for visiting international radiologists under Dr. Sanjay Desai.",
+    keywords: ["international fellowship", "musculoskeletal imaging", "radiology fellowship", "observership", "msk", "sanjay desai"],
+  },
+  {
     id: "feedbacks-stories",
     title: "Patient Stories & Testimonials",
     category: "Patient & Visitors",

@@ -3,7 +3,7 @@
 import React, { useEffect, useRef } from "react";
 import DynamicSidebar from "@/components/DynamicSidebar";
 import Link from "next/link";
-import { ChevronRight, Building, Building2, Pill, Droplets, Users, Coffee, Activity, Ambulance, Copy, AlertTriangle, Glasses, Ticket, FileText, MapPin, Phone, Clock, Info, CheckCircle2, CreditCard } from "lucide-react";
+import { ChevronRight, ArrowRight, Building, Building2, Pill, Droplets, Users, Coffee, Activity, Ambulance, Copy, AlertTriangle, Glasses, Ticket, FileText, MapPin, Phone, Clock, Info, CheckCircle2, CreditCard } from "lucide-react";
 
 const renderIcon = (iconName?: string, title?: string) => {
   const name = iconName || "";
@@ -127,6 +127,27 @@ export default function FacilitiesClientPage({ pageData }: { pageData: any }) {
                             </ul>
                           </div>
                         )}
+
+                        {/* Redirection Link (Read more) */}
+                        {(() => {
+                          const targetLink = facility.link || (
+                            facility.title?.toLowerCase().includes('pharmacy') ? '/pharmacy' :
+                            facility.title?.toLowerCase().includes('blood') ? '/blood-bank' :
+                            facility.title?.toLowerCase().includes('canteen') ? '/canteen' : null
+                          );
+                          if (!targetLink) return null;
+                          return (
+                            <div className="pt-4 mt-auto border-t border-slate-100 flex items-center justify-between">
+                              <Link
+                                href={targetLink}
+                                className="inline-flex items-center gap-1.5 text-xs font-bold text-[#007a87] hover:text-[#D9232D] group/link transition-colors"
+                              >
+                                <span>Read more</span>
+                                <ArrowRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover/link:translate-x-1" />
+                              </Link>
+                            </div>
+                          );
+                        })()}
                       </div>
                     ))}
                   </div>
@@ -234,6 +255,27 @@ export default function FacilitiesClientPage({ pageData }: { pageData: any }) {
                             </ul>
                           </div>
                         )}
+
+                        {/* Redirection Link (Read more) */}
+                        {(() => {
+                          const targetLink = facility.link || (
+                            facility.title?.toLowerCase().includes('pharmacy') ? '/pharmacy' :
+                            facility.title?.toLowerCase().includes('blood') ? '/blood-bank' :
+                            facility.title?.toLowerCase().includes('canteen') ? '/canteen' : null
+                          );
+                          if (!targetLink) return null;
+                          return (
+                            <div className="pt-4 mt-auto border-t border-slate-100 flex items-center justify-between">
+                              <Link
+                                href={targetLink}
+                                className="inline-flex items-center gap-1.5 text-xs font-bold text-[#007a87] hover:text-[#D9232D] group/link transition-colors"
+                              >
+                                <span>Read more</span>
+                                <ArrowRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover/link:translate-x-1" />
+                              </Link>
+                            </div>
+                          );
+                        })()}
                       </div>
                     ))}
                   </div>
